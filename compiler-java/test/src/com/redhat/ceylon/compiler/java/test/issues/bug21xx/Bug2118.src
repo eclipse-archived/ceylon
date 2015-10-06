@@ -43,7 +43,7 @@ public interface Observable2118<T> {
     public <V>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Bar<V> Bar$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class Observable2118$impl<T> {
+public final class Observable2118$impl<T> implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Observable2118$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<T> $this) {
@@ -72,7 +72,7 @@ public final class Observable2118$impl<T> {
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observable2118<U>"})
-                class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> {
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> {
                     
                     private anonymous_0_() {
                         this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>($reified$U, this);
@@ -124,7 +124,7 @@ public final class Observable2118$impl<T> {
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observer2118<T>"})
-    public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observer2118<T> {
+    public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observer2118<T>, .java.io.Serializable {
         
         protected Baz() {
         }
@@ -150,7 +150,7 @@ public final class Observable2118$impl<T> {
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public class Bar<V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observer2118<V> {
+    public class Bar<V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observer2118<V>, .java.io.Serializable {
         
         protected Bar(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
-abstract class Bug1119Operation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug1119Operation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1119Operation() {
     }
@@ -22,6 +22,10 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
     private bug1119Addition_() {
         super();
         this.string = "+";
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.class);
     

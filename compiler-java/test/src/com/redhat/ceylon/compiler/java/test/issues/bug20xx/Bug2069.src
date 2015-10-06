@@ -7,7 +7,7 @@ public interface Bug2069Bar {
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar$impl.Baz Baz$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar.class);
 }
-public final class Bug2069Bar$impl {
+public final class Bug2069Bar$impl implements .java.io.Serializable {
     
     public Bug2069Bar$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar $this) {
         this.$this = $this;
@@ -18,7 +18,7 @@ public final class Bug2069Bar$impl {
         return new Baz();
     }
     
-    public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Baz() {
         }
@@ -29,7 +29,7 @@ public final class Bug2069Bar$impl {
         }
     }
 }
-public class Bug2069Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar {
+public class Bug2069Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar, .java.io.Serializable {
     
     public Bug2069Foo() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2069Bar$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar$impl(this);

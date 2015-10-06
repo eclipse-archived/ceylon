@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class ChainingInit<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ChainingInit<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected ChainingInit(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();

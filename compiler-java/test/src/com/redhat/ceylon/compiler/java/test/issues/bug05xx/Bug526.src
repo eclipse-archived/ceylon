@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
-abstract class Bug526Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug526Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug526Top() {
         this.defaultAttr = 3L;

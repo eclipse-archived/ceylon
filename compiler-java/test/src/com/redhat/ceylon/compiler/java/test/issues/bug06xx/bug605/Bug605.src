@@ -64,7 +64,7 @@ final class bug605mth_ {
         final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
     }
 }
-class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug605cls() {
     }

@@ -9,7 +9,7 @@ interface Bug1550List {
     public .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List> getA();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List.class);
 }
-final class Bug1550List$impl {
+final class Bug1550List$impl implements .java.io.Serializable {
     
     Bug1550List$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List $this) {
         this.$this = $this;
@@ -24,7 +24,7 @@ final class Bug1550List$impl {
         return (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List>).ceylon.language.nothing_.get_();
     }
 }
-class Bug1550MyList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List {
+class Bug1550MyList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List, .java.io.Serializable {
     
     Bug1550MyList() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List$impl(this);
@@ -69,7 +69,7 @@ interface Bug1550List2<Element> {
     
     public .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>> getA2();
 }
-final class Bug1550List2$impl<Element> {
+final class Bug1550List2$impl<Element> implements .java.io.Serializable {
     
     Bug1550List2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -98,7 +98,7 @@ final class Bug1550List2$impl<Element> {
         return (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends Element>>).ceylon.language.nothing_.get_();
     }
 }
-class Bug1550L<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<T> {
+class Bug1550L<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<T>, .java.io.Serializable {
     
     Bug1550L(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

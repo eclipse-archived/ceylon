@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-final class foo2266_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class foo2266_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private foo2266_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ value;

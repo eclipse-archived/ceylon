@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.swtch;
 
-class SwitchIsExhaustive<TP1 extends .ceylon.language.Float, TP2 extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SwitchIsExhaustive<TP1 extends .ceylon.language.Float, TP2 extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SwitchIsExhaustive(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TP1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TP2) {
         this.$reified$TP1 = $reified$TP1;

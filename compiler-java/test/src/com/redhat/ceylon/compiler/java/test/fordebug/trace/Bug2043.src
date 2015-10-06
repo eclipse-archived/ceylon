@@ -20,7 +20,7 @@ public final class bug2043_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class Bug2043 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2043 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2043() {
     }

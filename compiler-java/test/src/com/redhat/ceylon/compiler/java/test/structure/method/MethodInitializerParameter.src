@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected MethodInitializerParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();

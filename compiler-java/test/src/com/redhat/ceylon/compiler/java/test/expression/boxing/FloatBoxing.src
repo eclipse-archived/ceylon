@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class FloatBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class FloatBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     FloatBoxing() {
         this.attrFloat = 1.0;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IndirectInvoke(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         this.$reified$X = $reified$X;

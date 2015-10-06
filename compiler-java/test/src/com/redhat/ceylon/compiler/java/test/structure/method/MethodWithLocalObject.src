@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodWithLocalObject() {
     }
@@ -8,7 +8,7 @@ class MethodWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.
     private final void m$priv$() {
         final .java.lang.String ss = "foo";
         
-        final class y_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class y_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private y_() {
             }

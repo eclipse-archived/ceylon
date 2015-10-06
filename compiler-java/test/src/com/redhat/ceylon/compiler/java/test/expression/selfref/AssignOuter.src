@@ -33,7 +33,7 @@ interface AssignOuter {
     public abstract void setD(final .ceylon.language.Integer d);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter.class);
 }
-final class AssignOuter$impl {
+final class AssignOuter$impl implements .java.io.Serializable {
     
     AssignOuter$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter $this) {
         this.$this = $this;
@@ -54,7 +54,7 @@ final class AssignOuter$impl {
     public final void setC(final long c) {
     }
     
-    final class I$impl {
+    final class I$impl implements .java.io.Serializable {
         
         I$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuter$I $this) {
             this.$this = $this;
@@ -159,7 +159,7 @@ interface AssignOuterClass$I {
     
     public void setCDefault(final long cDefault);
 }
-abstract class AssignOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class AssignOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AssignOuterClass() {
     }
@@ -182,7 +182,7 @@ abstract class AssignOuterClass implements .com.redhat.ceylon.compiler.java.runt
     public void setC(final long c) {
     }
     
-    final class I$impl {
+    final class I$impl implements .java.io.Serializable {
         
         I$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.AssignOuterClass$I $this) {
             this.$this = $this;

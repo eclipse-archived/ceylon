@@ -10,7 +10,7 @@ interface Bug1208I<T> {
     
     public abstract T m4();
 }
-class Bug1208 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<.ceylon.language.Integer> {
+class Bug1208 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<.ceylon.language.Integer>, .java.io.Serializable {
     
     Bug1208() {
     }

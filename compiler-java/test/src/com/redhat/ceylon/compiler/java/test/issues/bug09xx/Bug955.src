@@ -9,7 +9,7 @@ final class bug955_ {
         .ceylon.language.print_.print(str.$call$());
     }
 }
-class Bug595 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug595 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug595() {
         super();

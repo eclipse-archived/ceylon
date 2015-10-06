@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.importIt;
 
-class ImportJavaRuntimeTypeSingle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ImportJavaRuntimeTypeSingle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ImportJavaRuntimeTypeSingle() {
     }

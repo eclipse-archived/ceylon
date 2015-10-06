@@ -7,14 +7,14 @@ interface Bug1851Foo1 {
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo1$impl.Bar1 Bar1$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo1.class);
 }
-final class Bug1851Foo1$impl {
+final class Bug1851Foo1$impl implements .java.io.Serializable {
     
     Bug1851Foo1$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo1 $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo1 $this;
     
-    public abstract class Bar1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Bar1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Bar1() {
         }
@@ -32,14 +32,14 @@ interface Bug1851Foo2 {
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo2$impl.Bar2 Bar2$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo2.class);
 }
-final class Bug1851Foo2$impl {
+final class Bug1851Foo2$impl implements .java.io.Serializable {
     
     Bug1851Foo2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo2 $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo2 $this;
     
-    public abstract class Bar2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo1 {
+    public abstract class Bar2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo1, .java.io.Serializable {
         
         protected Bar2() {
             this.$com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1851Foo1$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1851Foo1$impl(this);

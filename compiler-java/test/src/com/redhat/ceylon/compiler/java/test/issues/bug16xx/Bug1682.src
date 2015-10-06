@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 
-public abstract class Bug1682 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class Bug1682 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1682() {
     }
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1682.Formal Formal$new$();
     
-    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Formal() {
         }

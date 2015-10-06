@@ -1,20 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     LocalClassWithLocalObject() {
     }
     
     private final void m$priv$() {
         
-        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Inner() {
                 this.o = new Inner.o_();
             }
             private final Inner.o_ o;
             
-            final class o_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private o_() {
                 }

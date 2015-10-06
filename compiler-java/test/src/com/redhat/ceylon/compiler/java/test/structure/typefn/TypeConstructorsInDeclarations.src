@@ -31,7 +31,7 @@ final class producesTc_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

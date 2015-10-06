@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2239() {
         final .java.lang.String notCaptured;

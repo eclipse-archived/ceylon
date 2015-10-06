@@ -235,7 +235,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_ {
                 from$50 = index + 1L;
                 final long from$55 = from$50;
                 
-                class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     C() {
                         final long x = from$55;
@@ -301,7 +301,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
                     from$64 = index + 1L;
                     final long from$75 = from$64;
                     
-                    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                         
                         C() {
                             final long x = from$75;

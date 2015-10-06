@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> {
+abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp>, .java.io.Serializable {
     
     OfOp() {
         this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp>(.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp.$TypeDescriptor$, this);

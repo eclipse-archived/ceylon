@@ -9,14 +9,14 @@ interface SubclassedTwiceTop {
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop qual);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop.class);
 }
-final class SubclassedTwiceTop$impl {
+final class SubclassedTwiceTop$impl implements .java.io.Serializable {
     
     SubclassedTwiceTop$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop $this;
     
-    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member() {
         }
@@ -44,7 +44,7 @@ interface SubclassedTwiceFirst extends .com.redhat.ceylon.compiler.java.test.str
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst.class);
 }
-final class SubclassedTwiceFirst$impl {
+final class SubclassedTwiceFirst$impl implements .java.io.Serializable {
     
     SubclassedTwiceFirst$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst $this) {
         this.$this = $this;
@@ -67,7 +67,7 @@ final class SubclassedTwiceFirst$impl {
         }
     }
 }
-class SubclassedTwiceSecond implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst {
+class SubclassedTwiceSecond implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst, .java.io.Serializable {
     
     SubclassedTwiceSecond() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl(this);

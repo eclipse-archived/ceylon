@@ -9,7 +9,7 @@ interface VarianceMiddle extends .com.redhat.ceylon.compiler.java.test.structure
 interface VarianceBottom extends .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom.class);
 }
-class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected VarianceClass() {
         super();

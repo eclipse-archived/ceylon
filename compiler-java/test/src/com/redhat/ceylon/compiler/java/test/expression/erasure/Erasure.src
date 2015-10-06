@@ -25,7 +25,7 @@ interface Right extends .com.redhat.ceylon.compiler.java.test.expression.erasure
     public abstract long getRightAttribute();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Right.class);
 }
-class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right {
+class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .com.redhat.ceylon.compiler.java.test.expression.erasure.Right, .java.io.Serializable {
     
     CMiddle() {
         this.topAttribute = 1L;
@@ -84,7 +84,7 @@ class CMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.CMiddle.class);
 }
-class CLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.Left {
+class CLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.Left, .java.io.Serializable {
     
     CLeft() {
         this.topAttribute = 1L;
@@ -184,7 +184,7 @@ interface MyEmpty extends .com.redhat.ceylon.compiler.java.test.expression.erasu
     public abstract .com.redhat.ceylon.compiler.java.test.expression.erasure.MyEmpty measure(final .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric from, final long length);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyEmpty.class);
 }
-class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Test() {
         super();

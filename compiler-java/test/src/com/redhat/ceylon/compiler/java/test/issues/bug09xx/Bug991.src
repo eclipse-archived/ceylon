@@ -7,7 +7,7 @@ interface Bug991Iterable {
     public .java.lang.Object f();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable.class);
 }
-final class Bug991Iterable$impl {
+final class Bug991Iterable$impl implements .java.io.Serializable {
     
     Bug991Iterable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable $this) {
         this.$this = $this;
@@ -26,7 +26,7 @@ interface Bug991List extends .com.redhat.ceylon.compiler.java.test.issues.bug09x
     public .java.lang.Object f();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List.class);
 }
-final class Bug991List$impl {
+final class Bug991List$impl implements .java.io.Serializable {
     
     Bug991List$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List $this) {
         this.$this = $this;
@@ -45,7 +45,7 @@ interface Bug991Sequence extends .com.redhat.ceylon.compiler.java.test.issues.bu
     public .java.lang.Object f();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence.class);
 }
-final class Bug991Sequence$impl {
+final class Bug991Sequence$impl implements .java.io.Serializable {
     
     Bug991Sequence$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence $this) {
         this.$this = $this;
@@ -56,7 +56,7 @@ final class Bug991Sequence$impl {
         return $this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$impl().f();
     }
 }
-class Bug991SequenceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List {
+class Bug991SequenceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List, .java.io.Serializable {
     
     Bug991SequenceClass() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl(this);

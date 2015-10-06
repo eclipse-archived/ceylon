@@ -50,7 +50,7 @@ final class bug1507_ {
         }
     }
 }
-class Bug1507IntWrapper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1507IntWrapper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1507IntWrapper() {
         super();

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected RefiningAnythingMembersClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -174,7 +174,7 @@ interface RefiningAnythingMembersInterface<T> {
     
     public abstract T formalReturnsT();
 }
-final class RefiningAnythingMembersInterface$impl<T> {
+final class RefiningAnythingMembersInterface$impl<T> implements .java.io.Serializable {
     
     RefiningAnythingMembersInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<T> $this) {
         this.$reified$T = $reified$T;
@@ -218,7 +218,7 @@ final class RefiningAnythingMembersInterface$impl<T> {
         return $this.getDefaultGetterT();
     }
 }
-abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object> {
+abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object>, .java.io.Serializable {
     
     RefiningAnythingMembersInterface_Boxed() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, this);
@@ -291,7 +291,7 @@ abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.cey
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Boxed.class);
 }
-abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object> {
+abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object>, .java.io.Serializable {
     
     RefiningAnythingMembersInterface_Unboxed() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, this);

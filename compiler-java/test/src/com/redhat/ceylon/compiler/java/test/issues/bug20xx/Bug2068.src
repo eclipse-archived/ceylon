@@ -15,7 +15,7 @@ public interface IBug2068 {
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault2 IDefault2$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068.class);
 }
-public final class IBug2068$impl {
+public final class IBug2068$impl implements .java.io.Serializable {
     
     public IBug2068$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068 $this) {
         this.$this = $this;
@@ -26,7 +26,7 @@ public final class IBug2068$impl {
         return new IShared();
     }
     
-    public class IShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class IShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected IShared() {
         }
@@ -37,7 +37,7 @@ public final class IBug2068$impl {
         }
     }
     
-    public abstract class IFormal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class IFormal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected IFormal() {
         }
@@ -52,7 +52,7 @@ public final class IBug2068$impl {
         return new IDefault();
     }
     
-    public class IDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class IDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected IDefault() {
         }
@@ -63,7 +63,7 @@ public final class IBug2068$impl {
         }
     }
     
-    public abstract class IFormal2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class IFormal2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected IFormal2() {
         }
@@ -78,7 +78,7 @@ public final class IBug2068$impl {
         return new IDefault2();
     }
     
-    public class IDefault2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class IDefault2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected IDefault2() {
         }
@@ -100,7 +100,7 @@ public interface IBug2068_2 extends .com.redhat.ceylon.compiler.java.test.issues
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IDefault2 IDefault2$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2.class);
 }
-public final class IBug2068_2$impl {
+public final class IBug2068_2$impl implements .java.io.Serializable {
     
     public IBug2068_2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2 $this) {
         this.$this = $this;
@@ -135,7 +135,7 @@ public final class IBug2068_2$impl {
         }
     }
 }
-public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public CBug2068() {
     }
@@ -144,7 +144,7 @@ public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runti
         return new CShared();
     }
     
-    public class CShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class CShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected CShared() {
         }
@@ -157,7 +157,7 @@ public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runti
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal CFormal$new$();
     
-    public abstract class CFormal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class CFormal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected CFormal() {
         }
@@ -172,7 +172,7 @@ public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runti
         return new CDefault();
     }
     
-    public class CDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class CDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected CDefault() {
         }
@@ -185,7 +185,7 @@ public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runti
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal2 CFormal2$new$();
     
-    public abstract class CFormal2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class CFormal2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected CFormal2() {
         }
@@ -200,7 +200,7 @@ public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runti
         return new CDefault2();
     }
     
-    public class CDefault2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class CDefault2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected CDefault2() {
         }

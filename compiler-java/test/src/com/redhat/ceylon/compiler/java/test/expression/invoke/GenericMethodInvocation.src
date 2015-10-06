@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public class KlassMethodTypeParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class KlassMethodTypeParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public KlassMethodTypeParams() {
     }
@@ -20,7 +20,7 @@ public class KlassMethodTypeParams implements .com.redhat.ceylon.compiler.java.r
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.KlassMethodTypeParams.class);
 }
-class GenericMethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class GenericMethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     GenericMethodInvocation() {
     }

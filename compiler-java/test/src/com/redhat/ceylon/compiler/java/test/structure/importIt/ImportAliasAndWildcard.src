@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.importIt;
 
-class ImportAliasAndWildcard implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ImportAliasAndWildcard implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ImportAliasAndWildcard() {
     }

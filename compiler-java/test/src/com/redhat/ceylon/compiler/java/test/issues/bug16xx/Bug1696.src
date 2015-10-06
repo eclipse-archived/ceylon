@@ -8,7 +8,7 @@ interface Bug1696<Element, Absent> {
     
     public .ceylon.language.Sequence<? extends Element> getPaired2();
 }
-final class Bug1696$impl<Element, Absent> {
+final class Bug1696$impl<Element, Absent> implements .java.io.Serializable {
     
     Bug1696$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696<? extends Element, ? extends Absent> $this) {
         this.$reified$Element = $reified$Element;
@@ -32,7 +32,7 @@ final class Bug1696$impl<Element, Absent> {
         return (.ceylon.language.Sequence<? extends Element>).ceylon.language.nothing_.get_();
     }
 }
-class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696<.java.lang.Object, .ceylon.language.String> {
+class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696<.java.lang.Object, .ceylon.language.String>, .java.io.Serializable {
     
     Bug1696Extend(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other) {
         this.$reified$Other = $reified$Other;
@@ -65,7 +65,7 @@ class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.m
 interface Bug1696MixinA1 extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinA1.class);
 }
-abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinA1, .ceylon.language.Iterable<T, .java.lang.Object> {
+abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinA1, .ceylon.language.Iterable<T, .java.lang.Object>, .java.io.Serializable {
     
     Bug1696MixinA2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -404,7 +404,7 @@ interface Bug1696MixinB1 extends .ceylon.language.Iterable<.java.lang.Object, .j
     public .ceylon.language.Iterable getPaired();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB1.class);
 }
-final class Bug1696MixinB1$impl {
+final class Bug1696MixinB1$impl implements .java.io.Serializable {
     
     Bug1696MixinB1$impl(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB1 $this) {
         this.$this = $this;
@@ -415,7 +415,7 @@ final class Bug1696MixinB1$impl {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
     }
 }
-abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB1, .ceylon.language.Iterable<T, .java.lang.Object> {
+abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB1, .ceylon.language.Iterable<T, .java.lang.Object>, .java.io.Serializable {
     
     Bug1696MixinB2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -756,7 +756,7 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
 interface Bug1696MixinC1 extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinC1.class);
 }
-abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinC1, .ceylon.language.Iterable<T, .java.lang.Object> {
+abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinC1, .ceylon.language.Iterable<T, .java.lang.Object>, .java.io.Serializable {
     
     Bug1696MixinC2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -1095,7 +1095,7 @@ interface Bug1696MixinD1 extends .ceylon.language.Iterable<.java.lang.Object, .j
     public .ceylon.language.Iterable getPaired();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinD1.class);
 }
-final class Bug1696MixinD1$impl {
+final class Bug1696MixinD1$impl implements .java.io.Serializable {
     
     Bug1696MixinD1$impl(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinD1 $this) {
         this.$this = $this;
@@ -1106,7 +1106,7 @@ final class Bug1696MixinD1$impl {
         return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
     }
 }
-abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinD1, .ceylon.language.Iterable<T, .java.lang.Object> {
+abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinD1, .ceylon.language.Iterable<T, .java.lang.Object>, .java.io.Serializable {
     
     Bug1696MixinD2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

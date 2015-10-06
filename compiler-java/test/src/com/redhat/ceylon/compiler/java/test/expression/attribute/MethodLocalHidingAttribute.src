@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class MethodLocalHidingAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodLocalHidingAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodLocalHidingAttribute() {
         final boolean b = true;

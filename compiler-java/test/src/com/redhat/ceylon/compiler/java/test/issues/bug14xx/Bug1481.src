@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
 
-public class Bug1481Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1481Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1481Foo() {
     }
@@ -43,7 +43,7 @@ public interface Bug1481Heap<Key, Item> {
     public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$new$();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class Bug1481Heap$impl<Key, Item> {
+public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Bug1481Heap$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap<Key, Item> $this) {

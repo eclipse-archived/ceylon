@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.ceylon.language.DeprecationAnnotation$annotation$(description = "A deprecated class")
 @.java.lang.Deprecated
-class Deprecated implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Deprecated implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Deprecated() {
     }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
+class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object>, .java.io.Serializable {
     
     UnionTypeArg() {
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable)this);
@@ -335,7 +335,7 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.UnionTypeArg.class);
 }
-class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
+class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object>, .java.io.Serializable {
     
     UnionTypeArgOverride() {
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable)this);

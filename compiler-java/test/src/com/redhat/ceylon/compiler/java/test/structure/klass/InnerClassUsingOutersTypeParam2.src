@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public class MutableList<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class MutableList<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public MutableList(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -15,7 +15,7 @@ public class MutableList<T> implements .com.redhat.ceylon.compiler.java.runtime.
         return new Cell<T>($reified$T, car, cdr);
     }
     
-    public class Cell<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Cell<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Cell(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T car, final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr) {
             this.$reified$T = $reified$T;

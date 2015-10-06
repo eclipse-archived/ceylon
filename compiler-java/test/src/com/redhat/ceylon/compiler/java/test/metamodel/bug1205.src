@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
-class Bug1205 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1205 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1205() {
     }

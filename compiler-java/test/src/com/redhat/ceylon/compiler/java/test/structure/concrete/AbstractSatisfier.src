@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 interface AbstractSatisfier_I extends .ceylon.language.Iterable<.java.lang.Object, .java.lang.Object> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I.class);
 }
-abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object> {
+abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSatisfier_I, .ceylon.language.Iterable<T, .java.lang.Object>, .java.io.Serializable {
     
     AbstractSatisfier(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

@@ -15,7 +15,7 @@ final class bug1939_ {
                 let
                 {
                     
-                    class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
                         private anonymous_0_() {
                             .ceylon.language.print_.print(.ceylon.language.String.instance(hello));

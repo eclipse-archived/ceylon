@@ -7,7 +7,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
         .java.lang.annotation.ElementType.TYPE})
 public @interface A$annotation$ {
 }
-public final class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation {
+public final class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation, .java.io.Serializable {
     
     public A(.com.redhat.ceylon.compiler.java.test.annotations.A$annotation$ anno) {
         this();

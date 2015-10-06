@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-class SatisfiesFileFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FileFilter {
+class SatisfiesFileFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FileFilter, .java.io.Serializable {
     
     SatisfiesFileFilter() {
     }
@@ -16,7 +16,7 @@ class SatisfiesFileFilter implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter.class);
 }
-class SatisfiesFilenameFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FilenameFilter {
+class SatisfiesFilenameFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FilenameFilter, .java.io.Serializable {
     
     SatisfiesFilenameFilter() {
     }
@@ -43,7 +43,7 @@ final class test_ {
         f1.listFiles(new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter());
     }
 }
-class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaInterface<.ceylon.language.Boolean, .ceylon.language.Integer> {
+class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaInterface<.ceylon.language.Boolean, .ceylon.language.Integer>, .java.io.Serializable {
     
     JavaInterfaceImpl() {
     }

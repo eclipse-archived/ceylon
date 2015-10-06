@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
-class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1243(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -16,7 +16,7 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return new Y<S>($reified$S, s);
     }
     
-    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
             this.$reified$S = $reified$S;
@@ -65,7 +65,7 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243.class, $reified$T);
     }
 }
-class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1243b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -81,7 +81,7 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return new Y<S>($reified$S, s);
     }
     
-    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
             this.$reified$S = $reified$S;
@@ -130,7 +130,7 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1243b.class, $reified$T);
     }
 }
-class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1243c(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -146,7 +146,7 @@ class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return new Y<S>($reified$S, s);
     }
     
-    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
             this.$reified$S = $reified$S;
@@ -202,7 +202,7 @@ final class bug1243d_ {
     
     static <T>void bug1243d(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$bug1243d$T, final T t) {
         
-        class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
                 this.$reified$S = $reified$S;
@@ -244,7 +244,7 @@ final class bug1243e_ {
     
     static <T>void bug1243e(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$bug1243e$T, final T t) {
         
-        class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
                 this.$reified$S = $reified$S;
@@ -286,7 +286,7 @@ final class bug1243f_ {
     
     static <T>void bug1243f(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$bug1243f$T, final T t) {
         
-        class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
                 this.$reified$S = $reified$S;

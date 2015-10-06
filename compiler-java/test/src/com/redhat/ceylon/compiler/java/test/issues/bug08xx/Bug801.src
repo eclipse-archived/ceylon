@@ -7,7 +7,7 @@ public interface Bug801_Interface {
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface.class);
 }
-public final class Bug801_Interface$impl {
+public final class Bug801_Interface$impl implements .java.io.Serializable {
     
     public Bug801_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface $this) {
         this.$this = $this;
@@ -16,7 +16,7 @@ public final class Bug801_Interface$impl {
 }
 public interface Bug801_Class$MemberInterface {
 }
-public class Bug801_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug801_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug801_Class() {
     }
@@ -36,7 +36,7 @@ public interface Bug801_ImplClass$MemberInterface2 extends .com.redhat.ceylon.co
 }
 interface Bug801_ImplClass$method$MemberInterface2 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
 }
-public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface {
+public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface, .java.io.Serializable {
     
     public Bug801_ImplClass() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
@@ -52,7 +52,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
         return new MemberInterfaceImpl();
     }
     
-    public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+    public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
         
         protected MemberInterfaceImpl() {
         }
@@ -67,7 +67,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
         return new Foo();
     }
     
-    public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Foo() {
         }
@@ -76,7 +76,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
             return new MemberInterfaceImpl();
         }
         
-        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
             
             protected MemberInterfaceImpl() {
             }
@@ -97,7 +97,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
         return new Bar();
     }
     
-    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface {
+    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface, .java.io.Serializable {
         
         protected Bar() {
             this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
@@ -113,7 +113,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
             return new MemberInterfaceImpl();
         }
         
-        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
             
             protected MemberInterfaceImpl() {
             }
@@ -132,7 +132,7 @@ public class Bug801_ImplClass implements .com.redhat.ceylon.compiler.java.runtim
     
     private final void method$priv$() {
         
-        class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+        class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
             
             MemberInterfaceImpl() {
             }
@@ -169,7 +169,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         return new MemberInterfaceImpl();
     }
     
-    public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+    public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface, .java.io.Serializable {
         
         protected MemberInterfaceImpl() {
         }
@@ -184,7 +184,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         return new Foo();
     }
     
-    public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Foo() {
         }
@@ -193,7 +193,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
             return new MemberInterfaceImpl();
         }
         
-        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface, .java.io.Serializable {
             
             protected MemberInterfaceImpl() {
             }
@@ -214,7 +214,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
         return new Bar();
     }
     
-    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface {
+    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface, .java.io.Serializable {
         
         protected Bar() {
             this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
@@ -230,7 +230,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
             return new MemberInterfaceImpl();
         }
         
-        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+        public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
             
             protected MemberInterfaceImpl() {
             }
@@ -249,7 +249,7 @@ public class Bug801_ImplClass2 extends .com.redhat.ceylon.compiler.java.test.iss
     
     private final void method$priv$() {
         
-        class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+        class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface, .java.io.Serializable {
             
             MemberInterfaceImpl() {
             }

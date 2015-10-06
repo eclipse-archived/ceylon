@@ -7,7 +7,7 @@ interface T {
     public long f();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.T.class);
 }
-final class T$impl {
+final class T$impl implements .java.io.Serializable {
     
     T$impl(.com.redhat.ceylon.compiler.java.test.statement.conditional.T $this) {
         this.$this = $this;

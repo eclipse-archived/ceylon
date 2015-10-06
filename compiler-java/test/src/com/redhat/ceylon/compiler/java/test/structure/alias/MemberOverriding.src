@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class MemberOverriding_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MemberOverriding_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MemberOverriding_Foo() {
     }
@@ -32,7 +32,7 @@ class MemberOverriding_Bar extends .com.redhat.ceylon.compiler.java.test.structu
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.Inner.class)})
-class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MemberOverriding_Super() {
     }

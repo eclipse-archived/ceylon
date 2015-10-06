@@ -11,7 +11,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .ceylon.language.Annotated, .java.lang.Object> {
+final class AnnotationTarget implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget, .ceylon.language.Annotated, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationTarget(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$ anno) {
         this();
@@ -55,7 +55,7 @@ final class annotationTarget_ {
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .ceylon.language.Annotated, .java.lang.Object> {
+final class AnnotationTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2, .ceylon.language.Annotated, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationTarget2(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$ anno) {
         this();
@@ -95,7 +95,7 @@ interface AnnotationTargetClass$method$LocalInterface {
 interface AnnotationTargetClass$InnerInterface {
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected AnnotationTargetClass() {
         super();
@@ -148,7 +148,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     }
     private final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ obj;
     
-    public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private obj_() {
         }
@@ -174,7 +174,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
         }
         
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             LocalClass(final .java.lang.String parameter) {
                 this.parameter = parameter;
@@ -194,7 +194,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerClass(final .java.lang.String parameter) {
             this.parameter = parameter;
@@ -234,7 +234,7 @@ final class AnnotationTargetClassAlias {
         throw new .ceylon.language.Exception();
     }
 }
-class AnnotationTargetOuter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationTargetOuter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AnnotationTargetOuter() {
     }
@@ -286,7 +286,7 @@ interface AnnotationTargetInterface {
     public .java.lang.String getSharedAttribute();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface.class);
 }
-final class AnnotationTargetInterface$impl {
+final class AnnotationTargetInterface$impl implements .java.io.Serializable {
     
     AnnotationTargetInterface$impl(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetInterface $this) {
         this.$this = $this;
@@ -326,7 +326,7 @@ final class AnnotationTargetInterface$impl {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerClass(final .java.lang.String parameter) {
             this.parameter = parameter;
@@ -357,9 +357,13 @@ final class annotationTargetMethod_ {
     final .java.lang.String parameter) {
     }
 }
-final class annotationTargetObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class annotationTargetObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private annotationTargetObject_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.class);
     private static final .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ value;

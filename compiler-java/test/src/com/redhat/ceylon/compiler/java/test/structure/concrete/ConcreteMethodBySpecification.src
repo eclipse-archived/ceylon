@@ -32,7 +32,7 @@ interface ConcreteMethodBySpecification {
     public long mDefaultMem(final long i);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification.class);
 }
-final class ConcreteMethodBySpecification$impl {
+final class ConcreteMethodBySpecification$impl implements .java.io.Serializable {
     
     ConcreteMethodBySpecification$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification $this) {
         this.$this = $this;
@@ -108,7 +108,7 @@ interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.j
     public long mDefaultSup(final long i);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub.class);
 }
-final class ConcreteMethodBySpecificationSub$impl {
+final class ConcreteMethodBySpecificationSub$impl implements .java.io.Serializable {
     
     ConcreteMethodBySpecificationSub$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub $this) {
         this.$this = $this;
@@ -159,7 +159,7 @@ final class ConcreteMethodBySpecificationSub$impl {
         return mDefaultSup$canonical$(i);
     }
 }
-class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub {
+class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub, .java.io.Serializable {
     
     ConcreteMethodBySpecificationImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl(this);

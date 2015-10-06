@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug269() {
         this.string = "";
@@ -31,7 +31,7 @@ class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.class);
 }
-class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug269_2() {
     }

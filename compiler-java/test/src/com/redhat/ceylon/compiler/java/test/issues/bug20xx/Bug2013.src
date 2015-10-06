@@ -6,7 +6,7 @@ interface Bug2013Car {
 interface Bug2013BigCar extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Car {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar.class);
 }
-class Bug2013Truck implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar {
+class Bug2013Truck implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar, .java.io.Serializable {
     
     Bug2013Truck() {
     }
@@ -28,7 +28,7 @@ interface Bug2013Driver {
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Car driveCar(final double speed);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver.class);
 }
-final class Bug2013Driver$impl {
+final class Bug2013Driver$impl implements .java.io.Serializable {
     
     Bug2013Driver$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver $this) {
         this.$this = $this;
@@ -49,14 +49,14 @@ interface Bug2013ExperiencedDriver extends .com.redhat.ceylon.compiler.java.test
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar driveCar(final double speed);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver.class);
 }
-final class Bug2013ExperiencedDriver$impl {
+final class Bug2013ExperiencedDriver$impl implements .java.io.Serializable {
     
     Bug2013ExperiencedDriver$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver $this;
 }
-class Bug2013Trucker implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver {
+class Bug2013Trucker implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver, .java.io.Serializable {
     
     Bug2013Trucker() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013ExperiencedDriver$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver$impl(this);

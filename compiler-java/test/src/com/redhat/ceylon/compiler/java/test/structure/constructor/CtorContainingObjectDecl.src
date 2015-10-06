@@ -1,10 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-public class CtorContainingObjectDecl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class CtorContainingObjectDecl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public CtorContainingObjectDecl() {
         
-        final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private foo_() {
             }

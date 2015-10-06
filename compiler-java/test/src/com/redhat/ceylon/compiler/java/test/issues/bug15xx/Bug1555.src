@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
-class Bug1555<Element extends .ceylon.language.Enumerable<Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1555<Element extends .ceylon.language.Enumerable<Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1555(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

@@ -72,7 +72,7 @@ final class bug1011_ {
         );
     }
 }
-public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected LazyMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
         super();
@@ -92,7 +92,7 @@ public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runt
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazyMap.class, $reified$Key, $reified$Item);
     }
 }
-public class LazySet<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class LazySet<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected LazySet(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

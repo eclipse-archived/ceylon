@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
-class Bug1108 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1108 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1108() {
         super();
@@ -32,9 +32,14 @@ class Bug1108 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("process")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-final class process_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class process_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private process_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_.class);
@@ -83,7 +88,7 @@ final class bug1108_ {
     
     static void bug1108() {
         
-        class Bug1108Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Bug1108Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Bug1108Inner(final .java.lang.String foo, final .ceylon.language.Callable<? extends .ceylon.language.String> bar) {
                 this.foo = foo;
@@ -165,7 +170,7 @@ final class bug1108_ {
             
             void m() {
                 
-                class Bug1108Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Bug1108Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Bug1108Local(final .java.lang.String foo, final .ceylon.language.Callable<? extends .ceylon.language.String> bar) {
                         this.foo = foo;

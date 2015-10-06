@@ -14,7 +14,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     VariadicTricks() {
         (
@@ -162,7 +162,7 @@ final class variadicTricksIndirectRepeated_ {
         @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotation$(args = {
                 "indirect-repeated",
                 "indirect-repeated"})})
-class VariadicTricksCallsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class VariadicTricksCallsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     VariadicTricksCallsite() {
     }

@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple.class)})
-class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MemberClassConstructorRef() {
     }
@@ -105,7 +105,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-    public class Simple implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Simple implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String string;
         
@@ -658,7 +658,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-    public class Defaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Defaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String string;
         
@@ -1235,7 +1235,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-    public class Sequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Sequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String string;
         
@@ -2083,7 +2083,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             satisfies = {"ceylon.language::Object"},
             caseTypes = {})})
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-    public class Parameterized<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Parameterized<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
         @.com.redhat.ceylon.compiler.java.metadata.Ignore

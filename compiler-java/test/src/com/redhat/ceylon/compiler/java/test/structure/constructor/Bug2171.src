@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class Test1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Test1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Test1() {
         final .java.lang.String name;
@@ -14,7 +14,7 @@ class Test1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test1.class);
 }
-class Test2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Test2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Test2() {
         final .java.lang.String name = "a";
@@ -27,7 +27,7 @@ class Test2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test2.class);
 }
-class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Test3() {
         super();
@@ -65,7 +65,7 @@ class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test3.class);
 }
-class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Test4() {
         super();
@@ -109,7 +109,7 @@ class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test4.class);
 }
-class TestA implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TestA implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TestA() {
         super();
@@ -136,7 +136,7 @@ class TestA implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestA.class);
 }
-class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TestB1() {
         super();
@@ -191,7 +191,7 @@ class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.class);
 }
-class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TestB2() {
         super();
@@ -245,7 +245,7 @@ class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.class);
 }
-class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TestB3() {
         super();
@@ -302,7 +302,7 @@ class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.class);
 }
-class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TestB4() {
         super();
@@ -384,7 +384,7 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.class);
 }
-class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TestC() {
         super();
@@ -437,7 +437,7 @@ class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.class);
 }
-class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TestC2() {
         super();
@@ -485,7 +485,7 @@ class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.TestC2.class);
 }
-class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name;
     
@@ -544,7 +544,7 @@ class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super.class);
 }
-class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name;
     
@@ -602,7 +602,7 @@ class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super2.class);
 }
-class Super3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Super3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Super3() {
         final .java.lang.String name;
@@ -650,7 +650,7 @@ class Super3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Super3.class);
 }
-class Super4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Super4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Super4() {
         final .java.lang.String name;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DefaultedVariableAttribute() {
         (

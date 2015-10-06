@@ -14,7 +14,7 @@ interface ConcreteAttribute<A> {
     
     public A getADefault();
 }
-final class ConcreteAttribute$impl<A> {
+final class ConcreteAttribute$impl<A> implements .java.io.Serializable {
     
     ConcreteAttribute$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<A> $this) {
         this.$reified$A = $reified$A;
@@ -55,7 +55,7 @@ final class concreteAttributeCallsite_ {
         v = a.getADefault();
     }
 }
-class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<B> {
+class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<B>, .java.io.Serializable {
     
     ConcreteAttributeGetterImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
         this.$reified$B = $reified$B;
@@ -120,7 +120,7 @@ final class concreteAttributeGetterImplCallsite_ {
         a.setADefault(.ceylon.language.Float.instance(1.0));
     }
 }
-class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<C> {
+class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<C>, .java.io.Serializable {
     
     ConcreteAttributeValueImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C) {
         this.$reified$C = $reified$C;

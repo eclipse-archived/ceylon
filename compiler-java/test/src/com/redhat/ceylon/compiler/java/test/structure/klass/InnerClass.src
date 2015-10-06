@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     OuterClass() {
     }
     
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerClass() {
         }

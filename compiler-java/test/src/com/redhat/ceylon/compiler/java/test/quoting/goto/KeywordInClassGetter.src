@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class KeywordInClassGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KeywordInClassGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KeywordInClassGetter() {
         

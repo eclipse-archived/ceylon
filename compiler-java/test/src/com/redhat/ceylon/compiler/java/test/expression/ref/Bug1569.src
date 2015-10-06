@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-class Bug1569 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1569 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1569() {
     }

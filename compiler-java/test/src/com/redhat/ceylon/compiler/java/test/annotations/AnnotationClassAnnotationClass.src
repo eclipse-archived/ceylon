@@ -8,7 +8,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassParam() {
         super();
@@ -59,7 +59,7 @@ final class annotationClassParam_ {
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassAnnotationClass() {
         super();
@@ -97,7 +97,7 @@ final class AnnotationClassAnnotationClass implements .com.redhat.ceylon.compile
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassAnnotationClassSequence() {
         super();
@@ -149,7 +149,7 @@ final class annotationClassAnnotationClassSequence_ {
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationClassAnnotationClassDefaulted() {
         (
@@ -203,7 +203,7 @@ final class annotationClassAnnotationClass_ {
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation$(params = {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$(name = "constructor"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$(name = "class")})})
-class AnnotationClassAnnotationClass_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationClassAnnotationClass_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AnnotationClassAnnotationClass_callsite() {
     }

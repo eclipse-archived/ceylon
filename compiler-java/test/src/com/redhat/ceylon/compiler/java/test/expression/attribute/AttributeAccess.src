@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class AttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AttributeAccess() {
         this.b1 = true;

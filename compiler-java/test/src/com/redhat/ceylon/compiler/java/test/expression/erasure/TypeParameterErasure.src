@@ -21,7 +21,7 @@ interface TPERight extends .com.redhat.ceylon.compiler.java.test.expression.eras
     public abstract long getRightAttribute();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight.class);
 }
-class TPECLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft {
+class TPECLeft implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft, .java.io.Serializable {
     
     TPECLeft() {
         this.topAttribute = 1L;
@@ -56,7 +56,7 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPECLeft.class);
 }
-class TPECMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight {
+class TPECMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft, .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight, .java.io.Serializable {
     
     TPECMiddle() {
         this.topAttribute = 1L;
@@ -103,7 +103,7 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.TPECMiddle.class);
 }
-class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     TypeParameterErasure() {
     }
@@ -365,7 +365,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         );
     }
     
-    class Parameterized<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Parameterized<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Parameterized(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
             this.$reified$T = $reified$T;
@@ -406,7 +406,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         }
     }
     
-    class ParameterizedWithBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class ParameterizedWithBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         ParameterizedWithBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
             this.$reified$T = $reified$T;
@@ -421,7 +421,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         }
     }
     
-    class ParameterizedWithIntersectionBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class ParameterizedWithIntersectionBounds<T extends .com.redhat.ceylon.compiler.java.test.expression.erasure.TPELeft & .com.redhat.ceylon.compiler.java.test.expression.erasure.TPERight> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         ParameterizedWithIntersectionBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
             this.$reified$T = $reified$T;
@@ -460,7 +460,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         }
     }
     
-    class ParameterizedWithErasedBounds<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class ParameterizedWithErasedBounds<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         ParameterizedWithErasedBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
             this.$reified$T = $reified$T;
@@ -473,7 +473,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         }
     }
     
-    class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class ParameterizedWithParameterizedBounds<T extends .ceylon.language.Ordinal<? extends T> & .ceylon.language.Comparable<? super T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         ParameterizedWithParameterizedBounds(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
             this.$reified$T = $reified$T;
@@ -724,7 +724,7 @@ class TypeParameterErasure implements .com.redhat.ceylon.compiler.java.runtime.m
         T n = (T)init;
     }
     
-    class TestPrimitiveBound<T extends .ceylon.language.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class TestPrimitiveBound<T extends .ceylon.language.Integer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         TestPrimitiveBound(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T init) {
             this.$reified$T = $reified$T;

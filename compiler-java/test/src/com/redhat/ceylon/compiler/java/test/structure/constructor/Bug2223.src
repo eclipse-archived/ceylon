@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug2223() {
         final long foo = 1L;

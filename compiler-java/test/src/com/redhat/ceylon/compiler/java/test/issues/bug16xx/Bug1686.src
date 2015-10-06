@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 
-class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> {
+class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>, .java.io.Serializable {
     
     Bug1686() {
         this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.$TypeDescriptor$, this);

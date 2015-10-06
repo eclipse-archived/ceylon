@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.literal;
 
-class CharacterLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CharacterLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CharacterLiteral() {
     }

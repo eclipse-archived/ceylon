@@ -4,7 +4,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
 @interface ConstructorAnnotation$annotation$ {
 }
-final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation, .ceylon.language.meta.declaration.ConstructorDeclaration, .java.lang.Object> {
+final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation, .ceylon.language.meta.declaration.ConstructorDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     ConstructorAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$ anno) {
         this();
@@ -40,7 +40,7 @@ final class constructorAnnotation_ {
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
 @interface CallableConstructorAnnotation$annotation$ {
 }
-final class CallableConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CallableConstructorAnnotation, .ceylon.language.meta.declaration.CallableConstructorDeclaration, .java.lang.Object> {
+final class CallableConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CallableConstructorAnnotation, .ceylon.language.meta.declaration.CallableConstructorDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     CallableConstructorAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.CallableConstructorAnnotation$annotation$ anno) {
         this();
@@ -76,7 +76,7 @@ final class callableConstructorAnnotation_ {
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
 @interface ValueConstructorAnnotation$annotation$ {
 }
-final class ValueConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation, .ceylon.language.meta.declaration.ValueConstructorDeclaration, .java.lang.Object> {
+final class ValueConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation, .ceylon.language.meta.declaration.ValueConstructorDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     ValueConstructorAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation$annotation$ anno) {
         this();
@@ -110,7 +110,7 @@ final class valueConstructorAnnotation_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

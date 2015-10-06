@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
-public abstract class Bug1251X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class Bug1251X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1251X() {
     }

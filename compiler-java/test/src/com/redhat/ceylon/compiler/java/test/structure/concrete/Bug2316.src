@@ -91,7 +91,7 @@ public final class bug2316_ {
     public static void bug2316() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        final class A$impl {
+        final class A$impl implements .java.io.Serializable {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             A$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ $this) {
@@ -111,7 +111,7 @@ public final class bug2316_ {
             }
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            final class B$impl {
+            final class B$impl implements .java.io.Serializable {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
                 public B$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ $this) {
@@ -182,7 +182,7 @@ public final class bug2316_ {
                         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                         @.com.redhat.ceylon.compiler.java.metadata.Object
                         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::bug2316.1A.B"})
-                        class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ {
+                        class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ {
                             
                             private anonymous_0_() {
                                 this.$com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$ = A$impl.this.new B$impl(this);
@@ -282,7 +282,7 @@ public final class bug2316_ {
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Object
         @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::bug2316.1A"})
-        final class a_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ {
+        final class a_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ {
             
             private a_() {
                 this.$com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$ = new A$impl(this);

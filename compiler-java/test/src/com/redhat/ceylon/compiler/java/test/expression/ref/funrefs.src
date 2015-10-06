@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Person.Address.class)})
-class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -33,7 +33,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Person.class)
-    public class Address implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Address implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Address(@.com.redhat.ceylon.compiler.java.metadata.Name("house")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")

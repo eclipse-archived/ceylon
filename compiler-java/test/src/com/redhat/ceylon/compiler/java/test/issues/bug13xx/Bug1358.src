@@ -6,7 +6,7 @@ public interface Bug1358<Element> {
     
     public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result);
 }
-public final class Bug1358$impl<Element> {
+public final class Bug1358$impl<Element> implements .java.io.Serializable {
     
     public Bug1358$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -23,7 +23,7 @@ public final class Bug1358$impl<Element> {
         return (Result).ceylon.language.nothing_.get_();
     }
 }
-public class Bug1358ClassImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<.java.lang.Object> {
+public class Bug1358ClassImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<.java.lang.Object>, .java.io.Serializable {
     
     public Bug1358ClassImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -59,7 +59,7 @@ public interface Bug1358InterfaceImpl<Element> extends .com.redhat.ceylon.compil
     @.java.lang.Override
     public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result);
 }
-public final class Bug1358InterfaceImpl$impl<Element> {
+public final class Bug1358InterfaceImpl$impl<Element> implements .java.io.Serializable {
     
     public Bug1358InterfaceImpl$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl<Element> $this) {
         this.$reified$Element = $reified$Element;

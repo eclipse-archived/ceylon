@@ -7,14 +7,14 @@ final class bug1263_ {
     
     static void bug1263() {
         
-        final class Node$impl {
+        final class Node$impl implements .java.io.Serializable {
             
             private final Node $default$foo() {
                 return null;
             }
         }
         
-        class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Node() {
                 (

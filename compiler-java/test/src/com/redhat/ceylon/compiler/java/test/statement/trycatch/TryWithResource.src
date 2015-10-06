@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable {
+class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable, .java.io.Serializable {
     
     protected TryWithResource() {
         super();

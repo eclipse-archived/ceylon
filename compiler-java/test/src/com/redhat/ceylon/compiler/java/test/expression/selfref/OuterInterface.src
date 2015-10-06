@@ -10,7 +10,7 @@ interface OuterInterface<T> {
     
     public abstract .java.lang.Object sharedFormal();
 }
-final class OuterInterface$impl<T> {
+final class OuterInterface$impl<T> implements .java.io.Serializable {
     
     OuterInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this) {
         this.$reified$T = $reified$T;
@@ -33,7 +33,7 @@ final class OuterInterface$impl<T> {
         return null;
     }
     
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerClass() {
         }

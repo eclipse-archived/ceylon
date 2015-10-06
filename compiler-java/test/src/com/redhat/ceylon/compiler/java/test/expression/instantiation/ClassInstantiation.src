@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class ClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassInstantiation() {
     }
@@ -15,7 +15,7 @@ class ClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation.class);
 }
-class ClassInstantiationWithParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassInstantiationWithParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected ClassInstantiationWithParam() {
         super();
@@ -34,7 +34,7 @@ class ClassInstantiationWithParam implements .com.redhat.ceylon.compiler.java.ru
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam.class);
 }
-class ClassInstantiationWithParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassInstantiationWithParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected ClassInstantiationWithParams() {
         super();
@@ -53,12 +53,12 @@ class ClassInstantiationWithParams implements .com.redhat.ceylon.compiler.java.r
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams.class);
 }
-class InnerClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class InnerClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     InnerClassInstantiation() {
     }
     
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerClass() {
         }
@@ -79,14 +79,14 @@ class InnerClassInstantiation implements .com.redhat.ceylon.compiler.java.runtim
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.class);
 }
-class LocalClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LocalClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     LocalClassInstantiation() {
     }
     
     private final void m$priv$() {
         
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             LocalClass() {
             }

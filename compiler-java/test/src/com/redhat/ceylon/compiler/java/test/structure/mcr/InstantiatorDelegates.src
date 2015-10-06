@@ -30,7 +30,7 @@ interface InstantiatorDelegates<X> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new$(final X x);
 }
-final class InstantiatorDelegates$impl<X> {
+final class InstantiatorDelegates$impl<X> implements .java.io.Serializable {
     
     InstantiatorDelegates$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> $this) {
         this.$reified$X = $reified$X;
@@ -47,7 +47,7 @@ final class InstantiatorDelegates$impl<X> {
         return new Nullary();
     }
     
-    public class Nullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Nullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Nullary() {
         }
@@ -62,7 +62,7 @@ final class InstantiatorDelegates$impl<X> {
         return new Unary(b);
     }
     
-    public class Unary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Unary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Unary(final boolean b) {
         }
@@ -91,7 +91,7 @@ final class InstantiatorDelegates$impl<X> {
         );
     }
     
-    public class Binary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Binary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Binary(final boolean b, final long i) {
         }
@@ -135,7 +135,7 @@ final class InstantiatorDelegates$impl<X> {
         );
     }
     
-    public class Binary2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Binary2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Binary2(final boolean b, final long i) {
         }
@@ -160,7 +160,7 @@ final class InstantiatorDelegates$impl<X> {
         );
     }
     
-    public class Sequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Sequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Sequenced(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         }
@@ -175,7 +175,7 @@ final class InstantiatorDelegates$impl<X> {
         return new TypeArg(x);
     }
     
-    public class TypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class TypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TypeArg(final X x) {
         }
@@ -186,7 +186,7 @@ final class InstantiatorDelegates$impl<X> {
         }
     }
 }
-class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X> {
+class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates<X>, .java.io.Serializable {
     
     InstantiatorDelegatesImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         this.$reified$X = $reified$X;

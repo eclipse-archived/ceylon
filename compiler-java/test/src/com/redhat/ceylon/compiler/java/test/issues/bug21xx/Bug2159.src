@@ -26,7 +26,7 @@ public final class run_ {
         @.com.redhat.ceylon.compiler.java.metadata.Name("Foo")
         @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.run$Foo$Bar_.class)})
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Foo() {
             }

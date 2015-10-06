@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
-class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected OptimizedForWithRange() {
         super();

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KlassInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KlassInGetter() {
         
@@ -13,7 +13,7 @@ class KlassInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
                 if (true || true) {
                     final long i = 1L;
                     
-                    class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                         
                         Bar() {
                         }

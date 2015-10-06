@@ -6,14 +6,14 @@ interface In1927<Element extends .ceylon.language.Sequence<? extends .java.lang.
     
     public abstract boolean add(final Element element);
 }
-class Test1927 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Test1927 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Test1927() {
     }
     
     public final void construct() {
         
-        class State<CompilerBugWorkaround> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class State<CompilerBugWorkaround> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             State(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CompilerBugWorkaround, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927<? super .ceylon.language.Sequence<? extends .java.lang.Object>> positions) {
                 this.$reified$CompilerBugWorkaround = $reified$CompilerBugWorkaround;

@@ -12,7 +12,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -53,7 +53,7 @@ public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ce
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public class Member<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")

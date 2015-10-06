@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041;
 
-abstract class Buffer<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Buffer<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Buffer(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -31,7 +31,7 @@ class ByteBuffer extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bu
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1041.ByteBuffer.class);
 }
-class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1041(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

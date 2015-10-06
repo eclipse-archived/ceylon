@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNestingInterface<ceylon.language::String>"})
-class JNI_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface<.ceylon.language.String> {
+class JNI_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface<.ceylon.language.String>, .java.io.Serializable {
     
     JNI_Impl() {
     }
@@ -17,7 +17,7 @@ class JNI_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNestingInterface.InnerInterface<ceylon.language::String>"})
-class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface<.ceylon.language.String> {
+class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface<.ceylon.language.String>, .java.io.Serializable {
     
     JNI_InnerInterface_Impl() {
     }
@@ -32,7 +32,7 @@ class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtim
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNesting.InnerStatic.InnerInterface<ceylon.language::String>"})
-class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerInterface<.ceylon.language.String> {
+class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerInterface<.ceylon.language.String>, .java.io.Serializable {
     
     JN_IS_InnerInterface_Impl() {
     }
@@ -47,7 +47,7 @@ class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runt
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNesting.InnerInterface<ceylon.language::String>"})
-class JN_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface<.ceylon.language.String> {
+class JN_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface<.ceylon.language.String>, .java.io.Serializable {
     
     JN_InnerInterface_Impl() {
     }

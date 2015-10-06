@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
 
-class Bug1477Node<TItem> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1477Node<TItem> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1477Node(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TItem, final TItem item) {
         (

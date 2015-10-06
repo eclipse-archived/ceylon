@@ -24,7 +24,7 @@ interface DefaultSetter$ISub extends .com.redhat.ceylon.compiler.java.test.struc
     
     public long inc();
 }
-class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DefaultSetter() {
         this.a = 0L;
@@ -39,7 +39,7 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         this.a = a;
     }
     
-    final class I$impl {
+    final class I$impl implements .java.io.Serializable {
         
         I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I $this) {
             this.$this = $this;
@@ -55,7 +55,7 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
     }
     
-    abstract class Abstract implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
+    abstract class Abstract implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I, .java.io.Serializable {
         
         Abstract() {
             this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
@@ -93,7 +93,7 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
     }
     
-    class Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
+    class Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I, .java.io.Serializable {
         
         Concrete() {
             this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
@@ -130,7 +130,7 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
     }
     
-    final class ISub$impl {
+    final class ISub$impl implements .java.io.Serializable {
         
         ISub$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub $this) {
             this.$this = $this;
@@ -157,7 +157,7 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
     }
     
-    class Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub {
+    class Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub, .java.io.Serializable {
         
         Sub() {
             this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl(this);

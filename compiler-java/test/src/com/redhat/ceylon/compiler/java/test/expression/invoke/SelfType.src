@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SelfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -32,7 +32,7 @@ final class selfType_ {
         ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)x).compareTo((X)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)y);
     }
 }
-abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SelfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

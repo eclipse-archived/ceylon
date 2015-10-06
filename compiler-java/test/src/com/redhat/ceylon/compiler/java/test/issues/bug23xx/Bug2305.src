@@ -7,7 +7,7 @@ public interface Bug2305Interf {
     public void initMultiEditChange();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf.class);
 }
-public final class Bug2305Interf$impl {
+public final class Bug2305Interf$impl implements .java.io.Serializable {
     
     public Bug2305Interf$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf $this) {
         this.$this = $this;
@@ -24,7 +24,7 @@ public interface Bug2305InvocationCompletion {
     public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl.Proposal Proposal$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion.class);
 }
-public final class Bug2305InvocationCompletion$impl {
+public final class Bug2305InvocationCompletion$impl implements .java.io.Serializable {
     
     public Bug2305InvocationCompletion$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion $this) {
         this.$this = $this;
@@ -35,7 +35,7 @@ public final class Bug2305InvocationCompletion$impl {
         return new Proposal();
     }
     
-    public class Proposal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf {
+    public class Proposal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf, .java.io.Serializable {
         
         protected Proposal() {
             this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305Interf$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305Interf$impl(this);

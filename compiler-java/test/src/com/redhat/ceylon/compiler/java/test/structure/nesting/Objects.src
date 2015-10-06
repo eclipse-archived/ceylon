@@ -6,13 +6,13 @@ interface Objects$ObjectsI {
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Objects$ObjectsI$impl();
 }
-class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Objects() {
         final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_ objects_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_();
     }
     
-    abstract class Dummy implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    abstract class Dummy implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Dummy() {
         }
@@ -29,7 +29,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             super();
         }
         
-        class DummyC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class DummyC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             DummyC() {
             }
@@ -46,7 +46,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    class ObjectsC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class ObjectsC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         ObjectsC() {
             final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_ objectsc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_();
@@ -64,7 +64,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
         }
         
-        class ObjectsCC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class ObjectsCC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             ObjectsCC() {
                 final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_ objectscc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_();
@@ -94,14 +94,14 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    final class ObjectsI$impl {
+    final class ObjectsI$impl implements .java.io.Serializable {
         
         ObjectsI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
             this.$this = $this;
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this;
         
-        class ObjectsIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class ObjectsIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             ObjectsIC() {
                 final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_ objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_();

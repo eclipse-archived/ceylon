@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class SerializableGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+class SerializableGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     protected SerializableGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null, $reified$T);

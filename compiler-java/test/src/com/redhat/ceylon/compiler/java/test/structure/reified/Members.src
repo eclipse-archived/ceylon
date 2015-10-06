@@ -26,7 +26,7 @@ interface OuterClass$outerMethod$InnerInterface<Outer, Inner> {
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public OuterClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Outer) {
@@ -48,7 +48,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
@@ -78,7 +78,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
                 satisfies = {},
                 caseTypes = {})})
-        class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
             final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
@@ -140,7 +140,7 @@ public interface OuterInterface<Outer> {
     public .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$impl<Outer> $com$redhat$ceylon$compiler$java$test$structure$reified$OuterInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class OuterInterface$impl<Outer> {
+public final class OuterInterface$impl<Outer> implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public OuterInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Outer, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface<Outer> $this) {
@@ -195,7 +195,7 @@ public final class outerMethod_ {
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
                 satisfies = {},
                 caseTypes = {})})
-        class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
             final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
@@ -222,7 +222,7 @@ public final class outerMethod_ {
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.com.redhat.ceylon.compiler.java.metadata.Name("InnerClass2")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        class InnerClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class InnerClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             InnerClass2() {
             }
@@ -238,7 +238,7 @@ public final class outerMethod_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.InnerClass.class)})
-public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public OuterClass2() {
     }
@@ -251,7 +251,7 @@ public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.class)
-    public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected InnerClass() {
         }

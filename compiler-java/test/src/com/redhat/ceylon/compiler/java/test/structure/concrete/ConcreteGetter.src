@@ -7,7 +7,7 @@ interface ConcreteGetter {
     public long getI();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter.class);
 }
-final class ConcreteGetter$impl {
+final class ConcreteGetter$impl implements .java.io.Serializable {
     
     ConcreteGetter$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter $this) {
         this.$this = $this;
@@ -18,7 +18,7 @@ final class ConcreteGetter$impl {
         return 1L;
     }
 }
-class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
+class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter, .java.io.Serializable {
     
     ConcreteGetterImplementor() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
@@ -41,7 +41,7 @@ class ConcreteGetterImplementor implements .com.redhat.ceylon.compiler.java.runt
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterImplementor.class);
 }
-class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
+class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter, .java.io.Serializable {
     
     ConcreteGetterOverrider() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);
@@ -64,7 +64,7 @@ class ConcreteGetterOverrider implements .com.redhat.ceylon.compiler.java.runtim
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetterOverrider.class);
 }
-class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter {
+class ConcreteGetterOverrider2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter, .java.io.Serializable {
     
     ConcreteGetterOverrider2() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteGetter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteGetter$impl(this);

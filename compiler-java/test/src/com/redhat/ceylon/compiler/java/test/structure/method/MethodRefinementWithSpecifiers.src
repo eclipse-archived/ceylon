@@ -54,7 +54,7 @@ final class methodRefinementWithSpecifiers_returnsMethod_ {
         };
     }
 }
-class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodRefinementWithSpecifiers_ClassNoParam() {
     }
@@ -65,7 +65,7 @@ class MethodRefinementWithSpecifiers_ClassNoParam implements .com.redhat.ceylon.
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_ClassNoParam.class);
 }
-class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface {
+class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithSpecifiers_Interface, .java.io.Serializable {
     
     protected MethodRefinementWithSpecifiers_Class() {
         super();
@@ -85,7 +85,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         arg.$call$();
     }
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
         }
@@ -100,7 +100,7 @@ class MethodRefinementWithSpecifiers_Class implements .com.redhat.ceylon.compile
         return new InnerShared();
     }
     
-    public class InnerShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class InnerShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected InnerShared() {
         }
@@ -296,14 +296,14 @@ interface Bug891_Interface2 extends .com.redhat.ceylon.compiler.java.test.struct
     public .java.lang.Object f19();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2.class);
 }
-final class Bug891_Interface2$impl {
+final class Bug891_Interface2$impl implements .java.io.Serializable {
     
     Bug891_Interface2$impl(.com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2 $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2 $this;
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
         }
@@ -318,7 +318,7 @@ final class Bug891_Interface2$impl {
         return new InnerShared();
     }
     
-    public class InnerShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class InnerShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected InnerShared() {
         }

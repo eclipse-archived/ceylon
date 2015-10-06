@@ -32,7 +32,7 @@ final class Z<E, Es extends .ceylon.language.Sequence<? extends E>> {
     private Z() {
     }
 }
-class Bug1533 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1533 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1533() {
     }

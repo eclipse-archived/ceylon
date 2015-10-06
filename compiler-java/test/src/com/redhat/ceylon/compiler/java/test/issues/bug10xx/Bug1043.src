@@ -7,7 +7,7 @@ final class bug1043_ {
     
     static void bug1043() {
         
-        class Delegate<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Delegate<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Delegate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
                 this.$reified$T = $reified$T;
@@ -20,7 +20,7 @@ final class bug1043_ {
             }
         }
         
-        class Consumer<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Consumer<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Consumer(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
                 (

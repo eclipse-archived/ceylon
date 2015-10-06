@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-public class TypeAliasWithTypeParametersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class TypeAliasWithTypeParametersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public TypeAliasWithTypeParametersClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<.ceylon.language.String> {
+public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<.ceylon.language.String>, .java.io.Serializable {
     
     public SequenceOperators() {
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
@@ -966,7 +966,7 @@ public interface List2<Element> extends .ceylon.language.List<Element> {
     @.java.lang.Override
     public Element getFromFirst(final long i);
 }
-public final class List2$impl<Element> {
+public final class List2$impl<Element> implements .java.io.Serializable {
     
     public List2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.expression.operator.List2<Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -983,7 +983,7 @@ public final class List2$impl<Element> {
         return $this.get(.ceylon.language.Integer.instance(i));
     }
 }
-public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.List2<.ceylon.language.String> {
+public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.List2<.ceylon.language.String>, .java.io.Serializable {
     
     public SequenceOperators2() {
         this.$com$redhat$ceylon$compiler$java$test$expression$operator$List2$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.List2$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);

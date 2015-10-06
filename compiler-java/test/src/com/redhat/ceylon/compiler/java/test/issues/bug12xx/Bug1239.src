@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
-public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected LazyMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
         super();

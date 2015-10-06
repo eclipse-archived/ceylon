@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
-class Bug1242<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1242<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1242(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -16,7 +16,7 @@ class Bug1242<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return new Y<S>($reified$S, s);
     }
     
-    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
             this.$reified$S = $reified$S;

@@ -18,7 +18,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
+final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected CollidingLiteralDefaults() {
         super();

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     public SerializableCycle(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
         this.ref = null;

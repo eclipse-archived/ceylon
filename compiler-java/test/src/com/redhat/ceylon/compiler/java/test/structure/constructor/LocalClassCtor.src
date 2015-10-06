@@ -7,7 +7,7 @@ final class localClassCtor_ {
     
     static void localClassCtor(final long i) {
         
-        abstract class LocalClassCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        abstract class LocalClassCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             private LocalClassCtor(final long j$param$) {
                 final long sum;

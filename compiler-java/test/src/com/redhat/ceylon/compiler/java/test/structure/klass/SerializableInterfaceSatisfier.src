@@ -8,7 +8,7 @@ interface SerializableInterface<T> {
     
     public T defaultMethod();
 }
-final class SerializableInterface$impl<T> {
+final class SerializableInterface$impl<T> implements .java.io.Serializable {
     
     SerializableInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<T> $this) {
         this.$reified$T = $reified$T;
@@ -27,7 +27,7 @@ final class SerializableInterface$impl<T> {
 }
 interface SerializableSubInterface<S> extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<S> {
 }
-class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<.ceylon.language.Integer>, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<.ceylon.language.Integer>, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     public SerializableInterfaceSatisfier(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
@@ -83,7 +83,7 @@ class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java
         } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
 }
-class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<U>, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<U>, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     protected SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
         this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null, $reified$U);

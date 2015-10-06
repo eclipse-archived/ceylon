@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category<.java.lang.Object> {
+public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .ceylon.language.Category<.java.lang.Object>, .java.io.Serializable {
     
     protected Bug966(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

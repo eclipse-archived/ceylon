@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class)})
-class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2176C() {
     }

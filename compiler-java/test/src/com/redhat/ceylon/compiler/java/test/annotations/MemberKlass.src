@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)})
-public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public MemberKlass() {
     }
@@ -17,7 +17,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class)})
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class)
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member() {
         }
@@ -30,7 +30,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)
-        public class MemberMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        public class MemberMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             protected MemberMember() {
             }
@@ -71,7 +71,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public ParameterisedMemberKlass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
@@ -86,7 +86,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
-    public final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private foo_() {
         }
@@ -104,7 +104,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
                 satisfies = {},
                 caseTypes = {})})
-        public class MemberMember<TTT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        public class MemberMember<TTT> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             protected MemberMember(@.com.redhat.ceylon.compiler.java.metadata.Ignore
             final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TTT) {

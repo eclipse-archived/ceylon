@@ -4,7 +4,7 @@ interface C$CI<T extends .ceylon.language.String, X extends .ceylon.language.Boo
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C<? extends T, ? super X>.CI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$cic$C$CI$impl();
 }
-class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         this.$reified$T = $reified$T;
@@ -35,14 +35,14 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
         return m1$priv$$canonical$($reified$U, b, u);
     }
     
-    final class CI$impl {
+    final class CI$impl implements .java.io.Serializable {
         
         CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI<? extends T, ? super X> $this) {
             this.$this = $this;
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.nesting.cic.C$CI<? extends T, ? super X> $this;
         
-        class CIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class CIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             CIC() {
             }

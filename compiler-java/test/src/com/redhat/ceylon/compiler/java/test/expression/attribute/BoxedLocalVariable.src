@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class BoxedLocalVariable<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     BoxedLocalVariable(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class Bug2056 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2056 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2056() {
         .com.redhat.ceylon.compiler.java.language.Getter<.ceylon.language.Callable<? extends .ceylon.language.String>> s$getter$_;

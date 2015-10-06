@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class InitializerKlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class InitializerKlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     InitializerKlassInStatement() {
         if (true) {
             final long i = 1L;
             
-            class KlassInStatement1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class KlassInStatement1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 KlassInStatement1() {
                 }

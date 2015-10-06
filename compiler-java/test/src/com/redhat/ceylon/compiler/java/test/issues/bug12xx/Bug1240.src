@@ -8,7 +8,7 @@ interface Top<T> {
     
     public T m();
 }
-final class Top$impl<T> {
+final class Top$impl<T> implements .java.io.Serializable {
     
     Top$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends T> $this) {
         this.$reified$T = $reified$T;
@@ -48,7 +48,7 @@ interface Middle<T> extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx
     @.java.lang.Override
     public T m();
 }
-final class Middle$impl<T> {
+final class Middle$impl<T> implements .java.io.Serializable {
     
     Middle$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends T> $this) {
         this.$reified$T = $reified$T;
@@ -72,7 +72,7 @@ final class Middle$impl<T> {
 interface Right extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right.class);
 }
-class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right {
+class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right, .java.io.Serializable {
     
     Bottom() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top)this);
@@ -107,7 +107,7 @@ class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bottom.class);
 }
-class Bottom2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right {
+class Bottom2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Right, .java.io.Serializable {
     
     Bottom2() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top)this);

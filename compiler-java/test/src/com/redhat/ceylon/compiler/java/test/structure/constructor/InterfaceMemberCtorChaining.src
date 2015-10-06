@@ -9,7 +9,7 @@ interface InterfaceMemberCtorChaining {
     public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member Member$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$other $name$, final long i$param$);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining.class);
 }
-final class InterfaceMemberCtorChaining$impl {
+final class InterfaceMemberCtorChaining$impl implements .java.io.Serializable {
     
     InterfaceMemberCtorChaining$impl(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining $this) {
         this.$this = $this;
@@ -31,7 +31,7 @@ final class InterfaceMemberCtorChaining$impl {
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChaining$impl.Member$other Member$other = null;
     
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public Member(final long i$param$) {
         }
@@ -58,7 +58,7 @@ interface InterfaceMemberCtorChainingSub extends .com.redhat.ceylon.compiler.jav
     public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub$impl.Sub$other $name$, final long i$param$);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub.class);
 }
-final class InterfaceMemberCtorChainingSub$impl {
+final class InterfaceMemberCtorChainingSub$impl implements .java.io.Serializable {
     
     InterfaceMemberCtorChainingSub$impl(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberCtorChainingSub $this) {
         this.$this = $this;

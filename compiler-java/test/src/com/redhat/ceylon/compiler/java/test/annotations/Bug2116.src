@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CBug2116.cctor")})
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class Bug2116 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2116 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

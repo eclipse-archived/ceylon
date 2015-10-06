@@ -32,7 +32,7 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
         "ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::Quoting,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>",
         "com.redhat.ceylon.compiler.java.test.annotations::Cloneable<com.redhat.ceylon.compiler.java.test.annotations::Quoting>"})
-final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<.com.redhat.ceylon.compiler.java.test.annotations.Quoting> {
+final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .com.redhat.ceylon.compiler.java.test.annotations.Cloneable<.com.redhat.ceylon.compiler.java.test.annotations.Quoting>, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

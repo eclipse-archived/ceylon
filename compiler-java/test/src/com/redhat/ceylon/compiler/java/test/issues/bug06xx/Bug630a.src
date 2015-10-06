@@ -26,7 +26,7 @@ interface Bug630 {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class Bug630$impl {
+final class Bug630$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug630$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this) {

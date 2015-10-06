@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class DelegationWithTypeParameter<F> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DelegationWithTypeParameter<F> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F;
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.$delegation$ $delegation$ = null;
     

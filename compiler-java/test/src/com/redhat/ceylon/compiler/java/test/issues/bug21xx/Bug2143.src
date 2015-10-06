@@ -11,7 +11,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class Bug2143 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class Bug2143 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1381_Superclass() {
         this.a = 0L;
@@ -19,7 +19,7 @@ class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.mod
         return p;
     }
     
-    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         C(final long p) {
         }
@@ -162,7 +162,7 @@ interface Bug1381_Superinterface {
     public void callsite(final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Subinterface bar);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface.class);
 }
-final class Bug1381_Superinterface$impl {
+final class Bug1381_Superinterface$impl implements .java.io.Serializable {
     
     Bug1381_Superinterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface $this) {
         this.$this = $this;
@@ -180,7 +180,7 @@ final class Bug1381_Superinterface$impl {
         return p;
     }
     
-    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         C(final long p) {
         }

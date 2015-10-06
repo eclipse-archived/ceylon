@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
  // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
-class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType { // line 1
+class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
      // line 1
     @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 1
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

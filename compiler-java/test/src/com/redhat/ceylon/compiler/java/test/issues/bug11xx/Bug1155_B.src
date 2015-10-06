@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
-class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1155_B() {
     }

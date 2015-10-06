@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class CallableArgumentReturningClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CallableArgumentReturningClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CallableArgumentReturningClass() {
     }

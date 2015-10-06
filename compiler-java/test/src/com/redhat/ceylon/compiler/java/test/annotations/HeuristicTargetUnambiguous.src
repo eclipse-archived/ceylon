@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on a class")
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeTarget
-class HeuristicTarget1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class HeuristicTarget1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     HeuristicTarget1() {
     }
@@ -18,7 +18,7 @@ class HeuristicTarget1 implements .com.redhat.ceylon.compiler.java.runtime.model
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on parameters and attributes")
-class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -89,9 +89,14 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("heuristicTarget3")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class heuristicTarget3_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private heuristicTarget3_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.class);
@@ -142,7 +147,7 @@ final class heuristicTarget3_ implements .com.redhat.ceylon.compiler.java.runtim
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::HeuristicAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
-final class HeuristicAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+final class HeuristicAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     HeuristicAnnotationClass(.com.redhat.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass$annotation$ anno) {

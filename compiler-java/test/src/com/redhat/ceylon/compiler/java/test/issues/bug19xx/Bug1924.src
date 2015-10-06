@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 
-abstract class Bug1924<RootTerminal> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug1924<RootTerminal> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1924(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$RootTerminal) {
         this.$reified$RootTerminal = $reified$RootTerminal;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$RootTerminal;
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
         }
@@ -20,7 +20,7 @@ abstract class Bug1924<RootTerminal> implements .com.redhat.ceylon.compiler.java
     
     public final void construct() {
         
-        class State implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class State implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             State() {
             }
@@ -53,7 +53,7 @@ abstract class Bug1924<RootTerminal> implements .com.redhat.ceylon.compiler.java
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.class, $reified$RootTerminal);
     }
 }
-class JavaEntry<K, V> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map.Entry<K, V> {
+class JavaEntry<K, V> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map.Entry<K, V>, .java.io.Serializable {
     
     protected JavaEntry(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$K, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
         super();

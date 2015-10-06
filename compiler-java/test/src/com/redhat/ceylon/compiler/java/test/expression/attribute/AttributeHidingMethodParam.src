@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class AttributeHidingMethodParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AttributeHidingMethodParam implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AttributeHidingMethodParam() {
         this.b = true;

@@ -7,7 +7,7 @@ public interface Bug1923 {
     public .java.lang.Object f();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.class);
 }
-public final class Bug1923$impl {
+public final class Bug1923$impl implements .java.io.Serializable {
     
     public Bug1923$impl(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 $this) {
         this.$this = $this;
@@ -18,10 +18,14 @@ public final class Bug1923$impl {
         return null;
     }
 }
-public final class bug1923_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 {
+public final class bug1923_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 {
     
     private bug1923_() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923$impl(this);
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.class);
     

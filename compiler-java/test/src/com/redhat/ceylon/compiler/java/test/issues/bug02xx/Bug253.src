@@ -10,7 +10,7 @@ interface Boxer<T> {
     
     public abstract void setTwo(final T two);
 }
-class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer> {
+class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Boxer<.ceylon.language.Integer>, .java.io.Serializable {
     
     IntBoxer() {
         this.one = .ceylon.language.Integer.instance(1L);

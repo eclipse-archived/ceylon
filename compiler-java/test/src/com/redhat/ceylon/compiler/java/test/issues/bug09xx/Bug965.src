@@ -11,7 +11,7 @@ public interface Bug965_Interface {
     public boolean foo();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface.class);
 }
-public final class Bug965_Interface$impl {
+public final class Bug965_Interface$impl implements .java.io.Serializable {
     
     public Bug965_Interface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface $this) {
         this.$this = $this;
@@ -30,7 +30,7 @@ public final class Bug965_Interface$impl {
         return false;
     }
 }
-public class Bug965_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface {
+public class Bug965_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface, .java.io.Serializable {
     
     public Bug965_Class() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug965_Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface$impl(this);

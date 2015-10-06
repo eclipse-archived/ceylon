@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
 
-class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<.ceylon.language.Integer> {
+class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<.ceylon.language.Integer>, .java.io.Serializable {
     
     Bug1430() {
         this.$ceylon$language$Sequence$this$ = new .ceylon.language.Sequence$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);

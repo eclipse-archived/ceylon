@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 
-class Bug1695T implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1695T implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1695T() {
         this.c = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
@@ -105,7 +105,7 @@ interface Bug1695It<Element, Absent> {
     
     public <Result, Args extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends Absent>> spread(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Args, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> method);
 }
-final class Bug1695It$impl<Element, Absent> {
+final class Bug1695It$impl<Element, Absent> implements .java.io.Serializable {
     
     Bug1695It$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It<Element, Absent> $this) {
         this.$reified$Element = $reified$Element;
@@ -125,7 +125,7 @@ final class Bug1695It$impl<Element, Absent> {
         return (.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends Absent>>).ceylon.language.nothing_.get_();
     }
 }
-class Bug1695Emp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It<.java.lang.Object, .java.lang.Object> {
+class Bug1695Emp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It<.java.lang.Object, .java.lang.Object>, .java.io.Serializable {
     
     Bug1695Emp() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1695It$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695It$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, this);

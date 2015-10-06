@@ -18,7 +18,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
+final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_1, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     Bug1323_1(final long i) {
         (
@@ -71,7 +71,7 @@ final class Bug1323_1 implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class Bug1323_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
+final class Bug1323_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1323_2, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected Bug1323_2() {
         super();

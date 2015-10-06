@@ -11,7 +11,7 @@ public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test
     @.java.lang.Override
     public Element getFirst();
 }
-public final class Bug668_Y$impl<Element> {
+public final class Bug668_Y$impl<Element> implements .java.io.Serializable {
     
     public Bug668_Y$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -35,7 +35,7 @@ final class bug668_method_ {
     
     static <Nada>void bug668_method(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, final Nada n) {
         
-        final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<.java.lang.Object>, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<.java.lang.Object, .java.lang.Object> {
+        final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<.java.lang.Object>, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<.java.lang.Object, .java.lang.Object> {
             
             private obj_() {
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);

@@ -8,7 +8,7 @@ interface Bug911 {
     public .java.lang.String toString();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911.class);
 }
-final class Bug911$impl {
+final class Bug911$impl implements .java.io.Serializable {
     
     Bug911$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911 $this) {
         this.$this = $this;

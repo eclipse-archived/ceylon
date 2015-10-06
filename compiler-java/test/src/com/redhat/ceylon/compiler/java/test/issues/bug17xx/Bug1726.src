@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
 
-final class bug1726_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class bug1726_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private bug1726_() {
         final .ceylon.language.Callable<? extends .ceylon.language.String> s1 = (
@@ -30,6 +30,10 @@ final class bug1726_ implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 }
             };
         );
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_ value;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class DeferredInitializedMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DeferredInitializedMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DeferredInitializedMethod() {
         

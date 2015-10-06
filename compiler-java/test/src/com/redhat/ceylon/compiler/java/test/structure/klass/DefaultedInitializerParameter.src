@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public class DefaultedInitializerParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class DefaultedInitializerParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public DefaultedInitializerParameter() {
         (
@@ -31,7 +31,7 @@ public class DefaultedInitializerParameter implements .com.redhat.ceylon.compile
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter.class);
 }
-class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DefaultedInitializerParameter2(final long n) {
         (
@@ -61,7 +61,7 @@ class DefaultedInitializerParameter2 implements .com.redhat.ceylon.compiler.java
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter2.class);
 }
-class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DefaultedInitializerParameter3() {
         (
@@ -103,7 +103,7 @@ class DefaultedInitializerParameter3 implements .com.redhat.ceylon.compiler.java
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter3.class);
 }
-class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DefaultedInitializerParameter4() {
         (
@@ -145,7 +145,7 @@ class DefaultedInitializerParameter4 implements .com.redhat.ceylon.compiler.java
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.DefaultedInitializerParameter4.class);
 }
-class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DefaultedInitializerParameter5 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DefaultedInitializerParameter5() {
         (

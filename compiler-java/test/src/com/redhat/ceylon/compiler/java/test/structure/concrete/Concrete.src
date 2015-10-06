@@ -28,7 +28,7 @@ interface Concrete<A> {
     
     public .java.lang.Object mDefault(final A a, final .ceylon.language.Sequential<? extends A> aseq);
 }
-final class Concrete$impl<A> {
+final class Concrete$impl<A> implements .java.io.Serializable {
     
     Concrete$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<A> $this) {
         this.$reified$A = $reified$A;
@@ -302,7 +302,7 @@ final class concreteCallsites_ {
         );
     }
 }
-class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<B> {
+class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<B>, .java.io.Serializable {
     
     ConcreteImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
         this.$reified$B = $reified$B;
@@ -575,7 +575,7 @@ final class concreteImplCallsites_ {
         );
     }
 }
-class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<C> {
+class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<C>, .java.io.Serializable {
     
     ConcreteImplWithDefault(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C) {
         this.$reified$C = $reified$C;
@@ -846,7 +846,7 @@ final class concreteImplWithDefaultCallsites_ {
         );
     }
 }
-abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<D> {
+abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<D>, .java.io.Serializable {
     
     Abstract(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$D) {
         this.$reified$D = $reified$D;
@@ -1275,7 +1275,7 @@ final class abstractSubCallsites_ {
         );
     }
 }
-abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<F> {
+abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<F>, .java.io.Serializable {
     
     AbstractImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F) {
         this.$reified$F = $reified$F;

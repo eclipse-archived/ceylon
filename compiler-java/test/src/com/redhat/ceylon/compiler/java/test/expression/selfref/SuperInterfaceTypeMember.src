@@ -7,7 +7,7 @@ interface SuperInterfaceTypeMember {
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember.class);
 }
-final class SuperInterfaceTypeMember$impl {
+final class SuperInterfaceTypeMember$impl implements .java.io.Serializable {
     
     SuperInterfaceTypeMember$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember $this) {
         this.$this = $this;
@@ -18,7 +18,7 @@ final class SuperInterfaceTypeMember$impl {
         return new Inner();
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
         }
@@ -29,7 +29,7 @@ final class SuperInterfaceTypeMember$impl {
         }
     }
 }
-class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember {
+class SuperInterfaceTypeMember_Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember, .java.io.Serializable {
     
     SuperInterfaceTypeMember_Sub() {
         this.$com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this$ = new .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl(this);

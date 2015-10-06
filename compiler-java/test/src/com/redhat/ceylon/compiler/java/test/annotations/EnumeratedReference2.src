@@ -5,7 +5,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
         .ceylon.language.smaller_.class,
         .ceylon.language.equal_.class})})
 @.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted$annotation$(comparison = .ceylon.language.smaller_.class)})
-class EnumeratedReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class EnumeratedReference_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     EnumeratedReference_callsite() {
     }

@@ -9,7 +9,7 @@ final class bug270_eatEntry_ {
         return entry;
     }
 }
-class Bug270 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug270 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug270() {
         this.bug270 = (

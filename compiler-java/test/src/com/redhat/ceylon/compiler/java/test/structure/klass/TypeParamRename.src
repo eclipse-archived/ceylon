@@ -16,7 +16,7 @@ interface TypeParamRename<T, U> {
     
     public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W, final V v);
 }
-final class TypeParamRename$impl<T, U> {
+final class TypeParamRename$impl<T, U> implements .java.io.Serializable {
     
     TypeParamRename$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<T, U> $this) {
         this.$reified$T = $reified$T;
@@ -76,7 +76,7 @@ final class TypeParamRename$impl<T, U> {
         return m2$canonical$($reified$V, $reified$W, v);
     }
 }
-class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y> {
+class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y>, .java.io.Serializable {
     
     TypeParamRenameKls(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
         this.$reified$X = $reified$X;

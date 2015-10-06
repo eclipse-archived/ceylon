@@ -6,7 +6,7 @@ public interface Bug1545ISignal<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$impl();
 }
-public final class Bug1545ISignal$impl<T> {
+public final class Bug1545ISignal$impl<T> implements .java.io.Serializable {
     
     public Bug1545ISignal$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<T> $this) {
         this.$reified$T = $reified$T;
@@ -19,7 +19,7 @@ public final class Bug1545ISignal$impl<T> {
         this.$reified$T = $reified$T;
     }
 }
-public class Bug1545Signal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<.ceylon.language.Integer> {
+public class Bug1545Signal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal<.ceylon.language.Integer>, .java.io.Serializable {
     
     public Bug1545Signal() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
@@ -31,7 +31,7 @@ public class Bug1545Signal implements .com.redhat.ceylon.compiler.java.runtime.m
         return $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1545ISignal$this$;
     }
     
-    class Listener implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<.ceylon.language.Integer> {
+    class Listener implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1545ISignal$IListener<.ceylon.language.Integer>, .java.io.Serializable {
         
         Listener() {
         }

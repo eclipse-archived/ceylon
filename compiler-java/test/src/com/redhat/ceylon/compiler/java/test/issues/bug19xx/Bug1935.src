@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 
 interface One1935<Item> {
 }
-class OneClass1935<Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<Item> {
+class OneClass1935<Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<Item>, .java.io.Serializable {
     
     protected OneClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
         super();
@@ -30,7 +30,7 @@ final class one1935_ {
 }
 interface Two1935<Key, Item> {
 }
-class TwoClass1935<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<Key, Item> {
+class TwoClass1935<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<Key, Item>, .java.io.Serializable {
     
     protected TwoClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
         super();
@@ -146,7 +146,7 @@ interface Parameter1935<Key, Item, X, Y> {
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
                 satisfies = {},
                 caseTypes = {})})
-class ParameterSub1935<Key, Item, X extends Y, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Parameter1935<Key, Item, X, Y> {
+class ParameterSub1935<Key, Item, X extends Y, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Parameter1935<Key, Item, X, Y>, .java.io.Serializable {
     
     ParameterSub1935(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class topLevelObjectWithMembers_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private topLevelObjectWithMembers_() {
         final boolean val = true;
@@ -9,6 +9,10 @@ final class topLevelObjectWithMembers_ implements .com.redhat.ceylon.compiler.ja
         boolean var = false;
         this.varShared = false;
         this.varCaptured = false;
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
     private final boolean valShared;

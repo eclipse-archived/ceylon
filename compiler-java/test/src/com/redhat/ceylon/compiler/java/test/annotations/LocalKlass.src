@@ -8,7 +8,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
         "3Local",
         "4Local",
         "5Local"})
-public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public LocalKlass() {
         if (true) {
@@ -17,7 +17,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
             @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = Local.Inner.class)})
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-            class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 Local() {
                 }
@@ -25,7 +25,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Inner")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = Local.class)
-                class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Inner() {
                     }
@@ -48,7 +48,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
             @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
-            class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 Local() {
                 }
@@ -78,7 +78,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Local() {
                     }
@@ -111,7 +111,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Local() {
                     }
@@ -139,7 +139,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
                 satisfies = {},
                 caseTypes = {})})
-        class Local<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>> {
+        class Local<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>>, .java.io.Serializable {
             
             Local(@.com.redhat.ceylon.compiler.java.metadata.Ignore
             final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {

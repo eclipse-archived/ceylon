@@ -5,7 +5,7 @@ interface Bug639Widening {
     public abstract .java.lang.Object getImplementation();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening.class);
 }
-class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
+class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening, .java.io.Serializable {
     
     protected Bug639WideningImpl() {
         super();
@@ -32,7 +32,7 @@ class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl.class);
 }
-class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening {
+class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening, .java.io.Serializable {
     
     protected Bug639WideningImpl2() {
         super();

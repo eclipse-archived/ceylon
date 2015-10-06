@@ -8,7 +8,7 @@ final class f_ {
     static void f() {
     }
 }
-class MethodSpecifierTopLevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodSpecifierTopLevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodSpecifierTopLevel() {
     }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
-abstract class Bug1117Tree implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug1117Tree implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1117Tree() {
     }

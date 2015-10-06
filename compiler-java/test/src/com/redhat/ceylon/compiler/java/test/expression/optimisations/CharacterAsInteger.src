@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.optimisations;
 
-class CharacterAsInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CharacterAsInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CharacterAsInteger() {
     }

@@ -47,7 +47,7 @@ final class inlineObject_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private anonymous_0_() {
                         this.a = 2L;
@@ -159,7 +159,7 @@ final class inlineObject_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous_1_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_1_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private anonymous_1_() {
                         this.a = 2L;
@@ -311,7 +311,7 @@ final class inlineObject_ {
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     InlineObjectInDefaultClassParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
@@ -340,7 +340,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous_4_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_4_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private anonymous_4_() {
                         this.a = 2L;
@@ -390,7 +390,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous_3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_3_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private anonymous_3_() {
                         this.a = 2L;
@@ -450,7 +450,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous_5_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_5_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private anonymous_5_() {
                         this.a = 2L;
@@ -549,7 +549,7 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6")
                 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                class anonymous_6_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_6_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private anonymous_6_() {
                         this.a = 2L;
@@ -610,7 +610,7 @@ final class inlineObjectTopLevel_ {
                             isPackageLocal = true,
                             qualifier = "1inlineObjectTopLevel$1")
                     @.com.redhat.ceylon.compiler.java.metadata.Object
-                    class anonymous_2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class anonymous_2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
                         private anonymous_2_() {
                             this.a = 2L;

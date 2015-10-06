@@ -11,7 +11,7 @@ interface Bug1649Superinterface {
     public abstract .java.lang.Object defaultedVar(final .java.lang.Object var);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface.class);
 }
-final class Bug1649Superinterface$impl {
+final class Bug1649Superinterface$impl implements .java.io.Serializable {
     
     Bug1649Superinterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface $this) {
         this.$this = $this;
@@ -34,7 +34,7 @@ interface Bug1649Subinterface extends .com.redhat.ceylon.compiler.java.test.issu
     public abstract .java.lang.Object refinedDelegate();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface.class);
 }
-final class Bug1649Subinterface$impl {
+final class Bug1649Subinterface$impl implements .java.io.Serializable {
     
     Bug1649Subinterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface $this) {
         this.$this = $this;
@@ -49,7 +49,7 @@ final class Bug1649Subinterface$impl {
         return defaultedVar$canonical$(var);
     }
 }
-class Bug1649Clazz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface {
+class Bug1649Clazz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface, .java.io.Serializable {
     
     Bug1649Clazz() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface$impl(this);

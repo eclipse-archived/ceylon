@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
-class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ArrayIterationStatic() {
     }

@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class LocalClassAlias_Toplevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LocalClassAlias_Toplevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     LocalClassAlias_Toplevel() {
     }
@@ -28,7 +28,7 @@ final class localClassAliasMethod_ {
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.com.redhat.ceylon.compiler.java.metadata.Name("ClassAlias_Foo")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             ClassAlias_Foo() {
             }

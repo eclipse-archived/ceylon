@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
 
-class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug323() {
     }
@@ -13,7 +13,7 @@ class Bug323 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return 4L;
     }
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
             (

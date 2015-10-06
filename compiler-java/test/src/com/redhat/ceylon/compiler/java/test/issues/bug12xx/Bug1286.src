@@ -18,7 +18,7 @@ interface bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Con
     
     public void add(final E e);
 }
-final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class bug1286_objectDefinition_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private bug1286_objectDefinition_() {
         super();
@@ -36,7 +36,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_)times1;
                         
-                        final class Consumer$impl<E> {
+                        final class Consumer$impl<E> implements .java.io.Serializable {
                             
                             Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1setterArgument$Consumer_<? super E> $this) {
                                 this.$reified$E = $reified$E;
@@ -64,7 +64,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_)times1;
                         
-                        final class Consumer$impl<E> {
+                        final class Consumer$impl<E> implements .java.io.Serializable {
                             
                             Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$1methodArgument$Consumer_<? super E> $this) {
                                 this.$reified$E = $reified$E;
@@ -84,7 +84,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                     }
                 };
                 
-                final class objectArgument_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                final class objectArgument_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private objectArgument_() {
                         super();
@@ -110,7 +110,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
                         return false;
                     }
                     
-                    final class Consumer$impl<E> {
+                    final class Consumer$impl<E> implements .java.io.Serializable {
                         
                         Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition$bug1286_objectDefinition$1$objectArgument$Consumer_<? super E> $this) {
                             this.$reified$E = $reified$E;
@@ -137,6 +137,10 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .com.
             }
             returning null;
         );
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.class);
     private final long hash;
@@ -207,7 +211,7 @@ final class bug1286_method_ {
                     let
                     {
                         
-                        final class objectArgument_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        final class objectArgument_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                             
                             private objectArgument_() {
                                 super();
@@ -233,7 +237,7 @@ final class bug1286_method_ {
                                 return false;
                             }
                             
-                            final class Consumer$impl<E> {
+                            final class Consumer$impl<E> implements .java.io.Serializable {
                                 
                                 Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_method$bug1286_method$6$bug1286_method$7$objectArgument$Consumer_<? super E> $this) {
                                     this.$reified$E = $reified$E;
@@ -270,7 +274,7 @@ interface Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$object
     
     public void add(final E e);
 }
-class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1286_initializer() {
         super();
@@ -284,7 +288,7 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                     let
                     {
                         
-                        final class objectArgument_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        final class objectArgument_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                             
                             private objectArgument_() {
                                 super();
@@ -310,7 +314,7 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 return false;
                             }
                             
-                            final class Consumer$impl<E> {
+                            final class Consumer$impl<E> implements .java.io.Serializable {
                                 
                                 Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1286_initializer$Bug1286_initializer$1$Bug1286_initializer$2$objectArgument$Consumer<? super E> $this) {
                                     this.$reified$E = $reified$E;
@@ -381,7 +385,7 @@ final class bug1286_getterSetter_ {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_)times1;
                 
-                final class Consumer$impl<E> {
+                final class Consumer$impl<E> implements .java.io.Serializable {
                     
                     Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$1getterSetter$Consumer_<? super E> $this) {
                         this.$reified$E = $reified$E;
@@ -412,7 +416,7 @@ final class bug1286_getterSetter_ {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_)times1;
                 
-                final class Consumer$impl<E> {
+                final class Consumer$impl<E> implements .java.io.Serializable {
                     
                     Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super E> $this) {
                         this.$reified$E = $reified$E;
@@ -436,7 +440,7 @@ final class bug1286_getterSetter_ {
     
     public static void set_(final .java.lang.String bug1286_getterSetter) {
         
-        final class objectDefinition_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class objectDefinition_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private objectDefinition_() {
                 super();
@@ -462,7 +466,7 @@ final class bug1286_getterSetter_ {
                 return false;
             }
             
-            final class Consumer$impl<E> {
+            final class Consumer$impl<E> implements .java.io.Serializable {
                 
                 Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$objectDefinition$Consumer_<? super E> $this) {
                     this.$reified$E = $reified$E;

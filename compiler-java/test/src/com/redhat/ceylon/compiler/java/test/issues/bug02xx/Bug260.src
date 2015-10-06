@@ -23,7 +23,7 @@ interface Bug260_Interface2 {
 interface Bug260_Interface3 {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3.class);
 }
-class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3 {
+class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface3, .java.io.Serializable {
     
     Bug260_Intersection() {
     }
@@ -34,7 +34,7 @@ class Bug260_Intersection implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection.class);
 }
-class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 {
+class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2, .java.io.Serializable {
     
     Bug260() {
         this.attr = null;

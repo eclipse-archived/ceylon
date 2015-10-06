@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class ExceptionAttr implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ExceptionAttr implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ExceptionAttr() {
         this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);

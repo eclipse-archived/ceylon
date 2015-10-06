@@ -136,7 +136,7 @@ final class bug609mth_ {
         clone.$clone();
     }
 }
-class Bug609cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug609cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug609cls() {
     }

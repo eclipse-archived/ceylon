@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 
-class Bug1292 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1292 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1292() {
     }
@@ -29,7 +29,7 @@ interface Bug1292I {
     public boolean equals(final .java.lang.Object other);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I.class);
 }
-final class Bug1292I$impl {
+final class Bug1292I$impl implements .java.io.Serializable {
     
     Bug1292I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I $this) {
         this.$this = $this;
@@ -40,7 +40,7 @@ final class Bug1292I$impl {
         return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
     }
 }
-class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I {
+class Bug1292_2 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I, .java.io.Serializable {
     
     Bug1292_2() {
         super();

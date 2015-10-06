@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.ceylon.language.String, .java.lang.Object> {
+class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.ceylon.language.String, .java.lang.Object>, .java.io.Serializable {
     
     protected Bug979Iterable() {
         super();
@@ -348,7 +348,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug979Iterable.class);
 }
-class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Set<.ceylon.language.String> {
+class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Set<.ceylon.language.String>, .java.io.Serializable {
     
     protected Bug979Set() {
         super();

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.literal;
 
-class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     TupleLiteral(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

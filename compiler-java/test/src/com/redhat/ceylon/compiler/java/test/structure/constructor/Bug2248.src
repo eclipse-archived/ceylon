@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-public class Bug2248C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug2248C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2248C.c_ c_ = null;
     

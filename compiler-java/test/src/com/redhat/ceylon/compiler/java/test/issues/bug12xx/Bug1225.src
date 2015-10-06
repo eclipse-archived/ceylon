@@ -3,9 +3,13 @@ package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
 public interface Bug1225Availability {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability.class);
 }
-public final class bug1225available_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
+public final class bug1225available_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
     
     private bug1225available_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_ value;
@@ -37,9 +41,13 @@ public final class bug1225available_ implements .com.redhat.ceylon.compiler.java
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$;
     }
 }
-public final class bug1225unavailableBy_O_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
+public final class bug1225unavailableBy_O_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
     
     private bug1225unavailableBy_O_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_ value;
@@ -71,9 +79,13 @@ public final class bug1225unavailableBy_O_ implements .com.redhat.ceylon.compile
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.$TypeDescriptor$;
     }
 }
-public final class bug1225unavailableBy_X_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
+public final class bug1225unavailableBy_X_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
     
     private bug1225unavailableBy_X_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_ value;
@@ -110,7 +122,7 @@ public final class Bug1225Board {
     private Bug1225Board() {
     }
 }
-class Bug1225Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1225Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1225Test() {
         (

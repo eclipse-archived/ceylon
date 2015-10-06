@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public NamedArgumentInvocationLocal() {
     }
@@ -57,7 +57,7 @@ public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.class);
 }
-class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     X() {
     }

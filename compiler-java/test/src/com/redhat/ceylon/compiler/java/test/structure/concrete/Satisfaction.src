@@ -13,7 +13,7 @@ interface I1 {
     public long m1(final long n);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1.class);
 }
-final class I1$impl {
+final class I1$impl implements .java.io.Serializable {
     
     I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
         this.$this = $this;
@@ -42,7 +42,7 @@ final class I1$impl {
         return m1$canonical$(n);
     }
 }
-class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 {
+class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .java.io.Serializable {
     
     CI1() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
@@ -103,7 +103,7 @@ interface I2 {
     public long m2(final long n);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2.class);
 }
-final class I2$impl {
+final class I2$impl implements .java.io.Serializable {
     
     I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
         this.$this = $this;
@@ -148,7 +148,7 @@ interface I4 {
     public long m4(final long n);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I4.class);
 }
-final class I4$impl {
+final class I4$impl implements .java.io.Serializable {
     
     I4$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I4 $this) {
         this.$this = $this;
@@ -177,7 +177,7 @@ final class I4$impl {
         return m4$canonical$(n);
     }
 }
-class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2, .java.io.Serializable {
     
     CI3() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
@@ -261,7 +261,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CI3.class);
 }
-abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I3, .com.redhat.ceylon.compiler.java.test.structure.concrete.I4 {
+abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I3, .com.redhat.ceylon.compiler.java.test.structure.concrete.I4, .java.io.Serializable {
     
     A7() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);

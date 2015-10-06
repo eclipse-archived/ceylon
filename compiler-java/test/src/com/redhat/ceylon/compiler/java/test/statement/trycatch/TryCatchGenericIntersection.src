@@ -95,7 +95,7 @@ class ExceptionGenericSub extends .com.redhat.ceylon.compiler.java.test.statemen
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGenericSub.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     TryCatchGenericIntersection() {
     }

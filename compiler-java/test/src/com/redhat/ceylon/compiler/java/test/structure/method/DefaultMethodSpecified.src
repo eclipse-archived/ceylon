@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class DefaultMethodSpecified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DefaultMethodSpecified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DefaultMethodSpecified() {
     }

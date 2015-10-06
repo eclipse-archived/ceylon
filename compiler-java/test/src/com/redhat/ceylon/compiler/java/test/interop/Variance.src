@@ -62,7 +62,7 @@ final class variance_ {
         final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> anything1 = inAnythingClass;
     }
 }
-abstract class MyMap implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map<.ceylon.language.String, .java.lang.Object> {
+abstract class MyMap implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map<.ceylon.language.String, .java.lang.Object>, .java.io.Serializable {
     
     MyMap() {
     }

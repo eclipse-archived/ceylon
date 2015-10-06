@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.lambda;
 
-class AnonMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnonMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AnonMemberQualClass() {
     }

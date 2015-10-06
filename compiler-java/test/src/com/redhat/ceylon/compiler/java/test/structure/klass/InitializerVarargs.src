@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     InitializerVarargs(final .java.lang.String f) {
         (

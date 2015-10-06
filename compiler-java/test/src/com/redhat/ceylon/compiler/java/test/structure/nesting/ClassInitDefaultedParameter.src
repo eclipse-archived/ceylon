@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
-class C1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class C1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     C1() {
         (
@@ -26,7 +26,7 @@ class C1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.C1.class);
 }
-class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     C3() {
         (
@@ -68,7 +68,7 @@ class C3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.C3.class);
 }
-class C4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class C4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     C4(final long i) {
         (
@@ -98,7 +98,7 @@ class C4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.C4.class);
 }
-class C5<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class C5<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     C5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         (

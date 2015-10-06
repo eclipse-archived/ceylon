@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class ObjectInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ObjectInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ObjectInSetter() {
         
@@ -25,7 +25,7 @@ class ObjectInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 if (true) {
                     final long i = 1L;
                     
-                    final class bar_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    final class bar_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                         
                         private bar_() {
                         }

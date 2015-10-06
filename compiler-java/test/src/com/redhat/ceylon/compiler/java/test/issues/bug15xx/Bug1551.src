@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
-public class Sql implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Sql implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Sql() {
     }
@@ -9,7 +9,7 @@ public class Sql implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return new Insert<ValueTypes>($reified$ValueTypes);
     }
     
-    public class Insert<ValueTypes> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Insert<ValueTypes> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Insert(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes) {
             this.$reified$ValueTypes = $reified$ValueTypes;
@@ -40,7 +40,7 @@ public class Sql implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Sql.class);
 }
-public class Insert<ValueTypes> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Insert<ValueTypes> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Insert(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes) {
         this.$reified$ValueTypes = $reified$ValueTypes;

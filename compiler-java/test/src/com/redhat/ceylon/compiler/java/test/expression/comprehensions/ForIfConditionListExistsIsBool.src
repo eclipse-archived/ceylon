@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ForIfConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ForIfConditionListExistsIsBool() {
     }

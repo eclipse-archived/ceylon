@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug620(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

@@ -24,7 +24,7 @@ public final class run_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug20xx.run_.run();
     }
 }
-public class SQLog implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class SQLog implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public SQLog() {
     }
@@ -78,7 +78,7 @@ public class SQLog implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         );
     }
     
-    public class LogMsg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class LogMsg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected LogMsg(.java.lang.String text, long severity, .java.lang.String error) {
             this.text = text;

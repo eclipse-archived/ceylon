@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-class Bug2282 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2282 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2282() {
         super();
@@ -50,7 +50,7 @@ final class bug2282k_ {
         return .ceylon.language.nothing_.get_();
     }
 }
-abstract class Bug2282C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug2282C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2282C() {
     }
@@ -89,7 +89,7 @@ final class bug2282M_ {
         return (F).ceylon.language.nothing_.get_();
     }
 }
-class Bug2282M extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2282M extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2282M() {
         super();

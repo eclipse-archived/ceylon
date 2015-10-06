@@ -13,7 +13,7 @@ interface ConcreteString {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class ConcreteString$impl {
+final class ConcreteString$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConcreteString$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString $this) {
@@ -40,7 +40,7 @@ final class ConcreteString$impl {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::ConcreteString"})
-class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString {
+class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString, .java.io.Serializable {
     
     ConcreteStringC() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString$impl(this);
@@ -121,7 +121,7 @@ interface ConcreteString2 {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class ConcreteString2$impl {
+final class ConcreteString2$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     ConcreteString2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2 $this) {
@@ -164,7 +164,7 @@ final class ConcreteString2$impl {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::ConcreteString2"})
-class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2 {
+class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2, .java.io.Serializable {
     
     ConcreteStringC2() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2$impl(this);

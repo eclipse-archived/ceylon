@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class TryCatchFinally implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TryCatchFinally implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     TryCatchFinally() {
     }

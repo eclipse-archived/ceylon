@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-abstract class ClassDefaultMemberClassWithMemberSubclass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class ClassDefaultMemberClassWithMemberSubclass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassDefaultMemberClassWithMemberSubclass() {
     }
@@ -9,7 +9,7 @@ abstract class ClassDefaultMemberClassWithMemberSubclass implements .com.redhat.
         return new Default(i);
     }
     
-    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Default(final long i) {
         }
@@ -22,7 +22,7 @@ abstract class ClassDefaultMemberClassWithMemberSubclass implements .com.redhat.
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithMemberSubclass.Formal Formal$new$(final long i);
     
-    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Formal(final long i) {
         }
@@ -37,7 +37,7 @@ abstract class ClassDefaultMemberClassWithMemberSubclass implements .com.redhat.
         return new Shared(i);
     }
     
-    public class Shared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Shared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Shared(final long i) {
         }
@@ -48,7 +48,7 @@ abstract class ClassDefaultMemberClassWithMemberSubclass implements .com.redhat.
         }
     }
     
-    class NonShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class NonShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         NonShared(final long i) {
         }

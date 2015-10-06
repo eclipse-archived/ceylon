@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class Bug1346_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1346_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1346_A() {
     }
@@ -11,7 +11,7 @@ class Bug1346_A implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A.class);
 }
-class Bug1346_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1346_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1346_B() {
     }

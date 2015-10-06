@@ -14,7 +14,7 @@ public final class bug2229_ {
             
             void bar() {
                 
-                class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Baz() {
                         i = 42L;

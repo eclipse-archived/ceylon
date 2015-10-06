@@ -1,20 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KeywordInInnerClass() {
     }
     
     private final void m$priv$() {
         
-        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Inner() {
                 this.$transient = new Inner.transient_();
             }
             private final Inner.transient_ $transient;
             
-            final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class transient_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private transient_() {
                 }

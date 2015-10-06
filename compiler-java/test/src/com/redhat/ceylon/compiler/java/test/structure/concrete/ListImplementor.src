@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<X> {
+class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<X>, .java.io.Serializable {
     
     ListImplementor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         this.$reified$X = $reified$X;

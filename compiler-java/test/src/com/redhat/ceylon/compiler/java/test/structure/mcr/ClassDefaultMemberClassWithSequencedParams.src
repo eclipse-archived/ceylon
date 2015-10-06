@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassDefaultMemberClassWithSequencedParams() {
     }
@@ -19,7 +19,7 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
         );
     }
     
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodWhileConditionListExistsIsBool implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodWhileConditionListExistsIsBool() {
     }

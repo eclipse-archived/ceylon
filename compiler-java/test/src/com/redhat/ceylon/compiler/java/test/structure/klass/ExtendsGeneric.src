@@ -6,7 +6,7 @@ interface ExtendsGeneric_Bar<T> {
 }
 interface ExtendsGeneric_Baz<T> {
 }
-class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ExtendsGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -18,7 +18,7 @@ class ExtendsGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ExtendsGeneric.class, $reified$T);
     }
 }
-class ExtendsGeneric2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ExtendsGeneric2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ExtendsGeneric2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

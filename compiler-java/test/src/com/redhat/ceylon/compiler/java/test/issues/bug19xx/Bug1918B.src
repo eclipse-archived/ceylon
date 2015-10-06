@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class Bug1918B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1918B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1918B() {
     }
@@ -23,7 +23,7 @@ public class Bug1918B implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class Bug1918C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1918C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1918C() {
     }
@@ -44,7 +44,7 @@ public class Bug1918C implements .com.redhat.ceylon.compiler.java.runtime.model.
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class Bug1918Dummy implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1918Dummy implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1918Dummy() {
         final .ceylon.language.List valList = (.ceylon.language.List).ceylon.language.nothing_.get_();

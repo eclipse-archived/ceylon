@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
         super();

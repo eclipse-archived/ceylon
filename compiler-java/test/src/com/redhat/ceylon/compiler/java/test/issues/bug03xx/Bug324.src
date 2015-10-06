@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
 
-class Bug324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug324() {
     }
     
-    class Bug324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Bug324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Bug324() {
         }
@@ -18,7 +18,7 @@ class Bug324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private final void m$priv$() {
         
-        class Bug324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Bug324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Bug324() {
             }

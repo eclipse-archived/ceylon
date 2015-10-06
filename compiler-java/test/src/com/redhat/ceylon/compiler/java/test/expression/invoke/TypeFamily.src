@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node, E extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     TypeFamily(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
         this.$reified$N = $reified$N;
@@ -11,7 +11,7 @@ abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expres
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Edge Edge$new$(final N n1, final N n2);
     
-    public abstract class Edge implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Edge implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Edge(final N n1, final N n2) {
             this.n1 = n1;
@@ -40,7 +40,7 @@ abstract class TypeFamily<N extends .com.redhat.ceylon.compiler.java.test.expres
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamily<N, E>.Node Node$new$();
     
-    public abstract class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Node() {
         }

@@ -15,7 +15,7 @@ final class bug1284_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$Consumer_<? super .java.lang.Object>).ceylon.language.nothing_.get_();
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$Consumer_<? super .ceylon.language.String> objects1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$Consumer_<? super .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$Consumer_)times1;
         
-        final class Consumer$impl<E> {
+        final class Consumer$impl<E> implements .java.io.Serializable {
             
             Consumer$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1284$Consumer_<? super E> $this) {
                 this.$reified$E = $reified$E;

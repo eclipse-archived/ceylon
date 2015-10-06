@@ -10,7 +10,7 @@ interface AppliedTypeDefaultedParameter<T, U> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$();
 }
-final class AppliedTypeDefaultedParameter$impl<T, U> {
+final class AppliedTypeDefaultedParameter$impl<T, U> implements .java.io.Serializable {
     
     AppliedTypeDefaultedParameter$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter<T, U> $this) {
         this.$reified$T = $reified$T;
@@ -44,7 +44,7 @@ final class AppliedTypeDefaultedParameter$impl<T, U> {
         );
     }
     
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(final T t) {
         }
@@ -55,7 +55,7 @@ final class AppliedTypeDefaultedParameter$impl<T, U> {
         }
     }
 }
-class AppliedTypeDefaultedParameterSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter<.ceylon.language.String, .ceylon.language.String> {
+class AppliedTypeDefaultedParameterSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter<.ceylon.language.String, .ceylon.language.String>, .java.io.Serializable {
     
     AppliedTypeDefaultedParameterSub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);

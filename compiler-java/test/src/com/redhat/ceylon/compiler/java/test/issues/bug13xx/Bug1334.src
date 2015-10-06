@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-class Bug1334_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_1() {
     }
@@ -22,7 +22,7 @@ class Bug1334_1 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_1.class);
 }
-class Bug1334_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_2() {
         this.hash = 23L;
@@ -46,7 +46,7 @@ class Bug1334_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_2.class);
 }
-class Bug1334_3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_3() {
         this.hash = 23L;
@@ -70,7 +70,7 @@ class Bug1334_3 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_3.class);
 }
-class Bug1334_4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_4() {
     }
@@ -92,7 +92,7 @@ class Bug1334_4 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_4.class);
 }
-class Bug1334_5 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_5 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_5() {
     }
@@ -114,7 +114,7 @@ class Bug1334_5 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_5.class);
 }
-class Bug1334_6 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_6 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1334_6() {
         super();
@@ -143,7 +143,7 @@ class Bug1334_6 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6.class);
 }
-class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_7() {
         (
@@ -182,7 +182,7 @@ class Bug1334_7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_7.class);
 }
-class Bug1334_8 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_8 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1334_8() {
         super();
@@ -211,7 +211,7 @@ class Bug1334_8 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_8.class);
 }
-class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_9 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_9() {
         (
@@ -266,7 +266,7 @@ class Bug1334_6_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.B
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_6_2.class);
 }
-class Bug1334_10 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1334_10 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1334_10() {
         this.hash = 23L;
@@ -302,7 +302,7 @@ interface Bug1334_11 {
     public int hashCode();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11.class);
 }
-final class Bug1334_11$impl {
+final class Bug1334_11$impl implements .java.io.Serializable {
     
     Bug1334_11$impl(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11 $this) {
         this.$this = $this;
@@ -319,7 +319,7 @@ final class Bug1334_11$impl {
         );
     }
 }
-class Bug1334_12 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11 {
+class Bug1334_12 extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11, .java.io.Serializable {
     
     Bug1334_12() {
         super();

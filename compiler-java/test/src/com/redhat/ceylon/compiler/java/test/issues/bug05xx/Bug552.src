@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
-class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -12,7 +12,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.C.class, $reified$T);
     }
 }
-class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     A() {
     }

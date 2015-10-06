@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodRef() {
     }
@@ -1303,7 +1303,7 @@ class MethodRef implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return new Inner(s);
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner(final .java.lang.String s) {
             this.s = s;

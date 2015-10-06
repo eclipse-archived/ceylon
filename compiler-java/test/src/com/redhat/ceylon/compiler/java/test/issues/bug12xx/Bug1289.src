@@ -4,7 +4,7 @@ interface Bug1289_Bar<Key> {
     
     public abstract .java.lang.Object m(final Key x, final Key y, final Key z);
 }
-class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Integer> {
+class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Integer>, .java.io.Serializable {
     
     Bug1289_Foo() {
     }
@@ -192,7 +192,7 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo.class);
 }
-class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Float> {
+class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<.ceylon.language.Float>, .java.io.Serializable {
     
     Bug1289_Foo2() {
     }
@@ -380,7 +380,7 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Foo2.class);
 }
-class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Element> {
+class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1289_Bar<Element>, .java.io.Serializable {
     
     Bug1289_Foo3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;

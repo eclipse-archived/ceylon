@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
 interface Bug816I<T> {
 }
-class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<.java.lang.Object> {
+class Bug816C<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug816I<.java.lang.Object>, .java.io.Serializable {
     
     Bug816C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2) {
         this.$reified$T1 = $reified$T1;

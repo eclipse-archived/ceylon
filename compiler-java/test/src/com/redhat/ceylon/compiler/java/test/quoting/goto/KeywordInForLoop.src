@@ -201,7 +201,7 @@ public final class keywordInForLoop2_ {
         return 2L;
     }
 }
-class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected KeywordInForLoop3() {
         super();

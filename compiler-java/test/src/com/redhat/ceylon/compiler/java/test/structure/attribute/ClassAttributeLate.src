@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassAttributeLate(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
         this.$reified$T = $reified$T;

@@ -56,7 +56,7 @@ final class tupleGeneric_ {
     
     static void tupleGeneric() {
         
-        class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
                 this.$reified$T = $reified$T;
@@ -131,7 +131,7 @@ final class entryGeneric_ {
     
     static void entryGeneric() {
         
-        class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
                 this.$reified$T = $reified$T;

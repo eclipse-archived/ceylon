@@ -11,7 +11,7 @@ interface InterfaceFormalMemberClassDefaultedParameter {
     public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl.X X$new$(final .java.lang.String o);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter.class);
 }
-final class InterfaceFormalMemberClassDefaultedParameter$impl {
+final class InterfaceFormalMemberClassDefaultedParameter$impl implements .java.io.Serializable {
     
     InterfaceFormalMemberClassDefaultedParameter$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter $this) {
         this.$this = $this;
@@ -22,7 +22,7 @@ final class InterfaceFormalMemberClassDefaultedParameter$impl {
         return null;
     }
     
-    public abstract class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public X(final .java.lang.String o) {
             (
@@ -44,7 +44,7 @@ final class InterfaceFormalMemberClassDefaultedParameter$impl {
         }
     }
 }
-class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter {
+class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter, .java.io.Serializable {
     
     InterfaceFormalMemberClassDefaultedParameterSub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl(this);
@@ -95,7 +95,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.cey
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameterSub.class);
 }
-class InterfaceFormalMemberClassDefaultedParameterSub2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter {
+class InterfaceFormalMemberClassDefaultedParameterSub2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter, .java.io.Serializable {
     
     InterfaceFormalMemberClassDefaultedParameterSub2() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl(this);

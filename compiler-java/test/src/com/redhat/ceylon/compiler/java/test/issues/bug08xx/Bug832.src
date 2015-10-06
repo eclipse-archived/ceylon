@@ -15,7 +15,7 @@ interface Bug832Common {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class Bug832Common$impl {
+final class Bug832Common$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug832Common$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common $this) {
@@ -31,7 +31,7 @@ final class Bug832Common$impl {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug08xx::Bug832Common"})
-class Bug832Integer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common {
+class Bug832Integer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common, .java.io.Serializable {
     
     Bug832Integer() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl(this);
@@ -61,7 +61,7 @@ class Bug832Integer implements .com.redhat.ceylon.compiler.java.runtime.model.Re
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug08xx::Bug832Common"})
-class Bug832Float implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common {
+class Bug832Float implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common, .java.io.Serializable {
     
     Bug832Float() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl(this);

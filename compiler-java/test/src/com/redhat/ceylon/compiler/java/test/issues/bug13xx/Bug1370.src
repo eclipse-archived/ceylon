@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-public class Bug1370 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1370 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1370() {
         super();
@@ -22,7 +22,7 @@ public class Bug1370 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370.class);
 }
-public class Bug1370_B<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1370_B<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1370_B(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -46,7 +46,7 @@ public class Bug1370_B<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1370_B.class, $reified$T);
     }
 }
-public class Bug1370_C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1370_C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1370_C() {
         super();

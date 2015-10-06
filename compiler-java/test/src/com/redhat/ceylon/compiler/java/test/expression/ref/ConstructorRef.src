@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ConstructorRef(.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.unaryDefaulted_ $name$) {
         (
@@ -278,7 +278,7 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         satisfies = {"ceylon.language::Object"},
         caseTypes = {})})
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

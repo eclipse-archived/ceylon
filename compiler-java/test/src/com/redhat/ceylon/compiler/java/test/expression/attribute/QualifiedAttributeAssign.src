@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     QualifiedAttributeAssign() {
         this.b = true;
@@ -46,7 +46,7 @@ class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runti
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign.class);
 }
-class QualifiedAttributeAssignFoo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class QualifiedAttributeAssignFoo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     QualifiedAttributeAssignFoo() {
         this.b = true;

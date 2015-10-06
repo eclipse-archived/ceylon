@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public abstract class CaseTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class CaseTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public CaseTypes(final .java.lang.String name) {
     }
@@ -15,6 +15,10 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
     
     private foo_() {
         super("foo");
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.foo_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.foo_.class);
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.foo_ value;
@@ -51,6 +55,10 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
     private bar_() {
         super("bar");
     }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.bar_.get_();
+    }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.bar_.class);
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.bar_ value;
     private static volatile boolean $init$value = false;
@@ -81,7 +89,7 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
         return .com.redhat.ceylon.compiler.java.test.structure.klass.bar_.$TypeDescriptor$;
     }
 }
-public abstract class CaseTypes2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class CaseTypes2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected CaseTypes2() {
         super();

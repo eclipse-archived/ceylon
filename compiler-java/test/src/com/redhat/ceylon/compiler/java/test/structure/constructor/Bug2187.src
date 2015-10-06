@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2187(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2187.bar$delegation$_ $name$) {
         (

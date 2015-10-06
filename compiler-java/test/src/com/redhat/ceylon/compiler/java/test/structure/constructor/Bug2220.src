@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug2220() {
     }
@@ -9,7 +9,7 @@ public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new Bar();
     }
     
-    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Bar() {
         }
@@ -36,7 +36,7 @@ public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
         }
         
-        public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             private Baz(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$baz $name$) {
             }

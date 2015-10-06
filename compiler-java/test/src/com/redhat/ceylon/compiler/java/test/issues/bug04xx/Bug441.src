@@ -7,7 +7,7 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.i
 interface IBug441 extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441.class);
 }
-class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441> {
+class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441>, .java.io.Serializable {
     
     Bug441() {
     }

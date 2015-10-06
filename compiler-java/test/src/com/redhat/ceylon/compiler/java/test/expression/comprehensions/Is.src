@@ -10,7 +10,7 @@ interface FooInterface {
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface foo();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface.class);
 }
-class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooInterface, .java.io.Serializable {
     
     Foo() {
     }
@@ -52,7 +52,7 @@ interface BarInterface {
     public abstract .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface bar();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.class);
 }
-class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface {
+class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface, .java.io.Serializable {
     
     Bar() {
     }

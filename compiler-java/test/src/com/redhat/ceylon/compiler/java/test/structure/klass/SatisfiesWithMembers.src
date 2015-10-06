@@ -11,7 +11,7 @@ interface SatisfiesWithMembers {
     public abstract .java.lang.Object m();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers.class);
 }
-class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers {
+class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers, .java.io.Serializable {
     
     SatisfiesWithMembersClass() {
         this.b = true;

@@ -9,7 +9,7 @@ final class methodSpecifyingTopLevelWithTypeParam_f_ {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class MethodSpecifyingTopLevelWithTypeParam<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodSpecifyingTopLevelWithTypeParam<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodSpecifyingTopLevelWithTypeParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$S = $reified$S;

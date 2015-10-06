@@ -9,7 +9,7 @@ interface Bug143Writer {
     public void writeLine(final .java.lang.String string);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer.class);
 }
-final class Bug143Writer$impl {
+final class Bug143Writer$impl implements .java.io.Serializable {
     
     Bug143Writer$impl(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer $this) {
         this.$this = $this;
@@ -21,7 +21,7 @@ final class Bug143Writer$impl {
         $this.write(.ceylon.language.operatingSystem_.get_().getNewline());
     }
 }
-class Bug143ToFunctionWriter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer {
+class Bug143ToFunctionWriter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer, .java.io.Serializable {
     
     protected Bug143ToFunctionWriter() {
         super();

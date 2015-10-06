@@ -197,7 +197,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class My1543Empty$impl {
+public final class My1543Empty$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public My1543Empty$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.My1543Empty $this) {

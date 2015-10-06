@@ -9,7 +9,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug1612(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
@@ -51,7 +51,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    class Bar1<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Bar1<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         Bar1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
@@ -111,7 +111,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public class Bar2<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Bar2<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Bar2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, @.com.redhat.ceylon.compiler.java.metadata.Name("j")

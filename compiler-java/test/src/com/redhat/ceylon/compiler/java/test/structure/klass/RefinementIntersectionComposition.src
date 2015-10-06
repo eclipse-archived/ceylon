@@ -15,7 +15,7 @@ interface RIC_Top<T> {
     
     public abstract T get();
 }
-abstract class RIC_Middle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A> {
+abstract class RIC_Middle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A>, .java.io.Serializable {
     
     RIC_Middle() {
     }
@@ -54,7 +54,7 @@ class RIC_Nothing_From_Class extends .com.redhat.ceylon.compiler.java.test.struc
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Class.class);
 }
-class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right {
+class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right, .java.io.Serializable {
     
     RIC_Nothing_From_Interface() {
     }

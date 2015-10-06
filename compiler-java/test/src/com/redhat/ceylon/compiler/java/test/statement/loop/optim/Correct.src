@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)})
-class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Correct() {
         final long expected = 55L;
@@ -142,7 +142,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Name("MyOrdinal")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Enumerable<com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal>"})
-    class MyOrdinal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> {
+    class MyOrdinal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>, .java.io.Serializable {
         
         MyOrdinal(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")

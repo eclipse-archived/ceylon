@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
-public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug844_Top(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -61,7 +61,7 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Bottom.class, $reified$Element, $reified$First);
     }
 }
-public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element> {
+public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .java.io.Serializable {
     
     protected Bug844_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest) {
         super();

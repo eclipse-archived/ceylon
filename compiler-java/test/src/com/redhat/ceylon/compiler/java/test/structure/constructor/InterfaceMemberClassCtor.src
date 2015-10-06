@@ -17,7 +17,7 @@ interface InterfaceMemberClassCtor {
     public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor.class);
 }
-final class InterfaceMemberClassCtor$impl {
+final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
     
     InterfaceMemberClassCtor$impl(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor $this) {
         this.$this = $this;
@@ -39,7 +39,7 @@ final class InterfaceMemberClassCtor$impl {
         return 1L;
     }
     
-    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Member() {
             (
@@ -118,7 +118,7 @@ final class InterfaceMemberClassCtor$impl {
         );
     }
     
-    public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public SharedMember(final long i$param$) {
         }
@@ -155,7 +155,7 @@ final class InterfaceMemberClassCtor$impl {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor"})
-class InterfaceMemberClassCtorImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor {
+class InterfaceMemberClassCtorImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor, .java.io.Serializable {
     
     InterfaceMemberClassCtorImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$this$ = new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl(this);

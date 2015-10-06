@@ -15,7 +15,7 @@ final class bug1250_ {
         @.com.redhat.ceylon.compiler.java.metadata.Name("Foo")
         @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = Foo.Bar.class)})
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Foo() {
             }
@@ -28,7 +28,7 @@ final class bug1250_ {
             @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
             @.ceylon.language.SharedAnnotation$annotation$
             @.com.redhat.ceylon.compiler.java.metadata.Container(klass = Foo.class)
-            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 protected Bar() {
                 }

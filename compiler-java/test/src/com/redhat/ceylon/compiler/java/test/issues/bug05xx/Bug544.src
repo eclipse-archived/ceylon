@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
-class Bug544 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug544 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug544() {
         super();
@@ -109,7 +109,7 @@ class Bug544Qualified extends .com.redhat.ceylon.compiler.java.test.issues.bug05
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544Qualified.class);
 }
-class Bug544ContainerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug544ContainerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug544ContainerClass() {
         this.s = "";
@@ -145,7 +145,7 @@ interface Bug544ContainerInterface {
     public abstract .java.lang.String getS();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface.class);
 }
-final class Bug544ContainerInterface$impl {
+final class Bug544ContainerInterface$impl implements .java.io.Serializable {
     
     Bug544ContainerInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544ContainerInterface $this) {
         this.$this = $this;

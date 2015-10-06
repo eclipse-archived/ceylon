@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
 
-public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug2335() {
     }
@@ -9,7 +9,7 @@ public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new D();
     }
     
-    public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected D() {
         }

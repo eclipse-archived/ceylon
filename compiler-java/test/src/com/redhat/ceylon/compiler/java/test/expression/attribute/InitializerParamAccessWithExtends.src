@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class InitializerParamAccessWithExtends extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class InitializerParamAccessWithExtends extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected InitializerParamAccessWithExtends() {
         super();

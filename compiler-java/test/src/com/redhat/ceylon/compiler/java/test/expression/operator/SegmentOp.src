@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-class SegmentOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SegmentOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SegmentOp() {
     }

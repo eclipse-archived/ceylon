@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     OuterClass() {
     }
@@ -9,7 +9,7 @@ class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return new InnerClass();
     }
     
-    public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected InnerClass() {
         }

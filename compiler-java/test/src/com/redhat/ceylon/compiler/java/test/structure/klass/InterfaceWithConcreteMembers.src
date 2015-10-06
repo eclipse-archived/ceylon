@@ -13,7 +13,7 @@ interface InterfaceWithConcreteMembers {
     public long getBar2();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers.class);
 }
-final class InterfaceWithConcreteMembers$impl {
+final class InterfaceWithConcreteMembers$impl implements .java.io.Serializable {
     
     InterfaceWithConcreteMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this) {
         this.$this = $this;
@@ -36,7 +36,7 @@ final class InterfaceWithConcreteMembers$impl {
         return 1L;
     }
 }
-class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers {
+class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers, .java.io.Serializable {
     
     InterfaceWithConcreteMembersImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);

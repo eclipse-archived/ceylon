@@ -6,7 +6,7 @@ final class bar_ {
     static void bar() {
     }
 }
-public class Bug214 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug214 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug214() {
         .bar_.bar();

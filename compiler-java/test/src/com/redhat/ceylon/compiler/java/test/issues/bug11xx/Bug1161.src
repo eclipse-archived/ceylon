@@ -1,12 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
-class Bug1161 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1161 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1161() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1161.objectMember_ objectMember = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1161.objectMember_();
     }
     
-    final class objectMember_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final class objectMember_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private objectMember_() {
         }

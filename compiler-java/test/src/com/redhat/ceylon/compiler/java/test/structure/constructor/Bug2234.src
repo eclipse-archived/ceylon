@@ -25,7 +25,7 @@ class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.class);
 }
-class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2234() {
         this.member = Inner$new$();
@@ -47,7 +47,7 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return new Inner();
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         private final .java.lang.String name;
         
         public final .java.lang.String getName() {

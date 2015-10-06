@@ -14,7 +14,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassCharacter() {
         super();
@@ -54,7 +54,7 @@ final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationClassCharacterDefaulted() {
         (
@@ -125,7 +125,7 @@ final class annotationClassCharacter_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$(c = 122)})
-class AnnotationClassCharacter_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationClassCharacter_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AnnotationClassCharacter_callsite() {
     }

@@ -13,7 +13,7 @@ public final class bug2281_ {
     
     public static void bug2281() {
         
-        final class Bar$impl {
+        final class Bar$impl implements .java.io.Serializable {
             
             Bar$impl(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281$Bar_ $this) {
                 this.$this = $this;
@@ -24,7 +24,7 @@ public final class bug2281_ {
                 return new C();
             }
             
-            class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 protected C() {
                 }
@@ -36,7 +36,7 @@ public final class bug2281_ {
             }
         }
         
-        class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281$Bar_ {
+        class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2281$Bar_, .java.io.Serializable {
             
             X() {
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$bug2281$Bar$this$ = new Bar$impl(this);

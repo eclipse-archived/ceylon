@@ -7,7 +7,7 @@ public interface Bug1478AbstractFoo$InnerInterface<T> {
     
     public abstract long execute2(final T t);
 }
-public abstract class Bug1478AbstractFoo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class Bug1478AbstractFoo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1478AbstractFoo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -16,7 +16,7 @@ public abstract class Bug1478AbstractFoo<T> implements .com.redhat.ceylon.compil
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.Inner Inner$new$();
     
-    public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
         }

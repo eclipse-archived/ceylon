@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.expression.selfref;
 interface IPackageQualified {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.IPackageQualified.class);
 }
-class CPackageQualified<T extends .com.redhat.ceylon.compiler.java.test.expression.selfref.IPackageQualified> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.IPackageQualified {
+class CPackageQualified<T extends .com.redhat.ceylon.compiler.java.test.expression.selfref.IPackageQualified> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.IPackageQualified, .java.io.Serializable {
     
     CPackageQualified(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

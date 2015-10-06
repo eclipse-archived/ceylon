@@ -22,7 +22,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
-final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
+final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     NestedLeaf() {
@@ -154,7 +154,7 @@ final class nestedLeafLiteralArgument_ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedBranch,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
-final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object> {
+final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

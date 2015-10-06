@@ -8,7 +8,7 @@ public interface Bug1777<Element> extends .ceylon.language.Iterable<Element, .ja
     
     public abstract <Result>.ceylon.language.Callable<? extends Result> foldFormal(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial);
 }
-public final class Bug1777$impl<Element> {
+public final class Bug1777$impl<Element> implements .java.io.Serializable {
     
     public Bug1777$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777<Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -39,7 +39,7 @@ public final class Bug1777$impl<Element> {
         };
     }
 }
-public abstract class Bug1777_Impl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777<Element> {
+public abstract class Bug1777_Impl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777<Element>, .java.io.Serializable {
     
     public Bug1777_Impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -382,7 +382,7 @@ public abstract class Bug1777_Impl<Element> implements .com.redhat.ceylon.compil
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777_Impl.class, $reified$Element);
     }
 }
-public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<Element, .java.lang.Object> {
+public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<Element, .java.lang.Object>, .java.io.Serializable {
     
     public Bug1777_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;

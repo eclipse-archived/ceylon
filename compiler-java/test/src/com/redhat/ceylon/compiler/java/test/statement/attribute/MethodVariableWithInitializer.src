@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.attribute;
 
-class MethodVariableWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodVariableWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodVariableWithInitializer() {
     }

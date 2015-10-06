@@ -4,7 +4,7 @@ public interface TestInterface<Key, Value> {
 }
 public interface TestInterface2<Key, Value> {
 }
-public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, .ceylon.language.Integer> {
+public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, .ceylon.language.Integer>, .java.io.Serializable {
     
     public TestClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         this.$reified$Key = $reified$Key;

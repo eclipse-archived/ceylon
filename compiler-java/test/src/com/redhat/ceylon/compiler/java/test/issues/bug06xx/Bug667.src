@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug667TopClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug667TopClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug667TopClass() {
     }
@@ -53,7 +53,7 @@ interface Bug667Interface<T> {
     
     public T getGet();
 }
-final class Bug667Interface$impl<T> {
+final class Bug667Interface$impl<T> implements .java.io.Serializable {
     
     Bug667Interface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<T> $this) {
         this.$reified$T = $reified$T;
@@ -70,7 +70,7 @@ final class Bug667Interface$impl<T> {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String>, .java.io.Serializable {
     
     protected Bug667Class(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada) {
         super();
@@ -114,7 +114,7 @@ final class bug667Method_ {
     
     static <Nada>void bug667Method(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, final Nada n) {
         
-        final class x_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+        final class x_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
             
             private x_() {
                 this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);

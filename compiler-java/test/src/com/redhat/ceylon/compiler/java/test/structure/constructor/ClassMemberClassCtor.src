@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassMemberClassCtor() {
     }
@@ -20,7 +20,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         return 2L;
     }
     
-    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Member() {
             (
@@ -99,7 +99,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         );
     }
     
-    public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class SharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public SharedMember(final long i$param$) {
         }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class EntryInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class EntryInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     EntryInstantiation() {
     }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-abstract class MyByte extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>, .ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> {
+abstract class MyByte extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>, .ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>, .java.io.Serializable {
     
     MyByte() {
         super();
@@ -63,7 +63,7 @@ abstract class MyByte extends .java.lang.Object implements .com.redhat.ceylon.co
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.class);
 }
-class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected ArithmeticOperators() {
         super();

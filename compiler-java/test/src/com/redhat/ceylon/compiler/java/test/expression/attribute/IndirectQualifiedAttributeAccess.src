@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class IndirectQualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IndirectQualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IndirectQualifiedAttributeAccess() {
         this.b = true;

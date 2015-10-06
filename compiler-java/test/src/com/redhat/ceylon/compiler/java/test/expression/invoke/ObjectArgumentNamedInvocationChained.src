@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ObjectArgumentNamedInvocationChained() {
     }
@@ -52,7 +52,7 @@ public final class objectArgumentNamedInvocationChained_ {
                                 identifiable = false,
                                 basic = false,
                                 extendsType = "ceylon.language::Object")
-                        final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        final class o_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                             
                             private o_() {
                                 super();
@@ -115,7 +115,7 @@ public final class objectArgumentNamedInvocationChained_ {
                         identifiable = false,
                         basic = false,
                         extendsType = "ceylon.language::Object")
-                final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                final class o_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private o_() {
                         super();

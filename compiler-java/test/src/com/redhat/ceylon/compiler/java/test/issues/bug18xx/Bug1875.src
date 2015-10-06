@@ -16,7 +16,7 @@ public interface Bug1879_P<N extends .com.redhat.ceylon.compiler.java.test.issue
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl<N>.MemberClass MemberClass$new$(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> g);
 }
-public final class Bug1879_P$impl<N extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P<N>, N>> {
+public final class Bug1879_P$impl<N extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P<N>, N>> implements .java.io.Serializable {
     
     public Bug1879_P$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P<N> $this) {
         this.$reified$N = $reified$N;
@@ -29,7 +29,7 @@ public final class Bug1879_P$impl<N extends .com.redhat.ceylon.compiler.java.tes
         this.$reified$N = $reified$N;
     }
     
-    public abstract class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected MemberClass(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> g) {
         }
@@ -40,7 +40,7 @@ public final class Bug1879_P$impl<N extends .com.redhat.ceylon.compiler.java.tes
         }
     }
 }
-public class Bug1879_X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X> {
+public class Bug1879_X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X>, .java.io.Serializable {
     
     public Bug1879_X() {
     }
@@ -56,7 +56,7 @@ public class Bug1879_X implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X.class);
 }
-public class Bug1879_Y implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P {
+public class Bug1879_Y implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P, .java.io.Serializable {
     
     public Bug1879_Y() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X.$TypeDescriptor$, this);
@@ -205,7 +205,7 @@ public interface Bug1879_Y2 extends .com.redhat.ceylon.compiler.java.test.issues
     public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl.MemberClass MemberClass$new$(final .ceylon.language.Iterable g);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2.class);
 }
-public final class Bug1879_Y2$impl {
+public final class Bug1879_Y2$impl implements .java.io.Serializable {
     
     public Bug1879_Y2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2 $this) {
         this.$this = $this;

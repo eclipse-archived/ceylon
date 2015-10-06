@@ -8,7 +8,7 @@ interface Bug2120X {
     public boolean equals(final .java.lang.Object that);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X.class);
 }
-final class Bug2120X$impl {
+final class Bug2120X$impl implements .java.io.Serializable {
     
     Bug2120X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X $this) {
         this.$this = $this;
@@ -19,7 +19,7 @@ final class Bug2120X$impl {
         return $this.equals(that);
     }
 }
-class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X {
+class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X, .java.io.Serializable {
     
     Bug2120Z() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X$impl(this);
@@ -75,7 +75,7 @@ class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z.class);
 }
-class Bug2120Z2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2120Z2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2120Z2() {
     }
@@ -107,7 +107,7 @@ interface Bug2120Z3 extends .com.redhat.ceylon.compiler.java.test.issues.bug21xx
     public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z3$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120Z3$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z3.class);
 }
-final class Bug2120Z3$impl {
+final class Bug2120Z3$impl implements .java.io.Serializable {
     
     Bug2120Z3$impl(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z3 $this) {
         this.$this = $this;

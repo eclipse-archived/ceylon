@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SuperClass() {
         this.a = 2L;
@@ -27,7 +27,7 @@ abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.mo
         return new Local();
     }
     
-    public class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Local() {
         }
@@ -42,7 +42,7 @@ abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.mo
         return new Default();
     }
     
-    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Default() {
         }
@@ -55,7 +55,7 @@ abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Formal Formal$new$();
     
-    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Formal() {
         }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
 
-class Box2306<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Box2306<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Box2306(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();

@@ -15,7 +15,7 @@ public interface MemberTypeAliasClass$TypeAliasInterface {
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias1.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass.class)})
-public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public MemberTypeAliasClass() {
     }
@@ -28,7 +28,7 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class)
-    public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TypeAliasClass() {
         }
@@ -156,7 +156,7 @@ public interface MemberTypeAliasInterface {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class MemberTypeAliasInterface$impl {
+public final class MemberTypeAliasInterface$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public MemberTypeAliasInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface $this) {
@@ -173,7 +173,7 @@ public final class MemberTypeAliasInterface$impl {
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class)
-    public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TypeAliasClass() {
         }

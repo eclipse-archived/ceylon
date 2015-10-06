@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
  // line 1
-class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType { // line 1
+class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
      // line 1
     protected Doer() { // line 1
         super();

@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CtorMemberClassOfNestedAnonymousClass() {
         this.memberObject = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_();
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_ memberObject;
     
-    public final class memberObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public final class memberObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private memberObject_() {
         }
@@ -26,7 +26,7 @@ class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compil
             }
         }
         
-        public class Ctor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        public class Ctor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             public Ctor() {
             }

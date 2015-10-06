@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 
-class DestroyableCategory implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable, .ceylon.language.Category<.ceylon.language.String> {
+class DestroyableCategory implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable, .ceylon.language.Category<.ceylon.language.String>, .java.io.Serializable {
     
     DestroyableCategory() {
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);

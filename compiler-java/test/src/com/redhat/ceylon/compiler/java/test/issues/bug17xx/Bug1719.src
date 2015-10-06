@@ -7,7 +7,7 @@ interface Bug1719Sup {
     public abstract .ceylon.language.Callable<? extends .java.lang.Object> moreFun();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sup.class);
 }
-class Bug1719Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sup {
+class Bug1719Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1719Sup, .java.io.Serializable {
     
     Bug1719Sub() {
     }

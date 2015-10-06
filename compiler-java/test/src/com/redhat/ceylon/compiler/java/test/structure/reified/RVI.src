@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Top() {
     }
@@ -70,7 +70,7 @@ public interface SubInterface2 extends .com.redhat.ceylon.compiler.java.test.str
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::SubInterface1"})
-public class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1 {
+public class Class1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface1, .java.io.Serializable {
     
     public Class1() {
     }

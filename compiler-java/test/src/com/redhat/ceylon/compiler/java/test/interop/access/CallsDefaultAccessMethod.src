@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop.access;
 
-class CallsDefaultAccessMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CallsDefaultAccessMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CallsDefaultAccessMethod() {
     }

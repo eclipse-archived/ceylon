@@ -8,7 +8,7 @@ interface RNParameters<Element, Absent> {
     
     public .java.lang.Object m2(final .java.lang.Object p);
 }
-final class RNParameters$impl<Element, Absent> {
+final class RNParameters$impl<Element, Absent> implements .java.io.Serializable {
     
     RNParameters$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this) {
         this.$reified$Element = $reified$Element;
@@ -28,7 +28,7 @@ final class RNParameters$impl<Element, Absent> {
         return null;
     }
 }
-class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, .java.lang.Object> {
+class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, .java.lang.Object>, .java.io.Serializable {
     
     RNParametersImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;

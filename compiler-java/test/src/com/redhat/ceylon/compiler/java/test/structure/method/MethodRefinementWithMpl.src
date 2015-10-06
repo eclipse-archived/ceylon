@@ -7,7 +7,7 @@ interface MethodRefinementWithMpl {
     public abstract .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> three(final .java.lang.String s);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithMpl.class);
 }
-class MethodRefinementWithMplSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithMpl {
+class MethodRefinementWithMplSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.method.MethodRefinementWithMpl, .java.io.Serializable {
     
     MethodRefinementWithMplSub() {
     }

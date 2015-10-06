@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Foo() {
         (
@@ -40,7 +40,7 @@ class Bar extends .com.redhat.ceylon.compiler.java.test.expression.instantiation
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.Bar.class);
 }
-class FooNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class FooNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected FooNonempty() {
         super();

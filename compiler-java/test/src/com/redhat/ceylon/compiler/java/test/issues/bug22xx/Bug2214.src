@@ -41,14 +41,14 @@ interface OK {
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$impl $com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK.class);
 }
-final class OK$impl {
+final class OK$impl implements .java.io.Serializable {
     
     OK$impl(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK $this;
     
-    final class Top$impl<T> {
+    final class Top$impl<T> implements .java.io.Serializable {
         
         Top$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Top<? extends T> $this) {
             this.$reified$T = $reified$T;
@@ -70,7 +70,7 @@ final class OK$impl {
         }
     }
     
-    final class Middle$impl<T> {
+    final class Middle$impl<T> implements .java.io.Serializable {
         
         Middle$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<? extends T> $this) {
             this.$reified$T = $reified$T;
@@ -92,7 +92,7 @@ final class OK$impl {
         }
     }
     
-    class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Left, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B>, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Right {
+    class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Left, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Middle<.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B>, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Right, .java.io.Serializable {
         
         Bottom() {
             this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$Top$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$impl.this.new Top$impl<.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$A.class))), (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B>)(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$Top)this);

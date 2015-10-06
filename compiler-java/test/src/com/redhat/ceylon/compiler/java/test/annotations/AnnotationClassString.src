@@ -14,7 +14,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassString implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassString implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassString() {
         super();
@@ -52,7 +52,7 @@ final class AnnotationClassString implements .com.redhat.ceylon.compiler.java.ru
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationClassStringDefaulted() {
         (
@@ -95,7 +95,7 @@ final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compile
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassStringSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassStringSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassStringSequence() {
         super();
@@ -127,7 +127,7 @@ final class AnnotationClassStringSequence implements .com.redhat.ceylon.compiler
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationClassStringSequenceDefaulted() {
         (
@@ -170,7 +170,7 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassStringIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterable, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassStringIterable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterable, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassStringIterable() {
         super();
@@ -202,7 +202,7 @@ final class AnnotationClassStringIterable implements .com.redhat.ceylon.compiler
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationClassStringIterableDefaulted() {
         (
@@ -258,7 +258,7 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassStringVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassStringVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassStringVariadic() {
         super();
@@ -371,7 +371,7 @@ final class annotationClassStringDefaulted_ {
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation$(s = "yes"),
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassString$annotation$(s = "yes")})
 @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted$annotation$})
-class AnnotationClassString_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationClassString_callsite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AnnotationClassString_callsite() {
     }

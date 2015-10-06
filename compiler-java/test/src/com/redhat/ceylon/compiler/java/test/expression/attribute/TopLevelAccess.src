@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     TopLevelAccess() {
     }

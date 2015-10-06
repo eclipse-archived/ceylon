@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
 
-public class Bug2164 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug2164 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug2164() {
         $return$$3: do {

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
 
-class Bug1746Obt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Obtainable {
+class Bug1746Obt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Obtainable, .java.io.Serializable {
     
     Bug1746Obt() {
     }

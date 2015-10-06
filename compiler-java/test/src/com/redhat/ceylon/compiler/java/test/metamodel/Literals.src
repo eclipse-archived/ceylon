@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.Member.class)})
-class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -72,7 +72,7 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class)
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
@@ -95,7 +95,7 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -167,7 +167,7 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -244,7 +244,7 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -325,7 +325,7 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    public class Member<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
@@ -352,7 +352,7 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.Member.class)})
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -386,7 +386,7 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         @.ceylon.language.SharedAnnotation$annotation$
         public Member(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
@@ -516,7 +516,7 @@ interface LitInterface {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class LitInterface$impl {
+final class LitInterface$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     LitInterface$impl(.com.redhat.ceylon.compiler.java.test.metamodel.LitInterface $this) {
@@ -549,7 +549,7 @@ interface LitParameterisedInterface<T> {
     public .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface$impl<T> $com$redhat$ceylon$compiler$java$test$metamodel$LitParameterisedInterface$impl();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class LitParameterisedInterface$impl<T> {
+final class LitParameterisedInterface$impl<T> implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     LitParameterisedInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface<T> $this) {
@@ -701,10 +701,15 @@ final class literals_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("obj")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private obj_() {
         this.attribute = 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.metamodel.obj_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.obj_.class);
@@ -777,7 +782,7 @@ final class Alias {
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     RelativeLiterals(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
@@ -832,7 +837,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.class)
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
         }

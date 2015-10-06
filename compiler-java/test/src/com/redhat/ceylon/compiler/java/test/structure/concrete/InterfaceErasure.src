@@ -28,7 +28,7 @@ interface InterfaceErasure<Element, Absent> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p);
 }
-final class InterfaceErasure$impl<Element, Absent> {
+final class InterfaceErasure$impl<Element, Absent> implements .java.io.Serializable {
     
     InterfaceErasure$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, Absent> $this) {
         this.$reified$Element = $reified$Element;
@@ -122,7 +122,7 @@ final class InterfaceErasure$impl<Element, Absent> {
         );
     }
     
-    public class Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Class(final .java.lang.Object p, final .java.lang.Object p2) {
         }
@@ -133,7 +133,7 @@ final class InterfaceErasure$impl<Element, Absent> {
         }
     }
 }
-class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, .java.lang.Object> {
+class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure<Element, .java.lang.Object>, .java.io.Serializable {
     
     InterfaceErasureImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;

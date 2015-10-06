@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassAttributeGetterSetter() {
         

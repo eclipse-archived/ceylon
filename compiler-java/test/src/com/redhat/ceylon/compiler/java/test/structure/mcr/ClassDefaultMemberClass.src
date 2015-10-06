@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-class ClassDefaultMemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassDefaultMemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassDefaultMemberClass() {
     }
@@ -9,7 +9,7 @@ class ClassDefaultMemberClass implements .com.redhat.ceylon.compiler.java.runtim
         return new Member();
     }
     
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member() {
         }

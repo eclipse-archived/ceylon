@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.misc.keyword;
 
-class Parameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Parameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Parameter() {
     }

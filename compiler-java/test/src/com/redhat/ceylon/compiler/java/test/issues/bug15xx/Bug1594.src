@@ -26,7 +26,7 @@ interface Bug1594Alias {
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class Bug1594Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1594Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1594Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
@@ -41,7 +41,7 @@ class Bug1594Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1594Class.class, $reified$T);
     }
 }
-class Bug1594OptimizedIs<X extends .ceylon.language.List<? extends .java.lang.Object>, Y extends .ceylon.language.String, Y2 extends .ceylon.language.List<? extends .ceylon.language.Character>, Z extends Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1594OptimizedIs<X extends .ceylon.language.List<? extends .java.lang.Object>, Y extends .ceylon.language.String, Y2 extends .ceylon.language.List<? extends .ceylon.language.Character>, Z extends Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1594OptimizedIs(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y2, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
         super();

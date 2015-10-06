@@ -11,7 +11,7 @@ interface SuperOfTop {
     public long m();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop.class);
 }
-final class SuperOfTop$impl {
+final class SuperOfTop$impl implements .java.io.Serializable {
     
     SuperOfTop$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfTop $this) {
         this.$this = $this;
@@ -43,7 +43,7 @@ interface SuperOfLeft extends .com.redhat.ceylon.compiler.java.test.expression.o
     public long m();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft.class);
 }
-final class SuperOfLeft$impl {
+final class SuperOfLeft$impl implements .java.io.Serializable {
     
     SuperOfLeft$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft $this) {
         this.$this = $this;
@@ -82,7 +82,7 @@ interface SuperOfRight extends .com.redhat.ceylon.compiler.java.test.expression.
     public long m();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight.class);
 }
-final class SuperOfRight$impl {
+final class SuperOfRight$impl implements .java.io.Serializable {
     
     SuperOfRight$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight $this) {
         this.$this = $this;
@@ -114,7 +114,7 @@ interface SuperOfBottom extends .com.redhat.ceylon.compiler.java.test.expression
     public long m();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottom.class);
 }
-final class SuperOfBottom$impl {
+final class SuperOfBottom$impl implements .java.io.Serializable {
     
     SuperOfBottom$impl(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottom $this) {
         this.$this = $this;
@@ -158,7 +158,7 @@ final class SuperOfBottom$impl {
         return $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().m() + $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$impl().getA() + $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().m() + $this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfRight$impl().getA();
     }
 }
-class SuperOfBottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight {
+class SuperOfBottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfRight, .java.io.Serializable {
     
     SuperOfBottomClass() {
         this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl(this);
@@ -206,7 +206,7 @@ class SuperOfBottomClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfBottomClass.class);
 }
-class SuperOfLeftClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft {
+class SuperOfLeftClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft, .java.io.Serializable {
     
     SuperOfLeftClass() {
         this.$com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.SuperOfLeft$impl(this);

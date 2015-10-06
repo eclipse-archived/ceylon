@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
-class ClassVariableWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassVariableWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassVariableWithInitializer() {
         .java.lang.String f = "";

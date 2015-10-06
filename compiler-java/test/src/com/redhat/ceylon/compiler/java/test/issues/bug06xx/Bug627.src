@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-abstract class Bug627Enum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug627Enum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug627Enum() {
     }
@@ -52,7 +52,7 @@ interface Bug627Abstract {
     public abstract .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Enum, ? extends .java.lang.Object> elements();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract.class);
 }
-class Bug627Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract {
+class Bug627Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug627Abstract, .java.io.Serializable {
     
     Bug627Concrete() {
     }

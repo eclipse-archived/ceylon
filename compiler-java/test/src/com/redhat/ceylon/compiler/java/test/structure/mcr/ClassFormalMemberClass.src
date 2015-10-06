@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure.mcr;
 
-abstract class ClassFormalMemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class ClassFormalMemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassFormalMemberClass() {
     }
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassFormalMemberClass.Member Member$new$();
     
-    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member() {
         }

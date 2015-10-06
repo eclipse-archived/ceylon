@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MemberClassRef() {
     }
@@ -9,7 +9,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new Nullary();
     }
     
-    public class Nullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Nullary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Nullary() {
         }
@@ -29,7 +29,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new Unary(s);
     }
     
-    public class Unary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Unary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Unary(final .java.lang.String s) {
             this.s = s;
@@ -55,7 +55,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new Binary(s1, s2);
     }
     
-    public class Binary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Binary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Binary(final .java.lang.String s1, final .java.lang.String s2) {
             this.s1 = s1;
@@ -87,7 +87,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new Ternary(s1, s2, s3);
     }
     
-    public class Ternary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Ternary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Ternary(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
             this.s1 = s1;
@@ -125,7 +125,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new Nary(s1, s2, s3, s4);
     }
     
-    public class Nary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Nary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Nary(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
             this.s1 = s1;
@@ -286,7 +286,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class UnaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class UnaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected UnaryDefaulted(final .java.lang.String s) {
             this.s = s;
@@ -341,7 +341,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class BinaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class BinaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected BinaryDefaulted(final .java.lang.String s1, final .java.lang.String s2) {
             this.s1 = s1;
@@ -418,7 +418,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class TernaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class TernaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TernaryDefaulted(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3) {
             this.s1 = s1;
@@ -518,7 +518,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class NaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class NaryDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected NaryDefaulted(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4) {
             this.s1 = s1;
@@ -793,7 +793,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class NullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class NullarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected NullarySequenced(final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
             this.s = s;
@@ -829,7 +829,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class UnarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class UnarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected UnarySequenced(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
             this.s1 = s1;
@@ -871,7 +871,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class BinarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class BinarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected BinarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
             this.s1 = s1;
@@ -919,7 +919,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class TernarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class TernarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TernarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
             this.s1 = s1;
@@ -973,7 +973,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         );
     }
     
-    public class NarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class NarySequenced implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected NarySequenced(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
             this.s1 = s1;
@@ -1413,7 +1413,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new NullaryParameterized<T1>($reified$T1);
     }
     
-    public class NullaryParameterized<T1> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class NullaryParameterized<T1> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected NullaryParameterized(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1) {
             this.$reified$T1 = $reified$T1;
@@ -1435,7 +1435,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new UnaryParameterized<T1>($reified$T1, s);
     }
     
-    public class UnaryParameterized<T1> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class UnaryParameterized<T1> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected UnaryParameterized(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final T1 s) {
             this.$reified$T1 = $reified$T1;
@@ -1463,7 +1463,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new BinaryParameterized<T1, T2>($reified$T1, $reified$T2, s1, s2);
     }
     
-    public class BinaryParameterized<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class BinaryParameterized<T1, T2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected BinaryParameterized(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2, final T1 s1, final T2 s2) {
             this.$reified$T1 = $reified$T1;
@@ -1499,7 +1499,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new TernaryParameterized<T1, T2, T3>($reified$T1, $reified$T2, $reified$T3, s1, s2, s3);
     }
     
-    public class TernaryParameterized<T1, T2, T3> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class TernaryParameterized<T1, T2, T3> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TernaryParameterized(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T3, final T1 s1, final T2 s2, final T3 s3) {
             this.$reified$T1 = $reified$T1;
@@ -1543,7 +1543,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new NaryParameterized<T1, T2, T3, T4>($reified$T1, $reified$T2, $reified$T3, $reified$T4, s1, s2, s3, s4);
     }
     
-    public class NaryParameterized<T1, T2, T3, T4> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class NaryParameterized<T1, T2, T3, T4> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected NaryParameterized(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T2, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T3, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T4, final T1 s1, final T2 s2, final T3 s3, final T4 s4) {
             this.$reified$T1 = $reified$T1;
@@ -1735,7 +1735,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new Inner(s);
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner(final .java.lang.String s) {
             this.s = s;
@@ -1750,7 +1750,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             return new M(s2);
         }
         
-        public class M implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        public class M implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             protected M(final .java.lang.String s2) {
                 this.s2 = s2;

@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public TypeAliasClass() {
     }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-class Bug1977 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1977 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1977() {
     }

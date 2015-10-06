@@ -9,7 +9,7 @@ final class methodSpecifyingToplevelWithResult_f_ {
         return 1L;
     }
 }
-class MethodSpecifyingToplevelWithResult implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodSpecifyingToplevelWithResult implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodSpecifyingToplevelWithResult() {
     }

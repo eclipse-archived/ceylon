@@ -6,7 +6,7 @@ interface Bug1928<T, A extends .ceylon.language.Sequential<? extends .java.lang.
     
     public abstract T a();
 }
-final class Bug1928$impl<T, A extends .ceylon.language.Sequential<? extends .java.lang.Object>> {
+final class Bug1928$impl<T, A extends .ceylon.language.Sequential<? extends .java.lang.Object>> implements .java.io.Serializable {
     
     Bug1928$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1928<? extends T, ? super A> $this) {
         this.$reified$T = $reified$T;

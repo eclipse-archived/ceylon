@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 
-class Bug1888 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1888 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1888() {
         super();

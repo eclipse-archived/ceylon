@@ -21,7 +21,7 @@ public interface TestListener {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class TestListener$impl {
+public final class TestListener$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public TestListener$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener $this) {

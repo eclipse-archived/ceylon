@@ -11,7 +11,7 @@ public interface Bug1106_Resource {
     public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl.Bug1106_Stub Bug1106_Stub$new$(final .java.lang.String path, final .java.lang.String contents);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource.class);
 }
-public final class Bug1106_Resource$impl {
+public final class Bug1106_Resource$impl implements .java.io.Serializable {
     
     public Bug1106_Resource$impl(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource $this) {
         this.$this = $this;
@@ -22,7 +22,7 @@ public final class Bug1106_Resource$impl {
         return new Bug1106_Stub(path, contents);
     }
     
-    public class Bug1106_Stub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource {
+    public class Bug1106_Stub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource, .java.io.Serializable {
         
         protected Bug1106_Stub(final .java.lang.String path, final .java.lang.String contents) {
             this.path = path;

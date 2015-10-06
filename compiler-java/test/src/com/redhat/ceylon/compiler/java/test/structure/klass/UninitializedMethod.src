@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public UninitializedMethod() {
         

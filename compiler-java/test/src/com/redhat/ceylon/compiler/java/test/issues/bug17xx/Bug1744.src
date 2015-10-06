@@ -5,7 +5,7 @@ final class Months1 {
     private Months1() {
     }
 }
-class Bug1744 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1744 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1744() {
     }

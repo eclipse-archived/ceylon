@@ -15,7 +15,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReference, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected AnnotationClassMetamodelReference() {
         super();
@@ -54,7 +54,7 @@ final class AnnotationClassMetamodelReference implements .com.redhat.ceylon.comp
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationClassMetamodelReferenceDefaulted() {
         (
@@ -104,7 +104,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
 }
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
-final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object> {
+final class AnnotationClassMetamodelReferenceVariadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     AnnotationClassMetamodelReferenceVariadic() {
         (
@@ -273,10 +273,15 @@ public final class TypeAlias {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("obj")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private obj_() {
         this.attribute = 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.obj_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.obj_.class);
@@ -361,7 +366,7 @@ public final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.mode
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassMetamodelReferenceVariadic$annotation$(mmrs = {
                 "::1.1.1:ceylon.language::Vfalse",
                 "::1.1.1:ceylon.language::Vfalse"})})
-class AnnotationClassMetamodelReference_callsite<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationClassMetamodelReference_callsite<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AnnotationClassMetamodelReference_callsite(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         this.$reified$X = $reified$X;

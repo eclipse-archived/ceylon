@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-public abstract class Bug673_Event implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class Bug673_Event implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug673_Event() {
     }
@@ -41,7 +41,7 @@ public interface Bug673_EventObserver<Evento extends .com.redhat.ceylon.compiler
     
     public .java.lang.Object on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
 }
-public final class Bug673_EventObserver$impl<Evento extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> {
+public final class Bug673_EventObserver$impl<Evento extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> implements .java.io.Serializable {
     
     public Bug673_EventObserver$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Evento, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver<Evento> $this) {
         this.$reified$Evento = $reified$Evento;
@@ -66,7 +66,7 @@ public interface Bug673_GridBehavior extends .com.redhat.ceylon.compiler.java.te
     public .java.lang.Object on(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior.class);
 }
-public final class Bug673_GridBehavior$impl {
+public final class Bug673_GridBehavior$impl implements .java.io.Serializable {
     
     public Bug673_GridBehavior$impl(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior $this) {
         this.$this = $this;
@@ -77,7 +77,7 @@ public final class Bug673_GridBehavior$impl {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior {
+public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior, .java.io.Serializable {
     
     public Bug673_PaisController() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_GridBehavior$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior$impl(this);

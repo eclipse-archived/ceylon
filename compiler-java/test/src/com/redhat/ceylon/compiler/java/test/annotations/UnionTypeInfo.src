@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Foo() {
     }
@@ -23,7 +23,7 @@ public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bar() {
     }
@@ -43,7 +43,7 @@ public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Bar.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -155,7 +155,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class SharedUnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class SharedUnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

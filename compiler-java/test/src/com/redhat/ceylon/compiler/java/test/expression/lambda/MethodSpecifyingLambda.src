@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.lambda;
 
-class MethodSpecifyingLambda implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodSpecifyingLambda implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodSpecifyingLambda() {
         this.m = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){

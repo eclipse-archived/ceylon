@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassMemberCtorChaining() {
     }
@@ -20,7 +20,7 @@ class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtim
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$other Member$other = null;
     
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public Member(final long i$param$) {
         }

@@ -6,7 +6,7 @@ interface Bug993Top<E> {
     
     public E e();
 }
-final class Bug993Top$impl<E> {
+final class Bug993Top$impl<E> implements .java.io.Serializable {
     
     Bug993Top$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends E> $this) {
         this.$reified$E = $reified$E;
@@ -26,7 +26,7 @@ final class Bug993Top$impl<E> {
 interface Bug993MiddleInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface.class);
 }
-class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> {
+class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>, .java.io.Serializable {
     
     Bug993MiddleClass() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), this);
@@ -49,7 +49,7 @@ class Bug993MiddleClass implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleClass.class);
 }
-class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Sequence<? extends .ceylon.language.Character>> {
+class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993MiddleInterface, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Sequence<? extends .ceylon.language.Character>>, .java.io.Serializable {
     
     Bug993BottomFromInterface() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug993Top$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top$impl<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Character.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)this);
@@ -134,7 +134,7 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
         return new Inner();
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
             final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e();
@@ -228,7 +228,7 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
         return new Inner();
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
             final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e();
@@ -259,7 +259,7 @@ interface Bug993BottomInterface extends .com.redhat.ceylon.compiler.java.test.is
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.Inner Inner$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface.class);
 }
-final class Bug993BottomInterface$impl {
+final class Bug993BottomInterface$impl implements .java.io.Serializable {
     
     Bug993BottomInterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface $this) {
         this.$this = $this;
@@ -334,7 +334,7 @@ final class Bug993BottomInterface$impl {
         return new Inner();
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
             final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e();

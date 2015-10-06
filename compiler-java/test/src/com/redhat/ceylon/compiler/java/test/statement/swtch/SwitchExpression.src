@@ -57,7 +57,7 @@ final class switchExpression_ {
         }
     }
 }
-class SwitchExpressionTop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SwitchExpressionTop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected SwitchExpressionTop() {
         super();

@@ -3,10 +3,15 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("bug629")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-final class bug629_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class bug629_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private bug629_() {
         this.version = ((.ceylon.language.meta.model.Value)(.ceylon.language.meta.model.Value)((.ceylon.language.meta.declaration.ReferenceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.metamodel", "123"), "com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getValue("bug629")).apply(.com.redhat.ceylon.compiler.java.test.metamodel.bug629_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)).getDeclaration().getContainingModule().getVersion();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.metamodel.bug629_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.bug629_.class);

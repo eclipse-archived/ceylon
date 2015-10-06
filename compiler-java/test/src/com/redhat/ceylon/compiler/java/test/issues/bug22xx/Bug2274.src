@@ -4,7 +4,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-public class Bug2274 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug2274 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public Bug2274() {

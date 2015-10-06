@@ -5,14 +5,14 @@ interface Foo {
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Foo$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Foo.class);
 }
-final class Foo$impl {
+final class Foo$impl implements .java.io.Serializable {
     
     Foo$impl(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Foo $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Foo $this;
     
-    public abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public Bar() {
         }
@@ -23,7 +23,7 @@ final class Foo$impl {
         }
     }
 }
-class Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Foo {
+class Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Foo, .java.io.Serializable {
     
     Foo2() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$Foo$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Foo$impl(this);

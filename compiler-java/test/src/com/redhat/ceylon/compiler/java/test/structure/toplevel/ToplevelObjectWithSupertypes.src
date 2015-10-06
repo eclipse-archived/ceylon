@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.toplevel;
 
-public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected C() {
         super();
@@ -24,6 +24,10 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
     
     private topLevelObjectWithSuperTypes_() {
         super(2L);
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.class);
     

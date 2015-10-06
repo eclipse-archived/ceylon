@@ -8,7 +8,7 @@ interface OuterInterfaceFormal<T> {
     
     public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.Formal Formal$new$();
 }
-final class OuterInterfaceFormal$impl<T> {
+final class OuterInterfaceFormal$impl<T> implements .java.io.Serializable {
     
     OuterInterfaceFormal$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this) {
         this.$reified$T = $reified$T;
@@ -21,7 +21,7 @@ final class OuterInterfaceFormal$impl<T> {
         this.$reified$T = $reified$T;
     }
     
-    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Formal() {
         }
@@ -32,7 +32,7 @@ final class OuterInterfaceFormal$impl<T> {
         }
     }
     
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerClass() {
             .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.m();

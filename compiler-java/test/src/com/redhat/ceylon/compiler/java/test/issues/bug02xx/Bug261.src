@@ -9,7 +9,7 @@ final class bug261_ {
         long vk = 0L;
         long vl = 0L;
         
-        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Inner() {
                 this.vi = 0L;

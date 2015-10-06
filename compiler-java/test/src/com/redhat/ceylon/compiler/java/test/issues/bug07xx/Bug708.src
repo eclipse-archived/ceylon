@@ -20,7 +20,7 @@ final class bug708_ {
         return null;
     }
 }
-class Bug708<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug708<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug708(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -54,7 +54,7 @@ final class bug708_test_ {
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -157,7 +157,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         identifiable = false,
         basic = false,
         extendsType = "ceylon.language::Object")
-public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Map<.ceylon.language.Integer, .java.lang.Object> {
+public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Map<.ceylon.language.Integer, .java.lang.Object>, .java.io.Serializable {
     
     public Bug708Map(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {

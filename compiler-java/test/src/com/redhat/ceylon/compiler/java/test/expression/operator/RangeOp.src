@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     RangeOp(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -20,7 +20,7 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOp.class, $reified$T);
     }
 }
-abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> {
+abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>, .java.io.Serializable {
     
     RangeOpEnum() {
         this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor$, this);
@@ -68,6 +68,10 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     private rangeOpF_() {
         super();
     }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.get_();
+    }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.class);
     private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_ value;
     private static volatile boolean $init$value = false;
@@ -102,6 +106,10 @@ final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     
     private rangeOpE_() {
         super();
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_.class);
     private static final .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_ value;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug2256() {
         super();

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class IsOptInvar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOptInvar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptInvar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -12,7 +12,7 @@ class IsOptInvar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, $reified$T);
     }
 }
-class IsOptCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOptCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptCov(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -24,7 +24,7 @@ class IsOptCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCov.class, $reified$T);
     }
 }
-class IsOptContra<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOptContra<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptContra(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -36,7 +36,7 @@ class IsOptContra<T> implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContra.class, $reified$T);
     }
 }
-class IsOptTop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOptTop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptTop() {
     }
@@ -59,7 +59,7 @@ class IsOptMiddle extends .com.redhat.ceylon.compiler.java.test.statement.condit
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptMiddle.class);
 }
-class IsOptInvarBound<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOptInvarBound<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptInvarBound(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -71,7 +71,7 @@ class IsOptInvarBound<T extends .com.redhat.ceylon.compiler.java.test.statement.
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound.class, $reified$T);
     }
 }
-class IsOptCovBound<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOptCovBound<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptCovBound(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -83,7 +83,7 @@ class IsOptCovBound<T extends .com.redhat.ceylon.compiler.java.test.statement.co
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptCovBound.class, $reified$T);
     }
 }
-class IsOptContraBound<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOptContraBound<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptContraBound(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -95,7 +95,7 @@ class IsOptContraBound<T extends .com.redhat.ceylon.compiler.java.test.statement
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptContraBound.class, $reified$T);
     }
 }
-abstract class IsOptConstrained<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class IsOptConstrained<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptConstrained(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -120,7 +120,7 @@ class IsOptConstrainedSub<T> extends .com.redhat.ceylon.compiler.java.test.state
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptConstrainedSub.class, $reified$T);
     }
 }
-abstract class IsOptSelfType<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class IsOptSelfType<T extends .com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOptSelfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -156,7 +156,7 @@ class IsOptSelfTypeB extends .com.redhat.ceylon.compiler.java.test.statement.con
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeB.class);
 }
-class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class IsOpt implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     IsOpt() {
     }

@@ -19,7 +19,7 @@ final class bug895_ {
         final .ceylon.language.Callable<? extends .java.lang.Object> foo2 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects2_.get_();
     }
 }
-abstract class Bug895A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug895A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug895A() {
     }

@@ -10,7 +10,7 @@ interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolea
     
     public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u);
 }
-final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .java.io.Serializable {
     
     I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.nesting.icc.I<? extends T, ? super X> $this) {
         this.$reified$T = $reified$T;
@@ -30,12 +30,12 @@ final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language
         return null;
     }
     
-    class IC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class IC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         IC() {
         }
         
-        class ICC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class ICC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             ICC() {
             }

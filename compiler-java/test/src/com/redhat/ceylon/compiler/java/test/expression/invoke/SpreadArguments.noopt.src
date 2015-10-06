@@ -8,7 +8,7 @@ final class spreadArguments_ {
     static void spreadArguments(final long i, final .java.lang.String s) {
     }
 }
-class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected SpreadArguments(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();

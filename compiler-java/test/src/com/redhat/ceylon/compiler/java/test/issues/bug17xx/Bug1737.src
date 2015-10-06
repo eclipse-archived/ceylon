@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
 
-class Bug1737Thrower<E> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1737Thrower<E> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1737Thrower(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
         this.$reified$E = $reified$E;

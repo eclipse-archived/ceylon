@@ -13,7 +13,7 @@ public interface Visitor {
     public void tag(final .java.lang.String name);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor.class);
 }
-public final class Visitor$impl {
+public final class Visitor$impl implements .java.io.Serializable {
     
     public Visitor$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor $this) {
         this.$this = $this;
@@ -50,7 +50,7 @@ public interface Visitable {
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable.class);
 }
-public final class Visitable$impl {
+public final class Visitable$impl implements .java.io.Serializable {
     
     public Visitable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable $this) {
         this.$this = $this;
@@ -88,7 +88,7 @@ public final class Visitable$impl {
         );
     }
 }
-public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable, .java.io.Serializable {
     
     public Html() {
         (
@@ -190,7 +190,7 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.class);
 }
-public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable, .java.io.Serializable {
     
     public Head() {
         (
@@ -276,7 +276,7 @@ public interface Tag extends .com.redhat.ceylon.compiler.java.test.issues.bug08x
 public interface InlineTag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.class);
 }
-public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable, .java.io.Serializable {
     
     public Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TagType, final .java.lang.String name) {
         (

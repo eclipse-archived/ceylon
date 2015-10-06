@@ -15,7 +15,7 @@ public @interface Bug2045Annotation$annotation$ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::Bug2045Annotation,ceylon.language.meta.declaration::ValueDeclaration,ceylon.language::Anything>"})
-public final class Bug2045Annotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2045Annotation, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object> {
+public final class Bug2045Annotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug2045Annotation, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

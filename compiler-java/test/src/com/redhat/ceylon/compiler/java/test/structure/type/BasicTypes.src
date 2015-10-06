@@ -90,7 +90,7 @@ public final class globalMethodOptionalCharacter_ {
         return i;
     }
 }
-class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected BasicTypes() {
         super();
@@ -308,7 +308,7 @@ class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.class);
 }
-abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam) {
         super();

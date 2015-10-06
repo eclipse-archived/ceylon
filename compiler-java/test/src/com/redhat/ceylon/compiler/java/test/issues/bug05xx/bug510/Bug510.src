@@ -15,7 +15,7 @@ interface Bug510 {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-final class Bug510$impl {
+final class Bug510$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     Bug510$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510 $this) {
@@ -38,9 +38,14 @@ final class goto_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-final class synchronized_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class synchronized_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private synchronized_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.class);

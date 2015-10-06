@@ -7,7 +7,7 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.AbstractDelegating.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.Super.class)})
-class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CtorDelegationMemberClass() {
     }
@@ -20,7 +20,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class)
-    public class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Super() {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Super");

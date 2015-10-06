@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>, .ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> {
+abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>, .ceylon.language.Invertible<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>, .java.io.Serializable {
     
     BWMyByte() {
         super();
@@ -63,7 +63,7 @@ abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte.class);
 }
-class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected BitwiseOperators() {
         super();

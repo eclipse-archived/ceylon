@@ -13,7 +13,7 @@ interface Bug1899Left extends .com.redhat.ceylon.compiler.java.test.issues.bug18
     public long getA();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Left.class);
 }
-final class Bug1899Left$impl {
+final class Bug1899Left$impl implements .java.io.Serializable {
     
     Bug1899Left$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Left $this) {
         this.$this = $this;
@@ -32,7 +32,7 @@ interface Bug1899Right extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     public long getA();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Right.class);
 }
-final class Bug1899Right$impl {
+final class Bug1899Right$impl implements .java.io.Serializable {
     
     Bug1899Right$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Right $this) {
         this.$this = $this;

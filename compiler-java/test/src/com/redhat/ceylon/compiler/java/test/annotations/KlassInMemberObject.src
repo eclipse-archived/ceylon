@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_.class)})
-public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public KlassInMemberObject() {
         this.member = new .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_();
@@ -14,7 +14,7 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.compiler.java.metadata.Name("member")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
-    public final class member_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public final class member_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private member_() {
         }
@@ -27,7 +27,7 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_.class)
-        public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             protected Klass() {
             }

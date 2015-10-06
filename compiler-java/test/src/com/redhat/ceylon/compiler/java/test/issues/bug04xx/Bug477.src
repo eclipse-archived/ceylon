@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
-abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T> {
+abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T>, .java.io.Serializable {
     
     Bug477_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -554,7 +554,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1.class, $reified$T);
     }
 }
-abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T> {
+abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.List<T>, .java.io.Serializable {
     
     Bug477_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

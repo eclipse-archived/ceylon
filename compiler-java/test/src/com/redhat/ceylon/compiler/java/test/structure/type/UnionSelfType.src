@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
-public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable {
+public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable, .java.io.Serializable {
     
     public UnionSelfType_Foo() {
         this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$), (.ceylon.language.Comparable)this);
@@ -48,7 +48,7 @@ public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runti
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.class);
 }
-public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable {
+public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable, .java.io.Serializable {
     
     public UnionSelfType_Bar() {
         this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$), (.ceylon.language.Comparable)this);

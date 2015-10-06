@@ -28,7 +28,7 @@ public final class bug2032_ {
     public static void bug2032() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        final class Foo$impl {
+        final class Foo$impl implements .java.io.Serializable {
             
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             Foo$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_ $this) {
@@ -41,7 +41,7 @@ public final class bug2032_ {
             @.ceylon.language.SharedAnnotation$annotation$
             @.ceylon.language.FormalAnnotation$annotation$
             @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)
-            abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 protected Bar() {
                 }

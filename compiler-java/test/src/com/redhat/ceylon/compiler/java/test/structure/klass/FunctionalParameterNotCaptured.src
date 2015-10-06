@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class FunctionalParameterNotCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class FunctionalParameterNotCaptured implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected FunctionalParameterNotCaptured() {
         super();

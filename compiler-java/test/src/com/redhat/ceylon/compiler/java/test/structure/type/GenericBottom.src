@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
-class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected GenericBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
         super();

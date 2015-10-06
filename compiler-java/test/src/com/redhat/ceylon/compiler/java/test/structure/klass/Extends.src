@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class Extends implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Extends implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Extends() {
     }

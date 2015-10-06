@@ -17,7 +17,7 @@ interface This {
     public long m2(final long i1, final long i2);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.class);
 }
-final class This$impl {
+final class This$impl implements .java.io.Serializable {
     
     This$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.This $this) {
         this.$this = $this;
@@ -61,7 +61,7 @@ final class This$impl {
         return m2$canonical$(i1, i2);
     }
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
         }

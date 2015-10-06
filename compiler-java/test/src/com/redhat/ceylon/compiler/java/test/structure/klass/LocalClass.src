@@ -1,13 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class LocalClassOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class LocalClassOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     LocalClassOuterClass() {
     }
     
     private final void m$priv$() {
         
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             LocalClass() {
             }

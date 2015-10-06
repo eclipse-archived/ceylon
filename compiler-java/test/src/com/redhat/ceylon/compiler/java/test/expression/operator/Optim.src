@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-abstract class OptimSuperclass<I, F, C, S, B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class OptimSuperclass<I, F, C, S, B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     OptimSuperclass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$I, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
         this.$reified$I = $reified$I;

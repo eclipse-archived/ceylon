@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();
@@ -17,7 +17,7 @@ class Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.Single.class, $reified$Element);
     }
 }
-public class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected KlassTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
         super();
@@ -41,7 +41,7 @@ public class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.r
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParams.class, $reified$U, $reified$V);
     }
 }
-class KlassTypeParamsInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KlassTypeParamsInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KlassTypeParamsInstantiation() {
     }
@@ -78,14 +78,14 @@ class KlassTypeParamsInstantiation implements .com.redhat.ceylon.compiler.java.r
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.KlassTypeParamsInstantiation.class);
 }
-class KlassTypeParamsInstantiationT<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KlassTypeParamsInstantiationT<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KlassTypeParamsInstantiationT(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    class Inner<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner<G> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
             this.$reified$G = $reified$G;

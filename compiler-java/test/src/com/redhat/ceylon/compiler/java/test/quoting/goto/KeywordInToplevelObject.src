@@ -1,8 +1,12 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-public final class transient_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public final class transient_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private transient_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.class);
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_ value;
@@ -34,9 +38,13 @@ public final class transient_ implements .com.redhat.ceylon.compiler.java.runtim
         return .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_.$TypeDescriptor$;
     }
 }
-public final class module_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public final class module_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private module_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.class);
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_ value;
@@ -68,9 +76,13 @@ public final class module_ implements .com.redhat.ceylon.compiler.java.runtime.m
         return .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_.$TypeDescriptor$;
     }
 }
-public final class package_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public final class package_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private package_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.class);
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_ value;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class ThisQualifiedSpecification implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ThisQualifiedSpecification implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected ThisQualifiedSpecification() {
         super();

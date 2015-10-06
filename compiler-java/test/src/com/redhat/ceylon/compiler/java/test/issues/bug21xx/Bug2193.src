@@ -5,7 +5,7 @@ interface Bug2193Foo {
     public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2193Foo$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo.class);
 }
-final class Bug2193Foo$impl {
+final class Bug2193Foo$impl implements .java.io.Serializable {
     
     Bug2193Foo$impl(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo $this) {
         this.$this = $this;
@@ -21,7 +21,7 @@ interface Bug2193Bar {
     public abstract .java.lang.String a();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Bar.class);
 }
-class Bug2193Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Bar {
+class Bug2193Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Bar, .java.io.Serializable {
     
     Bug2193Baz() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2193Foo$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2193Foo$impl(this);

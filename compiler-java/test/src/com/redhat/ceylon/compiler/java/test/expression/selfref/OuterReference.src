@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-class OuterReferenceSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class OuterReferenceSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     OuterReferenceSuper() {
     }
@@ -33,7 +33,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
     }
     
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerClass() {
             (
@@ -78,7 +78,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
         }
     }
     
-    final class InnerIface$impl {
+    final class InnerIface$impl implements .java.io.Serializable {
         
         InnerIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this) {
             this.$this = $this;
@@ -111,14 +111,14 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
     
     private final void m$priv$() {
         
-        final class LocalClass$impl {
+        final class LocalClass$impl implements .java.io.Serializable {
             
             private final boolean $default$b() {
                 return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
             }
         }
         
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             LocalClass() {
                 (
@@ -143,7 +143,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             }
         }
         
-        final class LocalIface$impl {
+        final class LocalIface$impl implements .java.io.Serializable {
             
             LocalIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$LocalIface $this) {
                 this.$this = $this;

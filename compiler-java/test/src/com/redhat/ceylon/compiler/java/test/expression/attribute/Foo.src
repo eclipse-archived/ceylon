@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Foo() {
         super();
@@ -72,7 +72,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType 
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.Foo.class);
 }
-class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bar() {
         super();

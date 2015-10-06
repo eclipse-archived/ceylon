@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
 
-public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1059(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$SomeType) {
         super();

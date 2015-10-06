@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class CtorContainingClassDecl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CtorContainingClassDecl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected CtorContainingClassDecl() {
         super();
@@ -15,7 +15,7 @@ class CtorContainingClassDecl implements .com.redhat.ceylon.compiler.java.runtim
     
     public CtorContainingClassDecl(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorContainingClassDecl.bar_ $name$) {
         
-        class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Baz() {
             }

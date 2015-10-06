@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334;
 
-class Under implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Over {
+class Under implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug334.Over, .java.io.Serializable {
     
     Under() {
         foo((float)12.0);

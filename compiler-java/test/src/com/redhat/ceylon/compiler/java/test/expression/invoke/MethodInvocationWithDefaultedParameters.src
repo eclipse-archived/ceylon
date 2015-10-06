@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Fookls() {
         super();
@@ -612,7 +612,7 @@ interface Barface {
     public abstract .java.lang.Object fe(final long n, final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.Barface.class);
 }
-final class Barface$impl {
+final class Barface$impl implements .java.io.Serializable {
     
     Barface$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Barface $this) {
         this.$this = $this;
@@ -659,7 +659,7 @@ final class Barface$impl {
         return 5L;
     }
 }
-class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface {
+class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface, .java.io.Serializable {
     
     Barkls() {
         this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Barface$this$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl(this);

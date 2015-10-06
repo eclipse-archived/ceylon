@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-public abstract class Bug1365_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class Bug1365_A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1365_A() {
         super();

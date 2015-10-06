@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class Bug1961 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1961 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public Bug1961() {

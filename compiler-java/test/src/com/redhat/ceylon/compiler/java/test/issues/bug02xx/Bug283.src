@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug283() {
         this.oi = .ceylon.language.Integer.instance(0L);

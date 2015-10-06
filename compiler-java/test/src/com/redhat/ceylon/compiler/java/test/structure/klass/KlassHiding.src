@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassHiding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KlassHiding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KlassHiding() {
     }
@@ -9,7 +9,7 @@ class KlassHiding implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return new Inner();
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
         }
@@ -37,7 +37,7 @@ class KlassHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.kla
         super();
     }
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
         }

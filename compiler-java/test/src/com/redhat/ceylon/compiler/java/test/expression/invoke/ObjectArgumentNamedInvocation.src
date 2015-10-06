@@ -21,7 +21,7 @@ public final class objectArgumentNamedInvocation_ {
             let
             {
                 
-                final class o_ extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                final class o_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private o_() {
                         super();

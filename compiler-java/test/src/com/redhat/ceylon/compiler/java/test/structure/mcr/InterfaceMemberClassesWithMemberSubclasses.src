@@ -11,7 +11,7 @@ interface InterfaceDefaultMemberClassWithMemberSubclass {
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared Shared$new$(final long i);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.class);
 }
-final class InterfaceDefaultMemberClassWithMemberSubclass$impl {
+final class InterfaceDefaultMemberClassWithMemberSubclass$impl implements .java.io.Serializable {
     
     InterfaceDefaultMemberClassWithMemberSubclass$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass $this) {
         this.$this = $this;
@@ -22,7 +22,7 @@ final class InterfaceDefaultMemberClassWithMemberSubclass$impl {
         return new Default(i);
     }
     
-    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Default(final long i) {
         }
@@ -33,7 +33,7 @@ final class InterfaceDefaultMemberClassWithMemberSubclass$impl {
         }
     }
     
-    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Formal(final long i) {
         }
@@ -48,7 +48,7 @@ final class InterfaceDefaultMemberClassWithMemberSubclass$impl {
         return new Shared(i);
     }
     
-    public class Shared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Shared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Shared(final long i) {
         }
@@ -59,7 +59,7 @@ final class InterfaceDefaultMemberClassWithMemberSubclass$impl {
         }
     }
     
-    class NonShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class NonShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         NonShared(final long i) {
         }

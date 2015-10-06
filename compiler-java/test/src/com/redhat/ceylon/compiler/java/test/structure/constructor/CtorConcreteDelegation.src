@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-class CtorConcreteDelegationSuper<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CtorConcreteDelegationSuper<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CtorConcreteDelegationSuper(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
@@ -130,7 +130,7 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.C.class, $reified$T);
     }
 }
-class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected ExtendsBasic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         super();
@@ -187,7 +187,7 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.class, $reified$X);
     }
 }
-class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Hello() {
         super();

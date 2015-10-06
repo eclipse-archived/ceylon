@@ -7,7 +7,7 @@ public interface BaseOuter {
     public .java.lang.Object getInverse();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter.class);
 }
-public final class BaseOuter$impl {
+public final class BaseOuter$impl implements .java.io.Serializable {
     
     public BaseOuter$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter $this) {
         this.$this = $this;
@@ -16,7 +16,7 @@ public final class BaseOuter$impl {
     
     public final .java.lang.Object getInverse() {
         
-        final class inverse_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class inverse_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private inverse_() {
             }
@@ -38,14 +38,14 @@ public final class BaseOuter$impl {
         return inverse;
     }
 }
-public abstract class BaseOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class BaseOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public BaseOuterClass() {
     }
     
     public .java.lang.Object getInverse() {
         
-        final class inverse_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class inverse_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private inverse_() {
             }

@@ -8,7 +8,7 @@ final class callableArgumentParameterQualified_f_ {
     static void callableArgumentParameterQualified_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
     }
 }
-class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected CallableArgumentParameterQualified() {
         super();

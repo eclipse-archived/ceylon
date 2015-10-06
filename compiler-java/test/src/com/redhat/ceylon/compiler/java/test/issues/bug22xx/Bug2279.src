@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-class Bug2279<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2279<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2279(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -8,12 +8,12 @@ class Bug2279<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             let
             {
                 
-                class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private anonymous_0_() {
                     }
                     
-                    class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                         
                         Baz() {
                         }

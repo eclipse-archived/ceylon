@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.type;
 
-class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Foo() {
     }
@@ -44,7 +44,7 @@ class Baz extends .com.redhat.ceylon.compiler.java.test.structure.type.Foo {
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.Baz.class);
 }
-class GenInv<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class GenInv<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     GenInv(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -59,7 +59,7 @@ class GenInv<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenInv.class, $reified$T);
     }
 }
-class GenCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class GenCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     GenCov(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -74,7 +74,7 @@ class GenCov<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.GenCov.class, $reified$T);
     }
 }
-class GenCon<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class GenCon<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     GenCon(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -94,7 +94,7 @@ interface ISats {
     public abstract .java.lang.Object z();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ISats.class);
 }
-class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Sats<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Sats(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -150,7 +150,7 @@ class ExtNothing extends .com.redhat.ceylon.compiler.java.test.structure.type.Ge
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ExtNothing.class);
 }
-class Conversions implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Conversions implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Conversions() {
     }
@@ -200,7 +200,7 @@ class Conversions implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
 interface ISats2 {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.ISats2.class);
 }
-class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class UpperBoundErasure1<T extends .com.redhat.ceylon.compiler.java.test.structure.type.ISats & .com.redhat.ceylon.compiler.java.test.structure.type.ISats2> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     UpperBoundErasure1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

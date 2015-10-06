@@ -653,7 +653,7 @@ final class callableWithDefaulted_ {
         final .ceylon.language.Callable<? extends .java.lang.Object> oneAgain = oneOrPlenty;
     }
 }
-class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CallableWithDefaulted() {
     }

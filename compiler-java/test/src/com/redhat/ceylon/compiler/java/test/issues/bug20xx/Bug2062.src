@@ -10,7 +10,7 @@ interface IBug2062<Element> {
     
     public <Other>.java.lang.Object append(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other> other);
 }
-final class IBug2062$impl<Element> {
+final class IBug2062$impl<Element> implements .java.io.Serializable {
     
     IBug2062$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -89,7 +89,7 @@ final class IBug2062$impl<Element> {
         return null;
     }
 }
-class SBug2062<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<Element> {
+class SBug2062<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<Element>, .java.io.Serializable {
     
     protected SBug2062(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

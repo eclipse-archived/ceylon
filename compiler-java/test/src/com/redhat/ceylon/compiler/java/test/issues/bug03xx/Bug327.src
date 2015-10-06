@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
 
-abstract class Bug327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Bug327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug327() {
     }
@@ -15,6 +15,10 @@ final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     
     private bug327_foo_() {
         super();
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_ value;
@@ -50,6 +54,10 @@ final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     
     private bug327_bar_() {
         super();
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_ value;

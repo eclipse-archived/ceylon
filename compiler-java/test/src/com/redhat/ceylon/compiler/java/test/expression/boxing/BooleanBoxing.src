@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.boxing;
 
-class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class BooleanBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     BooleanBoxing() {
     }

@@ -22,7 +22,7 @@ public final class coalesce_ {
         return (.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
     }
 }
-class Bug1403 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1403 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1403() {
         super();

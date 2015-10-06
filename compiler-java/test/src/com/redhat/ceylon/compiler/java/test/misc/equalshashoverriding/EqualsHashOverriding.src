@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding;
 
-class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected EqualsHashOverriding() {
         super();
@@ -47,7 +47,7 @@ class EqualsHashOverriding implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding.class);
 }
-class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected EqualsHashOverriding2() {
         super();
@@ -76,7 +76,7 @@ class EqualsHashOverriding2 implements .com.redhat.ceylon.compiler.java.runtime.
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.equalshashoverriding.EqualsHashOverriding2.class);
 }
-class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class EqualsHashOverriding3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected EqualsHashOverriding3() {
         super();

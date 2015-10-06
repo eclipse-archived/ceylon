@@ -9,14 +9,14 @@ interface InterfaceFormalMemberClass {
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass qual);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass.class);
 }
-final class InterfaceFormalMemberClass$impl {
+final class InterfaceFormalMemberClass$impl implements .java.io.Serializable {
     
     InterfaceFormalMemberClass$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass $this) {
         this.$this = $this;
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass $this;
     
-    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member() {
         }
@@ -36,7 +36,7 @@ final class InterfaceFormalMemberClass$impl {
         qual.Member$new$();
     }
 }
-class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass {
+class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass, .java.io.Serializable {
     
     InterfaceFormalMemberClass_sub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClass$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl(this);

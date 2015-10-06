@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-public abstract class Sup implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public abstract class Sup implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Sup() {
     }
@@ -89,7 +89,7 @@ public interface I<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22x
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s);
 }
-public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> {
+public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> implements .java.io.Serializable {
     
     public I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I<S> $this) {
         this.$reified$S = $reified$S;
@@ -155,7 +155,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
         return (S).ceylon.language.nothing_.get_();
     }
     
-    public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public Inner() {
             (
@@ -222,7 +222,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
         );
     }
     
-    public class Inner2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner2(final S s, final S s2) {
         }
@@ -233,7 +233,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
         }
     }
 }
-public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I<.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> {
+public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I<.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup>, .java.io.Serializable {
     
     public C() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub1.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sub2.$TypeDescriptor$), (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I)this);
@@ -418,7 +418,7 @@ public interface Range {
     public abstract .java.lang.Object getStep();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Range.class);
 }
-public abstract class DateRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Range {
+public abstract class DateRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Range, .java.io.Serializable {
     
     public DateRange() {
         (
@@ -461,7 +461,7 @@ public interface Completion<Element, T extends .ceylon.language.Sequential<? ext
     
     public .java.lang.Object completed(final .ceylon.language.Callable<? extends .java.lang.Object> onRejected);
 }
-public final class Completion$impl<Element, T extends .ceylon.language.Sequential<? extends Element>> {
+public final class Completion$impl<Element, T extends .ceylon.language.Sequential<? extends Element>> implements .java.io.Serializable {
     
     public Completion$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion<Element, ? extends T> $this) {
         this.$reified$Element = $reified$Element;
@@ -499,7 +499,7 @@ public final class Completion$impl<Element, T extends .ceylon.language.Sequentia
         return completed$canonical$(onRejected);
     }
 }
-public abstract class Promise<Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion<Value, .ceylon.language.Sequence<? extends Value>> {
+public abstract class Promise<Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion<Value, .ceylon.language.Sequence<? extends Value>>, .java.io.Serializable {
     
     public Promise(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         this.$reified$Value = $reified$Value;
@@ -552,7 +552,7 @@ interface FormalMethods<A, B> {
     
     public .java.lang.Object tpMethodBUnary(final B arg);
 }
-final class FormalMethods$impl<A, B> {
+final class FormalMethods$impl<A, B> implements .java.io.Serializable {
     
     FormalMethods$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods<A, B> $this) {
         this.$reified$A = $reified$A;
@@ -590,7 +590,7 @@ final class FormalMethods$impl<A, B> {
         return tpMethodBUnary$canonical$(arg);
     }
 }
-class MissingActualMethods implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods<.ceylon.language.Integer, .ceylon.language.String> {
+class MissingActualMethods implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods<.ceylon.language.Integer, .ceylon.language.String>, .java.io.Serializable {
     
     MissingActualMethods() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods$impl<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);
@@ -633,7 +633,7 @@ class MissingActualMethods implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.MissingActualMethods.class);
 }
-class IfaceInst implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors<.ceylon.language.String> {
+class IfaceInst implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors<.ceylon.language.String>, .java.io.Serializable {
     
     IfaceInst() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
@@ -676,7 +676,7 @@ public interface InterfaceConstructors<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$();
 }
-public final class InterfaceConstructors$impl<T> {
+public final class InterfaceConstructors$impl<T> implements .java.io.Serializable {
     
     public InterfaceConstructors$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors<T> $this) {
         this.$reified$T = $reified$T;
@@ -707,7 +707,7 @@ public final class InterfaceConstructors$impl<T> {
         );
     }
     
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public Member(final T t$param$) {
         }

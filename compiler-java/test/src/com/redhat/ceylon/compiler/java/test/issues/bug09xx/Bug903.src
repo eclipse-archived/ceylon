@@ -19,7 +19,7 @@ public interface Bug903 {
     public .java.lang.Object foo();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903.class);
 }
-public final class Bug903$impl {
+public final class Bug903$impl implements .java.io.Serializable {
     
     public Bug903$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $this) {
         this.$this = $this;
@@ -28,7 +28,7 @@ public final class Bug903$impl {
     
     public .java.lang.Object foo() {
         
-        final class obj_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private obj_() {
             }
@@ -52,7 +52,7 @@ public final class Bug903$impl {
         }
         final obj_ obj = new obj_();
         
-        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             C() {
             }
@@ -75,7 +75,7 @@ public final class Bug903$impl {
             }
         }
         
-        final class I$impl {
+        final class I$impl implements .java.io.Serializable {
             
             I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$I $this) {
                 this.$this = $this;

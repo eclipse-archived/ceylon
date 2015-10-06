@@ -2,10 +2,14 @@ package com.redhat.ceylon.compiler.java.test.structure.nesting;
 
 public interface interfaceWithinObject$Z_ {
 }
-final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class interfaceWithinObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private interfaceWithinObject_() {
         this.z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class);
     
@@ -13,7 +17,7 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
         return new ZI();
     }
     
-    public class ZI implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
+    public class ZI implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_, .java.io.Serializable {
         
         protected ZI() {
         }
@@ -25,7 +29,7 @@ final class interfaceWithinObject_ implements .com.redhat.ceylon.compiler.java.r
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ z;
     
-    public final class z_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
+    public final class z_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
         
         private z_() {
         }

@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
 @.ceylon.language.SharedAnnotation$annotation$ // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true) // line 1
-public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType { // line 1
+public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
      // line 1
     @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 1
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

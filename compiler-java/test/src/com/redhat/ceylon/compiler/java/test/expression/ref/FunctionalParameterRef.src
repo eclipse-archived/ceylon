@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected FunctionalParameterRef() {
         super();
@@ -770,7 +770,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         return new Inner(s);
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner(final .java.lang.String s) {
             this.s = s;

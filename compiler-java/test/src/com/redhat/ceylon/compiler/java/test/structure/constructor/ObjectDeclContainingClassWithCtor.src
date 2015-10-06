@@ -7,7 +7,7 @@ public final class objectDeclContainingClassWithCtor_ {
     
     public static void objectDeclContainingClassWithCtor() {
         
-        final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private foo_() {
             }
@@ -22,7 +22,7 @@ public final class objectDeclContainingClassWithCtor_ {
                 }
             }
             
-            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 private Bar(foo_.Bar$baz $name$) {
                 }

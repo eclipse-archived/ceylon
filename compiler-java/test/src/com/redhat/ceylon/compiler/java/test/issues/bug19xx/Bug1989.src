@@ -9,7 +9,7 @@ final class fn1989_ {
         return .ceylon.language.nothing_.get_();
     }
 }
-public class Bug1989 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1989 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1989(final .ceylon.language.Callable<? extends .java.lang.Object> fp2) {
         (

@@ -6,7 +6,7 @@ interface Bug1549In<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super T>.In In$new$();
 }
-final class Bug1549In$impl<T> {
+final class Bug1549In$impl<T> implements .java.io.Serializable {
     
     Bug1549In$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In<? super T> $this) {
         this.$reified$T = $reified$T;
@@ -23,7 +23,7 @@ final class Bug1549In$impl<T> {
         return new In();
     }
     
-    public class In implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class In implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected In() {
         }
@@ -42,7 +42,7 @@ interface Bug1549InSub extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl.In In$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub.class);
 }
-final class Bug1549InSub$impl {
+final class Bug1549InSub$impl implements .java.io.Serializable {
     
     Bug1549InSub$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub $this) {
         this.$this = $this;
@@ -71,7 +71,7 @@ interface Bug1549Out<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends T>.Out Out$new$();
 }
-final class Bug1549Out$impl<T> {
+final class Bug1549Out$impl<T> implements .java.io.Serializable {
     
     Bug1549Out$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out<? extends T> $this) {
         this.$reified$T = $reified$T;
@@ -88,7 +88,7 @@ final class Bug1549Out$impl<T> {
         return new Out();
     }
     
-    public class Out implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Out implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Out() {
         }
@@ -107,7 +107,7 @@ interface Bug1549OutSub extends .com.redhat.ceylon.compiler.java.test.issues.bug
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl.Out Out$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub.class);
 }
-final class Bug1549OutSub$impl {
+final class Bug1549OutSub$impl implements .java.io.Serializable {
     
     Bug1549OutSub$impl(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub $this) {
         this.$this = $this;

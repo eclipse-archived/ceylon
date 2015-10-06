@@ -8,7 +8,7 @@ interface Bug1124Interface<Key, Value> {
     
     public abstract .java.lang.Object get3(final Key k);
 }
-class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<.ceylon.language.Integer, .ceylon.language.Boolean> {
+class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<.ceylon.language.Integer, .ceylon.language.Boolean>, .java.io.Serializable {
     
     protected Bug1124() {
         super();

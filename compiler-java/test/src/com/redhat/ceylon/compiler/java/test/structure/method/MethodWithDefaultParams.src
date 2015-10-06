@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodWithDefaultParams() {
         this.prop = 42L;
@@ -282,7 +282,7 @@ interface MethodWithDefaultParams2 {
     public abstract .java.lang.Object f6(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2.class);
 }
-final class MethodWithDefaultParams2$impl {
+final class MethodWithDefaultParams2$impl implements .java.io.Serializable {
     
     MethodWithDefaultParams2$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
         this.$this = $this;

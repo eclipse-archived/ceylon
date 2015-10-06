@@ -42,7 +42,7 @@ interface I<T> {
     
     public abstract <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u);
 }
-final class I$impl<T> {
+final class I$impl<T> implements .java.io.Serializable {
     
     I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> $this) {
         this.$reified$T = $reified$T;
@@ -193,7 +193,7 @@ final class named_ {
         i.<.ceylon.language.String>m5(.ceylon.language.String.$TypeDescriptor$, 5L, null, .ceylon.language.String.instance(""));
     }
 }
-class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T> {
+class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I<T>, .java.io.Serializable {
     
     C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

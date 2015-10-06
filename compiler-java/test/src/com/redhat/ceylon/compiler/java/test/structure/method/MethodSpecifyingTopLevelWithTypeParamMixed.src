@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class C<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class C<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         this.$reified$X = $reified$X;
@@ -16,7 +16,7 @@ class C<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.C.class, $reified$X);
     }
 }
-class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodSpecifyingTopLevelWithTypeParamMixed<S, T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodSpecifyingTopLevelWithTypeParamMixed(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$S = $reified$S;

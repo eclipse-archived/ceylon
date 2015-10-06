@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public SetOperators() {
     }
@@ -188,7 +188,7 @@ public class SetOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SetOperators.class);
 }
-class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected SetOperatorsSuper() {
         super();

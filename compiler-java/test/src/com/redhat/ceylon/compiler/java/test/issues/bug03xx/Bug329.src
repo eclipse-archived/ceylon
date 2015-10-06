@@ -5,10 +5,14 @@ interface Bug329_Something {
     public abstract .java.lang.Object getSomething();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something.class);
 }
-final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
+final class bug329_se_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
     
     private bug329_se_() {
         this.something = .ceylon.language.String.instance("somethingElse");
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.class);
     private final .ceylon.language.String something;
@@ -46,9 +50,13 @@ final class bug329_se_ implements .com.redhat.ceylon.compiler.java.runtime.model
         return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.$TypeDescriptor$;
     }
 }
-final class bug329_se2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
+final class bug329_se2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
     
     private bug329_se2_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.class);
     

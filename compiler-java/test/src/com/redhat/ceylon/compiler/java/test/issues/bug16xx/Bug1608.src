@@ -20,7 +20,7 @@ final class bug1608_ {
         @.com.redhat.ceylon.compiler.java.metadata.Name("a")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Object
-        final class a_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class a_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private a_() {
             }
@@ -40,7 +40,7 @@ final class bug1608_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Name("param")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                final class param_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                final class param_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private param_() {
                     }
@@ -64,7 +64,7 @@ final class bug1608_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Name("param")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
-                final class param_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                final class param_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private param_() {
                     }

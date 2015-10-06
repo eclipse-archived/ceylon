@@ -7,7 +7,7 @@ interface RefinementAndIntersection_G {
     public void g();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G.class);
 }
-final class RefinementAndIntersection_G$impl {
+final class RefinementAndIntersection_G$impl implements .java.io.Serializable {
     
     RefinementAndIntersection_G$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G $this) {
         this.$this = $this;
@@ -24,7 +24,7 @@ interface RefinementAndIntersection_H {
     public void h();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H.class);
 }
-final class RefinementAndIntersection_H$impl {
+final class RefinementAndIntersection_H$impl implements .java.io.Serializable {
     
     RefinementAndIntersection_H$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H $this) {
         this.$this = $this;
@@ -38,7 +38,7 @@ interface RefinementAndIntersection_Co<T> {
     
     public abstract T get();
 }
-class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G> {
+class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G>, .java.io.Serializable {
     
     RefinementAndIntersection_SuperCoGood() {
     }

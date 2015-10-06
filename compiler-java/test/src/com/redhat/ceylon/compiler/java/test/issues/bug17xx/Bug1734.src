@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
 
-class Bug1734Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable {
+class Bug1734Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable, .java.io.Serializable {
     
     Bug1734Test() {
     }

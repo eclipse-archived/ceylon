@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-abstract class RefinedVarianceInheritance2Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class RefinedVarianceInheritance2Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     RefinedVarianceInheritance2Top() {
     }

@@ -4,7 +4,7 @@ interface Bug445<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug445$impl();
 }
-final class Bug445$impl<T> {
+final class Bug445$impl<T> implements .java.io.Serializable {
     
     Bug445$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this) {
         this.$reified$T = $reified$T;
@@ -17,7 +17,7 @@ final class Bug445$impl<T> {
         this.$reified$T = $reified$T;
     }
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
         }

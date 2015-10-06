@@ -12,7 +12,7 @@ public @interface Bug1384$annotation$ {
 @.ceylon.language.SharedAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object> {
+public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected Bug1384() {
         super();
@@ -56,7 +56,7 @@ public @interface Bug1384_sequence$annotation$ {
 @.ceylon.language.SharedAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object> {
+public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.Bug1384_sequence, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     protected Bug1384_sequence() {
         super();

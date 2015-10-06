@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-class MRAVEC_Invariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MRAVEC_Invariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MRAVEC_Invariant(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -12,7 +12,7 @@ class MRAVEC_Invariant<Element> implements .com.redhat.ceylon.compiler.java.runt
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Invariant.class, $reified$Element);
     }
 }
-class MRAVEC_Covariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MRAVEC_Covariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MRAVEC_Covariant(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -24,7 +24,7 @@ class MRAVEC_Covariant<Element> implements .com.redhat.ceylon.compiler.java.runt
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Covariant.class, $reified$Element);
     }
 }
-class MRAVEC_Contravariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MRAVEC_Contravariant<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MRAVEC_Contravariant(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -36,7 +36,7 @@ class MRAVEC_Contravariant<Element> implements .com.redhat.ceylon.compiler.java.
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant.class, $reified$Element);
     }
 }
-class MRAVEC_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MRAVEC_Top<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MRAVEC_Top(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;

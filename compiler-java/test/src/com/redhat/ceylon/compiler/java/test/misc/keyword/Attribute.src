@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.misc.keyword;
 
-public class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Attribute() {
         final boolean $abstract = false;
@@ -67,7 +67,7 @@ public class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.Attribute.class);
 }
-public class AttributeShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class AttributeShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public AttributeShared() {
         this.$abstract = false;
@@ -389,7 +389,7 @@ public class AttributeShared implements .com.redhat.ceylon.compiler.java.runtime
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.AttributeShared.class);
 }
-class VariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class VariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     VariableAttribute() {
         boolean $abstract = false;
@@ -451,7 +451,7 @@ class VariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttribute.class);
 }
-public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public VariableAttributeShared() {
         this.$abstract = false;

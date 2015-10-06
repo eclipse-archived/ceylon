@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.conditional;
 
-class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AssertionConditionList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AssertionConditionList() {
     }

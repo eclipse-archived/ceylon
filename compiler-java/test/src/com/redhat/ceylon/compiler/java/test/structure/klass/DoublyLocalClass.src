@@ -1,19 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class DoublyLocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class DoublyLocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     DoublyLocalClass() {
     }
     
     private final void m$priv$() {
         
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             LocalClass() {
                 final LocalClass.Innermost i = new LocalClass.Innermost();
             }
             
-            class Innermost implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class Innermost implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 Innermost() {
                 }

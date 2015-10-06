@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     AttributeAssign() {
         this.b1 = true;

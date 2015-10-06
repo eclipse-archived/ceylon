@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Klass() {
     }

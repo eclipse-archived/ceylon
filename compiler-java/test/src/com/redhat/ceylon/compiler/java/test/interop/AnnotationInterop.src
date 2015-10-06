@@ -57,7 +57,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
 @.com.redhat.ceylon.compiler.java.test.interop.javaAnnotationLowercase
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
-class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget
     @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationOnEveryTarget
@@ -129,7 +129,7 @@ public @interface Anno$annotation$ {
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.interop::Anno,ceylon.language::Annotated,ceylon.language::Anything>"})
-public final class Anno implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.interop.Anno, .ceylon.language.Annotated, .java.lang.Object> {
+public final class Anno implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.interop.Anno, .ceylon.language.Annotated, .java.lang.Object>, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public Anno(.com.redhat.ceylon.compiler.java.test.interop.Anno$annotation$ anno) {
@@ -184,7 +184,7 @@ public final class anno_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

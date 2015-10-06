@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
 
-public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Baz() {
     }
@@ -16,7 +16,7 @@ public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Baz.class);
 }
-class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Foo() {
     }

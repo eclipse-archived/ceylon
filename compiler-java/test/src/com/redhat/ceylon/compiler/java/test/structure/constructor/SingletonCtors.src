@@ -78,7 +78,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.class);
 }
-class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassMemberSingletonCtors() {
     }

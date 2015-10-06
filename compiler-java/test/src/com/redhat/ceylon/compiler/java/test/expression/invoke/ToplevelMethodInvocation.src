@@ -17,7 +17,7 @@ final class topLevelMethodInvocationMethod2_ {
         return 1L;
     }
 }
-class ToplevelMethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ToplevelMethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ToplevelMethodInvocation() {
     }

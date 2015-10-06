@@ -11,7 +11,7 @@ public interface Bug1151_A {
     public .java.lang.Object methodA(final long a);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A.class);
 }
-public final class Bug1151_A$impl {
+public final class Bug1151_A$impl implements .java.io.Serializable {
     
     public Bug1151_A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A $this) {
         this.$this = $this;
@@ -84,7 +84,7 @@ public final class Bug1151_A$impl {
         return methodA3$priv$$canonical$(a);
     }
 }
-public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1151_B() {
     }

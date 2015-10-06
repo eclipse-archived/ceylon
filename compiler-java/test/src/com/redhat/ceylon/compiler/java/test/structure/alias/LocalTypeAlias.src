@@ -24,7 +24,7 @@ final class localTypeAliasMethod_ {
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
         @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasClass")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             TypeAliasClass() {
             }

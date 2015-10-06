@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SetterLocalInstantiation() {
         
@@ -23,7 +23,7 @@ class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
             
             public void set_(final long i) {
                 
-                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     LocalClass() {
                     }

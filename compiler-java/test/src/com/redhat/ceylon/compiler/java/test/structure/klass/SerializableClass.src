@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     public SerializableClass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
         this.sharedVariableInteger = 0L;

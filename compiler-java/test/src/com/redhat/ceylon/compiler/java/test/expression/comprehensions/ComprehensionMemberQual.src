@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
 
-class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ComprehensionMemberQualClass() {
         this.i = 1L;
@@ -66,7 +66,7 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
         return new Inner();
     }
     
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
             this.i = 1L;
@@ -149,7 +149,7 @@ interface ComprehensionMemberQualInterfaceFormal {
     public abstract long getI();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal.class);
 }
-final class ComprehensionMemberQualInterfaceFormal$impl {
+final class ComprehensionMemberQualInterfaceFormal$impl implements .java.io.Serializable {
     
     ComprehensionMemberQualInterfaceFormal$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal $this) {
         this.$this = $this;
@@ -208,7 +208,7 @@ interface ComprehensionMemberQualInterfaceNonshared {
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared$impl $com$redhat$ceylon$compiler$java$test$expression$comprehensions$ComprehensionMemberQualInterfaceNonshared$impl();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared.class);
 }
-final class ComprehensionMemberQualInterfaceNonshared$impl {
+final class ComprehensionMemberQualInterfaceNonshared$impl implements .java.io.Serializable {
     
     ComprehensionMemberQualInterfaceNonshared$impl(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared $this) {
         this.$this = $this;
@@ -277,7 +277,7 @@ final class comprehensionMemberQualLocal_ {
     
     static void comprehensionMemberQualLocal() {
         
-        class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Local() {
                 this.i = 1L;
@@ -356,7 +356,7 @@ final class comprehensionMemberQualLocal_ {
         }
         final next_ next = new next_();
         
-        class Local2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Local2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Local2() {
             }

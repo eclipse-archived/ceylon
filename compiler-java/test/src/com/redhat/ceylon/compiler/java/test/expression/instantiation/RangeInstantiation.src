@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class RangeInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class RangeInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     RangeInstantiation() {
     }

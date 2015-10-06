@@ -10,7 +10,7 @@ public interface XIterable893<Element> {
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> getFail2();
 }
-public final class XIterable893$impl<Element> {
+public final class XIterable893$impl<Element> implements .java.io.Serializable {
     
     public XIterable893$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -47,7 +47,7 @@ public interface XSequence893<Element> extends .com.redhat.ceylon.compiler.java.
 public interface XEmpty893 extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequential893<.java.lang.Object> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.XEmpty893.class);
 }
-public abstract class XSingleton893<Element> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<Element> {
+public abstract class XSingleton893<Element> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XSequence893<Element>, .java.io.Serializable {
     
     protected XSingleton893(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

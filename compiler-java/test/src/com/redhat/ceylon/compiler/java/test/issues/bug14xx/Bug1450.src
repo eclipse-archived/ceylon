@@ -6,7 +6,7 @@ interface Bug1450<Element> {
     
     public .ceylon.language.Sequence<? extends Element> getTuple();
 }
-final class Bug1450$impl<Element> {
+final class Bug1450$impl<Element> implements .java.io.Serializable {
     
     Bug1450$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -23,7 +23,7 @@ final class Bug1450$impl<Element> {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class Bug1450_Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450<Element> {
+class Bug1450_Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450<Element>, .java.io.Serializable {
     
     protected Bug1450_Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

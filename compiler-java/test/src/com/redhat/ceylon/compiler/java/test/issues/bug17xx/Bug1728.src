@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
 
-abstract class Top1728 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Top1728 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Top1728() {
     }
@@ -65,7 +65,7 @@ class Bottom1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mi
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728.class);
 }
-abstract class Type1728 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class Type1728 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Type1728() {
         this.children = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();

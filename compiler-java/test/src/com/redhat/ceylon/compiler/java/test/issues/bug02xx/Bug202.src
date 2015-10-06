@@ -4,7 +4,7 @@ interface Bug202_ReadList<T> {
     
     public abstract T get(final long i);
 }
-class Bug202_Tricky implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>> {
+class Bug202_Tricky implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>>, .java.io.Serializable {
     
     Bug202_Tricky() {
     }

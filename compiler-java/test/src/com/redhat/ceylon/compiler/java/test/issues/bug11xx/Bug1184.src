@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1184() {
     }

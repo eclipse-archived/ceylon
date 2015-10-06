@@ -10,7 +10,7 @@ final class bug1001Foo_ {
     }
 }
 @.ceylon.language.SharedAnnotation$annotation$
-public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1001() {
         super();

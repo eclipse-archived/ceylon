@@ -22,7 +22,7 @@ interface RawInv<T, U> {
     
     public abstract U getA2();
 }
-final class RawInv$impl<T, U> {
+final class RawInv$impl<T, U> implements .java.io.Serializable {
     
     RawInv$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.concrete.RawInv<T, U> $this) {
         this.$reified$T = $reified$T;
@@ -69,7 +69,7 @@ interface RawIn<T, U> {
     
     public abstract .java.lang.Object m2(final U u);
 }
-final class RawIn$impl<T, U> {
+final class RawIn$impl<T, U> implements .java.io.Serializable {
     
     RawIn$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn<? super T, U> $this) {
         this.$reified$T = $reified$T;
@@ -93,7 +93,7 @@ final class RawIn$impl<T, U> {
         return null;
     }
 }
-class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn<.java.lang.Object, Y> {
+class RawInImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.RawIn<.java.lang.Object, Y>, .java.io.Serializable {
     
     RawInImplementor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
         this.$reified$X = $reified$X;
@@ -167,7 +167,7 @@ interface RawOut<T, U> {
     
     public abstract U getA2();
 }
-final class RawOut$impl<T, U> {
+final class RawOut$impl<T, U> implements .java.io.Serializable {
     
     RawOut$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<? extends T, U> $this) {
         this.$reified$T = $reified$T;
@@ -191,7 +191,7 @@ final class RawOut$impl<T, U> {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<.java.lang.Object, Y> {
+class RawOutImplementor<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.RawOut<.java.lang.Object, Y>, .java.io.Serializable {
     
     RawOutImplementor(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
         this.$reified$X = $reified$X;

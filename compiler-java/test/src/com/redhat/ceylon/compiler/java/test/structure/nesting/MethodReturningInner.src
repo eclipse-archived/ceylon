@@ -8,14 +8,14 @@ interface MethodReturningInner$CI<T> {
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC m3();
 }
-class MethodReturningInner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodReturningInner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodReturningInner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
-    final class CI$impl {
+    final class CI$impl implements .java.io.Serializable {
         
         CI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI<T> $this) {
             this.$this = $this;
@@ -26,7 +26,7 @@ class MethodReturningInner<T> implements .com.redhat.ceylon.compiler.java.runtim
             return new CIC();
         }
         
-        public class CIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        public class CIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             protected CIC() {
             }

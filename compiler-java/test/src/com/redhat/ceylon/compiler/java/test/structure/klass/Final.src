@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-final class Final implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class Final implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Final() {
     }

@@ -13,7 +13,7 @@ final class bug1154_ {
         final .ceylon.language.Sequence t = (.ceylon.language.Sequence)step.getTuple();
     }
 }
-public class Bug1154Bar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1154Bar<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1154Bar(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -37,7 +37,7 @@ public class Bug1154Bar<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar.class, $reified$T);
     }
 }
-public class Bug1154<Element, First extends Element, Rest extends .ceylon.language.Sequential<? extends Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1154<Element, First extends Element, Rest extends .ceylon.language.Sequential<? extends Element>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug1154(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest) {
         super();

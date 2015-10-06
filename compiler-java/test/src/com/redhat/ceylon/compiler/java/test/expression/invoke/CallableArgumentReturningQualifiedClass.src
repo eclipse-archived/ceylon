@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CallableArgumentReturningQualifiedClass() {
     }
@@ -9,7 +9,7 @@ class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.comp
         return new D();
     }
     
-    public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected D() {
         }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KeywordInSetterObject() {
         
@@ -23,7 +23,7 @@ class KeywordInSetterObject implements .com.redhat.ceylon.compiler.java.runtime.
             
             public void set_(final long i) {
                 
-                final class goto_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                final class goto_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     private goto_() {
                     }

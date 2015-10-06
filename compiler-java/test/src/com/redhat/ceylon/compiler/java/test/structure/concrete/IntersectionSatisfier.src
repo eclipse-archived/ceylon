@@ -11,7 +11,7 @@ interface IntersectionSatisfier_I1<T> extends .com.redhat.ceylon.compiler.java.t
     @.java.lang.Override
     public T getX();
 }
-final class IntersectionSatisfier_I1$impl<T> {
+final class IntersectionSatisfier_I1$impl<T> implements .java.io.Serializable {
     
     IntersectionSatisfier_I1$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<? extends T> $this) {
         this.$reified$T = $reified$T;
@@ -31,7 +31,7 @@ final class IntersectionSatisfier_I1$impl<T> {
 interface IntersectionSatisfier_I2 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<.java.lang.Object> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2.class);
 }
-class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<T> {
+class IntersectionSatisfier_C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2, .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<T>, .java.io.Serializable {
     
     IntersectionSatisfier_C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

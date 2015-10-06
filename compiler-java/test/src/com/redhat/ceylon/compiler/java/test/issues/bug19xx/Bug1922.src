@@ -5,6 +5,10 @@ final class random_ extends .java.util.Random implements .com.redhat.ceylon.comp
     private random_() {
         super();
     }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.get_();
+    }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.class);
     
     @.java.lang.Override

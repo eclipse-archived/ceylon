@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeTarget
-class ConstraintedClassCtorWithInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ConstraintedClassCtorWithInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationCtorTarget
     ConstraintedClassCtorWithInit() {
@@ -15,7 +15,7 @@ class ConstraintedClassCtorWithInit implements .com.redhat.ceylon.compiler.java.
 }
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeTarget
 @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeCtorTarget
-class ConstraintedClassCtorWithCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ConstraintedClassCtorWithCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationCtorTarget
     @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationTypeCtorTarget

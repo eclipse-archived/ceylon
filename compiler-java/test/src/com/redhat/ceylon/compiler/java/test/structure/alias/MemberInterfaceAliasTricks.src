@@ -29,7 +29,7 @@ public interface MemberInterfaceAliasTricks_Foo {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class MemberInterfaceAliasTricks_Foo$impl {
+public final class MemberInterfaceAliasTricks_Foo$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public MemberInterfaceAliasTricks_Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo $this) {
@@ -46,7 +46,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo.class)
-    public class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected MemberClass() {
         }
@@ -59,7 +59,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public final class MemberInterface$impl {
+    public final class MemberInterface$impl implements .java.io.Serializable {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public MemberInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface $this) {
@@ -105,7 +105,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl {
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl.MemberInterfaceImpl.class)})
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::MemberInterfaceAliasTricks_Foo"})
-public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo {
+public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo, .java.io.Serializable {
     
     public MemberInterfaceAliasTricksImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$this$ = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl(this);
@@ -134,7 +134,7 @@ public class MemberInterfaceAliasTricksImpl implements .com.redhat.ceylon.compil
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::MemberInterfaceAliasTricks_Foo.MemberInterface"})
-    public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface {
+    public class MemberInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface, .java.io.Serializable {
         
         protected MemberInterfaceImpl() {
             this.$com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$MemberInterface$this$ = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricksImpl.this.$com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$this$.new MemberInterface$impl(this);
@@ -189,7 +189,7 @@ public interface A {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.A.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class A$impl {
+public final class A$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public A$impl(.com.redhat.ceylon.compiler.java.test.structure.alias.A $this) {
@@ -206,7 +206,7 @@ public final class A$impl {
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.A.class)
-    public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Foo() {
         }
@@ -221,7 +221,7 @@ public final class A$impl {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.alias::A"})
-public class AImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.A {
+public class AImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.alias.A, .java.io.Serializable {
     
     public AImpl() {
         this.$com$redhat$ceylon$compiler$java$test$structure$alias$A$this$ = new .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl(this);

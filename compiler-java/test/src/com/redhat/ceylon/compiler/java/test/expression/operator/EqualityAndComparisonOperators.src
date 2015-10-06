@@ -6,7 +6,7 @@ interface BasicOperatorsA {
 interface BasicOperatorsB {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BasicOperatorsB.class);
 }
-public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> {
+public abstract class EqualityAndComparisonInteger extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger>, .java.io.Serializable {
     
     public EqualityAndComparisonInteger() {
         super();
@@ -113,7 +113,7 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger.class);
 }
-public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public EqualityAndComparisonOperators() {
     }

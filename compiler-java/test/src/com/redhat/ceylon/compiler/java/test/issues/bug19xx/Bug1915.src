@@ -8,7 +8,7 @@ interface Itrable<T> {
     
     public .java.lang.Object getIndexed();
 }
-final class Itrable$impl<T> {
+final class Itrable$impl<T> implements .java.io.Serializable {
     
     Itrable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable<T> $this) {
         this.$reified$T = $reified$T;
@@ -26,7 +26,7 @@ final class Itrable$impl<T> {
             let
             {
                 
-                class anonymous_0_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable<T> {
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable<T> {
                     
                     private anonymous_0_() {
                         this.$com$redhat$ceylon$compiler$java$test$issues$bug19xx$Itrable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl<T>($reified$T, this);
@@ -37,7 +37,7 @@ final class Itrable$impl<T> {
                             let
                             {
                                 
-                                class anonymous_1_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrator<T> {
+                                class anonymous_1_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Itrator<T> {
                                     
                                     private anonymous_1_() {
                                     }

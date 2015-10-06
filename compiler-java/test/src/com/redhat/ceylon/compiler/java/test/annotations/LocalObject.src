@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1foo_"})
-public class LocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class LocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public LocalObject() {
     }
@@ -15,7 +15,7 @@ public class LocalObject implements .com.redhat.ceylon.compiler.java.runtime.mod
         @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Object
-        final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private foo_() {
             }

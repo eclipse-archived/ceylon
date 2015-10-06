@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected SingletonCtorDelegation() {
         super();
@@ -83,7 +83,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.class);
 }
-class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected SingletonCtorAbstractDelegation() {
         super();

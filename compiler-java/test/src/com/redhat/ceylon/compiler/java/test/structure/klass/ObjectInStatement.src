@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ObjectInStatement() {
     }
@@ -9,7 +9,7 @@ class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.mode
         if (true) {
             final long i = 1L;
             
-            final class foo_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private foo_() {
                     this.string = .ceylon.language.Integer.toString(i);

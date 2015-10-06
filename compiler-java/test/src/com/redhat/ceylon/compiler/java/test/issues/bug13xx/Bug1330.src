@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1330_2() {
     }
@@ -9,7 +9,7 @@ class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return new Node();
     }
     
-    public class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Node() {
         }
@@ -38,7 +38,7 @@ class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.class);
 }
-class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1330(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N) {
         this.$reified$N = $reified$N;
@@ -49,7 +49,7 @@ class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return new Node();
     }
     
-    public class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Node() {
         }

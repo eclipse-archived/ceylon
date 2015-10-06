@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug699 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug699 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug699() {
         final .ceylon.language.Singleton<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> singleton = new .ceylon.language.Singleton<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){

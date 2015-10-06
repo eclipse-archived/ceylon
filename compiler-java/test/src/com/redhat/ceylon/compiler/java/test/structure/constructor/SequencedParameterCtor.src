@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ $name$) {
         (

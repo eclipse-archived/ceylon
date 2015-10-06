@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     GetterLocalInstantiation() {
         
@@ -11,7 +11,7 @@ class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
             
             public long get_() {
                 
-                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     LocalClass() {
                     }

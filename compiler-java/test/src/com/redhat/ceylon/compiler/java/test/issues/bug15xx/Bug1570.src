@@ -8,7 +8,7 @@ interface Bug1570<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$();
 }
-final class Bug1570$impl<T> {
+final class Bug1570$impl<T> implements .java.io.Serializable {
     
     Bug1570$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570<T> $this) {
         this.$reified$T = $reified$T;
@@ -25,7 +25,7 @@ final class Bug1570$impl<T> {
         return new In();
     }
     
-    public class In implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T> {
+    public class In implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T>, .java.io.Serializable {
         
         protected In() {
         }

@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class ClassWithInitializerAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation, .ceylon.language.meta.declaration.ClassWithInitializerDeclaration, .java.lang.Object> {
+final class ClassWithInitializerAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation, .ceylon.language.meta.declaration.ClassWithInitializerDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     ClassWithInitializerAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation$annotation$ anno) {
         this();
@@ -45,7 +45,7 @@ final class classWithInitializerAnnotation_ {
 }
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
-final class ClassWithConstructorsAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation, .ceylon.language.meta.declaration.ClassWithConstructorsDeclaration, .java.lang.Object> {
+final class ClassWithConstructorsAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation, .ceylon.language.meta.declaration.ClassWithConstructorsDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     ClassWithConstructorsAnnotation(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation$annotation$ anno) {
         this();
@@ -79,7 +79,7 @@ final class classWithConstructorsAnnotation_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation$annotation$
-class ClassWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassWithInitializer() {
     }
@@ -91,7 +91,7 @@ class ClassWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.m
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializer.class);
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation$annotation$
-class ClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassWithConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public ClassWithConstructors() {

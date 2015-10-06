@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.instantiation;
 
-class SequencedParameterClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SequencedParameterClassInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SequencedParameterClassInstantiation(final long a) {
         (
@@ -34,7 +34,7 @@ class SequencedParameterClassInstantiation implements .com.redhat.ceylon.compile
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SequencedParameterClassInstantiation.class);
 }
-class SequencedParameterClassInstantiationNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SequencedParameterClassInstantiationNonempty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected SequencedParameterClassInstantiationNonempty() {
         super();

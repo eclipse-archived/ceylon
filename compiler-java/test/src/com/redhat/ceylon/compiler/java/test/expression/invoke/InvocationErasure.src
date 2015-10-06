@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodErasure() {
     }

@@ -4,7 +4,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "1$1Gee",
         "2$1Gee"})
-class Bug1845 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1845 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1845() {
         final .java.lang.Object bug1845_1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
@@ -20,7 +20,7 @@ class Bug1845 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Gee")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Gee() {
                     }
@@ -47,7 +47,7 @@ class Bug1845 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Gee")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
-                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Gee() {
                     }
@@ -99,7 +99,7 @@ final class bug1845_1_ {
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
                             isPackageLocal = true,
                             qualifier = "1bug1845_1$1")
-                    class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                         
                         Gee() {
                         }
@@ -160,7 +160,7 @@ final class bug1845_2_ {
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
                             isPackageLocal = true,
                             qualifier = "1bug1845_2$1")
-                    class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                         
                         Gee() {
                         }
@@ -218,7 +218,7 @@ final class bug1845_3_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Gee")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1bug1845_3$1")
-                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Gee() {
                     }
@@ -259,7 +259,7 @@ final class bug1845_4_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Gee")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Gee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Gee() {
                     }

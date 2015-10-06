@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
-abstract class ActualMethodShortcut implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class ActualMethodShortcut implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ActualMethodShortcut() {
     }

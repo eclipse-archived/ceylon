@@ -22,7 +22,7 @@ public final class run_ {
         final .java.lang.String name = ((.ceylon.language.String)nameValue.get()).toString();
     }
 }
-class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Person() {
         super();

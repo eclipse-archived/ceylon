@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     SingletonCtorsInMemberClasses() {
     }
@@ -42,7 +42,7 @@ public final class singletonCtorsInMemberClasses_ {
     public static void singletonCtorsInMemberClasses() {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses().getBar$bar());
         
-        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Foo() {
             }

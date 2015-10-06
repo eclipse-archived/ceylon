@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.attribute;
 
-class QualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class QualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     QualifiedAttributeAccess() {
         this.b = true;
@@ -61,7 +61,7 @@ class QualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runti
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.class);
 }
-class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Foo() {
         this.b = true;

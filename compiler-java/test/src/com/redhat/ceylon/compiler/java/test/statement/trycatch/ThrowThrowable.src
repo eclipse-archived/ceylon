@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.trycatch;
 
-class ThrowThrowable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ThrowThrowable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ThrowThrowable() {
     }

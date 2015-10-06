@@ -13,14 +13,14 @@ public final class localInterfaceFormalMemberClass_ {
     
     public static void localInterfaceFormalMemberClass() {
         
-        final class Foo$impl {
+        final class Foo$impl implements .java.io.Serializable {
             
             Foo$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_ $this) {
                 this.$this = $this;
             }
             private final .com.redhat.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_ $this;
             
-            abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 protected Bar() {
                 }
@@ -32,7 +32,7 @@ public final class localInterfaceFormalMemberClass_ {
             }
         }
         
-        class FooImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_ {
+        class FooImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_, .java.io.Serializable {
             
             FooImpl() {
                 this.$com$redhat$ceylon$compiler$java$test$structure$mcr$localInterfaceFormalMemberClass$Foo$this$ = new Foo$impl(this);

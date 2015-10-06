@@ -33,7 +33,7 @@ public interface i_ {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class);
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-public final class i$impl_ {
+public final class i$impl_ implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public i$impl_(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_ $this) {

@@ -28,7 +28,7 @@ final class bug1878Init_ {
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1878() {
         this.$init$foo = false;

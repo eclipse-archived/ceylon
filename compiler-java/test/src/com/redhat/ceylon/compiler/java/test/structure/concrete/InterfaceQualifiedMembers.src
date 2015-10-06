@@ -27,7 +27,7 @@ interface InterfaceQualifiedIncrement {
     public long m3();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement.class);
 }
-final class InterfaceQualifiedIncrement$impl {
+final class InterfaceQualifiedIncrement$impl implements .java.io.Serializable {
     
     InterfaceQualifiedIncrement$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement $this) {
         this.$this = $this;
@@ -151,7 +151,7 @@ final class InterfaceQualifiedIncrement$impl {
         );
     }
     
-    class InnerC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class InnerC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         InnerC() {
         }
@@ -246,7 +246,7 @@ final class InterfaceQualifiedIncrement$impl {
         }
     }
     
-    final class InnerI$impl {
+    final class InnerI$impl implements .java.io.Serializable {
         
         InnerI$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceQualifiedIncrement$InnerI $this) {
             this.$this = $this;

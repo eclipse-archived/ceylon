@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
 
-class Bug781Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug781Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug781Class() {
     }
@@ -19,7 +19,7 @@ interface Bug781Interface {
     public abstract .java.lang.Object i();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface.class);
 }
-class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug781_1<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected Bug781_1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         super();
@@ -47,7 +47,7 @@ interface Bug781_2<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07x
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug07xx$Bug781_2$impl();
 }
-final class Bug781_2$impl<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> {
+final class Bug781_2$impl<T extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Class & .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781Interface> implements .java.io.Serializable {
     
     Bug781_2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug781_2<T> $this) {
         this.$reified$T = $reified$T;

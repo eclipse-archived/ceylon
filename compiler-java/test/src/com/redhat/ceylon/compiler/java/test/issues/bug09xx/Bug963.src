@@ -7,7 +7,7 @@ public interface Bug963<Element> extends .ceylon.language.List<Element> {
     @.java.lang.Override
     public long getSize();
 }
-public final class Bug963$impl<Element> {
+public final class Bug963$impl<Element> implements .java.io.Serializable {
     
     public Bug963$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug963<? extends Element> $this) {
         this.$reified$Element = $reified$Element;

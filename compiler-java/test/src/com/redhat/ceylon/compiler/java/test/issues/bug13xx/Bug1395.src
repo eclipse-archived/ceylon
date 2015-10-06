@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
 
-public class Bug1395LinkedList<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class Bug1395LinkedList<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public Bug1395LinkedList(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         (

@@ -9,7 +9,7 @@ final class foo_ {
         return 2L;
     }
 }
-class RefinedMethodSpecifyingTopLevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class RefinedMethodSpecifyingTopLevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     RefinedMethodSpecifyingTopLevel() {
     }

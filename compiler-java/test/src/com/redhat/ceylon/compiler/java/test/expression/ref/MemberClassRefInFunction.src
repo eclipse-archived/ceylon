@@ -7,7 +7,7 @@ final class memberClassRefInFunction_ {
     
     static void memberClassRefInFunction() {
         
-        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Foo() {
             }
@@ -16,7 +16,7 @@ final class memberClassRefInFunction_ {
                 return new Bar();
             }
             
-            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 protected Bar() {
                 }

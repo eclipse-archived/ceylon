@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 
-class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1972() {
         (
@@ -52,7 +52,7 @@ class Bug1972Sub extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bu
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972Sub.class);
 }
-class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+class Bug1972Ser implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     protected Bug1972Ser() {
         this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null);

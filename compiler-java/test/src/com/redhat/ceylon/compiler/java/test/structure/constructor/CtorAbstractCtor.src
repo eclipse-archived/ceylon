@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class CtorAbstractCtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class CtorAbstractCtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected CtorAbstractCtorSuper() {
         super();
@@ -228,7 +228,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
         this.y = y;
     }
     
-    final class xCapturer3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final class xCapturer3_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private xCapturer3_() {
         }
@@ -251,7 +251,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
         }
     }
     
-    final class yCapturer2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final class yCapturer2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private yCapturer2_() {
         }
@@ -287,7 +287,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.setX$priv$(x$param$);
         
-        final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class xCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private xCapturer_() {
             }
@@ -325,7 +325,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$9: do {
             
-            final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class xCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private xCapturer_() {
                 }
@@ -352,7 +352,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
             this.setY$priv$(y$param$);
             
-            final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class yCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private yCapturer_() {
                 }
@@ -420,7 +420,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
         this.y = y;
     }
     
-    final class xCapturer3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final class xCapturer3_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private xCapturer3_() {
         }
@@ -443,7 +443,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
         }
     }
     
-    final class yCapturer2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final class yCapturer2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private yCapturer2_() {
         }
@@ -479,7 +479,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.setX(x$param$);
         
-        final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class xCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private xCapturer_() {
             }
@@ -517,7 +517,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$20: do {
             
-            final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class xCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private xCapturer_() {
                 }
@@ -544,7 +544,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
             this.setY(y$param$);
             
-            final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class yCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private yCapturer_() {
                 }
@@ -612,7 +612,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
         this.y = y;
     }
     
-    final class xCapturer3_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final class xCapturer3_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private xCapturer3_() {
         }
@@ -635,7 +635,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
         }
     }
     
-    final class yCapturer2_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    final class yCapturer2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private yCapturer2_() {
         }
@@ -675,7 +675,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
         this.setX$priv$(x$param$);
         
-        final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class xCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private xCapturer_() {
             }
@@ -713,7 +713,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$31: do {
             
-            final class xCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class xCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private xCapturer_() {
                 }
@@ -740,7 +740,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
             this.setY$priv$(y$param$);
             
-            final class yCapturer_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            final class yCapturer_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private yCapturer_() {
                 }

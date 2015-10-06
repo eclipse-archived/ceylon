@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class KlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class KlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KlassInStatement() {
     }
@@ -9,7 +9,7 @@ class KlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model
         if (true) {
             final long i = 1L;
             
-            class KlassInStatement1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class KlassInStatement1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 KlassInStatement1() {
                 }

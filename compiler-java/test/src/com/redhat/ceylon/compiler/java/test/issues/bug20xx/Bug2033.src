@@ -20,7 +20,7 @@ public interface Iterable<Element> {
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<? extends Element>.Member Member$new$();
 }
-public final class Iterable$impl<Element> {
+public final class Iterable$impl<Element> implements .java.io.Serializable {
     
     public Iterable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -41,7 +41,7 @@ public final class Iterable$impl<Element> {
         return 2L;
     }
     
-    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public Member() {
             (
@@ -77,7 +77,7 @@ public interface Iterable2<Element> {
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<? extends Element> getRepeatAttr();
 }
-public final class Iterable2$impl<Element> {
+public final class Iterable2$impl<Element> implements .java.io.Serializable {
     
     public Iterable2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -115,7 +115,7 @@ public interface List<Element> extends .com.redhat.ceylon.compiler.java.test.iss
     @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element>.Member Member$new$();
 }
-public final class List$impl<Element> {
+public final class List$impl<Element> implements .java.io.Serializable {
     
     public List$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -166,7 +166,7 @@ public interface List2<Element> extends .com.redhat.ceylon.compiler.java.test.is
     @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> getRepeatAttr();
 }
-public final class List2$impl<Element> {
+public final class List2$impl<Element> implements .java.io.Serializable {
     
     public List2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> $this) {
         this.$reified$Element = $reified$Element;
@@ -183,7 +183,7 @@ public interface ListMutator<Element> extends .com.redhat.ceylon.compiler.java.t
 }
 public interface ListMutator2<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<.java.lang.Object> {
 }
-public abstract class ListMutatorClass<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<.java.lang.Object> {
+public abstract class ListMutatorClass<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<.java.lang.Object>, .java.io.Serializable {
     
     public ListMutatorClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -272,7 +272,7 @@ abstract class MweList1Class<T> extends .com.redhat.ceylon.compiler.java.test.is
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.MweList1Class.class, $reified$T);
     }
 }
-abstract class MweList2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList<T> {
+abstract class MweList2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList<T>, .java.io.Serializable {
     
     MweList2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
@@ -303,7 +303,7 @@ abstract class MweList2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.MweList2.class, $reified$T);
     }
 }
-class MweList3<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList2<T> {
+class MweList3<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList2<T>, .java.io.Serializable {
     
     MweList3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;

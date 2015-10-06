@@ -21,7 +21,7 @@ final class bug607mth_ {
         final cap_ cap = new cap_();
     }
 }
-class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug607cls() {
     }

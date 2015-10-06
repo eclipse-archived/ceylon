@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-class MangledMembers_class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MangledMembers_class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MangledMembers_class() {
     }
@@ -39,7 +39,7 @@ class MangledMembers_class implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class.class);
 }
-class MangledMembers_clone implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MangledMembers_clone implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MangledMembers_clone() {
     }

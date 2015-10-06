@@ -9,7 +9,7 @@ final class methodSpecifyingCallable_f_ {
         throw new .ceylon.language.Exception(null, null);
     }
 }
-class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodSpecifyingCallable() {
         this.noParam = new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Empty.$TypeDescriptor$, "Nothing()", (short)-1){

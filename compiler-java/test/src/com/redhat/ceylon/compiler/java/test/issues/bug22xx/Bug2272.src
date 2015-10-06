@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Local"})
-class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2272() {
         final .ceylon.language.Callable<? extends .java.lang.Object> local1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
@@ -18,7 +18,7 @@ class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Local() {
                     }
@@ -70,7 +70,7 @@ final class bug2272_ {
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
                             isPackageLocal = true,
                             qualifier = "1bug2272$1")
-                    class PackageLocal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    class PackageLocal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                         
                         PackageLocal() {
                         }

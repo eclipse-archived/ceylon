@@ -7,7 +7,7 @@ final class bug1165_ {
     
     static void bug1165() {
         
-        class B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             B(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> data) {
             }
@@ -18,7 +18,7 @@ final class bug1165_ {
             }
         }
         
-        class P implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class P implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             P(final .ceylon.language.Iterable params) {
             }
@@ -29,7 +29,7 @@ final class bug1165_ {
             }
         }
         
-        class Body implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Body implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Body(final P p) {
             }
@@ -40,7 +40,7 @@ final class bug1165_ {
             }
         }
         
-        class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Html(final Head head, final Body body) {
             }
@@ -51,7 +51,7 @@ final class bug1165_ {
             }
         }
         
-        class Head implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Head implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Head(final .java.lang.String title) {
             }

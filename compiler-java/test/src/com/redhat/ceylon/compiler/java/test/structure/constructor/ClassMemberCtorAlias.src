@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     ClassMemberCtorAlias() {
     }
@@ -12,7 +12,7 @@ class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$other Member$other = null;
     
-    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public Member(final long i$param$) {
         }

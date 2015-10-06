@@ -5,7 +5,7 @@ interface Bug1188 {
     public abstract .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188> getParents();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188.class);
 }
-abstract class AbstractBug1188 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188 {
+abstract class AbstractBug1188 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188, .java.io.Serializable {
     
     protected AbstractBug1188() {
         super();

@@ -8,7 +8,7 @@ interface OutStream<T> {
     
     public <BT extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<T>>void writeFrom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT);
 }
-final class OutStream$impl<T> {
+final class OutStream$impl<T> implements .java.io.Serializable {
     
     OutStream$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream<T> $this) {
         this.$reified$T = $reified$T;
@@ -24,12 +24,12 @@ final class OutStream$impl<T> {
     public <BT extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Buffer<T>>void writeFrom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT) {
     }
 }
-class OpenFileImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class OpenFileImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     OpenFileImpl() {
     }
     
-    class UnbufferedOutstreamImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream<.ceylon.language.Integer> {
+    class UnbufferedOutstreamImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream<.ceylon.language.Integer>, .java.io.Serializable {
         
         UnbufferedOutstreamImpl() {
             this.$com$redhat$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);

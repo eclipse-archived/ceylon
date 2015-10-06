@@ -32,7 +32,7 @@ class E2 extends .ceylon.language.Exception {
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E2.class);
 }
-class TryCatchUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class TryCatchUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     TryCatchUnion() {
     }

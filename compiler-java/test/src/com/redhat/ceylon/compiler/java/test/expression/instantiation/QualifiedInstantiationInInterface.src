@@ -8,7 +8,7 @@ interface QualifiedInstantiationInInterface<G> {
     
     public .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> $com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
 }
-final class QualifiedInstantiationInInterface$impl<G> {
+final class QualifiedInstantiationInInterface$impl<G> implements .java.io.Serializable {
     
     QualifiedInstantiationInInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> $this) {
         this.$reified$G = $reified$G;
@@ -21,7 +21,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
         this.$reified$G = $reified$G;
     }
     
-    class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
             this.$reified$T = $reified$T;
@@ -60,7 +60,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
     
     private void m2$priv$() {
         
-        final class Local$impl<T> {
+        final class Local$impl<T> implements .java.io.Serializable {
             
             Local$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$Local<G, T> $this) {
                 this.$reified$T = $reified$T;
@@ -73,7 +73,7 @@ final class QualifiedInstantiationInInterface$impl<G> {
                 this.$reified$T = $reified$T;
             }
             
-            class LocalInner<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class LocalInner<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 LocalInner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .java.lang.String t) {
                     this.$reified$X = $reified$X;

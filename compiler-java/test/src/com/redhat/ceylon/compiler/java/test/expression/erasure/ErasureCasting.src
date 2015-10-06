@@ -357,7 +357,7 @@ interface EC_ErasedMember<Element, Absent> {
     
     public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$();
 }
-final class EC_ErasedMember$impl<Element, Absent> {
+final class EC_ErasedMember$impl<Element, Absent> implements .java.io.Serializable {
     
     EC_ErasedMember$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, Absent> $this) {
         this.$reified$Element = $reified$Element;
@@ -421,7 +421,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
         );
     }
     
-    public class Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Class(final .java.lang.Object p) {
         }
@@ -432,7 +432,7 @@ final class EC_ErasedMember$impl<Element, Absent> {
         }
     }
 }
-class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, .java.lang.Object> {
+class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, .java.lang.Object>, .java.io.Serializable {
     
     EC_ErasedMemberImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
@@ -501,7 +501,7 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMemberImpl.class, $reified$Element);
     }
 }
-class EC_Tuple<Element, First extends Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class EC_Tuple<Element, First extends Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected EC_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First) {
         super();
@@ -537,7 +537,7 @@ final class ec_callableWithBonds_ {
         return (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>>).ceylon.language.nothing_.get_();
     }
 }
-class Bug1327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1327() {
     }
@@ -558,7 +558,7 @@ class Bug1327 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.Bug1327.class);
 }
-class Bug1327_2<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug1327_2<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1327_2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;

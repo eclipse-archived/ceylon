@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
 
-class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element> {
+class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Sequence<Element>, .java.io.Serializable {
     
     protected Bug837(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         super();

@@ -4,7 +4,7 @@ public interface Bug2038<Element> {
     
     public abstract .java.lang.Object run(final .ceylon.language.List<? extends Element> x, final .ceylon.language.List<? extends .ceylon.language.String> y);
 }
-public class Bug2038Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2038<.java.lang.Object> {
+public class Bug2038Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2038<.java.lang.Object>, .java.io.Serializable {
     
     public Bug2038Impl() {
     }

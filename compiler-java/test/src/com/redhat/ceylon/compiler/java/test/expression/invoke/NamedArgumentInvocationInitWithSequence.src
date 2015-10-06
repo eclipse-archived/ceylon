@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.expression.invoke;
 
-class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     NamedArgumentInvocationInitWithSequence(final .java.lang.String a) {
         (
@@ -20,7 +20,7 @@ class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.comp
     NamedArgumentInvocationInitWithSequence(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
     }
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner(final boolean x, final .java.lang.String y) {
             (

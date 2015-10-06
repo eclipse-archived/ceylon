@@ -7,7 +7,7 @@ public final class bug899_ {
     
     public static void bug899() {
         
-        final class o_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
             private o_() {
                 this.i = 1L;

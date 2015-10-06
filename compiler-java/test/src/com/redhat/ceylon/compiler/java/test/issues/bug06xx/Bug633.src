@@ -7,7 +7,7 @@ interface Bug633Ranged<Index, Span> {
 interface Bug633Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<.ceylon.language.Integer, .java.lang.Object> {
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty.class);
 }
-class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty {
+class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty, .java.io.Serializable {
     
     Bug633EmptyImpl() {
     }

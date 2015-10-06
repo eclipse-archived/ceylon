@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SharedAnnotation$annotation$
-public class AnnotationInteropQualifiedEnum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+public class AnnotationInteropQualifiedEnum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public AnnotationInteropQualifiedEnum() {
         this.field1 = "";

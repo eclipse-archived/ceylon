@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop;
 
-class MethodWhileConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MethodWhileConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     MethodWhileConditionListBoolBoolIs() {
     }

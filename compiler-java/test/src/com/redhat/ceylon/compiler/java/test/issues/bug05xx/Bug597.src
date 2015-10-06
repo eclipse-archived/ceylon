@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
 
-class Bug597 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super {
+class Bug597 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super, .java.io.Serializable {
     
     Bug597() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug05xx$Super$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super$impl(this);
@@ -30,7 +30,7 @@ public interface Super {
     public .java.lang.String getFoo();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super.class);
 }
-public final class Super$impl {
+public final class Super$impl implements .java.io.Serializable {
     
     public Super$impl(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super $this) {
         this.$this = $this;

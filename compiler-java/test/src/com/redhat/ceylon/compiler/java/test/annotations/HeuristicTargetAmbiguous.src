@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = {"ambiguousAnnotation"})
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrConstructorTarget
-class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Jpa
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -61,9 +61,14 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Name("ambiguousObject")
 @.com.redhat.ceylon.compiler.java.metadata.Object
-final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class ambiguousObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private ambiguousObject_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.get_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.class);
@@ -113,7 +118,7 @@ final class ambiguousObject_ implements .com.redhat.ceylon.compiler.java.runtime
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.annotations::AmbiguousAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
-final class AmbiguousAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object> {
+final class AmbiguousAnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     AmbiguousAnnotationClass(.com.redhat.ceylon.compiler.java.test.annotations.AmbiguousAnnotationClass$annotation$ anno) {

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-class VariadicPossiblyEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class VariadicPossiblyEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     VariadicPossiblyEmpty() {
         (
@@ -22,7 +22,7 @@ class VariadicPossiblyEmpty implements .com.redhat.ceylon.compiler.java.runtime.
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VariadicPossiblyEmpty.class);
 }
-class VariadicNonEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class VariadicNonEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     protected VariadicNonEmpty() {
         super();

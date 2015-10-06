@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
 
-class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object> {
+class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Iterable<.ceylon.language.Sequential<? extends .java.lang.Object>, .java.lang.Object>, .java.io.Serializable {
     
     Bug626() {
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Null.$TypeDescriptor$, this);

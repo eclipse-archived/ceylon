@@ -9,7 +9,7 @@ interface InterfaceDefaultMemberClass {
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass qual);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass.class);
 }
-final class InterfaceDefaultMemberClass$impl {
+final class InterfaceDefaultMemberClass$impl implements .java.io.Serializable {
     
     InterfaceDefaultMemberClass$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass $this) {
         this.$this = $this;
@@ -20,7 +20,7 @@ final class InterfaceDefaultMemberClass$impl {
         return new Member();
     }
     
-    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member() {
         }
@@ -38,7 +38,7 @@ final class InterfaceDefaultMemberClass$impl {
         qual.Member$new$();
     }
 }
-class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass {
+class InterfaceMemberDefaultClass_sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass, .java.io.Serializable {
     
     InterfaceMemberDefaultClass_sub() {
         this.$com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$this$ = new .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl(this);

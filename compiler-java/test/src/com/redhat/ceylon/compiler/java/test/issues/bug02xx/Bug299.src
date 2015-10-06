@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 
-class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug299() {
     }
@@ -9,7 +9,7 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return "a";
     }
     
-    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         Inner() {
             (
@@ -61,14 +61,14 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private final void m$priv$() {
         
-        final class Inner$impl {
+        final class Inner$impl implements .java.io.Serializable {
             
             private final .java.lang.String $default$s() {
                 return "a";
             }
         }
         
-        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Inner() {
                 (
