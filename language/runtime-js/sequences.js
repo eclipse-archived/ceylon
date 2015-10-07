@@ -51,7 +51,7 @@ atr$(arrprot$,'rest', function() {
 //for sequenced enumerations
 function sarg$(elems,spread,$$targs$$){
   $init$sarg();
-  that=new sarg$.$$;
+  var that=new sarg$.$$;
   Iterable($$targs$$,that);
   that.e=elems;
   that.s=spread;
