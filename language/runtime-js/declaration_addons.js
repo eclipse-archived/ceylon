@@ -187,7 +187,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       defs.push(this.meta['$i'][df]);
     }
   }
-  if (extendsType(dec,kind)) {
+  if (extendsType(cdec,kind)) {
     for (var df in this.meta['$c']) {
       defs.push(this.meta['$c'][df]);
     }
