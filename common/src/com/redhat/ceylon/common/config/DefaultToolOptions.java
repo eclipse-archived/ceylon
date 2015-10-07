@@ -27,6 +27,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_DOC = "compiler.doc";
     public final static String COMPILER_SUPPRESSWARNING = "compiler.suppresswarning";
     public final static String COMPILER_NOOSGI = "compiler.noosgi";
+    public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.osgiprovidedbundles";
     public final static String COMPILER_NOPOM = "compiler.nopom";
     public final static String COMPILER_PACK200 = "compiler.pack200";
     
@@ -197,6 +198,14 @@ public class DefaultToolOptions {
     
     public static boolean getCompilerNoOsgi(CeylonConfig config) {
         return config.getBoolOption(COMPILER_NOOSGI, false);
+    }
+
+    public static String getCompilerOsgiProvidedBundles() {
+        return getCompilerOsgiProvidedBundles(CeylonConfig.get());
+    }
+    
+    public static String getCompilerOsgiProvidedBundles(CeylonConfig config) {
+        return config.getOption(COMPILER_OSGIPROVIDEDBUNDLES, "");
     }
 
     public static boolean getCompilerNoPom() {
