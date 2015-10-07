@@ -62,7 +62,10 @@ function tpl$(elems,spread){
     if (spread) {
       return ChainedIterator(elems,spread,{Element$ChainedIterator:types,Other$ChainedIterator:spread.$$targs$$.Element$Sequential});
     }
-    return elems.iterator();
+    var i=0;
+    return for$iter(function(){
+      return i===elems.length?finished():elems[i++];
+    },{Element$Iterator:_t});
   }
   that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
   that.contains=function(i) { return elems.contains(i) || (spread&&spread.contains(i)); }
