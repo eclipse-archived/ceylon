@@ -475,12 +475,13 @@ class Strategy {
     }
 
     public static boolean introduceJavaIoSerializable(
-            Class cls) {
+            Class cls, Interface ser) {
         if (!(cls instanceof ClassAlias)) {
             if ((!Decl.hasOnlyValueConstructors(cls) || (cls.isAnonymous()))
                     && cls.getExtendedType() != null
                     && (cls.getExtendedType().isBasic()
-                    || cls.getExtendedType().isObject())) {
+                    || cls.getExtendedType().isObject())
+                    && !cls.getSatisfiedTypes().contains(ser.getType())) {
                 return true;
             }
         }
@@ -502,7 +503,7 @@ class Strategy {
             TypeDeclaration c = cls;
             while(c != null) {
                 if (c instanceof Class
-                        && Strategy.introduceJavaIoSerializable((Class)c)) {
+                        && Strategy.introduceJavaIoSerializable((Class)c, ser)) {
                     return true;
                 }
                 if (c.getExtendedType() != null) {

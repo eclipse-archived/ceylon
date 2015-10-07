@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -236,6 +237,29 @@ public class TypeFactory extends Unit {
     private boolean isVariadicElement(Type args) {
         return args.isClassOrInterface() 
                 && (args.isSequential() || args.isSequence());
+    }
+    
+    /**
+     * Get the interface for {@code java.io.Serializable} from
+     * {@code java.base}, or null if it could not be found.
+     * @return
+     */
+    public Interface getJavaIoSerializable() {
+        for (com.redhat.ceylon.model.typechecker.model.Module m : context.getModules().getListOfModules()) {
+            if ("java.base".equals(m.getNameAsString())) {
+                return (Interface)m.getPackage("java.io").getDirectMember("Serializable", null, false);
+            }
+        }
+        return null;
+    }
+    
+    public Type getJavaIoSerializableType() {
+        Interface ser = getJavaIoSerializable();
+        if (ser != null) {
+            return ser.getType();
+        } else {
+            return null;
+        }
     }
 
 }

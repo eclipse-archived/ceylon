@@ -277,7 +277,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (model instanceof Class
                 && !(model instanceof ClassAlias)) {
-            if (Strategy.introduceJavaIoSerializable((Class)model)) {
+            if (Strategy.introduceJavaIoSerializable((Class)model, typeFact().getJavaIoSerializable())) {
                 classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
             }
             serialization((Class)model, classBuilder);
@@ -5076,7 +5076,7 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
                 this, javaClassName, name, Decl.isLocal(klass)).forDefinition(klass);
         
-        if (Strategy.introduceJavaIoSerializable(klass)) {
+        if (Strategy.introduceJavaIoSerializable(klass, typeFact().getJavaIoSerializable())) {
             objectClassBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
         }
         makeReadResolve(objectClassBuilder, klass, model);
@@ -5196,8 +5196,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void makeReadResolve(ClassDefinitionBuilder objectClassBuilder,
             Class cls, 
             Value model) {
-        Interface ser = (Interface)loader().getJDKBaseModule().getPackage("java.io").getDirectMember("Serializable", null, false);
-        if (Strategy.addReadResolve(cls, ser)) {
+        if (Strategy.addReadResolve(cls, typeFact().getJavaIoSerializable())) {
             MethodDefinitionBuilder readResolve = MethodDefinitionBuilder.systemMethod(this, "readResolve");
             readResolve.modifiers(PRIVATE);
             readResolve.resultType(null, make().Type(syms().objectType));
