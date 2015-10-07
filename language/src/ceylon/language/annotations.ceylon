@@ -279,7 +279,7 @@ shared annotation OptionalImportAnnotation optional()
  annotation."
 shared final sealed annotation class SuppressWarningsAnnotation(
     "The warning types to suppress."
-    [String*] warnings)
+    shared String* warnings)
         satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
             FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Module|Package|Import> {}
 
