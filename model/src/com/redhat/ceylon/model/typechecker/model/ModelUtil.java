@@ -2853,6 +2853,8 @@ public class ModelUtil {
     public static ClassOrInterface getClassOrInterfaceContainer(
             Element decl, boolean includingDecl) {
         if (!includingDecl) {
+            if(decl.getContainer() instanceof Element == false)
+                return null;
             decl = (Element) decl.getContainer();
         }
         // stop when null or when it's a ClassOrInterface
