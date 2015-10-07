@@ -4339,7 +4339,7 @@ public abstract class AbstractTransformer implements Transformation {
             if (isAnything(testedType)){
                 // everything is Void, it's the root of the hierarchy
                 return typeTester.eval(varExpr, true);
-            } else if (testedType.isExactly(typeFact().getNullType())){
+            } else if (isNull(testedType)){
                 // is Null => is null
                 return typeTester.nullTest(varExpr, JCTree.EQ);
             } else if (testedType.isExactly(typeFact().getObjectType())){
