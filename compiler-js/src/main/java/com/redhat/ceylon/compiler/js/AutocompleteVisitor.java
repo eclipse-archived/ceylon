@@ -99,7 +99,7 @@ public class AutocompleteVisitor {
                 final int col1 = Math.max(col0+that.getText().length()-1, col0);
                 if (col >= col0 && col <= col1) {
                     node = that;
-                    text = node.getText();
+                    text = node.getText().substring(0, col-col0);
                 }
             }
             super.visit(that);
