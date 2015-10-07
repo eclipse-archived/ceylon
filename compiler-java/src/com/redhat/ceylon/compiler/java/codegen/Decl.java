@@ -761,11 +761,13 @@ public class Decl {
         
     }
     
-    public static boolean isJavaStaticPrimary(Tree.Term term) {
-        return term instanceof Tree.QualifiedMemberOrTypeExpression
-                && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration() != null
-                && ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration().isStaticallyImportable()
-                && !(((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration() instanceof Constructor);
+    public static boolean isJavaStaticOrInterfacePrimary(Tree.Term term) {
+        if(term instanceof Tree.QualifiedMemberOrTypeExpression == false)
+            return false;
+        Declaration decl = ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration();
+        return decl != null
+                && (decl.isStaticallyImportable() || decl instanceof Interface)
+                && !(decl instanceof Constructor);
     }
     
     public static boolean isConstructorPrimary(Tree.Term term) {

@@ -3483,7 +3483,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)invocation.getPrimary();
         Declaration declaration = qte.getDeclaration();
         invocation.location(callBuilder);
-        if (Decl.isJavaStaticPrimary(invocation.getPrimary())) {
+        if (Decl.isJavaStaticOrInterfacePrimary(invocation.getPrimary())) {
             callBuilder.instantiate(transformedPrimary.expr);
         } else if (!Strategy.generateInstantiator(declaration)) {
             if (Decl.isConstructorPrimary(invocation.getPrimary())) {
@@ -3881,7 +3881,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (ce.getPositionalArgumentList() != null) {
             if ((isIndirectInvocation(ce)
                     || isWithinDefaultParameterExpression(primaryDeclaration.getContainer()))
-                    && !Decl.isJavaStaticPrimary(ce.getPrimary())){
+                    && !Decl.isJavaStaticOrInterfacePrimary(ce.getPrimary())){
                 // indirect invocation
                 invocation = new IndirectInvocation(this, 
                         primary, primaryDeclaration,
@@ -4312,9 +4312,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && !expr.getDeclaration().isShared()
                     && Decl.getDeclarationScope(expr.getScope()) instanceof Constructor) {
                 result = null;
-            } else if (Decl.isJavaStaticPrimary(primary)) {
+            } else if (Decl.isJavaStaticOrInterfacePrimary(primary)) {
                 // Java static field or method access
-                result = transformJavaStaticMember((Tree.QualifiedMemberOrTypeExpression)primary, expr.getTypeModel());
+                result = transformJavaStaticOrInterfaceMember((Tree.QualifiedMemberOrTypeExpression)primary, expr.getTypeModel());
             } else {
                 result = transformExpression(primary, boxing, type);
             }
@@ -4324,7 +4324,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    private JCExpression transformJavaStaticMember(Tree.QualifiedMemberOrTypeExpression qmte, Type staticType) {
+    private JCExpression transformJavaStaticOrInterfaceMember(Tree.QualifiedMemberOrTypeExpression qmte, Type staticType) {
         Declaration decl = qmte.getDeclaration();
         if (decl instanceof FieldValue) {
             Value member = (Value)decl;
@@ -4356,6 +4356,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return utilInvocation().checkNull(makeJavaStaticInvocation(gen(),
                         class_, producedReference, parameterList));
             }
+        } else if (decl instanceof Interface) {
+            return naming.makeTypeDeclarationExpression(null, (Interface)decl, Naming.DeclNameFlag.QUALIFIED);
         } else {
             return makeErroneous(qmte, "compiler bug: unsupported static");
         }

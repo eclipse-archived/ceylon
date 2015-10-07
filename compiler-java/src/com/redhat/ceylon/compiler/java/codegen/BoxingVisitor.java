@@ -210,7 +210,7 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(InvocationExpression that) {
         super.visit(that);
         if (isIndirectInvocation(that)
-                && !Decl.isJavaStaticPrimary(that.getPrimary())) {
+                && !Decl.isJavaStaticOrInterfacePrimary(that.getPrimary())) {
             // if the Callable is raw the invocation will be erased
             if(that.getPrimary().getTypeModel() != null
                     && isRaw(that.getPrimary().getTypeModel()))
