@@ -2,6 +2,9 @@ import ceylon.collection{
     ArrayList,
     HashMap
 }
+import java.io{
+    Serializable
+}
 
 class JavaSerializationBasic<T>(String s, T t) 
         given T satisfies Object {
@@ -13,6 +16,10 @@ class JavaSerializationBasic<T>(String s, T t)
         }
         return false;
     }
+    
+}
+
+class JavaSerializationExplicit() satisfies Serializable {
     
 }
 
