@@ -306,7 +306,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `ambiguousAnnotation`,
      `javaAnnotationElement`."
     String* warnings) 
-        => SuppressWarningsAnnotation(warnings);
+        => SuppressWarningsAnnotation(*warnings);
 
 "The annotation class for the [[serializable]] annotation."
 shared final annotation class SerializableAnnotation()
