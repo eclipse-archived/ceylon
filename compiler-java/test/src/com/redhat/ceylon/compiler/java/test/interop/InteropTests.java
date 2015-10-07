@@ -550,6 +550,12 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopBug2327(){
+        compile("Bug2327Java.java");
+        compile("Bug2327.ceylon");
+    }
+    
+    @Test
     public void testIopJpaCtor(){
         compile("JpaCtorWithoutNullary.java");
         compile("JpaCtorWithNullary.java");
