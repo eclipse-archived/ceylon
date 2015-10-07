@@ -2928,9 +2928,18 @@ public class ClassTransformer extends AbstractTransformer {
             ClassOrInterface interfaceContainer = Decl.getClassOrInterfaceContainer(iface, false);
             if(interfaceContainer instanceof Interface){
                 ClassOrInterface modelContainer = model;
+                // first try to find exactly the interface we are looking for
                 while((modelContainer = Decl.getClassOrInterfaceContainer(modelContainer, false)) != null
-                        && modelContainer.getType().getSupertype(interfaceContainer) == null){
+                        && !modelContainer.equals(interfaceContainer)){
                     // keep searching
+                }
+                // then find one that inherits it
+                if(modelContainer == null){
+                    modelContainer = model;
+                    while((modelContainer = Decl.getClassOrInterfaceContainer(modelContainer, false)) != null
+                            && modelContainer.getType().getSupertype(interfaceContainer) == null){
+                        // keep searching
+                    }
                 }
                 if (modelContainer == null) {
                     throw new BugException("Could not find container that satisfies interface "
