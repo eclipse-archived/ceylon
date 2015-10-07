@@ -542,7 +542,7 @@ shared interface Iterable<out Element=Anything,
      The following identities explain the relationship 
      between `scan` and [[fold]]:
      
-         it.scan(z)(f).getFromFirst(n) == it.taking(n).fold(z)(f)
+         it.scan(z)(f).getFromFirst(n) == it.take(n).fold(z)(f)
          it.scan(z)(f).last == it.fold(z)(f)
          it.scan(z)(f).first == {}.fold(z)(f) == z
      
@@ -1357,7 +1357,7 @@ shared interface Iterable<out Element=Anything,
      
      For example, the expression
      
-         {6, 9}.cycled.taking(5)
+         {6, 9}.cycled.take(5)
      
      evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
     see (`function repeat`)
