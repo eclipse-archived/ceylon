@@ -1108,17 +1108,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         // objects don't need overloading stuff
                         decl = makeLazyClass(classMirror, null, null);
                         setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                    } else if(getJavaVisibility(classMirror) != JavaVisibility.PRIVATE){
-                        Class klass = (Class)makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                        decl = klass;
-                        LazyClass subdecl = makeLazyClass(classMirror, klass, null);
-                        // no visibility for subdecl (private)
-                        subdecl.setOverloaded(true);
-                        klass.getOverloads().add(subdecl);
-                        decls.add(subdecl);
                     } else {
-                        // private class does not need a constructor
+                        // no visible constructors
                         decl = makeLazyClass(classMirror, null, null);
+                        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                     }
                     if (!isCeylon) {
                         setSealedFromConstructorMods(decl, constructors);
@@ -2406,15 +2399,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }
             }
-        }
-        
-        // In some cases, where all constructors are ignored, we can end up with no constructor, so
-        // pretend we have one which takes no parameters (eg. ceylon.language.String).
-        if(klass instanceof Class
-                && !((Class) klass).isAbstraction()
-                && !klass.isAnonymous()
-                && ((Class) klass).getParameterList() == null){
-            ((Class) klass).setParameterList(new ParameterList());
         }
         
         setExtendedType(klass, classMirror);
