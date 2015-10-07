@@ -79,7 +79,7 @@ public class Stitcher {
             }
         }
         final TypeChecker tc = langmodtc.getTypeChecker();
-        tc.process();
+        tc.process(true);
         if (tc.getErrors() > 0) {
             return 1;
         }
@@ -169,11 +169,13 @@ public class Stitcher {
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
         tcb.addSrcDirectory(clSrcDir.getParentFile().getParentFile());
         TypeChecker tc = tcb.getTypeChecker();
-        tc.process();
+        tc.process(true);
         MetamodelVisitor mmg = null;
-        final ErrorVisitor errVisitor = new ErrorVisitor();
+        final ErrorCollectingVisitor errVisitor = new ErrorCollectingVisitor(tc);
         for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
-            if (errVisitor.hasErrors(pu.getCompilationUnit())) {
+            pu.getCompilationUnit().visit(errVisitor);
+            if (errVisitor.getErrorCount() > 0) {
+                errVisitor.printErrors(false, false);
                 System.out.println("whoa, errors in the language module "
                         + pu.getCompilationUnit().getLocation());
                 return 1;
