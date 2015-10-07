@@ -75,7 +75,6 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ConditionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -9275,9 +9274,9 @@ public class ExpressionVisitor extends Visitor {
             } else {
                 that.addError("non-native declaration: '" +
                         d.getName(unit) +
-                        "' accesses native code: '" +
+                        "' accesses native declaration '" +
                         dec.getName(unit) +
-                        "', mark it or the module native");
+                        "' (mark it or the module native)");
             }
         }
         if (dec.isNative()) {
