@@ -1891,7 +1891,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.EqualOp op) {
         // we don't care about the left/right type since they're both Object
-        return transformOverridableBinaryOperator(op, null, null);
+        return transformOverridableBinaryOperator(op, op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
     }
 
     public JCExpression transform(Tree.SegmentOp op) {
@@ -2154,20 +2154,53 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.WithinOp op) {
-        Tree.Term middle = op.getTerm();
-        Type middleType = middle.getTypeModel();
+        Tree.Term middleTerm = op.getTerm();
         
         Tree.Bound lowerBound = op.getLowerBound();
         OperatorTranslation lowerOp = Operators.getOperator(lowerBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
+        Tree.Term lowerTerm = lowerBound.getTerm();
+        
         
         Tree.Bound upperBound = op.getUpperBound();
         OperatorTranslation upperOp = Operators.getOperator(upperBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
+        Tree.Term upperTerm = upperBound.getTerm();
+        
+        final Type middleSuper = getSupertype(middleTerm, typeFact().getComparableDeclaration());
+        Type middleType = middleSuper;
+        Type middleSelf = middleType.getDeclaration().getSelfType();
+        if (middleSelf != null) {
+            // Simplify Comparable<X> to X
+            middleType = middleType.getTypeArguments().get(middleSelf.getDeclaration());
+        }
+        
+        final Type lowerSuper = getSupertype(lowerTerm, typeFact().getComparableDeclaration());
+        Type lowerType = lowerSuper;
+        Type lowerSelf = lowerType.getDeclaration().getSelfType();
+        if (lowerSelf != null) {
+            // Simplify Comparable<X> to X
+            lowerType = lowerType.getTypeArguments().get(lowerSelf.getDeclaration());
+        }
+        
+        final Type upperSuper = getSupertype(upperTerm, typeFact().getComparableDeclaration());
+        Type upperType = upperSuper;
+        Type upperSelf = upperType.getDeclaration().getSelfType();
+        if (upperSelf != null) {
+            // Simplify Comparable<X> to X
+            upperType = upperType.getTypeArguments().get(upperSelf.getDeclaration());
+        }
         
         // If any of the terms is optimizable, then use optimized
         OptimisationStrategy opt;
-        if (upperOp.isTermOptimisable(lowerBound.getTerm(), this) == OptimisationStrategy.OPTIMISE
-                || upperOp.isTermOptimisable(middle, this) == OptimisationStrategy.OPTIMISE
-                || upperOp.isTermOptimisable(upperBound.getTerm(), this) == OptimisationStrategy.OPTIMISE) {
+        boolean optimizeLower = lowerOp.isTermOptimisable(lowerTerm, lowerType, this) == OptimisationStrategy.OPTIMISE
+                || lowerOp.isTermOptimisable(middleTerm, middleType, this) == OptimisationStrategy.OPTIMISE;
+        boolean optimizeUpper = upperOp.isTermOptimisable(middleTerm, middleType, this) == OptimisationStrategy.OPTIMISE
+        || upperOp.isTermOptimisable(upperTerm, upperType, this) == OptimisationStrategy.OPTIMISE;
+        if ((lowerType.isExactly(middleType) 
+                && middleType.isExactly(upperType)
+                && (optimizeLower
+                        ||optimizeUpper))// if all same type and any optimizable
+            || (optimizeLower // otherwise onle if all optimizable
+                && optimizeUpper)) {
             opt = OptimisationStrategy.OPTIMISE;
         } else {
             opt = OptimisationStrategy.NONE;
@@ -2176,30 +2209,34 @@ public class ExpressionTransformer extends AbstractTransformer {
         SyntheticName middleName = naming.alias("middle");
         List<JCStatement> vars = List.<JCStatement>of(makeVar(middleName, 
                 makeJavaType(middleType, opt.getBoxingStrategy() == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES), 
-                transformExpression(middle, opt.getBoxingStrategy(), middleType)));
+                transformExpression(middleTerm, opt.getBoxingStrategy(), middleType)));
         
-        JCExpression lower = transformBound(middleName, lowerOp, opt, middle, lowerBound, false);
-        JCExpression upper = transformBound(middleName, upperOp, opt, middle, upperBound, true);
+        JCExpression lower = transformBound(middleName, middleType, lowerType, lowerOp, opt, middleTerm, lowerBound, false);
+        JCExpression upper = transformBound(middleName, middleType, upperType, upperOp, opt, middleTerm, upperBound, true);
         at(op);
         OperatorTranslation andOp = Operators.getOperator(Tree.AndOp.class);
         OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
         return make().LetExpr(vars, transformOverridableBinaryOperator(andOp, optimisationStrategy, lower, upper, null, null, op.getTypeModel()));
     }
 
-    public JCExpression transformBound(SyntheticName middle, final OperatorTranslation operator, final OptimisationStrategy optimisationStrategy, Tree.Term middleTerm, Tree.Bound bound, boolean isUpper) {
+    public JCExpression transformBound(
+            SyntheticName middle, Type middleType, Type otherType, final OperatorTranslation operator, final OptimisationStrategy optimisationStrategy, Tree.Term middleTerm, Tree.Bound bound, boolean isUpper) {
         ;
         final JCExpression left;
         final JCExpression right;
+        Type leftType;
         if (isUpper) {
             left = middle.makeIdent();
+            leftType = middleType;
             right = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
             
         } else {
             left = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
+            leftType = otherType;
             right = middle.makeIdent();
         }
         at(bound);
-        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null, null, bound.getTypeModel());
+        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null, leftType, null, bound.getTypeModel());
     }
 
     public JCExpression transform(Tree.ScaleOp op) {
@@ -2316,14 +2353,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType, int typeArgumentToUse) {
-        Type leftType = getSupertype(op.getLeftTerm(), compoundType);
+        final Type leftSuper = getSupertype(op.getLeftTerm(), compoundType);
+        Type leftType = leftSuper;
         Type leftSelf = leftType.getDeclaration().getSelfType();
         if (leftSelf != null) {
+            // Simplify Comparable<X> to X
             leftType = leftType.getTypeArguments().get(leftSelf.getDeclaration());
         }
         // the right type always only depends on the LHS so let's not try to find it on the right side because it may
         // be undecidable: https://github.com/ceylon/ceylon-compiler/issues/1535
-        Type rightType = getTypeArgument(getSupertype(op.getLeftTerm(), compoundType), typeArgumentToUse);
+        Type rightType = getTypeArgument(leftSuper, typeArgumentToUse);
         // we do have a special case which is when the LHS is Float and RHS is Integer and the typechecker allowed coercion
         if(getSupertype(op.getLeftTerm(), typeFact().getFloatDeclaration()) != null
                 && getSupertype(op.getRightTerm(), typeFact().getIntegerDeclaration()) != null){
@@ -2341,7 +2380,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (operator == null) {
             return makeErroneous(op, "compiler bug: " + op.getClass() +" is an unhandled operator");
         }
-        OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, op.getLeftTerm(), op.getRightTerm(), this);
+        OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, 
+                op.getLeftTerm(), leftType, op.getRightTerm(), rightType, this);
 
         at(op);
         JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), leftType, EXPR_WIDEN_PRIM);
@@ -2360,6 +2400,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             OptimisationStrategy optimisationStrategy, 
             JCExpression left, JCExpression right,
             Tree.Term leftTerm, Tree.Term rightTerm, Type expectedType) {
+        return transformOverridableBinaryOperator(originalOperator, optimisationStrategy, left, right, leftTerm, leftTerm != null ? leftTerm.getTypeModel() : null, rightTerm, expectedType);
+    }
+    
+    private JCExpression transformOverridableBinaryOperator(OperatorTranslation originalOperator,
+            OptimisationStrategy optimisationStrategy, 
+            JCExpression left, JCExpression right,
+            Tree.Term leftTerm, Type leftType, Tree.Term rightTerm, Type expectedType) {
         JCExpression result = null;
         
         // optimise if we can
@@ -2396,13 +2443,23 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         if (optimisationStrategy.useValueTypeMethod()) {
-            Type leftType = leftTerm.getTypeModel();
+            int flags = JT_NO_PRIMITIVES;
             if (optimisationStrategy == OptimisationStrategy.OPTIMISE_VALUE_TYPE
                     && leftType.getDeclaration().getSelfType() != null) {
                 leftType = leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration());
             }
-            result = make().Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, JT_NO_PRIMITIVES), actualOperator.ceylonMethod), args.prepend(left));
+            
+            result = make().Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), actualOperator.ceylonMethod), args.prepend(left));
         } else {
+            if ((originalOperator == OperatorTranslation.BINARY_LARGE_AS
+                    || originalOperator == OperatorTranslation.BINARY_LARGER
+                    || originalOperator == OperatorTranslation.BINARY_SMALL_AS
+                    || originalOperator == OperatorTranslation.BINARY_SMALLER
+                    || originalOperator == OperatorTranslation.BINARY_COMPARE)
+                    && willEraseToObject(leftType)) {
+                left = make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), left);
+                args = List.<JCExpression>of(make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), right));
+            }
             result = make().Apply(typeArgs, makeSelect(left, actualOperator.ceylonMethod), args);
         }
 

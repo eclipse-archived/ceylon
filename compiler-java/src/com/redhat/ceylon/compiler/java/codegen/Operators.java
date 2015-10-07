@@ -135,7 +135,9 @@ public class Operators {
         
         BINARY_EQUAL(Tree.EqualOp.class, 2, "equals", JCTree.EQ, All){
             @Override
-            public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term t, Tree.Term leftTerm, Tree.Term rightTerm, AbstractTransformer gen) {
+            public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term t, 
+                    Tree.Term leftTerm, Type leftType, 
+                    Tree.Term rightTerm, Type rightType, AbstractTransformer gen) {
                 // no optimised operator returns a boxed type 
                 if(!t.getUnboxed())
                     return OptimisationStrategy.NONE;
@@ -143,10 +145,6 @@ public class Operators {
                 OptimisationStrategy right = isTermOptimisable(rightTerm, gen);
                 if(left == OptimisationStrategy.OPTIMISE
                         && right == OptimisationStrategy.OPTIMISE){
-                    // these two previous checks ensure that the term is unboxed and has a type model
-                    Type leftType = leftTerm.getTypeModel();
-                    Type rightType = rightTerm.getTypeModel();
-
                     // make sure both types are the same, can't optimise otherwise
                     if(!leftType.isExactly(rightType))
                         return OptimisationStrategy.NONE;
@@ -223,19 +221,27 @@ public class Operators {
             return isTermOptimisable(term, gen);
         }
         
-        public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term expression, Tree.Term leftTerm, Tree.Term rightTerm, AbstractTransformer gen){
+        public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term expression, 
+                Tree.Term leftTerm, 
+                Tree.Term rightTerm, AbstractTransformer gen){
+            return getBinOpOptimisationStrategy(expression, leftTerm, leftTerm.getTypeModel(),
+                    rightTerm, rightTerm.getTypeModel(), gen);
+        }
+        
+        public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term expression, 
+                Tree.Term leftTerm, Type leftType, 
+                Tree.Term rightTerm, Type rightType, AbstractTransformer gen){
             // no optimised operator returns a boxed type 
             if(!expression.getUnboxed())
                 return OptimisationStrategy.NONE;
             // Can we do an operator optimization?
             OptimisationStrategy optimisationStrategy;
-            OptimisationStrategy left = isTermOptimisable(leftTerm, gen);
-            OptimisationStrategy right = isTermOptimisable(rightTerm, gen);
+            OptimisationStrategy left = isTermOptimisable(leftTerm, leftType, gen);
+            OptimisationStrategy right = isTermOptimisable(rightTerm, rightType, gen);
             optimisationStrategy = mostAggressive(left, right);
             if (optimisationStrategy != OptimisationStrategy.OPTIMISE) {
                 // we can't use operator optimization, but maybe was can
                 // use static value type method to avoid boxing
-                Type leftType = leftTerm.getTypeModel();
                 if (Decl.isValueTypeDecl(leftType)) {
                     optimisationStrategy = OptimisationStrategy.OPTIMISE_VALUE_TYPE;
                 } else if (leftType.getDeclaration().getSelfType() != null
@@ -262,9 +268,11 @@ public class Operators {
             return right;
         }
         final OptimisationStrategy isTermOptimisable(Tree.Term t, AbstractTransformer gen){
+            return isTermOptimisable(t, t.getTypeModel(), gen);
+        }
+        final OptimisationStrategy isTermOptimisable(Tree.Term t, Type pt, AbstractTransformer gen){
             if(javacOperator < 0 || !t.getUnboxed())
                 return OptimisationStrategy.NONE;
-            Type pt = t.getTypeModel();
             if(pt == null) // typechecker error?
                 return OptimisationStrategy.NONE;
             if(optimisableTypes == null)
