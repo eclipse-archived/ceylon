@@ -2690,6 +2690,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             } else if (annotated instanceof Module) {
                 ((Module)annotated).setNativeBackend(nativeBackend);
             }
+        } else {
+            // Mark native Classes and Interfaces as well, but don't deal with overloads and such
+            if (annotated instanceof LazyClass && !((LazyClass)annotated).isCeylon()
+                    || annotated instanceof LazyInterface && !((LazyInterface)annotated).isCeylon()) {
+                ((Declaration)annotated).setNativeBackend(nativeBackend);
+            }
         }
     }
 
