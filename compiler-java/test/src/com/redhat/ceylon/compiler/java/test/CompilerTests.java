@@ -232,20 +232,36 @@ public abstract class CompilerTests {
     }
 
     protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
-        assertErrors(ceylon, defaultOptions, null, expectedErrors);
+        assertErrors(ceylon, defaultOptions, null, false, expectedErrors);
+    }
+    
+    protected void assertErrors(String ceylon, boolean includeWarnings, CompilerError... expectedErrors) {
+        assertErrors(ceylon, defaultOptions, null, includeWarnings, expectedErrors);
     }
     
     protected void assertErrors(String ceylon, Throwable expectedException, CompilerError... expectedErrors) {
-        assertErrors(ceylon, defaultOptions, expectedException, expectedErrors);
+        assertErrors(ceylon, defaultOptions, expectedException, false, expectedErrors);
+    }
+    
+    protected void assertErrors(String ceylon, List<String> options, Throwable expectedException, boolean includeWarnings, CompilerError... expectedErrors) {
+        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, includeWarnings, expectedErrors);
     }
     
     protected void assertErrors(String ceylon, List<String> options, Throwable expectedException, CompilerError... expectedErrors) {
-        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, expectedErrors);
+        assertErrors(new String[] {ceylon+".ceylon"}, options, expectedException, false, expectedErrors);
     }
     
     protected void assertErrors(String[] ceylonFiles, 
             List<String> options, 
             Throwable expectedException, 
+            CompilerError... expectedErrors) {
+        assertErrors(ceylonFiles, options, expectedException, false, expectedErrors);
+    }
+    
+    protected void assertErrors(String[] ceylonFiles, 
+            List<String> options, 
+            Throwable expectedException, 
+            boolean includeWarnings, 
             CompilerError... expectedErrors) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
@@ -254,7 +270,7 @@ public abstract class CompilerTests {
         CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
 
         boolean expectedToFail = false;
-        Diagnostic.Kind lowestErrorLevel = Diagnostic.Kind.ERROR;
+        Diagnostic.Kind lowestErrorLevel = includeWarnings ? Diagnostic.Kind.WARNING : Diagnostic.Kind.ERROR;
         for (CompilerError expectedError : expectedErrors) {
             if (expectedError.kind == Diagnostic.Kind.ERROR) {
                 expectedToFail = true;

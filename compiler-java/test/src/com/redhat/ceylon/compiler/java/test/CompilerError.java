@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test;
 
 import javax.tools.Diagnostic;
+import javax.tools.Diagnostic.Kind;
 
 public class CompilerError implements Comparable<CompilerError>{
     public enum Classification {
@@ -116,5 +117,9 @@ public class CompilerError implements Comparable<CompilerError>{
             cmp = this.message.compareTo(o.message);
         }
         return Long.signum(cmp);
+    }
+
+    public static CompilerError warning(int line, String message) {
+        return new CompilerError(Kind.WARNING, null, line, message);
     }
 }
