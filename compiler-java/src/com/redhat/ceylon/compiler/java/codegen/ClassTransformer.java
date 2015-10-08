@@ -5365,7 +5365,7 @@ public class ClassTransformer extends AbstractTransformer {
             generateInstantiators(classBuilder, clz, ctor, decl, impl, that, parameterList);
         }
         
-        ctorDb.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.CONSTRUCTOR, that));
+        ctorDb.userAnnotations(expressionGen().transformAnnotations(!(that instanceof Tree.Enumerated), OutputElement.CONSTRUCTOR, that));
         if (atIgnoreCtor) {
             ctorDb.modelAnnotations(makeAtIgnore());
         } else if (!Decl.isDefaultConstructor(ctor)) {
