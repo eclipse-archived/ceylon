@@ -638,4 +638,10 @@ public class IssuesTests_2000_2499 extends CompilerTests {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2339",
                 "bug23xx/Bug2339.ceylon"); 
     }
+
+    @Test
+    public void testBug2343() throws Exception {
+        compile("bug23xx/Bug2343A.ceylon"); 
+        compile("bug23xx/Bug2343B.ceylon"); 
+    }
 }
