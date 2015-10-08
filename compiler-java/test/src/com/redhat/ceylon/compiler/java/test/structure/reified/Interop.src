@@ -60,6 +60,7 @@ final class reifiedInstantiateInterop_ {
     private reifiedInstantiateInterop_() {
     }
     
+    @.ceylon.language.NativeAnnotation$annotation$(backend = "jvm")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void reifiedInstantiateInterop() {
         final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);

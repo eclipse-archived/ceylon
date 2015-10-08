@@ -7,7 +7,7 @@ shared class CeylonClass<Element>()
 
 shared interface CeylonInterface<Element> satisfies JavaInterface<Element>{}
 
-void reifiedInstantiateInterop(){
+native("jvm") void reifiedInstantiateInterop(){
     value c = CeylonClass<Integer>();
     c.foo();
     c.foo{};

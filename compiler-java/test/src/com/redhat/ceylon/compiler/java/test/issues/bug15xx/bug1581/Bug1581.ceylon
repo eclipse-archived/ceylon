@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-void bug1581() {
+native("jvm") void bug1581() {
     value b = Bug1581Java(null);
     value p = b.props;
 }
