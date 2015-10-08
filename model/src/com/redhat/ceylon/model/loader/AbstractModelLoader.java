@@ -4153,7 +4153,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // ignore generated interfaces
                 if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE) 
                         || sameType(iface, CEYLON_SERIALIZABLE_TYPE)
-                        || sameType(iface, JAVA_IO_SERIALIZABLE_TYPE_TYPE))
+                        || (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null && sameType(iface, JAVA_IO_SERIALIZABLE_TYPE_TYPE)))
                     continue;
                 try{
                     klass.getSatisfiedTypes().add(getNonPrimitiveType(ModelUtil.getModule(klass), iface, klass, VarianceLocation.INVARIANT));
