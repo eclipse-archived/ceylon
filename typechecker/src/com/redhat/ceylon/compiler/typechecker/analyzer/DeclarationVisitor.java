@@ -472,7 +472,6 @@ public abstract class DeclarationVisitor extends Visitor {
                             // RefinementVisitor
                             initOverload(model, member, 
                                     scope, unit);
-                            dup = true;
                         }
                         else if (canBeNative(member) && 
                                  canBeNative(model) &&
