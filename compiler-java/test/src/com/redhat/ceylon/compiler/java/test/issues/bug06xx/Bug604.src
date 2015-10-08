@@ -29,7 +29,7 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
         }
         
         public final boolean touches(final N node) {
-            return getN1().equals(node) || getN2().equals(node);
+            return ((N)getN1()).equals((N)node) || ((N)getN2()).equals((N)node);
         }
         
         @.java.lang.Override
