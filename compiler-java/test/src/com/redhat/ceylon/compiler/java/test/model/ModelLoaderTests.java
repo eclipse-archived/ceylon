@@ -1414,6 +1414,31 @@ public class ModelLoaderTests extends CompilerTests {
     }
     
     @Test
+    public void ceylonDeprecated(){
+        compile("CeylonDeprecated.ceylon");
+        assertErrors("ceylondeprecatedtest", true,
+                CompilerError.warning(3, "type is deprecated: 'CeylonDeprecated'"),
+                CompilerError.warning(4, "declaration is deprecated: 'CeylonDeprecated'"),
+                CompilerError.warning(6, "type is deprecated: 'CeylonDeprecated2'"),
+                CompilerError.warning(7, "declaration is deprecated: 'CeylonDeprecated2'"),
+                // TODO spec error CompilerError.warning(10, "declaration is deprecated: 'CeylonDeprecated3'"),
+                CompilerError.warning(11, "declaration is deprecated: 'other'"),
+                CompilerError.warning(12, "declaration is deprecated: 'val'"),
+                CompilerError.warning(14, "declaration is deprecated: 'a'"),
+                CompilerError.warning(15, "declaration is deprecated: 'm'"),
+                CompilerError.warning(17, "declaration is deprecated: 'a'"),
+                CompilerError.warning(18, "declaration is deprecated: 'm'"),
+                CompilerError.warning(20, "type is deprecated: 'CeylonDeprecated6'"),
+                CompilerError.warning(22, "declaration is deprecated: 'ceylonDeprecated7'"),
+                CompilerError.warning(23, "declaration is deprecated: 'ceylonDeprecated8'"),
+                CompilerError.warning(25, "declaration is deprecated: 'ceylonDeprecated9'"),
+                CompilerError.warning(26, "declaration is deprecated: 'ceylonDeprecated10'"),
+                CompilerError.warning(28, "declaration is deprecated: 'ceylonDeprecated11'")
+                
+        );
+    }
+    
+    @Test
     public void bogusModelAnnotationsTopLevelAttribute(){
         compile("bogusTopLevelAttributeNoGetter_.java", "bogusTopLevelAttributeMissingType_.java", "bogusTopLevelAttributeInvalidType_.java");
         assertErrors("bogusTopLevelAttributeUser",
