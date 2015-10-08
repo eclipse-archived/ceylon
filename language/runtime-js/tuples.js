@@ -13,16 +13,17 @@ function tpl$(elems,spread){
   if (elems.size===0&&(spread===undefined||spread.size===0))return empty();
   var types=[];
   for (var i=0; i < elems.size; i++){
-    if (elems[i]===null) {
+    var e=elems.$_get(i,1);
+    if (e===null) {
       types.push({t:Null});
-    } else if (elems[i]===undefined) {
+    } else if (e===undefined) {
       types.push({t:Anything});
-    } else if (elems[i].getT$all && elems[i].getT$name) {
-      var _et={t:elems[i].getT$all()[elems[i].getT$name()]};
-      if (elems[i].$$targs$$)_et.a=elems[i].$$targs$$;
+    } else if (e.getT$all && e.getT$name) {
+      var _et={t:e.getT$all()[e.getT$name()]};
+      if (e.$$targs$$)_et.a=e.$$targs$$;
       types.push(_et);
     } else {
-      console.log("Tuple: WTF do I use for the type of " + elems[i]);
+      console.log("Tuple: WTF do I use for the type of " + e);
       types.push({t:Anything});
     }
   }
@@ -31,8 +32,8 @@ function tpl$(elems,spread){
   //  types.push(spread.$$targs$$.Element$Sequence);
   //}
   types={t:'T',l:types};
-  $init$Tuple();
-  var that=new Tuple.$$;
+  $init$tpl$();
+  var that=new tpl$.$$;
   that.$$targs$$=types;
   $_Object(that);
   var _t=types.l.length===1?types.l[0]:{t:'u',l:types.l};
@@ -51,171 +52,182 @@ function tpl$(elems,spread){
     that.$$targs$$.Rest$Tuple={t:'T',l:_t.l.spanFrom(1)};
   }
   that.first_=elems[0];
-  that.getFromFirst=function(i){
-    if (spread && i>=elems.length) {
-      return spread.getFromFirst(i-elems.length);
-    }
-    return elems[i];
-  };
-  that.getFromFirst.$crtmm$=Tuple.$$.prototype.getFromFirst.$crtmm$;
-  that.iterator=function(){
-    if (spread) {
-      return ChainedIterator(elems,spread,{Element$ChainedIterator:types,Other$ChainedIterator:spread.$$targs$$.Element$Sequential});
-    }
-    var i=0;
-    return for$iter(function(){
-      return i===elems.length?finished():elems[i++];
-    },{Element$Iterator:_t});
+  that.elem$=elems;
+  if (spread!==undefined) {
+    that.sp$=spread;
   }
-  that.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
-  that.contains=function(i) { return elems.contains(i) || (spread&&spread.contains(i)); }
-  that.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
-  that.withLeading=function(a,b){
-    var e2 = elems.slice(0); e2.unshift(a);
-    var t2 = types.l.slice(0); t2.unshift(b.Other$withLeading);
-    return tpl$(e2,spread);
-  }
-  that.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
-  that.span=function(a,b){//from,to
-    if (spread) {
-      if (a>=elems.length&&b>=elems.length){
-        return spread.span(a-elems.length,b-elems.length);
-      }
-      if (b>=elems.length) {
-        var s1=elems.spanFrom(a);
-        var s2=spread.spanTo(b-elems.length);
-        return s1.chain(s2,{Other$chain:spread.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
-      }
-      if (a>=elems.length) {
-        var s1=spread.span(a-elems.length,0);
-        var s2=elems.span(elems.length-1,b)
-        return s1.chain(s2,{Other$chain:types,OtherAbsent$chain:{t:Nothing}}).sequence();
-      }
-    }
-    var r=elems.span(a,b);
-    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
-  }
-  that.span.$crtmm$=Tuple.$$.prototype.span.$crtmm$;
-  that.spanTo=function(x){
-    if (spread) {
-      if (x<0)return empty();
-      return this.span(0,x);
-    }
-    var r=elems.spanTo(x);
-    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
-  }
-  that.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
-  that.spanFrom=function(x){
-    if (x===0)return that;
-    if (spread) {
-      if (x>=elems.length) {
-        return spread.spanFrom(x-elems.length);
-      } else if (x<0) {
-        return this;
-      }
-      return elems.spanFrom(x).chain(spread,{Other$chain:spread.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
-    }
-    var r=elems.spanFrom(x);
-    return r.size===0?empty():tpl$(r);
-  }
-  that.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
-  that.measure=function(a,b){//from,length
-    if(b===0)return empty();
-    if (spread) {
-      if (a>=elems.length) {
-          var m1=spread.measure(a-elems.length,b);
-        if (b>0) {
-          return m1;
-        } else {
-          console.log("missing tpl.measure with negative length");
-        }
-      }
-      if (b>0 && a+b-1>=elems.length) {
-        var m1=elems.measure(a,elems.length-a);
-        var m2=spread.measure(0,b-m1.size);
-        return m1.chain(m2,{Other$chain:spread.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
-      }
-    }
-    var r=elems.measure(a,b);
-    return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:_t});
-  }
-  that.measure.$crtmm$=Tuple.$$.prototype.measure.$crtmm$;
-  that.equals=function(o){
-    if (spread) {
-      if (!is$(o,{t:Sequential}))return false;
-      if (!o.size===this.size)return false;
-      var oi=o.iterator();
-      var ot=this.iterator();
-      var ni=oi.next();
-      var nt=ot.next();
-      while (ni!==finished()) {
-        if (!ni.equals(nt))return false;
-        ni=oi.next();
-        nt=ot.next();
-      }
-      return true;
-    }
-    return elems.equals(o);
-  }
-  that.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
-  that.withTrailing=function(a,b){
-    if (spread) {
-      return tpl$(elems,spread.withTrailing(a,b));
-    }
-    var e2=elems.slice(0);e2.push(a);
-    var t2=types.l.slice(0);t2.push(b.Other$withTrailing);
-    return tpl$(e2);
-  }
-  that.withTrailing.$crtmm$=Sequential.$$.prototype.withTrailing.$crtmm$;
-  that.chain=function(a,b){return elems.chain(a,b);}
-  that.chain.$crtmm$=Iterable.$$.prototype.chain.$crtmm$;
-  that.longerThan=function(i){return elems.longerThan(i);}
-  that.longerThan.$crtmm$=Iterable.$$.prototype.longerThan.$crtmm$;
-  that.shorterThan=function(i){return elems.shorterThan(i);}
-  that.shorterThan.$crtmm$=Iterable.$$.prototype.shorterThan.$crtmm$;
-  atr$(that,'hash',function(){
-    return elems.hash+(spread?spread.hash:0);
-  },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
-  atr$(that,'rest',function(){
-    return elems.size===1?spread||empty():tpl$(elems.slice(1),spread);
-  },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
-  atr$(that,'rest_',function(){
-    return that.rest;
-  },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
-  atr$(that,'size',function(){
-    return elems.size+(spread?spread.size:0);
-  },undefined,Tuple.$$.prototype.$prop$getSize.$crtmm$);
-  atr$(that,'lastIndex',function(){
-    return elems.size-1+(spread?spread.size:0);
-  },undefined,Tuple.$$.prototype.$prop$getLastIndex.$crtmm$);
-  atr$(that,'last',function(){
-    return spread?spread.last:elems[elems.size-1];
-  },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
-  atr$(that,'string',function(){
-    return '['+commaList(elems)+(spread?', '+commaList(spread):'')+']';
-  },undefined,Tuple.$$.prototype.$prop$getString.$crtmm$);
-  that.nativeArray=function(){
-    if (spread) {
-      var e=new Array(elems.length+spread.size);
-      for (var i=0;i<elems.length;i++) {
-        e[i]=elems[i];
-      }
-      var elem;for(var iter=spread.iterator();(elem=iter.next())!==finished();) {
-        e[i++]=elem;
-      }
-      return e;
-    }
-    return elems.slice(0);
-  };
-  that.append=function(elems){
-    var na=that.nativeArray();
-    for (var i=0;i<elems.size;i++) {
-      na.push(elems.$_get(i));
-    }
-    return tpl$(na);
-  };
+  that.t$=_t;
+  that.tps$=types;
   return that;
 }
+function $init$tpl$(){
+  if (tpl$.$$===undefined) {
+    initTypeProto(tpl$,'ceylon.language::Tuple',$init$Tuple());
+    (function(tuple) {
+      tuple.getFromFirst=function(i){
+        if (this.sp$ && i>=this.elem$.size) {
+          return this.sp$.getFromFirst(i-this.elem$.size);
+        }
+        return this.elem$[i];
+      };
+      tuple.getFromFirst.$crtmm$=Tuple.$$.prototype.getFromFirst.$crtmm$;
+      tuple.iterator=function(){
+        if (this.sp$) {
+          return ChainedIterator(this.elem$,this.sp$,{Element$ChainedIterator:this.tps$,Other$ChainedIterator:this.sp$.$$targs$$.Element$Sequential});
+        }
+        var i=0,e=this.elem$;
+        return for$iter(function(){
+          if (i===e.size)return finished();
+          var r=e.$_get(i++);
+          return r===undefined?null:r;
+        },{Element$Iterator:this.t$});
+      }
+      tuple.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
+      tuple.contains=function(i) { return this.elem$.contains(i) || (this.sp$&&this.sp$.contains(i)); }
+      tuple.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
+      tuple.withLeading=function(a,b){
+        var e2 = this.elem$.slice(0); e2.unshift(a);
+        var t2 = this.tps$.l.slice(0); t2.unshift(b.Other$withLeading);
+        return tpl$(e2,this.sp$);
+      }
+      tuple.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
+      tuple.span=function(a,b){//from,to
+        if (this.sp$) {
+          if (a>=this.elem$.size&&b>=this.elem$.size){
+            return this.sp$.span(a-this.elem$.size,b-this.elem$.size);
+          }
+          if (b>=this.elem$.size) {
+            var s1=this.elem$.spanFrom(a);
+            var s2=this.sp$.spanTo(b-this.elem$.size);
+            return s1.chain(s2,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+          }
+          if (a>=this.elem$.size) {
+            var s1=this.sp$.span(a-this.elem$.size,0);
+            var s2=this.elem$.span(this.elem$.size-1,b)
+            return s1.chain(s2,{Other$chain:this.tps$,OtherAbsent$chain:{t:Nothing}}).sequence();
+          }
+        }
+        var r=this.elem$.span(a,b);
+        return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:this.t$});
+      }
+      tuple.span.$crtmm$=Tuple.$$.prototype.span.$crtmm$;
+      tuple.spanTo=function(x){
+        if (this.sp$) {
+          if (x<0)return empty();
+          return this.span(0,x);
+        }
+        var r=this.elem$.spanTo(x);
+        return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:this.t$});
+      }
+      tuple.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
+      tuple.spanFrom=function(x){
+        if (x===0)return this;
+        if (this.sp$) {
+          if (x>=this.elem$.size) {
+            return this.sp$.spanFrom(x-this.elem$.size);
+          } else if (x<0) {
+            return this;
+          }
+          return this.elem$.spanFrom(x).chain(this.sp$,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+        }
+        var r=this.elem$.spanFrom(x);
+        return r.size===0?empty():tpl$(r);
+      }
+      tuple.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
+      tuple.measure=function(a,b){//from,length
+        if(b===0)return empty();
+        if (this.sp$) {
+          if (a>=this.elem$.size) {
+              var m1=this.sp$.measure(a-this.elem$.size,b);
+            if (b>0) {
+              return m1;
+            } else {
+              console.log("missing tpl.measure with negative length");
+            }
+          }
+          if (b>0 && a+b-1>=this.elem$.size) {
+            var m1=this.elem$.measure(a,this.elem$.size-a);
+            var m2=this.sp$.measure(0,b-m1.size);
+            return m1.chain(m2,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+          }
+        }
+        var r=this.elem$.measure(a,b);
+        return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:this.t$});
+      }
+      tuple.measure.$crtmm$=Tuple.$$.prototype.measure.$crtmm$;
+      tuple.equals=function(o){
+        if (this.sp$) {
+          if (!is$(o,{t:Sequential}))return false;
+          if (!o.size===this.size)return false;
+          var oi=o.iterator();
+          var ot=this.iterator();
+          var ni=oi.next();
+          var nt=ot.next();
+          while (ni!==finished()) {
+            if (!ni.equals(nt))return false;
+            ni=oi.next();
+            nt=ot.next();
+          }
+          return true;
+        }
+        return this.elem$.equals(o);
+      }
+      tuple.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
+      tuple.withTrailing=function(a,b){
+        if (this.sp$) {
+          return tpl$(this.elem$,this.sp$.withTrailing(a,b));
+        }
+        var e2=this.elem$.slice(0);e2.push(a);
+        var t2=this.tps$.l.slice(0);t2.push(b.Other$withTrailing);
+        return tpl$(e2);
+      }
+      tuple.withTrailing.$crtmm$=Sequential.$$.prototype.withTrailing.$crtmm$;
+      tuple.longerThan=function(i){return this.elem$.longerThan(i);}
+      tuple.longerThan.$crtmm$=Iterable.$$.prototype.longerThan.$crtmm$;
+      tuple.shorterThan=function(i){return this.elem$.shorterThan(i);}
+      tuple.shorterThan.$crtmm$=Iterable.$$.prototype.shorterThan.$crtmm$;
+      atr$(tuple,'hash',function(){
+        return this.elem$.hash+(this.sp$?this.sp$.hash:0);
+      },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
+      atr$(tuple,'rest',function(){
+        return this.elem$.size===1?this.sp$||empty():tpl$(this.elem$.slice(1),this.sp$);
+      },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
+      atr$(tuple,'size',function(){
+        return this.elem$.size+(this.sp$?this.sp$.size:0);
+      },undefined,Tuple.$$.prototype.$prop$getSize.$crtmm$);
+      atr$(tuple,'lastIndex',function(){
+        return this.elem$.size-1+(this.sp$?this.sp$.size:0);
+      },undefined,Tuple.$$.prototype.$prop$getLastIndex.$crtmm$);
+      atr$(tuple,'last',function(){
+        return this.sp$?this.sp$.last:this.elem$[this.elem$.size-1];
+      },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
+      atr$(tuple,'string',function(){
+        return '['+commaList(this.elem$)+(this.sp$?', '+commaList(this.sp$):'')+']';
+      },undefined,Tuple.$$.prototype.$prop$getString.$crtmm$);
+      tuple.nativeArray=function(){
+        if (this.sp$) {
+          var e=new Array(this.elem$.size+this.sp$.size);
+          for (var i=0;i<this.elem$.size;i++) {
+            e[i]=this.elem$[i];
+          }
+          var elem;for(var iter=this.sp$.iterator();(elem=iter.next())!==finished();) {
+            e[i++]=elem;
+          }
+          return e;
+        }
+        return this.elem$.slice(0);
+      };
+      tuple.append=function(e){
+        var na=this.nativeArray();
+        for (var i=0;i<e.size;i++) {
+          na.push(e.$_get(i));
+        }
+        return tpl$(na);
+      };
+    })(tpl$.$$.prototype);
+  }
+}
+$init$tpl$();
 ex$.tpl$=tpl$;
 
 //Create a proper Tuple from a simplified tuple type description
