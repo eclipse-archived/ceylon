@@ -3848,7 +3848,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     value.setType(logModelResolutionError(value.getContainer(), "Error while resolving toplevel attribute "+value.getQualifiedNameString()+": getter method missing"));
                     return;
                 }
-
+                value.setDeprecated(value.isDeprecated() | isDeprecated(meth));
                 value.setType(obtainType(meth.getReturnType(), meth, null, ModelUtil.getModuleContainer(value.getContainer()), VarianceLocation.INVARIANT,
                         "toplevel attribute", value));
 
@@ -3931,6 +3931,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     return;
                 }
 
+                method.setDeprecated(method.isDeprecated() | isDeprecated(meth));
                 // save the method name
                 method.setRealMethodName(meth.getName());
 
