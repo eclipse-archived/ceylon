@@ -576,4 +576,9 @@ public class InteropTests extends CompilerTests {
                 Arrays.asList(//"com.redhat.ceylon.compiler.java.test.interop",
                         "--run", "com.redhat.ceylon.compiler.java.test.interop.javaSerializationRoundTrip"));
     }
+    
+    @Test
+    public void testIopSerializableAssignable() throws Throwable{
+        compile("SerializableAssignable.ceylon");
+    }
 }
