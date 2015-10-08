@@ -1,6 +1,7 @@
 function flatten(tf, $$$mptypes) {
   if (tf.$unflattened$)return tf.$unflattened$;
   if (tf.jsc$)tf=tf.jsc$;
+  else if (tf.c2$)tf=tf.c2$;
   var mm=getrtmm$$(tf);
   var t0,iadic,argx;
   if (mm && mm.ps) {
