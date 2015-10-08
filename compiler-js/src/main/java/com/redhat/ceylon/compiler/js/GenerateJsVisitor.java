@@ -932,6 +932,10 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     void generateAttributeForParameter(Node node, Class d, Parameter p) {
+        if (p.getDeclaration() instanceof Function &&
+                ((Function)p.getDeclaration()).getTypeDeclaration() instanceof Constructor) {
+            return;
+        }
         final String privname = names.name(p) + "_";
         final FunctionOrValue pdec = p.getModel();
         defineAttribute(names.self(d), names.name(pdec));
