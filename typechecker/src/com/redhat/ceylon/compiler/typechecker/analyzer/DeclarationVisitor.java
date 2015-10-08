@@ -999,9 +999,10 @@ public abstract class DeclarationVisitor extends Visitor {
         defaultExtendedToObject(i);
         that.setDeclarationModel(i);
         super.visit(that);
-        if (that.getDynamic()) {
-            checkDynamic(that);
-        }
+        // Required by IDE to be omitted: https://github.com/ceylon/ceylon-compiler/issues/2326
+//        if (that.getDynamic()) {
+//            checkDynamic(that);
+//        }
     }
     
     @Override
