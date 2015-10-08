@@ -3577,7 +3577,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         : paramMirror.getType());
             }
             parameter.setDeclaration((Declaration) decl);
-            value.setDeprecated(isDeprecated(paramMirror));
+            value.setDeprecated(value.isDeprecated() || isDeprecated(paramMirror));
             setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
             if (!lookedup) {
