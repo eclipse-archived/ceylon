@@ -179,28 +179,16 @@ public class CeylonRunJsTool extends RepoUsingTool {
     private List<String> args;
     private PrintStream output;
     private boolean debug;
-    private boolean throwOnError;
     
     public CeylonRunJsTool() {
         super(CeylonRunJsMessages.RESOURCE_BUNDLE);
     }
 
     /**
-     * Tell the tool not to exit on a non-zero exit code from node, but throw otherwise. This is not
-     * used by the command-line, but can be useful when invoked via the API.
-     * @param throwOnError true to throw instead of calling System.exit. Defaults to false.
+     * Ignored: this is now always true.
+     * @deprecated this is now always true.
      */
     public void setThrowOnError(boolean throwOnError) {
-        this.throwOnError = throwOnError;
-    }
-    
-    /**
-     * Check if we throw on a non-zero exit code from node, rather than exit. This is not
-     * used by the command-line, but can be useful when invoked via the API.
-     * @return true to throw instead of calling System.exit. Defaults to false.
-     */
-    public boolean isThrowOnError() {
-        return throwOnError;
     }
     
     /** Sets the PrintStream to use for output. Default is System.out. */
@@ -478,10 +466,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
         int exitCode = nodeProcess.waitFor();
         if (exitCode != 0) {
-            if(throwOnError)
-                throw new RuntimeException("Node process exited with non-zero exit code: "+exitCode);
-            else
-                System.exit(exitCode==11?2:exitCode);
+            if(exitCode == 11)
+                exitCode = 2;
+            throw new CeylonRunJsException("Node process exited with non-zero exit code: "+exitCode, exitCode);
         }
     }
 

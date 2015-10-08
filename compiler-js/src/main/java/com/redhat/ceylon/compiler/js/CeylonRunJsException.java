@@ -10,4 +10,8 @@ public class CeylonRunJsException extends ToolError {
     public CeylonRunJsException(String message) {
         super(message);
     }
+
+    public CeylonRunJsException(String message, int exitCode) {
+        super(message, exitCode);
+    }
 }
