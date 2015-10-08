@@ -3569,10 +3569,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     typeFactory.isNonemptyIterableType(parameter.getType())) {
                 parameter.setAtLeastOne(true);
             }
-            // if it's variadic, consider the array element type (T[] == T...) for boxing rules
-            markUnboxed(value, null, isVariadic ? 
-                    paramMirror.getType().getComponentType()
-                    : paramMirror.getType());
+            // unboxed is already set if it's a real method
+            if(!lookedup){
+                // if it's variadic, consider the array element type (T[] == T...) for boxing rules
+                markUnboxed(value, null, isVariadic ? 
+                        paramMirror.getType().getComponentType()
+                        : paramMirror.getType());
+            }
             parameter.setDeclaration((Declaration) decl);
             value.setDeprecated(isDeprecated(paramMirror));
             setAnnotations(value, paramMirror);
