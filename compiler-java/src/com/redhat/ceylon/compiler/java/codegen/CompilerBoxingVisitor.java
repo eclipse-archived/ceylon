@@ -32,6 +32,11 @@ public class CompilerBoxingVisitor extends BoxingVisitor {
     }
 
     @Override
+    protected boolean willEraseToSequence(Type type) {
+        return transformer.willEraseToSequence(type);
+    }
+    
+    @Override
     protected boolean isBooleanTrue(Declaration decl) {
         return transformer.isBooleanTrue(decl);
     }

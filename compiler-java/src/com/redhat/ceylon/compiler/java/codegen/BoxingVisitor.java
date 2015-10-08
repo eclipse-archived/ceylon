@@ -83,6 +83,7 @@ public abstract class BoxingVisitor extends Visitor {
     protected abstract boolean hasErasure(Type type);
     protected abstract boolean hasErasedTypeParameters(Reference producedReference);
     protected abstract boolean willEraseToObject(Type type);
+    protected abstract boolean willEraseToSequence(Type type);
     protected abstract boolean isTypeParameter(Type type);
     protected abstract boolean isRaw(Type type);
     protected abstract boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, Type type);
@@ -173,7 +174,7 @@ public abstract class BoxingVisitor extends Visitor {
         }
         
         if(primaryType != null
-                && isRaw(primaryType)
+                && (isRaw(primaryType) || willEraseToSequence(primaryType))
                 && that.getTarget() != null
                 && that.getTarget().getDeclaration() instanceof TypedDeclaration
                 && CodegenUtil.containsTypeParameter(((TypedDeclaration)that.getTarget().getDeclaration()).getType())){
