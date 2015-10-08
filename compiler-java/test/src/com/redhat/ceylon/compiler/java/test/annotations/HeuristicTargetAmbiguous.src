@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-@.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = {"ambiguousAnnotation"})
+@.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = "ambiguousAnnotation")
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrConstructorTarget
 class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -88,7 +88,7 @@ final class ambiguousObject_ implements .java.io.Serializable, .com.redhat.ceylo
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = {"ambiguousAnnotation"})
+    @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = "ambiguousAnnotation")
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldOrMethodTarget
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::ambiguousObject")
     static .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_ get_() {
@@ -113,7 +113,7 @@ final class ambiguousObject_ implements .java.io.Serializable, .com.redhat.ceylo
 @interface AmbiguousAnnotationClass$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-@.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = {"ambiguousAnnotation"})
+@.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = "ambiguousAnnotation")
 @.com.redhat.ceylon.compiler.java.test.annotations.TypeOrAnnotationTypeTarget
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
