@@ -514,4 +514,11 @@ public abstract class FreeClassOrInterface
     public <AnnotationType extends java.lang.annotation.Annotation> boolean annotated(TypeDescriptor reifed$AnnotationType) {
         return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
+    
+    /**
+     * Used by the SDK's ceylon.interop.java
+     */
+    public java.lang.Class<?> getJavaClass(){
+        return Metamodel.getJavaClass(declaration);
+    }
 }
