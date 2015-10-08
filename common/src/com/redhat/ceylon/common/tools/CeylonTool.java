@@ -408,7 +408,8 @@ public class CeylonTool implements Tool {
         } else if (ex instanceof FatalToolError) {
             result = SC_TOOL_BUG;
         } else if (ex instanceof ToolError) {
-            result = SC_TOOL_ERROR;
+            ToolError err = (ToolError)ex;
+            result = err.isExitCodeProvided() ? err.getExitCode() : SC_TOOL_ERROR;
         } else {
             result = SC_TOOL_EXCEPTION;
         }

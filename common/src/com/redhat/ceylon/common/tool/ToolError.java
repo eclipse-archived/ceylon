@@ -8,12 +8,19 @@ package com.redhat.ceylon.common.tool;
  */
 public abstract class ToolError extends RuntimeException {
 
+    private int exitCode = -1;
+    
     public ToolError(String message, Throwable cause) {
         super(message, cause);
     }
 
     public ToolError(String message) {
         super(message);
+    }
+
+    public ToolError(String message, int exitCode) {
+        super(message);
+        this.exitCode = exitCode;
     }
 
     public ToolError(Throwable cause) {
@@ -33,5 +40,12 @@ public abstract class ToolError extends RuntimeException {
     public String getErrorMessage() {
         return getLocalizedMessage();
     }
-    
+
+    public boolean isExitCodeProvided(){
+        return exitCode != -1;
+    }
+
+    public int getExitCode(){
+        return exitCode;
+    }
 }
