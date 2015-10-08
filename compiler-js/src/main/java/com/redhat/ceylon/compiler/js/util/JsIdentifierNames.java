@@ -111,10 +111,7 @@ public class JsIdentifierNames {
         else {
             // The identifier will not be used outside the generated .js file,
             // so we can simply disambiguate it with a numeric ID.
-            name = uniqueVarNames.get(decl);
-            if (name == null) {
-                name = "$" + Long.toString(getUID(decl), 36);
-            }
+            name = uniquePrivateName(decl, false);
         }
         return sanitize(name);
     }
@@ -298,10 +295,7 @@ public class JsIdentifierNames {
         else {
             // The identifier will not be used outside the generated .js file,
             // so we can simply disambiguate it with a numeric ID.
-            name = uniqueVarNames.get(decl);
-            if (name == null) {
-                name = String.format(priv ? "$%s_" : "$%s", Long.toString(getUID(decl), 36));
-            }
+            name = uniquePrivateName(decl, priv);
         }
         //Fix #204 - same top-level declarations in different packages
         final com.redhat.ceylon.model.typechecker.model.Package declPkg = decl.getUnit().getPackage();
@@ -330,7 +324,21 @@ public class JsIdentifierNames {
         }
         return sanitize(name);
     }
-    
+
+    private String uniquePrivateName(Declaration d, boolean priv) {
+        String name = uniqueVarNames.get(d);
+        if (name != null) {
+            return name;
+        }
+        if (d.isClassOrInterfaceMember() && !JsCompiler.isCompilingLanguageModule()) {
+            final String containerName = d.getUnit().getPackage().getModule().getNameAsString();
+            return String.format(priv ? "$%s$%s_" : "$%s$%s",
+                    Integer.toString(Math.abs(containerName.hashCode()),36),
+                    Long.toString(getUID(d), 36));
+        }
+        return String.format(priv ? "$%s_" : "$%s", Long.toString(getUID(d), 36));
+    }
+
     private Declaration originalDeclaration(Declaration decl) {
         Declaration refinedDecl = decl;
         while (true) {
