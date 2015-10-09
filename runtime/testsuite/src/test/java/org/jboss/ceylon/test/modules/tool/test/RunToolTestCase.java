@@ -166,6 +166,14 @@ public class RunToolTestCase extends AbstractToolTest {
     }
 
     @Test
+    public void testQuotedModuleNameKeywordFunction() throws Exception {
+        ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
+        Assert.assertNotNull(model);
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--run", "foo.long.module::do", "foo.long.module/1.0.0"));
+        assertOutput(tool, "Hello, World!");
+    }
+
+    @Test
     public void testQuotedModuleNameNoVersion() throws Exception {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
