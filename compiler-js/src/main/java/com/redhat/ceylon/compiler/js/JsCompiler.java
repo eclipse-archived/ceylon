@@ -1,9 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -23,7 +19,6 @@ import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
@@ -207,8 +202,6 @@ public class JsCompiler {
             }
             boolean generatedCode = false;
             
-            checkInvalidNativePUs(phasedUnits);
-            
             //First generate the metamodel
             final Module defmod = tc.getContext().getModules().getDefaultModule();
             for (PhasedUnit pu: phasedUnits) {
@@ -248,8 +241,6 @@ public class JsCompiler {
                     e.getValue().encodeModel(names);
                 }
             }
-            
-            checkInvalidNativeImports(phasedUnits);
             
             //Output all the require calls for any imports
             final Visitor importVisitor = new Visitor() {
@@ -350,40 +341,6 @@ public class JsCompiler {
 
     public File getFullPath(PhasedUnit pu) {
         return new File(pu.getUnit().getFullPath());
-    }
-
-    private void checkInvalidNativePUs(List<PhasedUnit> phasedUnits) {
-        for (PhasedUnit pu : phasedUnits) {
-            ModuleDescriptor md = pu.findModuleDescriptor();
-            if (md != null) {
-                String be = getNativeBackend(md.getAnnotationList(), md.getUnit());
-                if (be != null) {
-                    if (be.isEmpty()) {
-                        md.addError("missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
-                    } else if (!isForBackend(be, Backend.JavaScript)) {
-                        md.addError("module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.JavaScript);
-                    }
-                }
-            }
-        }
-    }
-    
-    private void checkInvalidNativeImports(List<PhasedUnit> phasedUnits) {
-        for (PhasedUnit pu : phasedUnits) {
-            ModuleDescriptor md = pu.findModuleDescriptor();
-            if (md != null) {
-                for (ImportModule im : md.getImportModuleList().getImportModules()) {
-                    String be = getNativeBackend(im.getAnnotationList(), im.getUnit());
-                    if (im.getImportPath() != null) {
-                        Module m = (Module)im.getImportPath().getModel();
-                        if (be != null && m.isNative() && !be.equals(m.getNativeBackend())) {
-                            im.addError("native backend name conflicts with imported module: '\"" + 
-                                    be + "\"' is not '\"" + m.getNativeBackend() + "\"'", Backend.JavaScript);
-                        }
-                    }
-                }
-            }
-        }
     }
     
     /** Creates a JsOutput if needed, for the PhasedUnit.
