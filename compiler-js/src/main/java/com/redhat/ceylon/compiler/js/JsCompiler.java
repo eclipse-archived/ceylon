@@ -26,14 +26,10 @@ import com.redhat.ceylon.compiler.js.util.JsLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
@@ -64,48 +60,6 @@ public class JsCompiler {
     public int getExitCode() {
         return exitCode;
     }
-
-    private final Visitor unitVisitor = new Visitor() {
-
-        private boolean hasErrors(Node that) {
-            boolean r=false;
-            for (Message m: that.getErrors()) {
-                r |= m instanceof AnalysisError;
-            }
-            return r;
-        }
-        
-        @Override
-        public void visitAny(Node that) {
-            super.visitAny(that);
-        }
-        
-        @Override
-        public void visit(Tree.Declaration that) {
-            if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
-                super.visit(that);
-            }
-        }
-        
-        @Override
-        public void visit(Tree.Import that) {
-            if (hasErrors(that)) {
-                exitCode = 1;
-                return;
-            }
-            super.visit(that);
-        }
-        
-        @Override
-        public void visit(Tree.ImportModule that) {
-            if (hasErrors(that)) {
-                exitCode = 1;
-                return;
-            }
-            super.visit(that);
-        }
-        
-    };
 
     public JsCompiler(TypeChecker tc, Options options) {
         this.tc = tc;
@@ -150,25 +104,15 @@ public class JsCompiler {
     }
 
     /** Compile one phased unit. */
-    private void compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
-        pu.getCompilationUnit().visit(unitVisitor);
-        if (exitCode != 0) {
-            pu.getCompilationUnit().visit(errorVisitor);
-            return;
+    private int compileUnit(PhasedUnit pu, JsIdentifierNames names) throws IOException {
+        if (opts.isVerbose()) {
+            logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
         }
-        if (errCount == 0 || !stopOnErrors) {
-            if (opts.isVerbose()) {
-                logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
-            }
-            JsOutput jsout = getOutput(pu);
-            GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens());
-            pu.getCompilationUnit().visit(jsv);
-            pu.getCompilationUnit().visit(unitVisitor);
-            pu.getCompilationUnit().visit(errorVisitor);
-            if (jsv.getExitCode() != 0) {
-                exitCode = jsv.getExitCode();
-            }
-        }
+        JsOutput jsout = getOutput(pu);
+        GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens());
+        pu.getCompilationUnit().visit(jsv);
+        pu.getCompilationUnit().visit(errorVisitor);
+        return jsv.getExitCode();
     }
 
     /** Indicates if compilation should stop, based on whether there were errors
@@ -261,7 +205,7 @@ public class JsCompiler {
             //Then generate the JS code
             if (srcFiles == null && !phasedUnits.isEmpty()) {
                 for (PhasedUnit pu: phasedUnits) {
-                    compileUnit(pu, names);
+                    exitCode = compileUnit(pu, names);
                     generatedCode = true;
                     if (exitCode != 0) {
                         return false;
@@ -311,7 +255,7 @@ public class JsCompiler {
                         for (PhasedUnit pu : phasedUnits) {
                             File unitFile = getFullPath(pu);
                             if (FileUtil.sameFile(path, unitFile)) {
-                                compileUnit(pu, names);
+                                exitCode = compileUnit(pu, names);
                                 generatedCode = true;
                                 if (exitCode != 0) {
                                     return false;
@@ -333,7 +277,7 @@ public class JsCompiler {
             }
         } finally {
             if (exitCode==0) {
-                finish();
+                exitCode = finish();
             }
         }
         return errCount == 0 && exitCode == 0;
@@ -371,19 +315,20 @@ public class JsCompiler {
     }
 
     /** Closes all output writers and puts resulting artifacts in the output repo. */
-    protected void finish() throws IOException {
+    protected int finish() throws IOException {
+        int result = 0;
         String outDir = opts.getOutRepo();
         if(!isURL(outDir)){
             File root = new File(outDir);
             if (root.exists()) {
                 if (!(root.isDirectory() && root.canWrite())) {
                     logger.error("Cannot write to "+root+". Stop.");
-                    exitCode = 1;
+                    result = 1;
                 }
             } else {
                 if (!root.mkdirs()) {
                     logger.error("Cannot create "+root+". Stop.");
-                    exitCode = 1;
+                    result = 1;
                 }
             }
         }
@@ -447,6 +392,7 @@ public class JsCompiler {
             FileUtil.deleteQuietly(jsart);
             if (modart!=null) FileUtil.deleteQuietly(modart);
         }
+        return result;
     }
 
     private Collection<File> filterForModule(List<File> files, List<File> roots, String moduleName) {
