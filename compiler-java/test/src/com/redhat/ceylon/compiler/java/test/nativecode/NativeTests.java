@@ -99,6 +99,10 @@ public class NativeTests extends CompilerTests {
         assertErrors(new String[] {dir + "/test.ceylon", dir + "/module.ceylon"}, defaultOptions, null, expectedErrors);
     }
     
+    private void testNativeModuleErrors(String dir, String extraFile, CompilerError... expectedErrors) {
+        assertErrors(new String[] {dir + "/test.ceylon", dir + "/module.ceylon", dir + "/" + extraFile}, defaultOptions, null, expectedErrors);
+    }
+    
     // Methods
     
     @Test
@@ -414,6 +418,19 @@ public class NativeTests extends CompilerTests {
     public void testNativeIncremental() {
         compile("modincremental/test.ceylon", "modincremental/testheader.ceylon", "modincremental/module.ceylon");
         testNativeModule("modincremental");
+    }
+    
+    @Test
+    public void testNativeLocalJava() {
+        testNativeModuleErrors("localjava", "JavaTest.java",
+                new CompilerError(31, "native declaration: 'x' accesses native code for different backend: 'JavaTest'"),
+                new CompilerError(32, "native declaration: 'test' accesses native code for different backend: 'jvmonly'"),
+                new CompilerError(36, "non-native declaration: 'x' accesses native declaration 'JavaTest' (mark it or the module native)"),
+                new CompilerError(37, "non-native declaration: 'testjs' accesses native declaration 'jvmonly' (mark it or the module native)"),
+                new CompilerError(40, "native declaration: 'Test' accesses native code for different backend: 'JavaTest'"),
+                new CompilerError(45, "native declaration: 'Test' accesses native code for different backend: 'JavaTest'"),
+                new CompilerError(48, "non-native declaration: 'Testjs' accesses native declaration 'JavaTest' (mark it or the module native)")
+        );
     }
     
     // Misc
