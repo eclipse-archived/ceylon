@@ -8,7 +8,8 @@
  except that it may optionally begin with a sign 
  character (`+` or `-`) and may not contain grouping 
  underscore characters."
-see (`function parseInteger`)
+see (`function formatFloat`, 
+     `function parseInteger`)
 tagged("Numbers", "Basic types")
 shared Float? parseFloat(String string) {
     

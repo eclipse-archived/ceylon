@@ -36,6 +36,8 @@
  This function never produces a representation involving 
  scientific notation."
 tagged("Numbers")
+see (`function formatInteger`,
+     `function parseFloat`)
 shared String formatFloat(
         "The floating point value to format."
         Float float,
