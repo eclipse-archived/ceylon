@@ -2,7 +2,7 @@
  boolean value, or `null` if the string does not represent a 
  boolean value.
  
- Recognized values are \"true\", \"false\"."
+ Recognized values are `\"true\"`, `\"false\"`."
 tagged("Basic types")
 shared Boolean? parseBoolean(String string) {
     switch (string)
