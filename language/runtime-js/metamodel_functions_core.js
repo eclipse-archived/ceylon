@@ -110,6 +110,10 @@ function _findTypeFromModel(pkg,mdl,cont) {
     rv=out['$init$'+nm];
     if (typeof(rv)==='function')rv=rv();
   }
+  if(rv === undefined){
+    var unsh=out['$pkgunsh$'+pkg.name.$_replace('.','$')];
+    rv = unsh[nm];
+  }
   return rv;
 }
 //Generate the qualified name of a type
