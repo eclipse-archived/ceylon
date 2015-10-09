@@ -17,6 +17,7 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     private Inner $instance$Inner$instance = null;
     
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::Bug2176C.Inner.instance")
@@ -32,7 +33,6 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
-        @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Name("instance")
         @.com.redhat.ceylon.compiler.java.metadata.Enumerated
         private Inner(@.com.redhat.ceylon.compiler.java.metadata.Ignore

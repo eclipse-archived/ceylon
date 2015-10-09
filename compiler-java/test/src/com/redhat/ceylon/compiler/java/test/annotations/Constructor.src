@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.METHOD})
 @interface ConstructorAnnotation$annotation$ {
 }
 final class ConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation, .ceylon.language.meta.declaration.ConstructorDeclaration, .java.lang.Object>, .java.io.Serializable {
@@ -73,7 +75,7 @@ final class callableConstructorAnnotation_ {
     }
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.METHOD})
 @interface ValueConstructorAnnotation$annotation$ {
 }
 final class ValueConstructorAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation, .ceylon.language.meta.declaration.ValueConstructorDeclaration, .java.lang.Object>, .java.io.Serializable {
@@ -159,10 +161,6 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         }
     }
     
-    @.ceylon.language.DocAnnotation$annotation$(description = "docannotation")
-    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation$annotation$
-    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     private Constructor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -173,6 +171,10 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         val = new Constructor((.com.redhat.ceylon.compiler.java.test.annotations.Constructor.val_)null);
     }
     
+    @.ceylon.language.DocAnnotation$annotation$(description = "docannotation")
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Constructor.val")

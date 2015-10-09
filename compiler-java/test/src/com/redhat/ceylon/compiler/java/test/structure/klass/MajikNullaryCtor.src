@@ -451,7 +451,6 @@ class MajikNullaryCtorValueCtor implements .com.redhat.ceylon.compiler.java.runt
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     private MajikNullaryCtorValueCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -462,6 +461,7 @@ class MajikNullaryCtorValueCtor implements .com.redhat.ceylon.compiler.java.runt
         val = new MajikNullaryCtorValueCtor((.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.val_)null);
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtor.val")
@@ -495,7 +495,6 @@ class MajikNullaryCtorValueCtorAndDefault implements .com.redhat.ceylon.compiler
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     private MajikNullaryCtorValueCtorAndDefault(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -506,6 +505,7 @@ class MajikNullaryCtorValueCtorAndDefault implements .com.redhat.ceylon.compiler
         val = new MajikNullaryCtorValueCtorAndDefault((.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.val_)null);
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorAndDefault.val")
@@ -558,7 +558,6 @@ class MajikNullaryCtorValueCtorAndCallable implements .com.redhat.ceylon.compile
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     private MajikNullaryCtorValueCtorAndCallable(@.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -569,6 +568,7 @@ class MajikNullaryCtorValueCtorAndCallable implements .com.redhat.ceylon.compile
         val = new MajikNullaryCtorValueCtorAndCallable((.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.val_)null);
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorAndCallable.val")

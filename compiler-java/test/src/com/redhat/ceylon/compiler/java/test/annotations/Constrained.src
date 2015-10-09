@@ -455,7 +455,9 @@ final class ConstrainedToFunctionOrValue2 implements .com.redhat.ceylon.compiler
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
-@.java.lang.annotation.Target({.java.lang.annotation.ElementType.CONSTRUCTOR})
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.METHOD})
 @interface ConstrainedToConstructor$annotation$ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
