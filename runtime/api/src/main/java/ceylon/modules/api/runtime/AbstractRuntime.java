@@ -48,9 +48,12 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
                 int lastDot = runClassName.lastIndexOf('.');
                 if (lastDot > 0) {
                     firstChar = runClassName.charAt(lastDot + 1);
+                    String lastPart = runClassName.substring(lastDot+1);
+                    String pkgPart = runClassName.substring(0, lastDot);
+                    // only quote the package parts
+                    runClassName = JVMModuleUtil.quoteJavaKeywords(pkgPart) + "." + lastPart;
                 }
-                // make sure we quote java keywords
-                runClassName = JVMModuleUtil.quoteJavaKeywords(runClassName);
+                // if we have no package part, we don't need quoting
                 // we add _ to run class
                 runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName + "_" : runClassName);
             } catch (ClassNotFoundException cnfe) {
