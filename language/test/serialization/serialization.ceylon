@@ -1,6 +1,6 @@
 import ceylon.language.serialization{...}
 import ceylon.language.meta.declaration {
-    ValueDeclaration,
+    ReferenceDeclaration,
     TypeParameter
 }
 import ceylon.language.meta.model {
@@ -116,6 +116,35 @@ shared void testSerializationOfTupleTail() {
         restMember.attribute == `value Tuple.rest`,
         is Object o2 = restReference.item,
         (2..1_000_000) == o2);
+}
+
+@test
+shared void serializationOfCallable() {
+    value sc = serialization();
+    Anything(String) inst = print;
+    try {
+        variable value refs = sc.references(inst);
+    } catch (SerializationException e) {
+        
+    }
+}
+
+serializable class SerializableMethodSpecification(Anything(String) f) {
+    shared Anything m(String s) => f(s);
+}
+@test
+shared void serializationOfIndirectCallable() {
+    value sc = serialization();
+    Anything(Anything) p = print;
+    value inst = SerializableMethodSpecification(p);
+    variable value refs = sc.references(inst);
+    assert(exists inst2 = refs.instance,
+        inst2 == inst);
+    assert(exists ref = refs.sequence().first);
+    assert(is Member f = ref.key,
+    f.attribute.string == "value serialization::SerializableMethodSpecification.f");
+    assert(is Anything(Anything) pRef = ref.item);
+    // can't test p ===pRef because Callable.equals returns false 
 }
 
 @test
@@ -439,7 +468,7 @@ serializable class CollisionSub(String sup, collides) extends CollisionSuper(sup
 shared void deserializationWithAttributeNamingCollision() {
     variable value dc = deserialization<Integer>();
     dc.instance(1, `CollisionSub`);
-    dc.attribute(1, `class CollisionSuper`.getDeclaredMemberDeclaration<ValueDeclaration>("collides") else nothing, 2);
+    dc.attribute(1, `class CollisionSuper`.getDeclaredMemberDeclaration<ReferenceDeclaration>("collides") else nothing, 2);
     dc.instanceValue(2, "super");
     dc.attribute(1, `value CollisionSub.collides`, 3);
     dc.instanceValue(3, 42);
