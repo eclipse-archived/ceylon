@@ -9277,17 +9277,13 @@ public class ExpressionVisitor extends Visitor {
                                 inBackends))) {
             Declaration d = (Declaration) that.getScope();
             if (inBackends != null) {
-                that.addError("native declaration: '" +
-                        d.getName(unit) +
-                        "' accesses native code for different backend: '" +
-                        dec.getName(unit) +
-                        "'");
+                that.addError("illlegal reference to native declaration '" + 
+                        dec.getName(unit) + "': native declaration '" +
+                        d.getName(unit) + "' has a different backend");
             } else {
-                that.addError("non-native declaration: '" +
-                        d.getName(unit) +
-                        "' accesses native declaration '" +
-                        dec.getName(unit) +
-                        "' (mark it or the module native)");
+                that.addError("illlegal reference to native declaration '" +
+                        dec.getName(unit) + "': declaration '" +
+                        d.getName(unit) + "' is not native (mark it or the module native)");
             }
         }
         if (dec.isNative()) {
