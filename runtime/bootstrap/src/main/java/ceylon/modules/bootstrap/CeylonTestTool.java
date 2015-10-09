@@ -169,7 +169,14 @@ public class CeylonTestTool extends RepoUsingTool {
         ceylonRunTool.setVerbose(verbose);
         ceylonRunTool.setCompile(compileFlags);
         ceylonRunTool.setCwd(cwd);
-        ceylonRunTool.run();
+        try{
+            ceylonRunTool.run();
+        }catch(Error x){
+            // Get around class loader issues where we can't compare the class statically
+            if(x.getClass().getCanonicalName().equals("ceylon.language.AssertionError"))
+                throw new CeylonTestFailureError();
+            throw x;
+        }
     }
 
     private String resolveModuleAndVersion(String moduleNameOptVersion) throws IOException {
