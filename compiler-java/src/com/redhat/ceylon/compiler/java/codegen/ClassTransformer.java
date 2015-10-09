@@ -875,7 +875,7 @@ public class ClassTransformer extends AbstractTransformer {
                 types.add(AnnotationTarget.CONSTRUCTOR);
             } 
             if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("ValueConstructorDeclaration")).getType())) {
-                types.add(AnnotationTarget.CONSTRUCTOR);
+                types.add(AnnotationTarget.METHOD);
             }
             if (programElement.covers(((TypeDeclaration)typeFact().getLanguageModuleDeclarationDeclaration("Import")).getType())) {
                 types.add(AnnotationTarget.FIELD);
