@@ -1,20 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-abstract class SerializableAbstractClass implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+abstract class SerializableAbstractClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
     public SerializableAbstractClass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
     }
     
     SerializableAbstractClass() {
-    }
-    
-    @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass.$TypeDescriptor$));
-    }
-    
-    @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
     }
     
     public abstract boolean getB();
@@ -24,6 +15,30 @@ abstract class SerializableAbstractClass implements .com.redhat.ceylon.compiler.
         return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass.class);
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
 }
 class SerializableAbstractClassSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClass implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
     
@@ -36,24 +51,8 @@ class SerializableAbstractClassSub extends .com.redhat.ceylon.compiler.java.test
     }
     
     @.java.lang.Override
-    public void $serialize$(final .ceylon.language.Callable<? extends .ceylon.language.serialization.Deconstructor> dtorFactory) {
-        super.$serialize$(dtorFactory);
-        final .ceylon.language.serialization.Deconstructor deconstructor = dtorFactory.$call$(.ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub.$TypeDescriptor$));
-    }
-    
-    @.java.lang.Override
-    public void $deserialize$(final .ceylon.language.serialization.Deconstructed deconstructed) {
-        super.$deserialize$(deconstructed);
-    }
-    
-    @.java.lang.Override
     public final boolean getB() {
         return true;
-    }
-    
-    public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
-        new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub();
     }
     
     @.java.lang.Override
@@ -61,4 +60,28 @@ class SerializableAbstractClassSub extends .com.redhat.ceylon.compiler.java.test
         return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableAbstractClassSub.class);
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = super.$references$();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            return super.$get$(reference);
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            super.$set$(reference, instance);
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
 }

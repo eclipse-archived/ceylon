@@ -59,6 +59,7 @@ import com.redhat.ceylon.compiler.java.test.statement.OptimizationTests;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTests;
 import com.redhat.ceylon.compiler.java.test.statement.TryCatchTests;
 import com.redhat.ceylon.compiler.java.test.structure.ConstructorTests;
+import com.redhat.ceylon.compiler.java.test.structure.SerializableTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
@@ -72,6 +73,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     StructureTests.class,
     StructureTests2.class,
     StructureTests3.class,
+    SerializableTests.class,
     CMRHTTPTests.class,
     IssuesTests_0000_0499.class,
     IssuesTests_0500_0999.class,

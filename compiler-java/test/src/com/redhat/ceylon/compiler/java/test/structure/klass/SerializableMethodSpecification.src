@@ -1,0 +1,80 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SerializableAnnotation$annotation$
+class SerializableMethodSpecification implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected SerializableMethodSpecification() {
+        this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public SerializableMethodSpecification(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.f = null;
+    }
+    
+    SerializableMethodSpecification(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        this.f = f;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getF$priv$() {
+        return f;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final .java.lang.Object m() {
+        return getF$priv$().$call$();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMethodSpecification.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMethodSpecification.class);
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMethodSpecification.class)).<.ceylon.language.meta.declaration.ReferenceDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ReferenceDeclaration.$TypeDescriptor$, "f")));
+        return reference;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableMethodSpecification.f": 
+            return this.f;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableMethodSpecification.f": 
+            .com.redhat.ceylon.compiler.java.Util.setter(lookup, "f").invokeExact(this, (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable<? extends .java.lang.Object>)instance);
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

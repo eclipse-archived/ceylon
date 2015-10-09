@@ -25,6 +25,11 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class SerializableTests extends CompilerTests {
 
+    @Override
+    protected String transformDestDir(String name) {
+        return name + "-ser";
+    }
+    
     @Test
     public void testKlsSerializableClass() {
         compareWithJavaSource("klass/SerializableClass");
@@ -63,6 +68,11 @@ public class SerializableTests extends CompilerTests {
     @Test
     public void testKlsSerializableLate() {
         compareWithJavaSource("klass/SerializableLate");
+    }
+    
+    @Test
+    public void testKlsSerializableMethodSpecification() {
+        compareWithJavaSource("klass/SerializableMethodSpecification");
     }
     
 }
