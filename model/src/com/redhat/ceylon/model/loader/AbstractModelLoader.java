@@ -709,7 +709,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private void setInterfaceCompanionClass(Declaration d, ClassOrInterface container, LazyPackage pkg) {
+    protected void setInterfaceCompanionClass(Declaration d, ClassOrInterface container, LazyPackage pkg) {
         // find its companion class in its real container
         ClassMirror containerMirror = null;
         if(container instanceof LazyClass){
