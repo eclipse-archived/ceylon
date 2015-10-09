@@ -319,7 +319,7 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     private static boolean canBeNative(Tree.Declaration that) {
-        return that instanceof Tree.AnyClass
+        return that instanceof Tree.ClassOrInterface
             || that instanceof Tree.Constructor
             || that instanceof Tree.Enumerated
             || that instanceof Tree.AnyMethod
