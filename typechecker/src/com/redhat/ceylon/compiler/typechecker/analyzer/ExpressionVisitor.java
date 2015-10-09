@@ -5769,6 +5769,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration type = that.getDeclarationModel();
         if (type!=null) {
+            type = (TypeDeclaration)handleNativeHeader(type, that, true);
             if (!type.isVisible(that.getScope())) {
                 that.addError("type is not visible: " + 
                         baseDescription(that), 400);
@@ -5790,6 +5791,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration type = that.getDeclarationModel();
         if (type!=null) {
+            type = (TypeDeclaration)handleNativeHeader(type, that, true);
             if (!type.isVisible(that.getScope())) {
                 if (type instanceof Constructor) {
                     that.addError("constructor is not visible: " + 
@@ -9209,6 +9211,15 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec, 
             Tree.MemberOrTypeExpression that, 
             boolean error) {
+        dec = handleNativeHeader(dec, that, error);
+        dec = handleAbstraction(dec, that);
+        return dec;
+    }
+    
+    private Declaration handleNativeHeader(
+            Declaration dec, 
+            Node that, 
+            boolean error) {
         Declaration impl = dec;
         Declaration hdr = null;
         Module ctxModule = 
@@ -9295,7 +9306,13 @@ public class ExpressionVisitor extends Visitor {
             return inBackends == null || impl==null ? 
                     dec : impl;
         }
-        else {
+        return dec;
+    }
+    
+    private Declaration handleAbstraction(
+            Declaration dec, 
+            Tree.MemberOrTypeExpression that) {
+        if (!dec.isNative()) {
             //NOTE: if this is the qualifying type of a static 
             //      method reference, don't do anything special 
             //      here, since we're not actually calling the 
@@ -9307,11 +9324,11 @@ public class ExpressionVisitor extends Visitor {
                 //different visibility to the class itself
                 //(this is a hack the Java model loader uses
                 //because we didn't used to have constructors)
-            	List<Declaration> overloads = 
-            	        dec.getOverloads();
-            	if (overloads.size()==1) {
-            		return overloads.get(0);
-            	}
+                List<Declaration> overloads = 
+                        dec.getOverloads();
+                if (overloads.size()==1) {
+                    return overloads.get(0);
+                }
             }
         }
         return dec;
