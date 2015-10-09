@@ -2165,29 +2165,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         OperatorTranslation upperOp = Operators.getOperator(upperBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
         Tree.Term upperTerm = upperBound.getTerm();
         
-        final Type middleSuper = getSupertype(middleTerm, typeFact().getComparableDeclaration());
-        Type middleType = middleSuper;
-        Type middleSelf = middleType.getDeclaration().getSelfType();
-        if (middleSelf != null) {
-            // Simplify Comparable<X> to X
-            middleType = middleType.getTypeArguments().get(middleSelf.getDeclaration());
-        }
+        Type middleType = getComparableType(middleTerm);
         
-        final Type lowerSuper = getSupertype(lowerTerm, typeFact().getComparableDeclaration());
-        Type lowerType = lowerSuper;
-        Type lowerSelf = lowerType.getDeclaration().getSelfType();
-        if (lowerSelf != null) {
-            // Simplify Comparable<X> to X
-            lowerType = lowerType.getTypeArguments().get(lowerSelf.getDeclaration());
-        }
+        Type lowerType = getComparableType(lowerTerm);
         
-        final Type upperSuper = getSupertype(upperTerm, typeFact().getComparableDeclaration());
-        Type upperType = upperSuper;
-        Type upperSelf = upperType.getDeclaration().getSelfType();
-        if (upperSelf != null) {
-            // Simplify Comparable<X> to X
-            upperType = upperType.getTypeArguments().get(upperSelf.getDeclaration());
-        }
+        Type upperType = getComparableType(upperTerm);
         
         // If any of the terms is optimizable, then use optimized
         OptimisationStrategy opt;
@@ -2217,6 +2199,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         OperatorTranslation andOp = Operators.getOperator(Tree.AndOp.class);
         OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
         return make().LetExpr(vars, transformOverridableBinaryOperator(andOp, optimisationStrategy, lower, upper, null, null, op.getTypeModel()));
+    }
+
+    protected Type getComparableType(Tree.Term middleTerm) {
+        final Type middleSuper = getSupertype(middleTerm, typeFact().getComparableDeclaration());
+        Type middleType = middleSuper;
+        Type middleSelf = middleType.getDeclaration().getSelfType();
+        if (middleSelf != null) {
+            // Simplify Comparable<X> to X
+            middleType = middleType.getTypeArguments().get(middleSelf.getDeclaration());
+        }
+        return middleType;
     }
 
     public JCExpression transformBound(
