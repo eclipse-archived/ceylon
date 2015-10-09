@@ -25,7 +25,3 @@ native shared Integer nativeInvalidTypes();
 }
 
 /*@error*/ native("foo") shared Integer nativeInvalidTypes() => 2;
-
-/*@error*/ native("jvm") shared interface NativeInvalidInterface1;
-
-/*@error*/ native("jvm") shared interface NativeInvalidInterface2 {}
