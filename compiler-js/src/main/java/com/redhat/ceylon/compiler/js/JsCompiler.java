@@ -39,15 +39,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -84,16 +79,19 @@ public class JsCompiler {
             }
             return r;
         }
+        
         @Override
         public void visitAny(Node that) {
             super.visitAny(that);
         }
+        
         @Override
         public void visit(Tree.Declaration that) {
             if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())) {
                 super.visit(that);
             }
         }
+        
         @Override
         public void visit(Tree.Import that) {
             if (hasErrors(that)) {
@@ -104,111 +102,14 @@ public class JsCompiler {
         }
         
         @Override
-        public void visit(Tree.ImportMemberOrType that) {
-            if (hasErrors(that)) return;
-            Import importModel = that.getImportModel();
-            if (that.getImportModel() == null) {
-                return;
-            }
-            javaUnit(that, importModel.getDeclaration(), "cannot import Java declarations in Javascript");
-            super.visit(that);
-        }
-        @Override
         public void visit(Tree.ImportModule that) {
             if (hasErrors(that)) {
                 exitCode = 1;
-            } else {
-                boolean isJavaModule = false;
-                String importNativeBackend = null;
-                String moduleNativeBackend = null;
-                if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module) {
-                    Module importedModule = (Module) that.getImportPath().getModel();
-                    if (importedModule.isJava()) {
-                        isJavaModule = true;
-                        moduleNativeBackend = importedModule.getNativeBackend();
-                    }
-                }
-                if (that.getQuotedLiteral() != null) {
-                    isJavaModule = true;
-                }
-                if (isJavaModule) {
-                    importNativeBackend = TreeUtil.getNativeBackend(that.getAnnotationList(), that.getUnit());
-                    if (!Backend.Java.nativeAnnotation.equals(importNativeBackend)
-                            && !Backend.Java.nativeAnnotation.equals(moduleNativeBackend)) {
-                        that.getImportPath().addUnsupportedError("cannot import Java modules in Javascript", Backend.JavaScript);
-                    }
-                } else {
-                    super.visit(that);
-                }
-            }
-        }
-        
-        private Declaration nativeImplToJavascript(Declaration declaration) {
-            if (declaration == null) {
-                return null;
-            }
-            
-            if (declaration.isNative()) {
-                Declaration header = ModelUtil.getNativeHeader(declaration);
-                if (header != null) {
-                    Declaration javaScriptDecl = ModelUtil.getNativeDeclaration(header, Backend.JavaScript);
-                    if (javaScriptDecl != null) {
-                        declaration = javaScriptDecl;
-                    }
-                }
-            }
-            return declaration;
-        }
-        
-        private boolean javaUnit(Node that, Declaration d, String msg) {
-            Declaration declaration = nativeImplToJavascript(d);
-            Unit declarationUnit = null;
-            if (declaration != null) {
-                declarationUnit = declaration.getUnit();
-            }
-            if (declarationUnit != null && nonCeylonUnit(declarationUnit)) {
-                if (!providedByAJavaNativeModuleImport(that.getUnit(), declarationUnit)) {
-                    that.addUnsupportedError("cannot call Java declarations in Javascript", Backend.JavaScript);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public void visit(Tree.MemberOrTypeExpression that) {
-            if (hasErrors(that)) return;
-            if (javaUnit(that, that.getDeclaration(), "cannot call Java declarations in Javascript")) {
                 return;
             }
             super.visit(that);
         }
         
-        @Override
-        public void visit(Tree.BaseType that) {
-            if (hasErrors(that)) return;
-            if (javaUnit(that, that.getDeclarationModel(), "cannot call Java declarations in Javascript")) {
-                return;
-            }
-            super.visit(that);
-        }
-        
-        protected boolean providedByAJavaNativeModuleImport(
-                Unit currentUnit, Unit declarationUnit) {
-            boolean isFromAJavaNativeModuleImport;
-            Module declarationModule = declarationUnit.getPackage().getModule();
-            String moduleNativeBackend = declarationModule.getNativeBackend();
-            String importNativeBackend = null;
-            for(ModuleImport moduleImport : currentUnit.getPackage().getModule().getImports()) {
-                if (declarationModule.equals(moduleImport.getModule())) {
-                    importNativeBackend = moduleImport.getNativeBackend();
-                    break;
-                }
-            }
-            isFromAJavaNativeModuleImport = Backend.Java.nativeAnnotation.equals(importNativeBackend)
-                    || Backend.Java.nativeAnnotation.equals(moduleNativeBackend);
-            return isFromAJavaNativeModuleImport;
-        }
     };
 
     public JsCompiler(TypeChecker tc, Options options) {
