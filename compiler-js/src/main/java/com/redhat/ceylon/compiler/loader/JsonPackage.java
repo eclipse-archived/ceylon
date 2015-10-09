@@ -497,6 +497,11 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             u2.addDeclaration(md);
             addMember(null);
         }
+        if (m.containsKey(MetamodelGenerator.KEY_FLAGS)) {
+            int flags = (int)m.remove(MetamodelGenerator.KEY_FLAGS);
+            md.setDeclaredVoid((flags & 1) > 0);
+            md.setDeferred((flags & 2) > 0);
+        }
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), md, existing);
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);

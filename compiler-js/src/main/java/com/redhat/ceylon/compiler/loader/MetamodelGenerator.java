@@ -59,6 +59,7 @@ public class MetamodelGenerator {
     public static final String KEY_DS_VARIANCE  = "dv"; //declaration-site variance
     public static final String KEY_US_VARIANCE  = "uv"; //use-site variance
     public static final String KEY_CONSTRUCTORS = "$cn";
+    public static final String KEY_FLAGS        = "$ff";
 
     public static final String KEY_DEFAULT      = "def";
     public static final String KEY_DYNAMIC      = "dyn";
@@ -400,6 +401,16 @@ public class MetamodelGenerator {
         }
         if (paramLists.size() > 1 || !paramLists.get(0).isEmpty()) {
             m.put(KEY_PARAMS, paramLists);
+        }
+        int ff = 0;
+        if (d.isDeclaredVoid()) {
+            ff |= 1;
+        }
+        if (d.isDeferred()) {
+            ff |= 2;
+        }
+        if (ff > 0) {
+            m.put(KEY_FLAGS, ff);
         }
 
         //Annotations
