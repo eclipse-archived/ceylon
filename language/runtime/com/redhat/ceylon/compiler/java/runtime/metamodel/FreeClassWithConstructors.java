@@ -18,13 +18,6 @@ public class FreeClassWithConstructors
     public FreeClassWithConstructors(com.redhat.ceylon.model.typechecker.model.Class declaration) {
         super(declaration);
     }
-
-    //@Override
-    @Ignore
-    public ceylon.language.meta.declaration.ClassWithConstructorsDeclaration$impl 
-    $ceylon$language$meta$declaration$ClassWithConstructorsDeclaration$impl() {
-        return null;//new ceylon.language.meta.declaration.ClassWithConstructorsDeclaration$impl(this);
-    }
     
     @Ignore
     @Override
