@@ -89,11 +89,13 @@ import ceylon.language.finished_;
 import ceylon.language.null_;
 import ceylon.language.sequence_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
+import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.Module;
 import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
 import ceylon.language.meta.declaration.OpenType;
 import ceylon.language.meta.declaration.Package;
+import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.Generic;
@@ -1891,17 +1893,20 @@ public class Metamodel {
         TypeDescriptor[] annotationTypeDescriptors = Metamodel.getTypeDescriptors(annotations);
         for (ceylon.language.meta.declaration.Declaration d : ((FreeClass)cls.declaration).constructors()) {
             Declaration dd = null;
+            AnnotatedDeclaration annotated;
             if (d instanceof FreeCallableConstructor
                     && callableConstructors) {
                 dd = ((FreeCallableConstructor)d).declaration;
+                annotated = (CallableConstructorDeclaration)d;
             } else if (d instanceof FreeValueConstructor
                     && !callableConstructors) {
                 dd = ((FreeValueConstructor)d).declaration;
+                annotated = (ValueConstructorDeclaration)d;
             } else {
                 continue;
             }
             // ATM this is an AND WRT annotation types: all must be present
-            if(!cls.hasAllAnnotations((AnnotatedDeclaration)d, annotationTypeDescriptors))
+            if(!cls.hasAllAnnotations(annotated, annotationTypeDescriptors))
                 continue;
             if (dd instanceof Functional 
                     && reifiedArguments != null) {

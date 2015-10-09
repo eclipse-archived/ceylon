@@ -102,13 +102,13 @@ public class FreeValueConstructor
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
-        return Metamodel.getJavaConstructor(constructor).getAnnotations();
+        return AppliedValueConstructor.getJavaMethod(this).getAnnotations();
     }
     
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        final AnnotatedElement element = Metamodel.getJavaConstructor(constructor);
+        final AnnotatedElement element = AppliedValueConstructor.getJavaMethod(this);
         return element != null ? element.isAnnotationPresent(annotationType) : false;
     }
     

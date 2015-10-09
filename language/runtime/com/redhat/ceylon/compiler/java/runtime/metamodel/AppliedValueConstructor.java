@@ -52,7 +52,6 @@ public class AppliedValueConstructor<Get>
     protected final TypeDescriptor $reifiedGet;
     protected final FreeValueConstructor declaration;
     private MethodHandle getter;
-    private MethodHandle setter;
     private final Object instance;
     
     protected final Type producedType;
@@ -91,34 +90,61 @@ public class AppliedValueConstructor<Get>
     
     ///////////////////////////////////////////
     
-    private void initField(Object instance, Type valueType) {
+    /**
+     * Gets the getter {@code java.lang.reflect.Method} for the
+     * given value constructor.
+     */
+    static Method getJavaMethod(FreeValueConstructor declaration) {
         com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
-        if(decl instanceof JavaBeanValue){
-            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
-            if(javaClass == ceylon.language.Object.class
-                    || javaClass == ceylon.language.Basic.class
-                    || javaClass == ceylon.language.Identifiable.class){
-                if("string".equals(decl.getName())
-                        || "hash".equals(decl.getName())){
-                    // look it up on j.l.Object, getterName should work
-                    javaClass = java.lang.Object.class;
-                }else{
-                    throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+decl.getName());
-                }
-            } else if (javaClass == ceylon.language.Throwable.class) {
-                if("cause".equals(decl.getName())
-                        || "message".equals(decl.getName())){
-                    javaClass = instance.getClass();
-                }
-            }
-            String getterName = ((JavaBeanValue) decl).getGetterName();
-            try {
+        String getterName = "";
+        try {
+            if(decl instanceof JavaBeanValue){
+                java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
+                getterName = ((JavaBeanValue) decl).getGetterName();
                 Class<?>[] params = NO_PARAMS;
                 boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
                 if(isJavaArray)
                     params = MethodHandleUtil.getJavaArrayGetArrayParameterTypes(javaClass, getterName);
                 // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
                 Method m = decl.isShared() ? javaClass.getMethod(getterName, params) : javaClass.getDeclaredMethod(getterName, params);
+                return m;
+            }else if(decl instanceof LazyValue){
+                LazyValue lazyDecl = (LazyValue) decl;
+                java.lang.Class<?> javaClass = ((ReflectionClass)lazyDecl.classMirror).klass;
+                // FIXME: we should really save the getter name in the LazyDecl
+                getterName = NamingBase.getGetterName(lazyDecl);
+                // toplevels don't have inheritance
+                Method m = javaClass.getDeclaredMethod(getterName);
+                return m;
+            } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+                java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
+                if (com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
+                    // the getter for member classes is on the enclosing class.
+                    javaClass = javaClass.getEnclosingClass();
+                }
+                getterName = NamingBase.getGetterName(decl);
+                
+                Class<?>[] params = NO_PARAMS;
+                // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
+                Method m = javaClass.getDeclaredMethod(getterName, params);
+                return m;
+            }else {
+                throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
+            }
+        } catch (NoSuchMethodException | SecurityException  e) {
+            throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
+        }
+    }
+    
+    private void initField(Object instance, Type valueType) {
+        com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
+        Method m = getJavaMethod(declaration);
+        String getterName = m.getName();
+        try {
+            if(decl instanceof JavaBeanValue){
+                java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
+                boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
+                // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
                 m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
@@ -130,77 +156,13 @@ public class AppliedValueConstructor<Get>
                 }
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
-
-                initSetter(decl, javaClass, getterType, instance, valueType);
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
-                throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
-            }
-        }else if(decl instanceof LazyValue){
-            LazyValue lazyDecl = (LazyValue) decl;
-            java.lang.Class<?> javaClass = ((ReflectionClass)lazyDecl.classMirror).klass;
-            // FIXME: we should really save the getter name in the LazyDecl
-            String getterName = NamingBase.getGetterName(lazyDecl);
-            try {
-                // toplevels don't have inheritance
-                Method m = javaClass.getDeclaredMethod(getterName);
-                m.setAccessible(true);
-                getter = MethodHandles.lookup().unreflect(m);
-                java.lang.Class<?> getterType = m.getReturnType();
-                getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
-                // we need to cast to Object because this is what comes out when calling it in $call
-                getter = getter.asType(MethodType.methodType(Object.class));
-
-                initSetter(decl, javaClass, getterType, null, valueType);
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
-                throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
-            }
-        }else if(decl instanceof FieldValue){
-            FieldValue fieldDecl = (FieldValue) decl;
-            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
-            String fieldName = fieldDecl.getRealName();
-            if(MethodHandleUtil.isJavaArray(javaClass)){
-                try {
-                    Method method = Array.class.getDeclaredMethod("getLength", Object.class);
-                    getter = MethodHandles.lookup().unreflect(method);
-                    java.lang.Class<?> getterType = method.getReturnType();
-                    getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
-                    // this one is static but requires an instance a first param
-                    if(instance != null)
-                        getter = getter.bindTo(instance);
-                    // we need to cast to Object because this is what comes out when calling it in $call
-                    getter = getter.asType(MethodType.methodType(Object.class));
-                } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
-                    throw Metamodel.newModelError("Failed to find Array.getLength method for: "+decl, e);
+            } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+                java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
+                if (com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
+                    // the getter for member classes is on the enclosing class.
+                    javaClass = javaClass.getEnclosingClass();
                 }
-            }else{
-                try {
-                    // fields are not inherited
-                    Field f = javaClass.getDeclaredField(fieldName);
-                    f.setAccessible(true);
-                    getter = MethodHandles.lookup().unreflectGetter(f);
-                    java.lang.Class<?> getterType = f.getType();
-                    getter = MethodHandleUtil.boxReturnValue(getter, getterType, valueType);
-                    if(instance != null && !Modifier.isStatic(f.getModifiers()))
-                        getter = getter.bindTo(instance);
-                    // we need to cast to Object because this is what comes out when calling it in $call
-                    getter = getter.asType(MethodType.methodType(Object.class));
-
-                    initSetter(decl, javaClass, getterType, instance, valueType);
-                } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-                    throw Metamodel.newModelError("Failed to find field "+fieldName+" for: "+decl, e);
-                }
-            }
-        } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
-            java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
-            if (com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
-                // the getter for member classes is on the enclosing class.
-                javaClass = javaClass.getEnclosingClass();
-            }
-            String getterName = NamingBase.getGetterName(decl);
-            try {
-                Class<?>[] params = NO_PARAMS;
                 // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
-                Method m = javaClass.getDeclaredMethod(getterName, params);
                 m.setAccessible(true);
                 getter = MethodHandles.lookup().unreflect(m);
                 java.lang.Class<?> getterType = m.getReturnType();
@@ -214,62 +176,12 @@ public class AppliedValueConstructor<Get>
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
                 }
-
-                initSetter(decl, javaClass, getterType, instance, valueType);
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
-                throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
-            }
-        }else
-            throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
-    }
-
-    private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
-                            java.lang.Class<?> getterReturnType, Object instance, Type valueType) {
-        if(!decl.isVariable())
-            return;
-        if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
-            return;
+            }else
+                throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
+        
+        } catch (SecurityException | IllegalAccessException e) {
+            throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
         }
-        if(decl instanceof JavaBeanValue){
-            String setterName = ((JavaBeanValue) decl).getSetterName();
-            try {
-                Method m = javaClass.getMethod(setterName, getterReturnType);
-                m.setAccessible(true);
-                setter = MethodHandles.lookup().unreflect(m);
-                if(instance != null && !Modifier.isStatic(m.getModifiers()))
-                    setter = setter.bindTo(instance);
-                setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
-                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
-                throw Metamodel.newModelError("Failed to find setter method "+setterName+" for: "+decl, e);
-            }
-        }else if(decl instanceof LazyValue){
-            // FIXME: we should really save the getter name in the LazyDecl
-            String setterName = NamingBase.getSetterName(decl);
-            try {
-                Method m = javaClass.getMethod(setterName, getterReturnType);
-                m.setAccessible(true);
-                setter = MethodHandles.lookup().unreflect(m);
-                setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
-                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
-                throw Metamodel.newModelError("Failed to find setter method "+setterName+" for: "+decl, e);
-            }
-        }else if(decl instanceof FieldValue){
-            String fieldName = ((FieldValue) decl).getRealName();
-            try {
-                Field f = javaClass.getField(fieldName);
-                f.setAccessible(true);
-                setter = MethodHandles.lookup().unreflectSetter(f);
-                if(instance != null && !Modifier.isStatic(f.getModifiers()))
-                    setter = setter.bindTo(instance);
-                setter = setter.asType(MethodType.methodType(void.class, getterReturnType));
-                setter = MethodHandleUtil.unboxArguments(setter, 0, 0, new java.lang.Class[]{getterReturnType}, Arrays.asList(valueType));
-            } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-                throw Metamodel.newModelError("Failed to find field "+fieldName+" for: "+decl, e);
-            }
-        }else
-            throw Metamodel.newModelError("Unsupported attribute type: "+decl);
     }
 
     @Override
@@ -286,15 +198,7 @@ public class AppliedValueConstructor<Get>
 
     @Override
     public Object set(java.lang.Object value) {
-        if(!declaration.getVariable())
-            throw new MutationException("Value is not mutable");
-        try {
-            setter.invokeExact(value);
-            return null;
-        } catch (Throwable e) {
-            Util.rethrow(e);
-            return null;
-        }
+        throw new MutationException("Value is not mutable");
     }
 
     @Override

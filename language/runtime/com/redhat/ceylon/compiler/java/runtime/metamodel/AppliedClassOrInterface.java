@@ -1157,7 +1157,7 @@ public abstract class AppliedClassOrInterface<Type>
     }
 
     @Ignore
-    protected boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
+    protected static boolean hasAllAnnotations(AnnotatedDeclaration decl, TypeDescriptor[] annotationTypeDescriptors) {
         for(TypeDescriptor annotationTypeDescriptor : annotationTypeDescriptors){
             if(decl.annotations(annotationTypeDescriptor).getEmpty()){
                 // skip this declaration
