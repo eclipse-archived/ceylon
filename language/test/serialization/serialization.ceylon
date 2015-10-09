@@ -458,7 +458,7 @@ shared void serNonSerializable() {
         sc.references(NonserializableSub());
         "we expect it to throw"
         assert(false);
-    } catch (AssertionError e) {
+    } catch (SerializationException e) {
         assert("instance of non-serializable class: serialization::NonserializableSub" == e.message);
     }
 }
