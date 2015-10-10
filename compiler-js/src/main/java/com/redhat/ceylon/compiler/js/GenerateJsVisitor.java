@@ -155,6 +155,7 @@ public class GenerateJsVisitor extends Visitor {
 
     public final JsWriter out;
     private final PrintWriter verboseOut;
+    private final boolean verboseStitcher;
     public final Options opts;
     private Tree.CompilationUnit root;
     static final String function="function ";
@@ -184,6 +185,7 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             verboseOut = null;
         }
+        verboseStitcher = options.hasVerboseFlag("stitcher");
         this.names = names;
         conds = new ConditionGenerator(this, names, directAccess);
         this.tokens = tokens;
@@ -970,11 +972,11 @@ public class GenerateJsVisitor extends Visitor {
         } else if (s instanceof MethodDeclaration) {
             //Don't even bother with nodes that have errors
             if (errVisitor.hasErrors(s))return;
-            FunctionHelper.methodDeclaration(d, (MethodDeclaration) s, this);
+            FunctionHelper.methodDeclaration(d, (MethodDeclaration) s, this, verboseStitcher);
         } else if (s instanceof AttributeGetterDefinition) {
             addGetterToPrototype(d, (AttributeGetterDefinition)s);
         } else if (s instanceof AttributeDeclaration) {
-            AttributeGenerator.addGetterAndSetterToPrototype(d, (AttributeDeclaration) s, this);
+            AttributeGenerator.addGetterAndSetterToPrototype(d, (AttributeDeclaration) s, this, verboseStitcher);
         } else if (s instanceof ClassDefinition) {
             addClassToPrototype(d, (ClassDefinition) s, initDeferrer);
         } else if (s instanceof InterfaceDefinition) {
@@ -1090,7 +1092,7 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.MethodDeclaration that) {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
-        FunctionHelper.methodDeclaration(null, that, this);
+        FunctionHelper.methodDeclaration(null, that, this, verboseStitcher);
     }
 
     private File getStitchedFilename(final Declaration d, final String suffix) {
@@ -1143,7 +1145,6 @@ public class GenerateJsVisitor extends Visitor {
                 final String err = "no native implementation for backend: native '"
                         + d.getName(d.getUnit()) + "' is not implemented the 'js' backend";
                 n.addError(err, Backend.JavaScript);
-                spitOut(err);
                 out("/*", err, "*/");
             }
             return false;
@@ -1169,7 +1170,7 @@ public class GenerateJsVisitor extends Visitor {
                     String.format("%s%s.js", names.name(coi.getDeclarationModel()), partName));
         }
         if (f.exists() && f.isFile() && f.canRead()) {
-            if (verboseOut != null || JsCompiler.isCompilingLanguageModule()) {
+            if (verboseStitcher) {
                 spitOut("Stitching in " + f + ". It must contain an anonymous function "
                         + "which will be invoked with the same arguments as the "
                         + names.name(coi.getDeclarationModel()) + " constructor.");
@@ -1192,7 +1193,7 @@ public class GenerateJsVisitor extends Visitor {
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || TypeUtils.isNativeExternal(d))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
-            FunctionHelper.methodDefinition(that, this, true);
+            FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
             //Add reference to metamodel
             out(names.name(d), ".$crtmm$=");
             TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
@@ -1315,7 +1316,7 @@ public class GenerateJsVisitor extends Visitor {
         comment(that);
         initDefaultedParameters(that.getParameterLists().get(0), d);
         out(names.self(outer), ".", names.name(d), "=");
-        FunctionHelper.methodDefinition(that, this, false);
+        FunctionHelper.methodDefinition(that, this, false, verboseStitcher);
         //Add reference to metamodel
         out(names.self(outer), ".", names.name(d), ".$crtmm$=");
         TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
@@ -1351,8 +1352,10 @@ public class GenerateJsVisitor extends Visitor {
             if (TypeUtils.isNativeExternal(d)) {
                 out("{");
                 if (stitchNative(d, that)) {
-                    spitOut("Stitching in native attribute " + d.getQualifiedNameString()
+                    if (verboseStitcher) {
+                        spitOut("Stitching in native attribute " + d.getQualifiedNameString()
                             + ", ignoring Ceylon declaration");
+                    }
                 } else {
                     AttributeGenerator.getter(that, this, false);
                 }
@@ -1377,8 +1380,10 @@ public class GenerateJsVisitor extends Visitor {
         if (TypeUtils.isNativeExternal(d)) {
             out("{");
             if (stitchNative(d, that)) {
-                spitOut("Stitching in native getter " + d.getQualifiedNameString() +
+                if (verboseStitcher) {
+                    spitOut("Stitching in native getter " + d.getQualifiedNameString() +
                         ", ignoring Ceylon declaration");
+                }
             } else {
                 AttributeGenerator.getter(that, this, false);
             }
@@ -1531,8 +1536,10 @@ public class GenerateJsVisitor extends Visitor {
                 boolean genatr=true;
                 if (TypeUtils.isNativeExternal(d)) {
                     if (stitchNative(d, that)) {
-                        spitOut("Stitching in native attribute " + d.getQualifiedNameString() +
+                        if (verboseStitcher) {
+                            spitOut("Stitching in native attribute " + d.getQualifiedNameString() +
                                 ", ignoring Ceylon declaration");
+                        }
                         genatr=false;
                         out(";};");
                     }
@@ -1576,7 +1583,7 @@ public class GenerateJsVisitor extends Visitor {
             else if (!(d.isParameter() && d.getContainer() instanceof Function)) {
                 if (addGetter) {
                     AttributeGenerator.generateAttributeGetter(that, d, specInitExpr,
-                            names.name(param), this, directAccess);
+                            names.name(param), this, directAccess, verboseStitcher);
                 }
                 if ((d.isVariable() || d.isLate()) && !asprop) {
                     setterGend=AttributeGenerator.generateAttributeSetter(that, d, this);
@@ -2294,7 +2301,7 @@ public class GenerateJsVisitor extends Visitor {
                             endLine(true);
                         } else {
                             AttributeGenerator.generateAttributeGetter(null, moval,
-                                    specStmt.getSpecifierExpression(), null, this, directAccess);
+                                    specStmt.getSpecifierExpression(), null, this, directAccess, verboseStitcher);
                         }
                     }
                 } else {

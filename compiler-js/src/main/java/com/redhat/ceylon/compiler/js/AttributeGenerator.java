@@ -48,7 +48,7 @@ public class AttributeGenerator {
 
     static void generateAttributeGetter(final Tree.AnyAttribute attributeNode, final FunctionOrValue decl,
             final Tree.SpecifierOrInitializerExpression expr, final String param, final GenerateJsVisitor gen,
-            final Set<Declaration> directAccess) {
+            final Set<Declaration> directAccess, final boolean verboseStitcher) {
         final boolean asProp = defineAsProperty(decl) && (gen.isCaptured(decl) || decl.isToplevel());
         final String varName;
         if (asProp) {
@@ -75,7 +75,7 @@ public class AttributeGenerator {
             boolean genatr=true;
             if (stitch) {
                 genatr=!gen.stitchNative(decl, attributeNode);
-                if (!genatr) {
+                if (!genatr && verboseStitcher) {
                     gen.spitOut("Stitching in native attribute " + decl.getQualifiedNameString()
                             + ", ignoring Ceylon declaration");
                 }
@@ -165,8 +165,10 @@ public class AttributeGenerator {
                     } else if (stitch) {
                         gen.stitchNative(decl, attributeNode);
                         gen.out(";}");
-                        gen.spitOut("Stitching in native attribute " + decl.getQualifiedNameString()
+                        if (verboseStitcher) {
+                            gen.spitOut("Stitching in native attribute " + decl.getQualifiedNameString()
                                 + ", ignoring Ceylon declaration");
+                        }
                     } else {
                         gen.out(varName, ";}");
                     }
@@ -200,7 +202,7 @@ public class AttributeGenerator {
     }
 
     static void addGetterAndSetterToPrototype(final TypeDeclaration outer, final Tree.AttributeDeclaration that,
-            final GenerateJsVisitor gen) {
+            final GenerateJsVisitor gen, final boolean verboseStitcher) {
         final Value d = that.getDeclarationModel();
         if (!gen.opts.isOptimize()||d.isToplevel()||d.getTypeDeclaration()==null) return;
         gen.comment(that);
@@ -267,7 +269,7 @@ public class AttributeGenerator {
                     boolean stitch = TypeUtils.isNativeExternal(d);
                     if (stitch) {
                         stitch=gen.stitchNative(d, that);
-                        if (stitch) {
+                        if (stitch && verboseStitcher) {
                             gen.spitOut("Stitching in native getter " + d.getQualifiedNameString() +
                                     ", ignoring Ceylon declaration");
                         }
@@ -312,8 +314,10 @@ public class AttributeGenerator {
                     }
                     if (TypeUtils.isNativeExternal(d)) {
                         if (gen.stitchNative(d, that)) {
-                            gen.spitOut("Stitching in native getter " + d.getQualifiedNameString() +
+                            if (verboseStitcher) {
+                                gen.spitOut("Stitching in native getter " + d.getQualifiedNameString() +
                                     ", ignoring Ceylon declaration");
+                            }
                         } else {
                             gen.out("return ");
                             that.getSpecifierOrInitializerExpression().getExpression().visit(gen);

@@ -91,6 +91,16 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         super(CeylonCompileJsMessages.RESOURCE_BUNDLE);
     }
 
+    @Option(shortName='d')
+    @OptionArgument(argumentName = "flags")
+    @Description("Produce verbose output. " +
+            "If no `flags` are given then be verbose about everything, " +
+            "otherwise just be verbose about the flags which are present. " +
+            "Allowed flags include: `all`, `loader`, `ast`, `code`, `stitcher`.")
+    public void setVerbose(String verbose) {
+        this.verbose = verbose;
+    }
+    
     @OptionArgument(shortName='E', argumentName="encoding")
     @Description("Sets the encoding used for reading source files (default: platform-specific)")
     public void setEncoding(String encoding) {

@@ -198,7 +198,7 @@ public class FunctionHelper {
         gen.out(")");
     }
 
-    static void methodDeclaration(TypeDeclaration outer, Tree.MethodDeclaration that, GenerateJsVisitor gen) {
+    static void methodDeclaration(TypeDeclaration outer, Tree.MethodDeclaration that, GenerateJsVisitor gen, boolean verboseStitcher) {
         final Function m = that.getDeclarationModel();
         if (that.getSpecifierExpression() != null) {
             // method(params) => expr
@@ -210,7 +210,9 @@ public class FunctionHelper {
                 gen.initDefaultedParameters(that.getParameterLists().get(0), m);
                 if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && TypeUtils.isNativeExternal(m)) {
                     if (gen.stitchNative(m, that)) {
-                        gen.spitOut("Stitching in native method " + m.getQualifiedNameString() + ", ignoring Ceylon declaration");
+                        if (verboseStitcher) {
+                            gen.spitOut("Stitching in native method " + m.getQualifiedNameString() + ", ignoring Ceylon declaration");
+                        }
                         if (m.isShared()) {
                             gen.share(m);
                         }
@@ -257,7 +259,7 @@ public class FunctionHelper {
             gen.initDefaultedParameters(that.getParameterLists().get(0), m);
             if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && TypeUtils.isNativeExternal(m)) {
                 if (gen.stitchNative(m, that)) {
-                    if (!JsCompiler.isCompilingLanguageModule()) {
+                    if (verboseStitcher) {
                         gen.spitOut("Stitching in native method " + m.getQualifiedNameString()
                                 + ", ignoring Ceylon declaration");
                     }
@@ -276,7 +278,7 @@ public class FunctionHelper {
                 gen.out("};");
             } else if (TypeUtils.isNativeExternal(m)) {
                 if (gen.stitchNative(m, that)) {
-                    if (!JsCompiler.isCompilingLanguageModule()) {
+                    if (verboseStitcher) {
                         gen.spitOut("Stitching in native method " + m.getQualifiedNameString()
                                 + ", ignoring Ceylon declaration");
                     }
@@ -288,11 +290,13 @@ public class FunctionHelper {
         }
     }
 
-    static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen, final boolean needsName) {
+    static void methodDefinition(final Tree.MethodDefinition that, final GenerateJsVisitor gen, final boolean needsName, final boolean verboseStitcher) {
         final Function d = that.getDeclarationModel();
         if (TypeUtils.isNativeExternal(d)) {
             if (gen.stitchNative(d, that)) {
-                gen.spitOut("Stitching in native method " + d.getQualifiedNameString() + ", ignoring Ceylon definition");
+                if (verboseStitcher) {
+                    gen.spitOut("Stitching in native method " + d.getQualifiedNameString() + ", ignoring Ceylon definition");
+                }
                 if (d.isShared()) {
                     gen.share(d);
                 }
