@@ -1140,8 +1140,8 @@ public class GenerateJsVisitor extends Visitor {
                     missingDeclarationName = missingDeclarationName.substring(0, missingDeclarationName.length()-4)
                             + "<default constructor>";
                 }
-                final String err = "REQUIRED NATIVE FILE MISSING FOR "
-                        + missingDeclarationName + " => " + f + ", containing " + names.name(d);
+                final String err = "no native implementation for backend: native '"
+                        + d.getName(d.getUnit()) + "' is not implemented the 'js' backend";
                 n.addError(err, Backend.JavaScript);
                 spitOut(err);
                 out("/*", err, "*/");
