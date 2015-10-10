@@ -102,7 +102,7 @@ public class MissingNativeVisitor extends Visitor {
             return true;
         if (!model.isToplevel() || !model.isNative())
             return true;
-        Package pkg = Decl.getPackage(model);
+        Package pkg = ModelUtil.getPackage(model);
         if (pkg == null)
             return true;
         
@@ -138,13 +138,19 @@ public class MissingNativeVisitor extends Visitor {
             }
         }
         
+        boolean ok = checkNative(node, model);
+        if (!ok) {
+            node.addError("no native implementation for backend: native '" + model.getName() + "' is not implemented for the '" + forBackend.nativeAnnotation + "' backend", forBackend);
+        }
+
+        return true;
+    }
+    
+    protected boolean checkNative(Node node, Declaration model) {
 //      String pkgName = Util.quoteJavaKeywords(pkg.getNameAsString());
 //      String qualifiedName = Naming.toplevelClassName(pkgName, model);
 //      ClassMirror classMirror = loader.lookupClassMirror(pkg.getModule(), qualifiedName);
 //      ok = ok && (classMirror != null);
-      
-        node.addError("no native implementation for backend: native '" + model.getName() + "' is not implemented for the '" + forBackend.nativeAnnotation + "' backend", forBackend);
-
-        return true;
+        return false;
     }
 }
