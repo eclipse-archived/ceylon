@@ -9287,18 +9287,6 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (dec.isNative()) {
-            if (error && impl == null && hdr != null) {
-                if (!isImplemented(hdr) 
-                        && !decModule.equals(
-                                decModule.getLanguageModule())) {
-                    that.addError(
-                            "no native implementation for backend: native '"
-                            + dec.getName(unit) +
-                            "' is not implemented for one or more backends");
-                    unit.getMissingNativeImplementations()
-                        .add(hdr);
-                }
-            }
             return inBackends == null || impl==null ? 
                     dec : impl;
         }

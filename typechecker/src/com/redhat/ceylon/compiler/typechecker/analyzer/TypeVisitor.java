@@ -17,7 +17,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
@@ -42,7 +41,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -383,7 +381,7 @@ public class TypeVisitor extends Visitor {
             }
             else {
                 type = (TypeDeclaration) 
-                        handleHeader(type, that);
+                        handleNativeHeader(type, that);
                 Type outerType = 
                         scope.getDeclaringType(type);
                 visitSimpleType(that, outerType, type);
@@ -685,7 +683,6 @@ public class TypeVisitor extends Visitor {
         Type type = o.getType();
         that.getDeclarationModel().setType(type);
         that.getType().setTypeModel(type);
-        handleHeader(o, that);
     }
 
     @Override 
@@ -718,7 +715,6 @@ public class TypeVisitor extends Visitor {
         }
         cd.getSatisfiedTypes().clear();
         super.visit(that);
-        handleHeader(cd, that);
         Tree.ParameterList pl = that.getParameterList();
         if (pl!=null && cd.hasConstructors()) {
             pl.addError("class with parameters may not declare constructors: class '" + 
@@ -874,7 +870,6 @@ public class TypeVisitor extends Visitor {
                     that.getDeclarationModel();
         td.setExtendedType(null);
         super.visit(that);
-        handleHeader(td, that);
         Tree.ClassSpecifier cs = that.getClassSpecifier();
         if (cs==null) {
             that.addError("missing class body or aliased class reference");
@@ -1028,7 +1023,6 @@ public class TypeVisitor extends Visitor {
         Tree.SpecifierExpression sie = 
                 that.getSpecifierExpression();
         Function dec = that.getDeclarationModel();
-        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             if (sie!=null) {
                 sie.addError("function is an initializer parameter and may not have an initial value: '" + 
@@ -1045,7 +1039,6 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.MethodDefinition that) {
         super.visit(that);
         Function dec = that.getDeclarationModel();
-        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             that.getBlock()
                 .addError("function is an initializer parameter and may not have a body: '" + 
@@ -1059,7 +1052,6 @@ public class TypeVisitor extends Visitor {
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
         Value dec = that.getDeclarationModel();
-        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             Parameter param = dec.getInitializerParameter();
             Tree.Type type = that.getType();
@@ -1084,7 +1076,6 @@ public class TypeVisitor extends Visitor {
     public void visit(Tree.AttributeGetterDefinition that) {
         super.visit(that);
         Value dec = that.getDeclarationModel();
-        handleHeader(dec, that);
         if (isInitializerParameter(dec)) {
             that.getBlock()
                 .addError("value is an initializer parameter and may not have a body: '" + 
@@ -1605,7 +1596,7 @@ public class TypeVisitor extends Visitor {
         }
     }
     
-    private Declaration handleHeader(Declaration hdr, 
+    private Declaration handleNativeHeader(Declaration hdr,
             Node that) {
         if (hdr.isNativeHeader()) {
             Scope scope = that.getScope();
@@ -1619,16 +1610,6 @@ public class TypeVisitor extends Visitor {
                             inBackends;
             Declaration impl =
                     getNativeDeclaration(hdr, backends);
-            if (impl == null && hdr != null) {
-                Module module = hdr.getUnit().getPackage().getModule();
-                if (!isImplemented(hdr) && hdr.isShared()
-                        && !module.equals(module.getLanguageModule())) {
-                    that.addError("no native implementation for backend: native '"
-                            + hdr.getName(unit) +
-                            "' is not implemented for one or more backends");
-                    unit.getMissingNativeImplementations().add(hdr);
-                }
-            }
             return inBackends == null || impl==null ? 
                     hdr : impl;
         }
