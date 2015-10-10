@@ -25,7 +25,7 @@ native("js") Integer nativeMissingMethod2() => 1;
 
 shared void testNativeMissingMethod() {
     /* @error */ nativeMissingMethod();
-    nativeMissingMethod2();
+    /* @error */ nativeMissingMethod2();
     /* @error */ NativeMissingClass nmc = NativeMissingClass();
 }
 

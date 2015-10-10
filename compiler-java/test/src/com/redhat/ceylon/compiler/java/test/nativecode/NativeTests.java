@@ -146,9 +146,8 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(34, "native implementation must have the same return type as native header: 'nativeMethodMismatch2' must have the type 'Anything'"),
                 new CompilerError(40, "member does not have the same number of parameters as native header: 'nativeMethodMismatch3'"),
                 new CompilerError(44, "type of parameter 's' of 'nativeMethodMismatch3' is different to type of corresponding parameter 'i' of native header 'nativeMethodMismatch3': 'String' is not exactly 'Integer'"),
-                new CompilerError(51, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
-                new CompilerError(54, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for one or more backends"),
-                new CompilerError(57, "no native implementation for backend: native 'nativeMethodMismatch4jvm' is not implemented for one or more backends"),
+                new CompilerError(51, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for the 'jvm' backend"),
+                new CompilerError(54, "no native implementation for backend: native 'nativeMethodMismatch4js' is not implemented for the 'jvm' backend"),
                 new CompilerError(72, "native header does not have the same number of type parameters as native implementation: 'nativeMethodMismatch5'"),
                 new CompilerError(75, "native header does not have the same number of type parameters as native implementation: 'nativeMethodMismatch5'"),
                 new CompilerError(80, "type parameter does not have the same bounds as its header: 'T' for 'nativeMethodMismatch6'"),
@@ -296,15 +295,12 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
                 new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'"),
                 new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
-                new CompilerError(82, "no native implementation for backend: native 'NativeClassMismatch6' is not implemented for one or more backends"),
+                new CompilerError(82, "no native implementation for backend: native 'NativeClassMismatch6' is not implemented for the 'jvm' backend"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
                 new CompilerError(92, "native backend name on declaration conflicts with its scope: 'test1'"),
-                new CompilerError(102, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
-                new CompilerError(102, "no native implementation for backend: native 'test2' is not implemented for one or more backends"),
-                new CompilerError(106, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for one or more backends"),
-                new CompilerError(112, "no native implementation for backend: native 'NativeClassMismatch8jvm' is not implemented for one or more backends"),
-                new CompilerError(112, "no native implementation for backend: native 'test1' is not implemented for one or more backends"),
+                new CompilerError(102, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for the 'jvm' backend"),
+                new CompilerError(106, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for the 'jvm' backend"),
                 new CompilerError(134, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
                 new CompilerError(136, "type of parameter 's' of 'test2' is different to type of corresponding parameter 'i' of native header 'test2': 'String' is not exactly 'Integer'"),
                 new CompilerError(137, "native implementation must have the same return type as native header: 'test3' in 'NativeClassMismatch9' must have the type 'Anything'"),
@@ -409,7 +405,7 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeConflict() {
         testNativeModuleErrors("modconflict",
-                new CompilerError(20, "no native implementation for backend: native 'conflicting' is not implemented for one or more backends"),
+                new CompilerError(20, "no native implementation for backend: native 'conflicting' is not implemented for the 'jvm' backend"),
                 new CompilerError(22, "native backend name on declaration conflicts with module descriptor: '\"js\"' is not '\"jvm\"' for 'conflicting'")
         );
     }
@@ -450,7 +446,7 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(21, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
                 new CompilerError(22, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
                 new CompilerError(25, "native header for non-native declaration: 'nativeNonNativeMixed2'"),
-                new CompilerError(25, "no native implementation for backend: native 'nativeNonNativeMixed2' is not implemented for one or more backends"),
+                new CompilerError(25, "no native implementation for backend: native 'nativeNonNativeMixed2' is not implemented for the 'jvm' backend"),
                 new CompilerError(26, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
                 new CompilerError(27, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
                 new CompilerError(30, "duplicate declaration name: 'nativeNonNativeMixed3'")
@@ -460,14 +456,14 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeDuplicates() {
         testNativeErrors("NativeDuplicates",
-                new CompilerError(20, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for one or more backends"),
+                new CompilerError(20, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for the 'jvm' backend"),
                 new CompilerError(22, "duplicate native header: 'nativeDuplicates1'"),
-                new CompilerError(22, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for one or more backends"),
+                new CompilerError(22, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for the 'jvm' backend"),
                 new CompilerError(28, "duplicate native implementation: 'nativeDuplicates2'"),
-                new CompilerError(30, "no native implementation for backend: native 'nativeDuplicates3' is not implemented for one or more backends"),
+                new CompilerError(30, "no native implementation for backend: native 'nativeDuplicates3' is not implemented for the 'jvm' backend"),
                 new CompilerError(34, "duplicate native implementation: 'nativeDuplicates3'"),
                 new CompilerError(40, "duplicate native implementation: 'nativeDuplicates4'"),
-                new CompilerError(42, "no native implementation for backend: native 'nativeDuplicates5' is not implemented for one or more backends"),
+                new CompilerError(42, "no native implementation for backend: native 'nativeDuplicates5' is not implemented for the 'jvm' backend"),
                 new CompilerError(46, "duplicate native implementation: 'nativeDuplicates5'")
         );
     }
@@ -475,12 +471,13 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMissing() {
         testNativeErrors("NativeMissing",
-                new CompilerError(20, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
-                new CompilerError(21, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
-                new CompilerError(27, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for one or more backends"),
-                new CompilerError(28, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for one or more backends"),
-                new CompilerError(29, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends"),
-                new CompilerError(32, "no native implementation for backend: native 'NativeMissingClass' is not implemented for one or more backends")
+                new CompilerError(20, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for the 'jvm' backend"),
+                new CompilerError(21, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend"),
+                new CompilerError(23, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for the 'jvm' backend"),
+                new CompilerError(27, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for the 'jvm' backend"),
+                new CompilerError(28, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for the 'jvm' backend"),
+                new CompilerError(29, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend"),
+                new CompilerError(32, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend")
         );
     }
     
