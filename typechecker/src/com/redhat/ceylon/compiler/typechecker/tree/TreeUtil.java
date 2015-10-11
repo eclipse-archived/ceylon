@@ -93,13 +93,15 @@ public class TreeUtil {
             }
         }
         if (expression!=null) {
-            Tree.Literal literal = (Tree.Literal) 
-                    expression.getTerm();
-            result = literal.getText();
-            if (result.startsWith("\"") && 
-                    result.endsWith("\"")) {
-                result = result.substring(1, 
-                        result.length() - 1);
+            Tree.Term term = expression.getTerm();
+            if (term instanceof Tree.Literal) {
+                Tree.Literal literal = (Tree.Literal) term;
+                result = literal.getText();
+                if (result.startsWith("\"") && 
+                        result.endsWith("\"")) {
+                    result = result.substring(1, 
+                            result.length() - 1);
+                }
             }
         }
         return result;
