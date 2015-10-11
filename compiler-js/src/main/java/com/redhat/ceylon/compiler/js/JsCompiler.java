@@ -19,6 +19,7 @@ import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
@@ -26,12 +27,15 @@ import com.redhat.ceylon.compiler.js.util.JsLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.compiler.typechecker.analyzer.MissingNativeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -57,6 +61,19 @@ public class JsCompiler {
     private Logger logger;
     private JsIdentifierNames names;
 
+    private static class JsMissingNativeVisitor extends MissingNativeVisitor {
+        private File cwd;
+        
+        public JsMissingNativeVisitor(File cwd) {
+            super(Backend.JavaScript);
+            this.cwd = cwd;
+        }
+        
+        protected boolean checkNative(Node node, Declaration model) {
+            return GenerateJsVisitor.canStitchNative(cwd, model);
+        }
+    }
+    
     public int getExitCode() {
         return exitCode;
     }
@@ -109,6 +126,8 @@ public class JsCompiler {
             logger.debug("Compiling "+pu.getUnitFile().getPath()+" to JS");
         }
         JsOutput jsout = getOutput(pu);
+        MissingNativeVisitor mnv = new JsMissingNativeVisitor(opts.getCwd());
+        pu.getCompilationUnit().visit(mnv);
         GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens());
         pu.getCompilationUnit().visit(jsv);
         pu.getCompilationUnit().visit(errorVisitor);

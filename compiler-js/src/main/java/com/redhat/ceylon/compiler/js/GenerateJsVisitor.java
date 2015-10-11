@@ -21,6 +21,7 @@ import java.util.Stack;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -1095,7 +1096,7 @@ public class GenerateJsVisitor extends Visitor {
         FunctionHelper.methodDeclaration(null, that, this, verboseStitcher);
     }
 
-    private File getStitchedFilename(final Declaration d, final String suffix) {
+    private static File getStitchedFilename(final File cwd, final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
         String name = d.getName();
         if (name == null && d instanceof Constructor) {
@@ -1108,13 +1109,18 @@ public class GenerateJsVisitor extends Visitor {
         if (JsCompiler.isCompilingLanguageModule()) {
             return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
         } else {
-            return new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix);
+            return FileUtil.applyCwd(cwd, new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix));
         }
     }
 
+    public static boolean canStitchNative(final File cwd, final Declaration d) {
+        final File f = getStitchedFilename(cwd, d, ".js");
+        return (f.exists() && f.canRead());
+    }
+    
     /** Reads a file with hand-written snippet and outputs it to the current writer. */
     boolean stitchNative(final Declaration d, final Tree.Declaration n) {
-        final File f = getStitchedFilename(d, ".js");
+        final File f = getStitchedFilename(opts.getCwd(), d, ".js");
         if (f.exists() && f.canRead()) {
             jsout.outputFile(f);
             if (d.isClassOrInterfaceMember()) {
@@ -1153,7 +1159,7 @@ public class GenerateJsVisitor extends Visitor {
 
     /** Stitch a snippet of code to initialize type (usually a call to initTypeProto). */
     boolean stitchInitializer(TypeDeclaration d) {
-        final File f = getStitchedFilename(d, "$init.js");
+        final File f = getStitchedFilename(opts.getCwd(), d, "$init.js");
         if (f.exists() && f.canRead()) {
             jsout.outputFile(f);
             return true;
@@ -1164,7 +1170,7 @@ public class GenerateJsVisitor extends Visitor {
     boolean stitchConstructorHelper(final Tree.ClassOrInterface coi, final String partName) {
         final File f;
         if (JsCompiler.isCompilingLanguageModule()) {
-            f = getStitchedFilename(coi.getDeclarationModel(), partName + ".js");
+            f = getStitchedFilename(opts.getCwd(), coi.getDeclarationModel(), partName + ".js");
         } else {
             f = new File(new File(coi.getUnit().getFullPath()).getParentFile(),
                     String.format("%s%s.js", names.name(coi.getDeclarationModel()), partName));
