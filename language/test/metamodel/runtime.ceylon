@@ -2238,6 +2238,8 @@ shared void run() {
     sandbox(bugC1998);
     // those were filed for the JS compiler initially
     sandbox(bugJ505);
+    // those were filed for the ceylon-model
+    sandbox(bugM12test);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");
