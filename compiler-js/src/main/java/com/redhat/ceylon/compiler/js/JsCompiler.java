@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -70,6 +71,17 @@ public class JsCompiler {
         }
         
         protected boolean checkNative(Node node, Declaration model) {
+            if (model.getUnit() != node.getUnit()
+                    && TreeUtil.isForBackend(
+                            model.getUnit().getPackage().getModule().getNativeBackend(),
+                            Backend.JavaScript)) {
+                // If the model doesn't come from the current unit we're
+                // compiling we check if it comes from a module that
+                // supports JS and if so we assume everything is okay.
+                // This is not actually correct! But it's HACK for the
+                // IDE that doesn't really know about JS modules
+                return true;
+            }
             return GenerateJsVisitor.canStitchNative(cwd, model);
         }
     }
