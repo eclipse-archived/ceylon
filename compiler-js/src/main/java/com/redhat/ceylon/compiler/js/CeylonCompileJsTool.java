@@ -76,7 +76,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private boolean comments = false;
     private boolean skipSrc = false;
 
-    private String encoding;
+    private String encoding = DefaultToolOptions.getDefaultEncoding();
 
     private List<File> roots = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
