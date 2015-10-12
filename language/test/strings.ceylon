@@ -255,6 +255,8 @@ shared void strings() {
     check(!hello.keys.contains(5), "string keys 3");
     //check(hello.keys.contains(-1), "string keys 4");
     check(hello.keys.contains(0), "string keys 5");
+    // https://github.com/ceylon/ceylon.language/issues/766
+    check(#10000.character.string.keys == [0]);
     
     check(hello.hash==("HE"+"LLO").lowercased.hash, "string hash");
     
