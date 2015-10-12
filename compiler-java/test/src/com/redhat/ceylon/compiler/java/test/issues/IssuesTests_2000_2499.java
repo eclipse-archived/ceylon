@@ -654,4 +654,10 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     public void testBug2349() throws Exception {
         compareWithJavaSource("bug23xx/Bug2349"); 
     }
+    
+    @Test
+    public void testBug2350() throws Exception {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2350",
+                "bug23xx/Bug2350.ceylon"); 
+    }
 }
