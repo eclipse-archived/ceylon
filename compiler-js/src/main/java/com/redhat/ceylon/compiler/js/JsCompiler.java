@@ -2,8 +2,8 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.MissingNativeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -123,13 +124,15 @@ public class JsCompiler {
 
     /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
      * will be compiled. */
-    public void setSourceFiles(List<File> files) {
+    public JsCompiler setSourceFiles(List<File> files) {
         this.srcFiles = files;
+        return this;
     }
 
     /** Sets the names of the resources to pack with the compiler output. */
-    public void setResourceFiles(List<File> files) {
+    public JsCompiler setResourceFiles(List<File> files) {
         this.resFiles = files;
+        return this;
     }
 
     /** Compile one phased unit. */
@@ -262,7 +265,8 @@ public class JsCompiler {
                     if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
                         final JsOutput lastOut = getOutput(lastUnit);
-                        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+                        VirtualFile vpath = tc.getContext().getVfs().getFromFile(path);
+                        try (BufferedReader reader = new BufferedReader(new InputStreamReader(vpath.getInputStream(), opts.getEncoding()))) {
                             String line = null;
                             while ((line = reader.readLine()) != null) {
                                 if (opts.isMinify()) {
