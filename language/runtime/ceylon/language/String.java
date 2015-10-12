@@ -355,7 +355,7 @@ public final class String
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Sequential<? extends ceylon.language.Integer> 
     getKeys(java.lang.String value) {
-        long size = value.length();
+        long size = value.codePointCount(0, value.length());
         if (size==0) {
             return (Sequential) empty_.get_();
         }
