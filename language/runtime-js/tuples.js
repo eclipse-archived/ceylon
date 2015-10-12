@@ -2,6 +2,7 @@
 function tpl$(elems,spread){
   if (spread!==undefined) {
     if (is$(spread,{t:Sequential})) {
+      if (spread.size===0)spread=undefined;
     } else {
       var e;
       for (var iter=spread.iterator();(e=iter.next())!==finished();) {
