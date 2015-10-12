@@ -379,6 +379,9 @@ public class ToolFactory {
         private void invokeInitialize() {
             try {
                 tool.initialize(mainTool);
+            } catch (ToolError to) {
+                // those are already tool errors, just let them as-is
+                throw to;
             } catch (Exception e) {
                 throw new ToolInitializationException(toolModel, e);
             }
