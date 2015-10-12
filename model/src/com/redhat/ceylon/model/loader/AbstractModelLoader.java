@@ -319,6 +319,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return true;
     }
 
+    /**
+     * For subclassers to skip private members. Defaults to false.
+     */
+    protected boolean needsPrivateMembers() {
+        return true;
+    }
+
     public boolean searchAgain(ClassMirror cachedMirror, Module module, String name) {
         return false;
     }
@@ -2287,6 +2294,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // We skip members marked with @Ignore
             if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
+            if(skipPrivateMember(fieldMirror))
+                continue;
             if(isCeylon && fieldMirror.isStatic())
                 continue;
             // FIXME: temporary, because some private classes from the jdk are
@@ -2553,6 +2562,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // We skip members marked with @Ignore
             if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
                 continue;
+            if(skipPrivateMember(methodMirror))
+                continue;
             if(methodMirror.isStaticInit())
                 continue;
             if(isCeylon && methodMirror.isStatic()
@@ -2576,6 +2587,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
+    private boolean skipPrivateMember(AccessibleMirror mirror) {
+        return !mirror.isPublic() 
+                && !mirror.isProtected() 
+                && !mirror.isDefaultAccess()
+                && !needsPrivateMembers();
+    }
+
     private void addLocalDeclarations(LocalDeclarationContainer container, ClassMirror classContainerMirror, AnnotatedMirror annotatedMirror) {
         if(!needsLocalDeclarations())
             return;
