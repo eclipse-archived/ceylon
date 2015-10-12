@@ -1114,8 +1114,33 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public static boolean canStitchNative(final File cwd, final Declaration d) {
-        final File f = getStitchedFilename(cwd, d, ".js");
-        return (f.exists() && f.canRead());
+        if (JsCompiler.isCompilingLanguageModule()) {
+            switch(d.getName()){
+            // in special files
+            case "Integer":
+            case "Float":
+            case "true":
+            case "false":
+            case "modules":
+                // only native on JVM really
+            case "Tuple":
+            case "Callable":
+            case "Throwable":
+            case "Exception":
+            case "reach":
+                return true;
+            }
+        }
+        File f = getStitchedFilename(cwd, d, ".js");
+        if(f.exists() && f.canRead())
+            return true;
+        if (JsCompiler.isCompilingLanguageModule()) {
+            // try folder
+            f = getStitchedFilename(cwd, d, "");
+            if(f.exists() && f.isDirectory())
+                return true;
+        }
+        return false;
     }
     
     /** Reads a file with hand-written snippet and outputs it to the current writer. */
