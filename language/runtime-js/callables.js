@@ -26,7 +26,7 @@ function $JsCallable(f$,parms,targs) {
   }
   return f;
 }
-initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', Callable);
+initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', $init$Callable());
 
 function jsc$2(f$,parms,targs) {
   //Do not wrap another $JsCallable
@@ -56,7 +56,7 @@ function jsc$2(f$,parms,targs) {
   }
   return f;
 }
-initExistingTypeProto(jsc$2, Function, 'ceylon.language::JsCallable', Callable);
+initExistingTypeProto(jsc$2, Function, 'ceylon.language::JsCallable', $init$Callable());
 
 function nop$(){return null;}
 
