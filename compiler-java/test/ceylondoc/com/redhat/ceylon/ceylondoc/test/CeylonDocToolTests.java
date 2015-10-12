@@ -725,6 +725,23 @@ public class CeylonDocToolTests {
         }
     }
 
+    @Test
+    public void bug2346() throws Exception {
+        String pathname = "test/ceylondoc";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.bug2346";
+        
+        Module module = new Module();
+        module.setName(Arrays.asList(moduleName));
+        module.setVersion("1");
+        
+        CeylonDocTool tool = 
+                    tool(Arrays.asList(new File(pathname)),
+                            Arrays.asList(new File("doc")),
+                            Arrays.asList(moduleName),
+                            true, false, false);
+        tool.run();
+    }
+
     private void assertFileExists(File destDir, boolean includeNonShared) {
         assertDirectoryExists(destDir, ".resources");
         assertFileExists(destDir, ".resources/index.js");
