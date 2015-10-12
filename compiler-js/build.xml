@@ -135,7 +135,7 @@
 
     <!-- generate the ceylon.language.js file -->
     <target name="build-js-language-module" depends="compile" unless="skip.language.module">
-        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true">
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true" failonerror="yes">
             <arg value="../ceylon.language/runtime-js/MASTER.txt" />
             <arg value="${runtime}/${jslangmodule}" />
         </java>

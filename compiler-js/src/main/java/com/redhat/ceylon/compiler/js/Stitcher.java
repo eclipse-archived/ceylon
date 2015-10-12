@@ -142,7 +142,13 @@ public class Stitcher {
         JsCompiler.compilingLanguageModule=true;
         JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
         jsc.setSourceFiles(includes);
-        jsc.generate();
+        if (!jsc.generate()) {
+            jsc.printErrorsAndCount(new OutputStreamWriter(System.out));
+            return 1;
+        } else {
+            // We still call this here for any warning there might be
+            jsc.printErrorsAndCount(new OutputStreamWriter(System.out));
+        }
         if (names == null) {
             names = jsc.getNames();
         }
