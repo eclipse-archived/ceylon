@@ -1669,7 +1669,13 @@ class NamedArgumentInvocation extends Invocation {
                     // FIXME: deal with this erasure bug later
                     argExpr = gen.make().TypeCast(gen.makeJavaType(gen.typeFact().getIterableDeclaration().getType(), AbstractTransformer.JT_RAW), gen.makeEmpty());
                 } else {
-                    argExpr = gen.makeErroneous(this.getNode(), "compiler bug: missing argument, and parameter is not defaulted");
+                    // more expensive but worth a try
+                    Type appliedType = gen.getTypeForParameter(param, producedReference, AbstractTransformer.TP_TO_BOUND);
+                    if(gen.typeFact().isIterableType(appliedType)){
+                        argExpr = gen.make().TypeCast(gen.makeJavaType(gen.typeFact().getIterableDeclaration().getType(), AbstractTransformer.JT_RAW), gen.makeEmpty());
+                    }else{
+                        argExpr = gen.makeErroneous(this.getNode(), "compiler bug: missing argument, and parameter is not defaulted");
+                    }
                 }
                 appendDefaulted(param, argExpr);
             }
