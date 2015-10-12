@@ -377,7 +377,7 @@ public class Metamodel {
                 getOrCreateMetamodel(mod);
                 if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Class){
                     com.redhat.ceylon.model.typechecker.model.Class klass = (com.redhat.ceylon.model.typechecker.model.Class) declaration;
-                    ret = klass.hasConstructors() || klass.hasEnumerated()?
+                    ret = klass.hasConstructors() || klass.hasEnumerated() || klass.isAnonymous()?
                             new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithConstructors(klass) :
                             new com.redhat.ceylon.compiler.java.runtime.metamodel.FreeClassWithInitializer(klass);
                 }else if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Interface){
