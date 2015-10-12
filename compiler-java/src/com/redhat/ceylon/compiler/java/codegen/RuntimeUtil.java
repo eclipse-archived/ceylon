@@ -123,18 +123,26 @@ class RuntimeUtil {
 
     /**
      * Makes a call to 
-     * {@code Util.sequentialCopy($reifiedT, Sequential rest, Object... initial)} */
+     * {@code Util.sequentialCopy($reifiedT, Object[] initial, Sequential rest)} 
+     */
     public JCExpression sequentialInstance(JCExpression typeArgument,
             JCExpression reifiedTypeArgument, 
             JCExpression /*Sequential*/ rest, 
             List<JCExpression> /*T...*/elements) {
         // Explicitly box the elements into an Object[] to avoid ambiguous varargs invocation
+        
+        /*
+         * sequentialCopy($reifiedT, 0, 
+                elements.length, elements, rest)
+         */
         JCExpression array = abstractTransformer.make().NewArray(
                 abstractTransformer.make().Type(abstractTransformer.syms().objectType), 
                 List.<JCExpression>nil(), 
                 elements);
         return makeUtilInvocation(typeArgument != null ? List.of(typeArgument) : null, "sequentialCopy", 
-                List.<JCExpression>of(reifiedTypeArgument, rest, array));
+                List.<JCExpression>of(reifiedTypeArgument, 
+                        array,
+                        rest));
     }
 
     public JCExpression throwableMessage(JCExpression qualExpr) {
