@@ -514,7 +514,7 @@ public abstract class TypeDeclaration extends Declaration
             String name,
             List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
-        if (!onlyExactMatches) {
+        if (!onlyExactMatches && signature!=null) {
             //first try for an exact match
             SupertypeDeclaration sd = 
                     getMemberInternal(name, 
