@@ -576,7 +576,11 @@ public class InvocationGenerator {
                             gen.out(",", gen.getClAlias(), "nn$(", specialSpreadVar,
                                     ".$_get(", cs, "))?", specialSpreadVar, ".$_get(", cs, "):undefined");
                         } else if (restp.isSequenced()) {
-                            gen.out(",", specialSpreadVar, ".sublistFrom(", cs, ")");
+                            if (c == 2) {
+                                gen.out(",", specialSpreadVar, ".rest");
+                            } else {
+                                gen.out(",", specialSpreadVar, ".sublistFrom(", cs, ")");
+                            }
                         } else {
                             gen.out(",", specialSpreadVar, ".$_get(", cs, ")");
                         }
