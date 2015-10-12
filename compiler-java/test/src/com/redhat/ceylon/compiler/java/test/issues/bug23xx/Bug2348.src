@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+final class bug2348_ {
+    
+    private bug2348_() {
+    }
+    
+    static void bug2348() {
+        .ceylon.language.print_.print((
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> spread$0$iterable$ = .ceylon.language.String.instance("42");
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Boolean> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Character> spread$0$iterator$ = spread$0$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$0$element$;
+                            if (!((spread$0$element$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$0$element$ = .ceylon.language.Boolean.instance(((.ceylon.language.Character)spread$0$element$).getLetter());
+                            }
+                            return spread$0$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        ));
+    }
+}
