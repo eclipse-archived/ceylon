@@ -433,7 +433,7 @@ public class InvocationGenerator {
                     gen.out(",");
                 }
                 if (arg instanceof Tree.SpreadArgument) {
-                    generateSpread(primary, that, args, arg, expr, pd);
+                    generateSpreadArgument(primary, that, args, (Tree.SpreadArgument)arg, expr, pd);
                 } else {
                     ((Tree.Comprehension)arg).visit(gen);
                     if (!arg.getTypeModel().isSequential()) {
@@ -477,6 +477,9 @@ public class InvocationGenerator {
                     }
                     TypeUtils.printTypeArguments(that, _targs, gen, false, _vo);
                     gen.out(")");
+                    if (chained) {
+                        gen.out(".sequence()");
+                    }
                 }
                 if (arg instanceof Tree.Comprehension) {
                     break;
@@ -497,10 +500,10 @@ public class InvocationGenerator {
         return argvars;
     }
 
-    private void generateSpread(final Tree.Primary primary,
+    private void generateSpreadArgument(final Tree.Primary primary,
             final Tree.ArgumentList that,
             final List<Tree.PositionalArgument> args,
-            Tree.PositionalArgument arg, Tree.Expression expr,
+            final Tree.SpreadArgument arg, Tree.Expression expr,
             final Parameter pd) {
         TypedDeclaration td = pd == null ? null : pd.getModel();
         int boxType = gen.boxUnboxStart(expr.getTerm(), td);
