@@ -16,7 +16,7 @@ function $JsCallable(f$,parms,targs) {
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
   var f=function c1(){
-    return f$.apply(0,spread$(arguments,f$,targs));
+    return f$.apply(undefined,spread$(arguments,f$,targs,1));
   }
   f.$crtmm$=f$.$crtmm$;
   f.getT$all=f$.getT$all;
@@ -28,6 +28,36 @@ function $JsCallable(f$,parms,targs) {
 }
 initExistingTypeProto($JsCallable, Function, 'ceylon.language::JsCallable', Callable);
 
+function jsc$2(f$,parms,targs) {
+  //Do not wrap another $JsCallable
+  if (f$.jsc$)return f$;
+  if (f$.getT$all === undefined) {
+    f$.getT$all=Callable.getT$all;
+  }
+  var set_meta = getrtmm$$(f$) === undefined;
+  if (set_meta) {
+    f$.$crtmm$={ps:parms||[],mod:$CCMM$,d:['$','Callable']};
+  }
+  if (targs !== undefined && f$.$$targs$$ === undefined) {
+    f$.$$targs$$=targs;
+    if (set_meta) {
+      f$.$crtmm$.$t=targs.Return$Callable;
+    }
+  }
+  if (f$.$flattened$||f$.$unflattened$)return f$;
+  var f=function c1(){
+    return f$.apply(undefined,arguments);
+  }
+  f.$crtmm$=f$.$crtmm$;
+  f.getT$all=f$.getT$all;
+  f.jsc$=f$;
+  f.equals=function(o) {
+    return false;//o===f || o===f$;
+  }
+  return f;
+}
+initExistingTypeProto(jsc$2, Function, 'ceylon.language::JsCallable', Callable);
+
 function nop$(){return null;}
 
 //This is used for method references
@@ -38,7 +68,7 @@ function JsCallable(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
   var f2=function c2() {
-    var arg=spread$(arguments,f,targs);
+    var arg=spread$(arguments,f,targs,1);
     if (targs)arg.push(targs);
     return f.apply(o, arg);
   };
@@ -53,14 +83,32 @@ function JsCallable(o,f,targs) {
 JsCallable.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
   tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
-function spread$(a,f,targs) {
-  var arg=[].slice.call(a,0);
+function jsc$3(o,f,targs) {
+  if (o===null || o===undefined) return nop$;
+  if (f.jsc$)f=f.jsc$;
+  var f2=function c2() {
+    return f.apply(o, arguments);
+  };
+  f2.c2$=f;
+  f2.$$targs$$=targs;
+  f2.equals=function(x){
+    return false;//f===x || f2===x;
+  }
+  f2.$crtmm$=f.$crtmm$||Callable.$crtmm$;
+  return f2;
+}
+jsc$3.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Callable',Arguments$Callable:'Arguments$Callable'}}],
+  tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
+
+function spread$(a,f,targs,noInvoke) {
+  var argIsArray=Array.isArray(a);
+  var arg=argIsArray?[].slice.call(a,0):a;
   //if we get only 1 arg and it's a tuple...
-  if (arg.length===1 && is$(arg[0],{t:Tuple})) {
-    var tuple0=arg[0];
+  if (arg.size===1 && is$(arg.$_get(0),{t:Tuple})) {
+    var tuple0=arg.$_get(0);
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
-    var params = mm && mm.ps;
+    var params = mm && mm.ps || [];
     if (params.length===1 && params[0].seq>0 && is$(tuple0,{t:Sequence,a:{Element$Sequence:params[0].$t}})){
       return arg;
     }
@@ -104,18 +152,24 @@ function spread$(a,f,targs) {
         typecheck={t:Iterable,a:tuple0.$$targs$$.Element$Iterable};
       }
     }
-    if (params && (params.length>1 || (params.length===1
-        && (params[0].seq || !extendsType(a1t, typecheck))))) {
+    if (params.length>1 || (params.length===1
+        && (params[0].seq || !extendsType(a1t, typecheck)))) {
       var a=tuple0.nativeArray ? tuple0.nativeArray():undefined;
       if (a===undefined) {
         a=[];
         for (var i=0;i<tuple0.size;i++)a.push(tuple0.$_get(i));
       }
       arg=a;
+      argIsArray=true;
     }
   }
-  return arg;
+  if (noInvoke) {
+    return arg;
+  }
+  if (argIsArray&&targs)arg.push(targs);
+  return argIsArray?f.apply(undefined,arg):f.call(undefined,arg,targs);
 }
+ex$.spread$=spread$;
 
 //This is used for spread method references
 //Pass it a list (or Iterable, really) and a function to execute on the item with the specified arguments
@@ -145,3 +199,5 @@ ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;
 ex$.$JsCallable=$JsCallable;
 ex$.mkseq$=mkseq$;
+ex$.jsc$2=jsc$2;
+ex$.jsc$3=jsc$3;
