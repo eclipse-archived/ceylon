@@ -101,7 +101,7 @@ jsc$3.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Call
   tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 function spread$(a,f,targs,noInvoke) {
-  var argIsArray=Array.isArray(a);
+  var argIsArray=noInvoke || Array.isArray(a);
   var arg=argIsArray?[].slice.call(a,0):a;
   //if we get only 1 arg and it's a tuple...
   if (arg.size===1 && is$(arg.$_get(0),{t:Tuple})) {
