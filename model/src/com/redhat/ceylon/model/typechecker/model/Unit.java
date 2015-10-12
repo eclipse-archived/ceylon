@@ -2095,7 +2095,7 @@ public class Unit {
     }
     
     public Type getClassDeclarationType(Class clazz) {
-        return clazz.hasConstructors() || clazz.hasEnumerated() ?
+        return clazz.hasConstructors() || clazz.hasEnumerated() || clazz.isAnonymous() ?
                 getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithConstructorsDeclaration")) :
                 getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithInitializerDeclaration"));
     }
