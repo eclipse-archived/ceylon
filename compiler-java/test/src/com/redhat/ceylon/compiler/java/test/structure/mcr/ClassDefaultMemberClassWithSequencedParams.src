@@ -49,10 +49,10 @@ class ClassDefaultMemberClassWithSequencedParams implements .com.redhat.ceylon.c
             returning Member$new$(arg$2$0);
         );
         Member$new$();
-        return Member$new$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        return Member$new$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
-                .ceylon.language.Integer.instance(3L)}));
+                .ceylon.language.Integer.instance(3L)}, .ceylon.language.empty_.get_()));
     }
     
     @.java.lang.Override
@@ -114,10 +114,10 @@ class ClassDefaultMemberClassWithSequencedParams_sub extends .com.redhat.ceylon.
             returning Member$new$(arg$5$0);
         );
         Member$new$();
-        return Member$new$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        return Member$new$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L),
-                .ceylon.language.Integer.instance(4L)}));
+                .ceylon.language.Integer.instance(4L)}, .ceylon.language.empty_.get_()));
     }
     
     @.java.lang.Override

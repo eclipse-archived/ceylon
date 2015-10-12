@@ -61,7 +61,7 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
                 return $calltyped$(b$variadic$);
             }
             
@@ -72,9 +72,9 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{
                         $param$0,
-                        $param$1});
+                        $param$1}, .ceylon.language.empty_.get_());
                 return $calltyped$(b$variadic$);
             }
             
@@ -87,10 +87,10 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{
                         $param$0,
                         $param$1,
-                        $param$2});
+                        $param$2}, .ceylon.language.empty_.get_());
                 return $calltyped$(b$variadic$);
             }
             

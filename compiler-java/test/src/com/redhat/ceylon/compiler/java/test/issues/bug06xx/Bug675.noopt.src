@@ -17,9 +17,9 @@ public final class bug675_ {
     
     public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> bug675(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> elements) {
         .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> elem$0$iterator$ = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> elem$0$iterator$ = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)})).iterator();
+                .ceylon.language.Integer.instance(2L)}, .ceylon.language.empty_.get_())).iterator();
         loop_0: while (!((elem$0 = elem$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
             final long k = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getKey()).longValue();
             final long v = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getItem()).longValue();

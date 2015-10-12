@@ -70,9 +70,9 @@ final class variadicTricksRepeated_ {
     
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksRepeated(final .java.lang.String s) {
-        return new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        return new .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance(s),
-                .ceylon.language.String.instance(s)}));
+                .ceylon.language.String.instance(s)}, .ceylon.language.empty_.get_()));
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -146,9 +146,9 @@ final class variadicTricksIndirectRepeated_ {
     
     @.ceylon.language.AnnotationAnnotation$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks variadicTricksIndirectRepeated(final .java.lang.String s) {
-        return .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.variadicTricksIndirect((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        return .com.redhat.ceylon.compiler.java.test.annotations.variadicTricksIndirect_.variadicTricksIndirect((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance(s),
-                .ceylon.language.String.instance(s)}));
+                .ceylon.language.String.instance(s)}, .ceylon.language.empty_.get_()));
     }
 }
 @.com.redhat.ceylon.compiler.java.test.annotations.VariadicTricks$annotations$({

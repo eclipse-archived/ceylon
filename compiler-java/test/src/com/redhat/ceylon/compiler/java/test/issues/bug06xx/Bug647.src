@@ -53,9 +53,9 @@ final class bug647test_ {
             }
             returning null;
         );
-        final .ceylon.language.Array<.java.lang.Object> objs = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.arrayOfSome_.<.java.lang.Object>arrayOfSome(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        final .ceylon.language.Array<.java.lang.Object> objs = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.arrayOfSome_.<.java.lang.Object>arrayOfSome(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("one"),
                 .ceylon.language.String.instance("two"),
-                .ceylon.language.String.instance("three")}));
+                .ceylon.language.String.instance("three")}, .ceylon.language.empty_.get_()));
     }
 }

@@ -56,7 +56,7 @@ final class callableWithDefaulted_ {
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$2});
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$2}, .ceylon.language.empty_.get_());
                 return $calltyped$(a, b, args$variadic$);
             }
             
@@ -87,18 +87,18 @@ final class callableWithDefaulted_ {
         };
         defaultedVariadic.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L));
         defaultedVariadic.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
-        defaultedVariadic.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
-        defaultedVariadic.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        defaultedVariadic.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, .ceylon.language.empty_.get_()));
+        defaultedVariadic.$callvariadic$((.java.lang.Object).ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)}));
+                .ceylon.language.Integer.instance(2L)}, .ceylon.language.empty_.get_()));
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L)});
         defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints);
-        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)})));
-        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints, new .java.lang.Object[]{
+        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)}, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints)));
+        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(3L),
-                .ceylon.language.Integer.instance(4L)})));
+                .ceylon.language.Integer.instance(4L)}, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints)));
         defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -130,7 +130,7 @@ final class callableWithDefaulted_ {
                 };
             }
         }.sequence());
-        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -160,8 +160,10 @@ final class callableWithDefaulted_ {
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)})));
-        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        }.sequence())));
+        defaultedVariadic.$callvariadic$(.ceylon.language.Integer.instance(1L), .ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(3L),
+                .ceylon.language.Integer.instance(4L)}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -191,9 +193,7 @@ final class callableWithDefaulted_ {
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{
-                .ceylon.language.Integer.instance(3L),
-                .ceylon.language.Integer.instance(4L)})));
+        }.sequence())));
         final .ceylon.language.Callable<? extends .java.lang.Object> defaultedNonemptyVariadic = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, true, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "String(String, Integer+)", (short)1){
             
             @.java.lang.Override
@@ -206,7 +206,7 @@ final class callableWithDefaulted_ {
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .java.lang.String b = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$1});
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$1}, .ceylon.language.empty_.get_());
                 return $calltyped$(b, args$variadic$);
             }
             
@@ -219,9 +219,9 @@ final class callableWithDefaulted_ {
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final .java.lang.String b = ((.ceylon.language.String)$param$0).toString();
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         $param$1,
-                        $param$2});
+                        $param$2}, .ceylon.language.empty_.get_());
                 return $calltyped$(b, args$variadic$);
             }
             
@@ -249,15 +249,15 @@ final class callableWithDefaulted_ {
                 return .ceylon.language.String.instance(b);
             }
         };
-        defaultedNonemptyVariadic.$callvariadic$((.java.lang.Object).ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
-        defaultedNonemptyVariadic.$callvariadic$((.java.lang.Object).ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        defaultedNonemptyVariadic.$callvariadic$((.java.lang.Object).ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, .ceylon.language.empty_.get_()));
+        defaultedNonemptyVariadic.$callvariadic$((.java.lang.Object).ceylon.language.String.instance("a"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)}));
+                .ceylon.language.Integer.instance(2L)}, .ceylon.language.empty_.get_()));
         defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints);
-        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)})));
-        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints, new .java.lang.Object[]{
+        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)}, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints)));
+        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(3L),
-                .ceylon.language.Integer.instance(4L)})));
+                .ceylon.language.Integer.instance(4L)}, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints)));
         defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -289,7 +289,7 @@ final class callableWithDefaulted_ {
                 };
             }
         }.sequence());
-        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -319,8 +319,10 @@ final class callableWithDefaulted_ {
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)})));
-        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        }.sequence())));
+        defaultedNonemptyVariadic.$callvariadic$(.ceylon.language.String.instance("a"), .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(3L),
+                .ceylon.language.Integer.instance(4L)}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -350,9 +352,7 @@ final class callableWithDefaulted_ {
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{
-                .ceylon.language.Integer.instance(3L),
-                .ceylon.language.Integer.instance(4L)})));
+        }.sequence())));
         final .ceylon.language.Callable<? extends .java.lang.Object> notDefaulted = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), "Integer(Integer, String)", (short)-1){
             
             @.java.lang.Override
@@ -530,7 +530,7 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
                 return $calltyped$(a$variadic$);
             }
             
@@ -541,9 +541,9 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         $param$0,
-                        $param$1});
+                        $param$1}, .ceylon.language.empty_.get_());
                 return $calltyped$(a$variadic$);
             }
             
@@ -556,10 +556,10 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequential<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         $param$0,
                         $param$1,
-                        $param$2});
+                        $param$2}, .ceylon.language.empty_.get_());
                 return $calltyped$(a$variadic$);
             }
             
@@ -595,7 +595,7 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$0});
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
                 return $calltyped$(a$variadic$);
             }
             
@@ -606,9 +606,9 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         $param$0,
-                        $param$1});
+                        $param$1}, .ceylon.language.empty_.get_());
                 return $calltyped$(a$variadic$);
             }
             
@@ -621,10 +621,10 @@ final class callableWithDefaulted_ {
             
             @.java.lang.Override
             public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         $param$0,
                         $param$1,
-                        $param$2});
+                        $param$2}, .ceylon.language.empty_.get_());
                 return $calltyped$(a$variadic$);
             }
             
@@ -748,7 +748,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
                 final .java.lang.String b = ((.ceylon.language.String)$param$1).toString();
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$2});
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$2}, .ceylon.language.empty_.get_());
                 return $calltyped$(a, b, args$variadic$);
             }
             
@@ -795,7 +795,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{$param$1});
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$1}, .ceylon.language.empty_.get_());
                 return $calltyped$(a, args$variadic$);
             }
             
@@ -808,9 +808,9 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
                 final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                         $param$1,
-                        $param$2});
+                        $param$2}, .ceylon.language.empty_.get_());
                 return $calltyped$(a, args$variadic$);
             }
             

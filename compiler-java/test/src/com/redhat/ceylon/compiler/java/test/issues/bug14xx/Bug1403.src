@@ -43,7 +43,7 @@ final class bug1403_ {
     }
     
     static void bug1403() {
-        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, (
+        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, (
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.String.$TypeDescriptor$;
@@ -63,8 +63,8 @@ final class bug1403_ {
                 };
             }
             returning .com.redhat.ceylon.compiler.java.test.issues.bug14xx.coalesce_.<.ceylon.language.String>coalesce(arg$0$reified$0, arg$0$0);
-        ).sequence(), new .java.lang.Object[]{.ceylon.language.String.instance("")})));
-        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+        ).sequence())));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -77,7 +77,7 @@ final class bug1403_ {
                 
                 }
             }
-        }.sequence(), new .java.lang.Object[]{.ceylon.language.String.instance("")})));
+        }.sequence())));
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             
             @.java.lang.Override
@@ -92,9 +92,9 @@ final class bug1403_ {
                 }
             }
         };
-        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, it.sequence(), new .java.lang.Object[]{.ceylon.language.String.instance("")})));
-        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}), new .java.lang.Object[]{.ceylon.language.String.instance("")})));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, it.sequence())));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}))));
         final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
-        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)seq, new .java.lang.Object[]{.ceylon.language.String.instance("")})));
+        new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1403(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)seq)));
     }
 }

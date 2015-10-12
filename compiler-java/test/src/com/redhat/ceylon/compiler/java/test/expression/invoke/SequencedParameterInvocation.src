@@ -61,28 +61,28 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
     
     private final void f$priv$() {
         m$priv$("foo");
-        m$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        m$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
-                .ceylon.language.Integer.instance(3L)}));
-        m3$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(3L)}, .ceylon.language.empty_.get_()));
+        m3$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
-                .ceylon.language.Integer.instance(3L)}));
+                .ceylon.language.Integer.instance(3L)}, .ceylon.language.empty_.get_()));
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ints = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L)});
         m$priv$("foo", (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints);
         m3$priv$("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints);
-        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
-        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})));
-        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints, new .java.lang.Object[]{
+        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints));
+        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints)));
+        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)}));
-        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L)}, (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)ints));
+        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)})));
+                .ceylon.language.Integer.instance(2L)}, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)ints)));
         m$priv$("foo", new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -171,7 +171,7 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                 };
             }
         }.sequence());
-        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -214,8 +214,8 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
-        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        }.sequence()));
+        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -258,8 +258,10 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})));
-        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        }.sequence())));
+        m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L)}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -302,10 +304,10 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{
+        }.sequence()));
+        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)}));
-        m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                .ceylon.language.Integer.instance(2L)}, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -348,17 +350,15 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        }.sequence(), new .java.lang.Object[]{
-                .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(2L)})));
-        m2$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        }.sequence())));
+        m2$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, new .java.lang.Object[]{
                 this,
                 this,
-                this}));
-        m4$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+                this}, .ceylon.language.empty_.get_()));
+        m4$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, new .java.lang.Object[]{
                 this,
                 this,
-                this}));
+                this}, .ceylon.language.empty_.get_()));
     }
     
     @.java.lang.Override

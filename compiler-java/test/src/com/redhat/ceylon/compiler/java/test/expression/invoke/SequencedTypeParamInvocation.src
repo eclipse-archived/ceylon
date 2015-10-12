@@ -42,8 +42,8 @@ final class sequencedTypeParamInvocationMethod_ {
     }
     
     static void sequencedTypeParamInvocationMethod() {
-        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).algo((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.empty_.get_(), new .java.lang.Object[]{
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).algo((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("x"),
-                .ceylon.language.String.instance("y")}));
+                .ceylon.language.String.instance("y")}, .ceylon.language.empty_.get_()));
     }
 }
