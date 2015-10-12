@@ -38,6 +38,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationE
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
@@ -441,7 +442,7 @@ public class CompilerToolTests extends AbstractToolTests {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src/com/redhat/ceylon/tools/test/empty"));
             Assert.fail("Tool should have thrown an exception");
-        } catch (ToolInitializationException e) {
+        } catch (ToolUsageError e) {
             Assert.assertEquals("No modules or source files to compile", e.getMessage());
         }
         
@@ -472,7 +473,7 @@ public class CompilerToolTests extends AbstractToolTests {
                     options("--src=test/src/com/redhat/ceylon/tools/test/empty", "default"));
             tool.run();
             Assert.fail("Tool should have thrown an exception");
-        } catch (ToolInitializationException e) {
+        } catch (ToolUsageError e) {
             Assert.assertEquals("Module default does not contain any sources or resources", e.getMessage());
         }
         

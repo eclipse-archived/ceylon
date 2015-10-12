@@ -122,7 +122,7 @@ public class ImportJarToolTests extends AbstractToolTests {
             CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
                     "test/1.0", "test/src/com/redhat/ceylon/tools/test/nonexistent.jar"));
             Assert.fail();
-        } catch (OptionArgumentException e) {
+        } catch (ImportJarException e) {
             String jarName = "test/src/com/redhat/ceylon/tools/test/nonexistent.jar";
             jarName = jarName.replace('/', File.separatorChar);
             Assert.assertEquals("Jar file " +jarName + " does not exist", e.getMessage());
@@ -138,7 +138,7 @@ public class ImportJarToolTests extends AbstractToolTests {
                     "--descriptor", "test/src/com/redhat/ceylon/tools/test/ImportJarToolTests.java",
                     "test/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             Assert.fail();
-        } catch (OptionArgumentException e) {
+        } catch (ImportJarException e) {
             Assert.assertEquals("Descriptor file test/src/com/redhat/ceylon/tools/test/ImportJarToolTests.java does not end with '.xml' or '.properties' extension", e.getMessage().replace('\\', '/'));
         }
     }
@@ -179,11 +179,10 @@ public class ImportJarToolTests extends AbstractToolTests {
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
             Assert.fail();
-        } catch (OptionArgumentException e) {
-            Assert.assertTrue(e.getCause() instanceof ImportJarException);
+        } catch (ImportJarException e) {
             String xmlName = "test/src/com/redhat/ceylon/tools/test/test-nonexistent-descriptor.xml";
             xmlName = xmlName.replace('/', File.separatorChar);
-            Assert.assertEquals("Descriptor file " + xmlName + " does not exist", e.getCause().getMessage());
+            Assert.assertEquals("Descriptor file " + xmlName + " does not exist", e.getMessage());
         }
     }
 
