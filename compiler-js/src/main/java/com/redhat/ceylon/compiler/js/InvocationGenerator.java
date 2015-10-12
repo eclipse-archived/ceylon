@@ -432,90 +432,7 @@ public class InvocationGenerator {
                     gen.out(",");
                 }
                 if (arg instanceof Tree.SpreadArgument) {
-                    TypedDeclaration td = pd == null ? null : pd.getModel();
-                    int boxType = gen.boxUnboxStart(expr.getTerm(), td);
-                    if (boxType == 4) {
-                        arg.visit(gen);
-                        gen.out(",");
-                        describeMethodParameters(expr.getTerm());
-                        gen.out(",");
-                        TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false,
-                                arg.getTypeModel().getVarianceOverrides());
-                    } else if (pd == null) {
-                        if (gen.isInDynamicBlock() && primary instanceof Tree.MemberOrTypeExpression
-                                && ((Tree.MemberOrTypeExpression)primary).getDeclaration() == null
-                                && arg.getTypeModel() != null && arg.getTypeModel().getDeclaration().inherits((
-                                        that.getUnit().getTupleDeclaration()))) {
-                            //Spread dynamic parameter
-                            Type tupleType = arg.getTypeModel();
-                            Type targ = tupleType.getTypeArgumentList().get(2);
-                            arg.visit(gen);
-                            gen.out(".$_get(0)");
-                            int i = 1;
-                            while (!targ.isSubtypeOf(that.getUnit().getEmptyType())) {
-                                gen.out(",");
-                                arg.visit(gen);
-                                gen.out(".$_get("+(i++)+")");
-                                targ = targ.getTypeArgumentList().get(2);
-                            }
-                        } else {
-                            arg.visit(gen);
-                        }
-                    } else if (pd.isSequenced()) {
-                        arg.visit(gen);
-                        if (!TypeUtils.isSequential(arg.getTypeModel())) {
-                            gen.out(".sequence()");
-                        }
-                    } else {
-                        final String specialSpreadVar = gen.getNames().createTempVariable();
-                        gen.out("(", specialSpreadVar, "=");
-                        args.get(args.size()-1).visit(gen);
-                        if (TypeUtils.isSequential(args.get(args.size()-1).getTypeModel())) {
-                            gen.out(",");
-                        } else {
-                            gen.out(".sequence(),");
-                        }
-                        if (pd.isDefaulted()) {
-                            gen.out(gen.getClAlias(), "nn$(",
-                                    specialSpreadVar, ".$_get(0))?", specialSpreadVar,
-                                    ".$_get(0):undefined)");
-                        } else {
-                            gen.out(specialSpreadVar, ".$_get(0))");
-                        }
-                        //Find out if there are more params
-                        final List<Parameter> moreParams;
-                        final Declaration pdd = pd.getDeclaration();
-                        boolean found = false;
-                        if (pdd instanceof Function) {
-                            moreParams = ((Function)pdd).getFirstParameterList().getParameters();
-                        } else if (pdd instanceof Class) {
-                            moreParams = ((Class)pdd).getParameterList().getParameters();
-                        } else {
-                            //Check the parameters of the primary (obviously a callable, so this is a Tuple)
-                            List<Parameter> cparms = TypeUtils.convertTupleToParameters(
-                                    primary.getTypeModel().getTypeArgumentList().get(1));
-                            cparms.remove(0);
-                            moreParams = cparms;
-                            found = true;
-                        }
-                        if (moreParams != null) {
-                            int c = 1;
-                            for (Parameter restp : moreParams) {
-                                if (found) {
-                                    final String cs=Integer.toString(c++);
-                                    if (restp.isDefaulted()) {
-                                        gen.out(",", gen.getClAlias(), "nn$(", specialSpreadVar,
-                                                ".$_get(", cs, "))?", specialSpreadVar, ".$_get(", cs, "):undefined");
-                                    } else {
-                                        gen.out(",", specialSpreadVar, ".$_get(", cs, ")");
-                                    }
-                                } else {
-                                    found = restp.equals(pd);
-                                }
-                            }
-                        }
-                    }
-                    gen.boxUnboxEnd(boxType);
+                    generateSpread(primary, that, args, arg, expr, pd);
                 } else {
                     ((Tree.Comprehension)arg).visit(gen);
                     if (!arg.getTypeModel().isSequential()) {
@@ -577,6 +494,99 @@ public class InvocationGenerator {
                     seqtargs, gen);
         }
         return argvars;
+    }
+
+    private void generateSpread(final Tree.Primary primary,
+            final Tree.ArgumentList that,
+            final List<Tree.PositionalArgument> args,
+            Tree.PositionalArgument arg, Tree.Expression expr,
+            final Parameter pd) {
+        TypedDeclaration td = pd == null ? null : pd.getModel();
+        int boxType = gen.boxUnboxStart(expr.getTerm(), td);
+        if (boxType == 4) {
+            arg.visit(gen);
+            gen.out(",");
+            describeMethodParameters(expr.getTerm());
+            gen.out(",");
+            TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false,
+                    arg.getTypeModel().getVarianceOverrides());
+        } else if (pd == null) {
+            if (gen.isInDynamicBlock() && primary instanceof Tree.MemberOrTypeExpression
+                    && ((Tree.MemberOrTypeExpression)primary).getDeclaration() == null
+                    && arg.getTypeModel() != null && arg.getTypeModel().getDeclaration().inherits((
+                            that.getUnit().getTupleDeclaration()))) {
+                //Spread dynamic parameter
+                Type tupleType = arg.getTypeModel();
+                Type targ = tupleType.getTypeArgumentList().get(2);
+                arg.visit(gen);
+                gen.out(".$_get(0)");
+                int i = 1;
+                while (!targ.isSubtypeOf(that.getUnit().getEmptyType())) {
+                    gen.out(",");
+                    arg.visit(gen);
+                    gen.out(".$_get("+(i++)+")");
+                    targ = targ.getTypeArgumentList().get(2);
+                }
+            } else {
+                arg.visit(gen);
+            }
+        } else if (pd.isSequenced()) {
+            arg.visit(gen);
+            if (!TypeUtils.isSequential(arg.getTypeModel())) {
+                gen.out(".sequence()");
+            }
+        } else {
+            final String specialSpreadVar = gen.getNames().createTempVariable();
+            gen.out("(", specialSpreadVar, "=");
+            args.get(args.size()-1).visit(gen);
+            if (TypeUtils.isSequential(args.get(args.size()-1).getTypeModel())) {
+                gen.out(",");
+            } else {
+                gen.out(".sequence(),");
+            }
+            if (pd.isDefaulted()) {
+                gen.out(gen.getClAlias(), "nn$(",
+                        specialSpreadVar, ".$_get(0))?", specialSpreadVar,
+                        ".$_get(0):undefined)");
+            } else {
+                gen.out(specialSpreadVar, ".$_get(0))");
+            }
+            //Find out if there are more params
+            final List<Parameter> moreParams;
+            final Declaration pdd = pd.getDeclaration();
+            boolean found = false;
+            if (pdd instanceof Function) {
+                moreParams = ((Function)pdd).getFirstParameterList().getParameters();
+            } else if (pdd instanceof Class) {
+                moreParams = ((Class)pdd).getParameterList().getParameters();
+            } else {
+                //Check the parameters of the primary (obviously a callable, so this is a Tuple)
+                List<Parameter> cparms = TypeUtils.convertTupleToParameters(
+                        primary.getTypeModel().getTypeArgumentList().get(1));
+                cparms.remove(0);
+                moreParams = cparms;
+                found = true;
+            }
+            if (moreParams != null) {
+                int c = 1;
+                for (Parameter restp : moreParams) {
+                    if (found) {
+                        final String cs=Integer.toString(c++);
+                        if (restp.isDefaulted()) {
+                            gen.out(",", gen.getClAlias(), "nn$(", specialSpreadVar,
+                                    ".$_get(", cs, "))?", specialSpreadVar, ".$_get(", cs, "):undefined");
+                        } else if (restp.isSequenced()) {
+                            gen.out(",", specialSpreadVar, ".sublistFrom(", cs, ")");
+                        } else {
+                            gen.out(",", specialSpreadVar, ".$_get(", cs, ")");
+                        }
+                    } else {
+                        found = restp.equals(pd);
+                    }
+                }
+            }
+        }
+        gen.boxUnboxEnd(boxType);
     }
 
     /** Generate the code to create a native js object. */
