@@ -1151,16 +1151,37 @@ public class Util {
     /**
      * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
      * wrapping the given elements, depending on whether the given array 
-     * and varargs are empty
+     * and varargs are empty.
+     * 
+     * @deprecated because it's too easy to end up evaluating the arguments 
+     * in the wrong order. Use {@link #sequentialCopy(TypeDescriptor, Object[], Sequential)}
+     * 
      * @param rest The elements at the end of the sequence
      * @param elements the elements at the start of the sequence
      * @return A Sequential
      */
+    @Deprecated
     public static <T> Sequential<? extends T> 
     sequentialCopy(TypeDescriptor $reifiedT, Sequential<? extends T> rest, 
             Object... elements) {
         return sequentialCopy($reifiedT, 0, 
                 elements.length, elements, rest);
+    }
+    
+    /**
+     * Return {@link empty_#getEmpty$ empty} or an {@link ArraySequence}
+     * wrapping the given elements, depending on whether the given array 
+     * and varargs are empty.
+     * 
+     * @param rest The elements at the end of the sequence
+     * @param elements the elements at the start of the sequence
+     * @return A Sequential
+     */
+    public static <T> Sequential<? extends T> 
+    sequentialCopy(TypeDescriptor $reifiedT, Object[] initialElements,
+            Sequential<? extends T> rest) {
+        return sequentialCopy($reifiedT, 0, 
+                initialElements.length, initialElements, rest);
     }
         
     /**
