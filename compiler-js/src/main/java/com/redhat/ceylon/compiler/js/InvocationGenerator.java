@@ -195,7 +195,8 @@ public class InvocationGenerator {
                     boolean isSequenced = !(isUnion || td.equals(
                             callableArgs.getDeclaration()));
                     Type argtype = isUnion ? callableArgs :
-                        callableArgs.isTypeParameter() ? callableArgs :
+                        callableArgs.isTypeParameter() || callableArgs.isEmpty() ? callableArgs :
+                        callableArgs.isSequence()||callableArgs.isSequential() ? callableArgs.getTypeArgumentList().get(0) :
                         callableArgs.getTypeArgumentList().get(
                             isSequenced ? 0 : 1);
                     Parameter p = null;
