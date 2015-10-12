@@ -66,6 +66,11 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     }
     
     @Override
+    protected boolean needsPrivateMembers() {
+        return false;
+    }
+    
+    @Override
     protected Class<?> loadClass(Module module, String name) {
         Class<?> klass = null;
         try {
