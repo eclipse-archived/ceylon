@@ -24,6 +24,7 @@ import static com.sun.tools.javac.code.Flags.FINAL;
 import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
+import static com.sun.tools.javac.code.Flags.TRANSIENT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -306,7 +307,7 @@ public class CeylonVisitor extends Visitor {
                     null),
             gen.make().Return(field.makeIdent()));
             adb.getterBlock(gen.make().Block(0, l));
-            classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
+            classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE | TRANSIENT, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
             classBuilder.getContainingClassBuilder().defs(adb.build());
         } else {
             // LOCAL
