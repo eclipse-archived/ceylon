@@ -239,7 +239,90 @@ class JavaIoSerializableMixin implements .com.redhat.ceylon.compiler.java.runtim
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public JavaIoSerializableCtors() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
+    private static final class foo_ {
+        
+        private foo_() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    private JavaIoSerializableCtors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.foo_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors foo;
+    static {
+        foo = new JavaIoSerializableCtors((.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.foo_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.foo")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$foo() {
+        return foo;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
+    private static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
+    @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    private JavaIoSerializableCtors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.bar_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors bar;
+    static {
+        bar = new JavaIoSerializableCtors((.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.bar_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.bar")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
+    public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$bar() {
+        return bar;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getJavaIoSerializableCtors$bar";
+        } else if (this == foo) {
+            $name$ = "getJavaIoSerializableCtors$foo";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.class, $name$);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -304,6 +387,17 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getJavaIoSerializableValueCtors$bar";
+        } else if (this == foo) {
+            $name$ = "getJavaIoSerializableValueCtors$foo";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.class, $name$);
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Members({
@@ -348,7 +442,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         private JavaIoSerializableValueCtors$foo() {
         }
     }
-    private JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$foo = null;
+    private transient JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$foo = null;
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
@@ -368,7 +462,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         private JavaIoSerializableValueCtors$bar() {
         }
     }
-    private JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$bar = null;
+    private transient JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$bar = null;
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
@@ -384,7 +478,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-    public class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
         @.com.redhat.ceylon.compiler.java.metadata.Enumerated
@@ -402,6 +496,17 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.Outer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors.class));
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$JavaIoSerializableValueCtors$bar) {
+                $name$ = "getJavaIoSerializableValueCtors$bar";
+            } else if (this == $instance$JavaIoSerializableValueCtors$foo) {
+                $name$ = "getJavaIoSerializableValueCtors$foo";
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.Outer.this, .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class, $name$);
         }
     }
     

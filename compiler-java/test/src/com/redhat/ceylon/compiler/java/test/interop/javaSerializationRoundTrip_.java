@@ -22,7 +22,7 @@ public class javaSerializationRoundTrip_ {
     public static void javaSerializationRoundTrip() throws Exception {
         Class cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.javaSerialization_");
         Method meth = cls.getMethod("javaSerialization");
-        Object o = meth.invoke(new Object[0]);
+        final Object o = meth.invoke(null);
         System.err.println(o);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -31,8 +31,10 @@ public class javaSerializationRoundTrip_ {
         
         ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(is);
-        Object read = ois.readObject();
+        final Object read = ois.readObject();
         System.err.println(read);
-        assert(o.equals(read));
+        cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.javaSerializationCompare_");
+        meth = cls.getMethod("javaSerializationCompare", Object.class, Object.class);
+        meth.invoke(null, o, read);
     }
 }

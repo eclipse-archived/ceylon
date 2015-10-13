@@ -17,12 +17,15 @@ interface JavaIoSerializable {
 
 class JavaIoSerializableMixin() satisfies JavaIoSerializable {
 }
-
+class JavaIoSerializableCtors {
+    shared new() {}
+    shared new foo {}
+    shared new bar {}
+}
 class JavaIoSerializableValueCtors {
     shared new foo {}
     shared new bar {}
 }
-
 class Outer() {
     shared object javaIoSerializableObject extends Basic() {}
     shared class JavaIoSerializableValueCtors {
