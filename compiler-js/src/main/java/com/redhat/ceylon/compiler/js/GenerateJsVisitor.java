@@ -1147,7 +1147,9 @@ public class GenerateJsVisitor extends Visitor {
     boolean stitchNative(final Declaration d, final Tree.Declaration n) {
         final File f = getStitchedFilename(opts.getCwd(), d, ".js");
         if (f.exists() && f.canRead()) {
-            jsout.outputFile(f);
+            if (JsCompiler.isCompilingLanguageModule()) {
+                jsout.outputFile(f);
+            }
             if (d.isClassOrInterfaceMember()) {
                 if (d instanceof Value || n instanceof Tree.Constructor) {
                     //Native values are defined as attributes
