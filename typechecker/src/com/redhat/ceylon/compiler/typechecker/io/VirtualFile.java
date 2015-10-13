@@ -13,6 +13,11 @@ import java.util.List;
  */
 public interface VirtualFile extends Comparable<VirtualFile> {
     /**
+     * Does the file or folder exist and is it readable?
+     */
+    boolean exists();
+
+    /**
      * Is the file a folder?
      */
     boolean isFolder();

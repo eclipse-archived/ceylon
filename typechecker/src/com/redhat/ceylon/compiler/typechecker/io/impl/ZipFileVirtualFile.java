@@ -106,6 +106,11 @@ public class ZipFileVirtualFile implements ClosableVirtualFile {
     }
 
     @Override
+    public boolean exists() {
+        return true;
+    }
+
+    @Override
     public boolean isFolder() {
         return true;
     }

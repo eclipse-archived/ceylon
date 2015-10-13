@@ -26,6 +26,11 @@ public class FileSystemVirtualFile implements VirtualFile {
     }
 
     @Override
+    public boolean exists() {
+        return file.exists() && file.canRead();
+    }
+
+    @Override
     public boolean isFolder() {
         return file.isDirectory();
     }

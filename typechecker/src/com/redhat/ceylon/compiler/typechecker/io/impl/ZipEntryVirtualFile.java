@@ -31,6 +31,11 @@ class ZipEntryVirtualFile implements VirtualFile {
     }
 
     @Override
+    public boolean exists() {
+        return true;
+    }
+
+    @Override
     public boolean isFolder() {
         return false;
     }
