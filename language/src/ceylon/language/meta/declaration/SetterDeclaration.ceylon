@@ -1,5 +1,5 @@
 
-"A setter declaration for a variable `ValueDeclaration`."
+"A setter declaration represents the assign block of a [[ValueDeclaration]]."
 shared sealed interface SetterDeclaration
         satisfies NestableDeclaration {
 

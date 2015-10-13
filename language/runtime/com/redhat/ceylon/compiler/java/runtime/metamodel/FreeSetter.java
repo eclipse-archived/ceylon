@@ -107,4 +107,9 @@ public class FreeSetter
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+    
+    @Override
+    public String toString() {
+        return "assign "+super.toString();
+    }
 }
