@@ -30,5 +30,30 @@ final class bug2348_ {
                 }
             }.sequence();
         ));
+        .ceylon.language.print_.print((
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> spread$1$iterable$ = .ceylon.language.String.instance("42");
+                final .ceylon.language.Character spread$1$arg$0 = .ceylon.language.Character.instance(99);
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Comparison, .java.lang.Object>(.ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Comparison> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Comparison>(.ceylon.language.Comparison.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Character> spread$1$iterator$ = spread$1$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$1$element$;
+                            if (!((spread$1$element$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$1$element$ = ((.ceylon.language.Character)spread$1$element$).compare(spread$1$arg$0);
+                            }
+                            return spread$1$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        ));
     }
 }

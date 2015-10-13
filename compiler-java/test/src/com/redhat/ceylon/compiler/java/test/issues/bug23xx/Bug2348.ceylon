@@ -20,4 +20,5 @@
 @noanno
 void bug2348() {
     print("42"*.letter);
+    print("42"*.compare('c'));
 }
