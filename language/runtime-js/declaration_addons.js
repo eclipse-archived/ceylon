@@ -52,7 +52,13 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       if(rejectInheritedOrPrivate$(mm, this.tipo, noInherit))
         _d = undefined;
     }
-    if(_d)_m=OpenValue$jsint(this.containingPackage, _d);
+    if(_d) {
+      var _$m = getrtmm$$(_d);
+      var _mdl=get_model(_$m);
+      var isval=_mdl.mt==='g'||_mdl.mt==='o';
+      if (isval&&extendsType(kind,{t:ReferenceDeclaration$meta$declaration}))return null;
+      _m=(isval?OpenValue$jsint:OpenReference$jsint)(this.containingPackage, _d);
+    }
   }
   if (!_m && extendsType(kind,{t:FunctionDeclaration$meta$declaration})) {
     var _d = findMethodByNameFromPrototype$(raiz, name$20);
@@ -154,7 +160,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
         var _nom=mm.d[mm.d.length-1];
         var _idx=_nom.indexOf('$');
         if (_idx>0)_nom=_nom.substring(0,_idx);
-        _d=this.getMemberDeclaration(_nom,{Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}},inherited);
+        var isref=extendsType(kind,{t:ReferenceDeclaration$meta$declaration});
+        _d=this.getMemberDeclaration(_nom,{Kind$getMemberDeclaration:{t:isref?ReferenceDeclaration$meta$declaration:ValueDeclaration$meta$declaration}},inherited);
       } else if (_prot[mem].$$ && extendsType(kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
         var mt=mm.d[mm.d.length-2];
         if ((mt==='$c' && !extendsType(cdec,kind))
@@ -205,8 +212,10 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       if (!is$(_d,kind))_d=null;
     } else if (mt==='i') {
       _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:InterfaceDeclaration$meta$declaration}});
-    } else if (mt==='a'||mt==='g'||mt==='o'||mt==='s') {
+    } else if (mt==='g'||mt==='o') {
       _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
+    } else if (mt==='a'||mt==='s') {
+      _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:ReferenceDeclaration$meta$declaration}});
     }
     if (_d) {
       _d.$parent=this;
