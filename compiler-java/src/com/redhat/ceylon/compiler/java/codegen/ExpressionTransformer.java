@@ -2981,6 +2981,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         if (!(primary instanceof Tree.BaseTypeExpression)
                 && !(primary instanceof Tree.QualifiedTypeExpression)
+                && (!(primary instanceof Tree.QualifiedMemberExpression) || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp))
                 && Invocation.onValueType(this, primary, primaryDeclaration) 
                 && transformedPrimary != null) {
             result.add(new ExpressionAndType(transformedPrimary.expr,

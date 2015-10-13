@@ -125,7 +125,8 @@ abstract class Invocation {
         } else {
             this.qmePrimary = null;
         }
-        this.onValueType = onValueType(gen, primary, primaryDeclaration);
+        this.onValueType = onValueType(gen, primary, primaryDeclaration)
+                && (!(primary instanceof Tree.QualifiedMemberExpression) || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp));
     }
     
     public String toString() {
