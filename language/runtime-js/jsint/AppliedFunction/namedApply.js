@@ -12,9 +12,19 @@ function(args) {
     if (v===undefined && p.def===undefined) {
       throw InvocationException$meta$model("Required argument " + p.nm + " missing in named-argument invocation");
     } else if (v!==undefined) {
-        var t=p.$t;
-        if(typeof(t)==='string'&&this.$targs)t=this.$targs[t];
-        if (t&&!is$(v,t))throw IncompatibleTypeException$meta$model("Argument " + p.nm + "="+v+" is not of the expected type.");
+      var t=p.$t;
+      if (this.$targs) {
+        if (typeof(t)==='string') {
+          t=this.$targs[t];
+        } else if (t.a) {
+          var _t2={t:t.t,a:{}};
+          for (var k in t.a) {
+            if (typeof(t.a[k])==='string')_t2.a[k]=this.$targs[t.a[k]];
+          }
+          t=_t2;
+        }
+      }
+      if (t&&!is$(v,t))throw IncompatibleTypeException$meta$model("Argument " + p.nm + "="+v+" is not of the expected type.");
     }
     delete mapped[p.nm];
     ordered.push(v);
