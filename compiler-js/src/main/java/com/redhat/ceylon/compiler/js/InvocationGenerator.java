@@ -379,7 +379,11 @@ public class InvocationGenerator {
                         exprType = pd.getType();
                     }
                     if (sequencedType == null) {
-                        sequencedType=exprType;
+                        if (pd == null || pd.getType().getTypeArgumentList().isEmpty()) {
+                            sequencedType = exprType;
+                        } else {
+                            sequencedType= pd.getType().getTypeArgumentList().get(0);
+                        }
                     } else {
                         sequencedType = ModelUtil.unionType(exprType, sequencedType, that.getUnit());
                     }
