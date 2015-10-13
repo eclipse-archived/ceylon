@@ -2,6 +2,7 @@ import ceylon.language.meta { ... }
 import ceylon.language.meta.model { ... }
 import ceylon.language.meta.declaration {
     ValueDeclaration,
+    ReferenceDeclaration,
     FunctionDeclaration,
     ClassDeclaration,
     InterfaceDeclaration,
@@ -183,6 +184,7 @@ shared void checkMemberAttributes(){
     assert(is Class<NoParams, []> noParamsType);
     
     assert(exists string = noParamsType.getAttribute<NoParams, String>("str"));
+    assert(string.declaration is ReferenceDeclaration);
     assert(!string.declaration.variable);
     assert(string.declaration.name == "str");
     assert(string.declaration.qualifiedName == "metamodel::NoParams.str");
@@ -195,26 +197,32 @@ shared void checkMemberAttributes(){
     assert(!string.bind(noParamsInstance) is Value<String, String>);
     
     assert(exists integer = noParamsType.getAttribute<NoParams, Integer>("integer"));
+    assert(integer.declaration is ReferenceDeclaration);
     assert(integer(noParamsInstance).get() == 1);
     assert(integer.bind(noParamsInstance).get() == 1);
     
     assert(exists float = noParamsType.getAttribute<NoParams, Float>("float"));
+    assert(float.declaration is ReferenceDeclaration);
     assert(float(noParamsInstance).get() == 1.2);
     assert(float.bind(noParamsInstance).get() == 1.2);
     
     assert(exists character = noParamsType.getAttribute<NoParams, Character>("character"));
+    assert(character.declaration is ReferenceDeclaration);
     assert(character(noParamsInstance).get() == 'a');
     assert(character.bind(noParamsInstance).get() == 'a');
     
     assert(exists boolean = noParamsType.getAttribute<NoParams, Boolean>("boolean"));
+    assert(boolean.declaration is ReferenceDeclaration);
     assert(boolean(noParamsInstance).get() == true);
     assert(boolean.bind(noParamsInstance).get() == true);
     
     assert(exists obj = noParamsType.getAttribute<NoParams, NoParams>("obj"));
+    assert(!obj.declaration is ReferenceDeclaration);// it's a getter
     assert(obj(noParamsInstance).get() === noParamsInstance);
     assert(obj.bind(noParamsInstance).get() === noParamsInstance);
 
     assert(is Attribute<NoParams, String, String> string2 = noParamsType.getAttribute<NoParams, String, String>("str2"));
+    assert(string2.declaration is ReferenceDeclaration);
     assert(string2.declaration.variable);
     value string2Bound = string2(noParamsInstance);
     assert(string2Bound.get() == "a");
@@ -225,6 +233,7 @@ shared void checkMemberAttributes(){
     assert(noParamsInstance.str2 == "b");
     
     assert(is Attribute<NoParams, Integer, Integer> integer2 = noParamsType.getAttribute<NoParams, Integer, Integer>("integer2"));
+    assert(integer2.declaration is ReferenceDeclaration);
     value integer2Bound = integer2(noParamsInstance);
     assert(integer2Bound.get() == 1);
     integer2Bound.set(2);
@@ -233,6 +242,7 @@ shared void checkMemberAttributes(){
     assert(noParamsInstance.integer2 == 2);
 
     assert(is Attribute<NoParams, Float, Float> float2 = noParamsType.getAttribute<NoParams, Float, Float>("float2"));
+    assert(float2.declaration is ReferenceDeclaration);
     value float2Bound = float2(noParamsInstance);
     assert(float2Bound.get() == 1.2);
     float2Bound.set(2.1);
@@ -241,6 +251,7 @@ shared void checkMemberAttributes(){
     assert(noParamsInstance.float2 == 2.1);
     
     assert(is Attribute<NoParams, Character, Character> character2 = noParamsType.getAttribute<NoParams, Character, Character>("character2"));
+    assert(character2.declaration is ReferenceDeclaration);
     value character2Bound = character2(noParamsInstance);
     assert(character2Bound.get() == 'a');
     character2Bound.set('b');
@@ -249,6 +260,7 @@ shared void checkMemberAttributes(){
     assert(noParamsInstance.character2 == 'b');
     
     assert(is Attribute<NoParams, Boolean, Boolean> boolean2 = noParamsType.getAttribute<NoParams, Boolean, Boolean>("boolean2"));
+    assert(boolean2.declaration is ReferenceDeclaration);
     value boolean2Bound = boolean2(noParamsInstance);
     assert(boolean2Bound.get() == true);
     boolean2Bound.set(false);
@@ -257,6 +269,7 @@ shared void checkMemberAttributes(){
     assert(noParamsInstance.boolean2 == false);
     
     assert(is Attribute<NoParams, Object, Object> obj2 = noParamsType.getAttribute<NoParams, Object, Object>("obj2"));
+    assert(obj2.declaration is ReferenceDeclaration);
     value obj2Bound = obj2(noParamsInstance);
     assert(obj2Bound.get() == 2);
     obj2Bound.set(3);
@@ -600,30 +613,30 @@ shared void checkToplevelAttributes(){
 
     assert(pkg.members<NestableDeclaration>().find((Declaration decl) => decl.name == "toplevelInteger") exists);
 
-    assert(is ValueDeclaration toplevelIntegerDecl = pkg.getValue("toplevelInteger"));
+    assert(is ReferenceDeclaration toplevelIntegerDecl = pkg.getValue("toplevelInteger"));
     Value<Integer> toplevelIntegerAttribute = toplevelIntegerDecl.apply<Integer>();
     assert(toplevelIntegerAttribute.get() == 1);
     assert(exists toplevelIntegerValue = toplevelIntegerDecl.get(), toplevelIntegerValue == 1);
     // make sure immutable values have Set=Nothing
     assert(!is Value<Integer, Integer> toplevelIntegerAttribute);
 
-    assert(is ValueDeclaration toplevelStringDecl = pkg.getValue("toplevelString"));
+    assert(is ReferenceDeclaration toplevelStringDecl = pkg.getValue("toplevelString"));
     Value<String> toplevelStringAttribute = toplevelStringDecl.apply<String>();
     assert(toplevelStringAttribute.get() == "a");
 
-    assert(is ValueDeclaration toplevelFloatDecl = pkg.getValue("toplevelFloat"));
+    assert(is ReferenceDeclaration toplevelFloatDecl = pkg.getValue("toplevelFloat"));
     Value<Float> toplevelFloatAttribute = toplevelFloatDecl.apply<Float>();
     assert(toplevelFloatAttribute.get() == 1.2);
 
-    assert(is ValueDeclaration toplevelCharacterDecl = pkg.getValue("toplevelCharacter"));
+    assert(is ReferenceDeclaration toplevelCharacterDecl = pkg.getValue("toplevelCharacter"));
     Value<Character> toplevelCharacterAttribute = toplevelCharacterDecl.apply<Character>();
     assert(toplevelCharacterAttribute.get() == 'a');
 
-    assert(is ValueDeclaration toplevelBooleanDecl = pkg.getValue("toplevelBoolean"));
+    assert(is ReferenceDeclaration toplevelBooleanDecl = pkg.getValue("toplevelBoolean"));
     Value<Boolean> toplevelBooleanAttribute = toplevelBooleanDecl.apply<Boolean>();
     assert(toplevelBooleanAttribute.get() == true);
 
-    assert(is ValueDeclaration toplevelObjectDecl = pkg.getValue("toplevelObject"));
+    assert(is ReferenceDeclaration toplevelObjectDecl = pkg.getValue("toplevelObject"));
     Value<Object> toplevelObjectAttribute = toplevelObjectDecl.apply<Object>();
     assert(toplevelObjectAttribute.get() == 2);
     
@@ -638,7 +651,7 @@ shared void checkToplevelAttributes(){
     //
     // variables
 
-    assert(is ValueDeclaration toplevelIntegerVariableDecl = pkg.getValue("toplevelInteger2"));
+    assert(is ReferenceDeclaration toplevelIntegerVariableDecl = pkg.getValue("toplevelInteger2"));
     Value<Integer,Integer> toplevelIntegerVariable = toplevelIntegerVariableDecl.apply<Integer,Integer>();
     assert(toplevelIntegerVariable.get() == 1);
     toplevelIntegerVariable.set(2);
@@ -646,7 +659,7 @@ shared void checkToplevelAttributes(){
     assert(toplevelIntegerVariable.get() == 2);
     assert(toplevelInteger2 == 2);
 
-    assert(is ValueDeclaration toplevelStringVariableDecl = pkg.getValue("toplevelString2"));
+    assert(is ReferenceDeclaration toplevelStringVariableDecl = pkg.getValue("toplevelString2"));
     Value<String,String> toplevelStringVariable = toplevelStringVariableDecl.apply<String,String>();
     assert(toplevelStringVariable.get() == "a");
     toplevelStringVariable.set("b");
@@ -655,7 +668,7 @@ shared void checkToplevelAttributes(){
     assert(toplevelStringVariable.get() == "b");
     assert(toplevelString2 == "b");
 
-    assert(is ValueDeclaration toplevelFloatVariableDecl = pkg.getValue("toplevelFloat2"));
+    assert(is ReferenceDeclaration toplevelFloatVariableDecl = pkg.getValue("toplevelFloat2"));
     Value<Float,Float> toplevelFloatVariable = toplevelFloatVariableDecl.apply<Float,Float>();
     assert(toplevelFloatVariable.get() == 1.2);
     toplevelFloatVariable.set(2.0);
@@ -663,7 +676,7 @@ shared void checkToplevelAttributes(){
     assert(toplevelFloatVariable.get() == 2.0);
     assert(toplevelFloat2 == 2.0);
 
-    assert(is ValueDeclaration toplevelCharacterVariableDecl = pkg.getValue("toplevelCharacter2"));
+    assert(is ReferenceDeclaration toplevelCharacterVariableDecl = pkg.getValue("toplevelCharacter2"));
     Value<Character,Character> toplevelCharacterVariable = toplevelCharacterVariableDecl.apply<Character,Character>();
     assert(toplevelCharacterVariable.get() == 'a');
     toplevelCharacterVariable.set('b');
@@ -671,7 +684,7 @@ shared void checkToplevelAttributes(){
     assert(toplevelCharacterVariable.get() == 'b');
     assert(toplevelCharacter2 == 'b');
 
-    assert(is ValueDeclaration toplevelBooleanVariableDecl = pkg.getValue("toplevelBoolean2"));
+    assert(is ReferenceDeclaration toplevelBooleanVariableDecl = pkg.getValue("toplevelBoolean2"));
     Value<Boolean,Boolean> toplevelBooleanVariable = toplevelBooleanVariableDecl.apply<Boolean,Boolean>();
     assert(toplevelBooleanVariable.get() == true);
     toplevelBooleanVariable.set(false);
@@ -679,7 +692,7 @@ shared void checkToplevelAttributes(){
     assert(toplevelBooleanVariable.get() == false);
     assert(toplevelBoolean2 == false);
 
-    assert(is ValueDeclaration toplevelObjectVariableDecl = pkg.getValue("toplevelObject2"));
+    assert(is ReferenceDeclaration toplevelObjectVariableDecl = pkg.getValue("toplevelObject2"));
     Value<Object,Object> toplevelObjectVariable = toplevelObjectVariableDecl.apply<Object,Object>();
     assert(toplevelObjectVariable.get() == 2);
     toplevelObjectVariable.set(3);
