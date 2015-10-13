@@ -230,8 +230,7 @@ public class LazyPackage extends Package {
         
         compiledDeclarations.add(modelLoader.makeInteropAnnotationConstructor(iface, klass, null, this));
         
-        EnumSet<AnnotationTarget> annotationTargets = AnnotationTarget.annotationTargets(klass);
-        for (OutputElement target : OutputElement.possibleCeylonTargets(annotationTargets)) {
+        for (OutputElement target : AnnotationTarget.outputTargets(klass)) {
             compiledDeclarations.add(modelLoader.makeInteropAnnotationConstructor(iface, klass, target, this));
         }
         

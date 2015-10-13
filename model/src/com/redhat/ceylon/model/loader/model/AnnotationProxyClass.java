@@ -1,9 +1,7 @@
 package com.redhat.ceylon.model.loader.model;
 
 import java.util.EnumSet;
-import java.util.List;
 
-import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.typechecker.model.Class;
 
 /**
@@ -25,17 +23,6 @@ public class AnnotationProxyClass extends Class {
      */
     @Override
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
-        AnnotationMirror targetAnno = iface.classMirror.getAnnotation("java.lang.annotation.Target");
-        if (targetAnno != null) {
-            @SuppressWarnings("unchecked")
-            List<String> targets = (List<String>)targetAnno.getValue();
-            EnumSet<AnnotationTarget> result = EnumSet.noneOf(AnnotationTarget.class);
-            for (String name : targets) {
-                result.add(AnnotationTarget.valueOf(name));
-            }
-            return result;
-        }
-        return null;
+        return AnnotationTarget.getAnnotationTarget(iface);
     }
-
 }
