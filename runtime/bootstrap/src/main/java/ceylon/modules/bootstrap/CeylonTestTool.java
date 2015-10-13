@@ -171,10 +171,11 @@ public class CeylonTestTool extends RepoUsingTool {
         ceylonRunTool.setCwd(cwd);
         try{
             ceylonRunTool.run();
-        }catch(Error x){
+        }catch(Throwable x){
             // Get around class loader issues where we can't compare the class statically
-            if(x.getClass().getCanonicalName().equals("ceylon.language.AssertionError"))
+            if(x.getClass().getCanonicalName().equals("com.redhat.ceylon.testjvm.TestFailureException")) {
                 throw new CeylonTestFailureError();
+            }
             throw x;
         }
     }
