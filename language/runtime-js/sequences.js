@@ -19,6 +19,10 @@ arrprot$.rt$=function(t,ne) {
     add_type_arg(this,'Absent$Iterable',ne?{t:Nothing}:{t:Null});
     return this;
 }
+arrprot$.$sa$=function(t,ne) {
+    if (t===null || t===undefined)t={t:Anything};
+    return ArraySequence(this,{Element$ArraySequence:t});
+}
 arrprot$._elemTarg=function(){
   var t = this.$$targs$$ && this.$$targs$$.Element$Array;
   if (t===undefined)t = this.$$targs$$ && this.$$targs$$.Element$Iterable;
