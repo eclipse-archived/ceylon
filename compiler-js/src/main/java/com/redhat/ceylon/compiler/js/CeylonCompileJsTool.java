@@ -343,6 +343,12 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         
         t2=System.nanoTime();
         JsCompiler jsc = new JsCompiler(typeChecker, opts);
+        for (File root : roots) {
+            File cwdRoot = applyCwd(root);
+            if (cwdRoot.exists() && cwdRoot.isDirectory()) {
+                jsc.addSrcDirectory(cwdRoot);
+            }
+        }
         if (onlySources != null) {
             if (opts.isVerbose()) {
                 append("Only these files will be compiled: " + onlySources).newline();

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
@@ -54,6 +55,7 @@ public class JsCompiler {
     private boolean stopOnErrors = true;
     private int errCount = 0;
 
+    protected final List<VirtualFile> srcDirectories;
     protected List<File> srcFiles;
     protected List<File> resFiles;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
@@ -105,6 +107,7 @@ public class JsCompiler {
             logger = new JsLogger(opts);
         }
         errorVisitor = new ErrorCollectingVisitor(tc);
+        srcDirectories = new ArrayList<VirtualFile>();
     }
 
     private boolean isURL(String path) {
@@ -122,6 +125,21 @@ public class JsCompiler {
         return this;
     }
 
+    /**
+     * Adds a folder where the source files reside
+     */
+    public JsCompiler addSrcDirectory(File srcDirectory) {
+        return addSrcDirectory(tc.getContext().getVfs().getFromFile(srcDirectory));
+    }
+    
+    /**
+     * Adds a folder where the source files reside
+     */
+    public JsCompiler addSrcDirectory(VirtualFile srcDirectory) {
+        srcDirectories.add(srcDirectory);
+        return this;
+    }
+    
     /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
      * will be compiled. */
     public JsCompiler setSourceFiles(List<File> files) {
@@ -173,7 +191,7 @@ public class JsCompiler {
                     phasedUnits.add(pu);
                 } else {
                     File path = getFullPath(pu);
-                    if (FileUtil.containsFile(srcFiles, path)) {
+                    if (srcFiles.contains(path)) {
                         phasedUnits.add(pu);
                     }
                 }
@@ -265,7 +283,7 @@ public class JsCompiler {
                     if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
                         final JsOutput lastOut = getOutput(lastUnit);
-                        VirtualFile vpath = tc.getContext().getVfs().getFromFile(path);
+                        VirtualFile vpath = findFile(path);
                         try (BufferedReader reader = new BufferedReader(new InputStreamReader(vpath.getInputStream(), opts.getEncoding()))) {
                             String line = null;
                             while ((line = reader.readLine()) != null) {
@@ -289,7 +307,7 @@ public class JsCompiler {
                         //Find the corresponding compilation unit
                         for (PhasedUnit pu : phasedUnits) {
                             File unitFile = getFullPath(pu);
-                            if (FileUtil.sameFile(path, unitFile)) {
+                            if (path.equals(unitFile)) {
                                 exitCode = compileUnit(pu, names);
                                 generatedCode = true;
                                 if (exitCode != 0) {
@@ -318,6 +336,47 @@ public class JsCompiler {
         return errCount == 0 && exitCode == 0;
     }
 
+    private VirtualFile findFile(File path) {
+        if (isCompilingLanguageModule()) {
+            // Another crappy HACK for the language module
+            return tc.getContext().getVfs().getFromFile(path);
+        } else {
+            for (VirtualFile root : srcDirectories) {
+                VirtualFile f = findFile(root, path);
+                if (f != null) {
+                    return f;
+                }
+            }
+            return null;
+        }
+    }
+
+    private VirtualFile findFile(VirtualFile root, File path) {
+        VirtualFile result = null;
+        boolean first = true;
+        String parts[] = path.getPath().split(Pattern.quote(File.separator));
+        outer:
+        for (String p : parts) {
+            if (p.equals(".")) continue;
+            if (first) {
+                first = false;
+                if (root.getName().equals(p)) {
+                    result = root;
+                    continue outer;
+                }
+            } else {
+                for (VirtualFile f : result.getChildren()) {
+                    if (f.getName().equals(p)) {
+                        result = f;
+                        continue outer;
+                    }
+                }
+            }
+            return null;
+        }
+        return result;
+    }
+    
     public File getFullPath(PhasedUnit pu) {
         return new File(pu.getUnit().getFullPath());
     }
