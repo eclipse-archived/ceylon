@@ -29,8 +29,10 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Reference;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -88,20 +90,31 @@ public abstract class FreeClassOrInterface
         List<com.redhat.ceylon.model.typechecker.model.Declaration> memberModelDeclarations = declaration.getMembers();
         this.declaredDeclarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
         for(com.redhat.ceylon.model.typechecker.model.Declaration memberModelDeclaration : memberModelDeclarations){
-            if(isSupportedType(memberModelDeclaration))
-                declaredDeclarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(memberModelDeclaration));
+            addDeclarationTo(memberModelDeclaration, declaredDeclarations);
         }
 
         Collection<com.redhat.ceylon.model.typechecker.model.Declaration> inheritedModelDeclarations = 
                 collectMembers(declaration);
         this.declarations = new LinkedList<ceylon.language.meta.declaration.NestableDeclaration>();
         for(com.redhat.ceylon.model.typechecker.model.Declaration memberModelDeclaration : inheritedModelDeclarations){
-            if(isSupportedType(memberModelDeclaration))
-                declarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(memberModelDeclaration));
+            addDeclarationTo(memberModelDeclaration, declarations);
         }
     }
 
-    private boolean isSupportedType(Declaration memberModelDeclaration) {
+    protected static void addDeclarationTo(
+            com.redhat.ceylon.model.typechecker.model.Declaration memberModelDeclaration,
+            List<ceylon.language.meta.declaration.NestableDeclaration> declaredDeclarations) {
+        if(isSupportedType(memberModelDeclaration))
+            declaredDeclarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(memberModelDeclaration));
+        if (memberModelDeclaration instanceof Value) {
+            Setter setter = ((Value)memberModelDeclaration).getSetter();
+            if (setter != null) {
+                declaredDeclarations.add(Metamodel.<ceylon.language.meta.declaration.NestableDeclaration>getOrCreateMetamodel(setter));
+            }
+        }
+    }
+
+    private static boolean isSupportedType(Declaration memberModelDeclaration) {
         return memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Value
                 || (memberModelDeclaration instanceof com.redhat.ceylon.model.typechecker.model.Function
                         && !((com.redhat.ceylon.model.typechecker.model.Function)memberModelDeclaration).isAbstraction())
