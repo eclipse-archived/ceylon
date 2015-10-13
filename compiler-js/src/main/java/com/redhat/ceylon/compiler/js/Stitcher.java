@@ -41,9 +41,13 @@ public class Stitcher {
     private static TypeCheckerBuilder langmodtc;
     private static Path tmpDir;
     
-    public static final File clSrcDir = new File("../ceylon.language/src/ceylon/language/");
-    public static final File LANGMOD_JS_SRC = new File("../ceylon.language/runtime-js");
-    public static final File LANGMOD_JS_SRC2 = new File("../ceylon.language/runtime-js/ceylon/language");
+    private static final File baseDir = new File("../ceylon.language");
+    private static final File srcDir = new File("src");
+    private static final File jsDir = new File("runtime-js");
+    private static final File clSrcDir = new File(baseDir, "src");
+    private static final File clSrcFileDir = new File(clSrcDir, "ceylon/language/");
+    public static final File LANGMOD_JS_SRC = new File(baseDir, "runtime-js");
+    private static final File clJsFileDir = new File(LANGMOD_JS_SRC, "ceylon/language");
     private static JsIdentifierNames names;
     private static Module mod;
     private static final HashSet<File> compiledFiles = new HashSet<>(256);
@@ -58,16 +62,17 @@ public class Stitcher {
 
         //Typecheck the whole language module
         if (langmodtc == null) {
-            langmodtc = new TypeCheckerBuilder().addSrcDirectory(clSrcDir.getParentFile().getParentFile())
+            langmodtc = new TypeCheckerBuilder()
+                    .addSrcDirectory(clSrcDir)
                     .addSrcDirectory(LANGMOD_JS_SRC)
                     .encoding("UTF-8");
             langmodtc.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                     .userRepos(opts.getRepos()).outRepo(opts.getOutRepo()).buildManager());
         }
-        final File mod2 = new File(LANGMOD_JS_SRC2, "module.ceylon");
+        final File mod2 = new File(clJsFileDir, "module.ceylon");
         if (!mod2.exists()) {
             try (FileWriter w2 = new FileWriter(mod2);
-                    FileReader r2 = new FileReader(new File(clSrcDir, "module.ceylon"))) {
+                    FileReader r2 = new FileReader(new File(clSrcFileDir, "module.ceylon"))) {
                 char[] c = new char[512];
                 int r = r2.read(c);
                 while (r != -1) {
@@ -94,42 +99,12 @@ public class Stitcher {
             if (exclude) {
                 filename = filename.substring(1);
             }
-            final File src = ".".equals(filename) ? clSrcDir : new File(isJsSrc ? LANGMOD_JS_SRC : clSrcDir,
+            final File src = ".".equals(filename) ? clSrcFileDir : new File(isJsSrc ? LANGMOD_JS_SRC : clSrcFileDir,
                     isJsSrc || isDir ? filename :
                     String.format("%s.ceylon", filename));
-            if (src.exists() && src.isFile() && src.canRead()) {
-                if (exclude) {
-                    System.out.println("EXCLUDING " + src);
-                    compiledFiles.add(src);
-                } else if (!compiledFiles.contains(src)) {
-                    includes.add(src);
-                    compiledFiles.add(src);
-                }
-            } else if (src.exists() && src.isDirectory()) {
-                for (File sub : src.listFiles()) {
-                    if (!compiledFiles.contains(sub)) {
-                        includes.add(sub);
-                        compiledFiles.add(sub);
-                    }
-                }
-            } else {
-                final File src2 = new File(LANGMOD_JS_SRC2, isDir ? filename : String.format("%s.ceylon", filename));
-                if (src2.exists() && src2.isFile() && src2.canRead()) {
-                    if (exclude) {
-                        System.out.println("EXCLUDING " + src);
-                        compiledFiles.add(src2);
-                    } else if (!compiledFiles.contains(src2)) {
-                        includes.add(src2);
-                        compiledFiles.add(src2);
-                    }
-                } else if (src2.exists() && src2.isDirectory()) {
-                    for (File sub : src2.listFiles()) {
-                        if (!compiledFiles.contains(sub)) {
-                            includes.add(sub);
-                            compiledFiles.add(sub);
-                        }
-                    }
-                } else {
+            if (!addFiles(includes, src, exclude)) {
+                final File src2 = new File(clJsFileDir, isDir ? filename : String.format("%s.ceylon", filename));
+                if (!addFiles(includes, src2, exclude)) {
                     throw new IllegalArgumentException("Invalid Ceylon language module source " + src + " or " + src2);
                 }
             }
@@ -165,13 +140,35 @@ public class Stitcher {
         return 0;
     }
 
+    private static boolean addFiles(final List<File> includes, final File src, boolean exclude) {
+        if (src.exists() && src.isFile() && src.canRead()) {
+            if (exclude) {
+                System.out.println("EXCLUDING " + src);
+                compiledFiles.add(src);
+            } else if (!compiledFiles.contains(src)) {
+                includes.add(src);
+                compiledFiles.add(src);
+            }
+        } else if (src.exists() && src.isDirectory()) {
+            for (File sub : src.listFiles()) {
+                if (!compiledFiles.contains(sub)) {
+                    includes.add(sub);
+                    compiledFiles.add(sub);
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+    
     private static int encodeModel(final File moduleFile) throws IOException {
         final String name = moduleFile.getName();
         final File file = new File(moduleFile.getParentFile(),
                 name.substring(0,name.length()-3)+ArtifactContext.JS_MODEL);
         System.out.println("Generating language module compile-time model in JSON...");
         TypeCheckerBuilder tcb = new TypeCheckerBuilder().usageWarnings(false);
-        tcb.addSrcDirectory(clSrcDir.getParentFile().getParentFile());
+        tcb.addSrcDirectory(clSrcDir);
         TypeChecker tc = tcb.getTypeChecker();
         tc.process(true);
         MetamodelVisitor mmg = null;
