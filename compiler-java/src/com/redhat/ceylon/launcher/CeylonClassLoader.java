@@ -20,6 +20,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarFile;
 
+import com.redhat.ceylon.common.Versions;
+
 /**
  * Ceylon-specific class loader that knows how to find and add
  * all needed dependencies for compiler and runtime.
@@ -107,8 +109,8 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.common", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.model", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
-        archives.add(getRepoJar(ceylonRepo, "org.jboss.jandex", "1.0.3.Final"));
-        archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", "1.3.3.Final"));
+        archives.add(getRepoJar(ceylonRepo, "org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION));
+        archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", "1.4.0.Final"));
         // Maven support for CMR
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.maven-support", "2.0")); // optional
