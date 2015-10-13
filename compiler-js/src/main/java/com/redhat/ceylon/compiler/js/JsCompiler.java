@@ -340,7 +340,7 @@ public class JsCompiler {
         return errCount == 0 && exitCode == 0;
     }
 
-    private VirtualFile findFile(File path) {
+    VirtualFile findFile(File path) {
         if (isCompilingLanguageModule()) {
             // Another crappy HACK for the language module
             return tc.getContext().getVfs().getFromFile(path);
@@ -560,7 +560,7 @@ public class JsCompiler {
         return path.toString();
     }
 
-    File getStitchedFilename(final Declaration d, final String suffix) {
+    VirtualFile getStitchedFile(final Declaration d, final String suffix) {
         String fqn = d.getQualifiedNameString();
         String name = d.getName();
         if (name == null && d instanceof Constructor) {
@@ -571,12 +571,23 @@ public class JsCompiler {
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
         fqn = fqn.replace('.', '/').replace("::", "/");
         if (isCompilingLanguageModule()) {
-            return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
+            return findFile(new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix));
         } else {
-            return new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix);
+            return findFile(new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix));
         }
     }
 
+    VirtualFile getStitchedConstructorFile(final Declaration d, final String suffix) {
+        VirtualFile f;
+        if (isCompilingLanguageModule()) {
+            f = getStitchedFile(d, suffix + ".js");
+        } else {
+            f = findFile(new File(new File(d.getUnit().getFullPath()).getParentFile(),
+                    String.format("%s%s.js", names.name(d), suffix)));
+        }
+        return f;
+    }
+    
     boolean canStitchNative(final Declaration d) {
         if (isCompilingLanguageModule()) {
             switch(d.getName()){
@@ -595,13 +606,13 @@ public class JsCompiler {
                 return true;
             }
         }
-        File f = getStitchedFilename(d, ".js");
-        if(f.exists() && f.canRead())
+        VirtualFile f = getStitchedFile(d, ".js");
+        if (f != null)
             return true;
         if (isCompilingLanguageModule()) {
             // try folder
-            f = getStitchedFilename(d, "");
-            if(f.exists() && f.isDirectory())
+            f = getStitchedFile(d, "");
+            if (f != null && f.isFolder())
                 return true;
         }
         return false;

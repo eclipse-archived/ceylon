@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.loader.ModelEncoder;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -105,7 +108,23 @@ public class JsOutput {
     }
 
     public void outputFile(File f) {
-        try(BufferedReader r = new BufferedReader(new FileReader(f))) {
+        try (FileReader in = new FileReader(f)) {
+            outputFile(in);
+        } catch(IOException ex) {
+            throw new CompilerErrorException("Reading from " + f);
+        }
+    }
+
+    public void outputFile(VirtualFile f) {
+        try {
+            outputFile(new InputStreamReader(f.getInputStream()));
+        } catch(IOException ex) {
+            throw new CompilerErrorException("Reading from " + f);
+        }
+    }
+
+    public void outputFile(Reader in) throws IOException {
+        try (BufferedReader r = new BufferedReader(in)) {
             String line = null;
             while ((line = r.readLine()) != null) {
                 final String c = line.trim();
@@ -113,8 +132,6 @@ public class JsOutput {
                     out(c, "\n");
                 }
             }
-        } catch(IOException ex) {
-            throw new CompilerErrorException("Reading from " + f);
         }
     }
 

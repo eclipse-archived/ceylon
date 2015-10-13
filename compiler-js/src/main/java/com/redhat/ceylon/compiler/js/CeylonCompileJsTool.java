@@ -260,6 +260,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
         if (opts.isStdin()) {
             VirtualFile src = new VirtualFile() {
                 @Override
+                public boolean exists() {
+                    return true;
+                }
+                @Override
                 public boolean isFolder() {
                     return false;
                 }

@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.js;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -30,6 +29,7 @@ import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
+import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -1099,8 +1099,8 @@ public class GenerateJsVisitor extends Visitor {
 
     /** Reads a file with hand-written snippet and outputs it to the current writer. */
     boolean stitchNative(final Declaration d, final Tree.Declaration n) {
-        final File f = compiler.getStitchedFilename(d, ".js");
-        if (f.exists() && f.canRead()) {
+        final VirtualFile f = compiler.getStitchedFile(d, ".js");
+        if (f != null && f.exists()) {
             if (compiler.isCompilingLanguageModule()) {
                 jsout.outputFile(f);
             }
@@ -1140,8 +1140,8 @@ public class GenerateJsVisitor extends Visitor {
 
     /** Stitch a snippet of code to initialize type (usually a call to initTypeProto). */
     boolean stitchInitializer(TypeDeclaration d) {
-        final File f = compiler.getStitchedFilename(d, "$init.js");
-        if (f.exists() && f.canRead()) {
+        final VirtualFile f = compiler.getStitchedFile(d, "$init.js");
+        if (f != null && f.exists()) {
             jsout.outputFile(f);
             return true;
         }
@@ -1149,14 +1149,8 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     boolean stitchConstructorHelper(final Tree.ClassOrInterface coi, final String partName) {
-        final File f;
-        if (compiler.isCompilingLanguageModule()) {
-            f = compiler.getStitchedFilename(coi.getDeclarationModel(), partName + ".js");
-        } else {
-            f = new File(new File(coi.getUnit().getFullPath()).getParentFile(),
-                    String.format("%s%s.js", names.name(coi.getDeclarationModel()), partName));
-        }
-        if (f.exists() && f.isFile() && f.canRead()) {
+        final VirtualFile f = compiler.getStitchedConstructorFile(coi.getDeclarationModel(), partName);
+        if (f != null && f.exists() && !f.isFolder()) {
             if (verboseStitcher) {
                 spitOut("Stitching in " + f + ". It must contain an anonymous function "
                         + "which will be invoked with the same arguments as the "
