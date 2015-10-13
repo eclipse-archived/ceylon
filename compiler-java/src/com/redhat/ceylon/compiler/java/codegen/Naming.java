@@ -2118,6 +2118,18 @@ public class Naming extends NamingBase implements LocalId {
         int s = name.codePointAt(1);
         return Character.isUpperCase(s);
     }
+    
+    protected SyntheticName getValueConstructorFieldName(Value singletonModel) {
+        Class clz = (Class)singletonModel.getContainer();
+        if (clz.isToplevel()) {
+            return synthetic(Naming.quoteFieldName(singletonModel.getName()));
+        }
+        else if (clz.isClassMember()){
+            return synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
+        } else {
+            return synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
+        }
+    }
 }
 
 

@@ -898,7 +898,7 @@ public class Decl {
     }
     
     public static boolean hasOnlyValueConstructors(Class cls) {
-        if (cls.getParameterList() == null) {
+        if (cls.hasEnumerated()) {
             for (Declaration d : cls.getMembers()) {
                 if (d instanceof Constructor &&
                         !((Constructor) d).isValueConstructor()) {
@@ -906,13 +906,28 @@ public class Decl {
                 }
             }
             return true;
-        } 
-        return false;
+        } else {
+            return false;
+        }
+    }
+    
+    public static boolean hasAnyValueConstructors(Class cls) {
+        if (cls.hasEnumerated()) {
+            for (Declaration d : cls.getMembers()) {
+                if (d instanceof Constructor &&
+                        ((Constructor) d).isValueConstructor()) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
     
     /** Is the given constructor an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Constructor ctor) {
-        return ctor != null && ctor.getContainer().getDirectMember(ctor.getName(), null, false) instanceof Value;
+        return ctor != null && ctor.getParameterList() == null;
     }
     
     /** Is the given value the result of an enumerated ("singleton") constructor */
@@ -989,5 +1004,10 @@ public class Decl {
             return true;
         }
         return false;
+    }
+
+    public static boolean isValueConstructor(Declaration member) {
+        return member instanceof Value
+                && ((Value)member).getTypeDeclaration() instanceof Constructor;
     }
 }

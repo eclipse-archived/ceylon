@@ -277,10 +277,14 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (model instanceof Class
                 && !(model instanceof ClassAlias)) {
-            if (Strategy.introduceJavaIoSerializable((Class)model, typeFact().getJavaIoSerializable())) {
+            Class c = (Class)model;
+            if (Strategy.introduceJavaIoSerializable(c, typeFact().getJavaIoSerializable())) {
                 classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
+                if (Strategy.useSerializationProxy(c)) {
+                    addWriteReplace(c, classBuilder);
+                }
             }
-            serialization((Class)model, classBuilder);
+            serialization(c, classBuilder);
         }
         
         // reset position before initializer constructor is generated. 
@@ -299,9 +303,61 @@ public class ClassTransformer extends AbstractTransformer {
             result = classBuilder.build();
         }
         
-        
-        
         return result;
+    }
+
+    /**
+     * Adds a write replace method which replaces value constructor instances 
+     * with a SerializationProxy
+     * @param model
+     * @param classBuilder
+     */
+    protected void addWriteReplace(final Class model,
+            ClassDefinitionBuilder classBuilder) {
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "writeReplace");
+        mdb.resultType(null, make().Type(syms().objectType));
+        mdb.modifiers(PRIVATE | FINAL);
+        ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+        SyntheticName name = naming.synthetic(Unfix.$name$);
+        stmts.add(makeVar(FINAL, name, make().Type(syms().stringType), null));
+        JCStatement tail;
+        if (Decl.hasOnlyValueConstructors(model)) {
+            tail = make().Throw(statementGen().makeNewEnumeratedTypeError("Instance not of any constructor"));
+        } else {
+            tail =  make().Return(naming.makeThis());
+        }
+        for (Declaration member : model.getMembers()) {
+            if (Decl.isValueConstructor(member) ) {
+                Value val = (Value)member;
+                tail = make().If(
+                        make().Binary(JCTree.EQ, naming.makeThis(), 
+                                naming.getValueConstructorFieldName(val).makeIdent()), 
+                        make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(name.makeIdent(), make().Literal(Naming.getGetterName(member)))))), 
+                        tail);
+            }
+        }
+        
+        stmts.add(tail);
+        // final String name;
+        // if(this == instA) {
+        //    name = "getInstA";
+        // } // ... else { throw new 
+        
+        // return new SerializationProxy(outer, Foo.clazz, name);
+        List<JCExpression> args = List.<JCExpression>of(name.makeIdent());
+        if (model.isMember()) {
+            ClassOrInterface outer = (ClassOrInterface)model.getContainer();
+            args = args.prepend(makeClassLiteral(outer.getType()));
+            args = args.prepend(naming.makeQualifiedThis(naming.makeTypeDeclarationExpression(null, outer, DeclNameFlag.QUALIFIED)));
+        } else {
+            args = args.prepend(makeClassLiteral(model.getType())); 
+        }
+        stmts.add(make().Return(make().NewClass(null, null,
+                make().QualIdent(syms().ceylonSerializationProxyType.tsym),
+                args, 
+                null)));
+        mdb.body(stmts.toList());
+        classBuilder.method(mdb);
     }
 
     protected void buildJpaConstructor(Class model, ClassDefinitionBuilder classBuilder) {

@@ -412,7 +412,7 @@ class Strategy {
             boolean constrained = 
                     (cls.getCaseValues() != null 
                     && !cls.getCaseValues().isEmpty())
-                    || Decl.hasOnlyValueConstructors(cls);
+                    || cls.hasEnumerated() && Decl.hasOnlyValueConstructors(cls);
             
             return hasDelegatableSuper
                     && !constrained;
@@ -477,10 +477,11 @@ class Strategy {
     public static boolean introduceJavaIoSerializable(
             Class cls, Interface ser) {
         if (!(cls instanceof ClassAlias)) {
-            if ((!Decl.hasOnlyValueConstructors(cls) || (cls.isAnonymous()))
-                    && cls.getExtendedType() != null
+            if ((Decl.hasOnlyValueConstructors(cls) 
+                    || cls.isAnonymous()
+                    || (cls.getExtendedType() != null
                     && (cls.getExtendedType().isBasic()
-                    || cls.getExtendedType().isObject())
+                    || cls.getExtendedType().isObject())))
                     && !cls.getSatisfiedTypes().contains(ser.getType())) {
                 return true;
             }
@@ -515,6 +516,11 @@ class Strategy {
             }
         }
         return false;
+    }
+
+    public static boolean useSerializationProxy(Class model) {
+        return model.hasEnumerated()
+                && (model.isToplevel() || model.isMember());
     }
     
 }

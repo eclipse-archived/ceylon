@@ -3979,7 +3979,7 @@ public class StatementTransformer extends AbstractTransformer {
                                     !canUnbox(expectedType),
                                     CodegenUtil.getBoxingStrategy(outerExpression),
                                     expectedType))));
-                    stmts = stmts.prepend(make().Exec(utilInvocation().rethrow(makeNewEnumeratedTypeError())));
+                    stmts = stmts.prepend(make().Exec(utilInvocation().rethrow(makeNewEnumeratedTypeError(exhasutedExhaustiveSwitch))));
                     return make().Block(0L, stmts);
                 }else{
                     return makeThrowEnumeratedTypeError();
@@ -3987,14 +3987,11 @@ public class StatementTransformer extends AbstractTransformer {
             }
         }
         protected JCStatement makeThrowEnumeratedTypeError() {
-            return make().Throw(makeNewEnumeratedTypeError());
+            return make().Throw(makeNewEnumeratedTypeError(exhasutedExhaustiveSwitch));
         }
-        protected JCExpression makeNewEnumeratedTypeError() {
-            return make().NewClass(null, List.<JCExpression>nil(), 
-                            makeIdent(syms().ceylonEnumeratedTypeErrorType), 
-                            List.<JCExpression>of(make().Literal(
-                                    "Supposedly exhaustive switch was not exhaustive")), null);
-        }
+        
+        String exhasutedExhaustiveSwitch = "Supposedly exhaustive switch was not exhaustive";
+        
         public abstract JCStatement transformSwitch(Node node, Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList, 
                                                     String tmpVar, Tree.Term outerExpression, Type expectedType);
         
@@ -4005,6 +4002,14 @@ public class StatementTransformer extends AbstractTransformer {
             return false;
         }
     }
+    
+    JCExpression makeNewEnumeratedTypeError(String msg) {
+        return make().NewClass(null, List.<JCExpression>nil(), 
+                        makeIdent(syms().ceylonEnumeratedTypeErrorType), 
+                        List.<JCExpression>of(make().Literal(
+                                msg)), null);
+    }
+    
     /**
      * Switch transformation which produces a Java {@code switch},
      * suitable for a switch whose cases are all String literals,

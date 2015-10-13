@@ -280,6 +280,7 @@ public class CeylonVisitor extends Visitor {
         adb.userAnnotations(gen.expressionGen().transformAnnotations(true, OutputElement.GETTER, ctor));
         adb.fieldAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.FIELD, ctor));
         adb.immutable();// not setter
+        SyntheticName field = gen.naming.getValueConstructorFieldName(singletonModel);
         if (clz.isToplevel()) {
             adb.modifiers((singletonModel.isShared() ? PUBLIC : PRIVATE) | STATIC | FINAL);
             adb.initialValue(gen.make().NewClass(null, null, 
@@ -292,7 +293,6 @@ public class CeylonVisitor extends Visitor {
         } else if (clz.isClassMember()){
             adb.modifiers(singletonModel.isShared() ? 0 : PRIVATE);
             // lazy
-            SyntheticName field = gen.naming.synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
             adb.initialValue(gen.makeNull());
             List<JCStatement> l = List.<JCStatement>of(
             gen.make().If(gen.make().Binary(JCTree.EQ, field.makeIdent(), gen.makeNull()),
@@ -311,7 +311,7 @@ public class CeylonVisitor extends Visitor {
         } else {
             // LOCAL
             
-            classBuilder.after(gen.makeVar(FINAL, gen.naming.synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName()), 
+            classBuilder.after(gen.makeVar(FINAL, field, 
                     gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
                     gen.make().NewClass(null, null, 
                             gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
@@ -319,7 +319,7 @@ public class CeylonVisitor extends Visitor {
                                     gen.make().TypeCast(
                                             gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
                                     gen.makeNull())), null)));
-            gen.naming.addVariableSubst(singletonModel, gen.naming.synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName()).getName());
+            gen.naming.addVariableSubst(singletonModel, field.getName());
         }
     }
     
