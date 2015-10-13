@@ -52,6 +52,14 @@ class PrivateClass(){
 }
 class PrivateSubclass() extends PrivateClass() {}
 
+shared class GettersAndRefs() {
+    shared variable String strRef = "a";
+    shared String strGetter => "a";
+    assign strGetter {}
+    shared String strMethod() => "a";
+    
+}
+
 shared class NoParams(){
     shared variable String str2 = "a";
     shared variable Integer integer2 = 1;

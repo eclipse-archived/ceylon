@@ -1543,6 +1543,43 @@ shared void checkInheritedVsDeclared(){
 }
 
 @test
+shared void checkClassMembers() {
+    variable Declaration[] members = `class GettersAndRefs`.declaredMemberDeclarations<ReferenceDeclaration>();
+    assert(members.size == 1);
+    assert(`value GettersAndRefs.strRef` in members);
+    
+    members = `class GettersAndRefs`.declaredMemberDeclarations<ValueDeclaration>();
+    assert(members.size == 2);
+    assert(`value GettersAndRefs.strRef` in members);
+    assert(`value GettersAndRefs.strGetter` in members);
+    
+    members = `class GettersAndRefs`.declaredMemberDeclarations<FunctionOrValueDeclaration>();
+    assert(members .size == 3);
+    assert(`value GettersAndRefs.strRef` in members);
+    assert(`value GettersAndRefs.strGetter` in members);
+    assert(`function GettersAndRefs.strMethod` in members);
+    
+    members = `class GettersAndRefs`.declaredMemberDeclarations<FunctionDeclaration|ValueDeclaration>();
+    assert(members .size == 3);
+    assert(`value GettersAndRefs.strRef` in members);
+    assert(`value GettersAndRefs.strGetter` in members);
+    assert(`function GettersAndRefs.strMethod` in members);
+    
+    members = `class GettersAndRefs`.declaredMemberDeclarations<FunctionDeclaration|ReferenceDeclaration>();
+    assert(members .size == 2);
+    assert(`value GettersAndRefs.strRef` in members);
+    assert(`function GettersAndRefs.strMethod` in members);
+    
+    members = `class GettersAndRefs`.declaredMemberDeclarations<NestableDeclaration>();
+    assert(members.size == 4);
+    assert(`value GettersAndRefs.strRef` in members);
+    assert(`value GettersAndRefs.strGetter` in members);
+    assert(exists setter2 = `value GettersAndRefs.strGetter`.setter, setter2 in members);
+    assert(`function GettersAndRefs.strMethod` in members);
+    
+}
+
+@test
 shared void checkTests(){
     assert(`NoParams`.typeOf(NoParams()));
     assert(!`Integer`.typeOf(NoParams()));
@@ -2074,6 +2111,11 @@ shared void run() {
         checkPrivateMembers();
         pass++;
     } catch (Exception|AssertionError e) { print("Failed private members"); e.printStackTrace(); }
+    try {
+        total++;
+        checkClassMembers();
+        pass++;
+    } catch (Exception|AssertionError e) { print("Failed class members"); e.printStackTrace(); }
     try {
         total++;
         checkContainers();
