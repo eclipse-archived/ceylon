@@ -94,6 +94,14 @@ function resolve$typearg(ta,mm,$$targs$$) {
 }
 
 function convert$params(mm,a,$$targs$$) {
+  function sequenceToArray(as) {
+    if (is$(as,{t:Sequential})) {
+      var _a=[];
+      for (var i=0;i<as.size;i++)_a.push(as.$_get(i));
+      return _a;
+    }
+    return as;
+  }
   var ps=mm.ps;
   if (ps===undefined || ps.length===0){
     if (a && a.size>0)
@@ -101,16 +109,17 @@ function convert$params(mm,a,$$targs$$) {
     return [];
   }
   //Convert to a native array
-  if (a===undefined)a=[];
-  else if (a.nativeArray)a=a.nativeArray();
-  else if (is$(a,{t:ArraySequence})) {
-    var _a=[];
-    for (var i=0;i<a.size;i++)_a.push(a.$_get(i));
-    a=_a;
+  if (a===undefined) {
+    a=[];
+  } else if (a.nativeArray) {
+    a=a.nativeArray();
+  } else {
+    a=sequenceToArray(a);
   }
-  if (a.length===1 && Array.isArray(a[0]) && (ps.length!=1 || !extendsType(restype2$(ps[0].$t,$$targs$$),{t:$_Array}))) {
+  if (a.length===1 && (Array.isArray(a[0]) || is$(a[0],{t:Sequential}))
+      && (ps.length!=1 || !extendsType(restype2$(ps[0].$t,$$targs$$),{t:Sequential}))) {
     //We sometimes get an array with a single array (double wrapping)
-    a=a[0];
+    a=sequenceToArray(a[0]);
   }
   var fa=[],sarg;
   for (var i=0; i<ps.length;i++) { //check def/seq params
