@@ -100,7 +100,8 @@ public class SourceArgumentsResolver {
                         throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
                     }
                     if (!expandSingleSources) {
-                        srcFiles.add(file);
+                        String relFileName = FileUtil.relativeFile(srcs, file.getPath());
+                        srcFiles.add(new File(path, relFileName));
                     } else {
                         // Instead of adding the source file itself we remember
                         // its module name and at the end we expand that and
@@ -116,7 +117,8 @@ public class SourceArgumentsResolver {
                             String resrcPath = resourceDirs.toString();
                             throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                         }
-                        resFiles.add(file);
+                        String relFileName = FileUtil.relativeFile(srcs, file.getPath());
+                        resFiles.add(new File(path, relFileName));
                         // Determine the module path from the file path
                         resMods.add(moduleName(srcs, path, file));
                     }
