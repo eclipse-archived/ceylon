@@ -90,6 +90,10 @@ public class Versions {
     public static final int V1_1_1_BINARY_MAJOR_VERSION = 8;
     public static final int V1_1_1_BINARY_MINOR_VERSION = 0;
 
+    // Dependencies that end up in code
+    public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.3.3.Final";
+    public static final String DEPENDENCY_JANDEX_VERSION = "1.0.3.Final";
+    
     /**
      * Is the given binary version compatible with the current version
      * @param major the binary version to check for compatibility
