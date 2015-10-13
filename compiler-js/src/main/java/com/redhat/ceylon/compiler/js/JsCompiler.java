@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -60,17 +61,15 @@ public class JsCompiler {
     protected List<File> resFiles;
     private final Map<Module, JsOutput> output = new HashMap<Module, JsOutput>();
     //You have to manually set this when compiling the language module
-    static boolean compilingLanguageModule;
+    private boolean compilingLanguageModule;
     private int exitCode = 0;
     private Logger logger;
     private JsIdentifierNames names;
 
-    private static class JsMissingNativeVisitor extends MissingNativeVisitor {
-        private File cwd;
+    private class JsMissingNativeVisitor extends MissingNativeVisitor {
         
         public JsMissingNativeVisitor(File cwd) {
             super(Backend.JavaScript);
-            this.cwd = cwd;
         }
         
         protected boolean checkNative(Node node, Declaration model) {
@@ -85,7 +84,7 @@ public class JsCompiler {
                 // IDE that doesn't really know about JS modules
                 return true;
             }
-            return GenerateJsVisitor.canStitchNative(cwd, model);
+            return canStitchNative(model);
         }
     }
     
@@ -94,8 +93,13 @@ public class JsCompiler {
     }
 
     public JsCompiler(TypeChecker tc, Options options) {
+        this(tc, options, false);
+    }
+    
+    public JsCompiler(TypeChecker tc, Options options, boolean compilingLanguageModule) {
         this.tc = tc;
-        opts = options;
+        this.opts = options;
+        this.compilingLanguageModule = compilingLanguageModule;
         outRepo = CeylonUtils.repoManager()
                 .cwd(options.getCwd())
                 .outRepo(options.getOutRepo())
@@ -161,7 +165,7 @@ public class JsCompiler {
         JsOutput jsout = getOutput(pu);
         MissingNativeVisitor mnv = new JsMissingNativeVisitor(opts.getCwd());
         pu.getCompilationUnit().visit(mnv);
-        GenerateJsVisitor jsv = new GenerateJsVisitor(jsout, opts, names, pu.getTokens());
+        GenerateJsVisitor jsv = new GenerateJsVisitor(this, jsout, opts, names, pu.getTokens());
         pu.getCompilationUnit().visit(jsv);
         pu.getCompilationUnit().visit(errorVisitor);
         return jsv.getExitCode();
@@ -231,7 +235,7 @@ public class JsCompiler {
                 }
             }
             //Then write it out and output the reference in the module file
-            names = new JsIdentifierNames();
+            names = new JsIdentifierNames(this);
             if (!compilingLanguageModule) {
                 for (Map.Entry<Module,JsOutput> e : output.entrySet()) {
                     e.getValue().encodeModel(names);
@@ -398,7 +402,7 @@ public class JsCompiler {
 
     /** This exists solely so that the web IDE can override it and use a different JsOutput */
     protected JsOutput newJsOutput(Module m) throws IOException {
-        return new JsOutput(m, opts.getEncoding());
+        return new JsOutput(m, opts.getEncoding(), isCompilingLanguageModule());
     }
 
     JsOutput getOutputForModule(Module m) {
@@ -539,7 +543,7 @@ public class JsCompiler {
     }
 
     /** Returns true if the compiler is currently compiling the language module. */
-    public static boolean isCompilingLanguageModule() {
+    public boolean isCompilingLanguageModule() {
         return compilingLanguageModule;
     }
 
@@ -556,4 +560,51 @@ public class JsCompiler {
         return path.toString();
     }
 
+    File getStitchedFilename(final Declaration d, final String suffix) {
+        String fqn = d.getQualifiedNameString();
+        String name = d.getName();
+        if (name == null && d instanceof Constructor) {
+            name = "default$constructor";
+            fqn = fqn.substring(0, fqn.length()-4) + name;
+        }
+        if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
+        if (fqn.startsWith("::"))fqn=fqn.substring(2);
+        fqn = fqn.replace('.', '/').replace("::", "/");
+        if (isCompilingLanguageModule()) {
+            return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
+        } else {
+            return new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix);
+        }
+    }
+
+    boolean canStitchNative(final Declaration d) {
+        if (isCompilingLanguageModule()) {
+            switch(d.getName()){
+            // in special files
+            case "Integer":
+            case "Float":
+            case "true":
+            case "false":
+            case "modules":
+                // only native on JVM really
+            case "Tuple":
+            case "Callable":
+            case "Throwable":
+            case "Exception":
+            case "reach":
+                return true;
+            }
+        }
+        File f = getStitchedFilename(d, ".js");
+        if(f.exists() && f.canRead())
+            return true;
+        if (isCompilingLanguageModule()) {
+            // try folder
+            f = getStitchedFilename(d, "");
+            if(f.exists() && f.isDirectory())
+                return true;
+        }
+        return false;
+    }
+    
 }

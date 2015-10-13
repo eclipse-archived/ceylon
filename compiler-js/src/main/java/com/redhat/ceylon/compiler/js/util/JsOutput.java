@@ -36,10 +36,12 @@ public class JsOutput {
     public final MetamodelVisitor mmg;
     final String encoding;
     private JsWriter jsw;
-
-    public JsOutput(Module m, String encoding) throws IOException {
+    private final boolean compilingLanguageModule;
+    
+    public JsOutput(Module m, String encoding, boolean compilingLanguageModule) throws IOException {
         this.encoding = encoding == null ? "UTF-8" : encoding;
-        module = m;
+        this.module = m;
+        this.compilingLanguageModule = compilingLanguageModule;
         mmg = m==null?null:new MetamodelVisitor(m);
     }
     public void setJsWriter(JsWriter value) {
@@ -93,7 +95,7 @@ public class JsOutput {
             writeModelRetriever();
             out(";return _CTM$;}\n");
             out("ex$.$CCMM$=$CCMM$;\n");
-            if (!JsCompiler.isCompilingLanguageModule()) {
+            if (!compilingLanguageModule) {
                 Module clm = module.getLanguageModule();
                 clalias = names.moduleAlias(clm) + ".";
                 require(clm, names);

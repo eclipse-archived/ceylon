@@ -139,8 +139,7 @@ public class Stitcher {
         }
         //Compile only the files specified in the line
         //Set this before typechecking to share some decls that otherwise would be private
-        JsCompiler.compilingLanguageModule=true;
-        JsCompiler jsc = new JsCompiler(tc, opts).stopOnErrors(false);
+        JsCompiler jsc = new JsCompiler(tc, opts, true).stopOnErrors(false);
         jsc.setSourceFiles(includes);
         if (!jsc.generate()) {
             jsc.printErrorsAndCount(new OutputStreamWriter(System.out));
@@ -152,7 +151,6 @@ public class Stitcher {
         if (names == null) {
             names = jsc.getNames();
         }
-        JsCompiler.compilingLanguageModule=false;
         File compsrc = new File(tmpout, "delete/me/delete-me.js");
         if (compsrc.exists() && compsrc.isFile() && compsrc.canRead()) {
             try {
@@ -197,7 +195,7 @@ public class Stitcher {
             writer.write("ex$.$CCMM$=");
             ModelEncoder.encodeModel(mmg.getModel(), writer);
             writer.write(";\n");
-            final JsOutput jsout = new JsOutput(mod, "UTF-8") {
+            final JsOutput jsout = new JsOutput(mod, "UTF-8", true) {
                 @Override
                 public Writer getWriter() throws IOException {
                     return writer;
@@ -256,7 +254,7 @@ public class Stitcher {
                     final int p0 = args[1].indexOf(".language-");
                     final String version = args[1].substring(p0+10,args[1].length()-3);
                     try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
-                        final JsOutput jsout = new JsOutput(mod, "UTF-8") {
+                        final JsOutput jsout = new JsOutput(mod, "UTF-8", true) {
                             @Override
                             public Writer getWriter() throws IOException {
                                 return writer;

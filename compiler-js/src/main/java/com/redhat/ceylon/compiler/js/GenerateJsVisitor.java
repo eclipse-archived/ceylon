@@ -21,7 +21,6 @@ import java.util.Stack;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -154,6 +153,7 @@ public class GenerateJsVisitor extends Visitor {
 
     private List<? extends Statement> currentStatements = null;
 
+    private final JsCompiler compiler;
     public final JsWriter out;
     private final PrintWriter verboseOut;
     private final boolean verboseStitcher;
@@ -175,8 +175,9 @@ public class GenerateJsVisitor extends Visitor {
 
     private final JsOutput jsout;
 
-    public GenerateJsVisitor(JsOutput out, Options options, JsIdentifierNames names,
+    public GenerateJsVisitor(JsCompiler compiler, JsOutput out, Options options, JsIdentifierNames names,
             List<CommonToken> tokens) throws IOException {
+        this.compiler = compiler;
         this.jsout = out;
         this.opts = options;
         if (options.hasVerboseFlag("code")) {
@@ -1096,58 +1097,11 @@ public class GenerateJsVisitor extends Visitor {
         FunctionHelper.methodDeclaration(null, that, this, verboseStitcher);
     }
 
-    private static File getStitchedFilename(final File cwd, final Declaration d, final String suffix) {
-        String fqn = d.getQualifiedNameString();
-        String name = d.getName();
-        if (name == null && d instanceof Constructor) {
-            name = "default$constructor";
-            fqn = fqn.substring(0, fqn.length()-4) + name;
-        }
-        if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
-        if (fqn.startsWith("::"))fqn=fqn.substring(2);
-        fqn = fqn.replace('.', '/').replace("::", "/");
-        if (JsCompiler.isCompilingLanguageModule()) {
-            return new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
-        } else {
-            return FileUtil.applyCwd(cwd, new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix));
-        }
-    }
-
-    public static boolean canStitchNative(final File cwd, final Declaration d) {
-        if (JsCompiler.isCompilingLanguageModule()) {
-            switch(d.getName()){
-            // in special files
-            case "Integer":
-            case "Float":
-            case "true":
-            case "false":
-            case "modules":
-                // only native on JVM really
-            case "Tuple":
-            case "Callable":
-            case "Throwable":
-            case "Exception":
-            case "reach":
-                return true;
-            }
-        }
-        File f = getStitchedFilename(cwd, d, ".js");
-        if(f.exists() && f.canRead())
-            return true;
-        if (JsCompiler.isCompilingLanguageModule()) {
-            // try folder
-            f = getStitchedFilename(cwd, d, "");
-            if(f.exists() && f.isDirectory())
-                return true;
-        }
-        return false;
-    }
-    
     /** Reads a file with hand-written snippet and outputs it to the current writer. */
     boolean stitchNative(final Declaration d, final Tree.Declaration n) {
-        final File f = getStitchedFilename(opts.getCwd(), d, ".js");
+        final File f = compiler.getStitchedFilename(d, ".js");
         if (f.exists() && f.canRead()) {
-            if (JsCompiler.isCompilingLanguageModule()) {
+            if (compiler.isCompilingLanguageModule()) {
                 jsout.outputFile(f);
             }
             if (d.isClassOrInterfaceMember()) {
@@ -1186,7 +1140,7 @@ public class GenerateJsVisitor extends Visitor {
 
     /** Stitch a snippet of code to initialize type (usually a call to initTypeProto). */
     boolean stitchInitializer(TypeDeclaration d) {
-        final File f = getStitchedFilename(opts.getCwd(), d, "$init.js");
+        final File f = compiler.getStitchedFilename(d, "$init.js");
         if (f.exists() && f.canRead()) {
             jsout.outputFile(f);
             return true;
@@ -1196,8 +1150,8 @@ public class GenerateJsVisitor extends Visitor {
 
     boolean stitchConstructorHelper(final Tree.ClassOrInterface coi, final String partName) {
         final File f;
-        if (JsCompiler.isCompilingLanguageModule()) {
-            f = getStitchedFilename(opts.getCwd(), coi.getDeclarationModel(), partName + ".js");
+        if (compiler.isCompilingLanguageModule()) {
+            f = compiler.getStitchedFilename(coi.getDeclarationModel(), partName + ".js");
         } else {
             f = new File(new File(coi.getUnit().getFullPath()).getParentFile(),
                     String.format("%s%s.js", names.name(coi.getDeclarationModel()), partName));
@@ -3336,7 +3290,7 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.TypeLiteral that) {
         //Can be an alias, class, interface or type parameter
         if (that.getWantsDeclaration()) {
-            MetamodelHelper.generateOpenType(that, that.getDeclaration(), this);
+            MetamodelHelper.generateOpenType(that, that.getDeclaration(), this, compiler.isCompilingLanguageModule());
         } else {
             MetamodelHelper.generateClosedTypeLiteral(that, this);
         }
@@ -3345,7 +3299,7 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.MemberLiteral that) {
         if (that.getWantsDeclaration()) {
-            MetamodelHelper.generateOpenType(that, that.getDeclaration(), this);
+            MetamodelHelper.generateOpenType(that, that.getDeclaration(), this, compiler.isCompilingLanguageModule());
         } else {
             MetamodelHelper.generateMemberLiteral(that, this);
         }

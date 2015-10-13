@@ -24,12 +24,12 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class MetamodelHelper {
 
-    static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen) {
+    static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen, boolean compilingLanguageModule) {
         final Module m = d.getUnit().getPackage().getModule();
         final boolean isConstructor = TypeUtils.isConstructor(d)
                 || that instanceof Tree.NewLiteral;
         if (d instanceof TypeParameter == false) {
-            if (JsCompiler.isCompilingLanguageModule()) {
+            if (compilingLanguageModule) {
                 gen.out("$init$");
             } else {
                 gen.out(gen.getClAlias());
@@ -58,14 +58,14 @@ public class MetamodelHelper {
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.UnionType) {
             gen.out("OpenUnion");
         } else if (d instanceof TypeParameter) {
-            generateOpenType(that, ((TypeParameter)d).getDeclaration(), gen);
+            generateOpenType(that, ((TypeParameter)d).getDeclaration(), gen, compilingLanguageModule);
             gen.out(".getTypeParameterDeclaration('", d.getName(), "')");
             return;
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.NothingType) {
             gen.out("NothingType");
         } else if (d instanceof TypeAlias) {
             gen.out("OpenAlias$jsint(");
-            if (JsCompiler.isCompilingLanguageModule()) {
+            if (compilingLanguageModule) {
                 gen.out(")(");
             }
             if (d.isMember()) {
@@ -84,7 +84,7 @@ public class MetamodelHelper {
             return;
         }
         //TODO optimize for local declarations
-        if (JsCompiler.isCompilingLanguageModule()) {
+        if (compilingLanguageModule) {
             gen.out("()");
         }
         gen.out("(", gen.getClAlias());

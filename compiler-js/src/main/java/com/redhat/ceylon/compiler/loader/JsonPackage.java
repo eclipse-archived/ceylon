@@ -12,29 +12,27 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
-import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
@@ -1046,11 +1044,6 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 ann.addPositionalArgment(arg);
             }
             d.getAnnotations().add(ann);
-        }
-        //This is to avoid problems with private declarations while
-        //compiling the language module
-        if (JsCompiler.isCompilingLanguageModule() && d.isToplevel() && !d.isShared()) {
-            d.setShared(true);
         }
     }
 

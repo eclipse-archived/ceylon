@@ -27,7 +27,8 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
  * @author Ivo Kasiuk
  */
 public class JsIdentifierNames {
-
+    private final JsCompiler compiler;
+    
     private static long uniqueID = 0;
     private static long nextUID() {
         if (++uniqueID <= 0) {
@@ -80,6 +81,10 @@ public class JsIdentifierNames {
         return reservedWords.contains(token);
     }
 
+    public JsIdentifierNames(JsCompiler compiler) {
+        this.compiler = compiler;
+    }
+    
     /**
      * Determine the identifier name to be used in the generated JavaScript code
      * to represent the given declaration.
@@ -175,7 +180,7 @@ public class JsIdentifierNames {
      * an alias for the given package.
      */
     public String moduleAlias(Module pkg) {
-        if (JsCompiler.isCompilingLanguageModule() && pkg.getLanguageModule()==pkg) {
+        if (compiler.isCompilingLanguageModule() && pkg.getLanguageModule()==pkg) {
             //If we're compiling the language module, omit the package name
             return "";
         }
@@ -330,7 +335,7 @@ public class JsIdentifierNames {
         if (name != null) {
             return name;
         }
-        if (d.isClassOrInterfaceMember() && !JsCompiler.isCompilingLanguageModule()) {
+        if (d.isClassOrInterfaceMember() && !compiler.isCompilingLanguageModule()) {
             final String containerName = d.getUnit().getPackage().getModule().getNameAsString();
             return String.format(priv ? "$%s$%s_" : "$%s$%s",
                     Integer.toString(Math.abs(containerName.hashCode()),36),
