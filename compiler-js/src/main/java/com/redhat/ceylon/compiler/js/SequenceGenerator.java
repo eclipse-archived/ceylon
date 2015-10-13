@@ -154,7 +154,7 @@ public class SequenceGenerator {
     /** Closes a native array and invokes reifyCeylonType (rt$) with the specified type parameters. */
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
             final GenerateJsVisitor gen) {
-        gen.out("].rt$(");
+        gen.out("].$sa$(");
         boolean nonempty=false;
         Type elem = null;
         for (Map.Entry<TypeParameter,Type> e : types.entrySet()) {
