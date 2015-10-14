@@ -62,6 +62,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -280,7 +281,8 @@ public class ClassTransformer extends AbstractTransformer {
             Class c = (Class)model;
             if (Strategy.introduceJavaIoSerializable(c, typeFact().getJavaIoSerializable())) {
                 classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
-                if (Strategy.useSerializationProxy(c)) {
+                if (Strategy.useSerializationProxy(c)
+                        && noValueConstructorErrors((Tree.ClassDefinition)def)) {
                     addWriteReplace(c, classBuilder);
                 }
             }
@@ -304,6 +306,18 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         return result;
+    }
+
+    private boolean noValueConstructorErrors(Tree.ClassDefinition def) {
+        for (Tree.Statement s : def.getClassBody().getStatements()) {
+            if (s instanceof Tree.Constructor
+                    || s instanceof Tree.Enumerated) {
+                if (errors().hasAnyError((Tree.Declaration)s)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
