@@ -127,7 +127,10 @@ public abstract class BoxingVisitor extends Visitor {
                 CodegenUtil.markUntrustedType(that);
             // we must be boxed, since safe member op "?." returns an optional type
             //return;
-        } else if (Decl.isValueTypeDecl(that.getPrimary()) && CodegenUtil.isUnBoxed(that.getPrimary())) {
+        } else if (
+                that.getMemberOperator() instanceof Tree.MemberOp
+                && Decl.isValueTypeDecl(that.getPrimary()) 
+                && CodegenUtil.isUnBoxed(that.getPrimary())) {
             // it's unboxed if it's an unboxable type or it's declared void
             if (Decl.isValueTypeDecl((TypedDeclaration)that.getDeclaration())
                     || (that.getDeclaration() instanceof Function 
