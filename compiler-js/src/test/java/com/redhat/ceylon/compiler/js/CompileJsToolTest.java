@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.OSUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ServiceToolLoader;
 import com.redhat.ceylon.common.tool.Tool;
@@ -384,5 +387,66 @@ public class CompileJsToolTest {
         });
         jsc.run();
         Assert.assertEquals(0, warnings[0]);
+    }
+
+    private String script() {
+        if (OSUtil.isWindows()) {
+            return "../ceylon-dist/dist/bin/ceylon.bat";
+        } else {
+            return "../ceylon-dist/dist/bin/ceylon";
+        }
+    }
+    
+    private void testLaunchDistCeylon(String sampleDir, String sampleModule, String sampleVersion) throws IOException, InterruptedException {
+        String[] args1 = {
+                script(),
+                "compile-js",
+                "--src",
+                "../ceylon-dist/dist/samples/" + sampleDir + "/source",
+                "--out",
+                "build/test-cars",
+                sampleModule
+        };
+        launchCeylon(args1);
+        // doc is already tested by JVM tests
+        String modVer = (sampleVersion != null) ? sampleModule + "/" + sampleVersion : sampleModule;
+        String[] args3 = {
+                script(),
+                "run-js",
+                "--no-default-repositories",
+                "--rep",
+                "build/test-cars",
+                "--rep",
+                "+USER",
+                modVer
+        };
+        launchCeylon(args3);
+    }
+    
+    @Test
+    public void testDistSampleHelloworld() throws IOException, InterruptedException {
+        testLaunchDistCeylon("helloworld", "com.example.helloworld", Versions.CEYLON_VERSION_NUMBER);
+    }
+        
+    @Test
+    public void testDistSampleNoModule() throws IOException, InterruptedException {
+        testLaunchDistCeylon("no-module", "default", null);
+    }
+    
+    @Test
+    public void testDistSampleWithModule() throws IOException, InterruptedException {
+        testLaunchDistCeylon("with-module", "com.example.withmodule", Versions.CEYLON_VERSION_NUMBER);
+    }
+        
+    public void launchCeylon(String[] args) throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder(args);
+        pb.redirectInput(Redirect.INHERIT);
+        pb.redirectOutput(Redirect.INHERIT);
+        pb.redirectError(Redirect.INHERIT);
+        Process p = pb.start();
+        p.waitFor();
+        if (p.exitValue() > 0) {
+            Assert.fail("Ceylon script execution failed");
+        }
     }
 }
