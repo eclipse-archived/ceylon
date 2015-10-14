@@ -55,5 +55,54 @@ final class bug2348_ {
                 }
             }.sequence();
         ));
+        .ceylon.language.print_.print((
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> spread$2$iterable$ = .ceylon.language.String.instance("ABC");
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Character> spread$2$iterator$ = spread$2$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$2$element$;
+                            if (!((spread$2$element$ = spread$2$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$2$element$ = ((.ceylon.language.Character)spread$2$element$).getLowercased();
+                            }
+                            return spread$2$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        ));
+        .ceylon.language.print_.print((
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> spread$3$iterable$ = .ceylon.language.String.instance("42");
+                final long spread$3$arg$0 = 1L;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Character> spread$3$iterator$ = spread$3$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$3$element$;
+                            if (!((spread$3$element$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$3$element$ = ((.ceylon.language.Character)spread$3$element$).neighbour(spread$3$arg$0);
+                            }
+                            return spread$3$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        ));
     }
 }

@@ -21,4 +21,6 @@
 void bug2348() {
     print("42"*.letter);
     print("42"*.compare('c'));
+    print("ABC"*.lowercased);
+    print("42"*.neighbour(1));
 }
