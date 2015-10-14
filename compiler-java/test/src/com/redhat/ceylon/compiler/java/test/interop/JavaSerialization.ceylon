@@ -42,6 +42,10 @@ class JavaSerializationValueCtors {
             //string = "bar";
         }
     }
+    
+    shared object obj {
+        
+    }
 }
 
 "Return an object to serialize"
@@ -61,6 +65,8 @@ shared Object javaSerialization() {
     result.add([JavaSerializationValueCtors.foo, true, true]);
     result.add([JavaSerializationValueCtors.foo.Inner.bar, true, true]);
     result.add([JavaSerializationValueCtors().Inner.bar, false, false]);
+    result.add([JavaSerializationValueCtors.foo.obj, true, true]);
+    result.add([JavaSerializationValueCtors().obj, false, false]);
     return result;
 }
 
