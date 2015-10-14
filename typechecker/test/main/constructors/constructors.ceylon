@@ -432,3 +432,7 @@ interface InterfaceWithMethod {
     shared Integer create() => 0;
 }
 
+class WithDuplicateDefaultConstructor {
+    shared new() {}
+    @error shared new(String name) {}
+}

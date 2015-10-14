@@ -879,6 +879,14 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Constructor that) {
+        if (scope instanceof Class) {
+            Class clazz = (Class) scope;
+            if (that.getIdentifier()==null && 
+                    clazz.getDefaultConstructor()!=null) {
+                that.addError("duplicate default constructor: '" +
+                        clazz.getName() + "' may have at most one default constructor");
+            }
+        }
         Constructor c = new Constructor();
         that.setConstructor(c);
         visitDeclaration(that, c, false);
@@ -893,7 +901,6 @@ public abstract class DeclarationVisitor extends Visitor {
                 that.addError("anonymous class may not have constructor: '" + 
                         clazz.getName() + "' is an anonymous class");
             }
-            
         }
         else {
             at = null;
