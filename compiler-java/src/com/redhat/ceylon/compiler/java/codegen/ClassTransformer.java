@@ -335,24 +335,30 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
         SyntheticName name = naming.synthetic(Unfix.$name$);
         stmts.add(makeVar(FINAL, name, make().Type(syms().stringType), null));
-        JCStatement tail;
-        if (Decl.hasOnlyValueConstructors(model)) {
-            tail = make().Throw(statementGen().makeNewEnumeratedTypeError("Instance not of any constructor"));
-        } else {
-            tail =  make().Return(naming.makeThis());
-        }
-        for (Declaration member : model.getMembers()) {
-            if (Decl.isValueConstructor(member) ) {
-                Value val = (Value)member;
-                tail = make().If(
-                        make().Binary(JCTree.EQ, naming.makeThis(), 
-                                naming.getValueConstructorFieldName(val).makeIdent()), 
-                        make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(name.makeIdent(), make().Literal(Naming.getGetterName(member)))))), 
-                        tail);
+        if (model.hasEnumerated()) {
+            JCStatement tail;
+            if (Decl.hasOnlyValueConstructors(model)) {
+                tail = make().Throw(statementGen().makeNewEnumeratedTypeError("Instance not of any constructor"));
+            } else {
+                tail =  make().Return(naming.makeThis());
             }
+            for (Declaration member : model.getMembers()) {
+                if (Decl.isValueConstructor(member) ) {
+                    Value val = (Value)member;
+                    tail = make().If(
+                            make().Binary(JCTree.EQ, naming.makeThis(), 
+                                    naming.getValueConstructorFieldName(val).makeIdent()), 
+                            make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(name.makeIdent(), make().Literal(Naming.getGetterName(member)))))), 
+                            tail);
+                }
+            }
+            
+            stmts.add(tail);
+        } else if (model.isAnonymous()) {
+            stmts.add(make().Exec(make().Assign(name.makeIdent(), make().Literal(Naming.getGetterName((Value)model.getContainer().getDirectMember(model.getName(), null, false))))));
+        } else {
+            throw new BugException("Unsupported need for writeReplace()");
         }
-        
-        stmts.add(tail);
         // final String name;
         // if(this == instA) {
         //    name = "getInstA";
@@ -5158,6 +5164,11 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (Strategy.introduceJavaIoSerializable(klass, typeFact().getJavaIoSerializable())) {
             objectClassBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
+            if (def instanceof Tree.ObjectDefinition
+                    && klass.isMember()
+                    && (klass.isShared() || klass.isCaptured() || model.isCaptured())) {
+                addWriteReplace(klass, objectClassBuilder);
+            }
         }
         makeReadResolve(objectClassBuilder, klass, model);
         
