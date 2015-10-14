@@ -47,17 +47,22 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class AnnotationUtil {
 
+    /**
+     * Returns the set of output program elements that the given annotation 
+     * could be applied to. If the {@code errors} flag is true then add 
+     * warnings/errors to the tree about ambigous/impossible targets.
+     */
     public static EnumSet<OutputElement> interopAnnotationTargeting(EnumSet<OutputElement> outputs,
             Tree.Annotation annotation, boolean errors) {
         Declaration annoCtor = ((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration();
         if (annoCtor instanceof AnnotationProxyMethod) {
-            EnumSet<OutputElement> possibleTargets;
             AnnotationProxyMethod proxyCtor = (AnnotationProxyMethod)annoCtor;
             AnnotationProxyClass annoClass = proxyCtor.getProxyClass();
+            EnumSet<OutputElement> possibleTargets;
             if (proxyCtor.getAnnotationTarget() != null) {
                 possibleTargets = EnumSet.of(proxyCtor.getAnnotationTarget());
             } else {
-                possibleTargets = possibleCeylonTargets(AnnotationTarget.annotationTargets(annoClass));
+                possibleTargets = AnnotationTarget.outputTargets(annoClass);
             }
             EnumSet<OutputElement> actualTargets = possibleTargets.clone();
             actualTargets.retainAll(outputs);

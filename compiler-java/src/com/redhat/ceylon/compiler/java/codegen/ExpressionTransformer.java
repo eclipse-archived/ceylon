@@ -46,6 +46,8 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarDefBuilder;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.java.loader.TypeFactory;
+import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -55,6 +57,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -74,6 +78,7 @@ import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -6263,8 +6268,7 @@ public class ExpressionTransformer extends AbstractTransformer {
      * Transform the annotations on the given annotated declaration for 
      * inclusion on the given target element type 
      */
-    public List<JCAnnotation> transformAnnotations(boolean nat, 
-            OutputElement target, 
+    public List<JCAnnotation> transformAnnotations(OutputElement target, 
             Tree.Declaration annotated) {
         EnumSet<OutputElement> outputs;
         if (annotated instanceof Tree.AnyClass) {
@@ -6290,38 +6294,40 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             throw BugException.unhandledNodeCase(annotated);
         }
-        return transform(nat, target, annotated.getAnnotationList(), outputs);
+        return transform(annotated.getDeclarationModel(), target, annotated.getAnnotationList(), outputs);
     }
     /** 
      * Transform the annotations on the given package declaration for 
      * inclusion on the given target element type 
      */
-    public List<JCAnnotation> transformAnnotations(boolean nat,
+    public List<JCAnnotation> transformAnnotations(
             OutputElement target, 
             Tree.PackageDescriptor annotated) {
-        return transform(nat, target, annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.PackageDescriptor)annotated));
+        return transform(annotated.getUnit().getPackage(), target, 
+                annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.PackageDescriptor)annotated));
     }
     /** 
      * Transform the annotations on the given module import declaration for 
      * inclusion on the given target element type 
      */
-    public List<JCAnnotation> transformAnnotations(boolean nat,
+    public List<JCAnnotation> transformAnnotations(
             OutputElement target, 
             Tree.ImportModule annotated) {
-        return transform(nat, target, annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.ImportModule)annotated));
+        return transform(annotated, target, 
+                annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.ImportModule)annotated));
     }
     /** 
      * Transform the annotations on the given module declaration for inclusion 
      * on the given target element type 
      */
-    public List<JCAnnotation> transformAnnotations(boolean nat,
+    public List<JCAnnotation> transformAnnotations(
             OutputElement target, 
             Tree.ModuleDescriptor annotated) {
-        return transform(nat, target, annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.ModuleDescriptor)annotated));
+        return transform(annotated.getUnit().getPackage().getModule(), target, 
+                annotated.getAnnotationList(), AnnotationUtil.outputs((Tree.ModuleDescriptor)annotated));
     }
-    private List<JCAnnotation> transform(boolean nat, 
-            OutputElement target, 
-            Tree.AnnotationList annotationList,
+    private List<JCAnnotation> transform(Object useSite, 
+            OutputElement target, Tree.AnnotationList annotationList,
             EnumSet<OutputElement> outputs) {
         if (annotationList == null) {
             return List.nil();
@@ -6331,13 +6337,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         LinkedHashMap<Class, ListBuffer<JCAnnotation>> annotationSet = new LinkedHashMap<>();
         if (annotationList != null) {
-            if (nat && annotationList.getAnonymousAnnotation() != null) {
+            
+            if (annotationList.getAnonymousAnnotation() != null
+                    && isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("doc"),  useSite, target)) {
                 transformAnonymousAnnotation(annotationList.getAnonymousAnnotation(), annotationSet);
             }
             if (annotationList.getAnnotations() != null) {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
+                    Function annoCtorDecl = ((Function)((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration());
                     EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(outputs, annotation, false);
-                    if ((nat
+                    if ((isNaturalTarget(annoCtorDecl, useSite, target)
                             && possibleTargets == null)
                             || 
                             (possibleTargets != null 
@@ -6366,7 +6375,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Special case: Generate a @java.lang.Deprecated() if Ceylon deprecated
         if (annotationList != null) {
             for (Tree.Annotation annotation : annotationList.getAnnotations()) {
-                if (nat && isDeprecatedAnnotation(annotation.getPrimary())) {
+                if (isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("deprecated"), useSite, target) && isDeprecatedAnnotation(annotation.getPrimary())) {
                     result.append(make().Annotation(make().Type(syms().deprecatedType), List.<JCExpression>nil()));
                 }
             }
@@ -6375,6 +6384,87 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result.toList();
     }
     
+    /**
+     * Whether an annotation (with the given {@code annotationCtorDecl} 
+     * annotation constructor) used on the given declaration ({@code useSite})
+     * should be added to the Java annotations of the given generated program 
+     * elements ({@code target}) 
+     * @param annotationCtorDecl
+     * @param useSite
+     * @param target
+     * @return
+     */
+    private boolean isNaturalTarget(
+            Function annotationCtorDecl, // use site is either a Declaration, or a Package, or a Module, 
+            // or a Tree.ImportModule. Yes that's ugly as hell, but
+            // there's no supertype for annotated things, nor a "model" for 
+            // module imports
+            Object useSite, OutputElement target) {
+        EnumSet<AnnotationTarget> interopTargets;
+        if (annotationCtorDecl instanceof AnnotationProxyMethod) {
+            AnnotationProxyMethod annotationProxyMethod = (AnnotationProxyMethod)annotationCtorDecl;
+            if (annotationProxyMethod.getAnnotationTarget() == target) {
+                // Foo__WHATEVER, so honour the WHATEVER
+                return true;
+            }
+            interopTargets = annotationProxyMethod.getProxyClass().getAnnotationTarget(); 
+        } else {
+            interopTargets = null;
+        }
+        if (useSite instanceof Declaration) {
+            if (ModelUtil.isConstructor((Declaration)useSite)) {
+                if (useSite instanceof Functional) {
+                    return target == OutputElement.CONSTRUCTOR;
+                } else if (useSite instanceof Value) {
+                    return target == OutputElement.GETTER;
+                }
+            } else if (useSite instanceof Class) {
+                if (((Class)useSite).getParameterList() != null
+                        && interopTargets != null
+                        && interopTargets.contains(AnnotationTarget.CONSTRUCTOR)
+                        && !interopTargets.contains(AnnotationTarget.TYPE)) {
+                    return target == OutputElement.CONSTRUCTOR;
+                }
+                return target == OutputElement.TYPE;
+            } else  if (useSite instanceof Interface) {
+                return target == OutputElement.TYPE;
+            } else if (useSite instanceof Value) {
+                Value value = (Value)useSite;
+                TypeDeclaration decltype = typeFact().getValueDeclarationType().getDeclaration();
+                if (value.isParameter()
+                        && !value.isShared()
+                        && !(value.isCaptured() && value.isMember())) {
+                    return target ==  OutputElement.PARAMETER;
+                } else if (annotationCtorDecl instanceof AnnotationProxyMethod) {
+                    if (value.isLate() || value.isVariable()) {
+                        return target == OutputElement.SETTER;
+                    } else if (!value.isTransient()) {
+                        return target == OutputElement.FIELD;
+                    } else {
+                        return target == OutputElement.GETTER;
+                    }
+                } else {
+                    return target == OutputElement.GETTER;
+                }
+            } else if (useSite instanceof Setter) {
+                return target == OutputElement.SETTER;
+            } else if (useSite instanceof Function) {
+                return target == OutputElement.METHOD;
+            } else if (useSite instanceof Constructor) {
+                return target == OutputElement.CONSTRUCTOR;
+            } else if (useSite instanceof TypeAlias) {
+                return target == OutputElement.TYPE;
+            } 
+        } else if (useSite instanceof Package) {
+            return target == OutputElement.TYPE;
+        } else if (useSite instanceof Module) {
+            return target == OutputElement.TYPE;
+        } else if (useSite instanceof Tree.ImportModule) {
+            return target == OutputElement.FIELD;
+        }
+        throw new RuntimeException(""+useSite);
+    }
+
     void transformAnnotation(Tree.Annotation invocation, 
             Map<Class, ListBuffer<JCAnnotation>> annotationSet) {
         at(invocation);

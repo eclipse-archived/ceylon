@@ -26,4 +26,6 @@ module com.redhat.ceylon.compiler.java.test.interop "1" {
     import javax.annotation "7";
     import java.management "7";
     import ceylon.interop.java "1.2.0";
+    import javax.inject "1";
+    import "javax.validation:validation-api" "1.1.0.Final";
 }

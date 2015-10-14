@@ -273,8 +273,8 @@ public class CeylonVisitor extends Visitor {
                 singletonModel.getName(), singletonModel, false);
         adb.modelAnnotations(gen.makeAtEnumerated());
         adb.modelAnnotations(gen.makeAtIgnore());
-        adb.userAnnotations(gen.expressionGen().transformAnnotations(true, OutputElement.GETTER, ctor));
-        adb.fieldAnnotations(gen.expressionGen().transformAnnotations(false, OutputElement.FIELD, ctor));
+        adb.userAnnotations(gen.expressionGen().transformAnnotations(OutputElement.GETTER, ctor));
+        adb.fieldAnnotations(gen.expressionGen().transformAnnotations(OutputElement.FIELD, ctor));
         adb.immutable();// not setter
         SyntheticName field = gen.naming.getValueConstructorFieldName(singletonModel);
         if (clz.isToplevel()) {

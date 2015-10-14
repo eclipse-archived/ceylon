@@ -70,6 +70,13 @@ import java.lang.annotation.ElementType;
 @Target({ElementType.TYPE, ElementType.CONSTRUCTOR})
 @interface JavaAnnotationTypeCtorTarget {}
 
+@Target({ElementType.FIELD})
+@interface JavaAnnotationFieldTarget {}
+@Target({ElementType.FIELD, ElementType.METHOD})
+@interface JavaAnnotationFieldMethodTarget {}
+@Target({ElementType.METHOD})
+@interface JavaAnnotationMethodTarget {}
+
 @interface JavaAnnotationClass2 {
     java.lang.Class<?> clas();
 }

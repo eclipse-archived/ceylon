@@ -428,7 +428,16 @@ public class InteropTests extends CompilerTests {
         );
     }
     
-
+    @Test
+    public void testJavaxInject(){
+        compareWithJavaSource("JavaxInject");
+    }
+    
+    @Test
+    public void testJavaxValidation(){
+        compareWithJavaSource("JavaxValidation");
+    }
+    
     @Test
     public void testAnnotationInterop(){
         compile("JavaAnnotation.java");

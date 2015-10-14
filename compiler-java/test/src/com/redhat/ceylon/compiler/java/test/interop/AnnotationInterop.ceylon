@@ -22,7 +22,6 @@ import java.lang {
 import java.util.jar {
     JarFile
 }
-
 @nomodel
 generated{
     \ivalue={"Some", "code generator name"};
@@ -122,3 +121,23 @@ class CPAnnoTest2 {
 
 generated({JarFile.\iMANIFEST_NAME})
 void bug2103() {}
+
+class C {
+    javaAnnotationFieldTarget
+    javaAnnotationMethodTarget
+    javaAnnotationFieldMethodTarget
+    shared String s="";
+    
+    //javaAnnotationFieldTarget__FIELD
+    shared new val {
+        
+    }
+    
+    @error:"annotated program element does not satisfy annotation constraint: 'ValueConstructorDeclaration' is not assignable to 'ValueDeclaration'"
+    javaAnnotationFieldTarget
+    shared new val2 {
+        
+    }
+    
+    
+}
