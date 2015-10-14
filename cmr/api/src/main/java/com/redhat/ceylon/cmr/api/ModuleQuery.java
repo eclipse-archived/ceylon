@@ -50,7 +50,7 @@ public class ModuleQuery {
     }
     
     public ModuleQuery(String name, Type type, Retrieval retrieval) {
-        this.name = name.toLowerCase();
+        this.name = name;
         this.type = type;
         this.retrieval = retrieval;
     }
@@ -60,7 +60,7 @@ public class ModuleQuery {
     }
 
     public void setName(String name) {
-        this.name = name.toLowerCase();
+        this.name = name;
     }
 
     public Type getType() {
