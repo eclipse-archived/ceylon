@@ -19,5 +19,5 @@
  */
 native("jvm")
 module com.redhat.ceylon.ceylondoc.test.modules.bug2094 "1" {
-    import ceylon.file "1.1.1";
+    import ceylon.file "1.2.0";
 }

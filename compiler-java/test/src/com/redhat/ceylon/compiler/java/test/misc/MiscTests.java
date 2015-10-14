@@ -34,6 +34,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.OSUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -484,12 +485,12 @@ public class MiscTests extends CompilerTests {
     
     @Test
     public void testDistSampleHelloworld() throws IOException, InterruptedException {
-        testLaunchDistCeylon("helloworld", "com.example.helloworld", "1.1.1");
+        testLaunchDistCeylon("helloworld", "com.example.helloworld", Versions.CEYLON_VERSION_NUMBER);
     }
         
     @Test
     public void testDistSampleJavaInterop() throws IOException, InterruptedException {
-        testLaunchDistCeylon("interop-java", "com.example.interop", "1.1.1");
+        testLaunchDistCeylon("interop-java", "com.example.interop", Versions.CEYLON_VERSION_NUMBER);
     }
         
     @Test
@@ -499,7 +500,7 @@ public class MiscTests extends CompilerTests {
     
     @Test
     public void testDistSampleWithModule() throws IOException, InterruptedException {
-        testLaunchDistCeylon("with-module", "com.example.withmodule", "1.1.1");
+        testLaunchDistCeylon("with-module", "com.example.withmodule", Versions.CEYLON_VERSION_NUMBER);
     }
         
     public void launchCeylon(String[] args) throws IOException, InterruptedException {
