@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -214,10 +215,11 @@ public class JsCompiler {
                         pkg.setModule(defmod);
                     }
                 }
-                if (opts.getSuppressWarnings() != null) {
-                    pu.getCompilationUnit().visit(
-                            new WarningSuppressionVisitor<Warning>(Warning.class, opts.getSuppressWarnings()));
-                }
+                EnumSet<Warning> suppressedWarnings = opts.getSuppressWarnings();
+                if (suppressedWarnings == null)
+                    suppressedWarnings = EnumSet.noneOf(Warning.class);
+                pu.getCompilationUnit().visit(
+                            new WarningSuppressionVisitor<Warning>(Warning.class, suppressedWarnings));
                 //Perform capture analysis
                 for (com.redhat.ceylon.model.typechecker.model.Declaration d : pu.getDeclarations()) {
                     if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.model.typechecker.model.Setter == false) {
