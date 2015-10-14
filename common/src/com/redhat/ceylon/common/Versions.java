@@ -2,16 +2,20 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.1.1 "Pif Gadget"
+    // The current version is Ceylon 1.2.0 "A Series Of Unlikely Explanations"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
     * WARNING Don't forget to update:
-    * - ceylon.language/src/ceylon/language.ceylon
+    * - ceylon.language/src/ceylon/language/module.ceylon
+    * - ceylon.language/src/ceylon/language/language.ceylon
     * - ceylon.language/test/process.ceylon (versions, name, binary version)
     * - ceylon-dist/build.properties (versions)
     * - ceylon-dist/osgi/module.properties (versions)
     * - ceylon-dist/osgi/META-INF/MANIFEST.MF (versions)
+    * - ceylon-dist/osgi/embeddedRepository/META-INF/MANIFEST.MF (versions)
+    * - ceylon-dist/samples (versions, but not sure why we do that)
+    * - ceylon-dist/README.MD (versions, name)
     * - ceylon-common/common-build.properties (version)
     * - ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/about.ini (version, name)
     *   Find all files on IDE which need to be updated:
@@ -29,8 +33,8 @@ public class Versions {
     ****************************************************************************************************/
 
     public static final int CEYLON_VERSION_MAJOR = 1;
-    public static final int CEYLON_VERSION_MINOR = 1;
-    public static final int CEYLON_VERSION_RELEASE = 1;
+    public static final int CEYLON_VERSION_MINOR = 2;
+    public static final int CEYLON_VERSION_RELEASE = 0;
     /**
      * The MAJOR.MINOR.RELEASE version.
      */
@@ -38,7 +42,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "Pif Gadget";
+    public static final String CEYLON_VERSION_NAME = "A Series Of Unlikely Explanations";
     /**
      * The version number + code name description string.
      */
@@ -53,7 +57,7 @@ public class Versions {
      * M6 is 5.0
      * 1.0 is 6.0
      * 1.1 is 7.0
-     * 1.1.1 is 8.0
+     * 1.2.0 is 8.0
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 0;
@@ -87,8 +91,8 @@ public class Versions {
     public static final int V1_1_BINARY_MAJOR_VERSION = 7;
     public static final int V1_1_BINARY_MINOR_VERSION = 0;
     
-    public static final int V1_1_1_BINARY_MAJOR_VERSION = 8;
-    public static final int V1_1_1_BINARY_MINOR_VERSION = 0;
+    public static final int V1_2_BINARY_MAJOR_VERSION = 8;
+    public static final int V1_2_BINARY_MINOR_VERSION = 0;
 
     // Dependencies that end up in code
     public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.3.3.Final";
@@ -116,9 +120,9 @@ public class Versions {
      * @return true if the given consumer version of ceylon can consume the given binary version
      */
     public static boolean isBinaryVersionCompatible(int consumerMajor, int consumerMinor, int major, int minor){
-        // latest version 1.1.1 supports 1.1 (bin 7.0) and 1.1.1 (bin 8.0)
-        if(consumerMajor == V1_1_1_BINARY_MAJOR_VERSION && consumerMinor == V1_1_1_BINARY_MINOR_VERSION){
-            return (major == V1_1_1_BINARY_MAJOR_VERSION 
+        // latest version 1.2 supports 1.1 (bin 7.0) and 1.2 (bin 8.0)
+        if(consumerMajor == V1_2_BINARY_MAJOR_VERSION && consumerMinor == V1_2_BINARY_MINOR_VERSION){
+            return (major == V1_2_BINARY_MAJOR_VERSION 
                     || major == V1_1_BINARY_MAJOR_VERSION) && minor == 0;
         }
         // other versions must be equal
