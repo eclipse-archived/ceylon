@@ -1,7 +1,7 @@
 # Ceylon distribution
 
-This is the 1.1 _"Pif Gadget"_ release of the Ceylon 
-command line tools (version 1.1.1). This is a production version of 
+This is the 1.2 _"A Series Of Unlikely Explanations"_ release of the Ceylon 
+command line tools (version 1.2.0). This is a production version of 
 the platform.
 
 Ceylon is a modern, modular, statically typed programming language 

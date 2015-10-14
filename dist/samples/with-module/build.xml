@@ -43,11 +43,11 @@
     </target>
 
     <target name="run" depends="compile">
-        <ceylon-run module="com.example.withmodule/1.1.1" />
+        <ceylon-run module="com.example.withmodule/1.2.0" />
     </target>
 
     <target name="run-js" depends="compile-js">
-        <ceylon-run-js module="com.example.withmodule/1.1.1" />
+        <ceylon-run-js module="com.example.withmodule/1.2.0" />
     </target>
 
     <target name="clean">

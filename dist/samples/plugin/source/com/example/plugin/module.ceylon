@@ -17,7 +17,7 @@
 by("Tako Schotanus")
 license("http://www.apache.org/licenses/LICENSE-2.0")
 native("jvm")
-module com.example.plugin "1.1.1" {
+module com.example.plugin "1.2.0" {
     shared import java.base "7";
-    shared import com.redhat.ceylon.common "1.1.1";
+    shared import com.redhat.ceylon.common "1.2.0";
 }

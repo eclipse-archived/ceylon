@@ -17,6 +17,6 @@
 by("Stéphane Épardaud")
 license("http://www.apache.org/licenses/LICENSE-2.0")
 native("jvm")
-module com.example.interop "1.1.1" {
+module com.example.interop "1.2.0" {
     import java.base "7";
 }

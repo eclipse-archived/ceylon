@@ -1,4 +1,4 @@
 summary=A sample plugin
-module=com.example.plugin/1.1.1
+module=com.example.plugin/1.2.0
 ;class=com.example.plugin.CeylonExamplePluginTool # This is the default
 
