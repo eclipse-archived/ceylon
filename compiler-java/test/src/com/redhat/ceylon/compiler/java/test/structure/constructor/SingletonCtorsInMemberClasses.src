@@ -10,14 +10,14 @@ class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.
         private Bar$bar() {
         }
     }
-    private Bar $instance$Bar$bar = null;
+    private transient Bar $instance$Bar$bar = null;
     
     .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar getBar$bar() {
         if ($instance$Bar$bar == null) $instance$Bar$bar = new Bar((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar$bar)null);
         return $instance$Bar$bar;
     }
     
-    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         private Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar$bar $name$) {
         }
@@ -25,6 +25,14 @@ class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.Bar.class));
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$Bar$bar) {
+                $name$ = "getBar$bar";
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorsInMemberClasses.class, $name$);
         }
     }
     
@@ -52,14 +60,14 @@ public final class singletonCtorsInMemberClasses_ {
                 private Bar$bar() {
                 }
             }
-            private Bar $instance$Bar$bar = null;
+            private transient Bar $instance$Bar$bar = null;
             
             Foo.Bar getBar$bar() {
                 if ($instance$Bar$bar == null) $instance$Bar$bar = new Bar((Foo.Bar$bar)null);
                 return $instance$Bar$bar;
             }
             
-            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                 
                 private Bar(Foo.Bar$bar $name$) {
                 }
@@ -67,6 +75,14 @@ public final class singletonCtorsInMemberClasses_ {
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
                     return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.singletonCtorsInMemberClasses_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.Bar.class));
+                }
+                
+                private final .java.lang.Object writeReplace() {
+                    final .java.lang.String $name$;
+                    if (this == $instance$Bar$bar) {
+                        $name$ = "getBar$bar";
+                    } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+                    return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(Foo.this, Foo.class, $name$);
                 }
             }
             

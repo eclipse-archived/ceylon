@@ -22,7 +22,7 @@ class SingletonExtendingNamed implements .com.redhat.ceylon.compiler.java.runtim
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.class);
 }
-class SingletonExtendingNamed_Bar extends .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed {
+class SingletonExtendingNamed_Bar extends .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed implements .java.io.Serializable {
     
     private static final class bar_ {
         
@@ -47,4 +47,12 @@ class SingletonExtendingNamed_Bar extends .com.redhat.ceylon.compiler.java.test.
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getSingletonExtendingNamed_Bar$bar";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.class, $name$);
+    }
 }

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     private final .java.lang.String string;
     
     @.java.lang.Override
@@ -77,6 +77,16 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == two) {
+            $name$ = "getSingletonCtors$two";
+        } else if (this == one) {
+            $name$ = "getSingletonCtors$one";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.class, $name$);
+    }
 }
 class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -88,7 +98,7 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
         private MemberClass$one() {
         }
     }
-    private MemberClass $instance$MemberClass$one = null;
+    private transient MemberClass $instance$MemberClass$one = null;
     
     .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass getMemberClass$one() {
         if ($instance$MemberClass$one == null) $instance$MemberClass$one = new MemberClass((.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one)null);
@@ -100,14 +110,14 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
         private MemberClass$nonShared() {
         }
     }
-    private MemberClass $instance$MemberClass$nonShared = null;
+    private transient MemberClass $instance$MemberClass$nonShared = null;
     
     private .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass getMemberClass$nonShared() {
         if ($instance$MemberClass$nonShared == null) $instance$MemberClass$nonShared = new MemberClass((.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$nonShared)null);
         return $instance$MemberClass$nonShared;
     }
     
-    public class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         private final .java.lang.String string;
         
         @.java.lang.Override
@@ -126,6 +136,16 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass.class));
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$MemberClass$nonShared) {
+                $name$ = "getMemberClass$nonShared";
+            } else if (this == $instance$MemberClass$one) {
+                $name$ = "getMemberClass$one";
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.class, $name$);
         }
     }
     
@@ -153,7 +173,7 @@ final class localSingletonCtors_ {
     
     static .java.lang.Object localSingletonCtors() {
         
-        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             private final .java.lang.String string;
             
             @.java.lang.Override

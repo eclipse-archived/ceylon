@@ -110,4 +110,14 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getCtorDelegationWithDp$bar";
+        } else if (this == foo) {
+            $name$ = "getCtorDelegationWithDp$foo";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.class, $name$);
+    }
 }

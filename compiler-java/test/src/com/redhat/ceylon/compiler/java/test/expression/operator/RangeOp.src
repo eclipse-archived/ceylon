@@ -63,7 +63,7 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.class);
 }
-final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum {
+final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum implements .java.io.Serializable {
     
     private rangeOpF_() {
         super();
@@ -102,7 +102,7 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
         return .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_.$TypeDescriptor$;
     }
 }
-final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum {
+final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum implements .java.io.Serializable {
     
     private rangeOpE_() {
         super();

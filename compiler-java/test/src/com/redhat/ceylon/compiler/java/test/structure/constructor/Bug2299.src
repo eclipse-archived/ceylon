@@ -74,4 +74,13 @@ class Bug2299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == _ROOT) {
+            $name$ = "getBug2299$_ROOT";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.class, $name$);
+    }
 }

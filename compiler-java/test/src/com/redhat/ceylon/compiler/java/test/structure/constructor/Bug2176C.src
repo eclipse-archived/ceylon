@@ -15,7 +15,7 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         private Inner$instance() {
         }
     }
-    private Inner $instance$Inner$instance = null;
+    private transient Inner $instance$Inner$instance = null;
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
@@ -31,7 +31,7 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         @.com.redhat.ceylon.compiler.java.metadata.Name("instance")
         @.com.redhat.ceylon.compiler.java.metadata.Enumerated
@@ -43,6 +43,15 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.Inner.class));
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$Inner$instance) {
+                $name$ = "getInner$instance";
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.class, $name$);
         }
     }
     

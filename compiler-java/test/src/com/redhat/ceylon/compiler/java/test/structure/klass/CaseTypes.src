@@ -11,7 +11,7 @@ public abstract class CaseTypes implements .com.redhat.ceylon.compiler.java.runt
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes.class);
 }
-public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
+public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes implements .java.io.Serializable {
     
     private foo_() {
         super("foo");
@@ -50,7 +50,7 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
         return .com.redhat.ceylon.compiler.java.test.structure.klass.foo_.$TypeDescriptor$;
     }
 }
-public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes {
+public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.CaseTypes implements .java.io.Serializable {
     
     private bar_() {
         super("bar");

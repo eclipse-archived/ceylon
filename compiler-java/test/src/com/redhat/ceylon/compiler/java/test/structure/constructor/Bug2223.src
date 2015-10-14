@@ -11,14 +11,14 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private Foo$foo() {
         }
     }
-    private Foo $instance$Foo$foo = null;
+    private transient Foo $instance$Foo$foo = null;
     
     .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo getFoo$foo() {
         if ($instance$Foo$foo == null) $instance$Foo$foo = new Foo((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo$foo)null);
         return $instance$Foo$foo;
     }
     
-    class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         private Foo(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo$foo $name$) {
         }
@@ -27,6 +27,14 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Foo.class));
         }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$Foo$foo) {
+                $name$ = "getFoo$foo";
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.class, $name$);
+        }
     }
     
     static final class Bar$foo {
@@ -34,14 +42,14 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private Bar$foo() {
         }
     }
-    private Bar $instance$Bar$foo = null;
+    private transient Bar $instance$Bar$foo = null;
     
     .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar getBar$foo() {
         if ($instance$Bar$foo == null) $instance$Bar$foo = new Bar((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar$foo)null);
         return $instance$Bar$foo;
     }
     
-    class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         private Bar(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar$foo $name$) {
         }
@@ -49,6 +57,14 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.Bar.class));
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$Bar$foo) {
+                $name$ = "getBar$foo";
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223.class, $name$);
         }
     }
     
@@ -70,7 +86,7 @@ public final class bug2223_ {
     
     public static void bug2223() {
         
-        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             final class foo_ {
                 
@@ -88,7 +104,7 @@ public final class bug2223_ {
         }
         final Foo $instance$Foo$foo = new Foo((Foo.foo_)null);
         
-        class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             final class foo_ {
                 

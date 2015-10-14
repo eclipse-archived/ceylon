@@ -23,7 +23,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    final class objects_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+    final class objects_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
         
         private objects_o_() {
             super();
@@ -52,7 +52,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_ objectsc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_();
         }
         
-        final class objectsc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+        final class objectsc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
             
             private objectsc_o_() {
                 super();
@@ -70,7 +70,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_ objectscc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_();
             }
             
-            final class objectscc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+            final class objectscc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
                 
                 private objectscc_o_() {
                     super();
@@ -107,7 +107,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_ objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_();
             }
             
-            final class objectsic_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+            final class objectsic_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
                 
                 private objectsic_o_() {
                     super();
@@ -128,7 +128,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final void local$priv$() {
         
-        final class local_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+        final class local_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
             
             private local_o_() {
                 super();
@@ -142,7 +142,7 @@ class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final local_o_ local_o = new local_o_();
         try {
             
-            final class local_o2_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy {
+            final class local_o2_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
                 
                 private local_o2_() {
                     super();

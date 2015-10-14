@@ -56,7 +56,7 @@ class SubPackageQualified extends .com.redhat.ceylon.compiler.java.test.expressi
             let
             {
                 
-                class anonymous_0_ extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SubPackageQualified implements .com.redhat.ceylon.compiler.java.test.expression.selfref.IPackageQualified {
+                class anonymous_0_ extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SubPackageQualified implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.test.expression.selfref.IPackageQualified {
                     
                     private anonymous_0_() {
                         super();

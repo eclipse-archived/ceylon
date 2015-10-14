@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     private static final class foo_ {
         
@@ -24,6 +24,14 @@ class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == foo) {
+            $name$ = "getBug2234Sample$foo";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.class, $name$);
+    }
 }
 class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -36,7 +44,7 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         private Inner$foo() {
         }
     }
-    private Inner $instance$Inner$foo = null;
+    private transient Inner $instance$Inner$foo = null;
     
     .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner getInner$foo() {
         if ($instance$Inner$foo == null) $instance$Inner$foo = new Inner((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner$foo)null);
@@ -65,6 +73,14 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner.class));
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            if (this == $instance$Inner$foo) {
+                $name$ = "getInner$foo";
+            } else return this;
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.class, $name$);
         }
     }
     private final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner member;

@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     private static final class bar_ {
         
@@ -24,6 +24,14 @@ class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getBug2262$bar";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.class, $name$);
+    }
 }
 public final class bug2262_ {
     

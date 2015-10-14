@@ -11,7 +11,7 @@ abstract class SwitchMatchTop implements .com.redhat.ceylon.compiler.java.runtim
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop.class);
 }
-final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
+final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop implements .java.io.Serializable {
     
     private switchMatch_foo_() {
         super();
@@ -50,7 +50,7 @@ final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.state
         return .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_.$TypeDescriptor$;
     }
 }
-final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop {
+final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchMatchTop implements .java.io.Serializable {
     
     private switchMatch_bar_() {
         super();

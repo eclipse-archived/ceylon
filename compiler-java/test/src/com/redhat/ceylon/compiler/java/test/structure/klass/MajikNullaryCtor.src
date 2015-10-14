@@ -440,7 +440,7 @@ class MajikNullaryCtorMixinSub extends .com.redhat.ceylon.compiler.java.test.str
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
-class MajikNullaryCtorValueCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+class MajikNullaryCtorValueCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -477,6 +477,15 @@ class MajikNullaryCtorValueCtor implements .com.redhat.ceylon.compiler.java.runt
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getMajikNullaryCtorValueCtor$val";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.class, $name$);
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -521,6 +530,15 @@ class MajikNullaryCtorValueCtorAndDefault implements .com.redhat.ceylon.compiler
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getMajikNullaryCtorValueCtorAndDefault$val";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.class, $name$);
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -584,6 +602,15 @@ class MajikNullaryCtorValueCtorAndCallable implements .com.redhat.ceylon.compile
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getMajikNullaryCtorValueCtorAndCallable$val";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.class, $name$);
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.ceylon.language.AbstractAnnotation$annotation$
@@ -607,7 +634,7 @@ abstract class MajikNullaryCtorValueCtorOf implements .com.redhat.ceylon.compile
 @.com.redhat.ceylon.compiler.java.metadata.Name("majikNullaryCtorValueCtorOf")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorOf")
-final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorOf {
+final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorOf implements .java.io.Serializable {
     
     private majikNullaryCtorValueCtorOf_() {
         super(1L);

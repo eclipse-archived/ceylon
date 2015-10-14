@@ -1,6 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 
-final class random_ extends .java.util.Random implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+final class random_ extends .java.util.Random implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private random_() {
         super();

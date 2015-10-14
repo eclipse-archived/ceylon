@@ -82,6 +82,16 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == oneone) {
+            $name$ = "getSingletonCtorDelegation$oneone";
+        } else if (this == origin) {
+            $name$ = "getSingletonCtorDelegation$origin";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.class, $name$);
+    }
 }
 class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -154,6 +164,16 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
         return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == oneone) {
+            $name$ = "getSingletonCtorAbstractDelegation$oneone";
+        } else if (this == origin) {
+            $name$ = "getSingletonCtorAbstractDelegation$origin";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.class, $name$);
+    }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method

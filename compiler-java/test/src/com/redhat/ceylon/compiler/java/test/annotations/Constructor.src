@@ -190,4 +190,13 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Constructor.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getConstructor$val";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.annotations.Constructor.class, $name$);
+    }
 }

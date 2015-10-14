@@ -11,7 +11,7 @@ abstract class Bug2150Boolean implements .com.redhat.ceylon.compiler.java.runtim
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean.class);
 }
-final class bug2150True_ extends .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean {
+final class bug2150True_ extends .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean implements .java.io.Serializable {
     
     private bug2150True_() {
         super();
@@ -50,7 +50,7 @@ final class bug2150True_ extends .com.redhat.ceylon.compiler.java.test.issues.bu
         return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$TypeDescriptor$;
     }
 }
-final class bug2150False_ extends .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean {
+final class bug2150False_ extends .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean implements .java.io.Serializable {
     
     private bug2150False_() {
         super();
