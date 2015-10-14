@@ -117,7 +117,7 @@ public class SourceArgumentsResolver {
                             String resrcPath = resourceDirs.toString();
                             throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                         }
-                        String relFileName = FileUtil.relativeFile(srcs, file.getPath());
+                        String relFileName = FileUtil.relativeFile(resrcs, file.getPath());
                         resFiles.add(new File(path, relFileName));
                         // Determine the module path from the file path
                         resMods.add(moduleName(srcs, path, file));
