@@ -112,7 +112,10 @@ public class JsCompiler {
             logger = new JsLogger(opts);
         }
         errorVisitor = new ErrorCollectingVisitor(tc);
-        srcDirectories = new ArrayList<VirtualFile>();
+        srcDirectories = new ArrayList<VirtualFile>(opts.getSrcDirs().size());
+        for (File srcdir : opts.getSrcDirs()) {
+            srcDirectories.add(tc.getContext().getVfs().getFromFile(srcdir));
+        }
     }
 
     private boolean isURL(String path) {
@@ -130,21 +133,6 @@ public class JsCompiler {
         return this;
     }
 
-    /**
-     * Adds a folder where the source files reside
-     */
-    public JsCompiler addSrcDirectory(File srcDirectory) {
-        return addSrcDirectory(tc.getContext().getVfs().getFromFile(srcDirectory));
-    }
-    
-    /**
-     * Adds a folder where the source files reside
-     */
-    public JsCompiler addSrcDirectory(VirtualFile srcDirectory) {
-        srcDirectories.add(srcDirectory);
-        return this;
-    }
-    
     /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
      * will be compiled. */
     public JsCompiler setSourceFiles(List<File> files) {

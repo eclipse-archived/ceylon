@@ -56,7 +56,8 @@ public class Stitcher {
         final File tmpout = new File(clsrcTmpDir, Constants.DEFAULT_MODULE_DIR);
         tmpout.mkdir();
         final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
-                .outRepo(tmpout.getAbsolutePath()).modulify(false).minify(true);
+                .outRepo(tmpout.getAbsolutePath()).modulify(false).minify(true)
+                .addSrcDir(clSrcDir).addSrcDir(LANGMOD_JS_SRC);
 
         //Typecheck the whole language module
         if (langmodtc == null) {
@@ -114,8 +115,6 @@ public class Stitcher {
         //Set this before typechecking to share some decls that otherwise would be private
         JsCompiler jsc = new JsCompiler(tc, opts, true)
                 .stopOnErrors(false)
-                .addSrcDirectory(clSrcDir)
-                .addSrcDirectory(LANGMOD_JS_SRC)
                 .setSourceFiles(includes);
         if (!jsc.generate()) {
             jsc.printErrorsAndCount(new OutputStreamWriter(System.out));
