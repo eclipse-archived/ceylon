@@ -28,6 +28,7 @@ import static com.sun.tools.javac.code.Flags.PRIVATE;
 import static com.sun.tools.javac.code.Flags.PROTECTED;
 import static com.sun.tools.javac.code.Flags.PUBLIC;
 import static com.sun.tools.javac.code.Flags.STATIC;
+import static com.sun.tools.javac.code.Flags.TRANSIENT;
 import static com.sun.tools.javac.code.Flags.VARARGS;
 
 import java.lang.annotation.RetentionPolicy;
@@ -5251,20 +5252,32 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 
             } else if (model != null && Decl.withinClassOrInterface(model)) {
-                boolean visible = Decl.isCaptured(model);
-                int modifiers = FINAL | ((visible) ? PRIVATE : 0);
+                boolean generateGetter = Decl.isCaptured(model);
                 JCExpression type = makeJavaType(klass.getType());
-                JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
-                containingClassBuilder.field(modifiers, name, type, initialValue, !visible);
-                
-                if (visible) {
+                if (generateGetter) {
+                    int modifiers = TRANSIENT | PRIVATE;
+                    JCExpression initialValue = makeNull();
+                    containingClassBuilder.field(modifiers, name, type, initialValue, false);
                     AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
                     .getter(this, name, model)
                     .modifiers(transformAttributeGetSetDeclFlags(model, false));
                     if (def instanceof Tree.ObjectDefinition) {
                         getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
                     }
+                    ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+                    
+                    stmts.add(make().If(make().Binary(JCTree.EQ,
+                            naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
+                            makeNull()), make().Exec(make().Assign(
+                                    naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
+                                    makeNewClass(makeJavaType(klass.getType()), null))), null));
+                    stmts.add(make().Return(naming.makeUnquotedIdent(Naming.quoteFieldName(name))));
+                    getter.getterBlock(make().Block(0, stmts.toList()));
                     result = result.appendList(getter.build());
+                } else {
+                    int modifiers = FINAL;
+                    JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
+                    containingClassBuilder.field(modifiers, name, type, initialValue, true);
                 }
             }
         }
