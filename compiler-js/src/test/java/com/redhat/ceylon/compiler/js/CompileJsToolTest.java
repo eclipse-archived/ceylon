@@ -360,4 +360,29 @@ public class CompileJsToolTest {
         }
     }
 
+    @Test
+    public void testBug641() throws Exception {
+        ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
+        Assert.assertNotNull(tool);
+        CeylonCompileJsTool jsc = pluginFactory.bindArguments(tool, getMainTool(), args(
+                "--source=src/test/resources/bugs",
+                "bug641"));
+        final int[] warnings = {0};
+        jsc.setDiagnosticListener(new DiagnosticListener() {
+            @Override
+            public void warning(File file, long line, long column, String message) {
+                warnings[0]++;
+            }
+            
+            @Override
+            public void moduleCompiled(String module, String version) {
+            }
+            
+            @Override
+            public void error(File file, long line, long column, String message) {
+            }
+        });
+        jsc.run();
+        Assert.assertEquals(0, warnings[0]);
+    }
 }
