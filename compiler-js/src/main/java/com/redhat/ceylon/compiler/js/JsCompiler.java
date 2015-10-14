@@ -344,7 +344,7 @@ public class JsCompiler {
 
     VirtualFile findFile(File path) {
         for (VirtualFile root : srcDirectories) {
-            String p = path.getPath();
+            String p = path.getPath().replace(File.separator, "/");
             String r = root.getPath();
             if (p.startsWith(r)) {
                 File relPath = new File(p.substring(r.length() + 1));
