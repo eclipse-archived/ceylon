@@ -5,7 +5,7 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
 public final class Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private Object() {
-        this.InnerObject = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject();
+        this.InnerObject = null;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -14,7 +14,7 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class);
-    private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject InnerObject;
+    private transient .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject InnerObject;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class)
@@ -22,6 +22,13 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
     public final class InnerObject implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private InnerObject() {
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getInnerObject";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.this, .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class, $name$);
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
@@ -39,6 +46,7 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object.InnerObject")
     public final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject getInnerObject() {
+        if (InnerObject == null) InnerObject = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject();
         return InnerObject;
     }
     

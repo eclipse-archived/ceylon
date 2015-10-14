@@ -10,13 +10,19 @@ class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runt
         class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Inner() {
-                this.o = new Inner.o_();
+                this.o = null;
             }
-            private final Inner.o_ o;
+            private transient Inner.o_ o;
             
             final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private o_() {
+                }
+                
+                private final .java.lang.Object writeReplace() {
+                    final .java.lang.String $name$;
+                    $name$ = "getO";
+                    return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(Inner.this, Inner.class, $name$);
                 }
                 
                 @.java.lang.Override
@@ -26,6 +32,7 @@ class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runt
             }
             
             public final Inner.o_ getO() {
+                if (o == null) o = new Inner.o_();
                 return o;
             }
             

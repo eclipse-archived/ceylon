@@ -406,9 +406,9 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
 class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Outer() {
-        this.javaIoSerializableObject = new .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_();
+        this.javaIoSerializableObject = null;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_ javaIoSerializableObject;
+    private transient .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_ javaIoSerializableObject;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Name("javaIoSerializableObject")
@@ -421,6 +421,13 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             super();
         }
         
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getJavaIoSerializableObject";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.Outer.this, .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class, $name$);
+        }
+        
         @.java.lang.Override
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
@@ -431,6 +438,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::Outer.javaIoSerializableObject")
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_ getJavaIoSerializableObject() {
+        if (javaIoSerializableObject == null) javaIoSerializableObject = new .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_();
         return javaIoSerializableObject;
     }
     

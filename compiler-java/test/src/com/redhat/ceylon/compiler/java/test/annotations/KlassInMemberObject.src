@@ -6,9 +6,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     public KlassInMemberObject() {
-        this.member = new .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_();
+        this.member = null;
     }
-    private final .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_ member;
+    private transient .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_ member;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Name("member")
@@ -17,6 +17,13 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
     public final class member_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private member_() {
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getMember";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.this, .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.class, $name$);
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -49,6 +56,7 @@ public class KlassInMemberObject implements .com.redhat.ceylon.compiler.java.run
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::KlassInMemberObject.member")
     public final .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_ getMember() {
+        if (member == null) member = new .com.redhat.ceylon.compiler.java.test.annotations.KlassInMemberObject.member_();
         return member;
     }
     

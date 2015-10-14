@@ -109,7 +109,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
         this.parameter = parameter;
         this.attribute = true;
         this.varAttribute = true;
-        this.obj = new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_();
+        this.obj = null;
     }
     private final .java.lang.String parameter;
     
@@ -146,11 +146,17 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget2$annotation$
     public final void setGetter(final boolean getter) {
     }
-    private final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ obj;
+    private transient .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ obj;
     
     public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private obj_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getObj";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.this, .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.class, $name$);
         }
         
         @.java.lang.Override
@@ -162,6 +168,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
     public final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_ getObj() {
+        if (obj == null) obj = new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationTargetClass.obj_();
         return obj;
     }
     

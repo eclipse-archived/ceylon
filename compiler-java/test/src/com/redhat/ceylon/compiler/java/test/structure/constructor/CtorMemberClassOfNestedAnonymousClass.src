@@ -3,13 +3,19 @@ package com.redhat.ceylon.compiler.java.test.structure.constructor;
 class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     CtorMemberClassOfNestedAnonymousClass() {
-        this.memberObject = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_();
+        this.memberObject = null;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_ memberObject;
+    private transient .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_ memberObject;
     
     public final class memberObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private memberObject_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getMemberObject";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.class, $name$);
         }
         
         public .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor Ctor$new$() {
@@ -47,6 +53,7 @@ class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compil
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_ getMemberObject() {
+        if (memberObject == null) memberObject = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_();
         return memberObject;
     }
     

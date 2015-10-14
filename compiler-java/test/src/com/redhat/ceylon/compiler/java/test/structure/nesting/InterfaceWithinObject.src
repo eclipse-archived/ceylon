@@ -5,7 +5,7 @@ public interface interfaceWithinObject$Z_ {
 final class interfaceWithinObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private interfaceWithinObject_() {
-        this.z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
+        this.z = null;
     }
     
     private .java.lang.Object readResolve() {
@@ -27,11 +27,17 @@ final class interfaceWithinObject_ implements .java.io.Serializable, .com.redhat
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI.class));
         }
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ z;
+    private transient .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ z;
     
     public final class z_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
         
         private z_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getZ";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.this, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class, $name$);
         }
         
         @.java.lang.Override
@@ -41,6 +47,7 @@ final class interfaceWithinObject_ implements .java.io.Serializable, .com.redhat
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ getZ() {
+        if (z == null) z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
         return z;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_ value;

@@ -10,13 +10,19 @@ class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.mo
         class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             Inner() {
-                this.$transient = new Inner.transient_();
+                this.$transient = null;
             }
-            private final Inner.transient_ $transient;
+            private transient Inner.transient_ $transient;
             
             final class transient_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                 
                 private transient_() {
+                }
+                
+                private final .java.lang.Object writeReplace() {
+                    final .java.lang.String $name$;
+                    $name$ = "getTransient";
+                    return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(Inner.this, Inner.class, $name$);
                 }
                 
                 public final void $enum() {
@@ -29,6 +35,7 @@ class KeywordInInnerClass implements .com.redhat.ceylon.compiler.java.runtime.mo
             }
             
             public final Inner.transient_ getTransient() {
+                if ($transient == null) $transient = new Inner.transient_();
                 return $transient;
             }
             

@@ -76,11 +76,11 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     public ParameterisedMemberKlass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         this.$reified$T = $reified$T;
-        this.foo = new .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_();
+        this.foo = null;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    private final .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ foo;
+    private transient .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ foo;
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
@@ -89,6 +89,13 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     public final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private foo_() {
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getFoo";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this, .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, $name$);
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -130,6 +137,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::ParameterisedMemberKlass<T>.foo")
     public final .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ getFoo() {
+        if (foo == null) foo = new .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_();
         return foo;
     }
     

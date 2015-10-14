@@ -12,8 +12,8 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
     KlassWithObjectMember(final .java.lang.String x) {
         this.x = x;
         final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_ localobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_();
-        this.capturedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_();
-        this.sharedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_();
+        this.capturedobj = null;
+        this.sharedobj = null;
     }
     private final .java.lang.String x;
     
@@ -41,12 +41,18 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.localobj_.class));
         }
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ capturedobj;
+    private transient .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ capturedobj;
     
     final class capturedobj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private capturedobj_() {
             this.f = getX$priv$();
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getCapturedobj$priv$";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.this, .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.class, $name$);
         }
         private final .java.lang.String f;
         
@@ -65,14 +71,21 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_ getCapturedobj$priv$() {
+        if (capturedobj == null) capturedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.capturedobj_();
         return capturedobj;
     }
-    private final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ sharedobj;
+    private transient .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ sharedobj;
     
     public final class sharedobj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private sharedobj_() {
             this.f = getX$priv$();
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getSharedobj";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.this, .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.class, $name$);
         }
         private final .java.lang.String f;
         
@@ -91,6 +104,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_ getSharedobj() {
+        if (sharedobj == null) sharedobj = new .com.redhat.ceylon.compiler.java.test.structure.klass.KlassWithObjectMember.sharedobj_();
         return sharedobj;
     }
     

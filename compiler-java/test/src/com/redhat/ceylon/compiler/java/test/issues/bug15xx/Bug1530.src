@@ -98,14 +98,20 @@ final class bug1530_foo_ implements .java.io.Serializable, .com.redhat.ceylon.co
 class Bug1530 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1530() {
-        this.foo = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_();
-        this.bar = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_();
+        this.foo = null;
+        this.bar = null;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_ foo;
+    private transient .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_ foo;
     
     final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private foo_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getFoo$priv$";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.this, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.class, $name$);
         }
         
         public final void t() {
@@ -119,13 +125,20 @@ class Bug1530 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_ getFoo$priv$() {
+        if (foo == null) foo = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_();
         return foo;
     }
-    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ bar;
+    private transient .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ bar;
     
     public final class bar_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private bar_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getBar";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.this, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.class, $name$);
         }
         
         public final void t() {
@@ -139,6 +152,7 @@ class Bug1530 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ getBar() {
+        if (bar == null) bar = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_();
         return bar;
     }
     

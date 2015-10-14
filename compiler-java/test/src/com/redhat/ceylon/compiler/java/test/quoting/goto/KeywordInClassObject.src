@@ -3,13 +3,19 @@ package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 class KeywordInClassObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     KeywordInClassObject() {
-        this.$goto = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_();
+        this.$goto = null;
     }
-    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ $goto;
+    private transient .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ $goto;
     
     final class goto_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
         private goto_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getGoto$priv$";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.this, .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.class, $name$);
         }
         
         @.java.lang.Override
@@ -19,6 +25,7 @@ class KeywordInClassObject implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ getGoto$priv$() {
+        if ($goto == null) $goto = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_();
         return $goto;
     }
     
