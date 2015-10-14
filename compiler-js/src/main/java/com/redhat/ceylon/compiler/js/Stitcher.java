@@ -42,8 +42,6 @@ public class Stitcher {
     private static Path tmpDir;
     
     private static final File baseDir = new File("../ceylon.language");
-    private static final File srcDir = new File("src");
-    private static final File jsDir = new File("runtime-js");
     private static final File clSrcDir = new File(baseDir, "src");
     private static final File clSrcFileDir = new File(clSrcDir, "ceylon/language/");
     public static final File LANGMOD_JS_SRC = new File(baseDir, "runtime-js");
@@ -114,8 +112,11 @@ public class Stitcher {
         }
         //Compile only the files specified in the line
         //Set this before typechecking to share some decls that otherwise would be private
-        JsCompiler jsc = new JsCompiler(tc, opts, true).stopOnErrors(false);
-        jsc.setSourceFiles(includes);
+        JsCompiler jsc = new JsCompiler(tc, opts, true)
+                .stopOnErrors(false)
+                .addSrcDirectory(clSrcDir)
+                .addSrcDirectory(LANGMOD_JS_SRC)
+                .setSourceFiles(includes);
         if (!jsc.generate()) {
             jsc.printErrorsAndCount(new OutputStreamWriter(System.out));
             return 1;

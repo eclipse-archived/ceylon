@@ -341,39 +341,30 @@ public class JsCompiler {
     }
 
     VirtualFile findFile(File path) {
-        if (isCompilingLanguageModule()) {
-            // Another crappy HACK for the language module
-            return tc.getContext().getVfs().getFromFile(path);
-        } else {
-            for (VirtualFile root : srcDirectories) {
-                VirtualFile f = findFile(root, path);
+        for (VirtualFile root : srcDirectories) {
+            String p = path.getPath();
+            String r = root.getPath();
+            if (p.startsWith(r)) {
+                File relPath = new File(p.substring(r.length() + 1));
+                VirtualFile f = findFile(root, relPath);
                 if (f != null) {
                     return f;
                 }
             }
-            return null;
         }
+        return null;
     }
 
     private VirtualFile findFile(VirtualFile root, File path) {
-        VirtualFile result = null;
-        boolean first = true;
+        VirtualFile result = root;
         String parts[] = path.getPath().split(Pattern.quote(File.separator));
         outer:
         for (String p : parts) {
             if (p.equals(".")) continue;
-            if (first) {
-                first = false;
-                if (root.getName().equals(p)) {
-                    result = root;
+            for (VirtualFile f : result.getChildren()) {
+                if (f.getName().equals(p)) {
+                    result = f;
                     continue outer;
-                }
-            } else {
-                for (VirtualFile f : result.getChildren()) {
-                    if (f.getName().equals(p)) {
-                        result = f;
-                        continue outer;
-                    }
                 }
             }
             return null;
