@@ -15,31 +15,28 @@ function _openTypeFromTarg(targ,o) {
     }
     return (targ.t==='u'?FreeUnion$jsint:FreeIntersection$jsint)(tl.rt$({t:OpenType$meta$declaration}));
   } else if (targ.t==='T') {
-    mm=getrtmm$$(targ.t);
+    mm=getrtmm$$(Tuple);
     // FIXME: there must be an easier way to get to that package
     var _m = typeof($CCMM$)==='function'?$CCMM$():$CCMM$;
     //We need the module
     var _mod = modules$meta().find(_m['$mod-name'],_m['$mod-version']);
     var pkg_ = _mod.findPackage("ceylon.language");
-    var lit = OpenInterface$jsint(pkg_, Empty);
-    var lastEntry = FreeInterface$jsint(lit);
+    if(targ.l.length == 0){
+      lit = openClass$jsint(pkg_, Empty);
+      return FreeClass$jsint(lit);
+    }
+    var targ2 = {t: Empty};
     var elementTypes = [];
     for (var i=targ.l.length-1; i >= 0 ; i--) {
       var ct = targ.l[i];
-      var tl;
-      if (typeof(ct)==='string') {
-        tl = OpenTvar$jsint(OpenTypeParam$jsint(o,ct));
-      } else {
-        tl = ct.t?_openTypeFromTarg(ct,o):ct;
-      }
-      elementTypes.push(tl);
+      elementTypes.push(ct);
       var elementUnion = elementTypes.length == 1 
-        ? ct : FreeUnion$jsint(elementTypes.rt$({t:OpenType$meta$declaration}));
-      lit = openClass$jsint(pkg_, Tuple);
-      lit._targs = [elementUnion, ct, lastEntry];
-      lastEntry = FreeClass$jsint(lit);
+        ? ct : {t:'u', l:elementTypes.slice()};
+      targ2 = {t:Tuple, a:{'Element$Tuple':elementUnion, 'First$Tuple':ct, 'Rest$Tuple':targ2}};
     }
-    return lastEntry;
+    lit = openClass$jsint(pkg_, Tuple);
+    lit._targs = targ2.a;
+    return FreeClass$jsint(lit);
   } else {
     mm=getrtmm$$(targ.t);
     lit = typeLiteral$meta({Type$typeLiteral:targ.t});
