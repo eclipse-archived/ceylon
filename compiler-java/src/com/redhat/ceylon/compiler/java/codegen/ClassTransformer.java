@@ -5299,7 +5299,7 @@ public class ClassTransformer extends AbstractTransformer {
     private void makeReadResolve(ClassDefinitionBuilder objectClassBuilder,
             Class cls, 
             Value model) {
-        if (Strategy.addReadResolve(cls, typeFact().getJavaIoSerializable())) {
+        if (Strategy.addReadResolve(cls)) {
             MethodDefinitionBuilder readResolve = MethodDefinitionBuilder.systemMethod(this, "readResolve");
             readResolve.modifiers(PRIVATE);
             readResolve.resultType(null, make().Type(syms().objectType));
