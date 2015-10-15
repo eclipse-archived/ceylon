@@ -492,19 +492,6 @@ public abstract class DeclarationVisitor extends Visitor {
                 while (isControl);
             }
         }
-        else if (model instanceof Constructor) {
-            Scope container = model.getContainer();
-            if (container instanceof Class) {
-                Class c = (Class) container;
-                Constructor defaultConstructor = 
-                        c.getDefaultConstructor();
-                if (defaultConstructor!=null) {
-                    that.addError("duplicate default constructor");
-                    unit.getDuplicateDeclarations()
-                        .add(defaultConstructor);
-                }
-            }
-        }
     }
 
     protected static boolean canBeNative(Declaration member) {
@@ -876,16 +863,17 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Constructor that) {
+        Constructor c = new Constructor();
+        that.setConstructor(c);
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
             if (that.getIdentifier()==null && 
                     clazz.getDefaultConstructor()!=null) {
                 that.addError("duplicate default constructor: '" +
                         clazz.getName() + "' may have at most one default constructor");
+                unit.getDuplicateDeclarations().add(c);
             }
         }
-        Constructor c = new Constructor();
-        that.setConstructor(c);
         visitDeclaration(that, c, false);
         Type at;
         if (scope instanceof Class) {
