@@ -97,26 +97,19 @@ void visitDeclaration(Declaration decl){
     }
 }
 
-void visitClass(ClassDeclaration klass){
-    output("class ``klass.name``");
-    if(klass.typeParameterDeclarations nonempty){
+void visitTypeParameters(GenericDeclaration decl){
+    if(decl.typeParameterDeclarations nonempty){
         output("<");
-        output(",".join(klass.typeParameterDeclarations.map(function (TypeParameter tp) => tp.name)));
+        output(",".join(decl.typeParameterDeclarations.map(function (TypeParameter tp) => tp.name)));
         output(">");
     }
+}
+
+void visitClass(ClassDeclaration klass){
+    output("class ``klass.name``");
+    visitTypeParameters(klass);
     if (is ClassWithInitializerDeclaration klass) {
-        output("(");
-        variable Boolean onceParameter = true;
-        for(param in klass.parameterDeclarations){
-            if(onceParameter){
-                onceParameter = false;
-            }else{
-                output(", ");
-            }
-            visitOpenType(param.openType);
-            output(" ``param.name``");
-        }
-        output(")");
+        visitParameterList(klass.defaultConstructor);
     }
     if(exists superType = klass.extendedType){
         output("\n  extends ");
@@ -171,21 +164,43 @@ void visitMembers(ClassOrInterfaceDeclaration decl){
         }
     }
 }
-void visitFunction(FunctionDeclaration func) {
-    output(" ");
+
+void visitFunction(FunctionDeclaration func, Boolean forParameter = false) {
+    if(!forParameter){
+        output(" ");
+    }
     visitOpenType(func.openType);
-    output(" ``func.name``(");
+    output(" ``func.name``");
+    visitTypeParameters(func);
+    visitParameterList(func);
+    if(!forParameter){
+        output(";\n");
+    }
+}
+
+void visitParameterList(FunctionalDeclaration decl){
+    output("(");
     variable Boolean onceParameter = true;
-    for(param in func.parameterDeclarations){
+    for(param in decl.parameterDeclarations){
         if(onceParameter){
             onceParameter = false;
         }else{
             output(", ");
         }
+        visitParameter(param);
+    }
+    output(")");
+}
+
+void visitParameter(FunctionOrValueDeclaration param){
+    switch(param)
+    case (is ValueDeclaration) {
         visitOpenType(param.openType);
         output(" ``param.name``");
     }
-    output(");\n");
+    case (is FunctionDeclaration) {
+        visitFunction(param, true);
+    }
 }
 
 void visitValue(ValueDeclaration val) {
@@ -196,11 +211,7 @@ void visitValue(ValueDeclaration val) {
 
 void visitInterface(InterfaceDeclaration klass){
     output("interface ``klass.name``");
-    if(klass.typeParameterDeclarations nonempty){
-        output("<");
-        output(",".join(klass.typeParameterDeclarations.map(function (TypeParameter tp) => tp.name)));
-        output(">");
-    }
+    visitTypeParameters(klass);
     if(klass.satisfiedTypes nonempty){
         output("\n satisfies ");
         variable Boolean once = true;
