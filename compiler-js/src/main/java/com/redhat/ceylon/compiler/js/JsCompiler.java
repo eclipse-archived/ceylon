@@ -551,11 +551,14 @@ public class JsCompiler {
         if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
         if (fqn.startsWith("::"))fqn=fqn.substring(2);
         fqn = fqn.replace('.', '/').replace("::", "/");
+        File path;
         if (isCompilingLanguageModule()) {
-            return findFile(new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix));
+            path = new File(Stitcher.LANGMOD_JS_SRC, fqn + suffix);
         } else {
-            return findFile(new File(new File(d.getUnit().getFullPath()).getParentFile(), name + suffix));
+            PhasedUnit pu = tc.getPhasedUnitFromRelativePath(d.getUnit().getRelativePath());
+            path = new File(getFullPath(pu).getParentFile(), name + suffix);
         }
+        return findFile(path);
     }
 
     VirtualFile getStitchedConstructorFile(final Declaration d, final String suffix) {
