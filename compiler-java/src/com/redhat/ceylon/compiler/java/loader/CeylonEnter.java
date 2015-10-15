@@ -36,6 +36,7 @@ import org.antlr.runtime.Token;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationModelVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
@@ -65,6 +66,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
@@ -724,6 +726,12 @@ public class CeylonEnter extends Enter {
                 super.checkType(that, type, typedNode);
         }
         
+        @Override
+        protected boolean includeError(Message err, int phase) {
+            return err.getBackend() == null ||
+                    TreeUtil.isForBackend(err.getBackend().nativeAnnotation, Backend.Java);
+        }
+
         protected Node getIdentifyingNode(Node node) {
             return TreeUtil.getIdentifyingNode(node);
         }
