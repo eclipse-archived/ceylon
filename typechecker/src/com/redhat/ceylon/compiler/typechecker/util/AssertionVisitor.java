@@ -234,6 +234,9 @@ public class AssertionVisitor extends Visitor {
     private void checkErrors(Node that) {
         try {
             for (Message err: foundErrors) {
+                if (!includeError(err, 1)) {
+                    continue;
+                }
                 if (err instanceof UnexpectedError) {
                     out( (UnexpectedError) err );
                 }
@@ -241,6 +244,9 @@ public class AssertionVisitor extends Visitor {
             if (expectingError) {
             	boolean found = false;
                 for (Message err: foundErrors) {
+                    if (!includeError(err, 2)) {
+                        continue;
+                    }
                     if (err instanceof AnalysisError ||
                             err instanceof LexError ||
                             err instanceof ParseError) {
@@ -264,6 +270,9 @@ public class AssertionVisitor extends Visitor {
             }
 //            else {
                 for (Message err: foundErrors) {
+                    if (!includeError(err, 3)) {
+                        continue;
+                    }
                     if (err instanceof LexError) {
                         out( that, (LexError) err );
                     }
@@ -271,9 +280,7 @@ public class AssertionVisitor extends Visitor {
                         out( that, (ParseError) err );
                     }
                     else if (err instanceof UnsupportedError) {
-                        if (includeUnsupportedErrors()) {
-                            out( (UnsupportedError) err );
-                        }
+                        out( (UnsupportedError) err );
                     } 
                     else if (err instanceof AnalysisError) {
                         out( (AnalysisError) err );
@@ -303,7 +310,7 @@ public class AssertionVisitor extends Visitor {
         }
     }
     
-    protected boolean includeUnsupportedErrors() {
+    protected boolean includeError(Message err, int phase) {
         return true;
     }
     

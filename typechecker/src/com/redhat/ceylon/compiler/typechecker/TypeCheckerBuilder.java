@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 
@@ -31,10 +33,12 @@ public class TypeCheckerBuilder {
     private List<VirtualFile> srcFiles = null;
     private final VFS vfs = new VFS();
     private boolean verifyDependencies = true;
-    private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
-        @Override protected boolean includeUnsupportedErrors() {
-            return false;
+    private AssertionVisitor assertionVisitor = new AssertionVisitor() {
+        @Override
+        protected boolean includeError(Message err, int phase) {
+            return !(phase == 3 && err instanceof UnsupportedError);
         }
+        
     };
     private ModuleManagerFactory moduleManagerFactory;
     private RepositoryManager repositoryManager;
