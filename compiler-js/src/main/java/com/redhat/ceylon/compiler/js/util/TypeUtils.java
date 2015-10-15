@@ -770,7 +770,7 @@ public class TypeUtils {
                             }
                         } else if (p instanceof TypeAlias || p instanceof Setter) {
                             sb.add(i, MetamodelGenerator.KEY_ATTRIBUTES);
-                        } else if (p instanceof Constructor) {
+                        } else if (p instanceof Constructor || ModelUtil.isConstructor(p)) {
                             sb.add(i, MetamodelGenerator.KEY_CONSTRUCTORS);
                         } else { //It's a value
                             TypeDeclaration td=((TypedDeclaration)p).getTypeDeclaration();
