@@ -32,7 +32,12 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     raiz = this.tipo();
   }
   var kind=$$$mptypes.Kind$getMemberDeclaration;
-  if (extendsType(kind,{t:ValueDeclaration$meta$declaration})) {
+  if (extendsType({t:ReferenceDeclaration$meta$declaration}, kind)
+      || extendsType({t:SetterDeclaration$meta$declaration}, kind)) {
+    // we only get the setter if we accept setter and reject references, otherwise
+    // the getter wins
+    var wantsSetter = !extendsType({t:ReferenceDeclaration$meta$declaration}, kind)
+      && extendsType({t:SetterDeclaration$meta$declaration}, kind);
     var escapedName = escapePropertyName$(name$20);
     var propname=getValuePropertyName$(escapedName);
     var _d = raiz[propname];
@@ -55,12 +60,19 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     if(_d) {
       var _$m = getrtmm$$(_d);
       var _mdl=get_model(_$m);
+      if(wantsSetter && _mdl.$set === undefined)
+        _d = undefined; // we have no setter to return
       var isval=_mdl.mt==='g'||_mdl.mt==='o';
-      if (isval&&extendsType(kind,{t:ReferenceDeclaration$meta$declaration}))return null;
-      _m=(isval?OpenValue$jsint:OpenReference$jsint)(this.containingPackage, _d);
+      if (!wantsSetter && isval && !extendsType({t:ValueDeclaration$meta$declaration}, kind))
+        _d = undefined;
+      if(_d){
+        _m=(isval?OpenValue$jsint:OpenReference$jsint)(this.containingPackage, _d);
+        if(wantsSetter)
+          _m=_m.setter;
+      }
     }
   }
-  if (!_m && extendsType(kind,{t:FunctionDeclaration$meta$declaration})) {
+  if (!_m && extendsType({t:FunctionDeclaration$meta$declaration}, kind)) {
     var _d = findMethodByNameFromPrototype$(raiz, name$20);
     if(_d){
       var mm=getrtmm$$(_d);
@@ -70,7 +82,10 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
         _m=OpenFunction$jsint(this.containingPackage, _d);
     }
   }
-  if (!_m && extendsType(kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
+  if (!_m 
+      && (extendsType({t:InterfaceDeclaration$meta$declaration}, kind)
+          || extendsType({t:ClassWithConstructorsDeclaration$meta$declaration}, kind)
+          || extendsType({t:ClassWithInitializerDeclaration$meta$declaration}, kind))) {
     var nom=name$20+'$'+this.name;
     var _d = raiz[nom];
     if (_d===undefined) {
@@ -96,20 +111,27 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       }
     }
     if(_d){
-      var wantsClass=extendsType(kind,{t:ClassDeclaration$meta$declaration});
-      var wantsIface=extendsType(kind,{t:InterfaceDeclaration$meta$declaration});
+      var wantsClass=extendsType({t:ClassWithConstructorsDeclaration$meta$declaration}, kind)
+                     || extendsType({t:ClassWithInitializerDeclaration$meta$declaration}, kind);
+      var wantsIface=extendsType({t:InterfaceDeclaration$meta$declaration},kind);
       var _$m = getrtmm$$(_d);
       var _mdl=get_model(_$m);
-      if ((wantsClass && _mdl.mt!=='c') || (wantsIface && _mdl.mt!=='i'))return null;
       if (wantsClass && _mdl.mt==='c') {
         //check for constructors or initializer?
-        if (extendsType(kind,{t:ClassWithConstructorsDeclaration$meta$declaration})) {
-          if (_mdl.$cn===undefined)return null;
-        } else if (extendsType(kind,{t:ClassWithInitializerDeclaration$meta$declaration})) {
-          if (_mdl.$cn)return null;
+        var hasConstructor = _mdl.$cn;
+        if (hasConstructor && !extendsType({t:ClassWithConstructorsDeclaration$meta$declaration},kind)) {
+          return null;
         }
+        if (!hasConstructor && !extendsType({t:ClassWithInitializerDeclaration$meta$declaration},kind)) {
+          return null;
+        }
+        _m=openClass$jsint(this.containingPackage, _d);
+      }else if(wantsIface && _mdl.mt=='i'){
+        _m=OpenInterface$jsint(this.containingPackage, _d);
+      }else{
+        // not accepted
+        return null;
       }
-      _m=(_mdl.mt==='c'?openClass$jsint:OpenInterface$jsint)(this.containingPackage, _d);
     }
   }
   if (_m) {
@@ -150,31 +172,45 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       return _prot['$prop$get' + mem[0].toUpperCase() + mem.substring(1)]!==undefined;
     }
     var cdec={t:'u',l:[{t:ClassWithInitializerDeclaration$meta$declaration},{t:ClassWithConstructorsDeclaration$meta$declaration}]};
+    var kind=$$$mptypes.Kind$memberDeclarations;
     for (var mem in _prot) {
       if (isProp(mem))continue;
       var _d = undefined;
+      var _d2 = undefined;
       var mm=getrtmm$$(_prot[mem]);
-      var kind=$$$mptypes.Kind$memberDeclarations;
       if (mm && inherited && mm.$cont!==this.tipo)continue;
-      if (mem.substring(0,9)==='$prop$get' && extendsType(kind,{t:ValueDeclaration$meta$declaration})) {
+      if (mem.substring(0,9)==='$prop$get' 
+          && (extendsType({t:ReferenceDeclaration$meta$declaration}, kind)
+              || extendsType({t:SetterDeclaration$meta$declaration}, kind))) {
+        var wantsValue = extendsType({t:ReferenceDeclaration$meta$declaration}, kind);
+        var wantsSetter = extendsType({t:SetterDeclaration$meta$declaration}, kind);
         var _nom=mm.d[mm.d.length-1];
         var _idx=_nom.indexOf('$');
         if (_idx>0)_nom=_nom.substring(0,_idx);
-        var isref=extendsType(kind,{t:ReferenceDeclaration$meta$declaration});
-        _d=this.getMemberDeclaration(_nom,{Kind$getMemberDeclaration:{t:isref?ReferenceDeclaration$meta$declaration:ValueDeclaration$meta$declaration}},inherited);
-      } else if (_prot[mem].$$ && extendsType(kind,{t:ClassOrInterfaceDeclaration$meta$declaration})) {
+        _d=this.getMemberDeclaration(_nom,{Kind$getMemberDeclaration:kind},inherited);
+        // if we want both value and setter we will get the getter, so also add the setter
+        if(_d && wantsValue && wantsSetter){
+          _d2 = _d.setter;
+        }
+      } else if (_prot[mem].$$ 
+                 && (extendsType({t:ClassWithInitializerDeclaration$meta$declaration},kind)
+                     || extendsType({t:ClassWithConstructorsDeclaration$meta$declaration},kind)
+                     || extendsType({t:InterfaceDeclaration$meta$declaration},kind))) {
         var mt=mm.d[mm.d.length-2];
         if ((mt==='$c' && !extendsType(cdec,kind))
             ||(mt==='$i' && !extendsType({t:InterfaceDeclaration$meta$declaration},kind)))continue;
-        _d=this.getMemberDeclaration(mm.d[mm.d.length-1],
-          {Kind$getMemberDeclaration:kind},inherited);
+        var _nom=mm.d[mm.d.length-1];
+        if(_nom.indexOf("$") > -1)
+          _nom = _nom.substring(0, _nom.indexOf("$"));
+        _d=this.getMemberDeclaration(_nom,{Kind$getMemberDeclaration:kind},inherited);
       } else if(mm && mm.d) {
         var mt=mm.d[mm.d.length-2];
         if (mt === '$m' && extendsType({t:FunctionDeclaration$meta$declaration},kind)) {
-          _d=this.getMemberDeclaration(mm.d[mm.d.length-1],{Kind$getMemberDeclaration:{t:FunctionDeclaration$meta$declaration}},inherited);
+          _d=this.getMemberDeclaration(mm.d[mm.d.length-1],{Kind$getMemberDeclaration:kind},inherited);
         }
       }
       if (_d){_d.parent$=this;defs.push(_d);};
+      if (_d2){_d2.parent$=this;defs.push(_d2);};
     }
     return defs.length?ArraySequence(defs,{Element$ArraySequence:kind}):empty();
   }
@@ -184,7 +220,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       defs.push(this.meta['$m'][df]);
     }
   }
-  if (extendsType({t:ValueDeclaration$meta$declaration},kind)) {
+  if (extendsType({t:ReferenceDeclaration$meta$declaration},kind)) {
+  // FIXME: reference/attr
     for (var df in this.meta['$at']) {
       defs.push(this.meta['$at'][df]);
     }

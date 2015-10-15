@@ -1,6 +1,8 @@
 //Pass a {t:Bla} and get a FreeClass,FreeInterface,etc (OpenType).
 //second arg is the container for the second argument, if any
 function _openTypeFromTarg(targ,o) {
+  var lit = undefined;
+  var mm = undefined;
   if (targ.t==='u' || targ.t==='i') {
     var tl=[];
     for (var i=0; i < targ.l.length; i++) {
@@ -13,11 +15,11 @@ function _openTypeFromTarg(targ,o) {
     }
     return (targ.t==='u'?FreeUnion$jsint:FreeIntersection$jsint)(tl.rt$({t:OpenType$meta$declaration}));
   } else if (targ.t==='T') {
-    var mm=getrtmm$$(Tuple);
-    var lit = typeLiteral$meta({Type$typeLiteral:targ});
+    mm=getrtmm$$(Tuple);
+    lit = typeLiteral$meta({Type$typeLiteral:targ});
   } else {
-    var mm=getrtmm$$(targ.t);
-    var lit = typeLiteral$meta({Type$typeLiteral:targ.t});
+    mm=getrtmm$$(targ.t);
+    lit = typeLiteral$meta({Type$typeLiteral:targ.t});
   }
   if (targ.a && lit)lit._targs=targ.a;
   var mdl = get_model(mm);

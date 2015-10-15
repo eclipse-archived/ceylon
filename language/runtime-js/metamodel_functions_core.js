@@ -210,11 +210,15 @@ function getValuePropertyName$(propertyName){
 // Find a method by name from the prototype
 function findMethodByNameFromPrototype$(proto, name){
     var escapedName = escapePropertyName$(name);
+    // make sure it's not a property
+    var propname = getValuePropertyName$(name);
+    if(proto[propname] !== undefined)
+      return undefined;
     var decl = proto[escapedName];
     if (decl===undefined) {
       //Let's just look for this thing everywhere
       for (var key in proto) {
-        var propname=getValuePropertyName$(key);
+        propname=getValuePropertyName$(key);
         if (!key.startsWith("$prop$get") && proto[propname]===undefined && typeof(proto[key])==='function') {
           var mm = getrtmm$$(proto[key]);
           var mod = mm && get_model(mm);
