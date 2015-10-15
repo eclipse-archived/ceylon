@@ -33,3 +33,22 @@ class Outer() {
         shared new bar {}
     }
 }
+object javaIoSerializableQuoting {
+    shared void readResolve() {
+        
+    }
+}
+class JavaIoSerializableQuoting {
+    shared new val {}
+    shared void writeReplace() {
+        
+    }
+}
+class JavaIoSerializableNoQuoting() {
+    shared void readResolve() {
+        javaIoSerializableQuoting.readResolve();
+    }
+    shared void writeReplace() {
+        JavaIoSerializableQuoting.val.writeReplace();
+    }
+}
