@@ -347,10 +347,7 @@ public abstract class DeclarationVisitor extends Visitor {
         // Deal with implementations from the ModelLoader
         ArrayList<FunctionOrValue> loadedFunctionsOrValues = null;
         ArrayList<Class> loadedClasses = null;
-        for (Backend backendToSearch: Backend.values()) {
-            if (backendToSearch.equals(Backend.None)) {
-                continue;
-            }
+        for (Backend backendToSearch: Backend.getRegisteredBackends()) {
             Declaration overloadFromModelLoader = 
                     model.getContainer()
                         .getDirectMemberForBackend(name, 
