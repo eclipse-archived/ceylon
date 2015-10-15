@@ -199,6 +199,17 @@ public class Naming extends NamingBase implements LocalId {
         } else {
             name = decl.getName();
         }
+        if (decl.isClassMember()
+                && "readResolve".equals(name)
+                && Strategy.addReadResolve((Class)decl.getContainer())) {
+            return quote(name);
+        }
+        if (decl.isClassMember()
+                && "writeReplace".equals(name)
+                && Strategy.useSerializationProxy((Class)decl.getContainer())) {
+            return quote(name);
+        }
+        
         // ERASURE
         if (QUOTABLE_METHOD_NAMES.contains(name)) {
             return quote(name);
