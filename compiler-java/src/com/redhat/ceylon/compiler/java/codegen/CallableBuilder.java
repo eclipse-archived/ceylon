@@ -187,43 +187,47 @@ public class CallableBuilder {
         boolean instanceFieldIsBoxed = false;
         if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression
                 && !ExpressionTransformer.isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression) forwardCallTo).getPrimary())
-                && !ExpressionTransformer.isPackageQualified((Tree.QualifiedMemberOrTypeExpression)forwardCallTo)
-                && !(((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SpreadOp)) {
-            Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression)forwardCallTo;
-            boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
-            try {
-                instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
-                int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
-                Type primaryType;
-                if (Decl.isValueTypeDecl(qmte.getPrimary().getTypeModel())) {
-                    primaryType = qmte.getPrimary().getTypeModel();
-                } else {
-                    primaryType = qmte.getTarget().getQualifyingType();
+                && !ExpressionTransformer.isPackageQualified((Tree.QualifiedMemberOrTypeExpression)forwardCallTo)) {
+            if ((((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SpreadOp)) {
+                instanceFieldIsBoxed = true;
+                instanceFieldName = null;
+            } else {
+                Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression)forwardCallTo;
+                boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
+                try {
+                    instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
+                    int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
+                    Type primaryType;
+                    if (Decl.isValueTypeDecl(qmte.getPrimary().getTypeModel())) {
+                        primaryType = qmte.getPrimary().getTypeModel();
+                    } else {
+                        primaryType = qmte.getTarget().getQualifyingType();
+                    }
+                    if (((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SafeMemberOp) {
+                        primaryType = gen.typeFact().getOptionalType(primaryType);
+                    }
+                    JCExpression primaryExpr = gen.expressionGen().transformQualifiedMemberPrimary(qmte);
+                    if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
+                        primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
+                    }
+                    Type varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
+                    
+                    if (qmte.getPrimary().getUnboxed() == false) {
+                        varTypeFlags |= JT_NO_PRIMITIVES;
+                        instanceFieldIsBoxed = true;
+                    }
+                    letStmts.add(gen.makeVar(Flags.FINAL, 
+                            instanceFieldName, 
+                            gen.makeJavaType(varType, varTypeFlags), 
+                            primaryExpr));
+                    
+                    if (qmte.getPrimary() instanceof Tree.MemberOrTypeExpression
+                            && ((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration() instanceof TypedDeclaration) {
+                        cb.instanceSubstitution = gen.naming.addVariableSubst((TypedDeclaration)((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration(), instanceFieldName.getName());
+                    }
+                } finally {
+                    gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
                 }
-                if (((Tree.QualifiedMemberOrTypeExpression)forwardCallTo).getMemberOperator() instanceof Tree.SafeMemberOp) {
-                    primaryType = gen.typeFact().getOptionalType(primaryType);
-                }
-                JCExpression primaryExpr = gen.expressionGen().transformQualifiedMemberPrimary(qmte);
-                if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
-                    primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
-                }
-                Type varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
-                
-                if (qmte.getPrimary().getUnboxed() == false) {
-                    varTypeFlags |= JT_NO_PRIMITIVES;
-                    instanceFieldIsBoxed = true;
-                }
-                letStmts.add(gen.makeVar(Flags.FINAL, 
-                        instanceFieldName, 
-                        gen.makeJavaType(varType, varTypeFlags), 
-                        primaryExpr));
-                
-                if (qmte.getPrimary() instanceof Tree.MemberOrTypeExpression
-                        && ((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration() instanceof TypedDeclaration) {
-                    cb.instanceSubstitution = gen.naming.addVariableSubst((TypedDeclaration)((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration(), instanceFieldName.getName());
-                }
-            } finally {
-                gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
             }
         } else {
             instanceFieldName = null;
