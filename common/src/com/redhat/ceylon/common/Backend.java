@@ -13,21 +13,23 @@ public class Backend {
     
     static {
         backends = new HashSet<Backend>();
-        None = registerBackend("");
-        Java = registerBackend("jvm");
-        JavaScript = registerBackend("js");
+        None = registerBackend("None", "");
+        Java = registerBackend("Java", "jvm");
+        JavaScript = registerBackend("JavaScript", "js");
     }
     
+    public final String name;
     public final String nativeAnnotation;
     
-    private Backend(String nativeAnnotation) {
+    private Backend(String name, String nativeAnnotation) {
+        this.name = name;
         this.nativeAnnotation = nativeAnnotation;
     }
     
-    public static Backend registerBackend(String backend) {
+    public static Backend registerBackend(String name, String backend) {
         Backend b = fromAnnotation(backend);
         if (b == null) {
-            b = new Backend(backend);
+            b = new Backend(name, backend);
             backends.add(b);
         }
         return b;
