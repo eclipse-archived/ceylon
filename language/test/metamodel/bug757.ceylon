@@ -8,20 +8,21 @@ class Bug757 {
 
 @test
 shared void bug757() {
-    variable value ctors = `class Bug757`.annotatedMemberDeclarations<ConstructorDeclaration, SharedAnnotation>();
+    value bc = `class Bug757`;
+    variable value ctors = bc.annotatedMemberDeclarations<ConstructorDeclaration, SharedAnnotation>();
     assert(`new Bug757.x` in ctors);
     assert(`new Bug757.y` in ctors);
     assert(`new Bug757.z` in ctors);
     assert(ctors.size == 3);
-    ctors = `class Bug757`.annotatedMemberDeclarations<CallableConstructorDeclaration, SharedAnnotation>();
+    ctors = bc.annotatedMemberDeclarations<CallableConstructorDeclaration, SharedAnnotation>();
     assert(`new Bug757.y` in ctors);
     assert(`new Bug757.z` in ctors);
     assert(ctors.size == 2);
-    ctors = `class Bug757`.annotatedMemberDeclarations<ValueConstructorDeclaration, SharedAnnotation>();
+    ctors = bc.annotatedMemberDeclarations<ValueConstructorDeclaration, SharedAnnotation>();
     assert(`new Bug757.x` in ctors);
     assert(ctors.size == 1);
     
-    value fns = `class Bug757`.annotatedDeclaredMemberDeclarations<FunctionDeclaration, SharedAnnotation>();
+    value fns = bc.annotatedDeclaredMemberDeclarations<FunctionDeclaration, SharedAnnotation>();
     assert(fns.empty);
     
 }
