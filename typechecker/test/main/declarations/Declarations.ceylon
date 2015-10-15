@@ -38,7 +38,7 @@ interface Declarations {
     @error Foo getFoo() {}
     @error Foo foo {}*/
     
-    @error void duplicate() {}
+    void duplicate() {}
     @error void duplicate(Y y) {}
     
     class Dupe() {}
