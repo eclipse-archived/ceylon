@@ -23,4 +23,5 @@ void bug2348() {
     print("42"*.compare('c'));
     print("ABC"*.lowercased);
     print("42"*.neighbour(1));
+    print(let(f = "42"*.compare) f('3'));
 }
