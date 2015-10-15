@@ -491,29 +491,10 @@ class Strategy {
     
     /** Should the given class have a readResolve() method added ?
      * @param ser */
-    public static boolean addReadResolve(Class cls, Interface ser) {
+    public static boolean addReadResolve(Class cls) {
         if (cls.isAnonymous()
                 && cls.isToplevel()) {
-            // It explicitly inherits Serializable 
-            if (cls.inherits(ser)) {
-                return true;
-            }
-            // It has had Serializable introduced implicitly:
-            // Since Serializable hidden from the Ceylon model
-            // we have to iterate up the tree to figure it out...
-            TypeDeclaration c = cls;
-            while(c != null) {
-                if (c instanceof Class
-                        && Strategy.introduceJavaIoSerializable((Class)c, ser)) {
-                    return true;
-                }
-                if (c.getExtendedType() != null) {
-                    c = c.getExtendedType().getDeclaration();
-                } else {
-                    break;
-                }
-                
-            }
+            return true;
         }
         return false;
     }
