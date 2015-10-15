@@ -7,7 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 
-class Reflection {
+public class Reflection {
 
     private Reflection() {} 
     
@@ -45,7 +45,7 @@ class Reflection {
      * <p>Unlike {@link Class#getDeclaredMethod(String, Class...)} 
      * this method will find non-{@code public} methods.</p> 
      */
-    static Method getDeclaredSetter(Class<?> cls, String setterName) {
+    public static Method getDeclaredSetter(Class<?> cls, String setterName) {
         for (java.lang.reflect.Method method : cls.getDeclaredMethods()) {
             if (method.getName().equals(setterName)
                     && !method.isSynthetic()
@@ -69,7 +69,7 @@ class Reflection {
      * <p>Unlike {@link Class#getDeclaredMethod(String, Class...)} 
      * this method will find non-{@code public} methods.</p> 
      */
-    static Method getDeclaredGetter(Class<?> cls, String getterName) {
+    public static Method getDeclaredGetter(Class<?> cls, String getterName) {
         for (java.lang.reflect.Method method : cls.getDeclaredMethods()) {
             if (method.getName().equals(getterName)
                     && !method.isSynthetic()
@@ -83,7 +83,7 @@ class Reflection {
         return null;
     }
 
-    static java.lang.reflect.Method findClassAliasInstantiator(Class<?> javaClass, ClassAlias container) {
+    public static java.lang.reflect.Method findClassAliasInstantiator(Class<?> javaClass, ClassAlias container) {
         Class<?> searchClass;
         if (javaClass.getEnclosingClass() != null) {
             searchClass = javaClass.getEnclosingClass();
@@ -99,7 +99,7 @@ class Reflection {
         return null;
     }
     
-    static java.lang.reflect.Constructor<?> findConstructor(Class<?> javaClass) {
+    public static java.lang.reflect.Constructor<?> findConstructor(Class<?> javaClass) {
         // How to find the right Method, just go for the one with the longest parameter list?
         // OR go via the Method in AppliedFunction?
         java.lang.reflect.Constructor<?> best = null;

@@ -13,6 +13,8 @@ import ceylon.language.meta.model.nothingType_;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.EnumeratedTypeError;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.IntersectionTypeImpl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.UnionTypeImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -20,14 +22,14 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 /**
  * Factory methods for constructing predicates on things. 
  */
-class Predicates {
+public class Predicates {
     
     private Predicates() {}
 
     /**
      * A predicate
      */
-    static interface Predicate<T> {
+    public static interface Predicate<T> {
         /** Returns true if the predicate matches/accepts the given thing */
         boolean accept(T candidate);
     }
@@ -49,7 +51,7 @@ class Predicates {
     };
     
     @SuppressWarnings("unchecked")
-    static <T> Predicate<T> false_() {
+    public static <T> Predicate<T> false_() {
         return (Predicate<T>)FALSE;
     }
     
@@ -57,7 +59,7 @@ class Predicates {
      * A predicate that {@linkplain Predicate#accept(Object) accepts} 
      * everything, always returning {@code true}.
      */
-    static final Predicate<?> TRUE = new Predicate<Object>() {
+    public static final Predicate<?> TRUE = new Predicate<Object>() {
         /** Returns {@code true}, always. */
         @Override
         public boolean accept(Object candidate) {
@@ -95,7 +97,7 @@ class Predicates {
     /**
      * Returns a new name predicate
      */
-    static NamePredicate isDeclarationNamed(String name){
+    public static NamePredicate isDeclarationNamed(String name){
         return new NamePredicate(name);
     }
     
@@ -132,7 +134,7 @@ class Predicates {
      * other predicates.
      */
     @SafeVarargs
-    static <T> Predicate<T> and(Predicate<T>... others) {
+    public static <T> Predicate<T> and(Predicate<T>... others) {
         if (others.length == 1) {
             return others[0];
         }
@@ -357,7 +359,7 @@ class Predicates {
      * (Class, Interface, Function, Value etc)
      * @param kind A TypeDescriptor for the sought declaration kind.   
      */
-    static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
+    public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
             Class<?> declarationClass = (Class<?>)((TypeDescriptor.Class) kind).getKlass();
             if (declarationClass == ceylon.language.meta.declaration.ReferenceDeclaration.class) {
@@ -445,24 +447,24 @@ class Predicates {
     /**
      * Returns a predicate for Declarations having the given annotation 
      */
-    static <Kind extends ceylon.language.meta.declaration.Declaration, A extends java.lang.annotation.Annotation>  
+    public static <Kind extends ceylon.language.meta.declaration.Declaration, A extends java.lang.annotation.Annotation>  
             Predicate<Declaration> isDeclarationAnnotatedWith(TypeDescriptor annotation) {
         Type<?> at = Metamodel.getAppliedMetamodel(annotation);
         return Predicates.<A>isDeclarationAnnotatedWith(annotation, at);
     }
     
     @SuppressWarnings("unchecked")
-    static <A extends java.lang.annotation.Annotation> Predicate<Declaration> 
+    public static <A extends java.lang.annotation.Annotation> Predicate<Declaration> 
     isDeclarationAnnotatedWith(TypeDescriptor annotation, Type<?> at) {
         if (at instanceof nothingType_) {
             return false_();
         } else if (at instanceof ClassOrInterface) {
             return new AnnotatedWith<A>(annotation, (ClassOrInterface<A>)at);
-        } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType<?>)at).getCaseTypes();
+        } else if (at instanceof UnionTypeImpl) {
+            Sequential<? extends Type<?>> caseTypes = ((UnionTypeImpl<?>)at).getCaseTypes();
             return or(mapTypesToDeclarationAnnotatedWith(annotation, caseTypes));
-        } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType<?>)at).getSatisfiedTypes();
+        } else if (at instanceof IntersectionTypeImpl) {
+            Sequential<? extends Type<?>> satisfiedTypes = ((IntersectionTypeImpl<?>)at).getSatisfiedTypes();
             return and(mapTypesToDeclarationAnnotatedWith(annotation, satisfiedTypes));
         } else {
             throw new EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive: "+at);
@@ -498,11 +500,11 @@ class Predicates {
             throws EnumeratedTypeError {
         if (at instanceof nothingType_) {
             return false_();
-        } else if (at instanceof AppliedUnionType) {
-            Sequential<? extends Type<?>> caseTypes = ((AppliedUnionType<?>)at).getCaseTypes();
+        } else if (at instanceof UnionTypeImpl) {
+            Sequential<? extends Type<?>> caseTypes = ((UnionTypeImpl<?>)at).getCaseTypes();
             return or(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, caseTypes));
-        } else if (at instanceof AppliedIntersectionType) {
-            Sequential<? extends Type<?>> satisfiedTypes = ((AppliedIntersectionType<?>)at).getSatisfiedTypes();
+        } else if (at instanceof IntersectionTypeImpl) {
+            Sequential<? extends Type<?>> satisfiedTypes = ((IntersectionTypeImpl<?>)at).getSatisfiedTypes();
             return and(Predicates.<A>mapTypesToIsAnnotationOfType($reifiedAnnotation, satisfiedTypes));
         } else if (at instanceof ClassOrInterface) {
             // TODO What if reified is Annotation, or ContrainedAnnotation, or OptionalAnnotation, or SequencedAnnotation?

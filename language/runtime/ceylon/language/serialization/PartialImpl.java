@@ -8,9 +8,9 @@ import java.util.Iterator;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedClass;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.AppliedMemberClass;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
@@ -45,9 +45,9 @@ class PartialImpl extends Partial {
             throw new DeserializationException("no class specified for instance with id " + getId());
         } 
         
-        if (classModel instanceof AppliedClass) {
+        if (classModel instanceof ClassImpl) {
             return ((TypeDescriptor.Class)((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArgument(0));
-        } else if (classModel instanceof AppliedMemberClass) {
+        } else if (classModel instanceof MemberClassImpl) {
             return ((TypeDescriptor.Class)((TypeDescriptor.Member)((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArgument(1)).getMember());
         } else {
             throw new AssertionError("unexpected class model for instance with id " + getId() + ": " 
@@ -57,7 +57,7 @@ class PartialImpl extends Partial {
     
     private TypeDescriptor.Class getOuterClassTypeDescriptor() {
         ClassModel<?, ?> classModel = getClazz();
-        if (classModel instanceof AppliedMemberClass) {
+        if (classModel instanceof MemberClassImpl) {
             // MemberClass<Container, Type, Arguments>
             return (TypeDescriptor.Class)((TypeDescriptor.Class)((ReifiedType)classModel).$getType$()).getTypeArgument(0);
         } else {
@@ -74,11 +74,11 @@ class PartialImpl extends Partial {
         final java.lang.Class<?> clazz = getClassTypeDescriptor().getKlass();
         final Class<?> outerClass;
         Object outer;
-        if (classModel instanceof AppliedClass) {
+        if (classModel instanceof ClassImpl) {
             // Class<Type, Arguments>
             outerClass = null;
             outer = null;
-        } else if (classModel instanceof AppliedMemberClass) {
+        } else if (classModel instanceof MemberClassImpl) {
             // MemberClass<Container, Type, Arguments>
             // the algorithm in DeserializationContext
             // should ensure the container exists by the point we're called.

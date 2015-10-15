@@ -14,6 +14,10 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
 import com.redhat.ceylon.compiler.java.metadata.Jpa;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
@@ -37,29 +41,29 @@ import ceylon.language.meta.model.InvocationException;
  * @param <Type>
  * @param <Arguments>
  */
-class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>> 
+public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>> 
     implements Callable<Type>, DefaultValueProvider, Applicable<Type, Arguments>  {
 
-    private final FreeClass freeClass;
-    private final FreeCallableConstructor freeConstructor;
+    private final ClassDeclarationImpl freeClass;
+    private final CallableConstructorDeclarationImpl freeConstructor;
     private MethodHandle constructor;
-    final int firstDefaulted;
-    final int variadicIndex;
+    public final int firstDefaulted;
+    public final int variadicIndex;
     private MethodHandle[] dispatch;
-    final List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
+    public final List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes;
     final Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
     final Object instance;
     private Reference constructorReference;// TODO get rid of this
     
-    ConstructorDispatch(
+    public ConstructorDispatch(
             Reference constructorReference,
             ClassModel<Type, ?> appliedClass,
-            FreeCallableConstructor freeConstructor,
+            CallableConstructorDeclarationImpl freeConstructor,
             List<Parameter> parameters, Object instance) {
         this.constructorReference = constructorReference;
-        freeClass = (FreeClass)
-                (appliedClass instanceof AppliedClass ?
-                ((AppliedClass)appliedClass).declaration : ((AppliedMemberClass)appliedClass).declaration);
+        freeClass = (ClassDeclarationImpl)
+                (appliedClass instanceof ClassImpl ?
+                ((ClassImpl)appliedClass).declaration : ((MemberClassImpl)appliedClass).declaration);
         this.freeConstructor = freeConstructor;
         com.redhat.ceylon.model.typechecker.model.Class classDecl = (com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration;
         //com.redhat.ceylon.model.typechecker.model.Constructor decl = freeConstructor.constructor;
@@ -316,7 +320,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
     }*/
 
     protected void namedConstructorDispatch(Reference constructorReference,
-            FreeCallableConstructor freeConstructor,
+            CallableConstructorDeclarationImpl freeConstructor,
             java.lang.Class<?> javaClass) {
         // find the MH for the primary constructor for a Ceylon constructor
         if (firstDefaulted != -1) {
@@ -358,7 +362,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
     }
 
     protected Constructor<?>[] findConstructors(
-            FreeCallableConstructor freeConstructor,
+            CallableConstructorDeclarationImpl freeConstructor,
             java.lang.Class<?> javaClass) {
         final Constructor<?>[] defaultedMethods = new Constructor[dispatch.length];
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
@@ -424,7 +428,7 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
     }
     
     protected Method[] findInstantiators(
-            FreeCallableConstructor freeConstructor,
+            CallableConstructorDeclarationImpl freeConstructor,
             java.lang.Class<?> javaClass) {
         String builderName = freeClass.getName() + "$new$";
         final Method[] defaultedMethods = new Method[dispatch.length];
@@ -595,10 +599,10 @@ class ConstructorDispatch<Type, Arguments extends Sequential<? extends Object>>
         return method;
     }
     
-    void checkConstructor() {
-        if(((FreeClass)freeClass).getAbstract())
+    public void checkConstructor() {
+        if(((ClassDeclarationImpl)freeClass).getAbstract())
             throw new InvocationException("Abstract class cannot be instantiated");
-        if(((FreeClass)freeClass).getAnonymous())
+        if(((ClassDeclarationImpl)freeClass).getAnonymous())
             throw new InvocationException("Object class cannot be instantiated");
         if(constructor == null)
             throw Metamodel.newModelError("No constructor found for: "+freeClass.getName());
