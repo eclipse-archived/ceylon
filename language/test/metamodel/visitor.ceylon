@@ -143,7 +143,7 @@ void visitClass(ClassDeclaration klass){
 }
 
 void visitMembers(ClassOrInterfaceDeclaration decl){
-    for(m in decl.memberDeclarations<NestableDeclaration>()){
+    for(m in decl.declaredMemberDeclarations<NestableDeclaration>()){
         switch(m)
         case(is FunctionDeclaration){
             visitFunction(m);
@@ -176,7 +176,6 @@ void visitFunction(FunctionDeclaration func) {
     visitOpenType(func.openType);
     output(" ``func.name``(");
     variable Boolean onceParameter = true;
-    output("(");
     for(param in func.parameterDeclarations){
         if(onceParameter){
             onceParameter = false;
