@@ -24,12 +24,12 @@ native shared class NativeScopesWrong() {
 native("jvm") shared class NativeScopesWrong() {
     native("jvm") shared void test() {
         void test2() {
-            native("js") void test3() {
+            /*@error*/ native("js") void test3() {
             }
         }
         class Bar() {
             class Bar2() {
-                native("js") void test() {
+                /*@error*/ native("js") void test() {
                 }
             }
         }
@@ -39,12 +39,12 @@ native("jvm") shared class NativeScopesWrong() {
 native("js") shared class NativeScopesWrong() {
     native("js") shared void test() {
         void test2() {
-            native("jvm") void test3() {
+            /*@error*/ native("jvm") void test3() {
             }
         }
         class Bar() {
             class Bar2() {
-                native("jvm") void test() {
+                /*@error*/ native("jvm") void test() {
                 }
             }
         }

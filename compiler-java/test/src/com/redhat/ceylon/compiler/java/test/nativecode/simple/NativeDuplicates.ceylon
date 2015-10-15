@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-/*@error*/ native shared Integer nativeDuplicates1();
+native shared Integer nativeDuplicates1();
 
 /*@error*/ native shared Integer nativeDuplicates1();
 
