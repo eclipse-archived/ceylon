@@ -215,13 +215,15 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
     return defs.length?ArraySequence(defs,{Element$ArraySequence:kind}):empty();
   }
   //Fallback to the model declarations
-  if (extendsType({t:FunctionDeclaration$meta$declaration},kind)) {
+  var funorvals=extendsType({t:FunctionOrValueDeclaration$meta$declaration},kind);
+  var funs=funorvals||extendsType({t:FunctionDeclaration$meta$declaration},kind);
+  var vals=funorvals||extendsType({t:ReferenceDeclaration$meta$declaration},kind);
+  if (funs) {
     for (var df in this.meta['$m']) {
       defs.push(this.meta['$m'][df]);
     }
   }
-  if (extendsType({t:ReferenceDeclaration$meta$declaration},kind)) {
-  // FIXME: reference/attr
+  if (vals) {
     for (var df in this.meta['$at']) {
       defs.push(this.meta['$at'][df]);
     }

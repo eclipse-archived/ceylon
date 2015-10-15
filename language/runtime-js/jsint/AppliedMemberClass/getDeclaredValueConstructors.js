@@ -10,7 +10,7 @@ function(anntypes){
     startingType=startingType.container;
   }
   var pref=mtn+"_";
-  var cs=coiclsannconstrs$(this,anntypes,pref,'$o',{t:Nothing},this.$$targs$$.Type$AppliedMemberClass);
+  var cs=coiclsannconstrs$(this,anntypes,pref,this.$$targs$$.Type$AppliedMemberClass);
   for (var i=0;i<cs.length;i++) {
     var r=AppliedMemberClassValueConstructor$jsint(cs[i].tipo,
                {Type$AppliedMemberClassValueConstructor:this.$$targs$$.Type$AppliedMemberClass,

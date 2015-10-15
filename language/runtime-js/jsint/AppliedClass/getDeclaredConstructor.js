@@ -4,7 +4,7 @@ function(nm,$mpt){
   var cn=this.tipo[fn];
   if (cn) {
     mm=getrtmm$$(cn);
-    if (mm.d[mm.d.length-2]==='$cn') {
+    if (mm.d[mm.d.length-2]==='$cn' && mm.ps!==undefined) {
       validate$params(mm.ps,$mpt.Arguments$getDeclaredConstructor,"Wrong number of Arguments for getConstructor");
       var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
       var r=AppliedCallableConstructor$jsint(cn,{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,

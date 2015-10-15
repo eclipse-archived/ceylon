@@ -685,20 +685,25 @@ function cmp$targ$uv$(a,ta) {
 //Return a list of the constructors with the specified
 //annotations and the specified prefix in its name
 //and the specified metatype
-function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
+//coi: the ClassOrInterface
+//anntypes: the annotation types
+//prefix: The name we're looking for
+//tipo:The type of the constructor (used for type argument lookup)
+//arg$: the argument types for callable constructors (pass undefined for value constructors)
+function coiclsannconstrs$(coi,anntypes,prefix,tipo,arg$) {
   var ats=coi$get$anns(anntypes);
   var cs=[];
   for (var cn in coi.tipo) {
     if (cn.startsWith(prefix)) {
       var mm=getrtmm$$(coi.tipo[cn]);
-      if (mm.d[mm.d.length-2]===mt && coi$is$anns(allann$(mm),ats)) {
+      if (mm.d[mm.d.length-2]==='$cn' && coi$is$anns(allann$(mm),ats)) {
         var parms=mm.ps && mm.ps.slice(0);
-        if (parms && arg$.t!==Nothing && tipo.a) {
+        if (parms && arg$ && arg$.t!==Nothing && tipo.a) {
           for (var i=0;i<parms.length;i++) {
             parms[i] = {$t:restype$(tipo,parms[i].$t)};
           }
         }
-        if (validate$params(parms,arg$,"",1)) {
+        if ((arg$===undefined&&mm.ps===undefined) || (arg$!==undefined&&mm.ps!==undefined && validate$params(parms,arg$,"",1))) {
           var args=parms?tupleize$params(parms,coi.$targs):empty();
           cs.push({tipo:coi.tipo[cn],args:args});
         }
@@ -714,12 +719,12 @@ function coiclsannconstrs$(coi,anntypes,prefix,mt,arg$,tipo) {
     }
     if (coi$is$anns(allann$(mm),ats)) {
       var parms=mm.ps && mm.ps.slice(0);
-      if (parms && arg$.t!==Nothing && tipo.a) {
+      if (parms && arg$&&arg$.t!==Nothing && tipo.a) {
         for (var i=0;i<parms.length;i++) {
           parms[i] = {$t:restype$(tipo,parms[i].$t)};
         }
       }
-      if (validate$params(parms,arg$,"",1)) {
+      if ((mm.ps===undefined&&arg$===undefined) || (arg$!==undefined&&mm.ps!==undefined&&validate$params(parms,arg$,"",1))) {
         var args=parms?tupleize$params(parms,coi.$targs):empty();
         cs.push({tipo:coi.tipo,args:args,fakeConstr:true});
       }

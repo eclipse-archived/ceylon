@@ -14,7 +14,7 @@ function(nm,$m){
   var cn=this.tipo[fn];
   if (cn) {
     mm=getrtmm$$(cn);
-    if (mm.d[mm.d.length-2]==='$cn') {
+    if (mm.d[mm.d.length-2]==='$cn' && mm.ps!==undefined) {
       var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
       return AppliedMemberClassCallableConstructor$jsint(cn,
              {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,

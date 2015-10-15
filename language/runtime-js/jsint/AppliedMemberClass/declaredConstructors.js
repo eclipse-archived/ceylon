@@ -13,16 +13,17 @@ if (this.$constrs$===undefined) {
   for (k in this.tipo) {
     if (k.startsWith(prefix)) {
       mm=getrtmm$$(this.tipo[k]);
-      if (mm.d[mm.d.length-2]==='$cn') {
+      if (mm.d[mm.d.length-2]!=='$cn')continue;
+      if (mm.ps===undefined) {
+        var r=AppliedMemberClassValueConstructor$jsint(this.tipo[k],
+              {Container$AppliedMemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass,
+              Type$AppliedMemberClassValueConstructor:this.$$targs$$.Type$AppliedMemberClass});
+      } else {
         var args=mm.ps?tupleize$params(mm.ps,this.$targs):empty();
         var r=AppliedMemberClassCallableConstructor$jsint(this.tipo[k],
               {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,
                Container$AppliedMemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass,
                Arguments$AppliedMemberClassCallableConstructor:args},undefined,this.$targs);
-      } else {
-        var r=AppliedMemberClassValueConstructor$jsint(this.tipo[k],
-              {Container$AppliedMemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass,
-              Type$AppliedMemberClassValueConstructor:this.$$targs$$.Type$AppliedMemberClass});
       }
       ccc.push(r);
     }

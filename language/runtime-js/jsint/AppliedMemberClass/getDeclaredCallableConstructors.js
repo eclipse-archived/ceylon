@@ -10,7 +10,7 @@ function(anntypes,$m) {
     startingType=startingType.container;
   }
   var pref=mtn+"_";
-  var cs=coiclsannconstrs$(this,anntypes,pref,'$cn',$m.Arguments$getDeclaredCallableConstructors,this.$$targs$$.Type$AppliedMemberClass);
+  var cs=coiclsannconstrs$(this,anntypes,pref,this.$$targs$$.Type$AppliedMemberClass,$m.Arguments$getDeclaredCallableConstructors);
   for (var i=0;i<cs.length;i++) {
     var r=AppliedMemberClassCallableConstructor$jsint(cs[i].tipo,
                {Type$AppliedMemberClassCallableConstructor:this.$$targs$$.Type$AppliedMemberClass,

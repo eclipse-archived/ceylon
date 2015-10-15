@@ -9,12 +9,12 @@ function(m,i) {
     for (k in this.tipo) {
       if (k.startsWith(prefix)) {
         mm=getrtmm$$(this.tipo[k]);
-        if (mm.d[mm.d.length-2]==='$cn') {
-          if (!valuesOnly) {
-            ccc.push(OpenCallableConstructor$jsint(this.package,this.tipo[k]));
+        if (mm.ps===undefined) {
+          if (!callablesOnly) {
+            ccc.push(OpenValueConstructor$jsint(this.package, this.tipo[k]));
           }
-        } else if (!callablesOnly) {
-          ccc.push(OpenValueConstructor$jsint(this.package, this.tipo[k]));
+        } else if (!valuesOnly) {
+          ccc.push(OpenCallableConstructor$jsint(this.package,this.tipo[k]));
         }
       }
     }
