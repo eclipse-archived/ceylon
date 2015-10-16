@@ -1384,7 +1384,7 @@ public abstract class AbstractTransformer implements Transformation {
                 || Decl.equal(decl, typeFact.getNullDeclaration())
                 || Decl.equal(decl, typeFact.getNullValueDeclaration().getTypeDeclaration())
                 || Decl.equal(decl, typeFact.getAnythingDeclaration())
-                || type.isExactlyNothing()) {
+                || type.isNothing()) {
             return true;
         }
         return false;

@@ -1773,6 +1773,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             throw new BugException(op, "unreachable");
         } 
         Type expectedType = op.getType().getTypeModel();
+        if (expectedType.isExactlyNothing()) {
+            expectedType = typeFact().getNothingType();
+        }
         return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType, EXPR_DOWN_CAST);
     }
 
