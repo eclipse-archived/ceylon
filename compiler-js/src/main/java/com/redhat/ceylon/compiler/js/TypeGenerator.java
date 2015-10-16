@@ -413,7 +413,7 @@ public class TypeGenerator {
                     final TypeDeclaration _anoncont;
                     if (d.isAnonymous() && ModelUtil.contains(
                             ModelUtil.getContainingClassOrInterface(d.getContainer()), typeDecl)) {
-                        _anoncont = ModelUtil.getContainingClassOrInterface(d.getContainer());
+                        _anoncont = ModelUtil.getContainingClassOrInterface(d);
                     } else {
                         _anoncont = null;
                     }
@@ -423,7 +423,7 @@ public class TypeGenerator {
                     } else {
                         gen.qualify(that, _anoncont);
                         gen.out(gen.getNames().name(typeDecl), ".call(",
-                                gen.getNames().self(_anoncont), ",");
+                                gen.getNames().self(ModelUtil.getContainingClassOrInterface(d.getContainer())), ",");
                     }
                     if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
                         TypeUtils.printTypeArguments(that, st.getTypeArguments(), gen, d.isToplevel(), null);
