@@ -59,7 +59,7 @@ class Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right 
         } else {
             final .java.lang.Object mid$2 = mid$1;
             children = getSides$priv$();
-            children2 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.java.lang.Object).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.nothing_.get_()}, getSides$priv$());
+            children2 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.nothing_.get_()}, getSides$priv$());
         }
     }
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> sides;
