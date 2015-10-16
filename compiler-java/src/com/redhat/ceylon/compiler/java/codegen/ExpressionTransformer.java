@@ -468,7 +468,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         JCExpression targetType = makeJavaType(expectedType, AbstractTransformer.JT_RAW | companionFlags);
                         result = make().TypeCast(targetType, result);
                     }
-                }else if(exprType.isNothing()){
+                }else if(exprType.isExactlyNothing()){
                     // type param erasure
                     JCExpression targetType = makeJavaType(expectedType, 
                             AbstractTransformer.JT_NO_PRIMITIVES | companionFlags);
@@ -556,7 +556,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // very special case for nothing that we need to "unbox" to a primitive type
         if(exprType != null
-                && exprType.isNothing()
+                && exprType.isExactlyNothing()
                 && boxingStrategy == BoxingStrategy.UNBOXED){
             // in this case we have to use the expected type
             ret = unboxType(ret, expectedType);
