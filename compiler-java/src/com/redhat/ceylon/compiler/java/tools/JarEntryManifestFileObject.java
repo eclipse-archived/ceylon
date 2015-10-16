@@ -32,11 +32,9 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
@@ -269,8 +267,6 @@ public class JarEntryManifestFileObject implements JavaFileObject {
 
             applyActivationPolicyNonLazy(main);
 
-            main.put(Bundle_Activator, "com.redhat.ceylon.dist.osgi.Activator");
-            
             // Get all the attributes and entries from original manifest
             appendOriginalManifest(manifest, main);
 
@@ -328,7 +324,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             if (originalManifest != null) {
                 Attributes attributes = originalManifest.getMainAttributes();
                 for (Object key : attributes.keySet()) {
-                    if (!main.containsKey(key) || key.equals(Bundle_Activator)) {
+                    if (!main.containsKey(key)) {
                         main.put(key, attributes.get(key));
                     }
                 }
