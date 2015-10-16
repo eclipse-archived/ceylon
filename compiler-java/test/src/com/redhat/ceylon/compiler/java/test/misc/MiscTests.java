@@ -160,6 +160,8 @@ public class MiscTests extends CompilerTests {
                 "com/redhat/ceylon/compiler/java/runtime/ide",
                 "com/redhat/ceylon/compiler/java/runtime/metamodel",
                 "com/redhat/ceylon/compiler/java/runtime/model",
+                "com/redhat/ceylon/compiler/java/runtime/metamodel/decl",
+                "com/redhat/ceylon/compiler/java/runtime/metamodel/meta",
                 "com/redhat/ceylon/compiler/java/runtime/serialization",
                 };
         for(String pkg : javaPackages){
