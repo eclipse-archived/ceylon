@@ -550,5 +550,7 @@ shared void sequences() {
     check([""].string=="[]", "sequence string");
     check(["", ""].string=="[, ]", "sequence string");
     check(["", "", ""].string=="[, , ]", "sequence string");
-    
+
+    check({1, 2, 3}.string == "{ 1, 2, 3 }", "iter string: ``{1,2,3}``");
+    check([1, 2, 3].string == "[1, 2, 3]", "seq string: ``[1,2,3]``");
 }
