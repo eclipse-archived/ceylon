@@ -11,7 +11,7 @@ class TupleLiteral<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         final .ceylon.language.Empty empty = .ceylon.language.empty_.get_();
         final .ceylon.language.Sequence<? extends .ceylon.language.String> stringSingleton = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> intSingleton = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
-        final .ceylon.language.Sequence<? extends T> tSingleton = (.ceylon.language.Sequence<? extends T>)(.ceylon.language.Sequence)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .java.lang.Object[]{.ceylon.language.nothing_.get_()});
+        final .ceylon.language.Sequence<? extends T> tSingleton = (.ceylon.language.Sequence<? extends T>)(.java.lang.Object).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .java.lang.Object[]{.ceylon.language.nothing_.get_()});
         final .ceylon.language.Sequence<? extends .ceylon.language.String> stringPair = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance(""),
                 .ceylon.language.String.instance("")});
