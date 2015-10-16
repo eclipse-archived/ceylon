@@ -1149,7 +1149,23 @@ public class Unit {
             return false;
         }
     }
-
+    
+    /*public Type getHomogeneousTupleElementType(Type args) {
+        if (args!=null) {
+            Class td = getTupleDeclaration();
+            Type tuple = args.getSupertype(td);
+            if (tuple!=null) {
+                return getSequentialElementType(tuple);
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }*/
+    
     public int getHomogeneousTupleLength(Type args) {
         if (args!=null) {
             Class td = getTupleDeclaration();

@@ -129,8 +129,7 @@ public class TypePrinter {
                     return "[]";
                 }
                 if (abbreviateHomoTuple(pt)) {
-                    Type et = 
-                            u.getSequentialElementType(pt);
+                    Type et = u.getSequentialElementType(pt);
                     String etn = print(et, unit);
                     int len = u.getHomogeneousTupleLength(pt);
                     if (isPrimitiveAbbreviatedType(et)) {
@@ -295,8 +294,7 @@ public class TypePrinter {
 
                 if (printTypeParameterDetail() && 
                         tp.isDefaulted()) {
-                    Type dta = 
-                            tp.getDefaultTypeArgument();
+                    Type dta = tp.getDefaultTypeArgument();
                     if (dta == null) {
                         name.append("=");
                     }
@@ -355,25 +353,23 @@ public class TypePrinter {
     }
 
     private boolean abbreviateHomoTuple(Type pt) {
-        Unit unit = pt.getDeclaration().getUnit();
-        return unit.getHomogeneousTupleLength(pt)>1;
+        if (pt.isTuple()) {
+            Unit unit = pt.getDeclaration().getUnit();
+            return unit.getHomogeneousTupleLength(pt)>1;
+        }
+        else {
+            return false;
+        }
     }
 
     public static boolean abbreviateEntry(Type pt) {
-        Unit unit = pt.getDeclaration().getUnit();
-        Class ed = unit.getEntryDeclaration();
-        if (pt.isClass() &&
-                pt.getDeclaration().equals(ed) &&
+        if (pt.isEntry() &&
                 pt.getTypeArgumentList().size()==2) {
+            Unit unit = pt.getDeclaration().getUnit();
             Type kt = unit.getKeyType(pt);
             Type vt = unit.getValueType(pt);
             return kt!=null && vt!=null && 
-                    (!kt.isClass() ||
-                            !kt.getDeclaration()
-                                .equals(ed)) &&
-                    (!vt.isClass() ||
-                            !vt.getDeclaration()
-                                .equals(ed)); /*&&
+                    !kt.isEntry() && !vt.isEntry(); /*&&
                     kt.isPrimitiveAbbreviatedType() && 
                     vt.isPrimitiveAbbreviatedType();*/
         }
@@ -390,9 +386,9 @@ public class TypePrinter {
         if (pt.isUnion()) {
             TypeDeclaration dec = pt.getDeclaration();
             Unit unit = dec.getUnit();
+            Class nd = unit.getNullDeclaration();
             return pt.getCaseTypes().size()==2 &&
-                    isElementOfUnion(pt, 
-                            unit.getNullDeclaration()); /*&&
+                    isElementOfUnion(pt, nd); /*&&
                     minus(unit.getNullDeclaration()).isPrimitiveAbbreviatedType();*/
         }
         else {
@@ -407,10 +403,10 @@ public class TypePrinter {
     public static boolean abbreviateCallable(Type pt) {
         if (pt.isInterface()) {
             TypeDeclaration dec = pt.getDeclaration();
+            Unit unit = dec.getUnit();
             Interface callableDeclaration = 
-                    dec.getUnit()
-                        .getCallableDeclaration();
-            return  dec.equals(callableDeclaration) &&
+                    unit.getCallableDeclaration();
+            return dec.equals(callableDeclaration) &&
                     pt.getTypeArgumentList().size()==2 && 
                     pt.getTypeArgumentList().get(0)!=null /*&& 
                     abbreviateCallableArg(pt.getTypeArgumentList().get(1))*/;
@@ -436,42 +432,34 @@ public class TypePrinter {
     }
 
     public static boolean abbreviateSequence(Type pt) {
-        if (pt.isInterface()) {
-            TypeDeclaration dec = pt.getDeclaration();
-            if (dec.isSequence()) {
-                Type et = 
-                        dec.getUnit().getIteratedType(pt);
-                return et!=null;// && et.isPrimitiveAbbreviatedType();
-            }
+        if (pt.isSequence()) {
+            Unit unit = pt.getDeclaration().getUnit();
+            Type et = unit.getIteratedType(pt);
+            return et!=null;// && et.isPrimitiveAbbreviatedType();
         }
         return false;
     }
 
     public static boolean abbreviateSequential(Type pt) {
-        if (pt.isInterface()) {
-            TypeDeclaration ptd = pt.getDeclaration();
-            if (ptd.isSequential()) {
-                Type et = ptd.getUnit().getIteratedType(pt);
-                return et!=null;// && et.isPrimitiveAbbreviatedType();
-            }
+        if (pt.isSequential()) {
+            Unit unit = pt.getDeclaration().getUnit();
+            Type et = unit.getIteratedType(pt);
+            return et!=null;// && et.isPrimitiveAbbreviatedType();
         }
         return false;
     }
 
     public static boolean abbreviateIterable(Type pt) {
-        if (pt.isInterface()) {
-            TypeDeclaration ptd = pt.getDeclaration();
-            if (ptd.isIterable()) {
-                Type et = ptd.getUnit().getIteratedType(pt);
-                List<Type> typeArgs = 
-                        pt.getTypeArgumentList();
-                if (et!=null && typeArgs.size()==2) {
-                    Type at = typeArgs.get(1);
-                    if (at!=null) {
-                        return at.isNothing() || at.isNull();
-                    }
-                }// && et.isPrimitiveAbbreviatedType();
-            }
+        if (pt.isIterable()) {
+            Unit unit = pt.getDeclaration().getUnit();
+            Type et = unit.getIteratedType(pt);
+            List<Type> typeArgs = pt.getTypeArgumentList();
+            if (et!=null && typeArgs.size()==2) {
+                Type at = typeArgs.get(1);
+                if (at!=null) {
+                    return at.isNothing() || at.isNull();
+                }
+            }// && et.isPrimitiveAbbreviatedType();
         }
         return false;
     }
@@ -509,8 +497,7 @@ public class TypePrinter {
             Unit u = args.getDeclaration().getUnit();
             boolean defaulted=false;
             if (args.isUnion()) {
-                List<Type> cts = 
-                        args.getCaseTypes();
+                List<Type> cts = args.getCaseTypes();
                 if (cts.size()==2) {
                     Type lc = cts.get(0);
                     if (lc.isEmpty()) {
@@ -553,8 +540,7 @@ public class TypePrinter {
                     return defaulted ? "=" : "";
                 }
                 else if (!defaulted && args.isSequential()) {
-                    Type elementType = 
-                            u.getIteratedType(args);
+                    Type elementType = u.getIteratedType(args);
                     if (elementType!=null) {
                         String elemtype = print(elementType, unit);
                         if (isPrimitiveAbbreviatedType(elementType)) {
@@ -566,8 +552,7 @@ public class TypePrinter {
                     }
                 }
                 else if (!defaulted && args.isSequence()) {
-                    Type elementType = 
-                            u.getIteratedType(args);
+                    Type elementType = u.getIteratedType(args);
                     if (elementType!=null) {
                         String elemtype = print(elementType, unit);
                         if (isPrimitiveAbbreviatedType(elementType)) {
