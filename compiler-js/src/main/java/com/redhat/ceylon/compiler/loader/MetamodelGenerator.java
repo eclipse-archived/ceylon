@@ -47,6 +47,7 @@ public class MetamodelGenerator {
     public static final String KEY_ANNOTATIONS  = "an";
     public static final String KEY_PACKED_ANNS  = "pa";
     public static final String KEY_TYPE         = "$t";
+    public static final String KEY_RETURN_TYPE  = "$rt";
     public static final String KEY_TYPES        = "l";
     public static final String KEY_TYPE_PARAMS  = "tp";
     public static final String KEY_METATYPE     = "mt";

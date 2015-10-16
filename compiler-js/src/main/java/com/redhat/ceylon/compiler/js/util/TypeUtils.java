@@ -522,6 +522,12 @@ public class TypeUtils {
             }
             gen.out(MetamodelGenerator.KEY_TYPE, ":");
             metamodelTypeNameOrList(resolveTargs, n, gen.getCurrentPackage(), ptype, null, gen);
+            if(p.getModel() instanceof Function){
+                gen.out(",", MetamodelGenerator.KEY_RETURN_TYPE, ":");
+                metamodelTypeNameOrList(resolveTargs, n, gen.getCurrentPackage(), p.getType(), null, gen);
+                gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
+                encodeParameterListForRuntime(resolveTargs, n, ((Function)p.getModel()).getFirstParameterList(), gen);
+            }
             if (p.getModel().getAnnotations() != null && !p.getModel().getAnnotations().isEmpty()) {
                 new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
             }
