@@ -429,7 +429,7 @@ public class InvocationGenerator {
                 boolean chained=false;
                 if (opened) {
                     SequenceGenerator.closeSequenceWithReifiedType(that,
-                            TypeUtils.wrapAsIterableArguments(sequencedType), gen);
+                            TypeUtils.wrapAsIterableArguments(sequencedType), gen, false);
                     gen.out(".chain(");
                     sequencedType=null;
                     chained=true;
@@ -499,7 +499,7 @@ public class InvocationGenerator {
                 seqtargs = TypeUtils.wrapAsIterableArguments(sequencedType);
             }
             SequenceGenerator.closeSequenceWithReifiedType(primary,
-                    seqtargs, gen);
+                    seqtargs, gen, false);
         }
         return argvars;
     }

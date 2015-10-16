@@ -80,7 +80,7 @@ public class SequenceGenerator {
                 }
                 count++;
             }
-            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen);
+            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, true);
         }
     }
 
@@ -153,8 +153,11 @@ public class SequenceGenerator {
     }
     /** Closes a native array and invokes reifyCeylonType (rt$) with the specified type parameters. */
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
-            final GenerateJsVisitor gen) {
-        gen.out("].$sa$(");
+            final GenerateJsVisitor gen, boolean wantsIterable) {
+        if(wantsIterable)
+            gen.out("].rt$(");
+        else
+            gen.out("].$sa$(");
         boolean nonempty=false;
         Type elem = null;
         for (Map.Entry<TypeParameter,Type> e : types.entrySet()) {
