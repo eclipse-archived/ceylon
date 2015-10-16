@@ -4,7 +4,7 @@ function FunParamDecl(cont,param,$$funParamDecl){
   FunctionDeclaration$meta$declaration($$funParamDecl);
   $$funParamDecl.cont=cont;
   $$funParamDecl.param=param;
-  $$funParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$t,ps:param.ps,mt:'prm',d:cont.tipo.$crtmm$.d,an:param.an,pa:param.pa}};
+  $$funParamDecl.tipo={$crtmm$:{$cont:cont.tipo,$t:param.$rt,ps:param.ps,mt:'prm',d:cont.tipo.$crtmm$.d,an:param.an,pa:param.pa}};
 
   $$funParamDecl.$prop$getParameter={$crtmm$:function(){return{mod:$CCMM$,$t:{t:$_Boolean},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','parameter']};}};
   $$funParamDecl.$prop$getParameter.get=function(){return true;};
@@ -52,7 +52,7 @@ function $init$FunParamDecl(){
       },undefined,function(){return{mod:$CCMM$,$t:{t:Module$meta$declaration},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','containingModule']};});
       //AttributeGetterDef openType at caca.ceylon (14:2-14:70)
       atr$($$funParamDecl,'openType',function(){
-        var t = this.param.$t;
+        var t = this.param.$rt;
         if (typeof(t)==='string')return OpenTvar$jsint(OpenTypeParam$jsint(this.cont,t));
         return _openTypeFromTarg(t);
       },undefined,function(){return{mod:$CCMM$,$t:{t:OpenType$meta$declaration},$cont:FunParamDecl,pa:3,d:['ceylon.language.meta.declaration','FunctionDeclaration','$at','openType']};});
