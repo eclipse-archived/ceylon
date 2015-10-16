@@ -636,15 +636,16 @@ public class GenerateJsVisitor extends Visitor {
     private boolean share(Declaration d, boolean excludeProtoMembers) {
         boolean shared = false;
         if (!(excludeProtoMembers && opts.isOptimize() && d.isClassOrInterfaceMember())
-                && isCaptured(d)) {
+                && (d instanceof ClassOrInterface || isCaptured(d))) {
             beginNewLine();
-            outerSelf(d);
-            String dname=names.name(d);
-            if (dname.endsWith("()")){
-                dname = dname.substring(0, dname.length()-2);
+            if (outerSelf(d)) {
+                String dname=names.name(d);
+                if (dname.endsWith("()")){
+                    dname = dname.substring(0, dname.length()-2);
+                }
+                out(".", dname, "=", dname);
+                endLine(true);
             }
-            out(".", dname, "=", dname);
-            endLine(true);
             shared = true;
         }
         return shared;
@@ -2597,6 +2598,12 @@ public class GenerateJsVisitor extends Visitor {
         else if (d.isClassOrInterfaceMember()) {
             out(names.self((TypeDeclaration)d.getContainer()));
             return true;
+        } else if (d instanceof ClassOrInterface) {
+            ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
+            if (coi != null) {
+                out(names.self(coi));
+                return true;
+            }
         }
         return false;
     }
