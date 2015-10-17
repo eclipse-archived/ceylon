@@ -112,12 +112,21 @@ public class JsCompiler {
             logger = new JsLogger(opts);
         }
         errorVisitor = new ErrorCollectingVisitor(tc);
-        srcDirectories = new ArrayList<VirtualFile>(opts.getSrcDirs().size());
-        for (File srcdir : opts.getSrcDirs()) {
-            srcDirectories.add(tc.getContext().getVfs().getFromFile(srcdir));
-        }
+        srcDirectories = initSourceDirectories(opts);
     }
 
+    protected List<VirtualFile> initSourceDirectories(Options opts) {
+        ArrayList<VirtualFile> srcdirs = new ArrayList<VirtualFile>(opts.getSrcDirs().size());
+        for (File srcdir : opts.getSrcDirs()) {
+            srcdirs.add(sourceDirVirtual(srcdir));
+        }
+        return srcdirs;
+    }
+    
+    protected VirtualFile sourceDirVirtual(File f) {
+        return tc.getContext().getVfs().getFromFile(f);
+    }
+    
     private boolean isURL(String path) {
         try {
             new URL(path);
