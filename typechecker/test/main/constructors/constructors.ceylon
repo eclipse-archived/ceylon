@@ -436,3 +436,10 @@ class WithDuplicateDefaultConstructor {
     shared new() {}
     @error shared new(String name) {}
 }
+
+shared class WithIllegalDefaultArg {
+    Integer b = 1;
+    shared new(@error Integer a = b) { // error
+        print(a);
+    }
+}

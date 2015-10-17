@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.messa
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isSelfReference;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingDeclarationOfScope;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInBreakReturnThrow = false;
     private boolean inExtends = false;
     private boolean inAnonFunctionOrComprehension = false;
+    private Parameter parameter = null;
     
     @Override
     public void visit(Tree.ExtendedType that) {
@@ -290,6 +292,12 @@ public class SpecificationVisitor extends Visitor {
                         that.addError("not definitely specified: '" + 
                                 member.getName() + "'");
                     }
+                }
+            }
+            else if (parameter!=null && 
+                    isConstructor(parameter.getDeclaration())) {
+                if (parameter.getDeclaration().getContainer().equals(declaration.getContainer())) {
+                    that.addError("default argument to constructor parameter is a member of the constructed class");
                 }
             }
             if (!assigned && member.isDefault() && 
@@ -959,7 +967,10 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Parameter that) {
+        Parameter oip = parameter;
+        parameter = that.getParameterModel();
         super.visit(that);
+        parameter = oip;
         if (that.getParameterModel().getModel()==declaration) {
             specify();
         }
