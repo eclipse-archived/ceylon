@@ -1000,7 +1000,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private ClassType getClassType(ClassMirror classMirror) {
+    protected Declaration getOrCreateDeclaration(Module module, ClassMirror classMirror,
+            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
+        alreadyExists[0] = false;
+        Declaration decl = null;
         ClassType type;
         if(classMirror.isCeylonToplevelAttribute()){
             type = ClassType.ATTRIBUTE;
@@ -1013,13 +1016,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }else{
             type = ClassType.CLASS;
         }
-        return type;
-    }
-    
-    protected Declaration getOrCreateDeclaration(Module module, ClassMirror classMirror,
-            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
-        alreadyExists[0] = false;
-        ClassType type = getClassType(classMirror);
+
         String key = classMirror.getCacheKey(module);
         // see if we already have it
         Map<String, Declaration> declarationCache = null;
@@ -1043,69 +1040,39 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return declarationCache.get(key);
         }
         
-        Declaration decl = createDeclaration(module, classMirror, declarationType, decls, alreadyExists);
-        
-        if (type == ClassType.OBJECT){
-            typeDeclarationsByName.put(key, getByType(decls, Class.class));
-            valueDeclarationsByName.put(key, getByType(decls, Value.class));
-        }else{
-            declarationCache.put(key, decl);
-        }
-        
-        return decl;
-    }
 
-    private Declaration createDeclaration(Module module, ClassMirror classMirror,
-            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
-        Declaration decl = null;
-        ClassType type = getClassType(classMirror);
         checkBinaryCompatibility(classMirror);
+        
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
+        
         try{
             // make it
             switch(type){
             case ATTRIBUTE:
-                decl = makeToplevelAttribute(classMirror, false);
+                decl = makeToplevelAttribute(classMirror);
                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                    Declaration hdr = makeToplevelAttribute(classMirror, true);
-                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                    decls.add(initNativeHeader(hdr, decl));
-                }
                 break;
             case METHOD:
-                decl = makeToplevelMethod(classMirror, false);
+                decl = makeToplevelMethod(classMirror);
                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                    Declaration hdr = makeToplevelMethod(classMirror, true);
-                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                    decls.add(initNativeHeader(hdr, decl));
-                }
                 break;
             case OBJECT:
                 // we first make a class
-                Declaration objectClassDecl = makeLazyClass(classMirror, null, null, false);
-                setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(objectClassDecl, false)) {
-                    Declaration hdr = makeLazyClass(classMirror, null, null, true);
-                    decls.add(initNativeHeader(hdr, objectClassDecl));
-                }
+                Declaration objectClassDecl = makeLazyClass(classMirror, null, null);
+                typeDeclarationsByName.put(key, objectClassDecl);
                 decls.add(objectClassDecl);
                 // then we make a value for it, if it's not an inline object expr
                 if(objectClassDecl.isNamed()){
-                    Declaration objectDecl = makeToplevelAttribute(classMirror, false);
-                    setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
-                    if (isCeylon && shouldCreateNativeHeader(objectDecl, false)) {
-                        Declaration hdr = makeToplevelAttribute(classMirror, true);
-                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                        decls.add(initNativeHeader(hdr, objectDecl));
-                    }
+                    Declaration objectDecl = makeToplevelAttribute(classMirror);
+                    valueDeclarationsByName.put(key, objectDecl);
                     decls.add(objectDecl);
                     // which one did we want?
                     decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
+                    setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
                 }else{
                     decl = objectClassDecl;
                 }
+                setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
                 break;
             case CLASS:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
@@ -1122,13 +1089,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             if (hasConstructors == null || !hasConstructors) {
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                             } else {
-                                decl = makeLazyClass(classMirror, null, null, false);
+                                decl = makeLazyClass(classMirror, null, null);
                                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                                    Declaration hdr = makeLazyClass(classMirror, null, null, true);
-                                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, isCeylon);
-                                    decls.add(initNativeHeader(hdr, decl));
-                                }
                             }
                         } else {
                             if (hasConstructors == null || !hasConstructors) {
@@ -1138,45 +1100,25 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
                                 // where the constructor is protected because we want to use an accessor, in this case the class
                                 // visibility is to be used
-                                if (isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)) {
-                                    decl = makeLazyClass(classMirror, null, constructor, false);
+                                if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
+                                    decl = makeLazyClass(classMirror, null, constructor);
                                     setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                    if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                                        Declaration hdr = makeLazyClass(classMirror, null, constructor, true);
-                                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, isCeylon);
-                                        decls.add(initNativeHeader(hdr, decl));
-                                    }
-                                } else {
+                                }else{
                                     decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                                 }
                             } else {
-                                decl = makeLazyClass(classMirror, null, null, false);
+                                decl = makeLazyClass(classMirror, null, null);
                                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                                    Declaration hdr = makeLazyClass(classMirror, null, null, true);
-                                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, isCeylon);
-                                    decls.add(initNativeHeader(hdr, decl));
-                                }
                             }
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
-                        decl = makeLazyClass(classMirror, null, null, false);
+                        decl = makeLazyClass(classMirror, null, null);
                         setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                        if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                            Declaration hdr = makeLazyClass(classMirror, null, null, true);
-                            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, isCeylon);
-                            decls.add(initNativeHeader(hdr, decl));
-                        }
                     } else {
                         // no visible constructors
-                        decl = makeLazyClass(classMirror, null, null, false);
+                        decl = makeLazyClass(classMirror, null, null);
                         setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                        if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                            Declaration hdr = makeLazyClass(classMirror, null, null, true);
-                            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, isCeylon);
-                            decls.add(initNativeHeader(hdr, decl));
-                        }
                     }
                     if (!isCeylon) {
                         setSealedFromConstructorMods(decl, constructors);
@@ -1186,16 +1128,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             case INTERFACE:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
                     decl = makeInterfaceAlias(classMirror);
-                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                 }else{
-                    decl = makeLazyInterface(classMirror, false);
-                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                    if (isCeylon && shouldCreateNativeHeader(decl, false)) {
-                        Declaration hdr = makeLazyInterface(classMirror, false);
-                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, isCeylon);
-                        decls.add(initNativeHeader(hdr, decl));
-                    }
+                    decl = makeLazyInterface(classMirror);
                 }
+                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                 break;
             }
         }catch(ModelResolutionException x){
@@ -1206,60 +1142,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // objects have special handling above
         if(type != ClassType.OBJECT){
+            declarationCache.put(key, decl);
             decls.add(decl);
         }
         
         return decl;
-    }
-    
-    private Declaration getByType(List<Declaration> decls, java.lang.Class<?> type) {
-        for (Declaration decl : decls) {
-            if (type.isAssignableFrom(decl.getClass())) {
-                return decl;
-            }
-        }
-        return null;
-    }
-    
-    private boolean shouldCreateNativeHeader(Declaration decl, boolean isMember) {
-        // TODO instead of checking for "shared" we should add an annotation
-        // to all declarations that have a native header and check that here
-        if (decl.isNativeImplementation() && decl.isShared()) {
-            if (isMember) {
-                if (!decl.isOverloaded()) {
-                    Declaration container = (Declaration)decl.getContainer();
-                    return !container.isNative();
-                }
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    private boolean shouldLinkNatives(Declaration decl) {
-        // TODO instead of checking for "shared" we should add an annotation
-        // to all declarations that have a native header and check that here
-        if (decl.isNative() && decl.isShared()) {
-            Declaration container = (Declaration)decl.getContainer();
-            return container.isNativeHeader();
-        }
-        return false;
-    }
-    
-    private Declaration initNativeHeader(Declaration hdr, Declaration impl) {
-        List<Declaration> al = getOverloads(hdr);
-        if (al == null) {
-            al = new ArrayList<Declaration>(1);
-        }
-        al.add(impl);
-        setOverloads(hdr, al);
-        return hdr;
-    }
-    
-    private void initNativeHeaderMember(Declaration hdr) {
-        Declaration impl = ModelUtil.getNativeDeclaration(hdr, Backend.Java);
-        initNativeHeader(hdr, impl);
     }
     
     /** Returns:
@@ -1323,14 +1210,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // If the class has multiple constructors we make a copy of the class
         // for each one (each with it's own single constructor) and make them
         // a subclass of the original
-        Class supercls = makeLazyClass(classMirror, null, null, false);
+        Class supercls = makeLazyClass(classMirror, null, null);
         // the abstraction class gets the class modifiers
         setNonLazyDeclarationProperties(supercls, classMirror, classMirror, classMirror, isCeylon);
         supercls.setAbstraction(true);
         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
         // all filtering is done in getClassConstructors
         for (MethodMirror constructor : constructors) {
-            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
+            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor);
             // the subclasses class get the constructor modifiers
             setNonLazyDeclarationProperties(subdecl, constructor, constructor, classMirror, isCeylon);
             subdecl.setOverloaded(true);
@@ -1505,28 +1392,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return unit;
     }
 
-    protected LazyValue makeToplevelAttribute(ClassMirror classMirror, boolean isNativeHeader) {
+    protected LazyValue makeToplevelAttribute(ClassMirror classMirror) {
         LazyValue value = new LazyValue(classMirror, this);
 
         AnnotationMirror objectAnnotation = classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION);
         if(objectAnnotation != null) {
-            manageNativeBackend(value, classMirror, isNativeHeader);
+            manageNativeBackend(value, classMirror);
         } else {
-            manageNativeBackend(value, getValueMethodMirror(value, true), isNativeHeader);
+            manageNativeBackend(value, getValueMethodMirror(value, true));
         }
 
         return value;
     }
 
-    protected LazyFunction makeToplevelMethod(ClassMirror classMirror, boolean isNativeHeader) {
+    protected LazyFunction makeToplevelMethod(ClassMirror classMirror) {
         LazyFunction method = new LazyFunction(classMirror, this);
 
-        manageNativeBackend(method, getFunctionMethodMirror(method), isNativeHeader);
+        manageNativeBackend(method, getFunctionMethodMirror(method));
 
         return method;
     }
     
-    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror initOrDefaultConstructor, boolean isNativeHeader) {
+    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror initOrDefaultConstructor) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, initOrDefaultConstructor);
         AnnotationMirror objectAnnotation = classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION);
         if(objectAnnotation != null){
@@ -1559,19 +1446,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setFinal(classMirror.isFinal());
         klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
         
-        manageNativeBackend(klass, classMirror, isNativeHeader);
+        manageNativeBackend(klass, classMirror);
         
         return klass;
     }
 
-    protected LazyInterface makeLazyInterface(ClassMirror classMirror, boolean isNativeHeader) {
+    protected LazyInterface makeLazyInterface(ClassMirror classMirror) {
         LazyInterface iface = new LazyInterface(classMirror, this);
         iface.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
         iface.setDynamic(classMirror.getAnnotation(CEYLON_DYNAMIC_ANNOTATION) != null);
         iface.setStaticallyImportable(!iface.isCeylon());
-        
-        manageNativeBackend(iface, classMirror, isNativeHeader);
-        
         return iface;
     }
 
@@ -1950,7 +1834,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         module.setMajor(major);
         module.setMinor(minor);
 
-        setAnnotations(module, moduleClass, false);
+        setAnnotations(module, moduleClass);
         
         List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
         if(imports != null){
@@ -2215,36 +2099,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // When for each value constructor getter we can add a Value+Constructor
                 if (ctorMirror == null) {
                     // Only add a Constructor using the getter if we couldn't find a matching java constructor
-                    c = addConstructor((Class)klass, classMirror, ctor, false);
+                    c = addConstructor((Class)klass, classMirror, ctor);
                 } else {
-                    c = addConstructor((Class)klass, classMirror, ctorMirror, false);
+                    c = addConstructor((Class)klass, classMirror, ctorMirror);
                 }
-                addConstructorMethorOrValue((Class)klass, classMirror, ctor, c, false);
-                if (isCeylon && shouldCreateNativeHeader(c, true)) {
-                    Constructor hdr;
-                    if (ctorMirror == null) {
-                        // Only add a Constructor using the getter if we couldn't find a matching java constructor
-                        hdr = addConstructor((Class)klass, classMirror, ctor, true);
-                    } else {
-                        hdr = addConstructor((Class)klass, classMirror, ctorMirror, true);
-                    }
-                    initNativeHeader(hdr, c);
-                    addConstructorMethorOrValue((Class)klass, classMirror, ctor, hdr, true);
-                } else if (isCeylon && shouldLinkNatives(c)) {
-                    initNativeHeaderMember(c);
-                }
+                addConstructorMethorOrValue((Class)klass, classMirror, ctor, c);
             }
             // Everything left must be a callable constructor, so add Function+Constructor
             for (MethodMirror ctorMirror : m.values()) {
-                Constructor c = addConstructor((Class)klass, classMirror, ctorMirror, false);
-                addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, c, false);
-                if (isCeylon && shouldCreateNativeHeader(c, true)) {
-                    Constructor hdr = addConstructor((Class)klass, classMirror, ctorMirror, true);
-                    initNativeHeader(hdr, c);
-                    addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, hdr, false);
-                } else if (isCeylon && shouldLinkNatives(c)) {
-                    initNativeHeaderMember(c);
-                }
+                Constructor c = addConstructor((Class)klass, classMirror, ctorMirror);
+                addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, c);
             }
         }
         
@@ -2319,13 +2183,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(isHashAttribute(getterMethod)) {
                     // ERASURE
                     // Un-erasing 'hash' attribute from 'hashCode' method
-                    Value v = addValue(klass, getterMethod, "hash", isCeylon, false);
-                    if (isCeylon && shouldCreateNativeHeader(v, true)) {
-                        Value hdr = addValue(klass, getterMethod, "hash", isCeylon, true);
-                        initNativeHeader(hdr, v);
-                    } else if (isCeylon && shouldLinkNatives(v)) {
-                        initNativeHeaderMember(v);
-                    }
+                    addValue(klass, getterMethod, "hash", isCeylon);
                     // remove it as a method and add all other getters with the same name
                     // as methods
                     removeMultiMap(methods, getterMethod.getName(), getterMethod);
@@ -2335,13 +2193,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(isStringAttribute(getterMethod)) {
                     // ERASURE
                     // Un-erasing 'string' attribute from 'toString' method
-                    Value v = addValue(klass, getterMethod, "string", isCeylon, false);
-                    if (isCeylon && shouldCreateNativeHeader(v, true)) {
-                        Value hdr = addValue(klass, getterMethod, "string", isCeylon, true);
-                        initNativeHeader(hdr, v);
-                    } else if (isCeylon && shouldLinkNatives(v)) {
-                        initNativeHeaderMember(v);
-                    }
+                    addValue(klass, getterMethod, "string", isCeylon);
                     // remove it as a method and add all other getters with the same name
                     // as methods
                     removeMultiMap(methods, getterMethod.getName(), getterMethod);
@@ -2354,13 +2206,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // FTW!
                 MethodMirror getterMethod = getterList.get(0);
                 // simple attribute
-                Value v = addValue(klass, getterMethod, propertyName, isCeylon, false);
-                if (isCeylon && shouldCreateNativeHeader(v, true)) {
-                    Value hdr = addValue(klass, getterMethod, propertyName, isCeylon, true);
-                    initNativeHeader(hdr, v);
-                } else if (isCeylon && shouldLinkNatives(v)) {
-                    initNativeHeaderMember(v);
-                }
+                addValue(klass, getterMethod, propertyName, isCeylon);
                 // remove it as a method
                 removeMultiMap(methods, getterMethod.getName(), getterMethod);
                 // next property
@@ -2403,13 +2249,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     if(bestGetter != null){
                         // got it!
                         // simple attribute
-                        Value v = addValue(klass, bestGetter, propertyName, isCeylon, false);
-                        if (isCeylon && shouldCreateNativeHeader(v, true)) {
-                            Value hdr = addValue(klass, bestGetter, propertyName, isCeylon, true);
-                            initNativeHeader(hdr, v);
-                        } else if (isCeylon && shouldLinkNatives(v)) {
-                            initNativeHeaderMember(v);
-                        }
+                        addValue(klass, bestGetter, propertyName, isCeylon);
                         // remove it as a method and add all other getters with the same name
                         // as methods
                         removeMultiMap(methods, bestGetter.getName(), bestGetter);
@@ -2439,13 +2279,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         bestGetter = getMethod;
                     }
                     // simple attribute
-                    Value v = addValue(klass, bestGetter, propertyName, isCeylon, false);
-                    if (isCeylon && shouldCreateNativeHeader(v, true)) {
-                        Value hdr = addValue(klass, bestGetter, propertyName, isCeylon, true);
-                        initNativeHeader(hdr, v);
-                    } else if (isCeylon && shouldLinkNatives(v)) {
-                        initNativeHeaderMember(v);
-                    }
+                    addValue(klass, bestGetter, propertyName, isCeylon);
                     // remove it as a method and add all other getters with the same name
                     // as methods
                     removeMultiMap(methods, bestGetter.getName(), bestGetter);
@@ -2475,13 +2309,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     || "string".equals(name)
                     || "hash".equals(name);
             if (!conflicts) {
-                Value v = addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon, false);
-                if (isCeylon && shouldCreateNativeHeader(v, true)) {
-                    Value hdr = addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon, true);
-                    initNativeHeader(hdr, v);
-                } else if (isCeylon && shouldLinkNatives(v)) {
-                    initNativeHeaderMember(v);
-                }
+                addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon);
             }
         }
 
@@ -2556,22 +2384,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<Declaration> overloads = null;
             for (MethodMirror methodMirror : methodMirrors) {
                 // normal method
-                Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded, false);
-                if (isCeylon && shouldCreateNativeHeader(m, true)) {
-                    Function hdr = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded, true);
-                    initNativeHeader(hdr, m);
-                } else if (isCeylon && shouldLinkNatives(m)) {
-                    initNativeHeaderMember(m);
-                }
+                Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded);
                 if (m.isOverloaded()) {
-                    overloads = overloads == null ? new ArrayList<Declaration>(methodMirrors.size()) : overloads;
+                    overloads = overloads == null ? new ArrayList<Declaration>(methodMirrors.size()) :  overloads;
                     overloads.add(m);
                 }
             }
             
             if (overloads != null && !overloads.isEmpty()) {
                 // We create an extra "abstraction" method for overloaded methods
-                Function abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, isCeylon, false, false);
+                Function abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, isCeylon, false);
                 abstractionMethod.setAbstraction(true);
                 abstractionMethod.setOverloads(overloads);
                 abstractionMethod.setType(newUnknownType());
@@ -2600,7 +2422,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
-        setAnnotations(klass, classMirror, klass.isNativeHeader());
+        setAnnotations(klass, classMirror);
         
         // local declarations come last, because they need all members to be completed first
         if(!klass.isAlias()){
@@ -2664,7 +2486,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         list.add(value);
     }
     
-    private Constructor addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor, boolean isNativeHeader) {
+    private Constructor addConstructor(Class klass, ClassMirror classMirror, MethodMirror ctor) {
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
         Constructor constructor = new Constructor();
         constructor.setName(getCtorName(ctor));
@@ -2674,12 +2496,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         constructor.setAbstract(ctor.getAnnotation(CEYLON_LANGUAGE_ABSTRACT_ANNOTATION) != null);
         constructor.setExtendedType(klass.getType());
         setNonLazyDeclarationProperties(constructor, ctor, ctor, classMirror, isCeylon);
-        setAnnotations(constructor, ctor, isNativeHeader);
+        setAnnotations(constructor, ctor);
         klass.addMember(constructor);
         return constructor;
     }
-    
-    protected void addConstructorMethorOrValue(Class klass, ClassMirror classMirror, MethodMirror ctor, Constructor constructor, boolean isNativeHeader) {
+    protected void addConstructorMethorOrValue(Class klass, ClassMirror classMirror, MethodMirror ctor, Constructor constructor) {
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
         if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
             klass.setEnumerated(true);
@@ -2692,7 +2513,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             v.setVisibleScope(constructor.getVisibleScope());
             // read annotations from the getter method
             setNonLazyDeclarationProperties(v, ctor, ctor, classMirror, isCeylon);
-            setAnnotations(v, ctor, isNativeHeader);
+            setAnnotations(v, ctor);
             klass.addMember(v);
         }
         else {
@@ -2708,7 +2529,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             f.setVisibleScope(constructor.getVisibleScope());
             // read annotations from the constructor
             setNonLazyDeclarationProperties(f, ctor, ctor, classMirror, isCeylon);
-            setAnnotations(f, ctor, isNativeHeader);
+            setAnnotations(f, ctor);
             klass.addMember(f);
         }
     }
@@ -2809,7 +2630,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return JDKUtils.isJDKAnyPackage(pkgName) || JDKUtils.isOracleJDKAnyPackage(pkgName);
     }
 
-    private void setAnnotations(Annotated annotated, AnnotatedMirror classMirror, boolean isNativeHeader) {
+    private void setAnnotations(Annotated annotated, AnnotatedMirror classMirror) {
         if (classMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION) != null) {
             // If the class has @Annotations then use it (in >=1.2 only ceylon.language does)
             Long mods = (Long)getAnnotationValue(classMirror, CEYLON_ANNOTATIONS_ANNOTATION, "modifiers");
@@ -2877,30 +2698,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // Do nothing : 
             //    it has already been managed when in the makeLazyXXX() function
         } else {
-            manageNativeBackend(annotated, classMirror, isNativeHeader);
+            manageNativeBackend(annotated, classMirror);
         }
     }
-    
-    private void manageNativeBackend(Annotated annotated, AnnotatedMirror mirror, boolean isNativeHeader) {
+    private void manageNativeBackend(Annotated annotated, AnnotatedMirror mirror) {
         if (mirror == null)
             return;
         // Set "native" annotation
         String nativeBackend = getAnnotationStringValue(mirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend");
         if (nativeBackend != null) {
-            if (isNativeHeader) {
-                nativeBackend = Backend.None.nativeAnnotation;
-            } else if (Backend.None.nativeAnnotation.equals(nativeBackend)) {
-                // Elements in the class file marked `native("")` are actually
-                // default implementations taken from the header that were
-                // copied to the output, so here we reset them to `native("jvm")`
-                nativeBackend = Backend.Java.nativeAnnotation;
-            }
             if (annotated instanceof Declaration) {
                 Declaration decl = (Declaration)annotated;
                 decl.setNativeBackend(nativeBackend);
-                if (isNativeHeader) {
-                    List<Declaration> al = new ArrayList<Declaration>(1);
-                    setOverloads(decl, al);
+                if (decl.isNativeHeader()) {
+                    // FIXME we need to add the native implementations
+                    // to this list somehow!!
+                    List<Declaration> al = getOverloads(decl);
+                    if (al == null) {
+                        al = new ArrayList<Declaration>(2);
+                        setOverloads(decl, al);
+                    }
                 }
             } else if (annotated instanceof Module) {
                 ((Module)annotated).setNativeBackend(nativeBackend);
@@ -2936,8 +2753,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public static List<Declaration> getOverloads(Declaration decl) {
-        if (decl instanceof FunctionOrValue) {
-            return ((FunctionOrValue)decl).getOverloads();
+        if (decl instanceof Function) {
+            return ((Function)decl).getOverloads();
+        }
+        else if (decl instanceof Value) {
+            return ((Value)decl).getOverloads();
         }
         else if (decl instanceof Class) {
             return ((Class)decl).getOverloads();
@@ -2946,8 +2766,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public static void setOverloads(Declaration decl, List<Declaration> overloads) {
-        if (decl instanceof FunctionOrValue) {
-            ((FunctionOrValue)decl).setOverloads(overloads);
+        if (decl instanceof Function) {
+            ((Function)decl).setOverloads(overloads);
+        }
+        else if (decl instanceof Value) {
+            ((Value)decl).setOverloads(overloads);
         }
         else if (decl instanceof Class) {
             ((Class)decl).setOverloads(overloads);
@@ -3044,7 +2867,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private Function addMethod(ClassOrInterface klass, MethodMirror methodMirror, ClassMirror classMirror, 
-                             boolean isCeylon, boolean isOverloaded, boolean isNativeHeader) {
+                             boolean isCeylon, boolean isOverloaded) {
         
         JavaMethod method = new JavaMethod(methodMirror);
         String methodName = methodMirror.getName();
@@ -3097,7 +2920,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(method, methodMirror, methodMirror.getReturnType());
         markUntrustedType(method, methodMirror, methodMirror.getReturnType());
         method.setDeprecated(isDeprecated(methodMirror));
-        setAnnotations(method, methodMirror, isNativeHeader);
+        setAnnotations(method, methodMirror);
         
         klass.addMember(method);
         ModelUtil.setVisibleScope(method);
@@ -3271,7 +3094,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private Value addValue(ClassOrInterface klass, String ceylonName, FieldMirror fieldMirror, boolean isCeylon, boolean isNativeHeader) {
+    private void addValue(ClassOrInterface klass, String ceylonName, FieldMirror fieldMirror, boolean isCeylon) {
         // make sure it's a FieldValue so we can figure it out in the backend
         Value value = new FieldValue(fieldMirror.getName());
         value.setContainer(klass);
@@ -3325,10 +3148,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, fieldMirror, fieldMirror.getType());
         markUntrustedType(value, fieldMirror, fieldMirror.getType());
         value.setDeprecated(isDeprecated(fieldMirror));
-        setAnnotations(value, fieldMirror, isNativeHeader);
+        setAnnotations(value, fieldMirror);
         klass.addMember(value);
         ModelUtil.setVisibleScope(value);
-        return value;
     }
     
     private boolean isRaw(Module module, TypeMirror type) {
@@ -3409,7 +3231,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private JavaBeanValue addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName, boolean isCeylon, boolean isNativeHeader) {
+    private void addValue(ClassOrInterface klass, MethodMirror methodMirror, String methodName, boolean isCeylon) {
         JavaBeanValue value = new JavaBeanValue(methodMirror);
         value.setGetterName(methodMirror.getName());
         value.setContainer(klass);
@@ -3439,10 +3261,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         markUntrustedType(value, methodMirror, methodMirror.getReturnType());
         value.setDeprecated(isDeprecated(methodMirror));
-        setAnnotations(value, methodMirror, isNativeHeader);
+        setAnnotations(value, methodMirror);
         klass.addMember(value);
         ModelUtil.setVisibleScope(value);
-        return value;
     }
 
     private boolean isUncheckedNull(AnnotatedMirror methodMirror) {
@@ -3789,7 +3610,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             parameter.setDeclaration((Declaration) decl);
             value.setDeprecated(value.isDeprecated() || isDeprecated(paramMirror));
-            setAnnotations(value, paramMirror, false);
+            setAnnotations(value, paramMirror);
             parameters.getParameters().add(parameter);
             if (!lookedup) {
                 parameter.getDeclaration().getMembers().add(parameter.getModel());
@@ -4048,7 +3869,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
                 markVariable(value);
                 setValueTransientLateFlags(value, meth, true);
-                setAnnotations(value, meth, value.isNativeHeader());
+                setAnnotations(value, meth);
                 markUnboxed(value, meth, meth.getReturnType());
                 markTypeErased(value, meth, meth.getReturnType());
 
@@ -4170,7 +3991,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 setParameters(method, method.classMirror, meth, true /* toplevel methods are always Ceylon */, method);
                 
                 method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
-                setAnnotations(method, meth, method.isNativeHeader());
+                setAnnotations(method, meth);
 
                 setAnnotationConstructor(method, meth);
 
