@@ -78,7 +78,9 @@ shared void run() {
     testMetamodelInDefaultModule();
     print("Native extensions");
     testNativeClassesAndObjects();
-
+    print("Contextual");
+    testContextual();
+    
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
 
