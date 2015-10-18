@@ -1000,10 +1000,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    protected Declaration getOrCreateDeclaration(Module module, ClassMirror classMirror,
-            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
-        alreadyExists[0] = false;
-        Declaration decl = null;
+    private ClassType getClassType(ClassMirror classMirror) {
         ClassType type;
         if(classMirror.isCeylonToplevelAttribute()){
             type = ClassType.ATTRIBUTE;
@@ -1016,7 +1013,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }else{
             type = ClassType.CLASS;
         }
-
+        return type;
+    }
+    
+    protected Declaration getOrCreateDeclaration(Module module, ClassMirror classMirror,
+            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
+        alreadyExists[0] = false;
+        ClassType type = getClassType(classMirror);
         String key = classMirror.getCacheKey(module);
         // see if we already have it
         Map<String, Declaration> declarationCache = null;
@@ -1040,11 +1043,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return declarationCache.get(key);
         }
         
+        Declaration decl = createDeclaration(module, classMirror, declarationType, decls, alreadyExists);
+        
+        if (type == ClassType.OBJECT){
+            typeDeclarationsByName.put(key, getByType(decls, Class.class));
+            valueDeclarationsByName.put(key, getByType(decls, Value.class));
+        }else{
+            declarationCache.put(key, decl);
+        }
+        
+        return decl;
+    }
 
+    private Declaration createDeclaration(Module module, ClassMirror classMirror,
+            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
+        Declaration decl = null;
+        ClassType type = getClassType(classMirror);
         checkBinaryCompatibility(classMirror);
-        
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
-        
         try{
             // make it
             switch(type){
@@ -1074,7 +1090,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     Declaration hdr = makeLazyClass(classMirror, null, null, true);
                     decls.add(initNativeHeader(hdr, objectClassDecl));
                 }
-                typeDeclarationsByName.put(key, objectClassDecl);
                 decls.add(objectClassDecl);
                 // then we make a value for it, if it's not an inline object expr
                 if(objectClassDecl.isNamed()){
@@ -1085,7 +1100,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                         decls.add(initNativeHeader(hdr, objectDecl));
                     }
-                    valueDeclarationsByName.put(key, objectDecl);
                     decls.add(objectDecl);
                     // which one did we want?
                     decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
@@ -1192,11 +1206,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // objects have special handling above
         if(type != ClassType.OBJECT){
-            declarationCache.put(key, decl);
             decls.add(decl);
         }
         
         return decl;
+    }
+    
+    private Declaration getByType(List<Declaration> decls, java.lang.Class<?> type) {
+        for (Declaration decl : decls) {
+            if (type.isAssignableFrom(decl.getClass())) {
+                return decl;
+            }
+        }
+        return null;
     }
     
     private boolean shouldCreateNativeHeader(Declaration decl, boolean isMember) {
