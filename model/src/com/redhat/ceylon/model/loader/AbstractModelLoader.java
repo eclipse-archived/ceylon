@@ -1172,10 +1172,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             case INTERFACE:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
                     decl = makeInterfaceAlias(classMirror);
+                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                 }else{
-                    decl = makeLazyInterface(classMirror);
+                    decl = makeLazyInterface(classMirror, false);
+                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                    if (isCeylon && shouldCreateNativeHeader(decl, false)) {
+                        Declaration hdr = makeLazyInterface(classMirror, false);
+                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, isCeylon);
+                        decls.add(initNativeHeader(hdr, decl));
+                    }
                 }
-                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                 break;
             }
         }catch(ModelResolutionException x){
@@ -1536,11 +1542,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return klass;
     }
 
-    protected LazyInterface makeLazyInterface(ClassMirror classMirror) {
+    protected LazyInterface makeLazyInterface(ClassMirror classMirror, boolean isNativeHeader) {
         LazyInterface iface = new LazyInterface(classMirror, this);
         iface.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
         iface.setDynamic(classMirror.getAnnotation(CEYLON_DYNAMIC_ANNOTATION) != null);
         iface.setStaticallyImportable(!iface.isCeylon());
+        
+        manageNativeBackend(iface, classMirror, isNativeHeader);
+        
         return iface;
     }
 
