@@ -197,15 +197,14 @@ public class RefinementVisitor extends Visitor {
                             dec.getContainer(), 
                             dec.getName());
             if (decls.size() > 1) {
-                if (!dec.isShared()) {
-                    that.addError(
-                            "shared native implementation must have a header: " +
-                                    message(dec));
+                for (Declaration d : decls) {
+                    if (d != dec && 
+                            !d.getNativeBackend().equals(
+                                    dec.getNativeBackend())) {
+                        header = dec;
+                        break;
+                    }
                 }
-                header = 
-                        decls.get(0) != dec ? 
-                                decls.get(0) : 
-                                decls.get(1);
             }
         }
         if (dec!=header) {
@@ -272,7 +271,8 @@ public class RefinementVisitor extends Visitor {
     private void checkNativeDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration header) {
         if (header == null && dec.isMember()) {
-            if (dec.isNative() && 
+            if (((Declaration)dec.getContainer()).isNative() &&
+                dec.isNative() && 
                 dec.isShared() && 
                 !dec.isFormal() && 
                 !dec.isActual() && 

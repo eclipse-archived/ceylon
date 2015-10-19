@@ -26,6 +26,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -252,6 +253,15 @@ public abstract class DeclarationVisitor extends Visitor {
                                     od.getAnonymousClass(), 
                                     name);
                         }
+                    } else {
+                        member = model.getContainer().getDirectMemberForBackend(
+                                model.getName(), model.getNativeBackend());
+                        if (member != null && member != model) {
+                            that.addError("duplicate native implementation: '" + 
+                                    name + "'");
+                            unit.getDuplicateDeclarations()
+                                .add(member);
+                        }
                     }
                 }
                 else {
@@ -328,19 +338,19 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     private static boolean mustHaveHeader(Declaration model) {
-        if (model.isToplevel() && model.isShared()) {
-            return true;
+        if (model.isShared()) {
+            if (model.isToplevel()) {
+                return true;
+            }
+            else if (model.isMember()) {
+                Declaration container = 
+                        (Declaration)
+                            model.getContainer();
+                return !container.isNative() ||
+                        container.isNativeHeader();
+            }
         }
-        else if (model.isMember()) {
-            Declaration container = 
-                    (Declaration)
-                        model.getContainer();
-            return container.isNativeHeader() && 
-                    container.isShared();
-        }
-        else {
-            return false;
-        }
+        return false;
     }
     
     private void handleNativeHeader(Declaration model, String name) {
