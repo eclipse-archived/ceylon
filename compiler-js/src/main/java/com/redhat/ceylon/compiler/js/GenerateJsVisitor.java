@@ -567,10 +567,14 @@ public class GenerateJsVisitor extends Visitor {
             }
             //Check the other way around as well
             s = prototypeOwner;
+            Scope endScope = origScope;
+            if (endScope instanceof TypeParameter) {
+                endScope = endScope.getContainer();
+            }
             while (s != null) {
-                if (s == origScope ||
-                        (s instanceof TypeDeclaration && origScope instanceof TypeDeclaration
-                                && ((TypeDeclaration)s).inherits((TypeDeclaration)origScope))) {
+                if (s == endScope ||
+                        (s instanceof TypeDeclaration && endScope instanceof TypeDeclaration
+                                && ((TypeDeclaration)s).inherits((TypeDeclaration)endScope))) {
                     refs = true;
                     return true;
                 }
