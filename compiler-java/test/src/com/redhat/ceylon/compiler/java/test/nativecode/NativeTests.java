@@ -468,7 +468,13 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(34, "duplicate native implementation: 'nativeDuplicates3'"),
                 new CompilerError(40, "duplicate native implementation: 'nativeDuplicates4'"),
                 new CompilerError(42, "no native implementation for backend: native 'nativeDuplicates5' is not implemented for the 'jvm' backend"),
-                new CompilerError(46, "duplicate native implementation: 'nativeDuplicates5'")
+                new CompilerError(46, "duplicate native implementation: 'nativeDuplicates5'"),
+                new CompilerError(50, "duplicate native implementation: 'foo'"),
+                new CompilerError(52, "duplicate native implementation: 'foo'"),
+                new CompilerError(57, "duplicate native implementation: 'foo'"),
+                new CompilerError(58, "duplicate native implementation: 'foo'"),
+                new CompilerError(60, "duplicate native implementation: 'foo'"),
+                new CompilerError(61, "duplicate native implementation: 'foo'")
         );
     }
     

@@ -44,3 +44,19 @@ native shared Integer nativeDuplicates5();
 native("js") shared Integer nativeDuplicates5() => 1;
 
 /*@error*/ native("js") shared Integer nativeDuplicates5() => 1;
+
+class NativeDuplicates6() {
+    native("jvm") void foo() => print("impl 1");
+    /*@error*/ native("jvm") void foo() => print("impl 2");
+    native("js") void foo() => print("impl 1");
+    /*@error*/ native("js") void foo() => print("impl 2");
+}
+
+class NativeDuplicates7() {
+    native("jvm") void foo() => print("impl 1");
+    /*@error*/ native("jvm") void foo() => print("impl 2");
+    /*@error*/ native("jvm") void foo() => print("impl 3");
+    native("js") void foo() => print("impl 1");
+    /*@error*/ native("js") void foo() => print("impl 2");
+    /*@error*/ native("js") void foo() => print("impl 3");
+}
