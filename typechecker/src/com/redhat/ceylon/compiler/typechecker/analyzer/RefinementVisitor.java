@@ -627,6 +627,8 @@ public class RefinementVisitor extends Visitor {
                 if (!headerTP.getName().equals(implTP.getName())) {
                     that.addError("type parameter does not have the same name as its header: '" +
                             implTP.getName() +
+                            "' is not '" +
+                            headerTP.getName() +
                             "' for " +
                             message(impl));
                 }
