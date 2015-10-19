@@ -4926,57 +4926,66 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         synchronized(getLock()){
             // keep in sync with getOrCreateDeclaration
             for (Declaration decl : declarations) {
-                String qualifiedNameString = decl.getQualifiedNameString();
-                String fqn;
-                if (qualifiedNameString.contains("::")) {
-                    String[] parts = qualifiedNameString.split("::");
-                    if (parts.length == 2) {
-                        String pkgName = parts[0];
-                        String className = parts[1];
-                        className = className.replace(".", "$");
-                        fqn = new StringBuilder(pkgName).append('.').append(className).toString();
-                    } else {
-                        fqn = qualifiedNameString;
+                try {
+                    StringBuilder fqnBuilder = new StringBuilder(decl.getNameAsString());
+                    Scope scope = decl.getContainer();
+                    while(scope instanceof Declaration) {
+                        String prefix;
+                        Declaration scopeDecl = (Declaration) scope;
+                        if (scope instanceof LazyInterface
+                                && ((LazyInterface)scopeDecl).isCeylon()) {
+                            prefix = ((LazyInterface)scopeDecl).companionClass.getName();
+                        } else {
+                            prefix = scopeDecl.getNameAsString();
+                        }
+                        fqnBuilder.insert(0, '.').insert(0, prefix);
+                        scope = scope.getContainer();
                     }
-                } else {
-                    fqn = qualifiedNameString;
-                }
-                Module module = ModelUtil.getModuleContainer(decl.getContainer());
-                Map<String, Declaration> firstCache = null;
-                Map<String, Declaration> secondCache = null;
-                if(decl.isToplevel()){
-                    if(JvmBackendUtil.isValue(decl)){
-                        firstCache = valueDeclarationsByName;
-                        TypeDeclaration typeDeclaration = ((Value)decl).getTypeDeclaration();
-                        if (typeDeclaration != null) {
-                            if(typeDeclaration.isAnonymous()) {
+                    if (scope instanceof Package
+                            && ! scope.getQualifiedNameString().isEmpty()) {
+                        fqnBuilder.insert(0, '.').insert(0, scope.getQualifiedNameString());
+                    }
+                    
+                    String fqn = fqnBuilder.toString();
+                    Module module = ModelUtil.getModuleContainer(decl.getContainer());
+                    Map<String, Declaration> firstCache = null;
+                    Map<String, Declaration> secondCache = null;
+                    if(decl.isToplevel()){
+                        if(JvmBackendUtil.isValue(decl)){
+                            firstCache = valueDeclarationsByName;
+                            TypeDeclaration typeDeclaration = ((Value)decl).getTypeDeclaration();
+                            if (typeDeclaration != null) {
+                                if(typeDeclaration.isAnonymous()) {
+                                    secondCache = typeDeclarationsByName;
+                                }
+                            } else {
+                                // The value declaration has probably not been fully loaded yet.
+                                // => still try to clean the second cache also, just in case it is an anonymous object
                                 secondCache = typeDeclarationsByName;
                             }
-                        } else {
-                            // The value declaration has probably not been fully loaded yet.
-                            // => still try to clean the second cache also, just in case it is an anonymous object
-                            secondCache = typeDeclarationsByName;
-                        }
-                    }else if(JvmBackendUtil.isMethod(decl))
-                        firstCache = valueDeclarationsByName;
-                }
-                if(decl instanceof ClassOrInterface){
-                    firstCache = typeDeclarationsByName;
-                }
-                // ignore declarations which we do not cache, like member method/attributes
-                String key = cacheKeyByModule(module, fqn);
-                if(firstCache != null) {
-                    firstCache.remove(key);
-                    firstCache.remove(key + "_");
-
-                    if(secondCache != null) {
-                        secondCache.remove(key);
-                        secondCache.remove(key + "_");
+                        }else if(JvmBackendUtil.isMethod(decl))
+                            firstCache = valueDeclarationsByName;
                     }
-                }
+                    if(decl instanceof ClassOrInterface){
+                        firstCache = typeDeclarationsByName;
+                    }
+                    // ignore declarations which we do not cache, like member method/attributes
+                    String key = cacheKeyByModule(module, fqn);
+                    if(firstCache != null) {
+                        firstCache.remove(key);
+                        firstCache.remove(key + "_");
 
-                classMirrorCache.remove(key);
-                classMirrorCache.remove(key + "_");
+                        if(secondCache != null) {
+                            secondCache.remove(key);
+                            secondCache.remove(key + "_");
+                        }
+                    }
+
+                    classMirrorCache.remove(key);
+                    classMirrorCache.remove(key + "_");
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
