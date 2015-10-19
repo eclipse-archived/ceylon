@@ -20,8 +20,8 @@ native("jvm") class NativeMap<Key,Element>() {
     
     native("jvm") HashMap<Key, Element> m = HashMap<Key, Element>();
     
-    shared native("jvm") void put(Key id, Element instance) {
-        m.put(id, instance);
+    shared native("jvm") void put(Key id, Element instanceOrPartial) {
+        m.put(id, instanceOrPartial);
     }
     
     shared native("jvm") Element? get(Key id) {
@@ -107,18 +107,18 @@ native("js") class NativeMap<Key,Element>() {
         return 0;
     }
 
-    shared native("js") void put(Key id, Element instance) {
+    shared native("js") void put(Key id, Element instanceOrPartial) {
         value i = find(id);
         if (i >= 0) {
             //replace
             dynamic {
-                vs.set(i, instance);
+                vs.set(i, instanceOrPartial);
             }
         } else if (i < 0) {
             //new entry
             dynamic {
                 ks.push(id);
-                vs.push(instance);
+                vs.push(instanceOrPartial);
             }
         }
     }
