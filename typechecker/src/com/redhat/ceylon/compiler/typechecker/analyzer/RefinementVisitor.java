@@ -1349,6 +1349,12 @@ public class RefinementVisitor extends Visitor {
             for (int i=0; i<paramsList.size(); i++) {
                 Parameter rparam = refinedParamsList.get(i);
                 Parameter param = paramsList.get(i);
+                if (forNative &&
+                        !param.getName().equals(rparam.getName())) {
+                    that.addError("parameter does not have the same name as its header: '"
+                            + param.getName() + "' is not '" + rparam.getName() + "' for "
+                            + message(refinedMember.getDeclaration()));
+                }
                 Type refinedParameterType = 
                 		refinedMember.getTypedParameter(rparam)
                 		        .getFullType();
