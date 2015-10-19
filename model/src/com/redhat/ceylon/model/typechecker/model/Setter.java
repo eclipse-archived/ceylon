@@ -31,7 +31,12 @@ public class Setter extends FunctionOrValue implements Scope {
     
     @Override
     public String getQualifiedNameString() {
-        return getter.getQualifiedNameString();
+        if (getter!=null) {
+            return getter.getQualifiedNameString();
+        }
+        else {
+            return super.getQualifiedNameString();
+        }
     }
     
     @Override
