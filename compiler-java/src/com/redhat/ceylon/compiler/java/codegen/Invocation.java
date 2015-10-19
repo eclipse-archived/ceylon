@@ -1756,6 +1756,11 @@ class NamedArgumentInvocation extends Invocation {
                         && Decl.isPrivateAccessRequiringCompanion((Tree.StaticMemberOrTypeExpression)getPrimary())) {
                     jtFlags |= JT_COMPANION;
                 }
+                if (ExpressionTransformer.isSuperOrSuperOf(this.getQmePrimary())
+                        && (!(this.getPrimary() instanceof Tree.QualifiedMemberExpression)
+                        || ((Tree.QualifiedMemberExpression)this.getPrimary()).getMemberOperator() instanceof Tree.MemberOp)) {
+                    jtFlags |= JT_COMPANION;
+                }
                 varType = gen.makeJavaType(type, jtFlags);
             }
             vars.prepend(gen.makeVar(callVarName, varType, result));
