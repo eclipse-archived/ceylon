@@ -45,7 +45,7 @@ function flatten(tf, $$$mptypes) {
         } else if (arguments.length===1 && argx===1 && is$(arguments[0],{t:Sequential,a:{Element$Sequential:t0.l[0]}})) {
           //This definitely stinks
           return tf(arguments[0]);
-        } else {
+        } else if (arguments.length>0){
           for (var i=0;i<argx;i++) {
             t.push(arguments[i]);
           }
