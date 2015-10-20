@@ -29,7 +29,7 @@ shared native object runtime  {
      [[Binary]]."
     shared native Integer integerAddressableSize;
     
-    "The largest [[Integer]] value that can be represented 
+    "The smallest [[Integer]] value that can be represented 
      by the runtime.
      
      It is the minimum `Integer` that can be distinguished 
