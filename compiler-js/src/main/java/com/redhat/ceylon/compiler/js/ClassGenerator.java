@@ -41,7 +41,12 @@ public class ClassGenerator {
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         final List<Tree.Statement> stmts;
         if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
-            stmts = NativeUtil.mergeStatements(that.getClassBody(), gen.getNativeHeader(d));
+            Tree.Declaration nativeHeader = gen.getNativeHeader(d);
+            if (nativeHeader == null) {
+                that.addError("Native backend implementations must be declared after their corresponding native header");
+                return;
+            }
+            stmts = NativeUtil.mergeStatements(that.getClassBody(), nativeHeader);
         } else {
             stmts = that.getClassBody().getStatements();
         }
