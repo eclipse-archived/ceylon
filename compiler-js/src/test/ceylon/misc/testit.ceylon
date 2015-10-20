@@ -48,5 +48,6 @@ shared void test() {
     Object i611 = test611;
     check(i611 is Issue611, "#611.2");
     testBugCl733();
+    test656();
     results();
 }

@@ -157,3 +157,12 @@ shared void test() {
     check(i611 is Issue611, "#611.1");
     results();
 }
+
+shared class Class656() {
+  shared class Inner656() {}
+  shared interface Iface656 {}
+}
+shared interface Interface656 {
+  shared class Inner656() {}
+  shared interface Iface656 {}
+}

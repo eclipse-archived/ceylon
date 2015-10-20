@@ -1,4 +1,5 @@
 import check { check }
+import members { Class656, Interface656 }
 
 shared interface X {
     shared void helloWorld() {
@@ -77,4 +78,14 @@ shared class BugCl733Class() satisfies BugCl733Interface {
 shared interface BugCl733Interface {
     shared class OneInterface() satisfies BugCl733Interface{}
     shared class TwoInterface() satisfies BugCl733Interface{}
+}
+
+void test656() {
+  check((Class656().Inner656() of Object) is Class656.Inner656, "656.1");
+  check(!(Class656().Inner656() of Object) is Class656.Iface656, "656.2");
+  class MyClass() satisfies Interface656 {
+    shared Object foo => object satisfies Iface656{}
+  }
+  check((MyClass().Inner656() of Object) is Interface656.Inner656, "656.3");
+  check(MyClass().foo is Interface656.Iface656, "656.4");
 }
