@@ -543,7 +543,7 @@ public class InvocationGenerator {
             if (!TypeUtils.isSequential(arg.getTypeModel())) {
                 gen.out(".sequence()");
             }
-        } else {
+        } else if (!args.get(args.size()-1).getTypeModel().isEmpty()) {
             final String specialSpreadVar = gen.getNames().createTempVariable();
             gen.out("(", specialSpreadVar, "=");
             args.get(args.size()-1).visit(gen);
