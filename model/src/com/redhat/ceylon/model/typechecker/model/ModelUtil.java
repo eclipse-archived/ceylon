@@ -2673,11 +2673,11 @@ public class ModelUtil {
     
     /**
      * Find the declaration with the given name that occurs
-     * directly in the given scope, taking into account the
+     * in the list of members, taking into account the
      * given backend, if any. Does not take into account
      * Java overloading
      *  
-     * @param scope any scope
+     * @param members a list of member declarations
      * @param name the name of a declaration occurring 
      *        directly in the scope, and not overloaded
      * @param backend the native backend name
@@ -2698,6 +2698,32 @@ public class ModelUtil {
             }
         }
         return null;
+    }
+    
+    /**
+     * Find the all the declarations with the given
+     * name that occur in the given list of members
+     *  
+     * @param members a list of member declarations
+     * @param name the name of a declaration
+     * 
+     * @return the matching declarations
+     */
+    public static List<Declaration> lookupOverloadedByName(
+            List<Declaration> members, String name) {
+        List<Declaration> result = null;
+        for (Declaration dec: members) {
+            if (isResolvable(dec) && isNamed(name, dec)) {
+                if (result == null) {
+                    result = new ArrayList<Declaration>(3);
+                }
+                result.add(dec);
+            }
+        }
+        if (result == null) {
+            result = Collections.emptyList();
+        }
+        return result;
     }
     
     public static Declaration getNativeHeader(Declaration dec) {
