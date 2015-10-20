@@ -32,15 +32,6 @@ public class ClassGenerator {
         if (NativeUtil.isNativeHeader(that) && natd != null) {
             // It's a native header, remember it for later when we deal with its implementation
             gen.saveNativeHeader(that);
-            for (Tree.Statement st : that.getClassBody().getStatements()) {
-                if (st instanceof Tree.Declaration) {
-                    Tree.Declaration std = (Tree.Declaration)st;
-                    if (NativeUtil.isNativeHeader(std) && ModelUtil.getNativeDeclaration(
-                            std.getDeclarationModel(), Backend.JavaScript) != null) {
-                        gen.saveNativeHeader(std);
-                    }
-                }
-            }
             return;
         }
         if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript))) {
@@ -50,12 +41,7 @@ public class ClassGenerator {
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         final List<Tree.Statement> stmts;
         if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
-            Tree.Declaration nativeHeader = gen.getNativeHeader(d);
-            if (d.isNative() && nativeHeader == null) {
-                that.addError("Native backend implementations must be declared after their corresponding native header");
-                return;
-            }
-            stmts = NativeUtil.mergeStatements(that.getClassBody(), nativeHeader);
+            stmts = NativeUtil.mergeStatements(that.getClassBody(), gen.getNativeHeader(d));
         } else {
             stmts = that.getClassBody().getStatements();
         }
