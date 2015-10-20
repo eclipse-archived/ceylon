@@ -83,7 +83,7 @@ shared Float? parseFloat(String string) {
         Float signedNumerator 
                 = numerator.zero
                       then 0 * sign.float //preserve sign of -0.0
-                      else (sign * numerator).float;
+                      else (sign * numerator).nearestFloat;
         value exponentMagnitude = exponent.magnitude;
         if (exponentMagnitude==0) {
             return signedNumerator;
