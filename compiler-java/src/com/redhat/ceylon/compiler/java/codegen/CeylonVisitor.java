@@ -42,7 +42,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
-import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -131,14 +130,11 @@ public class CeylonVisitor extends Visitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (NativeUtil.isNativeHeader(decl)) {
-            // It's a native header, remember it for later when we deal with its implementation
-            headers.put(decl.getDeclarationModel().getName(), decl);
+        if (skipHeaderMergeLater(decl)) {
             return;
         }
         // To accept this class it is either not native or native for this backend
-        boolean accept = NativeUtil.isForBackend(decl, Backend.Java);
-        if (!accept)
+        if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
 
@@ -153,7 +149,7 @@ public class CeylonVisitor extends Visitor {
         }
         gen.resetCompilerAnnotations(annots);
     }
-    
+
     CtorDelegation ctorDelegation(Constructor ctorModel, Declaration delegatedDecl, HashMap<Constructor, CtorDelegation> broken) {
         CtorDelegation b = broken.get(delegatedDecl);
         if (b != null) {
@@ -506,14 +502,11 @@ public class CeylonVisitor extends Visitor {
         if (plan instanceof Drop) {
             return;
         }
-        if (NativeUtil.isNativeHeader(decl)) {
-            // It's a native header, remember it for later when we deal with its implementation
-            headers.put(decl.getDeclarationModel().getName(), decl);
+        if (skipHeaderMergeLater(decl)) {
             return;
         }
         // To accept this object it is either not native or native for this backend
-        boolean accept = NativeUtil.isForBackend(decl, Backend.Java);
-        if (!accept)
+        if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl)) {
@@ -532,9 +525,7 @@ public class CeylonVisitor extends Visitor {
         // To accept this method it is either not native, native for this
         // backend or it's a native header with an implementation and there
         // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
-                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
-                    && NativeUtil.isImplemented(decl));
+        boolean accept = acceptDeclaration(decl);
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
@@ -561,13 +552,7 @@ public class CeylonVisitor extends Visitor {
         if (plan instanceof Drop) {
             return;
         }
-        // To accept this method it is either not native, native for this
-        // backend or it's a native header with an implementation and there
-        // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
-                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
-                    && NativeUtil.isImplemented(decl));
-        if (!accept)
+        if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -598,13 +583,7 @@ public class CeylonVisitor extends Visitor {
             // because there's little chance we'll be able to generate a correct setter
             return;
         }
-        // To accept this method it is either not native, native for this
-        // backend or it's a native header with an implementation and there
-        // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
-                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
-                    && NativeUtil.isImplemented(decl));
-        if (!accept)
+        if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
@@ -629,13 +608,7 @@ public class CeylonVisitor extends Visitor {
         if (plan instanceof Drop) {
             return;
         }
-        // To accept this method it is either not native, native for this
-        // backend or it's a native header with an implementation and there
-        // is no native implementation specifically for this backend
-        boolean accept = NativeUtil.isForBackend(decl, Backend.Java)
-                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
-                        && NativeUtil.isImplemented(decl));
-        if (!accept)
+        if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl)
@@ -1154,6 +1127,29 @@ public class CeylonVisitor extends Visitor {
     void appendList(List<? extends JCTree> xs) {
         for (JCTree x : xs) {
             append(x);
+        }
+    }
+
+    // To accept a declaration it is either not native, native for this
+    // backend or it's a native header with an implementation and there
+    // is no native implementation specifically for this backend
+    private boolean acceptDeclaration(Tree.Declaration decl) {
+        return NativeUtil.isForBackend(decl, Backend.Java)
+                || (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
+                        && NativeUtil.isImplemented(decl));
+    }
+    
+    private boolean skipHeaderMergeLater(Tree.Declaration decl) {
+        if (NativeUtil.isNativeHeader(decl)) {
+            if (NativeUtil.isHeaderWithoutBackend(decl, Backend.Java)
+                    && NativeUtil.isImplemented(decl)) {
+                return false;
+            }
+            // It's a native header, remember it for later when we deal with its implementation
+            headers.put(decl.getDeclarationModel().getName(), decl);
+            return true;
+        } else {
+            return false;
         }
     }
 }
