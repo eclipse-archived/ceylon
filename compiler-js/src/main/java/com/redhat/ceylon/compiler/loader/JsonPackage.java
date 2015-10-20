@@ -274,6 +274,18 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             }
         }
         addAttributesAndMethods(m, cls, allparms);
+        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES);
+            for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
+                loadInterface(cdef.getKey(), cdef.getValue(), cls, allparms);
+            }
+        }
+        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES);
+            for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
+                loadClass(cdef.getKey(), cdef.getValue(), cls, allparms);
+            }
+        }
         return cls;
     }
 
@@ -644,6 +656,18 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             }
         }
         addAttributesAndMethods(m, t, allparms);
+        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES);
+            for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
+                loadInterface(cdef.getKey(), cdef.getValue(), t, allparms);
+            }
+        }
+        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES);
+            for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
+                loadClass(cdef.getKey(), cdef.getValue(), t, allparms);
+            }
+        }
         return t;
     }
 
