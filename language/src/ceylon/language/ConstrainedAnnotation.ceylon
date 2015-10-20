@@ -16,7 +16,7 @@
     [[ceylon.language.meta.declaration::ClassDeclaration]] 
     or [[ceylon.language.meta.declaration::Module]], where
     [[Annotated]] means there is no constraint, and
-  - [[Type]] is a constraint on the metamodel type of the 
+  - [[Type]] is a constraint on the _metamodel type_ of the 
     annotated program element, for example, 
     [[`Function<Float,[Float,Float]>`
      |ceylon.language.meta.model::Function]], 
