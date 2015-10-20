@@ -2758,7 +2758,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private boolean isDeprecated(AnnotatedMirror classMirror){
+    protected boolean isDeprecated(AnnotatedMirror classMirror){
         if (classMirror.getAnnotation(JAVA_DEPRECATED_ANNOTATION) != null)
             return true;
         if (classMirror.getAnnotation(CEYLON_ANNOTATIONS_ANNOTATION) != null) {
