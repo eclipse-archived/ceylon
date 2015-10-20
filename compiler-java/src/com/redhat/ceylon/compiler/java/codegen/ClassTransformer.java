@@ -2508,7 +2508,7 @@ public class ClassTransformer extends AbstractTransformer {
                                         model.getType(),
                                         PUBLIC | FINAL, 
                                         typeParameters, producedTypeParameterBounds,
-                                        typedParameter.getType(), 
+                                        typedParameter.getFullType(), 
                                         Naming.getDefaultedParamMethodName(method, param), 
                                         parameters.subList(0, parameters.indexOf(param)),
                                         param.getModel().getTypeErased(),
