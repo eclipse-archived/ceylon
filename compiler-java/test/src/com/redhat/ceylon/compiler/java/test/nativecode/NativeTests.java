@@ -547,4 +547,12 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(22, "function or value does not exist: 'foo'")
         );
     }
+    
+    @Test
+    public void testNativeWrongOrder() {
+        testNativeErrors("NativeWrongOrder",
+                new CompilerError(26, "native header must be defined before its implementations: 'NativeWrongOrder'"),
+                new CompilerError(32, "native header must be defined before its implementations: 'test'")
+        );
+    }
 }
