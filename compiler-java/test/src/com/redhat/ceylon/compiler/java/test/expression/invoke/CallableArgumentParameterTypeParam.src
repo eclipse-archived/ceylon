@@ -38,7 +38,7 @@ final class callableArgumentParameterTypeParam_m_ {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.<.ceylon.language.String>callableArgumentParameterTypeParam_bar(.ceylon.language.String.$TypeDescriptor$, $ceylontmp$s);
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParam_bar_.callableArgumentParameterTypeParam_bar(.ceylon.language.String.$TypeDescriptor$, $ceylontmp$s);
                     }
                     returning null;
                 );

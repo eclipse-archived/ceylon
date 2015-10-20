@@ -16,7 +16,7 @@ final class bug2236_ {
                 @.java.lang.Override
                 public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
                     final .ceylon.language.Callable $ceylontmp$collecting = (.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)$param$0;
-                    return .ceylon.language.String.<.ceylon.language.Integer>map(.ceylon.language.Integer.$TypeDescriptor$, $instance$, $ceylontmp$collecting);
+                    return (.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>).ceylon.language.String.map(.ceylon.language.Integer.$TypeDescriptor$, $instance$, $ceylontmp$collecting);
                 }
             };
         );

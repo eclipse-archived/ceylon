@@ -17,7 +17,7 @@ final class bug1544_ {
                 @.java.lang.Override
                 public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                     final long $ceylontmp$other = ((.ceylon.language.Integer)$param$0).longValue();
-                    return .ceylon.language.Integer.instance(.ceylon.language.Integer.plus($instance$, $ceylontmp$other));
+                    return (.ceylon.language.Integer).ceylon.language.Integer.instance(.ceylon.language.Integer.plus($instance$, $ceylontmp$other));
                 }
             };
         );

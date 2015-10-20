@@ -112,7 +112,7 @@ final class bug2259_ {
             }
             
             private .java.lang.Object[] $calltyped$(final .ceylon.language.Sequential<? extends .java.lang.Object> vals) {
-                return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.create_.<.java.lang.Object>create(.ceylon.language.Object.$TypeDescriptor$, vals);
+                return (.java.lang.Object[]).com.redhat.ceylon.compiler.java.test.issues.bug22xx.create_.create(.ceylon.language.Object.$TypeDescriptor$, vals);
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> ref2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor$), "Integer(Object*)", (short)0){
@@ -183,7 +183,7 @@ final class bug2259_ {
             }
             
             private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .java.lang.Object> vals) {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.create2_.<.java.lang.Object>create2(.ceylon.language.Object.$TypeDescriptor$, vals));
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.create2_.create2(.ceylon.language.Object.$TypeDescriptor$, vals));
             }
         };
     }

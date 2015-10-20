@@ -17,7 +17,7 @@ public final class bug1148_ {
                         @.java.lang.Override
                         public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                             final .ceylon.language.Iterable $ceylontmp$characters = (.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
-                            return new .ceylon.language.String($ceylontmp$characters);
+                            return (.ceylon.language.String)new .ceylon.language.String($ceylontmp$characters);
                         }
                     };
                 
@@ -27,7 +27,7 @@ public final class bug1148_ {
                         @.java.lang.Override
                         public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
                             final double $ceylontmp$float = ((.ceylon.language.Float)$param$0).doubleValue();
-                            return new .ceylon.language.Float($ceylontmp$float);
+                            return (.ceylon.language.Float)new .ceylon.language.Float($ceylontmp$float);
                         }
                     };
                 
@@ -37,7 +37,7 @@ public final class bug1148_ {
                         @.java.lang.Override
                         public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                             final long $ceylontmp$integer = ((.ceylon.language.Integer)$param$0).longValue();
-                            return new .ceylon.language.Integer($ceylontmp$integer);
+                            return (.ceylon.language.Integer)new .ceylon.language.Integer($ceylontmp$integer);
                         }
                     };
                 
@@ -47,7 +47,7 @@ public final class bug1148_ {
                         @.java.lang.Override
                         public .ceylon.language.Character $call$(final .java.lang.Object $param$0) {
                             final int $ceylontmp$character = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Character)$param$0).intValue());
-                            return new .ceylon.language.Character($ceylontmp$character);
+                            return (.ceylon.language.Character)new .ceylon.language.Character($ceylontmp$character);
                         }
                     };
                 

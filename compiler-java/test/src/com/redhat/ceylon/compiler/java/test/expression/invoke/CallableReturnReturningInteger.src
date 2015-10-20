@@ -19,7 +19,7 @@ final class callableReturnReturningInteger_bar_ {
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_foo_.callableReturnReturningInteger_foo());
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_foo_.callableReturnReturningInteger_foo());
             }
         };
     }

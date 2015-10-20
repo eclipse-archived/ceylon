@@ -73,14 +73,14 @@ final class test_booleans_ {
             @.java.lang.Override
             public boolean[] $call$(final .java.lang.Object $param$0) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                return new boolean[$ceylontmp$size];
+                return (boolean[])new boolean[$ceylontmp$size];
             }
             
             @.java.lang.Override
             public boolean[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 final boolean $ceylontmp$element = ((.ceylon.language.Boolean)$param$1).booleanValue();
-                return .com.redhat.ceylon.compiler.java.Util.fillArray(new boolean[$ceylontmp$size], $ceylontmp$element);
+                return (boolean[]).com.redhat.ceylon.compiler.java.Util.fillArray(new boolean[$ceylontmp$size], $ceylontmp$element);
             }
         };
         final long i = items.length;
@@ -176,14 +176,14 @@ final class test_bytes_ {
             @.java.lang.Override
             public byte[] $call$(final .java.lang.Object $param$0) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                return new byte[$ceylontmp$size];
+                return (byte[])new byte[$ceylontmp$size];
             }
             
             @.java.lang.Override
             public byte[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 final byte $ceylontmp$element = ((.ceylon.language.Byte)$param$1).byteValue();
-                return .com.redhat.ceylon.compiler.java.Util.fillArray(new byte[$ceylontmp$size], $ceylontmp$element);
+                return (byte[]).com.redhat.ceylon.compiler.java.Util.fillArray(new byte[$ceylontmp$size], $ceylontmp$element);
             }
         };
         final byte[] cloned = .com.redhat.ceylon.compiler.java.language.ByteArray.$clone(items);
@@ -227,14 +227,14 @@ final class test_shorts_ {
             @.java.lang.Override
             public short[] $call$(final .java.lang.Object $param$0) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                return new short[$ceylontmp$size];
+                return (short[])new short[$ceylontmp$size];
             }
             
             @.java.lang.Override
             public short[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 final short $ceylontmp$element = .com.redhat.ceylon.compiler.java.Util.toShort(((.ceylon.language.Integer)$param$1).longValue());
-                return .com.redhat.ceylon.compiler.java.Util.fillArray(new short[$ceylontmp$size], $ceylontmp$element);
+                return (short[]).com.redhat.ceylon.compiler.java.Util.fillArray(new short[$ceylontmp$size], $ceylontmp$element);
             }
         };
         final short[] cloned = .com.redhat.ceylon.compiler.java.language.ShortArray.$clone(items);
@@ -278,14 +278,14 @@ final class test_ints_ {
             @.java.lang.Override
             public int[] $call$(final .java.lang.Object $param$0) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                return new int[$ceylontmp$size];
+                return (int[])new int[$ceylontmp$size];
             }
             
             @.java.lang.Override
             public int[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 final int $ceylontmp$element = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$1).longValue());
-                return .com.redhat.ceylon.compiler.java.Util.fillArray(new int[$ceylontmp$size], $ceylontmp$element);
+                return (int[]).com.redhat.ceylon.compiler.java.Util.fillArray(new int[$ceylontmp$size], $ceylontmp$element);
             }
         };
         final int[] cloned = .com.redhat.ceylon.compiler.java.language.IntArray.$clone(items);
@@ -329,14 +329,14 @@ final class test_longs_ {
             @.java.lang.Override
             public long[] $call$(final .java.lang.Object $param$0) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                return new long[$ceylontmp$size];
+                return (long[])new long[$ceylontmp$size];
             }
             
             @.java.lang.Override
             public long[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 final long $ceylontmp$element = ((.ceylon.language.Integer)$param$1).longValue();
-                return .com.redhat.ceylon.compiler.java.Util.fillArray(new long[$ceylontmp$size], $ceylontmp$element);
+                return (long[]).com.redhat.ceylon.compiler.java.Util.fillArray(new long[$ceylontmp$size], $ceylontmp$element);
             }
         };
         final long[] cloned = .com.redhat.ceylon.compiler.java.language.LongArray.$clone(items);
@@ -380,14 +380,14 @@ final class test_floats_ {
             @.java.lang.Override
             public float[] $call$(final .java.lang.Object $param$0) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                return new float[$ceylontmp$size];
+                return (float[])new float[$ceylontmp$size];
             }
             
             @.java.lang.Override
             public float[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 final float $ceylontmp$element = (float)((.ceylon.language.Float)$param$1).doubleValue();
-                return .com.redhat.ceylon.compiler.java.Util.fillArray(new float[$ceylontmp$size], $ceylontmp$element);
+                return (float[]).com.redhat.ceylon.compiler.java.Util.fillArray(new float[$ceylontmp$size], $ceylontmp$element);
             }
         };
         final float[] cloned = .com.redhat.ceylon.compiler.java.language.FloatArray.$clone(items);
@@ -431,14 +431,14 @@ final class test_doubles_ {
             @.java.lang.Override
             public double[] $call$(final .java.lang.Object $param$0) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                return new double[$ceylontmp$size];
+                return (double[])new double[$ceylontmp$size];
             }
             
             @.java.lang.Override
             public double[] $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final int $ceylontmp$size = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
                 final double $ceylontmp$element = ((.ceylon.language.Float)$param$1).doubleValue();
-                return .com.redhat.ceylon.compiler.java.Util.fillArray(new double[$ceylontmp$size], $ceylontmp$element);
+                return (double[]).com.redhat.ceylon.compiler.java.Util.fillArray(new double[$ceylontmp$size], $ceylontmp$element);
             }
         };
         final double[] cloned = .com.redhat.ceylon.compiler.java.language.DoubleArray.$clone(items);

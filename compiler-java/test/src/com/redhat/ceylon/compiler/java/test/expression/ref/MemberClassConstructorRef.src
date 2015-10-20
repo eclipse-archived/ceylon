@@ -237,7 +237,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple $call$(final .java.lang.Object $param$0) {
                 final .java.lang.String $ceylontmp$s1 = ((.ceylon.language.String)$param$0).toString();
-                return .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Simple$new$($ceylontmp$s1);
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Simple).com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Simple$new$($ceylontmp$s1);
             }
         };
         if (defRef2.$call$((.java.lang.Object).ceylon.language.String.instance("s1")).toString().equals("Simple.Simple(s1)")) {
@@ -830,14 +830,14 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$() {
-                return .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Defaulted$new$();
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted).com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Defaulted$new$();
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted $call$(final .java.lang.Object $param$0) {
                 final .java.lang.String $ceylontmp$s1 = ((.ceylon.language.String)$param$0).toString();
-                return .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Defaulted$new$($ceylontmp$s1);
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Defaulted).com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Defaulted$new$($ceylontmp$s1);
             }
         };
         if (defRef2.$call$().toString().equals("Defaulted.Defaulted(s1)")) {
@@ -1596,7 +1596,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             }
             
             private .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> s1$param$) {
-                return .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Sequenced$new$(s1$param$);
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Sequenced).com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Sequenced$new$(s1$param$);
             }
         };
         if (defRef2.$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("s1")}, .ceylon.language.empty_.get_())).toString().equals("Sequenced.Sequenced([s1])")) {
@@ -2229,7 +2229,7 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String> $call$(final .java.lang.Object $param$0) {
                 final .ceylon.language.String $ceylontmp$s1 = (.ceylon.language.String)$param$0;
-                return .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, $ceylontmp$s1);
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.Parameterized<.ceylon.language.String>).com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassConstructorRef.this.Parameterized$new$(.ceylon.language.String.$TypeDescriptor$, $ceylontmp$s1);
             }
         };
         if (defRef2.$call$((.java.lang.Object).ceylon.language.String.instance("s1")).toString().equals("Parameterized.Parameterized(s1)")) {

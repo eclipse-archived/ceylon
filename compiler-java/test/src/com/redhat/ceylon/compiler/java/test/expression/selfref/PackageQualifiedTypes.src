@@ -29,7 +29,7 @@ class SubPackageQualified extends .com.redhat.ceylon.compiler.java.test.expressi
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.selfref.SubPackageQualified $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.expression.selfref.SubPackageQualified();
+                return (.com.redhat.ceylon.compiler.java.test.expression.selfref.SubPackageQualified)new .com.redhat.ceylon.compiler.java.test.expression.selfref.SubPackageQualified();
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> mref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.selfref.SubPackageQualified.$TypeDescriptor$), "Anything()(SubPackageQualified)", (short)-1){

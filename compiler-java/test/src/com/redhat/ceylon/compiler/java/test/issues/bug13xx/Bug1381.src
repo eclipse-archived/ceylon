@@ -78,7 +78,7 @@ class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.mod
                 @.java.lang.Override
                 public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                     final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                    return .ceylon.language.Integer.instance($instance$.m$priv$($ceylontmp$p));
+                    return (.ceylon.language.Integer).ceylon.language.Integer.instance($instance$.m$priv$($ceylontmp$p));
                 }
             };
         );
@@ -116,7 +116,7 @@ class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.mod
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C $call$(final .java.lang.Object $param$0) {
                     final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                    return $instance$.new C($ceylontmp$p);
+                    return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superclass.C)$instance$.new C($ceylontmp$p);
                 }
             };
         );
@@ -239,7 +239,7 @@ final class Bug1381_Superinterface$impl implements .java.io.Serializable {
                 @.java.lang.Override
                 public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
                     final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                    return .ceylon.language.Integer.instance($instance$.m$priv$($ceylontmp$p));
+                    return (.ceylon.language.Integer).ceylon.language.Integer.instance($instance$.m$priv$($ceylontmp$p));
                 }
             };
         );
@@ -277,7 +277,7 @@ final class Bug1381_Superinterface$impl implements .java.io.Serializable {
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C $call$(final .java.lang.Object $param$0) {
                     final long $ceylontmp$p = ((.ceylon.language.Integer)$param$0).longValue();
-                    return $instance$.new C($ceylontmp$p);
+                    return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1381_Superinterface$impl.C)$instance$.new C($ceylontmp$p);
                 }
             };
         );

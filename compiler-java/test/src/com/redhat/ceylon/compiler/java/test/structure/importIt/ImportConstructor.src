@@ -13,21 +13,21 @@ final class importConstructor_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor();
+                return (.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor)new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor();
             }
         };
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor> other1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor>(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Ctor.other()", (short)-1){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.other_);
+                return (.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor)new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.other_);
             }
         };
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor> y1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor>(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Ctor.third()", (short)-1){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.third_);
+                return (.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor)new .com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor(.com.redhat.ceylon.compiler.java.test.structure.importIt.ctor.Ctor.third_);
             }
         };
     }

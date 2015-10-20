@@ -143,7 +143,7 @@ final class methodRefsFromOutside_ {
                 @.java.lang.Override
                 public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                     final .java.lang.String $ceylontmp$arg = ((.ceylon.language.String)$param$0).toString();
-                    return .ceylon.language.String.instance($instance$.sharedStringFp($ceylontmp$arg));
+                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.sharedStringFp($ceylontmp$arg));
                 }
             };
         );

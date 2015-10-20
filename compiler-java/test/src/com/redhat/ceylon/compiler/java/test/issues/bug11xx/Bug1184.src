@@ -83,7 +83,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
             
             private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184.this.narySequenced(s1, s2, s3, s4, s));
+                return (.ceylon.language.String).ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184.this.narySequenced(s1, s2, s3, s4, s));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.String> r2 = (
@@ -125,7 +125,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 }
                 
                 private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-                    return .ceylon.language.String.instance($instance$.narySequenced(s1, s2, s3, s4, s));
+                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.narySequenced(s1, s2, s3, s4, s));
                 }
             };
         );
@@ -168,7 +168,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 }
                 
                 private .ceylon.language.String $calltyped$(final .java.lang.String s1, final .java.lang.String s2, final .java.lang.String s3, final .java.lang.String s4, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
-                    return .ceylon.language.String.instance($instance$.narySequenced(s1, s2, s3, s4, s));
+                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.narySequenced(s1, s2, s3, s4, s));
                 }
             };
         );

@@ -24,14 +24,14 @@ final class bug1877_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877 $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
+                return (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877)new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
             }
         }})).$clone();
         .ceylon.language.print_.print(((.ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877>(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Bug1877()", (short)-1){
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877 $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
+                return (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877)new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
             }
         }})).$clone());
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
@@ -44,7 +44,7 @@ final class bug1877_ {
                         
                         @.java.lang.Override
                         public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877 $call$() {
-                            return new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
+                            return (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877)new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877();
                         }
                     };
                 

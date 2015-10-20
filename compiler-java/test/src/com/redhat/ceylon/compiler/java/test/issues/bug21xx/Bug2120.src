@@ -42,7 +42,7 @@ class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                 final .java.lang.Object $ceylontmp$other = $param$0;
-                return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z.this.equals($ceylontmp$other));
+                return (.ceylon.language.Boolean).ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z.this.equals($ceylontmp$other));
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> eq2 = (
@@ -55,7 +55,7 @@ class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
                 @.java.lang.Override
                 public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                     final .java.lang.Object $ceylontmp$other = $param$0;
-                    return .ceylon.language.Boolean.instance($instance$.equals($ceylontmp$other));
+                    return (.ceylon.language.Boolean).ceylon.language.Boolean.instance($instance$.equals($ceylontmp$other));
                 }
             };
         );
@@ -64,7 +64,7 @@ class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                 final .java.lang.Object $ceylontmp$that = $param$0;
-                return .ceylon.language.Boolean.instance($com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$.equals($ceylontmp$that));
+                return (.ceylon.language.Boolean).ceylon.language.Boolean.instance($com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$.equals($ceylontmp$that));
             }
         };
     }
@@ -91,7 +91,7 @@ class Bug2120Z2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                 final .java.lang.Object $ceylontmp$that = $param$0;
-                return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z2.super.equals($ceylontmp$that));
+                return (.ceylon.language.Boolean).ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z2.super.equals($ceylontmp$that));
             }
         };
     }
@@ -120,7 +120,7 @@ final class Bug2120Z3$impl implements .java.io.Serializable {
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                 final .java.lang.Object $ceylontmp$that = $param$0;
-                return .ceylon.language.Boolean.instance($this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$impl().equals($ceylontmp$that));
+                return (.ceylon.language.Boolean).ceylon.language.Boolean.instance($this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$impl().equals($ceylontmp$that));
             }
         };
     }

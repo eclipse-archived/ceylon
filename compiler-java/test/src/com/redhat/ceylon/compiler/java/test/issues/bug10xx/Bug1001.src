@@ -52,7 +52,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> initLateCallableAttrib;
@@ -60,7 +60,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
             }
         };
         this.initLateMethodRefCaptured$priv$ = null;
@@ -68,7 +68,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
             }
         };
         .ceylon.language.print_.print((
@@ -131,7 +131,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
             }
         };
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> localLateCallableAttrib;
@@ -139,7 +139,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
             }
         };
         
@@ -159,7 +159,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$() {
-                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
             }
         };
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(localLateMethodRef.localLateMethodRef()));

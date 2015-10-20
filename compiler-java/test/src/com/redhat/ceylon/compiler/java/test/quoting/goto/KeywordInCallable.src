@@ -47,7 +47,7 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
             
             @.java.lang.Override
             public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
-                return enum.$enum();
+                return (.ceylon.language.Callable<? extends .java.lang.Object>)enum.$enum();
             }
         });
     }

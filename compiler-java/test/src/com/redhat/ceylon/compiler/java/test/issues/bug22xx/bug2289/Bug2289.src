@@ -21,42 +21,42 @@ final class bug2289_ {
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines1 = (
             let
             {
-                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable> $instance$ = (.ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable>)(.ceylon.language.Map)mm;
+                final .ceylon.language.Map $instance$ = (.ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable>)(.ceylon.language.Map)mm;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                     final .java.lang.Object $ceylontmp$key = $param$0;
-                    return .ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
+                    return (.ceylon.language.Boolean).ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
                 }
             };
         );
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines2 = (
             let
             {
-                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable> $instance$ = (.ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable>)(.ceylon.language.Map)mm;
+                final .ceylon.language.Map $instance$ = (.ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable>)(.ceylon.language.Map)mm;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                     final .java.lang.Object $ceylontmp$key = $param$0;
-                    return .ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
+                    return (.ceylon.language.Boolean).ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
                 }
             };
         );
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines3 = (
             let
             {
-                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = mm;
+                final .ceylon.language.Map $instance$ = mm;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                     final .java.lang.Object $ceylontmp$key = $param$0;
-                    return .ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
+                    return (.ceylon.language.Boolean).ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
                 }
             };
         );

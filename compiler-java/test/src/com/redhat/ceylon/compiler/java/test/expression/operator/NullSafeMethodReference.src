@@ -16,7 +16,7 @@ final class nullSafeMethodReference_ {
                 @.java.lang.Override
                 public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                     final long $ceylontmp$length = ((.ceylon.language.Integer)$param$0).longValue();
-                    return (
+                    return (.ceylon.language.String)(
                         let
                         {
                             .ceylon.language.String safe$1 = $instance$;

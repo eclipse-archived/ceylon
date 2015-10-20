@@ -21,7 +21,7 @@ final class callableReturnReturningClass_bar_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass $call$() {
-                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass();
+                return (.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass)new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass();
             }
         };
     }

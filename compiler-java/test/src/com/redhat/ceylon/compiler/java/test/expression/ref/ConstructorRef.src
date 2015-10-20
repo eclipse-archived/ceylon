@@ -427,7 +427,7 @@ final class constructorRef_ {
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef $call$(final .java.lang.Object $param$0) {
                 final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
-                return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef($ceylontmp$s);
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef)new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef($ceylontmp$s);
             }
         };
         if ("default(s1)".equals($default.$call$((.java.lang.Object).ceylon.language.String.instance("s1")).toString())) {
@@ -439,7 +439,7 @@ final class constructorRef_ {
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef $call$(final .java.lang.Object $param$0) {
                 final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
-                return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef($ceylontmp$s);
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef)new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef($ceylontmp$s);
             }
         };
         if ("default(s2)".equals(default2.$call$((.java.lang.Object).ceylon.language.String.instance("s2")).toString())) {
@@ -517,7 +517,7 @@ final class constructorRef_ {
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String> $call$(final .java.lang.Object $param$0) {
                 final .ceylon.language.String $ceylontmp$s = (.ceylon.language.String)$param$0;
-                return new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, $ceylontmp$s);
+                return (.com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>)new .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRefTp<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, $ceylontmp$s);
             }
         };
         if ("defaultTp(s1)".equals(defaultTp.$call$((.java.lang.Object).ceylon.language.String.instance("s1")).toString())) {
