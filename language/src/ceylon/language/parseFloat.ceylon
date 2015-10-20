@@ -4,6 +4,10 @@
  point number, or `null` if the string does not represent a 
  decimal floating point number.
  
+ If the given string representation contains more digits
+ than can be represented by a `Float`, then the least 
+ significant digits are ignored.
+ 
  The syntax accepted by this method is the same as the 
  syntax for a `Float` literal in the Ceylon language 
  except that it may optionally begin with a sign 
@@ -73,7 +77,7 @@ shared Float? parseFloat(String string) {
     
     value digits = usableWholePart + usableFractionalPart;
     value shift 
-            = if (usableFractionalPart.empty)
+            = usableFractionalPart.empty
             then usableWholePart.size - wholePart.size
             else usableFractionalPart.size;
     
@@ -100,7 +104,7 @@ shared Float? parseFloat(String string) {
         if (exponentMagnitude == 0) {
             return signed;
         }
-        else if (exponentMagnitude<maximumIntegerExponent) {
+        else if (exponentMagnitude<=maximumIntegerExponent) {
             value scale = 10^exponentMagnitude;
             return exponent<0
             then signed / scale
@@ -118,9 +122,12 @@ shared Float? parseFloat(String string) {
 }
 
 //TODO: replace with a native implementation
-Integer maximumIntegerExponent 
+"The maximum number of decimal digits that can be 
+ represented by an [[Integer]]."
+Integer maximumIntegerExponent
         = smallest(runtime.maxIntegerValue.string.size,
-                   runtime.minIntegerValue.string.size-1);
+                   runtime.minIntegerValue.string.size-1)
+            - 1;
 
 Integer? parseFloatExponent(String string) {
     switch (string)
