@@ -63,7 +63,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
@@ -263,7 +262,7 @@ public class ClassTransformer extends AbstractTransformer {
             .defs((List)childDefs);
         
         // aliases and native headers don't need a $getType method
-        if(!model.isAlias() && !model.isNativeHeader()){
+        if(!model.isAlias()){
             // only classes get a $getType method
             if(model instanceof Class)
                 classBuilder.addGetTypeMethod(model.getType());
@@ -3468,7 +3467,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= transformDeclarationSharedFlags(cdecl);
         // aliases cannot be abstract, especially since they're just placeholders
-        result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal() || cdecl.isNativeHeader()) && !cdecl.isAlias() ? ABSTRACT : 0;
+        result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal()) && !cdecl.isAlias() ? ABSTRACT : 0;
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         // aliases are always final placeholders, final classes are also final
         result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
@@ -3556,7 +3555,7 @@ public class ClassTransformer extends AbstractTransformer {
     private int transformObjectDeclFlags(Value cdecl) {
         int result = 0;
 
-        result |= cdecl.isNativeHeader() ? ABSTRACT : FINAL;
+        result |= FINAL;
         result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
 
         return result;
@@ -5173,11 +5172,9 @@ public class ClassTransformer extends AbstractTransformer {
         makeReadResolve(objectClassBuilder, klass, model);
         
         // Make sure top types satisfy reified type
-        if (model == null || !model.isNativeHeader()) {
-            addReifiedTypeInterface(objectClassBuilder, klass);
-            if(supportsReifiedAlias(klass))
-                objectClassBuilder.reifiedAlias(klass.getType());
-        }
+        addReifiedTypeInterface(objectClassBuilder, klass);
+        if(supportsReifiedAlias(klass))
+            objectClassBuilder.reifiedAlias(klass.getType());
         
         CeylonVisitor visitor = gen().visitor;
         final ListBuffer<JCTree> prevDefs = visitor.defs;
@@ -5203,8 +5200,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (model != null
                 && Decl.isToplevel(model)
-                && def instanceof Tree.ObjectDefinition
-                && !model.isNativeHeader()) {
+                && def instanceof Tree.ObjectDefinition) {
             // generate a field and getter
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                     // TODO attr build take a JCExpression className
@@ -5233,10 +5229,8 @@ public class ClassTransformer extends AbstractTransformer {
             .annotations(makeAtObject())
             .satisfies(klass.getSatisfiedTypes())
             .defs((List)childDefs);
-        if (model == null || !model.isNativeHeader()) {
-            objectClassBuilder.getInitBuilder().modifiers(PRIVATE);
-            objectClassBuilder.addGetTypeMethod(klass.getType());
-        }
+        objectClassBuilder.getInitBuilder().modifiers(PRIVATE);
+        objectClassBuilder.addGetTypeMethod(klass.getType());
         
         if(model != null)
             objectClassBuilder
@@ -5245,51 +5239,49 @@ public class ClassTransformer extends AbstractTransformer {
         
         List<JCTree> result = objectClassBuilder.build();
         
-        if (model == null || !model.isNativeHeader()) {
-            if (makeLocalInstance) {
-                if(model.isSelfCaptured()){
-                    // if it's captured we need to box it and define the var before the class, so it can access it
-                    JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
-                    JCFieldAccess setter = naming.makeSelect(Naming.getLocalValueName(model), Naming.getSetterName(model));
-                    JCStatement assign = make().Exec(make().Assign(setter, newInstance));
-                    result = result.prepend(assign);
-    
-                    JCVariableDecl localDecl = makeVariableBoxDecl(null, model);
-                    result = result.prepend(localDecl);
-                }else{
-                    // not captured, we can define the var after the class
-                    JCVariableDecl localDecl = makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false);
-                    result = result.append(localDecl);
+        if (makeLocalInstance) {
+            if(model.isSelfCaptured()){
+                // if it's captured we need to box it and define the var before the class, so it can access it
+                JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
+                JCFieldAccess setter = naming.makeSelect(Naming.getLocalValueName(model), Naming.getSetterName(model));
+                JCStatement assign = make().Exec(make().Assign(setter, newInstance));
+                result = result.prepend(assign);
+
+                JCVariableDecl localDecl = makeVariableBoxDecl(null, model);
+                result = result.prepend(localDecl);
+            }else{
+                // not captured, we can define the var after the class
+                JCVariableDecl localDecl = makeLocalIdentityInstance(name, objectClassBuilder.getClassName(), false);
+                result = result.append(localDecl);
+            }
+            
+        } else if (model != null && Decl.withinClassOrInterface(model)) {
+            boolean generateGetter = Decl.isCaptured(model);
+            JCExpression type = makeJavaType(klass.getType());
+            if (generateGetter) {
+                int modifiers = TRANSIENT | PRIVATE;
+                JCExpression initialValue = makeNull();
+                containingClassBuilder.field(modifiers, name, type, initialValue, false);
+                AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
+                .getter(this, name, model)
+                .modifiers(transformAttributeGetSetDeclFlags(model, false));
+                if (def instanceof Tree.ObjectDefinition) {
+                    getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
                 }
+                ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
                 
-            } else if (model != null && Decl.withinClassOrInterface(model)) {
-                boolean generateGetter = Decl.isCaptured(model);
-                JCExpression type = makeJavaType(klass.getType());
-                if (generateGetter) {
-                    int modifiers = TRANSIENT | PRIVATE;
-                    JCExpression initialValue = makeNull();
-                    containingClassBuilder.field(modifiers, name, type, initialValue, false);
-                    AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-                    .getter(this, name, model)
-                    .modifiers(transformAttributeGetSetDeclFlags(model, false));
-                    if (def instanceof Tree.ObjectDefinition) {
-                        getter.userAnnotations(expressionGen().transformAnnotations(true, OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
-                    }
-                    ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
-                    
-                    stmts.add(make().If(make().Binary(JCTree.EQ,
-                            naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
-                            makeNull()), make().Exec(make().Assign(
-                                    naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
-                                    makeNewClass(makeJavaType(klass.getType()), null))), null));
-                    stmts.add(make().Return(naming.makeUnquotedIdent(Naming.quoteFieldName(name))));
-                    getter.getterBlock(make().Block(0, stmts.toList()));
-                    result = result.appendList(getter.build());
-                } else {
-                    int modifiers = FINAL;
-                    JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
-                    containingClassBuilder.field(modifiers, name, type, initialValue, true);
-                }
+                stmts.add(make().If(make().Binary(JCTree.EQ,
+                        naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
+                        makeNull()), make().Exec(make().Assign(
+                                naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
+                                makeNewClass(makeJavaType(klass.getType()), null))), null));
+                stmts.add(make().Return(naming.makeUnquotedIdent(Naming.quoteFieldName(name))));
+                getter.getterBlock(make().Block(0, stmts.toList()));
+                result = result.appendList(getter.build());
+            } else {
+                int modifiers = FINAL;
+                JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
+                containingClassBuilder.field(modifiers, name, type, initialValue, true);
             }
         }
         
