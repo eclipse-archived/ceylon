@@ -64,7 +64,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
     
     @OptionArgument(shortName='R', argumentName="folder-name")
     @Description("Sets the special resource folder name whose files will " +
-            "end up in the root of the resulting WAR file (no default).")
+            "end up in the root of the resulting WAR file (default: web-content).")
     public void setResourceRoot(String root) {
     	this.resourceRoot = root;
     }
@@ -308,5 +308,5 @@ public class CeylonWarTool extends ModuleLoadingTool {
 	private final List<String> excludedModules = new ArrayList<>();
 	private String out = null;
 	private String name = null;
-	private String resourceRoot = null;
+	private String resourceRoot = "web-content";
 }
