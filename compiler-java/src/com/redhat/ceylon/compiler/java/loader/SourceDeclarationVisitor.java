@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.java.loader;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
