@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -69,6 +70,8 @@ public class NativeUtil {
     public static boolean isImplemented(Declaration decl) {
         if (decl instanceof FunctionOrValue) {
             return ((FunctionOrValue)decl).isImplemented();
+        } else if (decl instanceof ClassOrInterface) {
+            return !decl.isNative();
         } else {
             return false;
         }
