@@ -29,6 +29,9 @@ native shared class NativeClassShared() {
     native shared class Inner() {
         native shared Integer baz();
     }
+    native shared class Inner2() {
+        native shared Integer baz() => 1;
+    }
 }
 
 native("jvm") shared class NativeClassShared() {
@@ -66,4 +69,5 @@ void testNativeClassShared() {
     value c = x.obj;
     value y = x.Inner();
     value d = y.baz();
+    value z = x.Inner2();
 }
