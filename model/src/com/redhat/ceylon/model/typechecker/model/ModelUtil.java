@@ -2811,8 +2811,22 @@ public class ModelUtil {
             FunctionOrValue fov = (FunctionOrValue) dec;
             return fov.isImplemented();
         }
-        else if (dec instanceof Constructor) {
-            // For now constructors are always implemented
+        else if (dec instanceof Class) {
+            Class coi = (Class) dec;
+            if (dec.isNativeHeader()) {
+                for (Declaration m : coi.getMembers()) {
+                    if (!isImplemented(m)) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return coi.isAbstract();
+            }
+        }
+        else if (dec instanceof Constructor ||
+                dec instanceof Interface) {
+            // For now consider these implemented
             return true;
         }
         return false;
