@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.util;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -33,36 +33,47 @@ public class NativeUtil {
         }
         List<Tree.Statement> stmts = body.getStatements();
         if (hdrstmts != null && !hdrstmts.isEmpty()) {
-            Set<String> names = getDeclarationNames(stmts);
-            LinkedList<Tree.Statement> newstmts = new LinkedList<Tree.Statement>(stmts);
+            LinkedHashMap<String,Tree.Statement> stmtsmap = new LinkedHashMap<String,Tree.Statement>();
+            int idx = 0;
+            for (Tree.Statement stmt : stmts) {
+                if (stmt instanceof Tree.Declaration) {
+                    Tree.Declaration decl = (Tree.Declaration)stmt;
+                    Declaration m = decl.getDeclarationModel();
+                    String key = m.getClass().getSimpleName() + "#" + m.getName();
+                    stmtsmap.put(key, decl);
+                } else {
+                    stmtsmap.put("#" + (idx++), stmt);
+                }
+            }
             for (Tree.Statement stmt : hdrstmts) {
                 if (stmt instanceof Tree.Declaration) {
                     Tree.Declaration decl = (Tree.Declaration)stmt;
-                    if (isImplemented(decl)
-                            && !names.contains(decl.getDeclarationModel().getName())) {
-                        newstmts.addFirst(decl);
+                    Declaration m = decl.getDeclarationModel();
+                    if (acceptHeader(m)) {
+                        String key = m.getClass().getSimpleName() + "#" + m.getName();
+                        if (!stmtsmap.containsKey(key)) {
+                            stmtsmap.put(key, decl);
+                        }
                     }
                 } else {
-                    newstmts.addFirst(stmt);
+                    // Headers cannot have statements!
                 }
             }
-            stmts = newstmts;
+            stmts = new ArrayList<Tree.Statement>(stmtsmap.values());
         }
         return stmts;
     }
 
-    public static Set<String> getDeclarationNames(java.util.List<Tree.Statement> stmts) {
-        java.util.HashSet<String> names = new java.util.HashSet<String>();
-        for (Tree.Statement stmt : stmts) {
-            if (stmt instanceof Tree.Declaration) {
-                Tree.Declaration decl = (Tree.Declaration)stmt;
-                String declName = decl.getDeclarationModel().getName();
-                names.add(declName);
-            }
+    private static boolean acceptHeader(Declaration decl) {
+        if (decl instanceof FunctionOrValue) {
+            return isImplemented(decl);
+        } else if (decl instanceof ClassOrInterface) {
+            return !decl.isNative();
+        } else {
+            return false;
         }
-        return names;
     }
-
+    
     public static boolean isImplemented(Tree.Declaration decl) {
         return isImplemented(decl.getDeclarationModel());
     }
@@ -70,8 +81,6 @@ public class NativeUtil {
     public static boolean isImplemented(Declaration decl) {
         if (decl instanceof FunctionOrValue) {
             return ((FunctionOrValue)decl).isImplemented();
-        } else if (decl instanceof ClassOrInterface) {
-            return !decl.isNative();
         } else {
             return false;
         }
