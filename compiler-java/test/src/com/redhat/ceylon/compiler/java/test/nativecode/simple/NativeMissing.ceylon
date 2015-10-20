@@ -18,7 +18,9 @@
  * MA  02110-1301, USA.
  */
 native shared Integer nativeMissingMethod();
-native shared class NativeMissingClass() {}
+native shared class NativeMissingClass() {
+    native shared void foo();
+}
 
 native Integer nativeMissingMethod2();
 native("js") Integer nativeMissingMethod2() => 1;

@@ -233,13 +233,13 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         assertErrors("bug15xx/Bug1576",
                 new CompilerError(21, "no native implementation for backend: native 'bug1576angular' is not implemented for the 'jvm' backend"),
                 new CompilerError(26, "no native implementation for backend: native 'Bug1576Class' is not implemented for the 'jvm' backend"),
-                new CompilerError(29, "no native implementation for backend: native 'bug1576Method' is not implemented for the 'jvm' backend"),
-                new CompilerError(32, "no native implementation for backend: native 'bug1576Attr' is not implemented for the 'jvm' backend"),
-                new CompilerError(36, "no native implementation for backend: native 'bug1576angular' is not implemented for the 'jvm' backend"),
-                new CompilerError(40, "no native implementation for backend: native 'Bug1576Class' is not implemented for the 'jvm' backend"),
-                new CompilerError(45, "no native implementation for backend: native 'Bug1576Class' is not implemented for the 'jvm' backend"),
-                new CompilerError(50, "no native implementation for backend: native 'bug1576Method' is not implemented for the 'jvm' backend"),
-                new CompilerError(55, "no native implementation for backend: native 'bug1576Attr' is not implemented for the 'jvm' backend")
+                new CompilerError(31, "no native implementation for backend: native 'bug1576Method' is not implemented for the 'jvm' backend"),
+                new CompilerError(34, "no native implementation for backend: native 'bug1576Attr' is not implemented for the 'jvm' backend"),
+                new CompilerError(38, "no native implementation for backend: native 'bug1576angular' is not implemented for the 'jvm' backend"),
+                new CompilerError(42, "no native implementation for backend: native 'Bug1576Class' is not implemented for the 'jvm' backend"),
+                new CompilerError(47, "no native implementation for backend: native 'Bug1576Class' is not implemented for the 'jvm' backend"),
+                new CompilerError(52, "no native implementation for backend: native 'bug1576Method' is not implemented for the 'jvm' backend"),
+                new CompilerError(57, "no native implementation for backend: native 'bug1576Attr' is not implemented for the 'jvm' backend")
                 );
     }
 

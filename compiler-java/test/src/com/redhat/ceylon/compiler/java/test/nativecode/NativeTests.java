@@ -297,7 +297,6 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
                 new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'"),
                 new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
-                new CompilerError(82, "no native implementation for backend: native 'NativeClassMismatch6' is not implemented for the 'jvm' backend"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
                 new CompilerError(92, "native backend name on declaration conflicts with its scope: 'test1'"),
@@ -483,11 +482,11 @@ public class NativeTests extends CompilerTests {
         testNativeErrors("NativeMissing",
                 new CompilerError(20, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for the 'jvm' backend"),
                 new CompilerError(21, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend"),
-                new CompilerError(23, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for the 'jvm' backend"),
-                new CompilerError(27, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for the 'jvm' backend"),
-                new CompilerError(28, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for the 'jvm' backend"),
-                new CompilerError(29, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend"),
-                new CompilerError(32, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend")
+                new CompilerError(25, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for the 'jvm' backend"),
+                new CompilerError(29, "no native implementation for backend: native 'nativeMissingMethod' is not implemented for the 'jvm' backend"),
+                new CompilerError(30, "no native implementation for backend: native 'nativeMissingMethod2' is not implemented for the 'jvm' backend"),
+                new CompilerError(31, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend"),
+                new CompilerError(34, "no native implementation for backend: native 'NativeMissingClass' is not implemented for the 'jvm' backend")
         );
     }
     
