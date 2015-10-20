@@ -158,22 +158,30 @@ public class CeylonWarTool extends ModuleLoadingTool {
         }
     }
     
-    // returns true if a web.xml was added
+    /** 
+     * Copies resources from the {@link #resourceRoot} to the WAR.
+     * @return true if a web.xml was added
+     */
     protected boolean addResources(List<EntrySpec> entries) throws MalformedURLException {
-        if (this.resourceRoot != null) {
-            final File root = applyCwd(new File(this.resourceRoot));
-            if (!root.exists()) {
-                throw new ToolUsageError(CeylonWarMessages.msg("resourceRoot.missing", root.getAbsolutePath()));
+        final File root;
+        if (this.resourceRoot == null) {
+            File defaultRoot = applyCwd(new File("web-content"));
+            if (!defaultRoot.exists()) {
+                return false;
             }
-            if (!root.isDirectory()) {
-                throw new ToolUsageError(CeylonWarMessages.msg("resourceRoot.nondir", root.getAbsolutePath()));
-            }
-            debug("adding.resources", root.getAbsolutePath());
-            
-            return addResources(root, "", entries);
+            root = defaultRoot;
+        } else {
+            root = applyCwd(new File(this.resourceRoot));
         }
+        if (!root.exists()) {
+            throw new ToolUsageError(CeylonWarMessages.msg("resourceRoot.missing", root.getAbsolutePath()));
+        }
+        if (!root.isDirectory()) {
+            throw new ToolUsageError(CeylonWarMessages.msg("resourceRoot.nondir", root.getAbsolutePath()));
+        }
+        debug("adding.resources", root.getAbsolutePath());
         
-        return false;
+        return addResources(root, "", entries);
     }
     
     // returns true if a web.xml was added
@@ -308,5 +316,5 @@ public class CeylonWarTool extends ModuleLoadingTool {
     private final List<String> excludedModules = new ArrayList<>();
     private String out = null;
     private String name = null;
-    private String resourceRoot = "web-content";
+    private String resourceRoot;
 }
