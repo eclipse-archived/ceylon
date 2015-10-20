@@ -12,7 +12,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.AttributeGenerator;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
-import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
+import com.redhat.ceylon.compiler.js.loader.MetamodelGenerator;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;

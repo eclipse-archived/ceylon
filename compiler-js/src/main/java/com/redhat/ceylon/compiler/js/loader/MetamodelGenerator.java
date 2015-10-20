@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.js.loader;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 

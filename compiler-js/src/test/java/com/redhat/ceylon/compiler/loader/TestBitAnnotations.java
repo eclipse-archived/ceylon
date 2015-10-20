@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.loader;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.js.loader.JsonPackage;
+import com.redhat.ceylon.compiler.js.loader.MetamodelGenerator;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Value;
 

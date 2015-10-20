@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.js.loader;
 
 import java.io.IOException;
 import java.io.Writer;

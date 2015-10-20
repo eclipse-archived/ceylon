@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.loader;
+package com.redhat.ceylon.compiler.js.loader;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.context.Context;

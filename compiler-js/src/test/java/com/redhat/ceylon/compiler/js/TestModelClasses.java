@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import util.ModelUtils;
 
-import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
-import com.redhat.ceylon.compiler.loader.MetamodelVisitor;
+import com.redhat.ceylon.compiler.js.loader.MetamodelGenerator;
+import com.redhat.ceylon.compiler.js.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 
 public class TestModelClasses {

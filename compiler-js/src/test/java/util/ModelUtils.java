@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import com.redhat.ceylon.compiler.loader.MetamodelGenerator;
+import com.redhat.ceylon.compiler.js.loader.MetamodelGenerator;
 
 public class ModelUtils {
 
