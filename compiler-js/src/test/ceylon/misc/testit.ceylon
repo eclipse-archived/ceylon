@@ -49,5 +49,6 @@ shared void test() {
     check(i611 is Issue611, "#611.2");
     testBugCl733();
     test656();
+    testNatives();
     results();
 }

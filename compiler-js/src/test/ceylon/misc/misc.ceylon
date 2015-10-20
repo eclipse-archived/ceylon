@@ -84,7 +84,7 @@ void test656() {
   check((Class656().Inner656() of Object) is Class656.Inner656, "656.1");
   check(!(Class656().Inner656() of Object) is Class656.Iface656, "656.2");
   class MyClass() satisfies Interface656 {
-    shared Object foo => object satisfies Iface656{}
+    shared Object foo => object satisfies Iface656{};
   }
   check((MyClass().Inner656() of Object) is Interface656.Inner656, "656.3");
   check(MyClass().foo is Interface656.Iface656, "656.4");
