@@ -2741,11 +2741,7 @@ public class ModelUtil {
             if (cd.isNativeImplementation()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
-                Declaration c =
-                        cd.getContainer()
-                            .getDirectMemberForBackend(
-                                cd.getName(),
-                                Backend.None.nativeAnnotation);
+                Declaration c = getNativeHeader(cd.getContainer(), cd.getName());
                 if (c != null) {
                     // Is this the Value part of an object?
                     if (c instanceof Value) {
