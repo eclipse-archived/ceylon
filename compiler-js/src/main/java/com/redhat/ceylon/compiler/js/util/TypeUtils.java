@@ -1424,7 +1424,7 @@ public class TypeUtils {
                 || NativeUtil.isForBackend(decl, Backend.JavaScript)
                 || isNativeExternal(decl)
                 || (NativeUtil.isHeaderWithoutBackend(decl, Backend.JavaScript)
-                    && NativeUtil.isImplemented(decl));
+                    && ModelUtil.isImplemented(decl));
     }
 
     public static boolean isCallable(Type t) {
