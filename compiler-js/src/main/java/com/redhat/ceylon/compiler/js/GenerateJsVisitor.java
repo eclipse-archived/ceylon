@@ -1176,7 +1176,8 @@ public class GenerateJsVisitor extends Visitor {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         final Function d = that.getDeclarationModel();
-        if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) || TypeUtils.isNativeExternal(d))) {
+        if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) ||
+                (TypeUtils.isNativeExternal(d) && compiler.isCompilingLanguageModule()))) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), d);
             FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
