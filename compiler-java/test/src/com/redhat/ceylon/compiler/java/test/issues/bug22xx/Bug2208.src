@@ -515,7 +515,7 @@ public abstract class Promise<Value> implements .com.redhat.ceylon.compiler.java
     
     @.java.lang.Override
     public final .ceylon.language.Callable<? extends .java.lang.Object> completed$onRejected() {
-        return (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$.completed$onRejected();
+        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$this$.completed$onRejected();
     }
     
     public final .java.lang.Object completed() {
