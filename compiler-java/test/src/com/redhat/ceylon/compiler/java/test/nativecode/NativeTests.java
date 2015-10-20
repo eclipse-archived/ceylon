@@ -549,6 +549,11 @@ public class NativeTests extends CompilerTests {
     }
     
     @Test
+    public void testNativeCorrectOrder() {
+        testNative("NativeCorrectOrder");
+    }
+    
+    @Test
     public void testNativeWrongOrder() {
         testNativeErrors("NativeWrongOrder",
                 new CompilerError(26, "native header must be defined before its implementations: 'NativeWrongOrder'"),
