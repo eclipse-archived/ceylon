@@ -31,9 +31,18 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
-@Summary("Generates a WAR file")
-@Description("Generates a WAR file for the given module, suitable for " + 
-        "deploying to a standard Servlet container.")
+@Summary("Generates a WAR file from a compiled `.car` file")
+@Description("Generates a WAR file from the `.car` file of the "
+        + "given `module-with-version`, "
+        + "suitable for deploying to a standard Servlet container.\n\n"
+        + "The version number is required since, in general, there "
+        + "can be multiple versions available in the configured repositories.\n\n"
+        + "The given module's `.car` file and those of its "
+        + "transitive dependencies will be copied to the `WEB-INF/lib` of "
+        + "the generated WAR file. Dependencies which are provided by "
+        + "the application container "
+        + "(and thus not required to be in `WEB-INF/lib`) can be "
+        + "excluded using `--exclude-module`.")
 @RemainingSections( "## Overriding web.xml\n\n" +
         "If you provide a custom `WEB-INF/web.xml` file in your WAR " +
         "resource-root, you'll need to include the listener " + 
@@ -45,7 +54,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
 
     static final String WAR_MODULE = "com.redhat.ceylon.war";
     
-    @Argument(argumentName="module", multiplicity = "1")
+    @Argument(argumentName="module-with-version", multiplicity = "1")
     public void setModule(String module) {
         this.moduleNameOptVersion = module;
     }
@@ -62,8 +71,8 @@ public class CeylonWarTool extends ModuleLoadingTool {
         this.name = name;
     }
     
-    @OptionArgument(shortName='R', argumentName="folder-name")
-    @Description("Sets the special resource folder name whose files will " +
+    @OptionArgument(shortName='R', argumentName="directory")
+    @Description("Sets the special resource directory whose files will " +
             "end up in the root of the resulting WAR file (default: web-content).")
     public void setResourceRoot(String root) {
         this.resourceRoot = root;
