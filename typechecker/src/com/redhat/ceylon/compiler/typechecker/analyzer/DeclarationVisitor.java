@@ -26,7 +26,6 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,6 +228,10 @@ public abstract class DeclarationVisitor extends Visitor {
                     that.addError("native backend name on declaration conflicts with its scope: '" +
                             name + "'");
                 }
+                if (isHeader && existImplementations(model)) {
+                    that.addError("native header must be defined before its implementations: '" +
+                            name + "'");
+                }
                 model.setNativeBackend(backend);
                 Declaration member = getNativeHeader(model);
                 
@@ -326,6 +329,17 @@ public abstract class DeclarationVisitor extends Visitor {
                 }
             }
         }
+    }
+    
+    private boolean existImplementations(Declaration hdr) {
+        List<Declaration> decls = ModelUtil.lookupOverloadedByName(
+                hdr.getScope().getMembers(), hdr.getName());
+        for (Declaration decl : decls) {
+            if (decl.isNativeImplementation()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     private static boolean canBeNative(Tree.Declaration that) {
