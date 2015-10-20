@@ -6,9 +6,7 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 /** Certain convenience methods related to native types.
@@ -49,7 +47,7 @@ public class NativeUtil {
                 if (stmt instanceof Tree.Declaration) {
                     Tree.Declaration decl = (Tree.Declaration)stmt;
                     Declaration m = decl.getDeclarationModel();
-                    if (acceptHeader(m)) {
+                    if (ModelUtil.isImplemented(m)) {
                         String key = m.getClass().getSimpleName() + "#" + m.getName();
                         if (!stmtsmap.containsKey(key)) {
                             stmtsmap.put(key, decl);
@@ -64,28 +62,10 @@ public class NativeUtil {
         return stmts;
     }
 
-    private static boolean acceptHeader(Declaration decl) {
-        if (decl instanceof FunctionOrValue) {
-            return isImplemented(decl);
-        } else if (decl instanceof ClassOrInterface) {
-            return !decl.isNative();
-        } else {
-            return false;
-        }
-    }
-    
     public static boolean isImplemented(Tree.Declaration decl) {
-        return isImplemented(decl.getDeclarationModel());
+        return ModelUtil.isImplemented(decl.getDeclarationModel());
     }
     
-    public static boolean isImplemented(Declaration decl) {
-        if (decl instanceof FunctionOrValue) {
-            return ((FunctionOrValue)decl).isImplemented();
-        } else {
-            return false;
-        }
-    }
-
     public static boolean isNative(Tree.Declaration decl) {
         return isNative(decl.getDeclarationModel());
     }
