@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+final class bug2377_ {
+    
+    private bug2377_() {
+    }
+    
+    static <Arguments extends .ceylon.language.Sequential<? extends .ceylon.language.Annotated>>void bug2377(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Arguments, final Arguments args, final long other) {
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+        .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>apply(f, .com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(other)}, args));
+    }
+}
