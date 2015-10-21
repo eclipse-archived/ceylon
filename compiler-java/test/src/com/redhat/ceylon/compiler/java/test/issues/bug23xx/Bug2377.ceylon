@@ -18,13 +18,14 @@
  * MA  02110-1301, USA.
  */
 @noanno
-void bug2377<Arguments>(Arguments args, Integer other)
-        given Arguments satisfies [Annotated*] {
-    
-    value f = nothing of Callable<Anything, Tuple<Integer|Annotated, Integer, Arguments>>;
-    
+void bug2377<Arguments>(Arguments args, Integer other,
+    Callable<Anything, Tuple<Integer, Integer, Arguments>> f)
+        given Arguments satisfies [Integer*] {
     f(other, *args);
     //Inconvertible types
     //  required: ceylon.language.Sequential
     //  found:    ceylon.language.Integer
+}
+void bug2377_run() {
+    bug2377([1], 0, void(Integer i0, Integer i1) { print([i0, i1]); });
 }
