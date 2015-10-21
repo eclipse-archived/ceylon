@@ -166,10 +166,12 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 if(!Versions.isJvmBinaryVersionSupported(lazyModule.getMajor(), lazyModule.getMinor())){
                     attachErrorToDependencyDeclaration(moduleImport,
                             dependencyTree,
-                            "This module was compiled for an incompatible version of the Ceylon compiler ("+lazyModule.getMajor()+"."+lazyModule.getMinor()+")."
-                                    +"\nThis compiler supports "+Versions.JVM_BINARY_MAJOR_VERSION+"."+Versions.JVM_BINARY_MINOR_VERSION+"."
-                                    +"\nPlease try to recompile your module using a compatible compiler."
-                                    +"\nBinary compatibility will only be supported after Ceylon 1.2.");
+                            "version '"+ lazyModule.getVersion() + "' of module '" + module.getNameAsString() + 
+                            "' was compiled by an incompatible version of the compiler (binary version " +
+                            lazyModule.getMajor() + "." + lazyModule.getMinor() + 
+                            " of module is not compatible with binary version " + 
+                            Versions.JVM_BINARY_MAJOR_VERSION + "." + Versions.JVM_BINARY_MINOR_VERSION +
+                            " of this compiler)");
                 }
             }
             // module is now available
