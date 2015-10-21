@@ -51,11 +51,11 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 "\n" +
 "This reads a named setting:\n" +
 "\n" +
-"    ceylon config get defaults.encoding" +
+"    ceylon config get defaults.encoding\n" +
 "\n" +
 "This writes a named setting:\n" +
 "\n" +
-"    ceylon config --file=.ceylon/config set defaults.encoding UTF-8" +
+"    ceylon config --file=.ceylon/config set defaults.encoding UTF-8\n" +
 "\n"
 )
 public class CeylonConfigTool extends CeylonBaseTool {
