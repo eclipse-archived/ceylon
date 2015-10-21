@@ -24,14 +24,15 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("Executes tests")
 @Description(
-"Executes tests in specified `<modules>`. " +
+        "Executes tests in specified `<modules>`. " +
         "The `<modules>` arguments are the names of the modules to test with an optional version.")
 @RemainingSections(
-"## Configuration file" +
+        "## Configuration file" +
         "\n\n" +
         "The test-js tool accepts the following option from the Ceylon configuration file: " +
         "`testtool.compile` " +
         "(the equivalent option on the command line always has precedence)." +
+        "\n\n" +
         "## EXAMPLE" +
         "\n\n" +
         "The following would execute tests in the `com.example.foobar` module:" +
