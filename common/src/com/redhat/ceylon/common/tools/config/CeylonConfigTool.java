@@ -38,14 +38,25 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("Manages Ceylon configuration files")
 @Description(
-"Can be used to list, update and remove settings in Ceylon's configuration files."
+"Can be used to list, update and remove settings in Ceylon's configuration files.\n" +
+"\n" +
+"Setting names are of form `<section>.<key>`, for example, `defaults.encoding`.\n"
 )
 @RemainingSections(
 "##EXAMPLE\n" +
 "\n" +
 "The following would list the settings active from within the current folder:\n" +
 "\n" +
-"    ceylon config list"
+"    ceylon config list\n" +
+"\n" +
+"This reads a named setting:\n" +
+"\n" +
+"    ceylon config get defaults.encoding" +
+"\n" +
+"This writes a named setting:\n" +
+"\n" +
+"    ceylon config --file=.ceylon/config set defaults.encoding UTF-8" +
+"\n"
 )
 public class CeylonConfigTool extends CeylonBaseTool {
     
