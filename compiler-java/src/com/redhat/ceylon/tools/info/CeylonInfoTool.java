@@ -385,7 +385,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 if (formatting == Formatting.simple) {
                     append(moduleName).append("/");
                 }
-                append(version.getVersion()).append(" ").append(version.getOrigin());
+                append(version.getVersion()).append(" - ").append(version.getOrigin());
                 if (version.isRemote() && formatting == Formatting.fancy) {
                     append(" *");
                 }

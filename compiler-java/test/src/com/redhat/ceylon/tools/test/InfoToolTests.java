@@ -141,15 +141,15 @@ public class InfoToolTests extends AbstractToolTests {
         tool.run();
         
         Assert.assertTrue(b.toString().contains(
-                "    asm:asm-commons/2.0 [Maven] Aether\n"+
-                "    asm:asm-commons/2.1 [Maven] Aether\n"+
-                "    asm:asm-commons/2.2 [Maven] Aether\n"+
-                "    asm:asm-commons/2.2.1 [Maven] Aether\n"+
-                "    asm:asm-commons/3.0 [Maven] Aether\n"+
-                "    asm:asm-commons/3.1 [Maven] Aether\n"+
-                "    asm:asm-commons/3.2 [Maven] Aether\n"+
-                "    asm:asm-commons/3.3 [Maven] Aether\n"+
-                "    asm:asm-commons/3.3.1 [Maven] Aether"
+                "    asm:asm-commons/2.0 - [Maven] Aether\n"+
+                "    asm:asm-commons/2.1 - [Maven] Aether\n"+
+                "    asm:asm-commons/2.2 - [Maven] Aether\n"+
+                "    asm:asm-commons/2.2.1 - [Maven] Aether\n"+
+                "    asm:asm-commons/3.0 - [Maven] Aether\n"+
+                "    asm:asm-commons/3.1 - [Maven] Aether\n"+
+                "    asm:asm-commons/3.2 - [Maven] Aether\n"+
+                "    asm:asm-commons/3.3 - [Maven] Aether\n"+
+                "    asm:asm-commons/3.3.1 - [Maven] Aether"
                 ));
 
     }
@@ -165,10 +165,10 @@ public class InfoToolTests extends AbstractToolTests {
         tool.run();
         
         Assert.assertTrue(b.toString().contains(
-                "    asm:asm-commons/2.0 [Maven] Aether\n"+
-                "    asm:asm-commons/2.1 [Maven] Aether\n"+
-                "    asm:asm-commons/2.2 [Maven] Aether\n"+
-                "    asm:asm-commons/2.2.1 [Maven] Aether"
+                "    asm:asm-commons/2.0 - [Maven] Aether\n"+
+                "    asm:asm-commons/2.1 - [Maven] Aether\n"+
+                "    asm:asm-commons/2.2 - [Maven] Aether\n"+
+                "    asm:asm-commons/2.2.1 - [Maven] Aether"
                 ));
     }
 
