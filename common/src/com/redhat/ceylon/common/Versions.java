@@ -118,12 +118,6 @@ public class Versions {
      * @return true if the given consumer version of ceylon can consume the given binary version
      */
     public static boolean isBinaryVersionCompatible(int consumerMajor, int consumerMinor, int major, int minor){
-        // latest version 1.2 supports 1.1 (bin 7.0) and 1.2 (bin 8.0)
-        if(consumerMajor == V1_2_BINARY_MAJOR_VERSION && consumerMinor == V1_2_BINARY_MINOR_VERSION){
-            return (major == V1_2_BINARY_MAJOR_VERSION 
-                    || major == V1_1_BINARY_MAJOR_VERSION) && minor == 0;
-        }
-        // other versions must be equal
         return consumerMajor == major && consumerMinor == minor;
     }
 }
