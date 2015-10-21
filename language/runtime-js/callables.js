@@ -104,30 +104,36 @@ function spread$(a,f,targs,noInvoke) {
   var argIsArray=noInvoke || Array.isArray(a);
   var arg=argIsArray?[].slice.call(a,0):a;
   //if we get only 1 arg and it's a tuple...
-  if (arg.size===1 && is$(arg.$_get(0),{t:Tuple})) {
-    var tuple0=arg.$_get(0);
+  var spridx=arg.size-1;
+  if (arg.size>0 && is$(arg.$_get(spridx),{t:Tuple})) {
+    var tuple0=arg.$_get(spridx);
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
     var params = mm && mm.ps || [];
-    if (params.length===1 && params[0].seq>0 && is$(tuple0,{t:Sequence,a:{Element$Sequence:params[0].$t}})){
+    if (params.length===arg.size && params[spridx].seq>0 && is$(tuple0,{t:Sequence,a:{Element$Sequence:params[spridx].$t}})){
       return arg;
     }
-    if (tuple0.size===params.length && params.length>=1) {
+    if (params.size===tuple0.size+spridx) {
       //Simple mapping
       var all=[];
-      for (var i=0; i<params.length;i++){
+      for (var i=0; i<spridx;i++) {
+        all.push(arg.getFromFirst(i));
+      }
+      var j=0;
+      for (var i=spridx; i<params.length;i++){
         var tet=params[i].$t;
         if (typeof(tet)==='string'&&targs)tet=targs[tet];
-        if (is$(tuple0.$_get(i),tet)) {
-          all.push(tuple0.$_get(i));
+        if ((params[i].def && tuple0.getFromFirst(j)===undefined) || is$(tuple0.$_get(j),tet)) {
+          all.push(tuple0.getFromFirst(j));
         }
+        j++
       }
       if (all.length===params.length) {
         return all;
       }
     }
     //If f has only 1 param and it's not sequenced, get its type
-    var a1t=params.length===1 && params[0].seq===undefined ? params[0].$t : undefined;
+    var a1t=params.length===1 && params[spridx].seq===undefined ? params[spridx].$t : undefined;
     //If it's a type param, get the type argument
     if (typeof(a1t)==='string')a1t=targs && targs[a1t];
     //If the tuple type matches the param type, it's NOT a spread
