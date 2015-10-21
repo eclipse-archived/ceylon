@@ -27,7 +27,8 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
     /** Tells whether the language module has been loaded yet. */
     private boolean clLoaded;
     private String encoding;
-    private static final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + "." + Versions.JS_BINARY_MINOR_VERSION;
+    private static final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION +
+            "." + Versions.JS_BINARY_MINOR_VERSION;
 
     public JsModuleSourceMapper(Context context, ModuleManager moduleManager, String encoding) {
         super(context, moduleManager);
@@ -64,13 +65,14 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                     }
                     //TODO Remove this hack after next bin compat breaks
                     if (Module.LANGUAGE_MODULE_NAME.equals(depname) && "1.1.0".equals(depv)) {
-                        depv = "1.1.1";
+                        depv = "1.2.0";
                     }
                 } else {
                     depname = s;
                 }
                 //This will cause the dependency to be loaded later
-                JsonModule mod = (JsonModule)getModuleManager().getOrCreateModule(ModuleManager.splitModuleName(depname), depv);
+                JsonModule mod = (JsonModule)getModuleManager().getOrCreateModule(
+                        ModuleManager.splitModuleName(depname), depv);
                 Backend backend = Backend.fromAnnotation(mod.getNativeBackend());
                 ModuleImport imp = new ModuleImport(mod, optional, export, backend);
                 module.addImport(imp);
@@ -93,7 +95,8 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
         return;
     }
 
-    /** Read the metamodel declaration from a js file, check it's the right version and return the model as a Map. */
+    /** Read the metamodel declaration from a js file,
+     * check it's the right version and return the model as a Map. */
     public static Map<String,Object> loadJsonModel(File jsFile) {
         try {
             Map<String,Object> model = JSUtils.readJsonModel(jsFile);
@@ -109,7 +112,8 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 final boolean isNewest = binVersion.equals(BIN_VERSION);
                 //1.1.1 is not compatible with 1.1.0 anyway...
                 if (!isNewest) {
-                    throw new CompilerErrorException(String.format("The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
+                    throw new CompilerErrorException(String.format(
+                        "The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
                         modname, binVersion, BIN_VERSION));
                 }
             }
