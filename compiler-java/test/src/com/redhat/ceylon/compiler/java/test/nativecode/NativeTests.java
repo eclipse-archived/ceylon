@@ -559,4 +559,10 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(32, "native header must be defined before its implementations: 'test'")
         );
     }
+    
+    @Test
+    public void testBug2369() {
+        testNative("Bug2369");
+    }
+    
 }
