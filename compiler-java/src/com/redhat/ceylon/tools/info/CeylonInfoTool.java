@@ -40,21 +40,24 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 @Summary("Prints information about modules in repositories")
 @Description("When passed a search query like `*foo*` it will look at all the modules in all " +
         "repositories and see if the word `foo` appears anywhere in the name, description, " +
-        "version, license or any other field in the module's desciptor and print their names. " +
+        "version, license or any other field in the module's descriptor and print their names. " +
         "\n\n" +
         "When passed a partial module name like `com.acme.foo*` it will look at all the " +
-        "modules in all the repositoriues and see if their names start with `com.acme.foo` " +
+        "modules in all the repositories and see if their names start with `com.acme.foo` " +
         "and print their names." +
         "\n\n" +
         "When passed a complete module name like `com.acme.foobar` it will print the list " +
-        "of available versions for that module. Versions marked with `*` are not currently " +
-        "available on the local system but can be downloaded on-demand from remote servers." +
+        "of available versions for that module, with the module repository in which each " +
+        "version was found. Versions marked with `*` are not currently available on the local " +
+        "file system but will be downloaded on-demand from remote servers." +
         "\n\n" +
         "When passed a complete module name and version like `com.acme.foobar/1.0` it will " +
         "print information about the contents of a module archive, its description, its licence " +
         "and its dependencies")
 @RemainingSections("## EXAMPLE\n\n"
-        + "First list the versions of a module:\n\n"
+        + "First list the available modules in the 'ceylon' namespace:\n\n"
+        + "    ceylon info 'ceylon.*'\n\n"
+        + "Next list the versions of a module:\n\n"
         + "    ceylon info ceylon.collection\n\n"
         + "Then view information for a particular version:\n\n"
         + "    ceylon info ceylon.collection/1.2.0\n\n")
@@ -382,7 +385,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 if (formatting == Formatting.simple) {
                     append(moduleName).append("/");
                 }
-                append(version.getVersion());
+                append(version.getVersion()).append(" ").append(version.getOrigin());
                 if (version.isRemote() && formatting == Formatting.fancy) {
                     append(" *");
                 }
