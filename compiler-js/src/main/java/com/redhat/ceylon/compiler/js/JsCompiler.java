@@ -277,9 +277,11 @@ public class JsCompiler {
                             }
                         }
                         if (!BIN_VERSION.equals(binVersion)) {
-                            that.addUnsupportedError(String.format(
-                                "The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
-                                    m.getNameAsString(), binVersion, BIN_VERSION));
+                            that.addError(
+                                    "version '"+ m.getVersion() + "' of module '" + m.getNameAsString() + 
+                                    "' was compiled by an incompatible version of the compiler (binary version " +
+                                    binVersion + " of module is not compatible with binary version " + 
+                                    BIN_VERSION + " of this compiler)");
                         }
                     }
                 }
