@@ -31,6 +31,7 @@ import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
+import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
@@ -52,6 +53,11 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
         "When passed a complete module name and version like `com.acme.foobar/1.0` it will " +
         "print information about the contents of a module archive, its description, its licence " +
         "and its dependencies")
+@RemainingSections("## EXAMPLE\n\n"
+        + "First list the versions of a module:\n\n"
+        + "    ceylon info ceylon.collection\n\n"
+        + "Then view information for a particular version:\n\n"
+        + "    ceylon info ceylon.collection/1.2.0\n\n")
 public class CeylonInfoTool extends RepoUsingTool {
 
     private static final int INFINITE_DEPTH = -1;
