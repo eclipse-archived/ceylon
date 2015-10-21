@@ -2058,7 +2058,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 getAnnotation(al, "native", unit);
         if (na != null) {
             String backend = getAnnotationArgument(na, "");
-            if (!Backend.validAnnotation(backend)) {
+            if (!Backend.isRegisteredBackend(backend)) {
                 na.addError("illegal native backend name: '\"" +
                         backend +
                         "\"' (must be either '\"jvm\"' or '\"js\"')");
