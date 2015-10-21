@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.impl.JSUtils;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -27,8 +26,6 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
     /** Tells whether the language module has been loaded yet. */
     private boolean clLoaded;
     private String encoding;
-    private static final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION +
-            "." + Versions.JS_BINARY_MINOR_VERSION;
 
     public JsModuleSourceMapper(Context context, ModuleManager moduleManager, String encoding) {
         super(context, moduleManager);
@@ -106,16 +103,6 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
             if (!model.containsKey("$mod-bin")) {
                 throw new CeylonRunJsException("The JavaScript module " + jsFile +
                         " is not compatible with the current version of ceylon-js");
-            } else {
-                final String binVersion = model.get("$mod-bin").toString();
-                final String modname = model.get("$mod-name").toString();
-                final boolean isNewest = binVersion.equals(BIN_VERSION);
-                //1.1.1 is not compatible with 1.1.0 anyway...
-                if (!isNewest) {
-                    throw new CompilerErrorException(String.format(
-                        "The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
-                        modname, binVersion, BIN_VERSION));
-                }
             }
             return model;
         } catch (IOException ex) {

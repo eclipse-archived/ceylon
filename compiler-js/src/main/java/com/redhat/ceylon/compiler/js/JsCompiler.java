@@ -23,7 +23,9 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.compiler.js.loader.JsModuleSourceMapper;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -39,6 +41,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
@@ -243,12 +246,41 @@ public class JsCompiler {
             
             //Output all the require calls for any imports
             final Visitor importVisitor = new Visitor() {
+                private final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION +
+                        "." + Versions.JS_BINARY_MINOR_VERSION;
                 public void visit(Tree.Import that) {
                     ImportableScope scope =
                             that.getImportMemberOrTypeList().getImportList().getImportedScope();
                     Module _m = that.getUnit().getPackage().getModule();
                     if (scope instanceof Package && !((Package)scope).getModule().equals(_m)) {
                         output.get(_m).require(((Package) scope).getModule(), names);
+                    }
+                }
+                public void visit(Tree.ImportModule that) {
+                    if (that.getImportPath().getModel() instanceof Module) {
+                        Module m = (Module)that.getImportPath().getModel();
+                        //Binary version check goes here now
+                        String binVersion = m.getMajor() +"."+ m.getMinor();
+                        if (m.getMajor() == 0) {
+                            //Load the module (most likely we're in the IDE if we need to do this)
+                            ArtifactContext ac = new ArtifactContext(m.getNameAsString(),
+                                    m.getVersion(), ArtifactContext.JS_MODEL);
+                            ac.setIgnoreDependencies(true);
+                            ac.setThrowErrorIfMissing(true);
+                            ArtifactResult ar = tc.getContext().getRepositoryManager().getArtifactResult(ac);
+                            if (ar != null) {
+                                File js = ar.artifact();
+                                if (js != null) {
+                                    Map<String,Object> json = JsModuleSourceMapper.loadJsonModel(js);
+                                    binVersion = json.get("$mod-bin").toString();
+                                }
+                            }
+                        }
+                        if (!BIN_VERSION.equals(binVersion)) {
+                            that.addUnsupportedError(String.format(
+                                "The Ceylon-JS module %s has binary version %s is incompatible with the compiler version %s",
+                                    m.getNameAsString(), binVersion, BIN_VERSION));
+                        }
                     }
                 }
             };
