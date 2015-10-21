@@ -2997,8 +2997,23 @@ public class ExpressionTransformer extends AbstractTransformer {
         // doesn't really matter, assume Object, it's not used
         Type iteratedType = typeFact().getObjectType();
         // the single spread argument which is allowed
-        JCExpression expr = invocation.getTransformedArgumentExpression(0);
-        expr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), expr);
+        JCExpression rest = null;
+        ListBuffer<JCExpression> initial = ListBuffer.<JCExpression>lb();
+        for (int ii = 0; ii < invocation.getNumArguments(); ii++) {
+            if (invocation.isArgumentSpread(ii)) {
+                rest = invocation.getTransformedArgumentExpression(ii);
+            } else {
+                initial.add(invocation.getTransformedArgumentExpression(ii));
+            }
+        }
+        JCExpression expr;
+        if (initial.isEmpty()) {
+            expr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), rest);
+        } else {
+            expr = utilInvocation().sequentialInstance(null, makeReifiedTypeArgument(iteratedType), 
+                    rest != null ? rest : makeEmptyAsSequential(true), initial.toList());
+        }
+        
         JCExpression type = makeJavaType(typeFact().getSequenceType(iteratedType).getType());
         return new ExpressionAndType(expr, type);
     }
