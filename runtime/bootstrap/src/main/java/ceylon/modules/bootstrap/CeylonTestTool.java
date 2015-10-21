@@ -26,14 +26,15 @@ import com.redhat.ceylon.common.tools.CeylonTool;
         "The `<modules>` arguments are the names of the modules to test with an optional version.")
 @RemainingSections(
         "## Configuration file" +
-                "\n\n" +
-                "The test tool accepts the following option from the Ceylon configuration file: " +
-                "`testtool.compile` " +
-                "(the equivalent option on the command line always has precedence)." +
-                "## EXAMPLE" +
-                "\n\n" +
-                "The following would execute tests in the `com.example.foobar` module:" +
-                "\n\n" +
+        "\n\n" +
+        "The test tool accepts the following option from the Ceylon configuration file: " +
+        "`testtool.compile` " +
+        "(the equivalent option on the command line always has precedence)." +
+        "\n\n" +
+        "## EXAMPLE" +
+        "\n\n" +
+        "The following would execute tests in the `com.example.foobar` module:" +
+        "\n\n" +
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends RepoUsingTool {
 
