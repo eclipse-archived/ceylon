@@ -69,8 +69,8 @@ public class CeylonVisitor extends Visitor {
     boolean inInitializer = false;
     final LabelVisitor lv;
     private final GetterSetterPairingVisitor getterSetterPairing;
-    private final Map<String, Tree.Declaration> headers;
-
+    private Tree.CompilationUnit currentCompilationUnit = null;
+    
     /** For compilation units 
      * @param lv */
     public CeylonVisitor(CeylonTransformer ceylonTransformer, ToplevelAttributesDefinitionBuilder topattrBuilder, LabelVisitor lv, GetterSetterPairingVisitor gspv) {
@@ -81,7 +81,6 @@ public class CeylonVisitor extends Visitor {
         this.classBuilder = null;
         this.lv = lv;
         this.getterSetterPairing = gspv;
-        this.headers = new HashMap<String, Tree.Declaration>();
     }
 
 
@@ -247,7 +246,7 @@ public class CeylonVisitor extends Visitor {
         java.util.List<Statement> stmts = that.getStatements();
         if (classBuilder.getForDefinition().isNative()) {
             // In case of a native implementation we look for its header
-            Tree.Declaration hdr = headers.get(classBuilder.getForDefinition().getName());
+            Tree.Declaration hdr = getHeaderDeclaration(classBuilder.getForDefinition());
             if (hdr != null) {
                 stmts = NativeUtil.mergeStatements(that, hdr);
             }
@@ -1060,9 +1059,11 @@ public class CeylonVisitor extends Visitor {
     }
     
     public void visit(Tree.CompilationUnit cu) {
+        currentCompilationUnit = cu;
         // Figure out all the local ids
         gen.naming.assignNames(cu);
         super.visit(cu);
+        currentCompilationUnit = null;
         String arg = CodegenUtil.getCompilerAnnotationArgument(cu, "die");
         if (arg != null) {
             if (arg.isEmpty()) {
@@ -1145,11 +1146,41 @@ public class CeylonVisitor extends Visitor {
                     && NativeUtil.isImplemented(decl)) {
                 return false;
             }
-            // It's a native header, remember it for later when we deal with its implementation
-            headers.put(decl.getDeclarationModel().getName(), decl);
             return true;
         } else {
             return false;
         }
+    }
+    
+    // Traverse the entire tree looking for the header node
+    // that belongs to the given implementation declaration
+    private Tree.Declaration getHeaderDeclaration(final Declaration decl) {
+        class ClassVisitor extends Visitor {
+            Tree.Declaration hdr = null;
+
+            @Override
+            public void visit(Tree.ClassOrInterface that) {
+                checkForHeader(that);
+                super.visit(that);
+            }
+            @Override
+            public void visit(Tree.ObjectDefinition that) {
+                checkForHeader(that);
+                super.visit(that);
+            }
+            private void checkForHeader(Tree.Declaration that) {
+                Declaration v = that.getDeclarationModel();
+                if (v.isNativeHeader() &&
+                        v.getQualifiedNameString().equals(decl.getQualifiedNameString())) {
+                    hdr = that;
+                    throw new RuntimeException();
+                }
+            }
+        };
+        ClassVisitor v = new ClassVisitor();
+        try {
+            v.visit(currentCompilationUnit);
+        } catch (RuntimeException ex) {}
+        return v.hdr;
     }
 }
