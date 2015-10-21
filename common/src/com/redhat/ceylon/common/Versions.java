@@ -105,9 +105,7 @@ public class Versions {
      * @return true if the current version of ceylon can consume the given binary version
      */
     public static boolean isJvmBinaryVersionSupported(int major, int minor){
-        // latest version 1.1.1 supports 1.1 (bin 7.0) and 1.1.1 (bin 8.0)
-        return (major == JVM_BINARY_MAJOR_VERSION
-                || major == V1_1_BINARY_MAJOR_VERSION)
+        return major == JVM_BINARY_MAJOR_VERSION
                 && minor == JVM_BINARY_MINOR_VERSION;
     }
 
