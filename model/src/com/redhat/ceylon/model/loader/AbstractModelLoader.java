@@ -588,6 +588,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public Declaration convertToDeclaration(Module module, ClassMirror classMirror, DeclarationType declarationType) {
+        // find its package
+        String pkgName = getPackageNameForQualifiedClassName(classMirror);
+        if (pkgName.equals("java.lang")) {
+            module = getJDKBaseModule();
+        }
+        
+        Declaration decl = findCachedDeclaration(module, classMirror, declarationType);
+        if (decl != null) {
+            return decl;
+        }
+        
         // avoid ignored classes
         if(classMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
             return null;
@@ -604,21 +615,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || classMirror.getAnnotation(CEYLON_PACKAGE_ANNOTATION) != null)
             return null;
         
-        // find its package
-        String pkgName = getPackageNameForQualifiedClassName(classMirror);
-        
-        if (pkgName.equals("java.lang")) {
-            module = getJDKBaseModule();
-        }
-        
         List<Declaration> decls = new ArrayList<Declaration>();
-        boolean[] alreadyExists = new boolean[1];
-        Declaration decl = getOrCreateDeclaration(module, classMirror, declarationType,
-                decls, alreadyExists);
         
-        if (alreadyExists[0]) {
-            return decl;
-        }
+        decl = createDeclaration(module, classMirror, declarationType, decls);
+        cacheDeclaration(module, classMirror, declarationType, decl, decls);
 
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
@@ -1000,13 +1000,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    protected Declaration getOrCreateDeclaration(Module module, ClassMirror classMirror,
-            DeclarationType declarationType, List<Declaration> decls, boolean[] alreadyExists) {
-        alreadyExists[0] = false;
+    private Declaration findCachedDeclaration(Module module, ClassMirror classMirror,
+            DeclarationType declarationType) {
         ClassType type = getClassType(classMirror);
-
         String key = classMirror.getCacheKey(module);
         // see if we already have it
+        Map<String, Declaration> declarationCache = getCacheByType(type, declarationType);
+        return declarationCache.get(key);
+    }
+    
+    private void cacheDeclaration(Module module, ClassMirror classMirror,
+            DeclarationType declarationType, Declaration decl, List<Declaration> decls) {
+        ClassType type = getClassType(classMirror);
+        String key = classMirror.getCacheKey(module);
+        if(type == ClassType.OBJECT){
+            typeDeclarationsByName.put(key, getByType(decls, Class.class));
+            valueDeclarationsByName.put(key, getByType(decls, Value.class));
+        }else {
+            Map<String, Declaration> declarationCache = getCacheByType(type, declarationType);
+            declarationCache.put(key, decl);
+        }
+    }
+    
+    private Map<String, Declaration> getCacheByType(ClassType type, DeclarationType declarationType) {
         Map<String, Declaration> declarationCache = null;
         switch(type){
         case OBJECT:
@@ -1023,22 +1039,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         case INTERFACE:
             declarationCache = typeDeclarationsByName;
         }
-        if(declarationCache.containsKey(key)){
-            alreadyExists[0] = true;
-            return declarationCache.get(key);
-        }
-        
-        Declaration decl = createDeclaration(module, classMirror, declarationType, decls);
-        
-        // objects have special handling above
-        if(type == ClassType.OBJECT){
-            typeDeclarationsByName.put(key, getByType(decls, Class.class));
-            valueDeclarationsByName.put(key, getByType(decls, Value.class));
-        }else {
-            declarationCache.put(key, decl);
-        }
-        
-        return decl;
+        return declarationCache;
     }
     
     private Declaration getByType(List<Declaration> decls, java.lang.Class<?> klass) {
