@@ -266,14 +266,15 @@ public class JsCompiler {
                             ArtifactContext ac = new ArtifactContext(m.getNameAsString(),
                                     m.getVersion(), ArtifactContext.JS_MODEL);
                             ac.setIgnoreDependencies(true);
-                            ac.setThrowErrorIfMissing(true);
+                            ac.setThrowErrorIfMissing(false);
                             ArtifactResult ar = tc.getContext().getRepositoryManager().getArtifactResult(ac);
-                            if (ar != null) {
-                                File js = ar.artifact();
-                                if (js != null) {
-                                    Map<String,Object> json = JsModuleSourceMapper.loadJsonModel(js);
-                                    binVersion = json.get("$mod-bin").toString();
-                                }
+                            if (ar == null) {
+                                return;
+                            }
+                            File js = ar.artifact();
+                            if (js != null) {
+                                Map<String,Object> json = JsModuleSourceMapper.loadJsonModel(js);
+                                binVersion = json.get("$mod-bin").toString();
                             }
                         }
                         if (!BIN_VERSION.equals(binVersion)) {
