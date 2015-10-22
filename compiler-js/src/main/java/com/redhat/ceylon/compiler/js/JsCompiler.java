@@ -252,8 +252,15 @@ public class JsCompiler {
                     ImportableScope scope =
                             that.getImportMemberOrTypeList().getImportList().getImportedScope();
                     Module _m = that.getUnit().getPackage().getModule();
+                    if (scope instanceof Package) {
+                        Package pkg = (Package)scope;
+                        Module om = pkg.getModule();
+                        if (!om.equals(_m) && (!om.isNative() ||
+                                Backend.JavaScript.equals(om.getNativeBackend()))) {
+                            output.get(_m).require(((Package) scope).getModule(), names);
+                        }
+                    }
                     if (scope instanceof Package && !((Package)scope).getModule().equals(_m)) {
-                        output.get(_m).require(((Package) scope).getModule(), names);
                     }
                 }
                 public void visit(Tree.ImportModule that) {
