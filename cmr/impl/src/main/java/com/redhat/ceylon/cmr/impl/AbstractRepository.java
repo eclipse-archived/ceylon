@@ -458,41 +458,15 @@ public abstract class AbstractRepository implements CmrRepository {
                     suffixesToFind.remove(suffix);
                 }
                 // let's see if we can extract some information
-                try {
-                    File file = artifact.getContent(File.class);
-                    if (file != null) {
-                        ModuleInfoReader reader = getModuleInfoReader(suffix);
-                        if (reader != null) {
-                            ModuleVersionDetails mvd2 = reader.readModuleInfo(name, version, file, memberName != null, getOverrides());
-                            Set<String> matchingMembers = null;
-                            if (memberName != null) {
-                                matchingMembers = matchMembers(mvd2, lookup);
-                                if (matchingMembers.isEmpty()) {
-                                    // We haven't found a matching member in the module so we
-                                    // just continue to the next suffix/artifact if any
-                                    continue;
-                                }
-                                mvd.getMembers().addAll(matchingMembers);
-                            }
-                            foundInfo = true;
-                            if (mvd2.getDoc() != null) {
-                                mvd.setDoc(mvd2.getDoc());
-                            }
-                            if (mvd2.getLicense() != null) {
-                                mvd.setLicense(mvd2.getLicense());
-                            }
-                            mvd.getAuthors().addAll(mvd2.getAuthors());
-                            mvd.getDependencies().addAll(mvd2.getDependencies());
-                            mvd.getArtifactTypes().addAll(mvd2.getArtifactTypes());
-                        } else {
-                            if (memberName == null) {
-                                // We didn't get any information but we'll at least add the artifact type to the result
-                                mvd.getArtifactTypes().add(new ModuleVersionArtifact(suffix, null, null));
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    // bah
+                switch(addArtifactInfo(artifact, name, version, suffix, memberName, mvd, lookup)){
+                case INFO_FOUND:
+                    foundInfo = true;
+                    break;
+                case NO_MATCH:
+                    continue;
+                case OTHER:
+                    // nothing;
+                    break;
                 }
             }
             // NB: When searching for members it's not enough to have found
@@ -638,54 +612,92 @@ public abstract class AbstractRepository implements CmrRepository {
         Node versionChild = namePart.getChild(latestVersion);
         if (versionChild == null)
             throw new RuntimeException("Assertion failed: we didn't find the version child for " + moduleName + "/" + latestVersion);
-        
-        Node artifact = getBestInfoArtifact(versionChild);
 
         String memberName = query.getMemberName();
-        ModuleVersionDetails mvd = null;
-        if (artifact != null) {
-            try {
-                File file = artifact.getContent(File.class);
-                if (file != null) {
-                    ModuleInfoReader reader = getModuleInfoReader(artifact);
-                    if (reader != null) {
-                        mvd = reader.readModuleInfo(moduleName, latestVersion, file, memberName != null, getOverrides());
-                        if (memberName != null) {
-                            Set<String> matchingMembers = matchMembers(mvd, query);
-                            if (matchingMembers.isEmpty()) {
-                                // We haven't found a matching member in the module so we
-                                // just continue to the next suffix/artifact if any
-                                return null;
-                            }
-                            mvd.setMembers(matchingMembers);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                // bah
-                if (memberName != null) {
-                    // We couldn't check the artifact for its members so we
-                    // just exit without adding anything to the search result
-                    return null;
-                }
+        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, latestVersion);
+        boolean found = false;
+        // Now try to retrieve information for each of the suffixes
+        for (String suffix : suffixes) {
+            Node artifact;
+            // make sure we don't try to read info from source artifacts
+            if(ArtifactContext.SRC.equals(suffix)){
+                artifact = getBestInfoArtifact(versionChild);
+                if(artifact == null)
+                    continue;
+                suffix = ArtifactContext.getSuffixFromNode(artifact);
+            }else{
+                String artifactName = getArtifactName(moduleName, latestVersion, suffix);
+                artifact = versionChild.getChild(artifactName);
             }
-        } else {
-            if (memberName != null) {
-                // We haven't found an artifact to check for members so we
-                // just exit without adding anything to the search result
+            if(artifact == null)
+                continue;
+            // let's see if we can extract some information
+            switch(addArtifactInfo(artifact, moduleName, latestVersion, suffix, memberName, mvd, query)){
+            case INFO_FOUND:
+                found = true;
+                // cool, go on
+                break;
+            case NO_MATCH:
                 return null;
+            case OTHER:
+                // nothing;
+                break;
             }
         }
-        if (mvd == null) {
-            // We didn't get any useful information, so we'll just create a dummy
-            mvd = new ModuleVersionDetails(moduleName, latestVersion);
-        }
+
+        if(!found)
+            return null;
         mvd.setRemote(root.isRemote());
         mvd.setOrigin(getDisplayString());
 
         return mvd;
     }
 
+    private enum ArtifactInfoResult {
+        INFO_FOUND, NO_MATCH, OTHER;
+    }
+    
+    private ArtifactInfoResult addArtifactInfo(Node artifact, String name, String version, String suffix,
+            String memberName, ModuleVersionDetails mvd, ModuleQuery lookup){
+        // let's see if we can extract some information
+        try {
+            File file = artifact.getContent(File.class);
+            if (file != null) {
+                ModuleInfoReader reader = getModuleInfoReader(suffix);
+                if (reader != null) {
+                    ModuleVersionDetails mvd2 = reader.readModuleInfo(name, version, file, memberName != null, getOverrides());
+                    Set<String> matchingMembers = null;
+                    if (memberName != null) {
+                        matchingMembers = matchMembers(mvd2, lookup);
+                        if (matchingMembers.isEmpty()) {
+                            // We haven't found a matching member in the module so we
+                            // just continue to the next suffix/artifact if any
+                            return ArtifactInfoResult.NO_MATCH;
+                        }
+                        mvd.getMembers().addAll(matchingMembers);
+                    }
+                    if (mvd2.getDoc() != null) {
+                        mvd.setDoc(mvd2.getDoc());
+                    }
+                    if (mvd2.getLicense() != null) {
+                        mvd.setLicense(mvd2.getLicense());
+                    }
+                    mvd.getAuthors().addAll(mvd2.getAuthors());
+                    mvd.getDependencies().addAll(mvd2.getDependencies());
+                    mvd.getArtifactTypes().addAll(mvd2.getArtifactTypes());
+                    return ArtifactInfoResult.INFO_FOUND;
+                } else {
+                    if (memberName == null) {
+                        // We didn't get any information but we'll at least add the artifact type to the result
+                        mvd.getArtifactTypes().add(new ModuleVersionArtifact(suffix, null, null));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // bah
+        }
+        return ArtifactInfoResult.OTHER;
+    }
     private Set<String> matchMembers(ModuleVersionDetails mvd, ModuleQuery query) {
         return matchNames(mvd.getMembers(), query, false);
     }
