@@ -2,18 +2,25 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isExecutableStatement;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.CONSTRUCTOR;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.FIELD;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.LOCAL_VARIABLE;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.METHOD;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PACKAGE;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PARAMETER;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.TYPE;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
@@ -855,22 +862,19 @@ public class AnnotationVisitor extends Visitor {
                     }
                 }
                 TypeDeclaration td = t.getDeclaration();
-                ElementType[] target = td.getAnnotationTarget();
+                EnumSet<AnnotationTarget> target = 
+                        td.getAnnotationTarget();
                 if (target!=null) {
                     //check the *Java* annotation constraints
                     boolean ok = false;
                     if (that instanceof Tree.PackageDescriptor) {
-                        for (ElementType type: target) {
-                            if (type==ElementType.PACKAGE) {
-                                ok = true;
-                            }
+                        if (target.contains(PACKAGE)) {
+                            ok = true;
                         }
                     }
                     if (that instanceof Tree.InterfaceDefinition) {
-                        for (ElementType type: target) {
-                            if (type==ElementType.TYPE) {
-                                ok = true;
-                            }
+                        if (target.contains(TYPE)) {
+                            ok = true;
                         }
                     }
                     if (that instanceof Tree.ClassDefinition) {
@@ -878,38 +882,30 @@ public class AnnotationVisitor extends Visitor {
                                 (Tree.ClassDefinition) that;
                         boolean initializer = 
                                 c.getParameterList()!=null;
-                        for (ElementType type: target) {
-                            if (type==ElementType.TYPE) {
-                                //it always goes on the class,
-                                //not on the constructor
-                                ok = true;
-                            }
+                        if (target.contains(TYPE)) {
+                            //it always goes on the class,
+                            //not on the constructor
+                            ok = true;
                         }
-                        for (ElementType type: target) {
-                            if (type==ElementType.CONSTRUCTOR &&
-                                    initializer) {
-                                //it goes on the constructor
-                                ok = true;
-                            }
+                        if (target.contains(CONSTRUCTOR) &&
+                                initializer) {
+                            //it goes on the constructor
+                            ok = true;
                         }
                     }
                     if (that instanceof Tree.Constructor) {
-                        for (ElementType type: target) {
-                            if (type==ElementType.CONSTRUCTOR) {
-                                ok = true;
-                            }
+                        if (target.contains(CONSTRUCTOR)) {
+                            ok = true;
                         }
                     }
                     if (that instanceof Tree.MethodDefinition ||
                         that instanceof Tree.MethodDeclaration ||
                         that instanceof Tree.AttributeGetterDefinition ||
                         that instanceof Tree.AttributeSetterDefinition) {
-                        for (ElementType type: target) {
-                            if (type==ElementType.METHOD) {
-                                //it goes on the method, getter,
-                                //or setter, unambiguously
-                                ok = true;
-                            }
+                        if (target.contains(METHOD)) {
+                            //it goes on the method, getter,
+                            //or setter, unambiguously
+                            ok = true;
                         }
                     }
                     if (that instanceof Tree.AttributeDeclaration) {
@@ -919,40 +915,35 @@ public class AnnotationVisitor extends Visitor {
                                 ad.getSpecifierOrInitializerExpression();
                         if (se!=null) {
                             if (se instanceof Tree.LazySpecifierExpression) {
-                                for (ElementType type: target) {
-                                    if (type==ElementType.METHOD) {
-                                        //there is no field, so it
-                                        //goes on the getter
-                                        ok = true;
-                                    }
+                                if (target.contains(METHOD)) {
+                                    //there is no field, so it
+                                    //goes on the getter
+                                    ok = true;
                                 }
                             }
                             else {
                                 //there is some sort of field or local
                                 //in this case it *never* goes on the
                                 //getter or setter!
-                                for (ElementType type: target) {
-                                    boolean classMember = 
-                                            ad.getDeclarationModel()
-                                            .isClassMember();
-                                    boolean parameter = 
-                                            ad.getDeclarationModel()
-                                            .isParameter();
-                                    boolean local = 
-                                            !ad.getDeclarationModel()
-                                            .isClassOrInterfaceMember();
-                                    if (type==ElementType.FIELD &&
-                                            classMember) {
-                                        ok = true;
-                                    }
-                                    if (type==ElementType.PARAMETER &&
-                                            parameter) {
-                                        ok = true;
-                                    }
-                                    if (type==ElementType.LOCAL_VARIABLE &&
-                                            !parameter && local) {
-                                        ok = true;
-                                    }
+                                Value model = ad.getDeclarationModel();
+                                boolean classMember = 
+                                        model.isClassMember();
+                                boolean parameter = 
+                                        model.isParameter();
+                                boolean local = 
+                                        !model.isClassOrInterfaceMember() &&
+                                        !model.isToplevel();
+                                if (target.contains(FIELD) &&
+                                        classMember) {
+                                    ok = true;
+                                }
+                                if (target.contains(PARAMETER) &&
+                                        parameter) {
+                                    ok = true;
+                                }
+                                if (target.contains(LOCAL_VARIABLE) &&
+                                        !parameter && local) {
+                                    ok = true;
                                 }
                             }
                         }
@@ -960,7 +951,7 @@ public class AnnotationVisitor extends Visitor {
                     if (!ok) {
                         annotation.addError(
                                 "annotated program element does not satisfy annotation constraint: '"
-                                + Arrays.toString(target) + "'");
+                                + target + "'");
                     }
                 }
             }
