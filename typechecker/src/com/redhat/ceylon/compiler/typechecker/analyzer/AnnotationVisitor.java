@@ -5,7 +5,9 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isExe
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
@@ -258,7 +260,8 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getPackageDeclarationType(), null);
+                unit.getPackageDeclarationType(), null,
+                that);
     }
     
     @Override 
@@ -266,7 +269,8 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getModuleDeclarationType(), null);
+                unit.getModuleDeclarationType(), null,
+                that);
     }
     
     @Override 
@@ -274,7 +278,8 @@ public class AnnotationVisitor extends Visitor {
         super.visit(that);
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
-                unit.getImportDeclarationType(), null);
+                unit.getImportDeclarationType(), null,
+                that);
     }
     
     @Override
@@ -288,7 +293,8 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(),
                 unit.getClassDeclarationType(c),
-                unit.getClassMetatype(c.getType()));
+                unit.getClassMetatype(c.getType()),
+                that);
     }
 
     @Override 
@@ -298,7 +304,8 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(),
                 unit.getInterfaceDeclarationType(),
-                unit.getInterfaceMetatype(i.getType()));
+                unit.getInterfaceMetatype(i.getType()),
+                that);
     }
     
     @Override 
@@ -308,7 +315,8 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(),
                 unit.getCallableConstructorDeclarationType(),
-                unit.getConstructorMetatype(f.getTypedReference()));
+                unit.getConstructorMetatype(f.getTypedReference()),
+                that);
     }
     
     @Override 
@@ -319,7 +327,8 @@ public class AnnotationVisitor extends Visitor {
         //TODO: metamodel types for Enumerated!!
         checkAnnotations(that.getAnnotationList(),
                 unit.getValueConstructorDeclarationType(),
-                unit.getValueMetatype(v.getTypedReference()));
+                unit.getValueMetatype(v.getTypedReference()),
+                that);
     }
     
     @Override
@@ -329,7 +338,8 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getValueDeclarationType(a),
-                unit.getValueMetatype(a.getTypedReference()));
+                unit.getValueMetatype(a.getTypedReference()),
+                that);
     }
 
     @Override
@@ -339,7 +349,8 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(), 
                 unit.getValueDeclarationType(),
-                unit.getValueMetatype(o.getTypedReference()));
+                unit.getValueMetatype(o.getTypedReference()),
+                that);
     }
 
     @Override
@@ -354,7 +365,8 @@ public class AnnotationVisitor extends Visitor {
         Unit unit = that.getUnit();
         checkAnnotations(that.getAnnotationList(),
                 unit.getFunctionDeclarationType(),
-                unit.getFunctionMetatype(m.getTypedReference()));
+                unit.getFunctionMetatype(m.getTypedReference()),
+                that);
     }
 
     private void checkAnnotationType(Tree.AnyClass that, Class c) {
@@ -813,7 +825,7 @@ public class AnnotationVisitor extends Visitor {
     private void checkAnnotations(
             Tree.AnnotationList annotationList,
             Type declarationType, 
-            Type modelType) {
+            Type modelType, Node that) {
         Unit unit = annotationList.getUnit();
         List<Tree.Annotation> annotations = 
                 annotationList.getAnnotations();
@@ -824,6 +836,7 @@ public class AnnotationVisitor extends Visitor {
                         unit.getConstrainedAnnotationDeclaration();
                 Type cat = t.getSupertype(cad);
                 if (cat!=null) {
+                    //check *Ceylon* annotation constraints
                     List<Type> args = 
                             cat.getTypeArgumentList();
                     if (args.size()>2) {
@@ -839,6 +852,115 @@ public class AnnotationVisitor extends Visitor {
                                     constraint, annotation, 
                                     "annotated program element does not satisfy annotation constraint");
                         }
+                    }
+                }
+                TypeDeclaration td = t.getDeclaration();
+                ElementType[] target = td.getAnnotationTarget();
+                if (target!=null) {
+                    //check the *Java* annotation constraints
+                    boolean ok = false;
+                    if (that instanceof Tree.PackageDescriptor) {
+                        for (ElementType type: target) {
+                            if (type==ElementType.PACKAGE) {
+                                ok = true;
+                            }
+                        }
+                    }
+                    if (that instanceof Tree.InterfaceDefinition) {
+                        for (ElementType type: target) {
+                            if (type==ElementType.TYPE) {
+                                ok = true;
+                            }
+                        }
+                    }
+                    if (that instanceof Tree.ClassDefinition) {
+                        Tree.ClassDefinition c = 
+                                (Tree.ClassDefinition) that;
+                        boolean initializer = 
+                                c.getParameterList()!=null;
+                        for (ElementType type: target) {
+                            if (type==ElementType.TYPE) {
+                                //it always goes on the class,
+                                //not on the constructor
+                                ok = true;
+                            }
+                        }
+                        for (ElementType type: target) {
+                            if (type==ElementType.CONSTRUCTOR &&
+                                    initializer) {
+                                //it goes on the constructor
+                                ok = true;
+                            }
+                        }
+                    }
+                    if (that instanceof Tree.Constructor) {
+                        for (ElementType type: target) {
+                            if (type==ElementType.CONSTRUCTOR) {
+                                ok = true;
+                            }
+                        }
+                    }
+                    if (that instanceof Tree.MethodDefinition ||
+                        that instanceof Tree.MethodDeclaration ||
+                        that instanceof Tree.AttributeGetterDefinition ||
+                        that instanceof Tree.AttributeSetterDefinition) {
+                        for (ElementType type: target) {
+                            if (type==ElementType.METHOD) {
+                                //it goes on the method, getter,
+                                //or setter, unambiguously
+                                ok = true;
+                            }
+                        }
+                    }
+                    if (that instanceof Tree.AttributeDeclaration) {
+                        Tree.AttributeDeclaration ad = 
+                                (Tree.AttributeDeclaration) that;
+                        Tree.SpecifierOrInitializerExpression se = 
+                                ad.getSpecifierOrInitializerExpression();
+                        if (se!=null) {
+                            if (se instanceof Tree.LazySpecifierExpression) {
+                                for (ElementType type: target) {
+                                    if (type==ElementType.METHOD) {
+                                        //there is no field, so it
+                                        //goes on the getter
+                                        ok = true;
+                                    }
+                                }
+                            }
+                            else {
+                                //there is some sort of field or local
+                                //in this case it *never* goes on the
+                                //getter or setter!
+                                for (ElementType type: target) {
+                                    boolean classMember = 
+                                            ad.getDeclarationModel()
+                                            .isClassMember();
+                                    boolean parameter = 
+                                            ad.getDeclarationModel()
+                                            .isParameter();
+                                    boolean local = 
+                                            !ad.getDeclarationModel()
+                                            .isClassOrInterfaceMember();
+                                    if (type==ElementType.FIELD &&
+                                            classMember) {
+                                        ok = true;
+                                    }
+                                    if (type==ElementType.PARAMETER &&
+                                            parameter) {
+                                        ok = true;
+                                    }
+                                    if (type==ElementType.LOCAL_VARIABLE &&
+                                            !parameter && local) {
+                                        ok = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!ok) {
+                        annotation.addError(
+                                "annotated program element does not satisfy annotation constraint: '"
+                                + Arrays.toString(target) + "'");
                     }
                 }
             }
