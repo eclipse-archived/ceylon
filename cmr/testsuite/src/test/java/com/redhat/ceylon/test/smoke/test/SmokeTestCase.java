@@ -594,9 +594,16 @@ public class SmokeTestCase extends AbstractTest {
         }
     }
 
-    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, null)), false, null);
-    public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), types(art(".car", 3, null)), false, null);
-    public final static ModuleDetails moduletest = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo("hello", "1.0.0", false, false)), types(art(".car", 3, null)), false, null);
+    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails hello_js = new ModuleDetails("hello", null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo("ceylon.language", "0.6", false, false)), types(art(".js")), false, null);
+    public final static ModuleDetails hello_js_jvm = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 3, 0), art(".js")), false, null);
+    public final static ModuleDetails hello2 = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
+    public final static ModuleDetails hello2_jvm = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
+    public final static ModuleDetails hello2_js = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
+    public final static ModuleDetails moduletest = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo("hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo("ceylon.language", "0.6", false, false), new ModuleDependencyInfo("hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
+    public final static ModuleDetails moduletest_js = new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(new ModuleDependencyInfo("ceylon.language", "0.6", false, false), new ModuleDependencyInfo("hello", "1.0.0", false, false)), types(art(".js")), false, null);
     public final static ModuleDetails old_jar = new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo("moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
     public final static ModuleDetails older_jar = new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo("moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
     public final static ModuleDetails org_jboss_acme = new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), types(), false, null);
@@ -610,10 +617,10 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
                 hello,
+                hello2_jvm,
                 moduletest,
                 old_jar,
                 older_jar,
-                org_jboss_acme,
                 test_jar,
         };
         testComplete("", expected, manager);
@@ -624,19 +631,43 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                hello,
+                hello_js,
+                hello2_js,
                 jsonly,
-                moduletest
+                moduletest_js
         };
         testComplete("", expected, manager, ModuleQuery.Type.JS);
     }
 
+    @Test
+    public void testCompleteHello2JSNewModel() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        ModuleDetails[] expected = new ModuleDetails[]{
+                hello2_js,
+        };
+        testComplete("hello2", expected, manager, ModuleQuery.Type.JS);
+    }
+
+    @Test
+    public void testCompleteJsAndJvm() throws Exception {
+        RepositoryManager manager = getRepositoryManager();
+
+        ModuleDetails[] expected = new ModuleDetails[]{
+                hello_js_jvm,
+                hello2,
+        };
+        testComplete("hello", expected, manager, ModuleQuery.Type.CODE);
+    }
+
+    
     @Test
     public void testCompleteHe() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
                 hello,
+                hello2_jvm,
         };
         testComplete("he", expected, manager);
     }
@@ -646,9 +677,9 @@ public class SmokeTestCase extends AbstractTest {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                org_jboss_acme,
+                com_acme_helloworld,
         };
-        testComplete("org", expected, manager);
+        testComplete("com", expected, manager);
     }
 
     @Test
@@ -661,13 +692,13 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     @Test
-    public void testCompleteOrgDot() throws Exception {
+    public void testCompleteComDot() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
         ModuleDetails[] expected = new ModuleDetails[]{
-                org_jboss_acme,
+                com_acme_helloworld,
         };
-        testComplete("org.", expected, manager);
+        testComplete("com.", expected, manager);
     }
 
     @Test
@@ -676,14 +707,14 @@ public class SmokeTestCase extends AbstractTest {
 
         ModuleDetails[] expected = new ModuleDetails[]{
         };
-        testComplete("org.jboss.acme.", expected, manager);
+        testComplete("com.acme.helloworld.", expected, manager);
     }
 
     @Test
     public void testListVersion() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("", "1.0.0", "The classic Hello World module", "Public domain", set("Stef Epardaud"),
-                        deps(), types(new ModuleVersionArtifact(".car", 3, null)), false, getRepositoryRoot().getAbsolutePath()),
+                        deps(), types(new ModuleVersionArtifact(".car", 3, 0)), false, getRepositoryRoot().getAbsolutePath()),
         };
         testListVersions("com.acme.helloworld", null, expected);
     }
@@ -707,10 +738,10 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
                 hello,
+                hello2_jvm,
                 moduletest,
                 old_jar,
                 older_jar,
-                org_jboss_acme,
                 test_jar,
         };
 
@@ -720,8 +751,9 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesAllCeylonCodeAll() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-                hello,
-                moduletest,
+                hello_js_jvm,
+                hello2,
+                moduletest_js_jvm,
         };
 
         testSearchResults("", Type.CEYLON_CODE, Retrieval.ALL, expected);
@@ -731,10 +763,10 @@ public class SmokeTestCase extends AbstractTest {
     public void testSearchModulesAllCeylonCodeAny() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
-                hello,
+                hello_js_jvm,
+                hello2,
                 jsonly,
-                moduletest,
-                org_jboss_acme,
+                moduletest_js_jvm,
         };
 
         testSearchResults("", Type.CEYLON_CODE, Retrieval.ANY, expected);
@@ -745,8 +777,8 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
                 hello,
+                hello2_jvm,
                 moduletest,
-                org_jboss_acme,
         };
 
         testSearchResults("", Type.CAR, Retrieval.ALL, expected);
@@ -779,9 +811,9 @@ public class SmokeTestCase extends AbstractTest {
 
         // second page
         expected = new ModuleDetails[]{
+                hello2_jvm,
                 moduletest,
                 old_jar,
-                older_jar,
         };
 
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 3l, repoManager, results.getNextPagingInfo());
@@ -791,7 +823,7 @@ public class SmokeTestCase extends AbstractTest {
 
         // third page
         expected = new ModuleDetails[]{
-                org_jboss_acme,
+                older_jar,
                 test_jar,
         };
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 2l, repoManager, results.getNextPagingInfo());
@@ -805,6 +837,7 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
                 hello,
+                hello2_jvm,
                 moduletest,
         };
 
@@ -816,6 +849,7 @@ public class SmokeTestCase extends AbstractTest {
         ModuleDetails[] expected = new ModuleDetails[]{
                 com_acme_helloworld,
                 hello,
+                hello2_jvm,
         };
 
         testSearchResultsMember("", Type.JVM, "hello", false, false, expected);
