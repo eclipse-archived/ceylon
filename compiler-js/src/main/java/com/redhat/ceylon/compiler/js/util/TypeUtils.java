@@ -1479,7 +1479,7 @@ public class TypeUtils {
     /** Tells whether the declaration is a native header with a native implementation for this backend. */
     public static boolean makeAbstractNative(Declaration d) {
         return d.isNativeHeader() &&
-                ModelUtil.getNativeDeclaration(d, Backend.JavaScript) != null;
+                ModelUtil.getNativeDeclaration(d, Backend.JavaScript.asSet()) != null;
     }
 
     public static Declaration getToplevel(Declaration d) {

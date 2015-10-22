@@ -45,7 +45,7 @@ public class Singletons {
         final String objectName = gen.getNames().name(d);
         final String selfName = gen.getNames().self(c);
 
-        final Value natd = d == null ? null : (Value)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        final Value natd = d == null ? null : (Value)ModelUtil.getNativeDeclaration(d, Backend.JavaScript.asSet());
         if (that instanceof Tree.Declaration) {
             if (NativeUtil.isNativeHeader((Tree.Declaration)that) && natd != null) {
                 // It's a native header, remember it for later when we deal with its implementation
