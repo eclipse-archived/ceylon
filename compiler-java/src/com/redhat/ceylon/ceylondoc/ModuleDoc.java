@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.ceylondoc.Util.ModuleImportComparatorByName;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -150,10 +151,10 @@ public class ModuleDoc extends CeylonDoc {
         close("span");
         open("code class='decl-label'");
         linkRenderer().to(moduleImport.getModule()).write();
-        String backend = moduleImport.getNativeBackend();
-        if(backend != null){
+        Backends backends = moduleImport.getNativeBackends();
+        if(!backends.none()){
             write(" (");
-            write(backend);
+            write(backends.toString());
             write(")");
         }
         close("code");

@@ -60,6 +60,7 @@ import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
@@ -562,11 +563,11 @@ public class LanguageCompiler extends JavaCompiler {
         for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
             ModuleDescriptor md = pu.findModuleDescriptor();
             if (md != null) {
-                String be = getNativeBackend(md.getAnnotationList(), md.getUnit());
-                if (be != null) {
-                    if (be.isEmpty()) {
+                Backends bs = getNativeBackend(md.getAnnotationList(), md.getUnit());
+                if (!bs.none()) {
+                    if (bs == Backends.HEADER) {
                         md.addError("missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
-                    } else if (!isForBackend(be, Backend.Java)) {
+                    } else if (!isForBackend(bs, Backend.Java.asSet())) {
                         md.addError("module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
                     }
                 }
@@ -579,12 +580,12 @@ public class LanguageCompiler extends JavaCompiler {
             ModuleDescriptor md = pu.findModuleDescriptor();
             if (md != null) {
                 for (ImportModule im : md.getImportModuleList().getImportModules()) {
-                    String be = getNativeBackend(im.getAnnotationList(), im.getUnit());
+                    Backends bs = getNativeBackend(im.getAnnotationList(), im.getUnit());
                     if (im.getImportPath() != null) {
                         Module m = (Module)im.getImportPath().getModel();
-                        if (be != null && m.isNative() && !be.equals(m.getNativeBackend())) {
+                        if (!bs.none() && m.isNative() && !bs.supports(m.getNativeBackends())) {
                             im.addError("native backend name conflicts with imported module: '\"" + 
-                                    be + "\"' is not '\"" + m.getNativeBackend() + "\"'", Backend.Java);
+                                    bs + "\"' is not '\"" + m.getNativeBackends() + "\"'", Backend.Java);
                         }
                     }
                 }

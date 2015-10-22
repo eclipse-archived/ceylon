@@ -74,7 +74,6 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -2967,7 +2966,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
 
         for(ModuleImport dependency : module.getImports()){
-            if (!isForBackend(dependency.getNativeBackend(), Backend.Java)) {
+            if (!isForBackend(dependency.getNativeBackends(), Backend.Java.asSet())) {
                 continue;
             }
             Module dependencyModule = dependency.getModule();

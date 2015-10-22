@@ -32,6 +32,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
@@ -124,7 +125,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             if(!module.isDefault() && !moduleManager.getModelLoader().loadCompiledModule(module)){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
-                module.setNativeBackend(Backend.Java.nativeAnnotation);
+                module.setNativeBackends(Backend.Java.asSet());
                 
                 List<ArtifactResult> deps = artifact.dependencies();
                 for (ArtifactResult dep : deps) {
@@ -156,8 +157,8 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                         List<ModuleImport> newModuleImports = new ArrayList<>();
                         for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
                             Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
-                            Backend backend = Backend.fromAnnotation(dependency.getNativeBackend());
-                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backend);
+                            Backends backends = dependency.getNativeBackends();
+                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backends);
                             newModuleImports.add(moduleImport);
                         }
                         module.overrideImports(newModuleImports);
