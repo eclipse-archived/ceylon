@@ -1053,7 +1053,7 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.ObjectDefinition that) {
         if (errVisitor.hasErrors(that))return;
         if (NativeUtil.isNativeHeader(that) &&
-                ModelUtil.getNativeDeclaration(that.getDeclarationModel(), Backend.JavaScript.asSet()) != null) {
+                ModelUtil.getNativeDeclaration(that.getDeclarationModel(), Backend.JavaScript) != null) {
             // It's a native header, remember it for later when we deal with its implementation
             headers.put(that.getDeclarationModel().getQualifiedNameString(), that);
             return;
@@ -2423,7 +2423,7 @@ public class GenerateJsVisitor extends Visitor {
                     //perhaps in an outer scope
                     id = (TypeDeclaration) d.getContainer();
                     if (id.isNativeHeader()) {
-                        nd = (TypeDeclaration)ModelUtil.getNativeDeclaration(id, Backend.JavaScript.asSet());
+                        nd = (TypeDeclaration)ModelUtil.getNativeDeclaration(id, Backend.JavaScript);
                     }
                 }
                 Scope scope = ModelUtil.getRealScope(that.getScope());
@@ -2527,7 +2527,7 @@ public class GenerateJsVisitor extends Visitor {
         if (p1.getModule()== null)
             return (p2.getModule()!=null &&
                     (!p2.getModule().isNative() ||
-                        p2.getModule().getNativeBackends().supports(Backend.JavaScript.asSet())));
+                        p2.getModule().getNativeBackends().supports(Backend.JavaScript)));
         return !p1.getModule().equals(p2.getModule());
     }
 

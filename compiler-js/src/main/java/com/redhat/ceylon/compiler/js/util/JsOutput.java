@@ -176,7 +176,7 @@ public class JsOutput {
             for (Declaration d : pkg.getMembers()) {
                 if (!d.isShared()
                         && !(d.isAnonymous() && d.getName() != null && d.getName().startsWith("anonymous#"))
-                        && (!d.isNative() || d.getNativeBackends().supports(Backend.JavaScript.asSet()))) {
+                        && (!d.isNative() || d.getNativeBackends().supports(Backend.JavaScript))) {
                     unsharedDecls.add(d);
                 }
             }

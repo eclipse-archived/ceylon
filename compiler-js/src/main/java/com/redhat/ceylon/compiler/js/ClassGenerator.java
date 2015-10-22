@@ -28,7 +28,7 @@ public class ClassGenerator {
         final Class d = that.getDeclarationModel();
         //If it's inside a dynamic interface, don't generate anything
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
-        final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript.asSet());
+        final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
         if (NativeUtil.isNativeHeader(that) && natd != null) {
             // It's a native header, remember it for later when we deal with its implementation
             gen.saveNativeHeader(that);

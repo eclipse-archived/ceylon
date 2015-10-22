@@ -80,7 +80,7 @@ public class JsCompiler {
             if (model.getUnit() != node.getUnit()
                     && TreeUtil.isForBackend(
                             model.getUnit().getPackage().getModule().getNativeBackends(),
-                            Backend.JavaScript.asSet())) {
+                            Backend.JavaScript)) {
                 // If the model doesn't come from the current unit we're
                 // compiling we check if it comes from a module that
                 // supports JS and if so we assume everything is okay.
@@ -256,7 +256,7 @@ public class JsCompiler {
                         Package pkg = (Package)scope;
                         Module om = pkg.getModule();
                         if (!om.equals(_m) && (!om.isNative() ||
-                                om.getNativeBackends().supports(Backend.JavaScript.asSet()))) {
+                                om.getNativeBackends().supports(Backend.JavaScript))) {
                             output.get(_m).require(((Package) scope).getModule(), names);
                         }
                     }
