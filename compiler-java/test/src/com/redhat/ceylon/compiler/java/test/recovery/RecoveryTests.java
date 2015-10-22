@@ -842,6 +842,7 @@ public class RecoveryTests extends CompilerTests {
         assertFalse(carFile.exists());
     }
 
+    @Ignore("This test largely depends on modules that are now binary-incompatible")
     @Test
     public void testTako() throws IOException {
         String subPath = "modules/bug1411";
