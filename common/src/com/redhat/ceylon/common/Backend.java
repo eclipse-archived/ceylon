@@ -31,6 +31,10 @@ public class Backend {
         return Backends.fromAnnotation(nativeAnnotation);
     }
     
+    public boolean isRegistered() {
+        return registeredBackends.contains(this);
+    }
+    
     public static Backend registerBackend(String name, String backend) {
         Backend b = findAnnotation(backend);
         if (b == null) {

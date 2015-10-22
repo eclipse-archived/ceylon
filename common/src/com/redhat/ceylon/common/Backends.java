@@ -11,15 +11,16 @@ import java.util.Set;
 public class Backends implements Iterable<Backend>, BackendSupport {
     private final Set<Backend> backends;
     
-    public final static Backends NONE = new Backends(Collections.<Backend>emptySet());
-    
     private static final Map<String, Backends> collections;
     
     static {
         collections = new HashMap<String, Backends>();
     }
     
-    public Backends(Set<Backend> backends) {
+    public final static Backends NONE = new Backends(Collections.<Backend>emptySet());
+    public final static Backends HEADER = fromAnnotation(Backend.None.nativeAnnotation);
+    
+    Backends(Set<Backend> backends) {
         this.backends = backends;
     }
 
@@ -44,6 +45,9 @@ public class Backends implements Iterable<Backend>, BackendSupport {
             result.retainAll(this.backends);
             if (result.isEmpty()) {
                 return NONE;
+            } else if (result.size() == 1) {
+                Backend backend = result.iterator().next();
+                return backend.asSet();
             } else {
                 return new Backends(result);
             }
@@ -111,7 +115,28 @@ public class Backends implements Iterable<Backend>, BackendSupport {
     }
 
     @Override
+    public int hashCode() {
+        return backends.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (that instanceof Backends) {
+            return backends.equals(((Backends)that).backends);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public String toString() {
-        return backends.toString();
+        StringBuilder str = new StringBuilder();
+        for (Backend b : backends) {
+            if (str.length() > 0) {
+                str.append(",");
+            }
+            str.append(b.nativeAnnotation);
+        }
+        return str.toString();
     }
 }
