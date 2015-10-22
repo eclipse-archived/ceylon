@@ -33,6 +33,10 @@ public class Backends implements Iterable<Backend>, BackendSupport {
         return backends.isEmpty();
     }
     
+    public boolean supports(Backend backend) {
+        return !supported(backend.asSet()).none();
+    }
+    
     public boolean supports(Backends backends) {
         return !supported(backends).none();
     }
