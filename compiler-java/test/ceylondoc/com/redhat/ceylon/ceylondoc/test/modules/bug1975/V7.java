@@ -45,7 +45,7 @@ class V7 implements com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @ceylon.language.SharedAnnotation$annotation$
     @com.redhat.ceylon.compiler.java.metadata.Annotations({@com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
+    @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long g(@com.redhat.ceylon.compiler.java.metadata.Name("a")
     @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final java.lang.String a) {
@@ -56,7 +56,7 @@ class V7 implements com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     @ceylon.language.SharedAnnotation$annotation$
     @com.redhat.ceylon.compiler.java.metadata.Annotations({@com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
-    @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Callable<ceylon.language::Integer,ceylon.language::Tuple<ceylon.language::String,ceylon.language::String,ceylon.language::Empty>>")
+    @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long h(@com.redhat.ceylon.compiler.java.metadata.Name("a")
     @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final java.lang.String a) {
