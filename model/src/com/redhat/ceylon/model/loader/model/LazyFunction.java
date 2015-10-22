@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
@@ -216,13 +217,13 @@ public class LazyFunction extends Function implements LazyElement, LocalDeclarat
     }
 
     @Override
-    public String getNativeBackend() {
-        return super.getNativeBackend();
+    public Backends getNativeBackends() {
+        return super.getNativeBackends();
     }
     
     @Override
-    public void setNativeBackend(String backend) {
-        super.setNativeBackend(backend);
+    public void setNativeBackends(Backends backends) {
+        super.setNativeBackends(backends);
     }
 
     @Override

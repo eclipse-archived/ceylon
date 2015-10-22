@@ -56,8 +56,8 @@ public class ImportList implements Scope {
     }
 
     @Override
-    public Declaration getDirectMemberForBackend(String name, String backend) {
-        return getContainer().getDirectMemberForBackend(name, backend);
+    public Declaration getDirectMemberForBackend(String name, Backends backends) {
+        return getContainer().getDirectMemberForBackend(name, backends);
     }
 
     @Override

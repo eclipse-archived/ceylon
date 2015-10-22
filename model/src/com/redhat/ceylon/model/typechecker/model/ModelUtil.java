@@ -2613,7 +2613,7 @@ public class ModelUtil {
             if (backends.none() &&
                     !dec.isNativeHeader()
                 || backends.supports(
-                        Backends.fromAnnotation(dec.getNativeBackend()))) {
+                        dec.getNativeBackends())) {
                 abstraction = dec;
             }
             else {
@@ -2624,7 +2624,7 @@ public class ModelUtil {
                         if (backends.none() &&
                                 !d.isNativeHeader()
                             || backends.supports(
-                                    Backends.fromAnnotation(d.getNativeBackend()))) {
+                                    d.getNativeBackends())) {
                             abstraction = d;
                             break;
                         }
@@ -2667,25 +2667,25 @@ public class ModelUtil {
     /**
      * Find the declaration with the given name that occurs
      * in the list of members, taking into account the
-     * given backend, if any. Does not take into account
+     * given backends, if any. Does not take into account
      * Java overloading
      *  
      * @param members a list of member declarations
      * @param name the name of a declaration occurring 
      *        directly in the scope, and not overloaded
-     * @param backend the native backend name
+     * @param backends the native backends
      * 
      * @return the matching declaration
      */
     public static Declaration lookupMemberForBackend(
-            List<Declaration> members, String name, String backend) {
+            List<Declaration> members, String name, Backends backends) {
         for (Declaration dec: members) {
             if (isResolvable(dec) && isNamed(name, dec)) {
-                String nat = dec.getNativeBackend();
-                if (nat==null) {
+                Backends bs = dec.getNativeBackends();
+                if (bs.none()) {
                     return dec;
                 }
-                else if (nat.equals(backend)) {
+                else if (backends.supports(bs)) {
                     return dec;
                 }
             }
@@ -2785,7 +2785,7 @@ public class ModelUtil {
             header =
                     container.getDirectMemberForBackend(
                             name,
-                            Backend.None.nativeAnnotation);
+                            Backend.None.asSet());
         }
         return header;
     }

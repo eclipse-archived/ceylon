@@ -10,6 +10,8 @@ import static java.util.Collections.emptyList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backends;
+
 /**
  * Any program element of relevance to the model.
  * 
@@ -91,13 +93,13 @@ public abstract class Element {
     }
 
     /**
-     * Search only directly inside this scope for the given 
-     * backend.
+     * Search only directly inside this scope for a member
+     * with the given name and any of the given backends
      */
     public Declaration getDirectMemberForBackend(String name, 
-            String backend) {
+            Backends backends) {
         return lookupMemberForBackend(getMembers(), 
-                name, backend);
+                name, backends);
     }
 
     /**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 
 /**
  * Describes data specific to module imports
@@ -14,23 +15,23 @@ public class ModuleImport implements Annotated {
     private boolean optional;
     private boolean export;
     private Module module;
-    private String nativeBackend;
+    private Backends nativeBackends;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private ModuleImport overridenModuleImport = null;
 
     public ModuleImport(Module module, boolean optional, boolean export) {
-        this(module, optional, export, (String)null);
+        this(module, optional, export, (Backend)null);
     }
 
     public ModuleImport(Module module, boolean optional, boolean export, Backend backend) {
-        this(module, optional, export, backend != null ? backend.nativeAnnotation : null);
+        this(module, optional, export, backend != null ? backend.asSet() : Backends.NONE);
     }
 
-    public ModuleImport(Module module, boolean optional, boolean export, String nativeBackend) {
+    public ModuleImport(Module module, boolean optional, boolean export, Backends backends) {
         this.module = module;
         this.optional = optional;
         this.export = export;
-        this.nativeBackend = nativeBackend;
+        this.nativeBackends = backends;
     }
 
     public boolean isOptional() {
@@ -46,11 +47,11 @@ public class ModuleImport implements Annotated {
     }
     
     public boolean isNative() {
-        return getNativeBackend() != null;
+        return !getNativeBackends().none();
     }
     
-    public String getNativeBackend() {
-        return nativeBackend;
+    public Backends getNativeBackends() {
+        return nativeBackends;
     }
     
     @Override
@@ -65,11 +66,11 @@ public class ModuleImport implements Annotated {
     public boolean override(ModuleImport moduleImportOverride) {
         if (overridenModuleImport == null
         		&& moduleImportOverride != null) {
-            this.overridenModuleImport = new ModuleImport(module, optional, export, nativeBackend);
+            this.overridenModuleImport = new ModuleImport(module, optional, export, nativeBackends);
             module = moduleImportOverride.getModule();
             optional = moduleImportOverride.isOptional();
             export = moduleImportOverride.isExport();
-            nativeBackend = moduleImportOverride.getNativeBackend();
+            nativeBackends = moduleImportOverride.getNativeBackends();
             return true;
         }
         return false;
@@ -80,9 +81,9 @@ public class ModuleImport implements Annotated {
         final StringBuilder sb = new StringBuilder();
         if (export) sb.append("shared ");
         if (optional) sb.append("optional ");
-        if (nativeBackend!=null) {
+        if (!nativeBackends.none()) {
             sb.append("native(")
-              .append(nativeBackend)
+              .append(nativeBackends)
               .append(") ");
         }
         sb.append("import ")

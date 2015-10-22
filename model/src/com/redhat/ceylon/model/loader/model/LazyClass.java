@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
@@ -296,13 +297,13 @@ public class LazyClass extends Class implements LazyContainer {
     }
 
     @Override
-    public String getNativeBackend() {
-        return super.getNativeBackend();
+    public Backends getNativeBackends() {
+        return super.getNativeBackends();
     }
     
     @Override
-    public void setNativeBackend(String backend) {
-        super.setNativeBackend(backend);
+    public void setNativeBackends(Backends backends) {
+        super.setNativeBackends(backends);
     }
 
     @Override

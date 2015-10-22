@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Module 
@@ -39,7 +40,7 @@ public class Module
     private TypeCache cache = new TypeCache();
     private String signature;
     private List<ModuleImport> overridenImports = null;
-    private String nativeBackend;
+    private Backends nativeBackends = Backends.NONE;
 
     public Module() {}
     
@@ -307,15 +308,15 @@ public class Module
     }
 
     public boolean isNative() {
-        return getNativeBackend() != null;
+        return !getNativeBackends().none();
     }
     
-    public String getNativeBackend() {
-        return nativeBackend;
+    public Backends getNativeBackends() {
+        return nativeBackends;
     }
     
-    public void setNativeBackend(String backend) {
-        this.nativeBackend=backend;
+    public void setNativeBackends(Backends backends) {
+        this.nativeBackends=backends;
     }
     
     @Override

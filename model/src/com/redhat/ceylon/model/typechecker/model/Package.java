@@ -152,9 +152,9 @@ public class Package
 
     @Override
     public Declaration getDirectMemberForBackend(String name, 
-            String backend) {
+            Backends backends) {
         return lookupMemberForBackend(getMembers(), 
-                name, backend);
+                name, backends);
     }
 
     @Override
@@ -329,7 +329,6 @@ public class Package
     
     @Override
     public Backends getScopedBackends() {
-        String backend = getModule().getNativeBackend();
-        return Backends.fromAnnotation(backend);
+        return getModule().getNativeBackends();
     }
 }

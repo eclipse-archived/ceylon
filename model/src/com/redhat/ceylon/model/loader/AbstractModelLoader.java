@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.lang.model.type.TypeKind;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -1799,7 +1800,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // this attribute to false by default, so it should work
             if (isJdk && module instanceof LazyModule) {
                 ((LazyModule)module).setJava(true);
-                module.setNativeBackend(Backend.Java.nativeAnnotation);
+                module.setNativeBackends(Backend.Java.asSet());
             }
 
             // FIXME: this can't be that easy.
@@ -1877,7 +1878,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
                     Boolean exportVal = (Boolean) importAttribute.getValue("export");
 
-                    String backend = null; // TODO (String) importAttribute.getValue("native");
+                    Backend backend = null; // TODO (String) importAttribute.getValue("native");
 
                     ModuleImport moduleImport = moduleManager.findImport(module, dependency);
                     if (moduleImport == null) {
@@ -2722,13 +2723,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
 
         if (annotated instanceof Declaration
-                && ((Declaration)annotated).getNativeBackend() != null) {
+                && !((Declaration)annotated).getNativeBackends().none()) {
             // Do nothing : 
             //    it has already been managed when in the makeLazyXXX() function
         } else {
             manageNativeBackend(annotated, classMirror);
         }
     }
+    
     private void manageNativeBackend(Annotated annotated, AnnotatedMirror mirror) {
         if (mirror == null)
             return;
@@ -2737,7 +2739,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (nativeBackend != null) {
             if (annotated instanceof Declaration) {
                 Declaration decl = (Declaration)annotated;
-                decl.setNativeBackend(nativeBackend);
+                decl.setNativeBackends(Backends.fromAnnotation(nativeBackend));
                 if (decl.isNativeHeader()) {
                     // FIXME we need to add the native implementations
                     // to this list somehow!!
@@ -2748,13 +2750,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }
             } else if (annotated instanceof Module) {
-                ((Module)annotated).setNativeBackend(nativeBackend);
+                ((Module)annotated).setNativeBackends(Backends.fromAnnotation(nativeBackend));
             }
         } else {
             // Mark native Classes and Interfaces as well, but don't deal with overloads and such
             if (annotated instanceof LazyClass && !((LazyClass)annotated).isCeylon()
                     || annotated instanceof LazyInterface && !((LazyInterface)annotated).isCeylon()) {
-                ((Declaration)annotated).setNativeBackend(Backend.Java.nativeAnnotation);
+                ((Declaration)annotated).setNativeBackends(Backend.Java.asSet());
             }
         }
     }

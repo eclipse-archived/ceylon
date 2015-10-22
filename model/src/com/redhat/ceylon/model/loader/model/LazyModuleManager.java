@@ -34,7 +34,7 @@ public abstract class LazyModuleManager extends ModuleManager {
             if(JDKUtils.jdk.providesVersion(version)){
                 module.setAvailable(true);
                 module.setJava(true);
-                module.setNativeBackend(Backend.Java.nativeAnnotation);
+                module.setNativeBackends(Backend.Java.asSet());
             }
         }
     }

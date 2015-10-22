@@ -38,14 +38,14 @@ public interface Scope {
             boolean ellipsis);
 
     /**
-     * Get a member declared directly in this scope for the given backend
+     * Get a member declared directly in this scope for any of the given backends
      * 
      * @param name the name of the member
-     * @param backend the native backend name
+     * @param backends the native backends
      * 
      * @return the best matching member
      */
-    public Declaration getDirectMemberForBackend(String name, String backend);
+    public Declaration getDirectMemberForBackend(String name, Backends backends);
 
     /**
      * Resolve a qualified reference.

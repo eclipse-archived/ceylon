@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 
 /**
@@ -43,7 +42,7 @@ public abstract class Declaration
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
     private String qualifiedNameAsStringCache;
-	private String nativeBackend;
+	private Backends nativeBackends = Backends.NONE;
 	private boolean otherInstanceAccess;
     private DeclarationCompleter actualCompleter;
     private List<String> aliases;
@@ -190,31 +189,31 @@ public abstract class Declaration
     }
 
     public boolean isNative() {
-        return getNativeBackend() != null;
+        return !getNativeBackends().none();
     }
     
     public boolean isNativeHeader() {
-        return Backend.None.nativeAnnotation.equals(getNativeBackend());
+        return Backends.HEADER == getNativeBackends();
     }
     
     public boolean isNativeImplementation() {
         return isNative() && !isNativeHeader();
     }
     
-    public String getNativeBackend() {
-    	return nativeBackend;
+    public Backends getNativeBackends() {
+    	return nativeBackends;
     }
     
-    public void setNativeBackend(String backend) {
-    	this.nativeBackend=backend;
+    public void setNativeBackends(Backends backends) {
+    	this.nativeBackends=backends;
     }
 
     public Backends getScopedBackends() {
-        String backend = getNativeBackend();
-        if (backend == null) {
+        Backends backends = getNativeBackends();
+        if (backends.none()) {
             return getScope().getScopedBackends();
         } else {
-            return Backends.fromAnnotation(backend);
+            return backends;
         }
     }
 
