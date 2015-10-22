@@ -31,6 +31,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests.ExpectedError;
+import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests.HttpError;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests.RequestCounter;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests.TimeoutIn;
 import com.sun.net.httpserver.HttpExchange;
@@ -62,12 +64,16 @@ public class RepoFileHandler implements HttpHandler {
     private RequestCounter rq;
     private boolean herd;
     private TimeoutIn timeoutIn;
+    private HttpError httpError;
 
-    public RepoFileHandler(String destdir, boolean herd, RequestCounter rq, TimeoutIn timeoutIn) {
+    public RepoFileHandler(String destdir, boolean herd, RequestCounter rq, ExpectedError error) {
         this.folder = destdir;
         this.rq = rq;
         this.herd = herd;
-        this.timeoutIn = timeoutIn;
+        if(error instanceof TimeoutIn)
+            this.timeoutIn = (TimeoutIn) error;
+        else if(error instanceof HttpError)
+            this.httpError = (HttpError) error;
     }
 
     @Override
@@ -76,6 +82,15 @@ public class RepoFileHandler implements HttpHandler {
             rq.add();
         String path = t.getRequestURI().getPath();
         String method = t.getRequestMethod();
+        
+        if(httpError != null){
+            switch(httpError){
+            case FORBIDDEN:
+                t.sendResponseHeaders(HttpURLConnection.HTTP_FORBIDDEN, -1);
+                t.close();
+                return;
+            }
+        }
         
         log("Serving URI "+method+" "+path);
 

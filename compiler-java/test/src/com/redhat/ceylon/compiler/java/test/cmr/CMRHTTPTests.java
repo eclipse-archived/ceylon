@@ -39,16 +39,24 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.sun.net.httpserver.HttpServer;
 
 public class CMRHTTPTests extends CompilerTests {
 
-    enum TimeoutIn {
+    interface ExpectedError {}
+    
+    enum TimeoutIn implements ExpectedError {
         None, Head, GetInitial, GetMiddle, PutInitial, PutMiddle;
     }
-    
+
+    enum HttpError implements ExpectedError {
+        FORBIDDEN;
+    }
+
     class RequestCounter{
         volatile int count;
         synchronized void add(){
@@ -83,9 +91,9 @@ public class CMRHTTPTests extends CompilerTests {
         return startServer(port, repo, herd, rq, TimeoutIn.None);
     }
 
-    private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq, TimeoutIn timeoutIn) throws IOException{
+    private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq, ExpectedError error) throws IOException{
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 1);
-        server.createContext("/repo", new RepoFileHandler(repo.getPath(), herd, rq, timeoutIn));
+        server.createContext("/repo", new RepoFileHandler(repo.getPath(), herd, rq, error));
         // make sure we serve at least two concurrent connections, as each one might take a few ms to close
         ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(2);
         server.setExecutor(tpool);
@@ -227,7 +235,7 @@ public class CMRHTTPTests extends CompilerTests {
         try{
             // then try to compile our module by outputting to HTTP 
             assertErrors("modules/single/module", Arrays.asList("-out", repoAURL, "-verbose:cmr", "-timeout", "1"), null,
-                    new CompilerError(-1, "Failed to write module to repository: com.redhat.ceylon.cmr.impl.CMRException: java.net.SocketTimeoutException: Timed out writing to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.src"));
+                    new CompilerError(-1, "Failed to write module to repository: java.net.SocketTimeoutException: Timed out writing to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.src"));
 
         }finally{
             server.stop(1);
@@ -239,7 +247,7 @@ public class CMRHTTPTests extends CompilerTests {
         try{
             // then try to compile our module by outputting to HTTP 
             assertErrors("modules/single/module", Arrays.asList("-out", repoAURL, "-verbose:cmr", "-timeout", "1"), null,
-                    new CompilerError(-1, "Failed to write module to repository: com.redhat.ceylon.cmr.impl.CMRException: java.net.SocketTimeoutException: Timed out writing to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.src"));
+                    new CompilerError(-1, "Failed to write module to repository: java.net.SocketTimeoutException: Timed out writing to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/single/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.single-6.6.6.src"));
 
         }finally{
             server.stop(1);
@@ -348,5 +356,21 @@ public class CMRHTTPTests extends CompilerTests {
         src.close();
 
         rq.check(requests);
+    }
+
+    @Test
+    public void testMdlHTTPForbidden() throws IOException {
+        File repo = makeRepo();
+        
+        final int port = allocPortForTest();
+        final String repoAURL = getRepoUrl(port);
+        HttpServer server = startServer(port, repo, true, null, HttpError.FORBIDDEN); 
+        try{
+            // then try to compile our module by outputting to HTTP 
+            assertErrors("modules/single/module", Arrays.asList("-out", repoAURL), null, 
+                    new CompilerError(-1, "Failed to write module to repository: authentication failed on repository "+repoAURL));
+        }finally{
+            server.stop(1);
+        }
     }
 }
