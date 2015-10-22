@@ -33,6 +33,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -905,15 +906,19 @@ public abstract class CompilerTests {
         __redirected.__JAXPRedirected.restorePlatformFactory();
 
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
-        // make sure the class loader is cleaned up
-        String[] args = new String[4 + runnerArgs.size()];
-        args[0] = runner;
-        args[1] = "--rep";
-        args[2] = getOutPath();
-        for(int i=0;i<runnerArgs.size();i++)
-            args[3+i] = runnerArgs.get(i);
-        args[args.length-1] = module;
-        int exit = Launcher.run(true, args);
+
+        int exit = -1;
+        try (ExitManager em = new ExitManager()) {
+            // make sure the class loader is cleaned up
+            String[] args = new String[4 + runnerArgs.size()];
+            args[0] = runner;
+            args[1] = "--rep";
+            args[2] = getOutPath();
+            for(int i=0;i<runnerArgs.size();i++)
+                args[3+i] = runnerArgs.get(i);
+            args[args.length-1] = module;
+            exit = Launcher.run(true, args);
+        }
         Assert.assertEquals(0, exit);
 
         // Now the TCCL is fucked up, so restore it too
@@ -922,5 +927,34 @@ public abstract class CompilerTests {
         // And restore JAXP again because Launcher reloaded the Module class (and static init) in its own class
         // loader, which re-fucked up the JAXP System properties
         __redirected.__JAXPRedirected.restorePlatformFactory();
+    }
+    
+    class ExitManager extends SecurityManager implements AutoCloseable {
+        SecurityManager original;
+
+        ExitManager() {
+            original = System.getSecurityManager();
+            System.setSecurityManager(this);
+        }
+
+        /** Deny permission to exit the VM. */
+        public void checkExit(int status) {
+            throw (new SecurityException("Exit was called by program"));
+        }
+
+        /**
+         * Allow this security manager to be replaced, if fact, allow pretty
+         * much everything.
+         */
+        public void checkPermission(Permission perm) {
+            if (original != null) {
+                original.checkPermission(perm);
+            }
+        }
+
+        @Override
+        public void close() throws Exception {
+            System.setSecurityManager(original);
+        }
     }
 }
