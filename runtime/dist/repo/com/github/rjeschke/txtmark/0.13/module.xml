@@ -28,7 +28,6 @@
     </resources>
 
     <dependencies>
-        <module name="java.base" slot="7"/>
     </dependencies>
     
 </module>
