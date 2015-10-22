@@ -30,7 +30,6 @@ import com.redhat.ceylon.cmr.ceylon.LegacyImporter.DependencyErrors;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.DependencyResults;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.ImporterFeedback;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
-import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -41,6 +40,7 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 @Summary("Imports a jar file into a Ceylon module repository")
 @Description("Imports the given `<jar-file>` using the module name and version " +
@@ -348,10 +348,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                 msg("info.noProblems.publishing").newline();
                 try {
                     importer.publish();
-                } catch(CMRException x) {
+                } catch(RepositoryException x) {
                     throw new ImportJarException("error.failedWriteArtifact", new Object[]{module, x.getLocalizedMessage()}, x);
                 } catch(Exception x) {
-                    // FIXME: remove when the whole CMR is using CMRException
+                    // FIXME: remove when the whole CMR is using RepositoryException
                     throw new ImportJarException("error.failedWriteArtifact", new Object[]{module, x.getLocalizedMessage()}, x);
                 }
                 String repoString = this.getOutputRepositoryManager().getRepositoriesDisplayString().toString();
