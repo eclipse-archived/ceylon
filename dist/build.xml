@@ -502,23 +502,30 @@ Used with another target such as 'package'">
                 <actions>
                     <if>
                         <not>
-                            <equals arg1="${Require-Bundle}" arg2=""/>
+                            <equals arg1="@{moduleName}" arg2="java.base"/>
                         </not>
                         <then>
-                            <var name="Require-Bundle" value="${Require-Bundle}," />
-                        </then>
-                    </if>
-                    <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
-                    <if>
-                        <equals arg1="@{moduleExport}" arg2="true"/>
-                        <then>
-                            <var name="Require-Bundle" value="${Require-Bundle};visibility:=reexport" />
-                        </then>
-                    </if>
-                    <if>
-                        <equals arg1="@{moduleOptional}" arg2="true"/>
-                        <then>
-                            <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
+                            <if>
+                                <not>
+                                    <equals arg1="${Require-Bundle}" arg2=""/>
+                                </not>
+                                <then>
+                                    <var name="Require-Bundle" value="${Require-Bundle}," />
+                                </then>
+                            </if>
+                            <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
+                            <if>
+                                <equals arg1="@{moduleExport}" arg2="true"/>
+                                <then>
+                                    <var name="Require-Bundle" value="${Require-Bundle};visibility:=reexport" />
+                                </then>
+                            </if>
+                            <if>
+                                <equals arg1="@{moduleOptional}" arg2="true"/>
+                                <then>
+                                    <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
+                                </then>
+                            </if>
                         </then>
                     </if>
                 </actions>
