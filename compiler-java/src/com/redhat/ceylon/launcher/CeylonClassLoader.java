@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -120,7 +119,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.1.1"));
         // For the "doc" tool
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.2.7"));
-        archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.11"));
+        archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
         // For the --out http:// functionality of the compiler
         archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1"));
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2"));
