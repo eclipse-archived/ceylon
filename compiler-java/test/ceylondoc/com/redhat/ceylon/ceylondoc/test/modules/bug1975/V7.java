@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.ceylondoc.test.modules.bug1975;
 
-@com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 7)
+@com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 class V7 implements com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     V7(@com.redhat.ceylon.compiler.java.metadata.Name("f")
