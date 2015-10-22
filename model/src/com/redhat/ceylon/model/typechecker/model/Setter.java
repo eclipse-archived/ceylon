@@ -1,6 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import java.util.Set;
+import com.redhat.ceylon.common.Backends;
 
 
 /**
@@ -75,7 +75,7 @@ public class Setter extends FunctionOrValue implements Scope {
     }
     
     @Override
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         return super.getScopedBackends();
     }
     

@@ -6,13 +6,13 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVe
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
-import static java.util.Collections.singleton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
+
+import com.redhat.ceylon.common.Backends;
 
 public class Package 
         implements ImportableScope, Referenceable, Annotated {
@@ -328,8 +328,8 @@ public class Package
     }
     
     @Override
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         String backend = getModule().getNativeBackend();
-        return backend==null ? null : singleton(backend);
+        return Backends.fromAnnotation(backend);
     }
 }

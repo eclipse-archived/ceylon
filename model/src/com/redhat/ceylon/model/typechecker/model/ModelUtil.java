@@ -7,7 +7,6 @@ import static java.lang.Character.isLowerCase;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
-import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 
 
@@ -2606,21 +2606,14 @@ public class ModelUtil {
     }
     
     public static Declaration getNativeDeclaration(
-            Declaration decl, Backend backend) {
-        return getNativeDeclaration(decl, 
-                backend == null ? null :
-                    singleton(backend.nativeAnnotation));
-    }
-    
-    public static Declaration getNativeDeclaration(
-            Declaration dec, Set<String> backends) {
+            Declaration dec, Backends backends) {
         if (dec.isNative() && 
                 backends != null) {
             Declaration abstraction = null;
-            if (backends.isEmpty() && 
+            if (backends.none() &&
                     !dec.isNativeHeader()
-                || backends.contains(
-                        dec.getNativeBackend())) {
+                || backends.supports(
+                        Backends.fromAnnotation(dec.getNativeBackend()))) {
                 abstraction = dec;
             }
             else {
@@ -2628,10 +2621,10 @@ public class ModelUtil {
                         dec.getOverloads();
                 if (overloads != null) {
                     for (Declaration d: overloads) {
-                        if (backends.isEmpty() && 
+                        if (backends.none() &&
                                 !d.isNativeHeader()
-                            || backends.contains(
-                                    d.getNativeBackend())) {
+                            || backends.supports(
+                                    Backends.fromAnnotation(d.getNativeBackend()))) {
                             abstraction = d;
                             break;
                         }

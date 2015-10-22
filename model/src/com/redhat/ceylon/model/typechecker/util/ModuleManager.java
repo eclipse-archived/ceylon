@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BackendSupport;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -230,7 +231,7 @@ public class ModuleManager implements BackendSupport {
      * that any backend is acceptable.
      */
     @Override
-    public Set<String> getSupportedBackends() {
-        return Collections.emptySet();
+    public Backends getSupportedBackends() {
+        return Backends.NONE;
     }
 }

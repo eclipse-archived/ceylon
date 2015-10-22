@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
+import com.redhat.ceylon.common.Backends;
 
 public abstract class TypeDeclaration extends Declaration 
         implements ImportableScope, Cloneable, Generic {
@@ -1190,7 +1191,7 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     @Override
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         return super.getScopedBackends();
     }
     

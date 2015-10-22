@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import com.redhat.ceylon.common.Backends;
 
 //Note that this class exists to support
 //autocompletion in the IDE
@@ -132,7 +133,7 @@ public class ImportList implements Scope {
     }
     
     @Override
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         return getScope().getScopedBackends();
     }
 }

@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 
 /**
  * Represents a named, annotated program element:
@@ -209,12 +209,12 @@ public abstract class Declaration
     	this.nativeBackend=backend;
     }
 
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         String backend = getNativeBackend();
         if (backend == null) {
             return getScope().getScopedBackends();
         } else {
-            return Collections.singleton(backend);
+            return Backends.fromAnnotation(backend);
         }
     }
 

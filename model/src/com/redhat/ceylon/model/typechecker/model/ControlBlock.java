@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backends;
+
 /**
  * A scope representing a block of a control structure. Note
  * that even though declarations belonging to this scope 
@@ -79,7 +81,7 @@ public class ControlBlock extends Element implements Scope {
     }
     
     @Override
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         return getScope().getScopedBackends();
     }
 }

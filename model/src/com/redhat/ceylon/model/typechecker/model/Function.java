@@ -4,7 +4,8 @@ import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import com.redhat.ceylon.common.Backends;
 
 /**
  * A function. Note that a function must have at least one 
@@ -124,7 +125,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     }
 
     @Override
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         return super.getScopedBackends();
     }
     

@@ -1,11 +1,10 @@
 package com.redhat.ceylon.model.loader.model;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -70,8 +69,8 @@ public abstract class LazyModuleManager extends ModuleManager {
     }
 
     @Override
-    public Set<String> getSupportedBackends() {
-        return Collections.singleton(Backend.Java.nativeAnnotation);
+    public Backends getSupportedBackends() {
+        return Backend.Java.asSet();
     }
     
     @Override

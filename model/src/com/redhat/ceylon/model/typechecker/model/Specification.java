@@ -2,7 +2,8 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import com.redhat.ceylon.common.Backends;
 
 public class Specification extends Element implements Scope {
     
@@ -60,7 +61,7 @@ public class Specification extends Element implements Scope {
     }
 
     @Override
-    public Set<String> getScopedBackends() {
+    public Backends getScopedBackends() {
         return getScope().getScopedBackends();
     }
 }
