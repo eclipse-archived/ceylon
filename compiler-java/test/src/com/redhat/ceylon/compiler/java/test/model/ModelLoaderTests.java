@@ -329,7 +329,7 @@ public class ModelLoaderTests extends CompilerTests {
         public void compareDeclarations(String name, Declaration validDeclaration, Declaration modelDeclaration) {
             if (validDeclaration.isNativeHeader()) {
                 // It's a native header, best to compare against its JVM implementation
-                Declaration impl = ModelUtil.getNativeDeclaration(validDeclaration, Backend.Java.asSet());
+                Declaration impl = ModelUtil.getNativeDeclaration(validDeclaration, Backend.Java);
                 if (impl != null) {
                     validDeclaration = impl;
                 }

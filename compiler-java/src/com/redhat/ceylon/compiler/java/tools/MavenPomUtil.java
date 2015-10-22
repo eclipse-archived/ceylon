@@ -124,7 +124,7 @@ public class MavenPomUtil {
                 out.writeStartElement("dependencies");
 
                 for(ModuleImport dep : imports){
-                    if (!isForBackend(dep.getNativeBackends(), Backend.Java.asSet())) {
+                    if (!isForBackend(dep.getNativeBackends(), Backend.Java)) {
                         continue;
                     }
                     Module moduleDependency = dep.getModule();

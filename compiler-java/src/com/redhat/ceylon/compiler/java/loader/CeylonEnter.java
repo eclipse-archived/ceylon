@@ -729,7 +729,7 @@ public class CeylonEnter extends Enter {
         @Override
         protected boolean includeError(Message err, int phase) {
             return err.getBackend() == null ||
-                    TreeUtil.isForBackend(err.getBackend().nativeAnnotation, Backend.Java);
+                    TreeUtil.isForBackend(err.getBackend().asSet(), Backend.Java);
         }
 
         protected Node getIdentifyingNode(Node node) {

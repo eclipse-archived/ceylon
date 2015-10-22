@@ -4667,7 +4667,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Make sure we're using the correct declaration in case of natives
         // (the header might look like a field while the implementation is a getter)
         if (decl.isNativeHeader()) {
-            Declaration d = ModelUtil.getNativeDeclaration(decl, Backend.Java.asSet());
+            Declaration d = ModelUtil.getNativeDeclaration(decl, Backend.Java);
             if (d != null) {
                 decl = d;
             }

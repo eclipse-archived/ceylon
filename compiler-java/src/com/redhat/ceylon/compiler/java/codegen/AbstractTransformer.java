@@ -2966,7 +2966,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
 
         for(ModuleImport dependency : module.getImports()){
-            if (!isForBackend(dependency.getNativeBackends(), Backend.Java.asSet())) {
+            if (!isForBackend(dependency.getNativeBackends(), Backend.Java)) {
                 continue;
             }
             Module dependencyModule = dependency.getModule();
