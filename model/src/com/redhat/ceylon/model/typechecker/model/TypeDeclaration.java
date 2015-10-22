@@ -10,14 +10,16 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.strictlyBetterMatch;
 import static java.util.Collections.emptyList;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 
 public abstract class TypeDeclaration extends Declaration 
         implements ImportableScope, Cloneable, Generic {
@@ -1192,7 +1194,7 @@ public abstract class TypeDeclaration extends Declaration
         return super.getScopedBackends();
     }
     
-    public ElementType[] getAnnotationTarget() {
+    public EnumSet<AnnotationTarget> getAnnotationTarget() {
         return null;
     }
     

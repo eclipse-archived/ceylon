@@ -23,6 +23,7 @@ public class AnnotationProxyClass extends Class {
      * The elements in the {@code @Target} annotation, or null if 
      * the annotation type lacks the {@code @Target} annotation.
      */
+    @Override
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
         AnnotationMirror targetAnno = iface.classMirror.getAnnotation("java.lang.annotation.Target");
         if (targetAnno != null) {
