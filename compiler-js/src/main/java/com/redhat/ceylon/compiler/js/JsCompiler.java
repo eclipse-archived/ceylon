@@ -256,7 +256,7 @@ public class JsCompiler {
                         Package pkg = (Package)scope;
                         Module om = pkg.getModule();
                         if (!om.equals(_m) && (!om.isNative() ||
-                                Backend.JavaScript.equals(om.getNativeBackend()))) {
+                                om.getNativeBackends().supports(Backend.JavaScript.asSet()))) {
                             output.get(_m).require(((Package) scope).getModule(), names);
                         }
                     }

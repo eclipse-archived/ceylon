@@ -2524,7 +2524,10 @@ public class GenerateJsVisitor extends Visitor {
         }
         Package p1 = d.getUnit().getPackage();
         if (p2 == null)return p1 != null;
-        if (p1.getModule()== null)return (p2.getModule()!=null && (!p2.getModule().isNative() || p2.getModule().getNativeBackend().equals(Backend.JavaScript)));
+        if (p1.getModule()== null)
+            return (p2.getModule()!=null &&
+                    (!p2.getModule().isNative() ||
+                        p2.getModule().getNativeBackends().supports(Backend.JavaScript.asSet())));
         return !p1.getModule().equals(p2.getModule());
     }
 
