@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -320,7 +321,9 @@ public class JsIdentifierNames {
         if (decl.isAnonymous() && decl.isNativeHeader()) {
             //Couldn't use ModelUtils.getNativeDeclaration with the backend
             //because for some reason the anonymous class has null overloads.
-            if (decl.getContainer() != null && decl.getContainer().getDirectMemberForBackend(decl.getName(), "js") != null) {
+            if (decl.getContainer() != null &&
+                    decl.getContainer().getDirectMemberForBackend(
+                            decl.getName(), Backend.JavaScript.asSet()) != null) {
                 name+="$$N";
             }
         }

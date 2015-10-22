@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -33,7 +35,7 @@ public class JsonModule extends Module {
         setMinor(Integer.parseInt((String)binVersion.substring(dotidx+1), 10));
         if (model.get("$mod-pa") != null) {
             int bits = (int)model.get("$mod-pa");
-            setNativeBackend(JsonPackage.hasAnnotationBit(bits, "native") ? "js" : null);
+            setNativeBackends(JsonPackage.hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.NONE);
         }
         @SuppressWarnings("unchecked")
         Map<String,Object> moduleAnns = (Map<String,Object>)model.get("$mod-anns");

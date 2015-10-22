@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -1041,7 +1043,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
             d.setActual(hasAnnotationBit(bits, "actual"));
             d.setFormal(hasAnnotationBit(bits, "formal"));
             d.setDefault(hasAnnotationBit(bits, "default"));
-            d.setNativeBackend(hasAnnotationBit(bits, "native") ? "js" : null);
+            d.setNativeBackends(hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.NONE);
             d.setAnnotation(hasAnnotationBit(bits, "annotation"));
             if (hasAnnotationBit(bits, "sealed")) {
                 ((TypeDeclaration)d).setSealed(true);

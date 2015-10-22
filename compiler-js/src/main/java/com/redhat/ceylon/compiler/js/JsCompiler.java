@@ -79,8 +79,8 @@ public class JsCompiler {
         protected boolean checkNative(Node node, Declaration model) {
             if (model.getUnit() != node.getUnit()
                     && TreeUtil.isForBackend(
-                            model.getUnit().getPackage().getModule().getNativeBackend(),
-                            Backend.JavaScript)) {
+                            model.getUnit().getPackage().getModule().getNativeBackends(),
+                            Backend.JavaScript.asSet())) {
                 // If the model doesn't come from the current unit we're
                 // compiling we check if it comes from a module that
                 // supports JS and if so we assume everything is okay.
