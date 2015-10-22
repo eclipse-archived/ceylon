@@ -10,6 +10,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.strictlyBetterMatch;
 import static java.util.Collections.emptyList;
 
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -1190,4 +1191,9 @@ public abstract class TypeDeclaration extends Declaration
     public Set<String> getScopedBackends() {
         return super.getScopedBackends();
     }
+    
+    public ElementType[] getAnnotationTarget() {
+        return null;
+    }
+    
 }
