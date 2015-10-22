@@ -51,7 +51,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Prefix;
@@ -4668,7 +4667,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Make sure we're using the correct declaration in case of natives
         // (the header might look like a field while the implementation is a getter)
         if (decl.isNativeHeader()) {
-            Declaration d = ModelUtil.getNativeDeclaration(decl, Backend.Java);
+            Declaration d = ModelUtil.getNativeDeclaration(decl, Backend.Java.asSet());
             if (d != null) {
                 decl = d;
             }

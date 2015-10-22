@@ -21,11 +21,9 @@ package com.redhat.ceylon.ceylondoc;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -65,11 +63,6 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         return false;
     }
     
-    @Override
-    public Set<String> getSupportedBackends() {
-        return Collections.singleton(Backend.Java.nativeAnnotation);
-    }
-
     @Override
     protected AbstractModelLoader createModelLoader(Modules modules) {
         return new CeylonDocModelLoader(this, modules, tool, bootstrapCeylon){
