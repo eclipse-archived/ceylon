@@ -27,7 +27,7 @@
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
-        <module name="com.github.rjeschke.txtmark" slot="0.11"/>
+        <module name="com.github.rjeschke.txtmark" slot="0.13"/>
         <system export="true">
             <paths>
                 <path name="javax/tools"/>

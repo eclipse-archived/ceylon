@@ -22,11 +22,13 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="com.github.rjeschke.txtmark" slot="0.11">
+<module xmlns="urn:jboss:module:1.0" name="com.github.rjeschke.txtmark" slot="0.13">
     <resources>
-        <resource-root path="com.github.rjeschke.txtmark-0.11.jar"/>
+        <resource-root path="com.github.rjeschke.txtmark-0.13.jar"/>
     </resources>
 
     <dependencies>
+        <module name="java.base" slot="7"/>
     </dependencies>
+    
 </module>
