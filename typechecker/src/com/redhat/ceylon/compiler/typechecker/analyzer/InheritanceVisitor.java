@@ -870,17 +870,17 @@ public class InheritanceVisitor extends Visitor {
                         if (ad instanceof TypeParameter) {
                             TypeParameter tp = (TypeParameter) ad;
                             if (tp.getDeclaration().equals(td)) {
-                                help = " (try making " + ad.getName() + 
-                                        " a self type of " + td.getName() + ")";
+                                help = " (try making '" + ad.getName() + 
+                                        "' a self type of '" + td.getName() + "')";
                             }
                         }
                         else if (ad instanceof Interface) {
-                            help = " (try making " + td.getName() + 
-                                    " satisfy " + ad.getName() + ")";
+                            help = " (try making '" + td.getName() + 
+                                    "' satisfy '" + ad.getName() + "')";
                         }
                         else if (ad instanceof Class && td instanceof Class) {
-                            help = " (try making " + td.getName() + 
-                                    " extend " + ad.getName() + ")";
+                            help = " (try making '" + td.getName() + 
+                                    "' extend '" + ad.getName() + "')";
                         }
                         that.addError("type argument does not satisfy self type constraint on type parameter '" +
                                 param.getName() + "' of '" + 
