@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -162,7 +163,20 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(dependencies);
-        
+
+        Map<String,Object> annotations = (Map<String, Object>) metaModelProperty(model, "$mod-anns");
+        if(annotations != null){
+            
+            mvd.setDoc(asString(annotations.get("doc")));
+            mvd.setLicense(asString(annotations.get("license")));
+            Iterable<String> by = (Iterable<String>) annotations.get("by");
+            if(by != null){
+                for(String author : by){
+                    mvd.getAuthors().add(author);
+                }
+            }
+        }
+
         if (includeMembers) {
             mvd.setMembers(getMembers(moduleName, moduleArchive));
         }
@@ -182,6 +196,9 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
     private static String asString(Object obj) {
         if (obj == null) {
             return null;
+        } else if(obj instanceof Iterable){
+            Iterator<String> iter = ((Iterable<String>) obj).iterator();
+            return iter.hasNext() ? iter.next() : null;
         } else {
             return obj.toString();
         }
