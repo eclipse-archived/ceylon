@@ -40,7 +40,6 @@ import com.github.sardine.Sardine;
 import com.github.sardine.impl.SardineException;
 import com.github.sardine.impl.SardineImpl;
 import com.github.sardine.impl.io.ContentLengthInputStream;
-import com.redhat.ceylon.cmr.impl.CMRException;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
@@ -49,6 +48,7 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.SizedInputStream;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * WebDAV content store.
@@ -167,19 +167,19 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
-    public CMRException convertIOException(IOException x) {
+    public RepositoryException convertIOException(IOException x) {
         if (x instanceof SardineException) {
             // hide this from callers because its getMessage() is borked
             SardineException sx = (SardineException) x;
-            return new CMRException(sx.getMessage() + ": " + sx.getResponsePhrase() + " " + sx.getStatusCode());
+            return new RepositoryException(sx.getMessage() + ": " + sx.getResponsePhrase() + " " + sx.getStatusCode());
         }
         if (x instanceof ClientProtocolException) {
             // in case of protocol exception (invalid response) we get this sort of
             // chain set up with a null message, so unwrap it for better messages
             if (x.getCause() != null && x.getCause() instanceof ProtocolException)
-                return new CMRException(x.getCause().getMessage());
+                return new RepositoryException(x.getCause().getMessage());
         }
-        return new CMRException(x);
+        return new RepositoryException(x);
     }
 
     protected void mkdirs(Sardine s, Node parent) throws IOException {

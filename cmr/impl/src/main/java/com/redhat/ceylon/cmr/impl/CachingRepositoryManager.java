@@ -97,6 +97,8 @@ public class CachingRepositoryManager extends AbstractNodeRepositoryManager {
         final File file = caching.getArtifact(context); // should be here
         try {
             super.putArtifact(context, new FileInputStream(file)); // upload
+        } catch (RepositoryException e) {
+            throw e;
         } catch (Exception e) {
             throw new RepositoryException(e);
         }

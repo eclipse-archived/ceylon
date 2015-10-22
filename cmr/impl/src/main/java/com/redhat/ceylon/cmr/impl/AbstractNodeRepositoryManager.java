@@ -296,6 +296,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             try {
                 for (File f : folder.listFiles()) // ignore folder, it should match new root
                     putFiles(curent, f, context);
+            } catch (RepositoryException e) {
+                throw e;
             } catch (Exception e) {
                 removeArtifact(context);
                 throw new RepositoryException(e);

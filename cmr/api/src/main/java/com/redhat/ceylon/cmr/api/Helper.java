@@ -32,6 +32,8 @@ public class Helper {
     public static InputStream toInputStream(Node node) throws RepositoryException {
         try {
             return node.getInputStream();
+        } catch (RepositoryException e) {
+            throw e;
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
@@ -40,6 +42,8 @@ public class Helper {
     public static InputStream toInputStream(File file) throws RepositoryException {
         try {
             return new FileInputStream(file);
+        } catch (RepositoryException e) {
+            throw e;
         } catch (Exception e) {
             throw new RepositoryException(e);
         }
