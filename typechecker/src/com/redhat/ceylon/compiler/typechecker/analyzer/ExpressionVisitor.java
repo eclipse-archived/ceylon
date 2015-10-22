@@ -8768,7 +8768,7 @@ public class ExpressionVisitor extends Visitor {
         Backends scopedBackends = 
                 that.getScope()
                     .getScopedBackends();
-        if (scopedBackends.supports(Backend.Java.asSet())) {
+        if (scopedBackends.supports(Backend.Java)) {
             that.addUnsupportedError(
                     "type functions are not supported on the JVM", 
                     Backend.Java);

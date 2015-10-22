@@ -105,7 +105,7 @@ public class NativeUtil {
      */
     public static boolean isForBackend(Declaration decl, Backend backend) {
         Backends bs = getNative(decl);
-        return bs.none() || bs.supports(backend.asSet());
+        return bs.none() || bs.supports(backend);
     }
     
     public static boolean isHeaderWithoutBackend(Tree.Declaration decl, Backend backend) {
@@ -114,7 +114,7 @@ public class NativeUtil {
     
     public static boolean isHeaderWithoutBackend(Declaration decl, Backend backend) {
         return decl.isNativeHeader()
-                && (ModelUtil.getNativeDeclaration(decl, backend.asSet()) == null);
+                && (ModelUtil.getNativeDeclaration(decl, backend) == null);
     }
     
 }

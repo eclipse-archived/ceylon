@@ -122,14 +122,9 @@ public class TreeUtil {
         return isForBackend(bs, forBackend.asSet());
     }
     
-    public static boolean isForBackend(String backendName,
-            Backend forBackend) {
-        if (backendName != null) {
-            if (!forBackend.nativeAnnotation.equals(backendName)) {
-                return false;
-            }
-        }
-        return true;
+    public static boolean isForBackend(Backends backends,
+            Backend supported) {
+        return isForBackend(backends, supported.asSet());
     }
     
     public static boolean isForBackend(Backends backends,
@@ -139,24 +134,14 @@ public class TreeUtil {
     
     public static boolean isForBackend(Backends backends,
             Backends supported) {
-        if (!backends.none()) {
-            if (!supported.supports(backends)) {
-                return false;
-            }
-        }
-        return true;
+        return backends.none() || supported.supports(backends);
     }
     
     public static boolean isForBackendX(Backends backends,
             BackendSupport support) {
         Backends sups = support.getSupportedBackends();
         sups = sups.merged(Backend.None);
-        return isForBackendX(backends, sups);
-    }
-    
-    private static boolean isForBackendX(Backends backends,
-            Backends supported) {
-        return supported.supports(backends);
+        return isForBackend(backends, sups);
     }
     
     public static Backends getNativeBackend(Tree.AnnotationList al,

@@ -105,12 +105,12 @@ public class MissingNativeVisitor extends Visitor {
         
         if (nodeIsDecl
                 && !model.isNativeHeader()
-                && !TreeUtil.isForBackend(model.getNativeBackends(), forBackend.asSet())) {
+                && !TreeUtil.isForBackend(model.getNativeBackends(), forBackend)) {
             // We don't care about declarations for other backends
             return false;
         }
         
-        if (TreeUtil.isForBackend(model.getNativeBackends(), forBackend.asSet())) {
+        if (TreeUtil.isForBackend(model.getNativeBackends(), forBackend)) {
             return true;
         } else {
             Declaration hdr;
@@ -123,7 +123,7 @@ public class MissingNativeVisitor extends Visitor {
                 if (ModelUtil.isImplemented(hdr)) {
                     return true;
                 }
-                Declaration impl = getNativeDeclaration(hdr, forBackend.asSet());
+                Declaration impl = getNativeDeclaration(hdr, forBackend);
                 if (impl != null) {
                     return true;
                 }
