@@ -46,6 +46,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.DebianVersionComparator;
 import com.redhat.ceylon.cmr.api.MavenVersionComparator;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -907,42 +908,42 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void versionComparisonTests() {
-        assertEquals(0, VersionComparator.compareVersions("", ""));
+        assertEquals(0, DebianVersionComparator.compareVersions("", ""));
 
-        assertEquals(-1, VersionComparator.compareVersions("", "a"));
-        assertEquals(1, VersionComparator.compareVersions("a", ""));
-        assertEquals(0, VersionComparator.compareVersions("a", "a"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("", "a"));
+        assertEquals(1, DebianVersionComparator.compareVersions("a", ""));
+        assertEquals(0, DebianVersionComparator.compareVersions("a", "a"));
 
-        assertEquals(-1, VersionComparator.compareVersions("a", "b"));
-        assertEquals(1, VersionComparator.compareVersions("b", "a"));
-        assertEquals(-1, VersionComparator.compareVersions("a", "-"));
-        assertEquals(1, VersionComparator.compareVersions("-", "a"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("a", "b"));
+        assertEquals(1, DebianVersionComparator.compareVersions("b", "a"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("a", "-"));
+        assertEquals(1, DebianVersionComparator.compareVersions("-", "a"));
 
-        assertEquals(-1, VersionComparator.compareVersions("a", "aa"));
-        assertEquals(1, VersionComparator.compareVersions("aa", "a"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("a", "aa"));
+        assertEquals(1, DebianVersionComparator.compareVersions("aa", "a"));
 
-        assertEquals(0, VersionComparator.compareVersions("a1", "a1"));
-        assertEquals(-1, VersionComparator.compareVersions("a1", "a2"));
-        assertEquals(0, VersionComparator.compareVersions("a001", "a1"));
+        assertEquals(0, DebianVersionComparator.compareVersions("a1", "a1"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("a1", "a2"));
+        assertEquals(0, DebianVersionComparator.compareVersions("a001", "a1"));
 
-        assertEquals(0, VersionComparator.compareVersions("1.0.2", "1.0.2"));
-        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2.4"));
-        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2b"));
-        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2RC"));
-        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.0.2-RC"));
+        assertEquals(0, DebianVersionComparator.compareVersions("1.0.2", "1.0.2"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0.2", "1.0.2.4"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0.2", "1.0.2b"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0.2", "1.0.2RC"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0.2", "1.0.2-RC"));
 
-        assertEquals(-1, VersionComparator.compareVersions("0.3", "2.2.4"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("0.3", "2.2.4"));
 
-        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "1.2"));
-        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "2"));
-        assertEquals(-1, VersionComparator.compareVersions("1.0.2", "2.2.4"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0.2", "1.2"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0.2", "2"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0.2", "2.2.4"));
 
-        assertEquals(-1, VersionComparator.compareVersions("1.0", "1.0.2"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("1.0", "1.0.2"));
 
-        assertEquals(-1, VersionComparator.compareVersions("0.3", "0.3.1"));
-        assertEquals(1, VersionComparator.compareVersions("0.3.1", "0.3"));
-        assertEquals(-1, VersionComparator.compareVersions("0.3.1", "0.3.2"));
-        assertEquals(1, VersionComparator.compareVersions("0.3.2", "0.3.1"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("0.3", "0.3.1"));
+        assertEquals(1, DebianVersionComparator.compareVersions("0.3.1", "0.3"));
+        assertEquals(-1, DebianVersionComparator.compareVersions("0.3.1", "0.3.2"));
+        assertEquals(1, DebianVersionComparator.compareVersions("0.3.2", "0.3.1"));
     }
 
     @Test
