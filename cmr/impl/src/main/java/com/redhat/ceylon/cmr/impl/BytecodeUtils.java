@@ -209,7 +209,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
             mvd.getAuthors().addAll(Arrays.asList(by.asStringArray()));
         }
         mvd.getDependencies().addAll(getDependencies(dependencies, moduleName, mvd.getVersion(), overrides));
-        ModuleVersionArtifact mva = new ModuleVersionArtifact(type, majorVer != null ? majorVer.asInt() : null, minorVer != null ? minorVer.asInt() : null);
+        ModuleVersionArtifact mva = new ModuleVersionArtifact(type, majorVer != null ? majorVer.asInt() : 0, minorVer != null ? minorVer.asInt() : 0);
         mvd.getArtifactTypes().add(mva);
         
         if (includeMembers) {
