@@ -2606,6 +2606,11 @@ public class ModelUtil {
     }
     
     public static Declaration getNativeDeclaration(
+            Declaration dec, Backend backend) {
+        return getNativeDeclaration(dec, backend.asSet());
+    }
+    
+    public static Declaration getNativeDeclaration(
             Declaration dec, Backends backends) {
         if (dec.isNative() && 
                 backends != null) {
