@@ -24,8 +24,8 @@ public class Backends implements Iterable<Backend>, BackendSupport {
     }
 
     @Override
-    public Set<String> getSupportedBackends() {
-        return null;
+    public Backends getSupportedBackends() {
+        return this;
     }
 
     public boolean none() {
@@ -47,6 +47,31 @@ public class Backends implements Iterable<Backend>, BackendSupport {
             } else {
                 return new Backends(result);
             }
+        }
+    }
+
+    public Backends merged(Backend backend) {
+        if (none()) {
+            return backend.asSet();
+        } else if (backends.contains(backend)) {
+            return this;
+        } else {
+            HashSet<Backend> bs = new HashSet<Backend>(this.backends);
+            bs.add(backend);
+            return new Backends(bs);
+        }
+    }
+
+    public Backends merged(Backends backends) {
+        if (none()) {
+            return backends;
+        } else if (backends.none() ||
+                backends.backends.equals(this.backends)) {
+            return this;
+        } else {
+            HashSet<Backend> bs = new HashSet<Backend>(this.backends);
+            bs.addAll(backends.backends);
+            return new Backends(bs);
         }
     }
 
@@ -73,7 +98,10 @@ public class Backends implements Iterable<Backend>, BackendSupport {
         }
     }
 
-    static Backends fromAnnotation(String backend) {
+    public static Backends fromAnnotation(String backend) {
+        if (backend == null) {
+            return NONE;
+        }
         Backends bs = collections.get(backend);
         if (bs == null) {
             bs = new Backends(Collections.singleton(Backend.fromAnnotation(backend)));
