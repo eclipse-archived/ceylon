@@ -9250,7 +9250,7 @@ public class ExpressionVisitor extends Visitor {
                     if (hdr != null) {
                         if (backends.none()
                                 || !backends.supports(
-                                        Backends.fromAnnotation(dec.getNativeBackend()))) {
+                                        dec.getNativeBackends())) {
                             impl = getNativeDeclaration(hdr, backends);
                         }
                     }
@@ -9270,11 +9270,11 @@ public class ExpressionVisitor extends Visitor {
                 && (inBackends.none()
                     || impl.isNative()
                         && !isForBackend(
-                                impl.getNativeBackend(), 
+                                impl.getNativeBackends(), 
                                 inBackends)
                     || decModule.isNative()
                         && !isForBackend(
-                                decModule.getNativeBackend(), 
+                                decModule.getNativeBackends(), 
                                 inBackends))) {
             Declaration d = (Declaration) that.getScope();
             if (!inBackends.none()) {

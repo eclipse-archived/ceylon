@@ -199,8 +199,8 @@ public class RefinementVisitor extends Visitor {
             if (decls.size() > 1) {
                 for (Declaration d : decls) {
                     if (d != dec && 
-                            !d.getNativeBackend().equals(
-                                    dec.getNativeBackend())) {
+                            !d.getNativeBackends().supports(
+                                    dec.getNativeBackends())) {
                         header = dec;
                         break;
                     }

@@ -1175,12 +1175,12 @@ public class AnalyzerUtil {
                             String name = 
                                     mi.getModule()
                                         .getNameAsString();
-                            if (!isForBackend(mi.getNativeBackend(), path.getUnit()) &&
+                            if (!isForBackend(mi.getNativeBackends(), path.getUnit()) &&
                                     (nameToImport.equals(name) ||
                                      nameToImport.startsWith(name + "."))) {
                                 return null;
                             }
-                            if (!isForBackend(Backend.Java.nativeAnnotation, path.getUnit()) &&
+                            if (!isForBackend(Backend.Java.asSet(), path.getUnit()) &&
                                     (JDKUtils.isJDKAnyPackage(nameToImport) ||
                                      JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
                                 return null;

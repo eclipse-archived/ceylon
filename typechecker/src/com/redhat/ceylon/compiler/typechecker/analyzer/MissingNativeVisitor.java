@@ -105,12 +105,12 @@ public class MissingNativeVisitor extends Visitor {
         
         if (nodeIsDecl
                 && !model.isNativeHeader()
-                && !TreeUtil.isForBackend(model.getNativeBackend(), forBackend)) {
+                && !TreeUtil.isForBackend(model.getNativeBackends(), forBackend.asSet())) {
             // We don't care about declarations for other backends
             return false;
         }
         
-        if (TreeUtil.isForBackend(model.getNativeBackend(), forBackend)) {
+        if (TreeUtil.isForBackend(model.getNativeBackends(), forBackend.asSet())) {
             return true;
         } else {
             Declaration hdr;

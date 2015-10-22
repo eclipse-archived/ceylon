@@ -10,7 +10,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackendX
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -29,22 +28,12 @@ public class UsageVisitor extends Visitor {
 	
     private final ReferenceCounter rc;
     
-    private Backend inBackend = null;
-	
 	public UsageVisitor(ReferenceCounter rc) {
 		this.rc = rc;
 	}
 	
     @Override public void visit(Tree.CompilationUnit that) {
-        Backend ib = inBackend;
-        String nat = 
-                that.getUnit()
-                    .getPackage()
-                    .getModule()
-                    .getNativeBackend();
-        inBackend = Backend.fromAnnotation(nat);
         super.visit(that);
-        inBackend = ib;
     }
     
     @Override
@@ -84,7 +73,7 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.Declaration that) {
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
-        String nat = declaration.getNativeBackend();
+        Backends bs = declaration.getNativeBackends();
         if (declaration!=null && 
                 declaration.getName()!=null &&
         		!declaration.isShared() && 
@@ -95,7 +84,7 @@ public class UsageVisitor extends Visitor {
         		!(declaration instanceof TypeParameter &&
         		    ((TypeParameter) declaration).getDeclaration() 
         		            instanceof TypeParameter)) {
-            if (nat == null || isForBackend(nat, that.getUnit())) {
+            if (bs.none() || isForBackend(bs, that.getUnit())) {
                 that.addUsageWarning(Warning.unusedDeclaration,
                         "declaration is never used: '" + 
                             declaration.getName() + "'");

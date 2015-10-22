@@ -91,8 +91,8 @@ public class TypeHierarchyVisitor extends Visitor {
             TypeDeclKey other = (TypeDeclKey) obj;
             return decl.equals(other.decl) && 
                     (!decl.isNative() ||
-                            decl.getNativeBackend()
-                                .equals(other.decl.getNativeBackend()));
+                            decl.getNativeBackends()
+                                .supports(other.decl.getNativeBackends()));
         }
     }
     
@@ -592,7 +592,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
                 if (declaration.isNative() && member.isNative()) {
                     // Make sure we get the right member declaration (the one for the same backend as its container)
-                    Backends backends = Backends.fromAnnotation(declaration.getNativeBackend());
+                    Backends backends = declaration.getNativeBackends();
                     member = getNativeDeclaration(member, backends);
                     if (member == null) {
                         continue;

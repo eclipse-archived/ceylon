@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
@@ -109,9 +108,9 @@ public class TreeUtil {
     
     public static boolean isForUnsupportedBackend(Tree.AnnotationList al,
             TypecheckerUnit unit) {
-        String be = getNativeBackend(al, unit);
-        if (be != null && !be.isEmpty()) {
-            return !isForBackend(be, unit);
+        Backends bs = getNativeBackend(al, unit);
+        if (!bs.none()) {
+            return !isForBackend(bs, unit);
         } else {
             return false;
         }
@@ -119,8 +118,8 @@ public class TreeUtil {
     
     public static boolean isForBackend(Tree.AnnotationList al,
             Backend forBackend, Unit unit) {
-        String be = getNativeBackend(al, unit);
-        return isForBackend(be, forBackend);
+        Backends bs = getNativeBackend(al, unit);
+        return isForBackend(bs, forBackend.asSet());
     }
     
     public static boolean isForBackend(String backendName,
@@ -133,15 +132,15 @@ public class TreeUtil {
         return true;
     }
     
-    public static boolean isForBackend(String backendName,
+    public static boolean isForBackend(Backends backends,
             BackendSupport support) {
-        return isForBackend(backendName, support.getSupportedBackends());
+        return isForBackend(backends, support.getSupportedBackends());
     }
     
-    public static boolean isForBackend(String backendName,
-            Backends backends) {
-        if (backendName != null) {
-            if (!backends.supports(Backends.fromAnnotation(backendName))) {
+    public static boolean isForBackend(Backends backends,
+            Backends supported) {
+        if (!backends.none()) {
+            if (!supported.supports(backends)) {
                 return false;
             }
         }
@@ -160,12 +159,13 @@ public class TreeUtil {
         return supported.supports(backends);
     }
     
-    public static String getNativeBackend(Tree.AnnotationList al,
+    public static Backends getNativeBackend(Tree.AnnotationList al,
             Unit unit) {
         Tree.Annotation ann = 
                 getAnnotation(al, "native", unit);
-        return ann == null ? null : 
+        String backend = ann == null ? null : 
             getAnnotationArgument(ann, "");
+        return Backends.fromAnnotation(backend);
     }
     
     public static boolean hasUncheckedNulls(Tree.Term term) {

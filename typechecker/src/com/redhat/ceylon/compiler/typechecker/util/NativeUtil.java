@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -82,12 +83,12 @@ public class NativeUtil {
         return decl.isNativeHeader();
     }
     
-    public static String getNative(Tree.Declaration decl) {
+    public static Backends getNative(Tree.Declaration decl) {
         return getNative(decl.getDeclarationModel());
     }
     
-    public static String getNative(Declaration decl) {
-        return decl.getNativeBackend();
+    public static Backends getNative(Declaration decl) {
+        return decl.getNativeBackends();
     }
     
     /**
@@ -103,8 +104,8 @@ public class NativeUtil {
      * meant for the specified backend
      */
     public static boolean isForBackend(Declaration decl, Backend backend) {
-        String be = getNative(decl);
-        return be == null || be.equals(backend.nativeAnnotation);
+        Backends bs = getNative(decl);
+        return bs.none() || bs.supports(backend.asSet());
     }
     
     public static boolean isHeaderWithoutBackend(Tree.Declaration decl, Backend backend) {

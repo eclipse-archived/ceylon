@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -54,7 +55,7 @@ public class ModuleVisitor extends Visitor {
     private Tree.CompilationUnit unit;
     private Phase phase = Phase.SRC_MODULE;
     private boolean completeOnlyAST = false;
-    private String moduleBackend = null;
+    private Backends moduleBackends = Backends.NONE;
 
     public void setCompleteOnlyAST(boolean completeOnlyAST) {
         this.completeOnlyAST = completeOnlyAST;
@@ -141,7 +142,7 @@ public class ModuleVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ModuleDescriptor that) {
-        moduleBackend = 
+        moduleBackends = 
                 getNativeBackend(that.getAnnotationList(), 
                         that.getUnit());
         super.visit(that);
@@ -199,7 +200,7 @@ public class ModuleVisitor extends Visitor {
                         mainModule.getAnnotations().clear();
                         buildAnnotations(that.getAnnotationList(), 
                                 mainModule.getAnnotations());
-                        mainModule.setNativeBackend(moduleBackend);
+                        mainModule.setNativeBackends(moduleBackends);
                     }
                 }
             }
@@ -231,7 +232,7 @@ public class ModuleVisitor extends Visitor {
                 }
             }
         }
-        moduleBackend = null;
+        moduleBackends = Backends.NONE;
     }
     
     @Override
@@ -347,20 +348,20 @@ public class ModuleVisitor extends Visitor {
                 }
             }
             else {
-                Tree.AnnotationList al = 
+                Tree.AnnotationList al =
                         that.getAnnotationList();
                 Unit u = unit.getUnit();
-                String be = getNativeBackend(al, u);
-                if (be != null) {
-                    Backend backend = Backend.fromAnnotation(be);
-                    if (backend == null) {
-                        node.addError("illegal native backend name: '\"" + 
-                                be + "\"' (must be either '\"jvm\"' or '\"js\"')");
+                Backends bs = getNativeBackend(al, u);
+                if (!bs.none()) {
+                    for (Backend b : bs) {
+                        if (!b.isRegistered()) {
+                            node.addError("illegal native backend name: '\"" + 
+                                    b.name + "\"' (must be either '\"jvm\"' or '\"js\"')");
+                        }
                     }
-                    else if (moduleBackend != null && 
-                            !moduleBackend.equals(be)) {
+                    if (!moduleBackends.none() && !moduleBackends.supports(bs)) {
                         node.addError("native backend name on import conflicts with module descriptor: '\"" + 
-                                be + "\"' is not '\"" + moduleBackend + "\"'");
+                                bs + "\"' is not '\"" + moduleBackends + "\"'");
                     }
                 }
                 Module importedModule = 
@@ -373,19 +374,19 @@ public class ModuleVisitor extends Visitor {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);
                     }
-                    ModuleImport moduleImport = 
+                    ModuleImport moduleImport =
                             moduleManager.findImport(
                                     mainModule, importedModule);
                     if (moduleImport == null) {
-                        boolean optional = 
+                        boolean optional =
                                 hasAnnotation(al, "optional", u);
-                        boolean export = 
+                        boolean export =
                                 hasAnnotation(al, "shared", u);
-                        moduleImport = 
-                                new ModuleImport(importedModule, 
-                                        optional, export, be);
+                        moduleImport =
+                                new ModuleImport(importedModule,
+                                        optional, export, bs);
                         moduleImport.getAnnotations().clear();
-                        buildAnnotations(al, 
+                        buildAnnotations(al,
                                 moduleImport.getAnnotations());
                         mainModule.addImport(moduleImport);
                     }

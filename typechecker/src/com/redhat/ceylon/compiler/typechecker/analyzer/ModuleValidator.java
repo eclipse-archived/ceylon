@@ -14,6 +14,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -203,7 +204,8 @@ public class ModuleValidator {
         List<Module> visibleDependencies = new ArrayList<Module>();
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
-            if (moduleImport.isNative() && !isForBackend(moduleImport.getNativeBackend(), moduleManager)) {
+            if (moduleImport.isNative() &&
+                    !isForBackend(moduleImport.getNativeBackends(), moduleManager)) {
                 //import is not for this backend
                 continue;
             }
@@ -353,18 +355,18 @@ public class ModuleValidator {
                 importedModule = moduleManagerUtil.getModuleForNode(node);
                 if (importedModule == null) continue;
             }
-            String be = getNativeBackend(imp.getAnnotationList(), imp.getUnit());
-            if (be == null) {
+            Backends bs = getNativeBackend(imp.getAnnotationList(), imp.getUnit());
+            if (bs.none()) {
                 if (importedModule.isNative() && !module.isNative()) {
                     node.addError(new ModuleSourceMapper.ModuleDependencyAnalysisError(node, 
                             "native import for cross-platform module" +
                             " (mark either the module or the import as native)", 
                             20000));
                 }
-            } else if (importedModule.isNative() && !be.equals(importedModule.getNativeBackend())) {
+            } else if (importedModule.isNative() && !bs.supports(importedModule.getNativeBackends())) {
                 node.addError(new ModuleSourceMapper.ModuleDependencyAnalysisError(node, 
                         "native backend name conflicts with imported module: '\"" + 
-                        be + "\"' is not '\"" + importedModule.getNativeBackend() + "\"'"));
+                        bs + "\"' is not '\"" + importedModule.getNativeBackends() + "\"'"));
             }
         }
     }

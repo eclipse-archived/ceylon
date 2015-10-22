@@ -203,28 +203,28 @@ public abstract class DeclarationVisitor extends Visitor {
             Declaration model, Scope scope) {
         Unit unit = model.getUnit();
         if (model.isNative()) {
-            String backend = model.getNativeBackend();
+            Backends mbackends = model.getNativeBackends();
             boolean isHeader = model.isNativeHeader();
             String name = model.getName();
             boolean canBeNative = canBeNative(that);
             if (canBeNative) {
-                String moduleBackend = 
+                Backends moduleBackends = 
                         unit.getPackage()
                             .getModule()
-                            .getNativeBackend();
+                            .getNativeBackends();
                 Backends backends = 
                         model.getScope()
                             .getScopedBackends();
                 if (!isHeader &&
-                        moduleBackend != null &&
-                        !backend.equals(moduleBackend)) {
+                        !moduleBackends.none() &&
+                        !mbackends.supports(moduleBackends)) {
                     that.addError("native backend name on declaration conflicts with module descriptor: '\"" +
-                            backend + "\"' is not '\"" +
-                            moduleBackend + "\"' for '" +
+                            mbackends + "\"' is not '\"" +
+                            moduleBackends + "\"' for '" +
                             name + "'");
                 } else if (!isHeader &&
                         !backends.none() &&
-                        !backends.supports(Backends.fromAnnotation(backend))) {
+                        !backends.supports(mbackends)) {
                     that.addError("native backend name on declaration conflicts with its scope: '" +
                             name + "'");
                 }
@@ -232,7 +232,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     that.addError("native header must be defined before its implementations: '" +
                             name + "'");
                 }
-                model.setNativeBackend(backend);
+                model.setNativeBackends(mbackends);
                 Declaration member = getNativeHeader(model);
                 
                 if (member == null || 
@@ -258,7 +258,7 @@ public abstract class DeclarationVisitor extends Visitor {
                         }
                     } else {
                         member = model.getContainer().getDirectMemberForBackend(
-                                model.getName(), model.getNativeBackend());
+                                model.getName(), model.getNativeBackends());
                         if (member != null && member != model) {
                             that.addError("duplicate native implementation: '" + 
                                     name + "'");
@@ -281,7 +281,7 @@ public abstract class DeclarationVisitor extends Visitor {
                         else {
                             Declaration overload = 
                                     findOverloadForBackend(
-                                            backend, model, 
+                                            mbackends, model, 
                                             overloads);
                             if (overload != null) {
                                 that.addError("duplicate native implementation: '" + 
@@ -375,7 +375,7 @@ public abstract class DeclarationVisitor extends Visitor {
             Declaration overloadFromModelLoader = 
                     model.getContainer()
                         .getDirectMemberForBackend(name, 
-                                backendToSearch.nativeAnnotation);
+                                backendToSearch.asSet());
             if (overloadFromModelLoader 
                     instanceof FunctionOrValue) {
                 if (loadedFunctionsOrValues == null) {
@@ -420,12 +420,12 @@ public abstract class DeclarationVisitor extends Visitor {
         }
     }
     
-    private Declaration findOverloadForBackend(String backend, 
+    private Declaration findOverloadForBackend(Backends backends, 
             Declaration declaration, 
             List<Declaration> overloads) {
         if (overloads!=null) {
             for (Declaration overload: overloads) {
-                if (backend.equals(overload.getNativeBackend()) && 
+                if (backends.supports(overload.getNativeBackends()) && 
                     !shouldIgnoreOverload(overload, declaration)) {
                     return overload;
                 }
@@ -569,7 +569,7 @@ public abstract class DeclarationVisitor extends Visitor {
             else {
                 getter.setSetter(setter);
             }
-            setter.setNativeBackend(getter.getNativeBackend());
+            setter.setNativeBackends(getter.getNativeBackends());
         }
     }
 
@@ -2062,7 +2062,7 @@ public abstract class DeclarationVisitor extends Visitor {
                         backend +
                         "\"' (must be either '\"jvm\"' or '\"js\"')");
             }
-            model.setNativeBackend(backend);
+            model.setNativeBackends(Backends.fromAnnotation(backend));
         }
         if (model.isNative() && model.isFormal()) {
             that.addError("declaration may not be annotated both formal and native");
