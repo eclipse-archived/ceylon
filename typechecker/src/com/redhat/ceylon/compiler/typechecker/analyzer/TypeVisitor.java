@@ -8,7 +8,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackendX;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -26,8 +26,8 @@ import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -1603,9 +1603,9 @@ public class TypeVisitor extends Visitor {
             if (scope == hdr) {
                 scope = scope.getScope();
             }
-            Set<String> inBackends = scope.getScopedBackends();
-            Set<String> backends =
-                    inBackends == null ?
+            Backends inBackends = scope.getScopedBackends();
+            Backends backends =
+                    inBackends.none() ?
                             unit.getSupportedBackends() :
                             inBackends;
             Declaration impl =
@@ -1618,8 +1618,8 @@ public class TypeVisitor extends Visitor {
     
     // We use this for situations where the backend compiler can't check the
     // validity of the code for the other backend 
-    private boolean isNativeForWrongBackend(Set<String> backends) {
-        return backends != null &&
-                !isForBackend(backends, unit);
+    private boolean isNativeForWrongBackend(Backends backends) {
+        return !backends.none() &&
+                !isForBackendX(backends, unit);
     }    
 }

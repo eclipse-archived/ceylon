@@ -32,6 +32,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackendX;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
@@ -71,6 +72,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -8763,11 +8765,10 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private static void checkTypeConstructor(Node that) {
-        Set<String> scopedBackends = 
+        Backends scopedBackends = 
                 that.getScope()
                     .getScopedBackends();
-        if (scopedBackends!=null &&
-                scopedBackends.contains("jvm")) {
+        if (scopedBackends.supports(Backend.Java.asSet())) {
             that.addUnsupportedError(
                     "type functions are not supported on the JVM", 
                     Backend.Java);
@@ -9230,12 +9231,12 @@ public class ExpressionVisitor extends Visitor {
                 dec.getUnit()
                     .getPackage()
                     .getModule();
-        Set<String> inBackends = 
+        Backends inBackends = 
                 that.getScope()
                     .getScopedBackends();
         if (dec.isNative()) {
-            Set<String> backends = 
-                    inBackends == null ?
+            Backends backends = 
+                    inBackends.none() ?
                             unit.getSupportedBackends() :
                             inBackends;
             if (dec.isNativeHeader()) {
@@ -9247,9 +9248,9 @@ public class ExpressionVisitor extends Visitor {
                 if (tmp != dec) {
                     hdr = tmp;
                     if (hdr != null) {
-                        if (backends.isEmpty()
-                                || !backends.contains(
-                                        dec.getNativeBackend())) {
+                        if (backends.none()
+                                || !backends.supports(
+                                        Backends.fromAnnotation(dec.getNativeBackend()))) {
                             impl = getNativeDeclaration(hdr, backends);
                         }
                     }
@@ -9266,7 +9267,7 @@ public class ExpressionVisitor extends Visitor {
                     || ctxModule == decModule
                         && dec.isNative()
                         && hdr == null)
-                && (inBackends == null
+                && (inBackends.none()
                     || impl.isNative()
                         && !isForBackend(
                                 impl.getNativeBackend(), 
@@ -9276,7 +9277,7 @@ public class ExpressionVisitor extends Visitor {
                                 decModule.getNativeBackend(), 
                                 inBackends))) {
             Declaration d = (Declaration) that.getScope();
-            if (inBackends != null) {
+            if (!inBackends.none()) {
                 that.addError("illlegal reference to native declaration '" + 
                         dec.getName(unit) + "': native declaration '" +
                         d.getName(unit) + "' has a different backend");
@@ -9287,7 +9288,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (dec.isNative()) {
-            return inBackends == null || impl==null ? 
+            return inBackends.none() || impl==null ? 
                     dec : impl;
         }
         return dec;
@@ -9321,8 +9322,8 @@ public class ExpressionVisitor extends Visitor {
     // We use this to check for similar situations as "dynamic"
     // where in this case the backend compiler can't check the
     // validity of the code for the other backend 
-    private boolean isNativeForWrongBackend(Set<String> backends) {
-        return backends != null &&
-                !isForBackend(backends, unit);
+    private boolean isNativeForWrongBackend(Backends backends) {
+        return !backends.none() &&
+                !isForBackendX(backends, unit);
     }    
 }

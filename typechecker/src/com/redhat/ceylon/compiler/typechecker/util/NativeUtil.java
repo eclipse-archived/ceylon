@@ -113,7 +113,7 @@ public class NativeUtil {
     
     public static boolean isHeaderWithoutBackend(Declaration decl, Backend backend) {
         return decl.isNativeHeader()
-                && (ModelUtil.getNativeDeclaration(decl, backend) == null);
+                && (ModelUtil.getNativeDeclaration(decl, backend.asSet()) == null);
     }
     
 }

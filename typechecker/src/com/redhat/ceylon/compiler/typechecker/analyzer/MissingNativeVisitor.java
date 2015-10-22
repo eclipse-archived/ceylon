@@ -123,7 +123,7 @@ public class MissingNativeVisitor extends Visitor {
                 if (ModelUtil.isImplemented(hdr)) {
                     return true;
                 }
-                Declaration impl = getNativeDeclaration(hdr, forBackend);
+                Declaration impl = getNativeDeclaration(hdr, forBackend.asSet());
                 if (impl != null) {
                     return true;
                 }

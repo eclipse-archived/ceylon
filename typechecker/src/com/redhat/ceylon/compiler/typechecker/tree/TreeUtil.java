@@ -3,12 +3,12 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
@@ -139,31 +139,25 @@ public class TreeUtil {
     }
     
     public static boolean isForBackend(String backendName,
-            Set<String> backends) {
+            Backends backends) {
         if (backendName != null) {
-            if (!backends.contains(backendName)) {
+            if (!backends.supports(Backends.fromAnnotation(backendName))) {
                 return false;
             }
         }
         return true;
     }
     
-    public static boolean isForBackend(Set<String> backendNames,
+    public static boolean isForBackendX(Backends backends,
             BackendSupport support) {
-        Set<String> sups = new HashSet<String>(support.getSupportedBackends().size() + 1);
-        sups.addAll(support.getSupportedBackends());
-        sups.add(Backend.None.nativeAnnotation);
-        return isForBackend(backendNames, sups);
+        Backends sups = support.getSupportedBackends();
+        sups = sups.merged(Backend.None);
+        return isForBackendX(backends, sups);
     }
     
-    private static boolean isForBackend(Set<String> backendNames,
-            Set<String> backends) {
-        if (backendNames != null) {
-            if (!backends.containsAll(backendNames)) {
-                return false;
-            }
-        }
-        return true;
+    private static boolean isForBackendX(Backends backends,
+            Backends supported) {
+        return supported.supports(backends);
     }
     
     public static String getNativeBackend(Tree.AnnotationList al,

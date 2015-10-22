@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -212,7 +212,7 @@ public abstract class DeclarationVisitor extends Visitor {
                         unit.getPackage()
                             .getModule()
                             .getNativeBackend();
-                Set<String> backends = 
+                Backends backends = 
                         model.getScope()
                             .getScopedBackends();
                 if (!isHeader &&
@@ -223,8 +223,8 @@ public abstract class DeclarationVisitor extends Visitor {
                             moduleBackend + "\"' for '" +
                             name + "'");
                 } else if (!isHeader &&
-                        backends != null &&
-                        !backends.contains(backend)) {
+                        !backends.none() &&
+                        !backends.supports(Backends.fromAnnotation(backend))) {
                     that.addError("native backend name on declaration conflicts with its scope: '" +
                             name + "'");
                 }
@@ -649,15 +649,14 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     private static void checkDynamic(Node that) {
-        Set<String> scopedBackends = 
+        Backends scopedBackends = 
                 that.getScope()
                     .getScopedBackends();
-        Set<String> backends =
-                scopedBackends == null ?
+        Backends backends =
+                scopedBackends.none() ?
                         that.getUnit().getSupportedBackends() :
                         scopedBackends;
-        if (backends!=null &&
-                backends.contains("jvm")) {
+        if (backends.supports(Backend.Java.asSet())) {
             that.addUnsupportedError(
                     "dynamic is not supported on the JVM", 
                     Backend.Java);
