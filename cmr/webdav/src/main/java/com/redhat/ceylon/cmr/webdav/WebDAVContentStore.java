@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.webdav;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.SocketTimeoutException;
 import java.net.URL;
@@ -171,6 +172,9 @@ public class WebDAVContentStore extends URLContentStore {
         if (x instanceof SardineException) {
             // hide this from callers because its getMessage() is borked
             SardineException sx = (SardineException) x;
+            if(sx.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN){
+                return new RepositoryException("authentication failed on repository "+this.root);
+            }
             return new RepositoryException(sx.getMessage() + ": " + sx.getResponsePhrase() + " " + sx.getStatusCode());
         }
         if (x instanceof ClientProtocolException) {
