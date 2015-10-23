@@ -30,14 +30,7 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
     var mm = getrtmm$$(atr);
     var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
     var pkg = modules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]);
-    var f;
-    if (mm.d[mm.length-2]==='$o') {
-      f=OpenValue$jsint;
-    } else {
-      var mdl=get_model(mm);
-      f=mdl.mt==='g'?OpenValue$jsint:OpenReference$jsint;
-    }
-    return f(pkg, atr);
+    return OpenValue$jsint(pkg, atr);
   },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
   that.$_bind=function(cont){
     return AppliedValue$jsint(cont,atr,{Get$AppliedValue:$$targs$$.Get$AppliedAttribute,

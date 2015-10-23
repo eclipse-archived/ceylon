@@ -32,11 +32,11 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     raiz = this.tipo();
   }
   var kind=$$$mptypes.Kind$getMemberDeclaration;
-  if (extendsType({t:ReferenceDeclaration$meta$declaration}, kind)
+  if (extendsType({t:ValueDeclaration$meta$declaration}, kind)
       || extendsType({t:SetterDeclaration$meta$declaration}, kind)) {
     // we only get the setter if we accept setter and reject references, otherwise
     // the getter wins
-    var wantsSetter = !extendsType({t:ReferenceDeclaration$meta$declaration}, kind)
+    var wantsSetter = !extendsType({t:ValueDeclaration$meta$declaration}, kind)
       && extendsType({t:SetterDeclaration$meta$declaration}, kind);
     var escapedName = escapePropertyName$(name$20);
     var propname=getValuePropertyName$(escapedName);
@@ -66,7 +66,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
       if (!wantsSetter && isval && !extendsType({t:ValueDeclaration$meta$declaration}, kind))
         _d = undefined;
       if(_d){
-        _m=(isval?OpenValue$jsint:OpenReference$jsint)(this.containingPackage, _d);
+        _m=OpenValue$jsint(this.containingPackage, _d);
         if(wantsSetter)
           _m=_m.setter;
       }
@@ -180,9 +180,9 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       var mm=getrtmm$$(_prot[mem]);
       if (mm && inherited && mm.$cont!==this.tipo)continue;
       if (mem.substring(0,9)==='$prop$get' 
-          && (extendsType({t:ReferenceDeclaration$meta$declaration}, kind)
+          && (extendsType({t:ValueDeclaration$meta$declaration}, kind)
               || extendsType({t:SetterDeclaration$meta$declaration}, kind))) {
-        var wantsValue = extendsType({t:ReferenceDeclaration$meta$declaration}, kind);
+        var wantsValue = extendsType({t:ValueDeclaration$meta$declaration}, kind);
         var wantsSetter = extendsType({t:SetterDeclaration$meta$declaration}, kind);
         var _nom=mm.d[mm.d.length-1];
         var _idx=_nom.indexOf('$');
@@ -217,7 +217,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
   //Fallback to the model declarations
   var funorvals=extendsType({t:FunctionOrValueDeclaration$meta$declaration},kind);
   var funs=funorvals||extendsType({t:FunctionDeclaration$meta$declaration},kind);
-  var vals=funorvals||extendsType({t:ReferenceDeclaration$meta$declaration},kind);
+  var vals=funorvals||extendsType({t:ValueDeclaration$meta$declaration},kind);
   if (funs) {
     for (var df in this.meta['$m']) {
       defs.push(this.meta['$m'][df]);
@@ -251,10 +251,8 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       if (!is$(_d,kind))_d=null;
     } else if (mt==='i') {
       _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:InterfaceDeclaration$meta$declaration}});
-    } else if (mt==='g'||mt==='o') {
+    } else if (mt==='g'||mt==='o'||mt==='a'||mt==='s') {
       _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:ValueDeclaration$meta$declaration}});
-    } else if (mt==='a'||mt==='s') {
-      _d=this.getMemberDeclaration(m.nm, {Kind$getMemberDeclaration:{t:ReferenceDeclaration$meta$declaration}});
     }
     if (_d) {
       _d.$parent=this;
