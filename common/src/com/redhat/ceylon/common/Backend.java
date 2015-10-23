@@ -14,7 +14,7 @@ public class Backend {
     static {
         registeredBackends = new HashSet<Backend>();
         allBackends = new HashSet<Backend>();
-        None = registerBackend("None", "");
+        None = createBackend("None", "");
         Java = registerBackend("Java", "jvm");
         JavaScript = registerBackend("JavaScript", "js");
     }
@@ -38,8 +38,7 @@ public class Backend {
     public static Backend registerBackend(String name, String backend) {
         Backend b = findAnnotation(backend);
         if (b == null) {
-            b = new Backend(name, backend);
-            allBackends.add(b);
+            b = createBackend(name, backend);
             registeredBackends.add(b);
         }
         return b;
@@ -50,6 +49,9 @@ public class Backend {
     }
 
     public static boolean isRegisteredBackend(String backend) {
+        if (backend.isEmpty()) {
+            return true;
+        }
         for (Backend b : registeredBackends) {
             if (b.nativeAnnotation.equals(backend)) {
                 return true;
@@ -64,8 +66,7 @@ public class Backend {
         }
         Backend b = findAnnotation(backend);
         if (b == null) {
-            b = new Backend("Unregistered", backend);
-            allBackends.add(b);
+            b = createBackend("Unregistered", backend);
         }
         return b;
     }
@@ -82,6 +83,12 @@ public class Backend {
             }
         }
         return null;
+    }
+    
+    private static Backend createBackend(String name, String backend) {
+        Backend b = new Backend(name, backend);
+        allBackends.add(b);
+        return b;
     }
 
     @Override
