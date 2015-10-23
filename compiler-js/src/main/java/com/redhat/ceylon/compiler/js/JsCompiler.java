@@ -38,13 +38,13 @@ import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ImportableScope;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -78,7 +78,7 @@ public class JsCompiler {
         
         protected boolean checkNative(Node node, Declaration model) {
             if (model.getUnit() != node.getUnit()
-                    && TreeUtil.isForBackend(
+                    && ModelUtil.isForBackend(
                             model.getUnit().getPackage().getModule().getNativeBackends(),
                             Backend.JavaScript)) {
                 // If the model doesn't come from the current unit we're
