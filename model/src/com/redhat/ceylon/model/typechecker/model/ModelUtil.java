@@ -2659,13 +2659,6 @@ public class ModelUtil {
         return backends.none() || supported.supports(backends);
     }
     
-    public static boolean isForBackendX(Backends backends,
-            BackendSupport support) {
-        Backends sups = support.getSupportedBackends();
-        sups = sups.merged(Backend.None);
-        return isForBackend(backends, sups);
-    }
-    
     /**
      * The list of type parameters of the given generic
      * declaration as types. (As viewed within the body of
