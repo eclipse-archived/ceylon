@@ -597,6 +597,9 @@ public abstract class AbstractRepository implements CmrRepository {
                 String artifactName = getArtifactName(moduleName, version, suffix);
                 Node artifact = child.getChild(artifactName);
                 if (artifact != null) {
+                    if (!checkBinaryVersion(moduleName, version, artifact, query)) {
+                        continue;
+                    }
                     if (query.getRetrieval() == Retrieval.ANY) {
                         // we found the artifact: store it
                         versions.add(version);
