@@ -48,11 +48,7 @@ public class MetamodelHelper {
         } else if (d instanceof Function) {
             gen.out("OpenFunction$jsint");
         } else if (d instanceof Value) {
-            if ("ReferenceDeclaration".equals(d.getUnit().getValueDeclarationType((Value)d).asString())) {
-                gen.out("OpenReference$jsint");
-            } else {
-                gen.out("OpenValue$jsint");
-            }
+            gen.out("OpenValue$jsint");
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.IntersectionType) {
             gen.out("OpenIntersection");
         } else if (d instanceof com.redhat.ceylon.model.typechecker.model.UnionType) {
