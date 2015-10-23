@@ -198,7 +198,7 @@ public class CallableBuilder {
                 boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
                 try {
                     instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
-                    int varTypeFlags = JT_RAW | (Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0);
+                    int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
                     Type primaryType;
                     if (Decl.isValueTypeDecl(qmte.getPrimary().getTypeModel())) {
                         primaryType = qmte.getPrimary().getTypeModel();
@@ -913,10 +913,6 @@ public class CallableBuilder {
             }
             
             JCExpression invocation = makeInvocation(arity, isCallMethod);
-            Type returnType = gen.getReturnTypeOfCallable(typeModel);
-            if (!gen.willEraseToObject(returnType)) {
-                invocation = gen.make().TypeCast(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), invocation);
-            }
             stmts.append(gen.make().Return(invocation));
             
             return isCallMethod ? makeCallMethod(stmts.toList(), arity) : makeCallTypedMethod(stmts.toList());
