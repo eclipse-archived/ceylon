@@ -99,14 +99,14 @@ public class ErrorCollectingVisitor extends Visitor {
     @Override
     public void visit(Tree.Declaration that) {
         if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())
-                || isForBackend(that.getAnnotationList(), Backend.None, that.getUnit())) {
+                || isForBackend(that.getAnnotationList(), Backend.Header, that.getUnit())) {
             super.visit(that);
         }
     }
     @Override
     public void visit(Tree.ModuleDescriptor that) {
         if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())
-                || isForBackend(that.getAnnotationList(), Backend.None, that.getUnit())) {
+                || isForBackend(that.getAnnotationList(), Backend.Header, that.getUnit())) {
             super.visit(that);
         } else {
             addErrors(that);
@@ -115,7 +115,7 @@ public class ErrorCollectingVisitor extends Visitor {
     @Override
     public void visit(Tree.ImportModule that) {
         if (isForBackend(that.getAnnotationList(), Backend.JavaScript, that.getUnit())
-                || isForBackend(that.getAnnotationList(), Backend.None, that.getUnit())) {
+                || isForBackend(that.getAnnotationList(), Backend.Header, that.getUnit())) {
             super.visit(that);
         }
     }
