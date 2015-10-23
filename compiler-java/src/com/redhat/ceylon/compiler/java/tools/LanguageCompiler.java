@@ -32,7 +32,6 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -89,6 +88,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.util.NewlineFixingStringStream;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -567,7 +567,7 @@ public class LanguageCompiler extends JavaCompiler {
                 if (!bs.none()) {
                     if (bs == Backends.HEADER) {
                         md.addError("missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
-                    } else if (!isForBackend(bs, Backend.Java)) {
+                    } else if (!ModelUtil.isForBackend(bs, Backend.Java)) {
                         md.addError("module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
                     }
                 }

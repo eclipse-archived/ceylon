@@ -80,6 +80,7 @@ import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.Timer;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -729,7 +730,7 @@ public class CeylonEnter extends Enter {
         @Override
         protected boolean includeError(Message err, int phase) {
             return err.getBackend() == null ||
-                    TreeUtil.isForBackend(err.getBackend().asSet(), Backend.Java);
+                    ModelUtil.isForBackend(err.getBackend().asSet(), Backend.Java);
         }
 
         protected Node getIdentifyingNode(Node node) {

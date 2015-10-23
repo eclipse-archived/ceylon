@@ -20,8 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FilterOutputStream;
@@ -47,6 +45,7 @@ import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -349,7 +348,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
             StringBuilder requires = new StringBuilder();
             boolean distImportAlreadyFound = false;
             for (ModuleImport anImport : module.getImports()) {
-                if (!isForBackend(anImport.getNativeBackends(), Backend.Java)) {
+                if (!ModelUtil.isForBackend(anImport.getNativeBackends(), Backend.Java)) {
                     continue;
                 }
                 Module m = anImport.getModule();
