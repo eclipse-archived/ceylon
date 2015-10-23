@@ -365,6 +365,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     private void outputVersions(ModuleSpec module, Collection<ModuleVersionDetails> versions) throws IOException {
+        String prefix = (formatting == Formatting.fancy) ? "    " : "";
         if (formatting == Formatting.fancy) {
             if (findMember != null) {
                 msg("version.query.member", module.getName(), findMember).newline();
@@ -374,7 +375,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 msg("version.query", module.getName()).newline();
             }
         }
-        outputVersions(module.getName(), versions, "    ");
+        outputVersions(module.getName(), versions, prefix);
     }
 
     private void outputVersions(String moduleName, Collection<ModuleVersionDetails> versions, String prefix) throws IOException {
@@ -385,9 +386,17 @@ public class CeylonInfoTool extends RepoUsingTool {
                 if (formatting == Formatting.simple) {
                     append(moduleName).append("/");
                 }
-                append(version.getVersion()).append(" - ").append(version.getOrigin());
-                if (version.isRemote() && formatting == Formatting.fancy) {
-                    append(" *");
+                append(version.getVersion());
+                if (formatting == Formatting.fancy) {
+                    append(" - ").append(version.getOrigin());
+                    if (hasOnlyIncompatibleBinaries(version)) {
+                        append(" ");
+                        msg("label.incompatible.version");
+                    }
+                    if (version.isRemote()) {
+                        append(" ");
+                        msg("label.remote");
+                    }
                 }
                 newline();
             }
@@ -409,6 +418,29 @@ public class CeylonInfoTool extends RepoUsingTool {
                 outputNames(moduleName, version, namePrefix);
             }
         }
+    }
+
+    private boolean hasOnlyIncompatibleBinaries(ModuleVersionDetails version) {
+        boolean hasBinaries = false;
+        for (ModuleVersionArtifact at : version.getArtifactTypes()) {
+            if (at.getSuffix().equals(ArtifactContext.CAR)) {
+                if (Versions.isJvmBinaryVersionSupported(
+                            at.getMajorBinaryVersion(),
+                            at.getMinorBinaryVersion())) {
+                    return false;
+                }
+                hasBinaries = true;
+            }
+            if (at.getSuffix().equals(ArtifactContext.JS)) {
+                if (Versions.isJvmBinaryVersionSupported(
+                            at.getMajorBinaryVersion(),
+                            at.getMinorBinaryVersion())) {
+                    return false;
+                }
+                hasBinaries = true;
+            }
+        }
+        return hasBinaries;
     }
 
     private void outputNames(String moduleName, ModuleVersionDetails version, String prefix) throws IOException {
@@ -580,8 +612,9 @@ public class CeylonInfoTool extends RepoUsingTool {
                         append(".");
                         append(minor);
                     }
-                    if (major != Versions.JVM_BINARY_MAJOR_VERSION && minor != Versions.JVM_BINARY_MINOR_VERSION) {
-                        append(" *incompatible*");
+                    if (!Versions.isJvmBinaryVersionSupported(major, minor)) {
+                        append(" ");
+                        msg("label.incompatible.version");
                     }
                     append(")");
                 } else if (suffix.equalsIgnoreCase(ArtifactContext.JAR)) {
@@ -597,8 +630,9 @@ public class CeylonInfoTool extends RepoUsingTool {
                         append(".");
                         append(minor);
                     }
-                    if (major != Versions.JS_BINARY_MAJOR_VERSION && minor != Versions.JS_BINARY_MINOR_VERSION) {
-                        append(" *incompatible*");
+                    if (!Versions.isJsBinaryVersionSupported(major, minor)) {
+                        append(" ");
+                        msg("label.incompatible.version");
                     }
                     append(")");
                     js = true;
