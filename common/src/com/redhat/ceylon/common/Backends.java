@@ -21,6 +21,8 @@ public class Backends implements Iterable<Backend>, BackendSupport {
     public final static Backends HEADER = fromAnnotation(Backend.None.nativeAnnotation);
     
     Backends(Set<Backend> backends) {
+        // We don't allow Backend.None in a set with others
+        assert (backends.size() <= 1 || !backends.contains(Backend.None));
         this.backends = backends;
     }
 
@@ -31,6 +33,10 @@ public class Backends implements Iterable<Backend>, BackendSupport {
 
     public boolean none() {
         return backends.isEmpty();
+    }
+    
+    public boolean header() {
+        return this == HEADER;
     }
     
     public boolean supports(Backend backend) {
