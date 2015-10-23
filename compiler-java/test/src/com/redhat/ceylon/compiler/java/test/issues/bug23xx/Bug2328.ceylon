@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import ceylon.language.meta.declaration { ValueDeclaration, ReferenceDeclaration }
+import ceylon.language.meta.declaration { ValueDeclaration }
 
 @noanno
 shared String bug2328Name = "Gavin";
 @noanno
 shared String bug2328Name2 => "Gavin";
 @noanno
-shared ReferenceDeclaration bug2328ReferenceDeclaration = `value bug2328Name`;
+shared ValueDeclaration bug2328ReferenceDeclaration = `value bug2328Name`;
 @noanno
 shared ValueDeclaration bug2328ReferenceDeclaration2 = `value bug2328Name2`;
