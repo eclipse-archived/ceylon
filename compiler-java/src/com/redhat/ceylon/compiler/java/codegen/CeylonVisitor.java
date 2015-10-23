@@ -1173,14 +1173,11 @@ public class CeylonVisitor extends Visitor {
                 if (v.isNativeHeader() &&
                         v.getQualifiedNameString().equals(decl.getQualifiedNameString())) {
                     hdr = that;
-                    throw new RuntimeException();
                 }
             }
         };
         ClassVisitor v = new ClassVisitor();
-        try {
-            v.visit(currentCompilationUnit);
-        } catch (RuntimeException ex) {}
+        v.visit(currentCompilationUnit);
         return v.hdr;
     }
 }
