@@ -55,7 +55,7 @@ public class ModuleVisitor extends Visitor {
     private Tree.CompilationUnit unit;
     private Phase phase = Phase.SRC_MODULE;
     private boolean completeOnlyAST = false;
-    private Backends moduleBackends = Backends.NONE;
+    private Backends moduleBackends = Backends.ANY;
 
     public void setCompleteOnlyAST(boolean completeOnlyAST) {
         this.completeOnlyAST = completeOnlyAST;
@@ -232,7 +232,7 @@ public class ModuleVisitor extends Visitor {
                 }
             }
         }
-        moduleBackends = Backends.NONE;
+        moduleBackends = Backends.ANY;
     }
     
     @Override

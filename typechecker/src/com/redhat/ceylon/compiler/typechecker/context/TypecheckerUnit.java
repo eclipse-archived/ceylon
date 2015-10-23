@@ -22,7 +22,7 @@ public class TypecheckerUnit extends Unit implements BackendSupport {
         return missingNativeImplementations;
     }
     
-    private Backends supportedBackends = Backends.NONE;
+    private Backends supportedBackends = Backends.ANY;
 
     @Override
     public Backends getSupportedBackends() {
