@@ -69,10 +69,14 @@ public class CeylonInfoTool extends RepoUsingTool {
         simple, fancy
     }
     
+    public enum Incompatible {
+        yes, no, auto
+    }
+    
     private List<ModuleSpec> modules;
     private boolean showVersions;
     private boolean showDependencies;
-    private boolean showIncompatible;
+    private Incompatible showIncompatible = Incompatible.auto;
     private boolean showFullDescription;
     private String showType;
     private int depth = 1;
@@ -137,9 +141,10 @@ public class CeylonInfoTool extends RepoUsingTool {
         this.showDependencies = showDependencies;
     }
     
-    @Option(longName="show-incompatible")
-    @Description("Also show versions incompatible with the current Ceylon installation")
-    public void setShowIncompatible(boolean showIncompatible) {
+    @OptionArgument(argumentName="mode")
+    @Description("Also show versions incompatible with the current Ceylon installation. " +
+            "allowed values are: 'yes', 'no' and 'auto'")
+    public void setShowIncompatible(Incompatible showIncompatible) {
         this.showIncompatible = showIncompatible;
     }
     
@@ -251,11 +256,12 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @Override
     public void run() throws Exception {
-        if (!showIncompatible) {
+        if (showIncompatible != Incompatible.yes) {
             binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
             binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
         }
-        
+        String msgkey = showIncompatible == Incompatible.no ? "module.not.found.compat" : "module.not.found";
+
         for (ModuleSpec module : modules) {
             String name = module.getName();
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
@@ -265,7 +271,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                     if (name.startsWith("*") || name.endsWith("*")) {
                         err = CeylonInfoMessages.msg("no.match", name);
                     } else {
-                        err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                        err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion(), msgkey);
                     }
                     errorAppend(err);
                     errorNewline();
@@ -281,13 +287,14 @@ public class CeylonInfoTool extends RepoUsingTool {
                         // is it the version we're after?
                         versions = Arrays.asList(fromSource);
                     } else {
-                        if (binaryMajor != null || binaryMinor != null) {
+                        if (showIncompatible == Incompatible.auto &&
+                                (binaryMajor != null || binaryMinor != null)) {
                             // If we were called with a specific version and we didn't find a "compatible"
                             // artifact then lets see if we can find an "incompatible" one
                             versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), queryType, null, null);
                         }
                         if (versions.isEmpty()) {
-                            String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                            String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion(), msgkey);
                             errorAppend(err);
                             errorNewline();
                             continue;
