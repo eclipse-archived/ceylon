@@ -191,18 +191,6 @@ public class Predicates {
         return new Or<T>(others);
     } 
     
-    /** Predicate on Declarations that accepts Value */
-    private static final Predicate<Declaration> DECLARATION_IS_REFERENCE = new Predicate<Declaration>() {  
-        @Override
-        public boolean accept(Declaration declaration) {
-            return declaration instanceof com.redhat.ceylon.model.typechecker.model.Value
-                    && !((com.redhat.ceylon.model.typechecker.model.Value)declaration).isTransient();
-        }
-        @Override
-        public String toString() {
-            return "(kind = Value)";
-        }
-    };
     
     /** Predicate on Declarations that accepts Value */
     private static final Predicate<Declaration> DECLARATION_IS_VALUE = new Predicate<Declaration>() {  
@@ -362,9 +350,7 @@ public class Predicates {
     public static Predicate<Declaration> isDeclarationOfKind(TypeDescriptor kind) {
         if (kind instanceof TypeDescriptor.Class) {
             Class<?> declarationClass = (Class<?>)((TypeDescriptor.Class) kind).getKlass();
-            if (declarationClass == ceylon.language.meta.declaration.ReferenceDeclaration.class) {
-                return DECLARATION_IS_REFERENCE;
-            } else if (declarationClass == ceylon.language.meta.declaration.ValueDeclaration.class) {
+            if (declarationClass == ceylon.language.meta.declaration.ValueDeclaration.class) {
                 return DECLARATION_IS_VALUE;
             } else if (declarationClass == ceylon.language.meta.declaration.FunctionDeclaration.class) {
                 return DECLARATION_IS_FUNCTION;

@@ -2,7 +2,7 @@ import ceylon.language.meta.model {
     ClassModel
 }
 import ceylon.language.meta.declaration {
-    ReferenceDeclaration
+    ValueDeclaration
 }
 
 """A contract for identifying instances, specifying their classes, attributes, 
@@ -81,7 +81,7 @@ shared sealed interface DeserializationContext<Id> {
        the given [[instanceId]] has given [[attributeValueId]]."""
     throws(`class DeserializationException`, 
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
-    shared formal void attribute(Id instanceId, ReferenceDeclaration attribute, Id attributeValueId);
+    shared formal void attribute(Id instanceId, ValueDeclaration attribute, Id attributeValueId);
     
     """The value at the given [[index]] of the [[Array]] instance with 
        the given [[instanceId]] has given [[elementValueId]]."""

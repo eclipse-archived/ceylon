@@ -1,5 +1,5 @@
 import ceylon.language.meta.declaration {
-    ReferenceDeclaration, FunctionOrValueDeclaration
+    ValueDeclaration, FunctionOrValueDeclaration
 }
 import ceylon.language.serialization {
     Member, UninitializedLateValue
@@ -8,11 +8,11 @@ import ceylon.language.serialization {
 "Implementation of [[Member]], in ceylon.language.impl because although 
  compiled user classes depend on it, it is not part of the public API."
 shared class MemberImpl satisfies Member {
-    shared actual ReferenceDeclaration attribute;
+    shared actual ValueDeclaration attribute;
     
     shared new (FunctionOrValueDeclaration attribute) {
         "Classes with specified methods cannot be serialized"
-        assert(is ReferenceDeclaration attribute);
+        assert(is ValueDeclaration attribute);
         this.attribute = attribute;
     }
     

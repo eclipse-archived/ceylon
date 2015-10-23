@@ -1,12 +1,12 @@
 import ceylon.language.meta.declaration {
-    ReferenceDeclaration
+    ValueDeclaration
 }
 
 "An instance referring to another instance via a reference attribute."
 shared sealed interface Member // or Reference
         satisfies ReachableReference {
     "The attribute making the reference."
-    shared formal ReferenceDeclaration attribute;
+    shared formal ValueDeclaration attribute;
     
     "The [[referred]] instance reachable from the given [[instance]].
      

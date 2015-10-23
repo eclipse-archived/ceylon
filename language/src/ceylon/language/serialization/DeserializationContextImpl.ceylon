@@ -1,5 +1,5 @@
 import ceylon.language.meta.declaration {
-    ReferenceDeclaration
+    ValueDeclaration
 }
 import ceylon.language.meta {
     type, 
@@ -32,7 +32,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     """Get the [[Partial]] or instance with the given id"""
     shared Anything leakInstance(Id id) => instances.get(id);
     
-    shared actual void attribute(Id instanceId, ReferenceDeclaration attribute, Id attributeValueId) {
+    shared actual void attribute(Id instanceId, ValueDeclaration attribute, Id attributeValueId) {
         attributeOrElement(instanceId, MemberImpl(attribute), attributeValueId);
     }
     

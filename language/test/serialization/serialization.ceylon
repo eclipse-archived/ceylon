@@ -1,6 +1,6 @@
 import ceylon.language.serialization{...}
 import ceylon.language.meta.declaration {
-    ReferenceDeclaration,
+    ValueDeclaration,
     TypeParameter
 }
 import ceylon.language.meta.model {
@@ -468,7 +468,7 @@ serializable class CollisionSub(String sup, collides) extends CollisionSuper(sup
 shared void deserializationWithAttributeNamingCollision() {
     variable value dc = deserialization<Integer>();
     dc.instance(1, `CollisionSub`);
-    dc.attribute(1, `class CollisionSuper`.getDeclaredMemberDeclaration<ReferenceDeclaration>("collides") else nothing, 2);
+    dc.attribute(1, `class CollisionSuper`.getDeclaredMemberDeclaration<ValueDeclaration>("collides") else nothing, 2);
     dc.instanceValue(2, "super");
     dc.attribute(1, `value CollisionSub.collides`, 3);
     dc.instanceValue(3, 42);
