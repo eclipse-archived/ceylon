@@ -24,7 +24,7 @@ public class ModuleImport implements Annotated {
     }
 
     public ModuleImport(Module module, boolean optional, boolean export, Backend backend) {
-        this(module, optional, export, backend != null ? backend.asSet() : Backends.NONE);
+        this(module, optional, export, backend != null ? backend.asSet() : Backends.ANY);
     }
 
     public ModuleImport(Module module, boolean optional, boolean export, Backends backends) {

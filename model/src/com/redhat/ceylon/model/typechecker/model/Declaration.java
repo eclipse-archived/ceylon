@@ -42,7 +42,7 @@ public abstract class Declaration
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
     private String qualifiedNameAsStringCache;
-	private Backends nativeBackends = Backends.NONE;
+	private Backends nativeBackends = Backends.ANY;
 	private boolean otherInstanceAccess;
     private DeclarationCompleter actualCompleter;
     private List<String> aliases;

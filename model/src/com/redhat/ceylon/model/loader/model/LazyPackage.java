@@ -63,7 +63,7 @@ public class LazyPackage extends Package {
 
             }
         }
-        Declaration ret = getDirectMemberMemoised(name, signature, ellipsis, Backends.NONE);
+        Declaration ret = getDirectMemberMemoised(name, signature, ellipsis, Backends.ANY);
         if(canCache){
             cache.put(name, ret);
         }

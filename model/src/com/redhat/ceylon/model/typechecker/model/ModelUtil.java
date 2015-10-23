@@ -2806,7 +2806,7 @@ public class ModelUtil {
             header =
                     container.getDirectMemberForBackend(
                             name,
-                            Backend.None.asSet());
+                            Backend.Header.asSet());
         }
         return header;
     }

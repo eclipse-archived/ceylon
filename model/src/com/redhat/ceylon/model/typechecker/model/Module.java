@@ -40,7 +40,7 @@ public class Module
     private TypeCache cache = new TypeCache();
     private String signature;
     private List<ModuleImport> overridenImports = null;
-    private Backends nativeBackends = Backends.NONE;
+    private Backends nativeBackends = Backends.ANY;
 
     public Module() {}
     

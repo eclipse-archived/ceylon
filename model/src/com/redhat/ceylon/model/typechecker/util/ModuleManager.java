@@ -232,6 +232,6 @@ public class ModuleManager implements BackendSupport {
      */
     @Override
     public Backends getSupportedBackends() {
-        return Backends.NONE;
+        return Backends.ANY;
     }
 }
