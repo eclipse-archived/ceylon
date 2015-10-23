@@ -29,7 +29,7 @@ final class callableArgumentReturningClass_m_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass $call$() {
-                return (.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass)new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass();
+                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningClass();
             }
         });
     }

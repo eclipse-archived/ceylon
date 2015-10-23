@@ -117,7 +117,7 @@ final class bug2348_ {
                         @.java.lang.Override
                         public .ceylon.language.Sequential<? extends .ceylon.language.Comparison> $call$(final .java.lang.Object $param$0) {
                             final .ceylon.language.Character $ceylontmp$other = (.ceylon.language.Character)$param$0;
-                            return (.ceylon.language.Sequential<? extends .ceylon.language.Comparison>)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Comparison, .java.lang.Object>(.ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Comparison, .java.lang.Object>(.ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                                 
                                 @.java.lang.Override
                                 public final .ceylon.language.Iterator<? extends .ceylon.language.Comparison> iterator() {

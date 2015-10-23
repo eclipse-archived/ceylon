@@ -32,21 +32,21 @@ public final class bug1737_ {
         final .ceylon.language.Callable<? extends .ceylon.language.String> onFulfilled0 = (
             let
             {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower $instance$ = doneThrower;
+                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower<.ceylon.language.Integer> $instance$ = doneThrower;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                     final .ceylon.language.Integer $ceylontmp$e = (.ceylon.language.Integer)$param$0;
-                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.m0($ceylontmp$e));
+                    return .ceylon.language.String.instance($instance$.m0($ceylontmp$e));
                 }
             };
         );
         final .ceylon.language.Callable<? extends .java.lang.Object> onFulfilled1 = (
             let
             {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower $instance$ = doneThrower;
+                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower<.ceylon.language.Integer> $instance$ = doneThrower;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                 
@@ -66,7 +66,7 @@ public final class bug1737_ {
         final .ceylon.language.Callable<? extends .java.lang.Object> onFulfilled2 = (
             let
             {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower $instance$ = doneThrower;
+                final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1737Thrower<.ceylon.language.Integer> $instance$ = doneThrower;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
                 

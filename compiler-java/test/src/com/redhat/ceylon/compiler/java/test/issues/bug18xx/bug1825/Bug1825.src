@@ -9,7 +9,7 @@ final class bug1825_ {
         final .ceylon.language.Callable<? extends .java.lang.Object> fun = (
             let
             {
-                final .ceylon.collection.HashMap $instance$ = (
+                final .ceylon.collection.HashMap<.java.lang.Object, .java.lang.Object> $instance$ = (
                     let
                     {
                         .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;

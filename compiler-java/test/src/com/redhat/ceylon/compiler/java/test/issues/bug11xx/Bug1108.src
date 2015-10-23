@@ -119,7 +119,7 @@ final class bug1108_ {
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$() {
-                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                    return .ceylon.language.String.instance($instance$.readLine());
                 }
             };
         )).getFoo();
@@ -132,7 +132,7 @@ final class bug1108_ {
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$() {
-                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                    return .ceylon.language.String.instance($instance$.readLine());
                 }
             };
         )).getBar().$call$().toString();
@@ -145,7 +145,7 @@ final class bug1108_ {
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$() {
-                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                    return .ceylon.language.String.instance($instance$.readLine());
                 }
             };
         )).getFoo();
@@ -158,7 +158,7 @@ final class bug1108_ {
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$() {
-                    return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                    return .ceylon.language.String.instance($instance$.readLine());
                 }
             };
         )).getBar().$call$().toString();
@@ -201,7 +201,7 @@ final class bug1108_ {
                         
                         @.java.lang.Override
                         public .ceylon.language.String $call$() {
-                            return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                            return .ceylon.language.String.instance($instance$.readLine());
                         }
                     };
                 )).getFoo();
@@ -214,7 +214,7 @@ final class bug1108_ {
                         
                         @.java.lang.Override
                         public .ceylon.language.String $call$() {
-                            return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                            return .ceylon.language.String.instance($instance$.readLine());
                         }
                     };
                 )).getBar().$call$().toString();
@@ -227,7 +227,7 @@ final class bug1108_ {
                         
                         @.java.lang.Override
                         public .ceylon.language.String $call$() {
-                            return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                            return .ceylon.language.String.instance($instance$.readLine());
                         }
                     };
                 )).getFoo();
@@ -240,7 +240,7 @@ final class bug1108_ {
                         
                         @.java.lang.Override
                         public .ceylon.language.String $call$() {
-                            return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                            return .ceylon.language.String.instance($instance$.readLine());
                         }
                     };
                 )).getBar().$call$().toString();
@@ -253,7 +253,7 @@ final class bug1108_ {
                         
                         @.java.lang.Override
                         public .ceylon.language.String $call$() {
-                            return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                            return .ceylon.language.String.instance($instance$.readLine());
                         }
                     };
                 )).getFoo();
@@ -266,7 +266,7 @@ final class bug1108_ {
                         
                         @.java.lang.Override
                         public .ceylon.language.String $call$() {
-                            return (.ceylon.language.String).ceylon.language.String.instance($instance$.readLine());
+                            return .ceylon.language.String.instance($instance$.readLine());
                         }
                     };
                 )).getBar().$call$().toString();

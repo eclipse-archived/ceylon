@@ -63,7 +63,7 @@ final class reifiedInstantiateInterop_ {
         final .ceylon.language.Callable<? extends .java.lang.Object> f = (
             let
             {
-                final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass $instance$ = c;
+                final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> $instance$ = c;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
                 
@@ -73,7 +73,7 @@ final class reifiedInstantiateInterop_ {
                     return (
                         let
                         {
-                            $instance$.foo();
+                            $instance$.<.ceylon.language.Integer>foo();
                         }
                         returning null;
                     );
@@ -87,7 +87,7 @@ final class reifiedInstantiateInterop_ {
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> $call$() {
-                return (.com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
+                return new .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
             }
         };
         final .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c3 = constr.$call$();

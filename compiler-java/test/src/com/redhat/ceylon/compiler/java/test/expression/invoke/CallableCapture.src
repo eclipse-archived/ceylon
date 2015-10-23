@@ -29,7 +29,7 @@ final class callableCapture_m_ {
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
-                return (.ceylon.language.String).ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo_.callableCapture_foo($ceylontmp$i));
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo_.callableCapture_foo($ceylontmp$i));
             }
         };
         final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher_.higher(callableCapture_bar).equals("");

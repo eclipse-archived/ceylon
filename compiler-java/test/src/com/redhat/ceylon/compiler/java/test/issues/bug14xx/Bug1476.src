@@ -15,7 +15,7 @@ public final class run_ {
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$() {
-                    return (.ceylon.language.String)(.ceylon.language.String)$instance$.get();
+                    return (.ceylon.language.String)$instance$.get();
                 }
             };
         );

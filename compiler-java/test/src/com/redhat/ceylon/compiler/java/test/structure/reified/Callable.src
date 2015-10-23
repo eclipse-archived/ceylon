@@ -11,7 +11,7 @@ final class reifiedCallable_ {
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
-                return (.ceylon.language.String).ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.reified.reifiedCallable_.reifiedCallable($ceylontmp$i));
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.reified.reifiedCallable_.reifiedCallable($ceylontmp$i));
             }
         };
         return "";

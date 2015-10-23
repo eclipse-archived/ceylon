@@ -85,7 +85,7 @@ public final class bug1923_ implements .java.io.Serializable, .com.redhat.ceylon
                 
                 @.java.lang.Override
                 public .ceylon.language.Sequential<? extends .java.lang.Object> $call$() {
-                    return (.ceylon.language.Sequential<? extends .java.lang.Object>)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                         
                         @.java.lang.Override
                         public final .ceylon.language.Iterator<? extends .java.lang.Object> iterator() {

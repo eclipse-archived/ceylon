@@ -29,7 +29,7 @@ class ClassDefaultMemberClassReference implements .com.redhat.ceylon.compiler.ja
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call$() {
-                return (.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member).com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.this.Member$new$();
+                return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.this.Member$new$();
             }
         });
         m$priv$((
@@ -41,7 +41,7 @@ class ClassDefaultMemberClassReference implements .com.redhat.ceylon.compiler.ja
                 
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member $call$() {
-                    return (.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassReference.Member)$instance$.Member$new$();
+                    return $instance$.Member$new$();
                 }
             };
         ));

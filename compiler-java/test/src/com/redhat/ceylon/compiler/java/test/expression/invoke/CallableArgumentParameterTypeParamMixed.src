@@ -40,7 +40,7 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
                 final boolean $ceylontmp$b = ((.ceylon.language.Boolean)$param$1).booleanValue();
-                return (.ceylon.language.Integer).ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_baz_.callableArgumentParameterTypeParamMixed_baz($ceylontmp$i, $ceylontmp$b));
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_baz_.callableArgumentParameterTypeParamMixed_baz($ceylontmp$i, $ceylontmp$b));
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_f(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Boolean(Boolean, Integer)", (short)-1){
@@ -49,7 +49,7 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .ceylon.language.Boolean $ceylontmp$u = (.ceylon.language.Boolean)$param$0;
                 final .ceylon.language.Integer $ceylontmp$v = (.ceylon.language.Integer)$param$1;
-                return (.ceylon.language.Boolean).com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, $ceylontmp$u, $ceylontmp$v);
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.ceylon.language.Boolean, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, $ceylontmp$u, $ceylontmp$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_f($reified$X, .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reified$X, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$X, .ceylon.language.Integer.$TypeDescriptor$), "X(X, Integer)", (short)-1){
@@ -58,7 +58,7 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
             public X $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final X $ceylontmp$u = (X)$param$0;
                 final .ceylon.language.Integer $ceylontmp$v = (.ceylon.language.Integer)$param$1;
-                return (X).com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar($reified$X, .ceylon.language.Integer.$TypeDescriptor$, $ceylontmp$u, $ceylontmp$v);
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, .ceylon.language.Integer>callableArgumentParameterTypeParamMixed_bar($reified$X, .ceylon.language.Integer.$TypeDescriptor$, $ceylontmp$u, $ceylontmp$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<X, Y>callableArgumentParameterTypeParamMixed_f($reified$X, $reified$Y, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<X>($reified$X, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$X, $reified$Y), "X(X, Y)", (short)-1){
@@ -67,7 +67,7 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
             public X $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final X $ceylontmp$u = (X)$param$0;
                 final Y $ceylontmp$v = (Y)$param$1;
-                return (X).com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar($reified$X, $reified$Y, $ceylontmp$u, $ceylontmp$v);
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<X, Y>callableArgumentParameterTypeParamMixed_bar($reified$X, $reified$Y, $ceylontmp$u, $ceylontmp$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_f(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y), "<X&Y>(X&Y, Y)", (short)-1){
@@ -76,7 +76,7 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .java.lang.Object $ceylontmp$u = $param$0;
                 final Y $ceylontmp$v = (Y)$param$1;
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, $ceylontmp$u, $ceylontmp$v);
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), $reified$Y, $ceylontmp$u, $ceylontmp$v);
             }
         });
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_f_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_f(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), $reified$Y, new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), $reified$Y), "<X|Y>(X|Y, Y)", (short)-1){
@@ -85,7 +85,7 @@ class CallableArgumentParameterTypeParamMixed<X> implements .com.redhat.ceylon.c
             public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                 final .java.lang.Object $ceylontmp$u = $param$0;
                 final Y $ceylontmp$v = (Y)$param$1;
-                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), $reified$Y, $ceylontmp$u, $ceylontmp$v);
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterTypeParamMixed_bar_.<.java.lang.Object, Y>callableArgumentParameterTypeParamMixed_bar(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), $reified$Y, $ceylontmp$u, $ceylontmp$v);
             }
         });
     }

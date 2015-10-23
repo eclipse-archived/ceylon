@@ -33,7 +33,7 @@ class CallableArgumentReturningQualifiedClass implements .com.redhat.ceylon.comp
                 
                 @.java.lang.Override
                 public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D $call$() {
-                    return (.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentReturningQualifiedClass.D)$instance$.D$new$();
+                    return $instance$.D$new$();
                 }
             };
         ));

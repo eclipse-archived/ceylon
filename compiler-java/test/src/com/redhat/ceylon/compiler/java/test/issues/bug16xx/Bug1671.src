@@ -37,7 +37,7 @@ final class bug1671_ {
                 @.java.lang.Override
                 public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
                     final long $ceylontmp$other = ((.ceylon.language.Integer)$param$0).longValue();
-                    return (.ceylon.language.Boolean).ceylon.language.Boolean.instance(.ceylon.language.Integer.divides($instance$, $ceylontmp$other));
+                    return .ceylon.language.Boolean.instance(.ceylon.language.Integer.divides($instance$, $ceylontmp$other));
                 }
             };
         );
@@ -50,20 +50,20 @@ final class bug1671_ {
                 
                 @.java.lang.Override
                 public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$() {
-                    return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>).ceylon.language.String.split($instance$);
+                    return .ceylon.language.String.split($instance$);
                 }
                 
                 @.java.lang.Override
                 public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
                     final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
-                    return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>).ceylon.language.String.split($instance$, $ceylontmp$splitting);
+                    return .ceylon.language.String.split($instance$, $ceylontmp$splitting);
                 }
                 
                 @.java.lang.Override
                 public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                     final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
                     final boolean $ceylontmp$discardSeparators = ((.ceylon.language.Boolean)$param$1).booleanValue();
-                    return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>).ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators);
+                    return .ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators);
                 }
                 
                 @.java.lang.Override
@@ -71,7 +71,7 @@ final class bug1671_ {
                     final .ceylon.language.Callable $ceylontmp$splitting = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0;
                     final boolean $ceylontmp$discardSeparators = ((.ceylon.language.Boolean)$param$1).booleanValue();
                     final boolean $ceylontmp$groupSeparators = ((.ceylon.language.Boolean)$param$2).booleanValue();
-                    return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>).ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators);
+                    return .ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators);
                 }
             };
         );

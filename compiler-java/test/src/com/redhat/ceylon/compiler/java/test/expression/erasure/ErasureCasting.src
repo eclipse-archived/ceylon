@@ -62,7 +62,7 @@ final class erasureCasting_ {
                 return (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.ec_boundsOnElement3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmp$elements);
+                        .com.redhat.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.<.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A>ec_boundsOnElement3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmp$elements);
                     }
                     returning null;
                 );

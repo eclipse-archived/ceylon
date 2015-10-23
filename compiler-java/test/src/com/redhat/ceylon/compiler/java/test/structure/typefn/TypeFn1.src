@@ -37,7 +37,7 @@ final class genericFunctionReference_ {
                             @.java.lang.Override
                             public Any $call$(final .java.lang.Object $param$0) {
                                 final Any $ceylontmp$anything = (Any)$param$0;
-                                return (Any).com.redhat.ceylon.compiler.java.test.structure.typefn.pipe_.pipe(applied[0], $ceylontmp$anything);
+                                return .com.redhat.ceylon.compiler.java.test.structure.typefn.pipe_.<Any>pipe(applied[0], $ceylontmp$anything);
                             }
                         };
                     }
@@ -96,7 +96,7 @@ final class genericLocalFunctionReference_ {
                             public Number $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                                 final Number $ceylontmp$x = (Number)$param$0;
                                 final Number $ceylontmp$y = (Number)$param$1;
-                                return (Number)(Number)add.add(applied[0], $ceylontmp$x, $ceylontmp$y);
+                                return (Number)add.<Number>add(applied[0], $ceylontmp$x, $ceylontmp$y);
                             }
                         };
                     }
@@ -150,7 +150,7 @@ final class genericClassReference_ {
                             public .ceylon.language.Entry<? extends Key, ? extends Item> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
                                 final Key $ceylontmp$key = (Key)$param$0;
                                 final Item $ceylontmp$item = (Item)$param$1;
-                                return (.ceylon.language.Entry<? extends Key, ? extends Item>)new .ceylon.language.Entry<Key, Item>(applied[0], applied[1], $ceylontmp$key, $ceylontmp$item);
+                                return new .ceylon.language.Entry<Key, Item>(applied[0], applied[1], $ceylontmp$key, $ceylontmp$item);
                             }
                         };
                     }

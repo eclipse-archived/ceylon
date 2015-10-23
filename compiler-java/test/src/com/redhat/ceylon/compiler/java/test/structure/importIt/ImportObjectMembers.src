@@ -62,7 +62,7 @@ final class importObjectMembers_ {
             
             @.java.lang.Override
             public .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class $call$() {
-                return (.com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class).com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().Class$new$();
+                return .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().Class$new$();
             }
         };
         final .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel$Interface_ i = c;
