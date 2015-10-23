@@ -260,8 +260,6 @@ public class JsCompiler {
                             output.get(_m).require(((Package) scope).getModule(), names);
                         }
                     }
-                    if (scope instanceof Package && !((Package)scope).getModule().equals(_m)) {
-                    }
                 }
                 public void visit(Tree.ImportModule that) {
                     if (that.getImportPath().getModel() instanceof Module) {
