@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 
@@ -2643,6 +2644,28 @@ public class ModelUtil {
         }
     }
 
+    public static boolean isForBackend(Backends backends,
+            Backend supported) {
+        return isForBackend(backends, supported.asSet());
+    }
+    
+    public static boolean isForBackend(Backends backends,
+            BackendSupport support) {
+        return isForBackend(backends, support.getSupportedBackends());
+    }
+    
+    public static boolean isForBackend(Backends backends,
+            Backends supported) {
+        return backends.none() || supported.supports(backends);
+    }
+    
+    public static boolean isForBackendX(Backends backends,
+            BackendSupport support) {
+        Backends sups = support.getSupportedBackends();
+        sups = sups.merged(Backend.None);
+        return isForBackend(backends, sups);
+    }
+    
     /**
      * The list of type parameters of the given generic
      * declaration as types. (As viewed within the body of
