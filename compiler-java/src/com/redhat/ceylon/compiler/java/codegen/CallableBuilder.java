@@ -343,33 +343,9 @@ public class CallableBuilder {
             // invoke the param class ctor
             Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
             callBuilder.argument(gen.naming.makeNamedConstructorName(ctor, false));
-            for (Parameter parameter : parameterList.getParameters()) {
-                callBuilder.argument(gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter)));
-            }
-        } else {
-            for (Parameter parameter : parameterList.getParameters()) {
-                JCExpression parameterExpr = gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter));
-                int flags = 0;
-                Type parameterType = parameter.getType();
-                // this works on the parameter type as declared
-                if(!parameterType.isRaw())
-                    flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_NOT_RAW;
-                if(gen.hasConstrainedTypeParameters(parameter))
-                    flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
-                if(gen.hasDependentCovariantTypeParameters(parameterType))
-                    flags |= ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS;
-                // this gives me the parameter as typed in this invocation
-                TypedReference typedParameter = qmte.getTarget().getTypedParameter(parameter);
-                // this gives me the parameter as typed that the method expects
-                Type targetParamType = gen.expressionGen().getTypeForParameter(parameter, qmte.getTarget(), ExpressionTransformer.TP_TO_BOUND);
-                // make sure it's compatible
-                parameterExpr = gen.expressionGen().applyErasureAndBoxing(parameterExpr, typedParameter.getType(), 
-                        CodegenUtil.hasTypeErased(parameter.getModel()),
-                        !CodegenUtil.isUnBoxed(parameter.getModel()), 
-                        CodegenUtil.getBoxingStrategy(parameter.getModel()), 
-                        targetParamType, flags);
-                callBuilder.argument(parameterExpr);
-            }
+        }
+        for (Parameter parameter : parameterList.getParameters()) {
+            callBuilder.argument(gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter)));
         }
         JCExpression innerInvocation = callBuilder.build();
         // Need to worry about boxing for Function and FunctionalParameter 
@@ -776,7 +752,25 @@ public class CallableBuilder {
                 final Parameter param, Type parameterType,
                 Naming.SyntheticName name, boolean boxed, JCExpression expr) {
             // store it in a local var
-            int flags = jtFlagsForParameter(param, parameterType, boxed);
+            int flags = 0;
+            boolean castRequired = false;
+            if ((parameterType.isExactlyNothing()
+                    || gen.willEraseToObject(parameterType))) {
+                Type et = param.getType();
+                while (et.getDeclaration() instanceof TypeParameter
+                    && !et.getSatisfiedTypes().isEmpty()) {
+                    et = et.getSatisfiedTypes().get(0);
+                }
+                if (param.getType() != et) {
+                    parameterType = et;
+                    castRequired = true;
+                    flags |= AbstractTransformer.JT_RAW;
+                }
+            }
+            flags |= jtFlagsForParameter(param, parameterType, boxed);
+            if (castRequired && !gen.willEraseToObject(parameterType)) {
+                expr = gen.make().TypeCast(gen.makeJavaType(parameterType, flags), expr);
+            }
             JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(param.getModel().isVariable() ? 0 : Flags.FINAL), 
                     name.asName(), 
                     gen.makeJavaType(parameterType, flags),
