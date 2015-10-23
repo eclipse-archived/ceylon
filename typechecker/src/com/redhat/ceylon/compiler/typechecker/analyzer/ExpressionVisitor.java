@@ -54,7 +54,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionTy
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackendX;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
@@ -9324,6 +9323,7 @@ public class ExpressionVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Backends backends) {
         return !backends.none() &&
-                !isForBackendX(backends, unit);
+                !Backends.HEADER.equals(backends) &&
+                !isForBackend(backends, unit);
     }    
 }

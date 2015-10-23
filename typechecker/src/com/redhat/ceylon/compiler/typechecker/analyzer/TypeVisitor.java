@@ -16,7 +16,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackendX;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
@@ -1620,6 +1620,7 @@ public class TypeVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Backends backends) {
         return !backends.none() &&
-                !isForBackendX(backends, unit);
+                !Backends.HEADER.equals(backends) &&
+                !isForBackend(backends, unit);
     }    
 }

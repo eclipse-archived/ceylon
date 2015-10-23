@@ -7,7 +7,6 @@ package com.redhat.ceylon.compiler.typechecker.util;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasErrorOrWarning;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackendX;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import com.redhat.ceylon.common.Backends;
@@ -99,7 +98,7 @@ public class UsageVisitor extends Visitor {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
                 Backends inBackends = that.getScope().getScopedBackends();
-                if (isForBackendX(inBackends, that.getUnit())) {
+                if (inBackends.none() || isForBackend(inBackends, that.getUnit())) {
                     that.addUsageWarning(Warning.expressionTypeNothing,
                             "expression has type 'Nothing'");
                 }
