@@ -193,7 +193,7 @@ public abstract class Declaration
     }
     
     public boolean isNativeHeader() {
-        return Backends.HEADER == getNativeBackends();
+        return getNativeBackends().header();
     }
     
     public boolean isNativeImplementation() {
