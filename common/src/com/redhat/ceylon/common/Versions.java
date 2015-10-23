@@ -108,6 +108,17 @@ public class Versions {
         return major == JVM_BINARY_MAJOR_VERSION
                 && minor == JVM_BINARY_MINOR_VERSION;
     }
+    
+    /**
+     * Is the given binary version compatible with the current version
+     * @param major the binary version to check for compatibility
+     * @param minor the binary version to check for compatibility
+     * @return true if the current version of ceylon can consume the given binary version
+     */
+    public static boolean isJsBinaryVersionSupported(int major, int minor){
+        return major == JS_BINARY_MAJOR_VERSION
+                && minor == JS_BINARY_MINOR_VERSION;
+    }
 
     /**
      * Can the given consumer binary version consume modules compiled for the given binary version
