@@ -459,6 +459,10 @@ public class Type extends Reference {
                 return false;
             }
             if (!r1.isTuple() || !r2.isTuple()) {
+                //TODO: if both are unions containing
+                //      exactly one Tuple, break the 
+                //      union in two and continue
+                //      iterating with the Tuples
                 return r1.isExactlyInternal(r2); 
             }
             t1 = r1;
@@ -737,6 +741,10 @@ public class Type extends Reference {
                 return false;
             }
             if (!r1.isTuple() || !r2.isTuple()) {
+                //TODO: if both are unions containing
+                //      exactly one Tuple, break the 
+                //      union in two and continue
+                //      iterating with the Tuples
                 return r1.isSubtypeOfInternal(r2); 
             }
             t1 = r1;
