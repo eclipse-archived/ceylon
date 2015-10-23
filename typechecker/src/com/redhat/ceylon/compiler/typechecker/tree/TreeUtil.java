@@ -6,13 +6,13 @@ import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -110,7 +110,7 @@ public class TreeUtil {
             TypecheckerUnit unit) {
         Backends bs = getNativeBackend(al, unit);
         if (!bs.none()) {
-            return !isForBackend(bs, unit);
+            return !ModelUtil.isForBackend(bs, unit);
         } else {
             return false;
         }
@@ -119,29 +119,7 @@ public class TreeUtil {
     public static boolean isForBackend(Tree.AnnotationList al,
             Backend forBackend, Unit unit) {
         Backends bs = getNativeBackend(al, unit);
-        return isForBackend(bs, forBackend.asSet());
-    }
-    
-    public static boolean isForBackend(Backends backends,
-            Backend supported) {
-        return isForBackend(backends, supported.asSet());
-    }
-    
-    public static boolean isForBackend(Backends backends,
-            BackendSupport support) {
-        return isForBackend(backends, support.getSupportedBackends());
-    }
-    
-    public static boolean isForBackend(Backends backends,
-            Backends supported) {
-        return backends.none() || supported.supports(backends);
-    }
-    
-    public static boolean isForBackendX(Backends backends,
-            BackendSupport support) {
-        Backends sups = support.getSupportedBackends();
-        sups = sups.merged(Backend.None);
-        return isForBackend(backends, sups);
+        return ModelUtil.isForBackend(bs, forBackend.asSet());
     }
     
     public static Backends getNativeBackend(Tree.AnnotationList al,
