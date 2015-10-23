@@ -277,14 +277,22 @@ public class CeylonInfoTool extends RepoUsingTool {
                 if (versions.isEmpty()) {
                     // try from source
                     ModuleVersionDetails fromSource = getVersionFromSource(name);
-                    if(fromSource != null){
+                    if (fromSource != null) {
                         // is it the version we're after?
                         versions = Arrays.asList(fromSource);
-                    }else{
-                        String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
-                        errorAppend(err);
-                        errorNewline();
-                        continue;
+                    } else {
+                        if (module.getVersion() != null && !module.getVersion().isEmpty()
+                                && (binaryMajor != null || binaryMinor != null)) {
+                            // If we were called with a specific version and we didn't find a "compatible"
+                            // artifact then lets see if we can find an "incompatible" one
+                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), queryType, null, null);
+                        }
+                        if (versions.isEmpty()) {
+                            String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());
+                            errorAppend(err);
+                            errorNewline();
+                            continue;
+                        }
                     }
                 }
                 if (module.getVersion() == null || module.getVersion().isEmpty() || versions.size() > 1) {
