@@ -281,8 +281,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                         // is it the version we're after?
                         versions = Arrays.asList(fromSource);
                     } else {
-                        if (module.getVersion() != null && !module.getVersion().isEmpty()
-                                && (binaryMajor != null || binaryMinor != null)) {
+                        if (binaryMajor != null || binaryMinor != null) {
                             // If we were called with a specific version and we didn't find a "compatible"
                             // artifact then lets see if we can find an "incompatible" one
                             versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), queryType, null, null);
