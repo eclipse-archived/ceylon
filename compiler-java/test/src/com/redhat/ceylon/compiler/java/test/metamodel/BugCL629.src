@@ -6,7 +6,7 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 final class bug629_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     private bug629_() {
-        this.version = ((.ceylon.language.meta.model.Value)(.ceylon.language.meta.model.Value)((.ceylon.language.meta.declaration.ReferenceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.metamodel", "123"), "com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getValue("bug629")).apply(.com.redhat.ceylon.compiler.java.test.metamodel.bug629_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)).getDeclaration().getContainingModule().getVersion();
+        this.version = ((.ceylon.language.meta.model.Value)(.ceylon.language.meta.model.Value).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.metamodel", "123"), "com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getValue("bug629").apply(.com.redhat.ceylon.compiler.java.test.metamodel.bug629_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)).getDeclaration().getContainingModule().getVersion();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

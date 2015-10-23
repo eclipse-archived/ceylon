@@ -35,7 +35,7 @@ class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.mode
     @.java.lang.Override
     public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
         .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
-        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.class)).<.ceylon.language.meta.declaration.ReferenceDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ReferenceDeclaration.$TypeDescriptor$, "ref")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableCycle.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "ref")));
         return reference;
     }
     

@@ -41,12 +41,12 @@ public final class bug2328ReferenceDeclaration_ {
     
     private bug2328ReferenceDeclaration_() {
     }
-    private static final .ceylon.language.meta.declaration.ReferenceDeclaration value;
+    private static final .ceylon.language.meta.declaration.ValueDeclaration value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.ceylon.language.meta.declaration.ReferenceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name");
+            value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name");
             $initException$ = null;
             $init$value = true;
         } catch (.java.lang.Throwable x) {
@@ -56,7 +56,7 @@ public final class bug2328ReferenceDeclaration_ {
         }
     }
     
-    public static .ceylon.language.meta.declaration.ReferenceDeclaration get_() {
+    public static .ceylon.language.meta.declaration.ValueDeclaration get_() {
         if (bug2328ReferenceDeclaration_.$init$value) {
             return value;
         } else {
