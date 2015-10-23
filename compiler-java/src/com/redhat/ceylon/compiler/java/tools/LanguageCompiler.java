@@ -565,7 +565,7 @@ public class LanguageCompiler extends JavaCompiler {
             if (md != null) {
                 Backends bs = getNativeBackend(md.getAnnotationList(), md.getUnit());
                 if (!bs.none()) {
-                    if (bs == Backends.HEADER) {
+                    if (bs.header()) {
                         md.addError("missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
                     } else if (!ModelUtil.isForBackend(bs, Backend.Java)) {
                         md.addError("module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
