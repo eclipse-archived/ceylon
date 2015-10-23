@@ -427,6 +427,7 @@ public abstract class AbstractRepository implements CmrRepository {
             // try every known suffix
             boolean found = false;
             boolean foundInfo = false;
+            boolean binaryMatch = false;
             ModuleVersionDetails mvd = new ModuleVersionDetails(name, version);
             String[] suffixes = lookup.getType().getSuffixes();
             // When we need to find ALL requested suffixes we maintain a set of those not found yet
@@ -438,19 +439,26 @@ public abstract class AbstractRepository implements CmrRepository {
             for (String suffix : suffixes) {
                 String artifactName = getArtifactName(name, version, suffix);
                 Node artifact = child.getChild(artifactName);
-                if (artifact == null
-                        // is it the right version?
-                        || (suffix.equals(ArtifactContext.CAR)
-                                || suffix.equals(ArtifactContext.JS_MODEL) 
-                                || suffix.equals(ArtifactContext.JS)
-                                || suffix.equals(ArtifactContext.DART)
-                                || suffix.equals(ArtifactContext.DART_MODEL))
-                                && !checkBinaryVersion(name, version, artifact, lookup)) {
+                if (artifact == null) {
                     if (lookup.getRetrieval() == Retrieval.ALL) {
                         break;
                     } else {
                         continue;
                     }
+                }
+                if (suffix.equals(ArtifactContext.CAR)
+                        || suffix.equals(ArtifactContext.JS_MODEL) 
+                        || suffix.equals(ArtifactContext.JS)
+                        || suffix.equals(ArtifactContext.DART)
+                        || suffix.equals(ArtifactContext.DART_MODEL)) {
+                    if (!checkBinaryVersion(name, version, artifact, lookup)) {
+                        if (lookup.getRetrieval() == Retrieval.ALL) {
+                            break;
+                        } else {
+                            continue;
+                        }
+                    }
+                    binaryMatch = true;
                 }
                 // we found the artifact: let's notify
                 found = true;
@@ -473,7 +481,8 @@ public abstract class AbstractRepository implements CmrRepository {
             // just any artifact, we need to make sure we were able to
             // read the artifact's information
             if (((found && memberName == null) || foundInfo)
-                    && (lookup.getRetrieval() == Retrieval.ANY || suffixesToFind.isEmpty())) {
+                    && (lookup.getRetrieval() == Retrieval.ANY || suffixesToFind.isEmpty())
+                    && ((lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null) || binaryMatch)) {
                 mvd.setRemote(root.isRemote());
                 mvd.setOrigin(getDisplayString());
                 result.addVersion(mvd);
