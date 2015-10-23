@@ -31,8 +31,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminatePare
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackendX;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
@@ -55,6 +53,8 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOf
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackendX;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;

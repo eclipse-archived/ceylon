@@ -6,7 +6,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeade
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -105,12 +104,12 @@ public class MissingNativeVisitor extends Visitor {
         
         if (nodeIsDecl
                 && !model.isNativeHeader()
-                && !TreeUtil.isForBackend(model.getNativeBackends(), forBackend)) {
+                && !ModelUtil.isForBackend(model.getNativeBackends(), forBackend)) {
             // We don't care about declarations for other backends
             return false;
         }
         
-        if (TreeUtil.isForBackend(model.getNativeBackends(), forBackend)) {
+        if (ModelUtil.isForBackend(model.getNativeBackends(), forBackend)) {
             return true;
         } else {
             Declaration hdr;

@@ -5,9 +5,9 @@
 package com.redhat.ceylon.compiler.typechecker.util;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasErrorOrWarning;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackendX;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackendX;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import com.redhat.ceylon.common.Backends;

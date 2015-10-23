@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 
 import java.util.ArrayList;
 import java.util.Collection;
