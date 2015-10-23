@@ -2399,7 +2399,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             
-            if (ta.isNothing()
+            if (ta.isExactlyNothing()
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
                     || ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) != 0
@@ -2416,7 +2416,7 @@ public abstract class AbstractTransformer implements Transformation {
                     // - The Ceylon type Foo<Bottom> appearing in an extends or satisfies location results in the Java type
                     //   Foo<Object> (see https://github.com/ceylon/ceylon-compiler/issues/633 for why)
                     if((flags & (JT_SATISFIES | JT_EXTENDS)) != 0){
-                        if (ta.isNothing()) {
+                        if (ta.isExactlyNothing()) {
                             jta = make().Type(syms().objectType);
                         } else {
                             if (!tp.getSatisfiedTypes().isEmpty()) {
@@ -2426,7 +2426,7 @@ public abstract class AbstractTransformer implements Transformation {
                                 jta = make().Type(syms().objectType);
                             }
                         }
-                    }else if (ta.isNothing()){
+                    }else if (ta.isExactlyNothing()){
                         // - The Ceylon type Foo<Bottom> appearing anywhere else results in the Java type
                         // - Foo if Foo is contravariant in T (see https://github.com/ceylon/ceylon-compiler/issues/1042), or
                         // - Foo<? extends Object> if Foo is covariant in T and not depended on by other type params
