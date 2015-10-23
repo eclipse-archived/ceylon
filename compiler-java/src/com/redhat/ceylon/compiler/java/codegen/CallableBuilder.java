@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
-import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_RAW;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
 
 import java.util.ArrayList;
@@ -47,7 +46,6 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
@@ -779,21 +777,6 @@ public class CallableBuilder {
                 Naming.SyntheticName name, boolean boxed, JCExpression expr) {
             // store it in a local var
             int flags = jtFlagsForParameter(param, parameterType, boxed);
-            TypeDeclaration ptd = param.getType().getDeclaration();
-            Type erasedParameterType = param.getType();
-            while (ptd instanceof TypeParameter
-                    && !ptd.getSatisfiedTypes().isEmpty()) {
-                erasedParameterType = ptd.getSatisfiedTypes().get(0);
-                ptd = erasedParameterType.getDeclaration();
-            }
-            if (!(parameterType.getDeclaration() instanceof TypeParameter)
-                    && erasedParameterType != param.getType() // entered while loop
-                    && !gen.willEraseToObject(erasedParameterType)) {
-                flags |= JT_RAW;
-                parameterType = erasedParameterType;
-                expr = gen.expressionGen().applyErasureAndBoxing(expr, 
-                        gen.typeFact().getAnythingType(), false, true, BoxingStrategy.UNBOXED, parameterType, ExpressionTransformer.EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS);
-            }
             JCVariableDecl var = gen.make().VarDef(gen.make().Modifiers(param.getModel().isVariable() ? 0 : Flags.FINAL), 
                     name.asName(), 
                     gen.makeJavaType(parameterType, flags),
