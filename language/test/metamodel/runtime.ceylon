@@ -1544,10 +1544,6 @@ shared void checkInheritedVsDeclared(){
 @test
 shared void checkClassMembers() {
     variable Declaration[] members = `class GettersAndRefs`.declaredMemberDeclarations<ValueDeclaration>();
-    assert(members.size == 1);
-    assert(`value GettersAndRefs.strRef` in members);
-    
-    members = `class GettersAndRefs`.declaredMemberDeclarations<ValueDeclaration>();
     assert(members.size == 2);
     assert(`value GettersAndRefs.strRef` in members);
     assert(`value GettersAndRefs.strGetter` in members);
@@ -1562,11 +1558,6 @@ shared void checkClassMembers() {
     assert(members .size == 3);
     assert(`value GettersAndRefs.strRef` in members);
     assert(`value GettersAndRefs.strGetter` in members);
-    assert(`function GettersAndRefs.strMethod` in members);
-    
-    members = `class GettersAndRefs`.declaredMemberDeclarations<FunctionDeclaration|ValueDeclaration>();
-    assert(members .size == 2);
-    assert(`value GettersAndRefs.strRef` in members);
     assert(`function GettersAndRefs.strMethod` in members);
     
     members = `class GettersAndRefs`.declaredMemberDeclarations<NestableDeclaration>();
