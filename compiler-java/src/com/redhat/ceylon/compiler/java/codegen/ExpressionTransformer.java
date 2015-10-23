@@ -3441,8 +3441,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean prevFnCall = withinInvocation(true);
         try {
             final CallBuilder callBuilder = CallBuilder.instance(this);
-            if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression
-                    && !(invocation instanceof CallableInvocation)){
+            if (invocation.getPrimary() instanceof Tree.StaticMemberOrTypeExpression){
                 transformTypeArguments(callBuilder, 
                         (Tree.StaticMemberOrTypeExpression)invocation.getPrimary());
             }
