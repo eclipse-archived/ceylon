@@ -112,29 +112,29 @@ void test<T>() {
     value toplevelGetterValue = `value get`;
     @type:"Value<Integer,Nothing>"
     value toplevelGetter = `get`;
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value toplevelAttributeValue = `value attribute`;
     @type:"Value<Integer,Nothing>"
     value toplevelAttribute = `attribute`;
     @error:"does not accept type arguments: 'attribute'"
     value toplevelAttributeErr = `attribute<String>`;
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value toplevelVariableAttributeValue = `value variableAttribute`;
     @type:"Value<Integer,Integer>"
     value toplevelVariableAttribute = `variableAttribute`;
 
     // qualified attributes
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value containerAttributeValue = `value Container.attribute`;
     @type:"Attribute<Container,Integer,Nothing>"
     value containerAttribute = `Container.attribute`;
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value containerVariableAttributeValue = `value Container.variableAttribute`;
     @type:"Attribute<Container,Integer,Integer>"
     value containerVariableAttribute = `Container.variableAttribute`;
     @type:"Attribute<ParameterisedContainer<String>,String,Nothing>"
     value parameterisedContainerAttribute = `ParameterisedContainer<String>.attribute`;
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedContainerAttributeDeclValue = `value ParameterisedContainer.attribute`;
     @error
     value parameterisedContainerAttributeDecl = `ParameterisedContainer.attribute`;
@@ -146,7 +146,7 @@ void test<T>() {
     // class parameters
     @error
     value classParameter = `Container.parameter`;
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value classParameterAndSharedAttributeValue = `value Container.parameterAndSharedAttribute`;
     @type:"Attribute<Container,Integer,Nothing>"
     value classParameterAndSharedAttribute = `Container.parameterAndSharedAttribute`;
@@ -167,13 +167,13 @@ void test<T>() {
     value parameterisedClassParameterErr = `ParameterisedContainer<String>.parameter`;
     @type:"Attribute<ParameterisedContainer<String>,Integer,Nothing>"
     value parameterisedClassParameterAndSharedAttribute = `ParameterisedContainer<String>.parameterAndSharedAttribute`;
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedClassParameterAndSharedAttributeDeclValue = `value ParameterisedContainer.parameterAndSharedAttribute`;
     @error
     value parameterisedClassParameterAndSharedAttributeDecl = `ParameterisedContainer.parameterAndSharedAttribute`;
     
     // class attributes that are parameters too
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value classSharedAttributeAndParameterValue = `value Container.sharedAttributeAndParameter`;
     @type:"Attribute<Container,Integer,Nothing>"
     value classSharedAttributeAndParameter = `Container.sharedAttributeAndParameter`;
@@ -184,7 +184,7 @@ void test<T>() {
 
     @type:"Attribute<ParameterisedContainer<String>,Integer,Nothing>"
     value parameterisedClassSharedAttributeAndParameter = `ParameterisedContainer<String>.sharedAttributeAndParameter`;
-    @type:"ReferenceDeclaration"
+    @type:"ValueDeclaration"
     value parameterisedClassSharedAttributeAndParameterDeclValue = `value ParameterisedContainer.sharedAttributeAndParameter`;
     @error
     value parameterisedClassSharedAttributeAndParameterDecl = `ParameterisedContainer.sharedAttributeAndParameter`;
