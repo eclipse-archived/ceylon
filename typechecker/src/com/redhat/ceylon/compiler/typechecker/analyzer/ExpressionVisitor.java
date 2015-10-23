@@ -9323,7 +9323,7 @@ public class ExpressionVisitor extends Visitor {
     // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Backends backends) {
         return !backends.none() &&
-                !Backends.HEADER.equals(backends) &&
+                !backends.header() &&
                 !isForBackend(backends, unit);
     }    
 }
