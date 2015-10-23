@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Backend {
-    public static final Backend None;
+    public static final Backend Header;
     public static final Backend Java;
     public static final Backend JavaScript;
     
@@ -14,7 +14,7 @@ public class Backend {
     static {
         registeredBackends = new HashSet<Backend>();
         allBackends = new HashSet<Backend>();
-        None = createBackend("None", "");
+        Header = createBackend("Header", "");
         Java = registerBackend("Java", "jvm");
         JavaScript = registerBackend("JavaScript", "js");
     }
@@ -74,7 +74,7 @@ public class Backend {
     private static Backend findAnnotation(String backend) {
         if (backend != null) {
             if (backend.isEmpty()) {
-                return None;
+                return Header;
             }
             for (Backend b : allBackends) {
                 if (b.nativeAnnotation.equals(backend)) {

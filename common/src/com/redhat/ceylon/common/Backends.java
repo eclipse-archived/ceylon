@@ -17,12 +17,12 @@ public class Backends implements Iterable<Backend>, BackendSupport {
         collections = new HashMap<String, Backends>();
     }
     
-    public final static Backends NONE = new Backends(Collections.<Backend>emptySet());
-    public final static Backends HEADER = fromAnnotation(Backend.None.nativeAnnotation);
+    public final static Backends ANY = new Backends(Collections.<Backend>emptySet());
+    public final static Backends HEADER = fromAnnotation(Backend.Header.nativeAnnotation);
     
     Backends(Set<Backend> backends) {
         // We don't allow Backend.None in a set with others
-        assert (backends.size() <= 1 || !backends.contains(Backend.None));
+        assert (backends.size() <= 1 || !backends.contains(Backend.Header));
         this.backends = backends;
     }
 
@@ -54,7 +54,7 @@ public class Backends implements Iterable<Backend>, BackendSupport {
             HashSet<Backend> result = new HashSet<Backend>(backends.backends);
             result.retainAll(this.backends);
             if (result.isEmpty()) {
-                return NONE;
+                return ANY;
             } else if (result.size() == 1) {
                 Backend backend = result.iterator().next();
                 return backend.asSet();
@@ -98,7 +98,7 @@ public class Backends implements Iterable<Backend>, BackendSupport {
         if (backends == null) {
             return null;
         } else if (backends.isEmpty()) {
-            return Backends.NONE;
+            return Backends.ANY;
         } else if (backends.size() == 1) {
             String backend = backends.iterator().next();
             return fromAnnotation(backend);
@@ -114,7 +114,7 @@ public class Backends implements Iterable<Backend>, BackendSupport {
 
     public static Backends fromAnnotation(String backend) {
         if (backend == null) {
-            return NONE;
+            return ANY;
         }
         Backends bs = collections.get(backend);
         if (bs == null) {
