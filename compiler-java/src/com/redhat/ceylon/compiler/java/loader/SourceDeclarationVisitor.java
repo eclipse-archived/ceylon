@@ -40,7 +40,7 @@ public abstract class SourceDeclarationVisitor extends Visitor {
     // have an implementation. In all other cases returns `false`.
     protected boolean checkNative(Tree.Declaration decl){
         return isForBackend(decl.getAnnotationList(), Backend.Java, decl.getUnit())
-                || (isForBackend(decl.getAnnotationList(), Backend.None, decl.getUnit())
+                || (isForBackend(decl.getAnnotationList(), Backend.Header, decl.getUnit())
                         && hasImplementation(decl));
     }
     
