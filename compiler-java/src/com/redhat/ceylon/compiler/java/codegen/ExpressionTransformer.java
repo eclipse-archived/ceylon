@@ -2351,7 +2351,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         final Type leftSuper = getSupertype(op.getLeftTerm(), compoundType);
         Type leftType = leftSuper;
         Type leftSelf = leftType.getDeclaration().getSelfType();
-        if (leftSelf != null) {
+        if (leftSelf != null
+                && leftType.getTypeArguments().get(leftSelf.getDeclaration()).isSubtypeOf(leftSuper)) {
             // Simplify Comparable<X> to X
             leftType = leftType.getTypeArguments().get(leftSelf.getDeclaration());
         }
