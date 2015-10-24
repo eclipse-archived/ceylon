@@ -375,7 +375,7 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             <programlisting>class Point {
     Float x; 
     Float y;
-    new Point(Float x, Float y) {
+    new create(Float x, Float y) {
         this.x = x;
         this.y = y;
     }
@@ -407,11 +407,31 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             classes</emphasis>. An anonymous class is a class which is instantiated 
             only in exactly the place it is defined. Among other uses, the 
             <literal>object</literal> declaration is useful for creating singleton 
-            objects or method-local interface implementations. 
+            objects or locally-scoped interface implementations. 
             </para>
             
             <programlisting>object origin extends Point(0.0, 0.0) {}</programlisting>
-        
+            
+            <para>
+            Strictly speaking, an <literal>object</literal> declaration is just an
+            abbreviated way to write a class with a <emphasis>value constructor</emphasis>. 
+            A value constructor defines a named instance of a class:
+            </para>
+            
+            <programlisting>class Point {
+    Float x; 
+    Float y;
+    new create(Float x, Float y) {
+        this.x = x;
+        this.y = y;
+    }
+    new origin {
+        this.x = 0.0;
+        this.y = 0.0;
+    }
+    ...
+}</programlisting>
+            
         </section>
         
        <section id="methodsandattributes">
