@@ -1185,12 +1185,21 @@ TypeConstraints?
                 <listitem>
                     <para>any occurrence of the expression <literal>outer</literal>, as 
                     defined in <xref linkend="outer"/>, in the body of a class or 
-                    interface declaration immediately contained by the class, or</para>
+                    interface declaration immediately contained by the class,</para>
                 </listitem>
-                <listitem>
+                <!--listitem>
                     <para>in the case of an anonymous class, any base expression, or 
                     qualified expression with receiver expression <literal>outer</literal>, 
-                    that is a value reference to the anonymous class.</para>
+                    that is a value reference to the anonymous class, or</para>
+                </listitem-->
+                <listitem>
+                    <para>any reference to an anononymous class that inherits the class,
+                    or, if the class is an anonymous class, to the anonymous class itself,
+                    or</para>
+                </listitem>
+                <listitem>
+                    <para>any reference to a value constructor of the class or of a class 
+                    which inherits the class.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1216,10 +1225,6 @@ TypeConstraints?
             <para>A member class contained in the initializer of a class may not 
             <literal>extend</literal> a member or nested class of an interface or 
             superclass of the class.</para>
-            
-            <para>A statement or declaration contained in the initializer of a class may 
-            not evaluate a value constructor of the class or of any subclass of the class.
-            </para>
             
             <para>Furthermore, a statement or declaration contained in the initializer 
             of a class may not:</para>
