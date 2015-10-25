@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -73,19 +74,26 @@ public class SelfReferenceVisitor extends Visitor {
             Tree.MemberOrTypeExpression that) {
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
-        if (member!=null && 
-                isValueConstructor(that, member)) {
-            Declaration container = 
-                    (Declaration) 
-                    member.getContainer();
-            that.addError("value constructor may not be used in initializer of '" +
-                    typeDeclaration.getName() + 
-                    "': '" + member.getName() + 
-                    "' is a value constructor of '" +
-                    container.getName() + "'");
+        if (member!=null) {
+            if (isInheritingValueConstructor(that, member)) {
+                Declaration container = 
+                        (Declaration) 
+                        member.getContainer();
+                that.addError("value constructor may not be used in initializer of '" +
+                        typeDeclaration.getName() + 
+                        "': '" + member.getName() + 
+                        "' is a value constructor of '" +
+                        container.getName() + "'");
+            }
+            else if (isInheritingAnonymousClass(member)) {
+                that.addError("anonymous class may not be used in initializer of '" +
+                        typeDeclaration.getName() + 
+                        "': '" + member.getName() +
+                        "' is an anonymous class");
+            }
         }
     }
-    
+
     private void checkMemberReference(
             Tree.MemberOrTypeExpression that) {
         Declaration member = 
@@ -109,16 +117,34 @@ public class SelfReferenceVisitor extends Visitor {
      * type declaration, from within the initializer section
      * of the type declaration?
      */
-    private boolean isValueConstructor(Tree.Primary that, 
+    private boolean isInheritingValueConstructor(Tree.Primary that, 
             Declaration member) {
-        return inInitializer() &&
-                !inCaseTypesList &&
-                member instanceof Value && 
-                isConstructor(member) && 
-                ((TypeDeclaration) member.getContainer())
-                    .inherits(typeDeclaration);
+        if (member instanceof Value) {
+            return inInitializer() &&
+                    !inCaseTypesList &&
+                    isConstructor(member) && 
+                    ((TypeDeclaration) member.getContainer())
+                        .inherits(typeDeclaration);
+        }
+        else {
+            return false;
+        }
     }
 
+    private boolean isInheritingAnonymousClass(Declaration member) {
+        if (member instanceof Value) {
+            Value value = (Value) member;
+            return inInitializer() &&
+                    !inCaseTypesList &&
+                    isObject(value) && 
+                    value.getTypeDeclaration()
+                        .inherits(typeDeclaration);
+        }
+        else {
+            return false;
+        }
+    }
+    
     /**
      * Is this a reference to a member inherited by the
      * type declaration from within the initializer section

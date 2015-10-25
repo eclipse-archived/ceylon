@@ -32,3 +32,21 @@ shared void testAnonymousClassMemberOfGenericClass() {
     Deferred<String>.\Ipromise promise3 = Deferred<String>().promise;
 }
 
+
+class SuperFoobarbaz() {
+    @error print(foobarbaz.hash);
+    @error print(Foobarbaz.foobarbaz.hash);
+}
+
+object foobarbaz extends SuperFoobarbaz() {
+    @error print(foobarbaz.hash);
+    @error print(this.hash);
+    @error print(super.hash);
+}
+
+class Foobarbaz extends SuperFoobarbaz {
+    shared new foobarbaz extends SuperFoobarbaz() {}
+    @error print(foobarbaz.hash);
+    @error print(Foobar.foobarbaz.hash);
+}
+
