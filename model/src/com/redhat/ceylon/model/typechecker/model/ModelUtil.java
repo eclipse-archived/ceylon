@@ -2811,7 +2811,7 @@ public class ModelUtil {
         return header;
     }
     
-    // Check if the Value is part of an object
+    // Check if the Value is part of an object or value constructor
     public static boolean isObject(Value value) {
         Type type = value.getType();
         // Check type because in case of compile errors it can be null
