@@ -2361,7 +2361,7 @@ else {
             <para>The <literal>switch/case/else</literal> conditional has the following 
             form:</para>
             
-            <synopsis>SwitchCaseElse: Switch Case+ DefaultCase?</synopsis>
+            <synopsis>SwitchCaseElse: Switch Case+ Else?</synopsis>
             
             <para>Every <literal>switch</literal> conditional has a
             <literal>switch</literal> clause.</para> 
@@ -2410,8 +2410,6 @@ else {
             </itemizedlist>
             
             <synopsis>Case: "case" CaseCondition Block</synopsis>
-            
-            <synopsis>DefaultCase: "else" Block</synopsis>
             
             <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
             if:</para>
