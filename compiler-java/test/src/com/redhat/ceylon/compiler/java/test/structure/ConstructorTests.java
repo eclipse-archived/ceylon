@@ -198,6 +198,14 @@ public class ConstructorTests extends CompilerTests {
     }
     
     @Test
+    public void testCtorThrow() {
+        compile("constructor/checker.ceylon");
+        compareWithJavaSource("constructor/CtorThrow");
+        //compile("constructor/CtorThrow.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.structure.constructor.ctorThrow");
+    }
+    
+    @Test
     public void testCtorSingletonCtors() {
         compareWithJavaSource("constructor/SingletonCtors");
         //compile("constructor/SingletonCtors.ceylon");

@@ -1,0 +1,275 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow() {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$0: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        }         while (false);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throws_ throws_ = null;
+    
+    public static final class throws_ {
+        
+        private throws_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throws_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$1: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+            throw new .ceylon.language.Exception();
+        }         while (false);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwIfTrue_ throwIfTrue_ = null;
+    
+    public static final class throwIfTrue_ {
+        
+        private throwIfTrue_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwIfTrue_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$2: do {
+            if (true) {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+                throw new .ceylon.language.Exception(null, null);
+            }
+            throw new .java.lang.Error("Ceylon flow error");
+        }         while (false);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwIfFalse_ throwIfFalse_ = null;
+    
+    public static final class throwIfFalse_ {
+        
+        private throwIfFalse_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwIfFalse_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$4: do {
+            if (false) {
+                throw new .ceylon.language.Exception(null, null);
+            }
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        }         while (false);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwWhileTrue_ throwWhileTrue_ = null;
+    
+    public static final class throwWhileTrue_ {
+        
+        private throwWhileTrue_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwWhileTrue_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$6: do {
+            loop_0: while (true) {
+                if (true) {
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+                    throw new .ceylon.language.Exception(null, null);
+                } else {
+                    break loop_0;
+                }
+            }
+            throw new .java.lang.Error("Ceylon flow error");
+        }         while (false);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwWhileFalse_ throwWhileFalse_ = null;
+    
+    public static final class throwWhileFalse_ {
+        
+        private throwWhileFalse_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwWhileFalse_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$7: do {
+            loop_1: while (true) {
+                if (false) {
+                    throw new .ceylon.language.Exception(null, null);
+                } else {
+                    break loop_1;
+                }
+            }
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        }         while (false);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalse_ assertFalse_ = null;
+    
+    public static final class assertFalse_ {
+        
+        private assertFalse_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalse_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$8: do {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        }         while (false);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseIfTrue_ assertFalseIfTrue_ = null;
+    
+    public static final class assertFalseIfTrue_ {
+        
+        private assertFalseIfTrue_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseIfTrue_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$10: do {
+            if (true) {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+            }
+            throw new .java.lang.Error("Ceylon flow error");
+        }         while (false);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseIfFalse_ assertFalseIfFalse_ = null;
+    
+    public static final class assertFalseIfFalse_ {
+        
+        private assertFalseIfFalse_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseIfFalse_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$13: do {
+            if (false) {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+            }
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        }         while (false);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseFor_ assertFalseFor_ = null;
+    
+    public static final class assertFalseFor_ {
+        
+        private assertFalseFor_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseFor_ $name$) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        $return$$16: do {
+            .java.lang.Object elem$17;
+            .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$18 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).iterator();
+            loop_2: while (!((elem$17 = x$iterator$$18.next()) instanceof .ceylon.language.Finished)) {
+                final long x = ((.ceylon.language.Integer)elem$17).longValue();
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+            }
+        }         while (false);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class ctorThrow_ {
+    
+    private ctorThrow_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void ctorThrow() {
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow();
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2, 3]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throws_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwIfTrue_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwIfFalse_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2, 3]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwWhileTrue_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.throwWhileFalse_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2, 3]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalse_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseIfTrue_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseIfFalse_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2, 3]");
+        }
+        try {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+            new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseFor_);
+        } catch (final .java.lang.Throwable t) {
+        } finally {
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[1, 2]");
+        }
+    }
+}
