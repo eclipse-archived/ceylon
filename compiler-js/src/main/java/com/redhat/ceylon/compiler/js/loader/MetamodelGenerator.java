@@ -86,6 +86,12 @@ public class MetamodelGenerator {
         model.put("$mod-name", module.getNameAsString());
         model.put("$mod-version", module.getVersion());
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);
+        if (module.isNative()) {
+            List<String> backends = new ArrayList<String>(1);
+            for(Backend backend : module.getNativeBackends())
+                backends.add(backend.nativeAnnotation);
+            model.put("$mod-nat", backends);
+        }
         encodeAnnotations(module.getAnnotations(), module, model);
         if (!module.getImports().isEmpty()) {
             ArrayList<Object> imps = new ArrayList<>(module.getImports().size());
@@ -97,14 +103,20 @@ public class MetamodelGenerator {
                     continue;
                 }
                 String impath = String.format("%s/%s", mi.getModule().getNameAsString(), mi.getModule().getVersion());
-                if (mi.isOptional() || mi.isExport()) {
+                if (mi.isOptional() || mi.isExport() || mi.isNative()) {
                     Map<String,Object> optimp = new HashMap<>(3);
                     optimp.put("path",impath);
                     if (mi.isOptional()) {
-                        optimp.put("opt",1);
+                        optimp.put("opt", 1);
                     }
                     if (mi.isExport()) {
                         optimp.put("exp", 1);
+                    }
+                    if (mi.isNative()) {
+                        List<String> backends = new ArrayList<String>(1);
+                        for(Backend backend : mi.getNativeBackends())
+                            backends.add(backend.nativeAnnotation);
+                        optimp.put("nat", backends);
                     }
                     imps.add(optimp);
                 } else {
