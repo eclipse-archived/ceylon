@@ -682,7 +682,7 @@ public class AnalyzerUtil {
         return sb.toString();
     }
 
-    static boolean isAlwaysSatisfied(Tree.ConditionList cl) {
+    public static boolean isAlwaysSatisfied(Tree.ConditionList cl) {
         if (cl==null) return false;
         for (Tree.Condition c: cl.getConditions()) {
             if (c instanceof Tree.BooleanCondition) {
@@ -709,7 +709,7 @@ public class AnalyzerUtil {
         return true;
     }
 
-    static boolean isNeverSatisfied(Tree.ConditionList cl) {
+    public static boolean isNeverSatisfied(Tree.ConditionList cl) {
         if (cl==null) return false;
         for (Tree.Condition c: cl.getConditions()) {
             if (c instanceof Tree.BooleanCondition) {
@@ -736,7 +736,7 @@ public class AnalyzerUtil {
         return false;
     }
     
-    static boolean isAtLeastOne(Tree.ForClause forClause) {
+    public static boolean isAtLeastOne(Tree.ForClause forClause) {
         Tree.ForIterator fi = forClause.getForIterator();
         if (fi!=null) {
             Tree.SpecifierExpression se = 
