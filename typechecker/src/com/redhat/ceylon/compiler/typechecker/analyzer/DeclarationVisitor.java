@@ -219,8 +219,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         !moduleBackends.none() &&
                         !mbackends.supports(moduleBackends)) {
                     that.addError("native backend name on declaration conflicts with module descriptor: '\"" +
-                            mbackends + "\"' is not '\"" +
-                            moduleBackends + "\"' for '" +
+                            mbackends.names() + "\"' is not '\"" +
+                            moduleBackends.names() + "\"' for '" +
                             name + "'");
                 } else if (!isHeader &&
                         !backends.none() &&

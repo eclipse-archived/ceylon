@@ -361,7 +361,7 @@ public class ModuleVisitor extends Visitor {
                     }
                     if (!moduleBackends.none() && !moduleBackends.supports(bs)) {
                         node.addError("native backend name on import conflicts with module descriptor: '\"" + 
-                                bs + "\"' is not '\"" + moduleBackends + "\"'");
+                                bs + "\"' is not '\"" + moduleBackends.names() + "\"'");
                     }
                 }
                 Module importedModule = 

@@ -366,7 +366,7 @@ public class ModuleValidator {
             } else if (importedModule.isNative() && !bs.supports(importedModule.getNativeBackends())) {
                 node.addError(new ModuleSourceMapper.ModuleDependencyAnalysisError(node, 
                         "native backend name conflicts with imported module: '\"" + 
-                        bs + "\"' is not '\"" + importedModule.getNativeBackends() + "\"'"));
+                        bs + "\"' is not '\"" + importedModule.getNativeBackends().names() + "\"'"));
             }
         }
     }
