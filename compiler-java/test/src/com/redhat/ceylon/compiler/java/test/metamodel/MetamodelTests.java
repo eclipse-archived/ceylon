@@ -116,5 +116,16 @@ public class MetamodelTests extends CompilerTests {
         compile("ConstructorLiterals.ceylon");
         run("com.redhat.ceylon.compiler.java.test.metamodel.constructorLiterals");
     }
+    
+    @Test
+    public void testInteropAnnotations() throws Throwable {
+        compile("annotations/Type.java", 
+                "annotations/Constructor.java",
+                "annotations/TypeConstructor.java",
+                "interopAnnotations.ceylon");
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.metamodel/123", 
+                Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.metamodel::interopAnnotations"));
+        
+    }
 }
 

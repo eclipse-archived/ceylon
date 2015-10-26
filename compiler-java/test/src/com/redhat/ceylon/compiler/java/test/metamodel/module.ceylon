@@ -23,4 +23,6 @@ module com.redhat.ceylon.compiler.java.test.metamodel "123" {
     "Not actually needed, but we want to test ModuleImports"
     deprecated optional import java.base "7";
     import "org.hibernate.javax.persistence:hibernate-jpa-2.1-api" "1.0.0.Final";
+    
+    import javax.inject "1";
 }
