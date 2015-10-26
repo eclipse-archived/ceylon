@@ -2405,6 +2405,10 @@ else {
                     and,</para>
                 </listitem>
                 <listitem>
+                    <para>optionally, a chain of an arbitrary number of child 
+                    <literal>else if</literal> clauses, and/or</para>
+                </listitem>
+                <listitem>
                     <para>optionally, an <literal>else</literal> clause.</para>
                 </listitem>
             </itemizedlist>
@@ -2448,7 +2452,7 @@ else {
             variable or, if there is no inline variable declared by the <literal>switch</literal>, 
             the value referred by the <literal>switch</literal> expression, will be treated 
             by the compiler as having the type <literal>V~U</literal> inside the 
-            <literal>case</literal> block, where <literal>V</literal> is the switched type, 
+            <literal>else</literal> block, where <literal>V</literal> is the switched type, 
             and <literal>U</literal> is the union type formed by the types of the case 
             conditions of the <literal>switch</literal>.</para>
             
