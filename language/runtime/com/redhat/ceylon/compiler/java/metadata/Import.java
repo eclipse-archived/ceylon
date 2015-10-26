@@ -9,4 +9,6 @@ public @interface Import {
 	public boolean optional() default false;
 	public String name() default "";
 	public String version() default "";
+    /** The import native backends. */
+    public String[] nativeBackends() default {};
 }

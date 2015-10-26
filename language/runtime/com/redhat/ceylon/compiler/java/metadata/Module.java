@@ -25,4 +25,6 @@ public @interface Module {
     public String license() default "";
     /** The module dependencies */
     public Import[] dependencies() default {};
+    /** The module native backends. */
+    public String[] nativeBackends() default {};
 }
