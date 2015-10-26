@@ -432,9 +432,11 @@ public class CeylonVisitor extends Visitor {
             }
         }
         
-        //if (!ctorModel.isAbstract()) {
+        ThrowVisitor visitor = new ThrowVisitor();
+        block.visit(visitor);
+        if (!visitor.getDefinitelyReturnsViaThrow()) {
             stmts.addAll(following);
-        //}
+        }
         
         String ctorName = !Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel) : null;
         classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, parameterList, ctorModel, classBuilder, Strategy.generateInstantiator(ctorModel),
