@@ -3,7 +3,7 @@
 This project contains:
 
 * The Ceylon Language Specification, in docbook format.
-* A parser for the language, implemented using ANTLR.
+* A parser for the language, implemented using ANTLR 3.
 * A syntax tree for the language.
 * A type analyzer, implemented in Java.
 
@@ -30,21 +30,27 @@ directory.
 
 Directory structure:
 
-* `en`      - the docbook source of the language 
-              specification
-* `support` - the docbook build
+* `en/modules` - the docbook source of the language 
+                 specification
+* `support`    - the docbook build
 
 ## Build and test the type analyzer
 
-For setting up the development environment and compiling and building the distribution
-take a look at [ceylon-dist](https://github.com/ceylon/ceylon-dist#ceylon-distribution).
+For setting up the development environment and compiling and 
+building the distribution, follow the instructions for
+building the [ceylon-dist][] project.
 
-If after having built the distribution you want to build and test the type analyzer
-return to `ceylon-spec` and run
+[ceylon-dist]: https://github.com/ceylon/ceylon-dist#ceylon-distribution
+
+If after having built the distribution you want to build and 
+test the type analyzer, return to `ceylon-spec/` and run:
 
     ant clean publish
-    
-To run the tests type
+
+This will publish a clean build of the typechecker to the
+local repository `~/.ceylon/repo`.
+
+To run the tests for the type analyzer type:
 
     ant test
 
@@ -58,36 +64,15 @@ Directory structure:
 * `Ceylon.nodes` - the specification of the syntax tree
 * `src/`         - the Java implementation of the type 
                    analyzer 
-* `languagesrc/` - the Ceylon implementation of the 
-                   language module
-* `test`         - the tests for the type analyzer,
-                   written in Ceylon, with a special
+* `test/`        - the tests for the type analyzer, written 
+                   in Ceylon, written using a special 
                    `@assertion` syntax extension
-* `lib/`         - required dependencies for building 
-                   and running the tests
-* `treegen/`     - the ANTLR grammars that generate
-                   the syntax tree
-* `gensrc/`      - the generated Java implementation
-                   of the parser and syntax tree
-
-## Repository
-
-The local repository is created under `~/.ceylon/repo`
-
-To publish the type checker and language module (this
-is required before building the compiler), type:
-
-    ant publish
-
-Other commands:
-
-* `ant clean.repo`              - clean local repository
-* `ant publish.language.module` - publish `ceylon.language` 
-                                  module as `.template` 
-                                  file in the local repo
-* `ant publish.typechecker`     - publish typechecker jar 
-                                  in the local repo
-* `ant publish`                 - publish both
+* `lib/`         - required dependencies for building and 
+                   running the tests
+* `treegen/`     - the ANTLR grammars that generate the 
+                   syntax tree
+* `gensrc/`      - the generated Java implementation of the 
+                   parser and syntax tree
 
 ## License
 
