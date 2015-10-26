@@ -1863,6 +1863,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         module.setMajor(major);
         module.setMinor(minor);
 
+        // no need to load the "nativeBackends" annotation value, it's loaded from annotations
         setAnnotations(module, moduleClass);
         
         List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
@@ -1878,13 +1879,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
                     Boolean exportVal = (Boolean) importAttribute.getValue("export");
 
-                    Backend backend = null; // TODO (String) importAttribute.getValue("native");
+                    List<String> nativeBackends = (List<String>) importAttribute.getValue("nativeBackends");
+                    Backends backends = nativeBackends == null ? Backends.ANY : Backends.fromAnnotations(nativeBackends);
 
                     ModuleImport moduleImport = moduleManager.findImport(module, dependency);
                     if (moduleImport == null) {
                         boolean optional = optionalVal != null && optionalVal;
                         boolean export = exportVal != null && exportVal;
-                        moduleImport = new ModuleImport(dependency, optional, export, backend);
+                        moduleImport = new ModuleImport(dependency, optional, export, backends);
                         module.addImport(moduleImport);
                     }
                 }
