@@ -155,7 +155,11 @@ public class ConfigFinder {
      */
     public CeylonConfig loadSystemConfig() throws IOException {
         File configFile = findSystemConfig();
-        return loadConfigFromFile(configFile);
+        if (configFile != null) {
+            return loadConfigFromFile(configFile);
+        } else {
+            return new CeylonConfig();
+        }
     }
     
     /**
