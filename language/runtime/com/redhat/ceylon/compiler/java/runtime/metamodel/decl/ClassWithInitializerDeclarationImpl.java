@@ -95,5 +95,21 @@ public class ClassWithInitializerDeclarationImpl
     public ceylon.language.meta.declaration.FunctionOrValueDeclaration getParameterDeclaration(@Name("name") String name){
         return super.getParameterDeclaration(name);
     }
-
+    
+    @Override
+    @Ignore
+    public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
+        java.lang.reflect.Constructor<?> ctor = Metamodel.getJavaConstructor((com.redhat.ceylon.model.typechecker.model.Class)declaration, null);
+        java.lang.annotation.Annotation[] classAnnos = super.$getJavaAnnotations$();
+        java.lang.annotation.Annotation[] ctorAnnos;
+        if (ctor != null) {
+            ctorAnnos = ctor.getAnnotations();
+        } else {
+            ctorAnnos = new java.lang.annotation.Annotation[0];
+        }
+        java.lang.annotation.Annotation[] result = new java.lang.annotation.Annotation[classAnnos.length + ctorAnnos.length];
+        System.arraycopy(classAnnos, 0, result, 0, classAnnos.length);
+        System.arraycopy(ctorAnnos, 0, result, classAnnos.length, ctorAnnos.length);
+        return result;
+    }
 }

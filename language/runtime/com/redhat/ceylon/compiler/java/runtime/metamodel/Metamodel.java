@@ -749,7 +749,7 @@ public class Metamodel {
                 return ctor;
             }
         }
-        throw Metamodel.newModelError("Unsupported declaration type: " + clazz);
+        return null;
     }
     
     public static java.lang.reflect.Method getJavaInstantiator(com.redhat.ceylon.model.typechecker.model.Constructor declaration, String methodName) {
