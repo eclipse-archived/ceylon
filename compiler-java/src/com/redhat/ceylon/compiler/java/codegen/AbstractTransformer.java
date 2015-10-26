@@ -45,6 +45,7 @@ import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -2995,6 +2996,9 @@ public abstract class AbstractTransformer implements Transformation {
                 JCExpression exported = make().Assign(naming.makeUnquotedIdent("optional"), make().Literal(true));
                 spec = spec.append(exported);
             }
+            JCExpression nativeBackendsAnnotationValue = makeNativeBackendsAnnotationValue(dependency.getNativeBackends());
+            if(nativeBackendsAnnotationValue != null)
+                spec = spec.append(nativeBackendsAnnotationValue);
             
             JCAnnotation atImport = make().Annotation(makeIdent(syms().ceylonAtImportType), spec);
             imports.add(atImport);
@@ -3005,7 +3009,22 @@ public abstract class AbstractTransformer implements Transformation {
         annotationArgs.add(make().Assign(naming.makeUnquotedIdent("version"), make().Literal(module.getVersion())));
         annotationArgs.add(make().Assign(naming.makeUnquotedIdent("dependencies"),
                 make().NewArray(null, null, imports.toList())));
+        JCExpression nativeBackendsAnnotationValue = makeNativeBackendsAnnotationValue(module.getNativeBackends());
+        if(nativeBackendsAnnotationValue != null)
+            annotationArgs.add(nativeBackendsAnnotationValue);
         return makeModelAnnotation(syms().ceylonAtModuleType, annotationArgs.toList());
+    }
+
+    private JCExpression makeNativeBackendsAnnotationValue(Backends backends) {
+        if (!backends.none()) {
+            ListBuffer<JCExpression> nativeBackendArray = new ListBuffer<>();
+            for(Backend backend : backends){
+                nativeBackendArray.append(make().Literal(backend.nativeAnnotation));
+            }
+            return make().Assign(naming.makeUnquotedIdent("nativeBackends"),
+                    make().NewArray(null, null, nativeBackendArray.toList()));
+        }
+        return null;
     }
 
     List<JCAnnotation> makeAtPackage(Package pkg) {
