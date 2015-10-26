@@ -4954,70 +4954,115 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         throw new ModelResolutionException("Failed to look up given type in language module while bootstrapping: "+name);
     }
 
-    public void removeDeclarations(List<Declaration> declarations)  {
+    public ClassMirror[] getClassMirrorsToRemove(com.redhat.ceylon.model.typechecker.model.Declaration declaration) {
+        if(declaration instanceof LazyClass){
+           return new ClassMirror[] { ((LazyClass) declaration).classMirror };
+        }
+        if(declaration instanceof LazyInterface){
+            LazyInterface lazyInterface = (LazyInterface) declaration;
+            if (lazyInterface.companionClass != null) {
+                return new ClassMirror[] { lazyInterface.classMirror, lazyInterface.companionClass };
+            } else {
+                return new ClassMirror[] { lazyInterface.classMirror };
+            }
+        }
+        if(declaration instanceof LazyFunction){
+            return new ClassMirror[] { ((LazyFunction) declaration).classMirror };
+        }
+        if(declaration instanceof LazyValue){
+            return new ClassMirror[] { ((LazyValue) declaration).classMirror };
+        }
+        if (declaration instanceof LazyClassAlias) {
+            return new ClassMirror[] { ((LazyClassAlias) declaration).classMirror };
+        }
+        if (declaration instanceof LazyInterfaceAlias) {
+            return new ClassMirror[] { ((LazyInterfaceAlias) declaration).classMirror };
+        }
+        if (declaration instanceof LazyTypeAlias) {
+            return new ClassMirror[] { ((LazyTypeAlias) declaration).classMirror };
+        }
+        return new ClassMirror[0];
+    }
+    
+    public void removeDeclarations(List<Declaration> declarations) {
         synchronized(getLock()){
+            Set<String> qualifiedNames = new HashSet<>(declarations.size() * 2);
+            
             // keep in sync with getOrCreateDeclaration
             for (Declaration decl : declarations) {
                 try {
-                    StringBuilder fqnBuilder = new StringBuilder(decl.getNameAsString());
-                    Scope scope = decl.getContainer();
-                    while(scope instanceof Declaration) {
-                        String prefix;
-                        Declaration scopeDecl = (Declaration) scope;
-                        if (scope instanceof LazyInterface
-                                && ((LazyInterface)scopeDecl).isCeylon()) {
-                            prefix = ((LazyInterface)scopeDecl).companionClass.getName();
-                        } else {
-                            prefix = scopeDecl.getNameAsString();
-                        }
-                        fqnBuilder.insert(0, '.').insert(0, prefix);
-                        scope = scope.getContainer();
-                    }
-                    if (scope instanceof Package
-                            && ! scope.getQualifiedNameString().isEmpty()) {
-                        fqnBuilder.insert(0, '.').insert(0, scope.getQualifiedNameString());
+                    ClassMirror[] classMirrors = getClassMirrorsToRemove(decl);
+                    if (classMirrors == null || classMirrors.length == 0) {
+                        continue;
                     }
                     
-                    String fqn = fqnBuilder.toString();
-                    Module module = ModelUtil.getModuleContainer(decl.getContainer());
                     Map<String, Declaration> firstCache = null;
                     Map<String, Declaration> secondCache = null;
+//                    String firstCacheName = null;
+//                    String secondCacheName = null;
                     if(decl.isToplevel()){
                         if(JvmBackendUtil.isValue(decl)){
                             firstCache = valueDeclarationsByName;
+//                            firstCacheName = "value declarations cache";
                             TypeDeclaration typeDeclaration = ((Value)decl).getTypeDeclaration();
                             if (typeDeclaration != null) {
                                 if(typeDeclaration.isAnonymous()) {
                                     secondCache = typeDeclarationsByName;
+//                                    secondCacheName = "type declarations cache";
                                 }
                             } else {
                                 // The value declaration has probably not been fully loaded yet.
                                 // => still try to clean the second cache also, just in case it is an anonymous object
                                 secondCache = typeDeclarationsByName;
+//                                secondCacheName = "type declarations cache";
                             }
-                        }else if(JvmBackendUtil.isMethod(decl))
+                        }else if(JvmBackendUtil.isMethod(decl)) {
                             firstCache = valueDeclarationsByName;
+//                            firstCacheName = "value declarations cache";
+                        }
                     }
                     if(decl instanceof ClassOrInterface){
                         firstCache = typeDeclarationsByName;
+//                        firstCacheName = "type declarations cache";
                     }
-                    // ignore declarations which we do not cache, like member method/attributes
-                    String key = cacheKeyByModule(module, fqn);
-                    if(firstCache != null) {
-                        firstCache.remove(key);
-                        firstCache.remove(key + "_");
 
-                        if(secondCache != null) {
-                            secondCache.remove(key);
-                            secondCache.remove(key + "_");
+                    Module module = ModelUtil.getModuleContainer(decl.getContainer());
+                    // ignore declarations which we do not cache, like member method/attributes
+
+                    for (ClassMirror classMirror : classMirrors) {
+                        qualifiedNames.add(classMirror.getQualifiedName());
+                        String key = classMirror.getCacheKey(module);
+
+//                        String notRemovedMessageFromFirstCache = "No non-null declaration removed from the " + firstCacheName + " for key :" + key;
+//                        String notRemovedMessageFromSecondCache = "No non-null declaration removed from the " + secondCacheName + " for key :" + key;
+                        if(firstCache != null) {
+                            if (firstCache.remove(key) == null) {
+//                                System.out.println(notRemovedMessageFromFirstCache);
+                            }
+
+                            if(secondCache != null) {
+                                if (secondCache.remove(key) == null) {
+//                                    System.out.println(notRemovedMessageFromSecondCache);
+                                }
+                            }
                         }
                     }
-
-                    classMirrorCache.remove(key);
-                    classMirrorCache.remove(key + "_");
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
+            }
+            
+            List<String> keysToRemove = new ArrayList<>(qualifiedNames.size());
+            for (Map.Entry<String, ClassMirror> entry : classMirrorCache.entrySet()) {
+                ClassMirror mirror = entry.getValue();
+                if (mirror == null 
+                        || qualifiedNames.contains(mirror.getQualifiedName())) {
+                    keysToRemove.add(entry.getKey());
+                }
+            }
+
+            for (String keyToRemove : keysToRemove) {
+                classMirrorCache.remove(keyToRemove);
             }
         }
     }
