@@ -169,7 +169,7 @@ public class ModuleDoc extends CeylonDoc {
         Backends backends = moduleImport.getNativeBackends();
         if(!backends.none()){
             write(" (");
-            write(backends.toString());
+            write(backends.names());
             write(")");
         }
         close("code");
