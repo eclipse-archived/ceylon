@@ -64,7 +64,6 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String s3;
     
-    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
@@ -72,6 +71,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
         return s3;
     }
     
+    @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     public final void setS3(@.com.redhat.ceylon.compiler.java.metadata.Name("s3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s3) {

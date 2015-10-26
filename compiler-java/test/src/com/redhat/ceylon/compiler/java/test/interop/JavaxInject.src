@@ -122,3 +122,71 @@ final class JavaxInjectScope implements .com.redhat.ceylon.compiler.java.runtime
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaxInjectScope.class);
 }
+final class javaxInjectInjectSetter_ {
+    
+    private javaxInjectInjectSetter_() {
+    }
+    private static .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = "";
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    public static .java.lang.String get_() {
+        if (javaxInjectInjectSetter_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaxInjectInjectSetter\' before it was set");
+        }
+    }
+    
+    public static void set_(final .java.lang.String javaxInjectInjectSetter) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = javaxInjectInjectSetter;
+    }
+}
+final class javaxInjectInjectField_ {
+    
+    private javaxInjectInjectField_() {
+    }
+    private static .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = "";
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    public static .java.lang.String get_() {
+        if (javaxInjectInjectField_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaxInjectInjectField\' before it was set");
+        }
+    }
+    
+    public static void set_(final .java.lang.String javaxInjectInjectField) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = javaxInjectInjectField;
+    }
+}

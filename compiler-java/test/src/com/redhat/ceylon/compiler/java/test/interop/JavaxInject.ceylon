@@ -17,7 +17,9 @@ class JavaxInjectInject {
     inject__FIELD variable String darren = "";
 }
 
+@nomodel
 inject variable String javaxInjectInjectSetter = "";// TODO
+@nomodel
 inject__FIELD variable String javaxInjectInjectField = "";// TODO
 
 @nomodel

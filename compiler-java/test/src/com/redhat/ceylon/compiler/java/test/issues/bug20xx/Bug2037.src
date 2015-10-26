@@ -38,18 +38,18 @@ public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         this.p1 = p1;
         this.p2 = p2;
     }
+    @.javax.annotation.Generated({"by me"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String p2;
     
-    @.javax.annotation.Generated({"by me"})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     private final .java.lang.String getP2$priv$() {
         return p2;
     }
+    @.javax.annotation.Generated({"by me"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String p1;
     
-    @.javax.annotation.Generated({"by me"})
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     private final .java.lang.String getP1$priv$() {
         return p1;
