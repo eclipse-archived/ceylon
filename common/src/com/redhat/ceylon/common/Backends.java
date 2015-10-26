@@ -19,6 +19,8 @@ public class Backends implements Iterable<Backend>, BackendSupport {
     
     public final static Backends ANY = new Backends(Collections.<Backend>emptySet());
     public final static Backends HEADER = fromAnnotation(Backend.Header.nativeAnnotation);
+    public final static Backends JAVA = fromAnnotation(Backend.Java.nativeAnnotation);
+    public final static Backends JS = fromAnnotation(Backend.JavaScript.nativeAnnotation);
     
     Backends(Set<Backend> backends) {
         // We don't allow Backend.None in a set with others
@@ -138,8 +140,7 @@ public class Backends implements Iterable<Backend>, BackendSupport {
         }
     }
 
-    @Override
-    public String toString() {
+    public String names() {
         StringBuilder str = new StringBuilder();
         for (Backend b : backends) {
             if (str.length() > 0) {
@@ -148,5 +149,10 @@ public class Backends implements Iterable<Backend>, BackendSupport {
             str.append(b.nativeAnnotation);
         }
         return str.toString();
+    }
+
+    @Override
+    public String toString() {
+        return backends.toString();
     }
 }
