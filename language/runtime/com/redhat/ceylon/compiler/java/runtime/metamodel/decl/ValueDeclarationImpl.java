@@ -1,7 +1,10 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel.decl;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -231,12 +235,28 @@ public class ValueDeclarationImpl
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
+        ArrayList<java.lang.annotation.Annotation> result = new ArrayList<>();
         if(javaClass != null){
             // FIXME: pretty sure this doesn't work with interop and fields
             Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
             if (declaredGetter != null) {
-                return declaredGetter.getAnnotations();
+                result.addAll(Arrays.asList(declaredGetter.getAnnotations()));
             }
+            if (!((Value)declaration).isTransient()) {
+                // TODO only include those which are java annotations 
+                Field field  = Reflection.getDeclaredField(javaClass, declaration.getName());
+                if (field != null) {
+                    Annotation[] fieldAnnos = field.getAnnotations();
+                    result.addAll(Arrays.asList(fieldAnnos));
+                }
+                
+                Method setter = Reflection.getDeclaredSetter(javaClass, NamingBase.getSetterName(declaration.getName()));
+                if (setter != null) { 
+                    Annotation[] setterAnnos = setter.getAnnotations();
+                    result.addAll(Arrays.asList(setterAnnos));
+                }
+            }
+        
         }
         // one last chance
         if(parameter != null
@@ -266,10 +286,10 @@ public class ValueDeclarationImpl
                 throw Metamodel.newModelError("Parameter "+parameter+" not found in container "+parameter.getModel().getContainer());
             if(index >= parameterAnnotations.length)
                 throw Metamodel.newModelError("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getModel().getContainer());
-            return parameterAnnotations[index];
+            result.addAll(Arrays.asList(parameterAnnotations[index]));
         }
         // nope
-        return new Annotation[0];
+        return result.toArray(new java.lang.annotation.Annotation[result.size()]);
     }
     
     @Override

@@ -82,6 +82,17 @@ public class Reflection {
         }
         return null;
     }
+    
+    public static java.lang.reflect.Field getDeclaredField(Class<?> cls, String fieldName) {
+        for (java.lang.reflect.Field field : cls.getDeclaredFields()) {
+            if (field.getName().equals(fieldName)
+                    && !field.isSynthetic()) {
+                field.setAccessible(true);
+                return field;
+            }
+        }
+        return null;
+    }
 
     public static java.lang.reflect.Method findClassAliasInstantiator(Class<?> javaClass, ClassAlias container) {
         Class<?> searchClass;
