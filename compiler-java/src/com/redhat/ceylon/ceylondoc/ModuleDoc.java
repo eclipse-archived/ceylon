@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.redhat.ceylon.ceylondoc.Util.ModuleImportComparatorByName;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
@@ -87,10 +88,24 @@ public class ModuleDoc extends CeylonDoc {
         around("div class='doc section'", doc);
 
         writeAnnotations(module);
+        writePlatform(module);
         writeBy(module);
         writeLicense(module);
 
         close("div");
+    }
+
+    private void writePlatform(Module module) throws IOException {
+        if(module.isNative()) {
+            List<String> backendNames = new ArrayList<String>();
+            for(Backend backend : module.getNativeBackends()) {
+                backendNames.add(backend.name);
+            }
+            open("div class='platform section'");
+            around("span class='title'", "Platform: ");
+            around("span class='value'", Util.join(", ", backendNames));
+            close("div");
+        }
     }
 
     private void writeLicense(Module module) throws IOException {
