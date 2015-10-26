@@ -2567,46 +2567,45 @@ caseExpressions returns [SwitchCaseList switchCaseList]
     : { $switchCaseList = new SwitchCaseList(null); }
       (
         caseExpression
-        { $switchCaseList.addCaseClause($caseExpression.clause); }
+        { $switchCaseList.addCaseClause($caseExpression.caseClause); }
       )+
       (
-        defaultCaseExpression
-        { $switchCaseList.setElseClause($defaultCaseExpression.clause); }
+        elseExpression
+        { $switchCaseList.setElseClause($elseExpression.elseClause); }
       )?
     ;
     
-caseExpression returns [CaseClause clause]
+caseExpression returns [CaseClause caseClause]
     : CASE_CLAUSE 
-      { $clause = new CaseClause($CASE_CLAUSE); }
+      { $caseClause = new CaseClause($CASE_CLAUSE); }
       caseItemList
-      { $clause.setCaseItem($caseItemList.item); }
+      { $caseClause.setCaseItem($caseItemList.item); }
       conditionalBranch
-      { $clause.setExpression($conditionalBranch.expression); }
+      { $caseClause.setExpression($conditionalBranch.expression); }
     ;
 
-defaultCaseExpression returns [ElseClause clause]
+elseExpression returns [ElseClause elseClause]
     : ELSE_CLAUSE 
-      { $clause = new ElseClause($ELSE_CLAUSE); }
+      { $elseClause = new ElseClause($ELSE_CLAUSE); }
       conditionalBranch
-      { $clause.setExpression($conditionalBranch.expression); }
+      { $elseClause.setExpression($conditionalBranch.expression); }
     ;
 
 ifExpression returns [IfExpression term]
     : IF_CLAUSE
-      { $term = new IfExpression($IF_CLAUSE); }
-      thenElseClauses
-      { IfClause ic = $thenElseClauses.ifClause;
-        ElseClause ec = $thenElseClauses.elseClause;
-        ConditionList cl = $thenElseClauses.conditionList;
-        $term.setIfClause(ic);
+      { $term = new IfExpression($IF_CLAUSE); 
+        $term.setIfClause(new IfClause(null)); }
+      conditions
+      { $term.getIfClause().setConditionList($conditions.conditionList); }
+      thenExpression
+      { IfClause ic = $thenExpression.ifClause;
+        $term.setIfClause(ic); 
+        ic.setConditionList($conditions.conditionList); }
+      elseExpression
+      { ElseClause ec = $elseExpression.elseClause;
         $term.setElseClause(ec);
+        ConditionList cl = $conditions.conditionList;
         if (cl!=null) {
-          if (ic==null) {
-            ic = new IfClause(null);
-            $term.setIfClause(ic);
-          }
-          ic.setConditionList(cl); 
-          if (cl!=null) {
             List<Condition> conditions = cl.getConditions();
             if (conditions.size()==1) {
               Condition c = conditions.get(0);
@@ -2642,7 +2641,6 @@ ifExpression returns [IfExpression term]
                 ebme.setIdentifier(id);
               }
             }
-          }        
         } 
       }
     ;
@@ -2659,17 +2657,11 @@ conditionalBranch returns [Expression expression]
         $expression.setTerm($disjunctionExpression.term); }
     ;
 
-thenElseClauses returns [IfClause ifClause, ElseClause elseClause, ConditionList conditionList]
-    : conditions
-      { $conditionList = $conditions.conditionList; }
-      THEN_CLAUSE
+thenExpression returns [IfClause ifClause]
+    : THEN_CLAUSE
       { $ifClause = new IfClause($THEN_CLAUSE); }
       cb1=conditionalBranch
       { $ifClause.setExpression($cb1.expression); }
-      ELSE_CLAUSE
-      { $elseClause = new ElseClause($ELSE_CLAUSE); }
-      cb2=conditionalBranch
-      { $elseClause.setExpression($cb2.expression); }
     ;
 
 anonymousFunction returns [FunctionArgument function]
@@ -3933,8 +3925,8 @@ cases returns [SwitchCaseList switchCaseList]
         { $switchCaseList.addCaseClause($caseBlock.clause); }
       )+
       (
-        defaultCaseBlock
-        { $switchCaseList.setElseClause($defaultCaseBlock.clause); }
+        elseBlock
+        { $switchCaseList.setElseClause($elseBlock.clause); }
       )?
     ;
     
@@ -3943,13 +3935,6 @@ caseBlock returns [CaseClause clause]
       { $clause = new CaseClause($CASE_CLAUSE); }
       caseItemList
       { $clause.setCaseItem($caseItemList.item); }
-      block
-      { $clause.setBlock($block.block); }
-    ;
-
-defaultCaseBlock returns [ElseClause clause]
-    : ELSE_CLAUSE 
-      { $clause = new ElseClause($ELSE_CLAUSE); }
       block
       { $clause.setBlock($block.block); }
     ;
