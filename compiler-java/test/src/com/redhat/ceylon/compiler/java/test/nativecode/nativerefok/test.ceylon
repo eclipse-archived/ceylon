@@ -28,6 +28,7 @@ void test1() {
     value x = nativeMethod();
 }
 
+native("jvm")
 void test2() {
     value x = testMethod();
     value y = TestClass();
