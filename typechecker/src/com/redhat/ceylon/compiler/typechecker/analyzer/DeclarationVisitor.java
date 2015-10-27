@@ -10,6 +10,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotati
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationArgument;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationArgumentCount;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationSequenceArgument;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
@@ -2055,15 +2056,25 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         Tree.Annotation na = 
                 getAnnotation(al, "native", unit);
+        Backends backends = Backends.ANY;
         if (na != null) {
-            String backend = getAnnotationArgument(na, "");
-            if (!Backend.isRegisteredBackend(backend)) {
-                na.addError("illegal native backend name: '\"" +
-                        backend +
-                        "\"' (must be either '\"jvm\"' or '\"js\"')");
+            int cnt = getAnnotationArgumentCount(na);
+            if (cnt == 0) {
+                backends = Backends.HEADER;
+            } else {
+                for (int i=0; i<cnt; i++) {
+                    String be = getAnnotationArgument(na, i);
+                    Backend backend = Backend.fromAnnotation(be);
+                    if (!backend.isRegistered()) {
+                        na.addError("illegal native backend name: '\"" +
+                                be +
+                                "\"' (must be either '\"jvm\"' or '\"js\"')");
+                    }
+                    backends = backends.merged(backend);
+                }
             }
-            model.setNativeBackends(Backends.fromAnnotation(backend));
         }
+        model.setNativeBackends(backends);
         if (model.isNative() && model.isFormal()) {
             that.addError("declaration may not be annotated both formal and native");
         }

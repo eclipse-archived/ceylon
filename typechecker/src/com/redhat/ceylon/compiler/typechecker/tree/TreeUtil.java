@@ -59,9 +59,28 @@ public class TreeUtil {
         return null;
     }
 
+
+    public static int getAnnotationArgumentCount(Tree.Annotation ann) {
+        Tree.PositionalArgumentList pal = 
+                ann.getPositionalArgumentList();
+        if (pal!=null) {
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            return args.size();
+        }
+        Tree.NamedArgumentList nal = 
+                ann.getNamedArgumentList();
+        if (nal!=null) {
+            List<Tree.NamedArgument> args = 
+                    nal.getNamedArguments();
+            return args.size();
+        }
+        return 0;
+    }
+    
     public static String getAnnotationArgument(Tree.Annotation ann, 
-            String defaultValue) {
-        String result = defaultValue;
+            int index) {
+        String result = null;
         Tree.Expression expression = null;
         Tree.PositionalArgumentList pal = 
                 ann.getPositionalArgumentList();
@@ -69,7 +88,7 @@ public class TreeUtil {
             List<Tree.PositionalArgument> args = 
                     pal.getPositionalArguments();
             if (!args.isEmpty()) {
-                Tree.PositionalArgument arg = args.get(0);
+                Tree.PositionalArgument arg = args.get(index);
                 if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) arg;
@@ -85,7 +104,7 @@ public class TreeUtil {
             if (!args.isEmpty()) {
                 Tree.SpecifiedArgument arg = 
                         (Tree.SpecifiedArgument)
-                            args.get(0);
+                            args.get(index);
                 expression = 
                         arg.getSpecifierExpression()
                             .getExpression();
@@ -126,9 +145,19 @@ public class TreeUtil {
             Unit unit) {
         Tree.Annotation ann = 
                 getAnnotation(al, "native", unit);
-        String backend = ann == null ? null : 
-            getAnnotationArgument(ann, "");
-        return Backends.fromAnnotation(backend);
+        Backends backends = Backends.ANY;
+        if (ann != null) {
+            int cnt = getAnnotationArgumentCount(ann);
+            if (cnt == 0) {
+                backends = Backends.HEADER;
+            } else {
+                for (int i=0; i<cnt; i++) {
+                    String be = getAnnotationArgument(ann, i);
+                    backends = backends.merged(Backend.fromAnnotation(be));
+                }
+            }
+        }
+        return backends;
     }
     
     public static boolean hasUncheckedNulls(Tree.Term term) {
