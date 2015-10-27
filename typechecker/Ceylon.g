@@ -2599,8 +2599,10 @@ ifExpression returns [IfExpression term]
       { $term.getIfClause().setConditionList($conditions.conditionList); }
       thenExpression
       { IfClause ic = $thenExpression.ifClause;
-        $term.setIfClause(ic); 
-        ic.setConditionList($conditions.conditionList); }
+        if (ic!=null) {
+          $term.setIfClause(ic); 
+          ic.setConditionList($conditions.conditionList); 
+        } }
       elseExpression
       { ElseClause ec = $elseExpression.elseClause;
         $term.setElseClause(ec);
