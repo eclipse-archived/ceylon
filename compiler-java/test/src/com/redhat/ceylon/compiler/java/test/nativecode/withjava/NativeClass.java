@@ -23,7 +23,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 //Compiled from run.ceylon (version 1.7 : 51.0, super bit)
 @com.redhat.ceylon.compiler.java.metadata.Ceylon(major=8)
-@ceylon.language.NativeAnnotation$annotation$(backend="jvm")
+@ceylon.language.NativeAnnotation$annotation$(backends="jvm")
 @ceylon.language.SharedAnnotation$annotation$
 public class NativeClass implements com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
 
