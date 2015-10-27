@@ -589,10 +589,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public Declaration convertToDeclaration(Module module, ClassMirror classMirror, DeclarationType declarationType) {
-        return convertToDeclaration(module, classMirror, declarationType, false);
+        return convertToDeclaration(module, null, classMirror, declarationType);
     }
     
-    private Declaration convertToDeclaration(Module module, ClassMirror classMirror, DeclarationType declarationType, boolean isMember) {
+    private Declaration convertToDeclaration(Module module, Declaration container, ClassMirror classMirror, DeclarationType declarationType) {
         // find its package
         String pkgName = getPackageNameForQualifiedClassName(classMirror);
         if (pkgName.equals("java.lang")) {
@@ -622,10 +622,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         List<Declaration> decls = new ArrayList<Declaration>();
         
-        decl = createDeclaration(module, classMirror, declarationType, decls, isMember);
-        cacheDeclaration(module, classMirror, declarationType, decl, decls);
-
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
+
+        decl = createDeclaration(module, container, classMirror, declarationType, decls);
+        cacheDeclaration(module, classMirror, declarationType, decl, decls);
 
         // find/make its Unit
         Unit unit = getCompiledUnit(pkg, classMirror);
@@ -670,6 +670,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private String unquotePackageName(String pkg) {
         return JvmBackendUtil.removeChar('$', pkg);
+    }
+
+    private Scope getContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {
+        // add it to its package if it's not an inner class
+        if(!classMirror.isInnerClass() && !classMirror.isLocalClass()){
+            return pkg;
+        }else if(classMirror.isLocalClass() && !classMirror.isInnerClass()){
+            // set its container to the package for now, but don't add it to the package as a member because it's not
+            Scope localContainer = getLocalContainer(pkg, classMirror, d);
+            if(localContainer != null){
+                return localContainer;
+            }else{
+                return pkg;
+            }
+        }else if(d instanceof ClassOrInterface || d instanceof TypeAlias){
+            // do overloads later, since their container is their abstract superclass's container and
+            // we have to set that one first
+            if(d instanceof Class == false || !((Class)d).isOverloaded()){
+                ClassOrInterface container = getContainer(pkg.getModule(), classMirror);
+                return container;
+            }
+        }
+        return null;
     }
 
     private void setContainer(ClassMirror classMirror, Declaration d, LazyPackage pkg) {
@@ -1056,8 +1079,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return null;
     }
 
-    private Declaration createDeclaration(Module module, ClassMirror classMirror,
-            DeclarationType declarationType, List<Declaration> decls, boolean isMember) {
+    private Declaration createDeclaration(Module module, Declaration container, ClassMirror classMirror,
+            DeclarationType declarationType, List<Declaration> decls) {
         Declaration decl = null;
         Declaration hdr = null;
         
@@ -1072,7 +1095,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             case ATTRIBUTE:
                 decl = makeToplevelAttribute(classMirror, false);
                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
                     hdr = makeToplevelAttribute(classMirror, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                 }
@@ -1080,7 +1103,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             case METHOD:
                 decl = makeToplevelMethod(classMirror, false);
                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
                     hdr = makeToplevelMethod(classMirror, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                 }
@@ -1090,7 +1113,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 Declaration objectClassDecl = makeLazyClass(classMirror, null, null, false);
                 setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
                 decls.add(objectClassDecl);
-                if (isCeylon && shouldCreateNativeHeader(objectClassDecl, isMember)) {
+                if (isCeylon && shouldCreateNativeHeader(objectClassDecl, container)) {
                     Declaration hdrobj = makeLazyClass(classMirror, null, null, true);
                     setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
                     decls.add(hdrobj);
@@ -1100,7 +1123,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     Declaration objectDecl = makeToplevelAttribute(classMirror, false);
                     setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
                     decls.add(objectDecl);
-                    if (isCeylon && shouldCreateNativeHeader(objectDecl, isMember)) {
+                    if (isCeylon && shouldCreateNativeHeader(objectDecl, container)) {
                         Declaration hdrobj = makeToplevelAttribute(classMirror, true);
                         setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
                         decls.add(hdrobj);
@@ -1128,7 +1151,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             } else {
                                 decl = makeLazyClass(classMirror, null, null, false);
                                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
                                     hdr = makeLazyClass(classMirror, null, null, true);
                                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                                 }
@@ -1144,7 +1167,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
                                     decl = makeLazyClass(classMirror, null, constructor, false);
                                     setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                    if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                                    if (isCeylon && shouldCreateNativeHeader(decl, container)) {
                                         hdr = makeLazyClass(classMirror, null, constructor, true);
                                         setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                                     }
@@ -1154,7 +1177,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             } else {
                                 decl = makeLazyClass(classMirror, null, null, false);
                                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
                                     hdr = makeLazyClass(classMirror, null, null, true);
                                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                                 }
@@ -1164,7 +1187,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         // objects don't need overloading stuff
                         decl = makeLazyClass(classMirror, null, null, false);
                         setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                        if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
                             hdr = makeLazyClass(classMirror, null, null, true);
                             setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                         }
@@ -1172,7 +1195,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         // no visible constructors
                         decl = makeLazyClass(classMirror, null, null, false);
                         setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                        if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
                             hdr = makeLazyClass(classMirror, null, null, true);
                             setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                         }
@@ -1190,7 +1213,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decl = makeLazyInterface(classMirror);
                 }
                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                if (!isAlias && isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                if (!isAlias && isCeylon && shouldCreateNativeHeader(decl, container)) {
                     hdr = makeLazyInterface(classMirror);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                 }
@@ -1229,13 +1252,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return type;
     }
     
-    private boolean shouldCreateNativeHeader(Declaration decl, boolean isMember) {
+    private boolean shouldCreateNativeHeader(Declaration decl, Declaration container) {
         // TODO instead of checking for "shared" we should add an annotation
         // to all declarations that have a native header and check that here
         if (decl.isNativeImplementation() && decl.isShared()) {
-            if (isMember) {
+            if (container != null) {
                 if (!decl.isOverloaded()) {
-                    Declaration container = (Declaration)decl.getContainer();
                     return !container.isNative();
                 }
             } else {
@@ -1581,10 +1603,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public Declaration convertToDeclaration(Module module, String typeName, DeclarationType declarationType)  {
-        return convertToDeclaration(module, typeName, declarationType, false);
+        return convertToDeclaration(module, null, typeName, declarationType);
     }
 
-    private Declaration convertToDeclaration(Module module, String typeName, DeclarationType declarationType, boolean isMember)  {
+    private Declaration convertToDeclaration(Module module, Declaration container, String typeName, DeclarationType declarationType)  {
         synchronized(getLock()){
             // FIXME: this needs to move to the type parser and report warnings
             //This should be done where the TypeInfo annotation is parsed
@@ -1628,7 +1650,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // (well, technically before the ceylon code)
                 if(classMirror.isLoadedFromSource() && !classMirror.isJavaSource())
                     return null;
-                return convertToDeclaration(module, classMirror, declarationType, isMember);
+                return convertToDeclaration(module, container, classMirror, declarationType);
             }finally{
                 timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
@@ -2966,7 +2988,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             + " when trying to load inner class " + name);
                 javaClassName = container.getQualifiedName()+"$"+name;
             }
-            Declaration innerDecl = convertToDeclaration(ModelUtil.getModuleContainer(klass), javaClassName, DeclarationType.TYPE, true);
+            Declaration innerDecl = convertToDeclaration(ModelUtil.getModuleContainer(klass), klass, javaClassName, DeclarationType.TYPE);
             if(innerDecl == null)
                 throw new ModelResolutionException("Failed to load inner type " + javaClassName 
                         + " for outer type " + klass.getQualifiedNameString());
@@ -2994,7 +3016,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(isJDK && !innerClass.isPublic())
                 continue;
             // convert it
-            convertToDeclaration(module, innerClass, DeclarationType.TYPE, true);
+            convertToDeclaration(module, klass, innerClass, DeclarationType.TYPE);
             // no need to set its container as that's now handled by convertToDeclaration
         }
     }
