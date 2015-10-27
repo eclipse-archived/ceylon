@@ -6,6 +6,7 @@ import ceylon.language.meta.model {
 }
 import ceylon.language.meta { type }
 
+import natest { fun661=f }
 import check { check, fail }
 
 shared class Fuera() {
@@ -111,5 +112,10 @@ void issues() {
       check(p543.annotations<AuthorsAnnotation>() nonempty, "#543.2");
     } else {
       fail("WTF #543");
+    }
+    if (nonempty anns661 = `function fun661`.annotations<NativeAnnotation>()) {
+        check(anns661.first.backends.size==2, "native #661");
+    } else {
+        fail("Annotations #661");
     }
 }
