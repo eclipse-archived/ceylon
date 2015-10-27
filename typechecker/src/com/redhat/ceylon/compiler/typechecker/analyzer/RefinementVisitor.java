@@ -785,12 +785,12 @@ public class RefinementVisitor extends Visitor {
                 }
                 if (!member.isActual()) {
                     that.addError(
-                            "non-actual member refines an inherited member: " + 
+                            "non-actual member collides with an inherited member: " + 
                             message(member) + 
                             " refines " + message(refined), 
                             600);
                 }
-                if (!refined.isDefault() && !refined.isFormal()) {
+                else if (!refined.isDefault() && !refined.isFormal()) {
                     that.addError(
                             "member refines a non-default, non-formal member: " + 
                             message(member) + 
