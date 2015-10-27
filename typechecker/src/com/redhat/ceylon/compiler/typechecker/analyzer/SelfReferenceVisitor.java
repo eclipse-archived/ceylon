@@ -79,17 +79,43 @@ public class SelfReferenceVisitor extends Visitor {
                 Declaration container = 
                         (Declaration) 
                         member.getContainer();
-                that.addError("value constructor may not be used in initializer of '" +
-                        typeDeclaration.getName() + 
-                        "': '" + member.getName() + 
-                        "' is a value constructor of '" +
-                        container.getName() + "'");
+                if (member.equals(container)) {
+                    that.addError("value constructor ' " +
+                    		member.getName() +
+                    		"' may not be used in initializer of class '" +
+                            typeDeclaration.getName() + 
+                            "': '" + member.getName() +
+                            "' is a value constructor of '" +
+                            container.getName() + "'");
+                }
+                else {
+                	that.addError("value constructor '" +
+                			member.getName() +
+                			"' may not be used in initializer of superclass '" +
+                			typeDeclaration.getName() + 
+                			"': '" + member.getName() + 
+                			"' is a value constructor of '" +
+                			container.getName() + "', which inherits '" +
+                            typeDeclaration.getName() + "'");
+                }
             }
             else if (isInheritingAnonymousClass(member)) {
-                that.addError("anonymous class may not be used in initializer of '" +
-                        typeDeclaration.getName() + 
-                        "': '" + member.getName() +
-                        "' is an anonymous class");
+            	if (member.equals(typeDeclaration)) {
+            		that.addError("anonymous class '" +
+                    		member.getName() +
+                    		"' may not be used in its own initializer: '" +
+            				member.getName() +
+            				"' is an anonymous class");
+            	}
+            	else {
+                    that.addError("anonymous class '" +
+                    		member.getName() +
+                    		"' may not be used in initializer of superclass '" +
+                            typeDeclaration.getName() + 
+                            "': '" + member.getName() +
+                            "' is an anonymous class that inherits '" +
+                            typeDeclaration.getName() + "'");
+            	}
             }
         }
     }
