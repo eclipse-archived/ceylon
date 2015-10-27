@@ -378,14 +378,19 @@ public class InvocationGenerator {
                         //We don't have a real type so get the one declared in the parameter
                         exprType = pd.getType();
                     }
-                    if (sequencedType == null) {
-                        if (pd == null || pd.getType().getTypeArgumentList().isEmpty()) {
-                            sequencedType = exprType;
-                        } else {
-                            sequencedType= pd.getType().getTypeArgumentList().get(0);
-                        }
+                    Type elemtype;
+                    if (pd == null || pd.getType().getTypeArgumentList().isEmpty()) {
+                        elemtype = exprType;
                     } else {
-                        sequencedType = ModelUtil.unionType(exprType, sequencedType, that.getUnit());
+                        elemtype = pd.getType().getTypeArgumentList().get(0);
+                        if (!elemtype.isTypeParameter()) {
+                            elemtype = exprType;
+                        }
+                    }
+                    if (sequencedType == null) {
+                        sequencedType = elemtype;
+                    } else {
+                        sequencedType = ModelUtil.unionType(elemtype, sequencedType, that.getUnit());
                     }
                     if (!opened) {
                         if (generateVars) {
