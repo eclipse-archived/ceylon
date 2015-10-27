@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastExecutableStatement;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -65,7 +64,9 @@ public class SelfReferenceVisitor extends Visitor {
             that.addError("inherited member class may not be extended in initializer of '" +
                     typeDeclaration.getName() + 
                     "': '" + member.getName() + 
-                    "' is inherited from '" + 
+                    "' is inherited by '" + 
+                    typeDeclaration.getName() +
+                    "' from '" + 
                     container.getName() + "'");
         }
     }
@@ -132,7 +133,9 @@ public class SelfReferenceVisitor extends Visitor {
             that.addError("inherited member may not be used in initializer of '" +
                     typeDeclaration.getName() + 
                     "': '" + member.getName() + 
-                    "' is inherited from '" + 
+                    "' is inherited by '" + 
+                    typeDeclaration.getName() +
+                    "' from '" + 
                     container.getName() + "'");
         }
     }
@@ -160,11 +163,16 @@ public class SelfReferenceVisitor extends Visitor {
     private boolean isInheritingAnonymousClass(Declaration member) {
         if (member instanceof Value) {
             Value value = (Value) member;
-            return inInitializer() &&
-                    !inCaseTypesList &&
-                    isObject(value) && 
-                    value.getTypeDeclaration()
-                        .inherits(typeDeclaration);
+            if (inInitializer() && !inCaseTypesList) {
+            	TypeDeclaration vtd = 
+            			value.getTypeDeclaration();
+            	return vtd!=null &&
+            			vtd.isObjectClass() && 
+            			vtd.inherits(typeDeclaration);
+            }
+            else { 
+            	return false;
+            }
         }
         else {
             return false;
@@ -254,16 +262,17 @@ public class SelfReferenceVisitor extends Visitor {
                             se.getExpression().getTerm();
                     if (directlyInBody() 
                             && term instanceof Tree.Super) {
-                        term.addError("narrows super");
+                        term.addError("narrows 'super': '" + 
+                                typeDeclaration.getName() + "'");
                     }
                     else if (mayNotLeakThis() 
                             && term instanceof Tree.This) {
-                        term.addError("narrows this in initializer: '" + 
+                        term.addError("narrows 'this' in initializer: '" + 
                                 typeDeclaration.getName() + "'");
                     }
                     else if (mayNotLeakOuter() 
                             && term instanceof Tree.Outer) {
-                        term.addError("narrows outer in initializer: '" + 
+                        term.addError("narrows 'outer' in initializer: '" + 
                                 typeDeclaration.getName() + "'");
                     }
                 }
@@ -405,15 +414,15 @@ public class SelfReferenceVisitor extends Visitor {
     private void checkSelfReference(Node that, Tree.Term term) {
         Tree.Term t = eliminateParensAndWidening(term);
         if (directlyInBody() && t instanceof Tree.Super) {
-            that.addError("leaks super reference: '" + 
+            that.addError("leaks 'super' reference: '" + 
                     typeDeclaration.getName() + "'");
         }    
         if (mayNotLeakThis() && t instanceof Tree.This) {
-            that.addError("leaks this reference in initializer: '" + 
+            that.addError("leaks 'this' reference in initializer: '" + 
                     typeDeclaration.getName() + "'");
         }    
         if (mayNotLeakOuter() && t instanceof Tree.Outer) {
-            that.addError("leaks outer reference in initializer: '" + 
+            that.addError("leaks 'outer' reference in initializer: '" + 
                     typeDeclaration.getName() + "'");
         }
         if (typeDeclaration.isObjectClass() && 
@@ -426,7 +435,7 @@ public class SelfReferenceVisitor extends Visitor {
         		TypedDeclaration td = 
         		        (TypedDeclaration) declaration;
                 if (td.getTypeDeclaration()==typeDeclaration) {
-                    that.addError("object leaks self reference in initializer: '" + 
+                    that.addError("anonymous class leaks self reference in initializer: '" + 
                             typeDeclaration.getName() + "'");
         		}
         	}
@@ -442,7 +451,7 @@ public class SelfReferenceVisitor extends Visitor {
         			TypedDeclaration td = 
         			        (TypedDeclaration) declaration;
                     if (td.getTypeDeclaration()==typeDeclaration) {
-        				that.addError("object leaks self reference in initializer: '" + 
+        				that.addError("anonymous class leaks self reference in initializer: '" + 
         						typeDeclaration.getName() + "'");
         			}
         		}
