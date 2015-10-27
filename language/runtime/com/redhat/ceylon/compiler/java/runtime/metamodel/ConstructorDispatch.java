@@ -370,6 +370,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             if (constr.isAnnotationPresent(Jpa.class)) {
                 continue;
             }
+            int numTypeParameters = 0;
             int ii = 0;
             boolean jvmVarargs = MethodHandleUtil.isJvmVarargsMethodOrConstructor(constr);
             Class<?>[] pts = constr.getParameterTypes();
@@ -385,8 +386,16 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
                 }
                 if (TypeDescriptor.class.isAssignableFrom(pt)) {
                     // ignore the type descriptors
+                    numTypeParameters++;
                     ii++;
                     continue;
+                }
+                if (numTypeParameters != -1) {
+                    if (numTypeParameters != ((com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration).getTypeParameters().size()) {
+                        // type parameter's don't match
+                        continue outer;
+                    }
+                    numTypeParameters = -1;
                 }
                 ConstructorName annotation = pt.getAnnotation(ConstructorName.class);
                 if (ctorName != null) {
