@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel.decl;
 
-import java.util.List;
-
 import ceylon.language.DeprecationAnnotation;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
@@ -10,8 +8,6 @@ import ceylon.language.Singleton;
 import ceylon.language.ThrownExceptionAnnotation;
 import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
-import ceylon.language.meta.declaration.ConstructorDeclaration;
-import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.model.Type;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -23,7 +19,6 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Predicates;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Predicates.Predicate;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -51,13 +46,13 @@ public class ClassWithInitializerDeclarationImpl
         return $TypeDescriptor$;
     }
     
-    @TypeInfo("ceylon.language::ConstructorDeclaration[]")
+    @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration[]")
     @Override
     public Sequence<? extends CallableConstructorDeclaration> constructorDeclarations() {
         return new Singleton<CallableConstructorDeclaration>(CallableConstructorDeclaration.$TypeDescriptor$, getDefaultConstructor());
     }
     
-    @TypeInfo("ceylon.language::ConstructorDeclaration[]")
+    @TypeInfo("ceylon.language.meta.declaration::ConstructorDeclaration[]")
     @Override
     public <A extends java.lang.annotation.Annotation> Sequential<? extends CallableConstructorDeclaration> annotatedConstructorDeclarations(TypeDescriptor reified$Annotation) {
         Type<?> at = Metamodel.getAppliedMetamodel(reified$Annotation);
