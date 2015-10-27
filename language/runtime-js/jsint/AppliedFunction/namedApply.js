@@ -19,7 +19,11 @@ function(args) {
         } else if (t.a) {
           var _t2={t:t.t,a:{}};
           for (var k in t.a) {
-            if (typeof(t.a[k])==='string')_t2.a[k]=this.$targs[t.a[k]];
+            if (typeof(t.a[k])==='string') {
+              _t2.a[k]=this.$targs[t.a[k]];
+            } else {
+              _t2.a[k]=t.a[k];
+            }
           }
           t=_t2;
         }
