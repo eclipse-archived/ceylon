@@ -93,6 +93,7 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -107,6 +108,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -9230,6 +9232,8 @@ public class ExpressionVisitor extends Visitor {
                 dec.getUnit()
                     .getPackage()
                     .getModule();
+        Backends decModuleBackends =
+                getModuleBackends(decModule, that.getUnit());
         Backends inBackends = 
                 that.getScope()
                     .getScopedBackends();
@@ -9262,7 +9266,7 @@ public class ExpressionVisitor extends Visitor {
                 && that.getScope() instanceof Declaration
                 && (hdr == null || !isImplemented(hdr))
                 && (ctxModule != decModule
-                        && decModule.isNative()
+                        && !decModuleBackends.none()
                     || ctxModule == decModule
                         && dec.isNative()
                         && hdr == null)
@@ -9271,9 +9275,9 @@ public class ExpressionVisitor extends Visitor {
                         && !isForBackend(
                                 impl.getNativeBackends(), 
                                 inBackends)
-                    || decModule.isNative()
+                    || !decModuleBackends.none()
                         && !isForBackend(
-                                decModule.getNativeBackends(), 
+                                decModuleBackends, 
                                 inBackends))) {
             Declaration d = (Declaration) that.getScope();
             if (!inBackends.none()) {
@@ -9293,6 +9297,24 @@ public class ExpressionVisitor extends Visitor {
         return dec;
     }
     
+    private Backends getModuleBackends(Module decModule, Unit unit) {
+        Backends bs = decModule.getNativeBackends();
+        List<ModuleImport> imports = unit.getPackage().getModule().getImports();
+        for (ModuleImport imp : imports) {
+            if (imp.getModule().equals(decModule)) {
+                if (!imp.getNativeBackends().none()) {
+                    if (bs.none()) {
+                        bs = imp.getNativeBackends();
+                    } else {
+                        bs = bs.supported(imp.getNativeBackends());
+                    }
+                }
+                break;
+            }
+        }
+        return bs;
+    }
+
     private Declaration handleAbstraction(
             Declaration dec, 
             Tree.MemberOrTypeExpression that) {
