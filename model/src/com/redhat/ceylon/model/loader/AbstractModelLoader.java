@@ -1425,10 +1425,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         LazyValue value = new LazyValue(classMirror, this);
 
         AnnotationMirror objectAnnotation = classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION);
-        if(objectAnnotation != null) {
+        if(objectAnnotation == null) {
             manageNativeBackend(value, classMirror);
         } else {
-            manageNativeBackend(value, getValueMethodMirror(value, true));
+            manageNativeBackend(value, getGetterMethodMirror(value, value.classMirror, true));
         }
 
         return value;
@@ -1475,7 +1475,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setFinal(classMirror.isFinal());
         klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
         
-        manageNativeBackend(klass, classMirror);
+        if(objectAnnotation == null) {
+            manageNativeBackend(klass, classMirror);
+        } else {
+            manageNativeBackend(klass, getGetterMethodMirror(klass, klass.classMirror, true));
+        }
         
         return klass;
     }
@@ -3891,7 +3895,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         synchronized(getLock()){
             timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
             try{
-                MethodMirror meth = getValueMethodMirror(value, value.isToplevel());
+                MethodMirror meth = getGetterMethodMirror(value, value.classMirror, value.isToplevel());
                 if(meth == null || meth.getReturnType() == null){
                     value.setType(logModelResolutionError(value.getContainer(), "Error while resolving toplevel attribute "+value.getQualifiedNameString()+": getter method missing"));
                     return;
@@ -3930,7 +3934,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private MethodMirror getValueMethodMirror(LazyValue value, boolean toplevel) {
+    private MethodMirror getGetterMethodMirror(Declaration value, ClassMirror classMirror, boolean toplevel) {
         MethodMirror meth = null;
         String getterName;
         if (toplevel) {
@@ -3939,7 +3943,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else {
             getterName = NamingBase.getGetterName(value);
         }
-        for (MethodMirror m : value.classMirror.getDirectMethods()) {
+        for (MethodMirror m : classMirror.getDirectMethods()) {
             // Do not skip members marked with @Ignore, because the getter is supposed to be ignored
             if (m.getName().equals(getterName)
                     && (!toplevel || m.isStatic()) 
