@@ -120,19 +120,19 @@ shared annotation LateAnnotation late()
         => LateAnnotation();
 
 "The annotation class for the [[native]] annotation."
-shared final sealed annotation class NativeAnnotation(backend)
+shared final sealed annotation class NativeAnnotation(backends)
         satisfies OptionalAnnotation<NativeAnnotation,Annotated> {
     "The compiler backend that this native annotation applies to,
      or the empty string to declare the annotated element is a
      native header."
-    shared String backend;
+    shared String* backends;
 }
 
 "Annotation to mark a member whose implementation is defined 
  in platform-native code."
 shared annotation NativeAnnotation native(
-    String backend = "")
-        => NativeAnnotation(backend);
+    String* backends)
+        => NativeAnnotation(*backends);
 
 /*"The annotation class for [[inherited]]."
 shared final sealed annotation class InheritedAnnotation()
