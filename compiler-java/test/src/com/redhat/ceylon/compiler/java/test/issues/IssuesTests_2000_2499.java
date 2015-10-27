@@ -698,8 +698,16 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     }
     
     @Test
+    public void testBug2388() throws Throwable {
+//        runInJBossModules("test", "test.ceylon.transaction/1.2.0", 
+//                Arrays.asList("--rep", "../ceylon-sdk/modules", "--rep", "../ceylon-sdk/test-deps"));
+        compile("bug23xx/Bug2388Java.java");
+        compareWithJavaSource("bug23xx/Bug2388");
+    }
+
+    @Test
     public void testBug2391() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2391",
-                "bug23xx/Bug2391.ceylon"); 
+                "bug23xx/Bug2391.ceylon");
     }
 }
