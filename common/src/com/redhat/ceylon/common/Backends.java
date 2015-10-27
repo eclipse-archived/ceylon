@@ -153,6 +153,23 @@ public class Backends implements Iterable<Backend>, BackendSupport {
 
     @Override
     public String toString() {
-        return backends.toString();
+        if (none()) {
+            return "<none>";
+        } else if (header()) {
+            return "native";
+        } else {
+            StringBuilder str = new StringBuilder();
+            str.append("native(");
+            for (Backend b : backends) {
+                if (str.length() > 7) {
+                    str.append(", ");
+                }
+                str.append("\"");
+                str.append(b.nativeAnnotation);
+                str.append("\"");
+            }
+            str.append(")");
+            return str.toString();
+        }
     }
 }
