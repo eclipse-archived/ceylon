@@ -1087,19 +1087,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 break;
             case OBJECT:
                 // we first make a class
-                Declaration objectClassDecl = makeLazyClass(classMirror, null, null);
+                Declaration objectClassDecl = makeLazyClass(classMirror, null, null, false);
+                setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
                 decls.add(objectClassDecl);
+                if (isCeylon && shouldCreateNativeHeader(objectClassDecl, isMember)) {
+                    Declaration hdrobj = makeLazyClass(classMirror, null, null, true);
+                    setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
+                    decls.add(hdrobj);
+                }
                 // then we make a value for it, if it's not an inline object expr
                 if(objectClassDecl.isNamed()){
                     Declaration objectDecl = makeToplevelAttribute(classMirror, false);
+                    setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
                     decls.add(objectDecl);
+                    if (isCeylon && shouldCreateNativeHeader(objectDecl, isMember)) {
+                        Declaration hdrobj = makeToplevelAttribute(classMirror, true);
+                        setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
+                        decls.add(hdrobj);
+                    }
                     // which one did we want?
                     decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
-                    setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
                 }else{
                     decl = objectClassDecl;
                 }
-                setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
                 break;
             case CLASS:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
@@ -1116,8 +1126,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             if (hasConstructors == null || !hasConstructors) {
                                 decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                             } else {
-                                decl = makeLazyClass(classMirror, null, null);
+                                decl = makeLazyClass(classMirror, null, null, false);
                                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                                if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                                    hdr = makeLazyClass(classMirror, null, null, true);
+                                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                                }
                             }
                         } else {
                             if (hasConstructors == null || !hasConstructors) {
@@ -1128,24 +1142,40 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 // where the constructor is protected because we want to use an accessor, in this case the class
                                 // visibility is to be used
                                 if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
-                                    decl = makeLazyClass(classMirror, null, constructor);
+                                    decl = makeLazyClass(classMirror, null, constructor, false);
                                     setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                                    if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                                        hdr = makeLazyClass(classMirror, null, constructor, true);
+                                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                                    }
                                 }else{
                                     decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
                                 }
                             } else {
-                                decl = makeLazyClass(classMirror, null, null);
+                                decl = makeLazyClass(classMirror, null, null, false);
                                 setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                                if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                                    hdr = makeLazyClass(classMirror, null, null, true);
+                                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                                }
                             }
                         }
                     } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
                         // objects don't need overloading stuff
-                        decl = makeLazyClass(classMirror, null, null);
+                        decl = makeLazyClass(classMirror, null, null, false);
                         setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                        if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                            hdr = makeLazyClass(classMirror, null, null, true);
+                            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                        }
                     } else {
                         // no visible constructors
-                        decl = makeLazyClass(classMirror, null, null);
+                        decl = makeLazyClass(classMirror, null, null, false);
                         setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                        if (isCeylon && shouldCreateNativeHeader(decl, isMember)) {
+                            hdr = makeLazyClass(classMirror, null, null, true);
+                            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                        }
                     }
                     if (!isCeylon) {
                         setSealedFromConstructorMods(decl, constructors);
@@ -1301,14 +1331,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // If the class has multiple constructors we make a copy of the class
         // for each one (each with it's own single constructor) and make them
         // a subclass of the original
-        Class supercls = makeLazyClass(classMirror, null, null);
+        Class supercls = makeLazyClass(classMirror, null, null, false);
         // the abstraction class gets the class modifiers
         setNonLazyDeclarationProperties(supercls, classMirror, classMirror, classMirror, isCeylon);
         supercls.setAbstraction(true);
         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
         // all filtering is done in getClassConstructors
         for (MethodMirror constructor : constructors) {
-            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor);
+            LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
             // the subclasses class get the constructor modifiers
             setNonLazyDeclarationProperties(subdecl, constructor, constructor, classMirror, isCeylon);
             subdecl.setOverloaded(true);
@@ -1504,7 +1534,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
     
-    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror initOrDefaultConstructor) {
+    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror initOrDefaultConstructor, boolean isNativeHeader) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, initOrDefaultConstructor);
         AnnotationMirror objectAnnotation = classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION);
         if(objectAnnotation != null){
@@ -1537,7 +1567,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setFinal(classMirror.isFinal());
         klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
         
-        manageNativeBackend(klass, classMirror, false);
+        manageNativeBackend(klass, classMirror, isNativeHeader);
         
         return klass;
     }
