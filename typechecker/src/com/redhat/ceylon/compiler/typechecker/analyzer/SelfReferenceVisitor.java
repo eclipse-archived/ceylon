@@ -81,7 +81,7 @@ public class SelfReferenceVisitor extends Visitor {
                         (Declaration) 
                         member.getContainer();
                 if (container.equals(typeDeclaration)) {
-                    that.addError("value constructor ' " +
+                    that.addError("value constructor '" +
                     		member.getName() +
                     		"' may not be used in initializer of class '" +
                             typeDeclaration.getName() + 
