@@ -1177,7 +1177,7 @@ public class TypeUtils {
             anns.addAll(annotations.getAnnotations());
             for (Iterator<Tree.Annotation> iter = anns.iterator(); iter.hasNext();) {
                 final String qn = ((Tree.StaticMemberOrTypeExpression)iter.next().getPrimary()).getDeclaration().getQualifiedNameString();
-                if (qn.startsWith("ceylon.language::") && MetamodelGenerator.annotationBits.contains(qn.substring(17))) {
+                if (!qn.equals("ceylon.language::native") && qn.startsWith("ceylon.language::") && MetamodelGenerator.annotationBits.contains(qn.substring(17))) {
                     iter.remove();
                 }
             }

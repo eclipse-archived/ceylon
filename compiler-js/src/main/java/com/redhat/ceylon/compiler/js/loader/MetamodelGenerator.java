@@ -75,7 +75,8 @@ public class MetamodelGenerator {
     public static final String METATYPE_PARAMETER       = "prm";
     //DO NOT REARRANGE, only append
     public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default",
-            "sealed", "final", "native", "late", "abstract", "annotation", "variable", "serializable");
+            "sealed", "final", "native", "late", "abstract", "annotation",
+            "variable", "serializable");
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();
@@ -88,8 +89,9 @@ public class MetamodelGenerator {
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);
         if (module.isNative()) {
             List<String> backends = new ArrayList<String>(1);
-            for(Backend backend : module.getNativeBackends())
+            for(Backend backend : module.getNativeBackends()) {
                 backends.add(backend.nativeAnnotation);
+            }
             model.put("$mod-nat", backends);
         }
         encodeAnnotations(module.getAnnotations(), module, model);
@@ -680,7 +682,7 @@ public class MetamodelGenerator {
         int bits = 0;
         for (Annotation a : annotations) {
             String name = a.getName();
-            int idx = annotationBits.indexOf(name);
+            int idx = "native".equals(name) ? -1 : annotationBits.indexOf(name);
             if (idx >= 0) {
                 bits |= (1 << idx);
             } else if (anns != null) {
