@@ -2737,11 +2737,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (mirror == null)
             return;
         // Set "native" annotation
-        String nativeBackend = getAnnotationStringValue(mirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backend");
-        if (nativeBackend != null) {
+        @SuppressWarnings("unchecked")
+        List<String> nativeBackends = (List<String>)getAnnotationValue(mirror, CEYLON_LANGUAGE_NATIVE_ANNOTATION, "backends");
+        if (nativeBackends != null) {
             if (annotated instanceof Declaration) {
                 Declaration decl = (Declaration)annotated;
-                decl.setNativeBackends(Backends.fromAnnotation(nativeBackend));
+                decl.setNativeBackends(Backends.fromAnnotations(nativeBackends));
                 if (decl.isNativeHeader()) {
                     // FIXME we need to add the native implementations
                     // to this list somehow!!
@@ -2752,7 +2753,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }
             } else if (annotated instanceof Module) {
-                ((Module)annotated).setNativeBackends(Backends.fromAnnotation(nativeBackend));
+                ((Module)annotated).setNativeBackends(Backends.fromAnnotations(nativeBackends));
             }
         } else {
             // Mark native Classes and Interfaces as well, but don't deal with overloads and such

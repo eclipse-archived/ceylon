@@ -22,7 +22,6 @@ public enum LanguageAnnotation {
     FORMAL("formal", 1L<<7, AbstractModelLoader.CEYLON_LANGUAGE_FORMAL_ANNOTATION),
     DEFAULT("default", 1L<<8, AbstractModelLoader.CEYLON_LANGUAGE_DEFAULT_ANNOTATION),
     LATE("late", 1L<<9, AbstractModelLoader.CEYLON_LANGUAGE_LATE_ANNOTATION),
-    NATIVE("native", 1L<<10, AbstractModelLoader.CEYLON_LANGUAGE_NATIVE_ANNOTATION),
     OPTIONAL("optional", 1L<<11, AbstractModelLoader.CEYLON_LANGUAGE_OPTIONAL_ANNOTATION),
     SERIALIZABLE("serializable", 1L<<12, AbstractModelLoader.CEYLON_LANGUAGE_SERIALIZABLE_ANNOTATION),
 
@@ -56,6 +55,19 @@ public enum LanguageAnnotation {
             List<String> authors = (List<String>)mirror.getValue("authors");
             for (String author : authors) {
                 anno.addPositionalArgment(author);
+            }
+            return Collections.singletonList(anno);
+        }
+    },
+    NATIVE("native", 0, AbstractModelLoader.CEYLON_LANGUAGE_NATIVE_ANNOTATION) {
+        public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
+            Annotation anno = new Annotation(name);
+            @SuppressWarnings("unchecked")
+            List<String> backends = (List<String>)mirror.getValue("backends");
+            if (backends != null) {
+                for (String backend : backends) {
+                    anno.addPositionalArgment(backend);
+                }
             }
             return Collections.singletonList(anno);
         }
