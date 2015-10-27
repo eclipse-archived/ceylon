@@ -18,10 +18,11 @@
  * MA  02110-1301, USA.
  */
 abstract shared class Bug1509() {
-    shared {Bug1509+} allFoo = [bug1509];
+    shared {Bug1509+} allFoo = [bug1509b];
 }
-
 object bug1509 extends Bug1509(){}
+Bug1509 bug1509b => bug1509;
+
 Integer bug1509_2 = (function (){ throw Bug1509Exception("Hah"); })();
 
 class Bug1509Exception(String desc) extends Exception(desc){}
