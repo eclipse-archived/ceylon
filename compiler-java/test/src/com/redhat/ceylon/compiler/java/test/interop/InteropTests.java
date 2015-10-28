@@ -590,4 +590,9 @@ public class InteropTests extends CompilerTests {
     public void testIopSerializableAssignable() throws Throwable{
         compile("SerializableAssignable.ceylon");
     }
+    
+    @Test
+    public void testIopBug2397() throws Throwable{
+        compareWithJavaSource("Bug2397");
+    }
 }
