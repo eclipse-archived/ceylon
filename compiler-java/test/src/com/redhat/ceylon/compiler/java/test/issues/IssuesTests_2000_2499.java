@@ -703,6 +703,9 @@ public class IssuesTests_2000_2499 extends CompilerTests {
 //                Arrays.asList("--rep", "../ceylon-sdk/modules", "--rep", "../ceylon-sdk/test-deps"));
         compile("bug23xx/Bug2388Java.java");
         compareWithJavaSource("bug23xx/Bug2388");
+        compile("bug23xx/Bug2388b.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2388b");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2388c");
     }
 
     @Test
