@@ -2212,6 +2212,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void complete(ClassOrInterface klass, ClassMirror classMirror) {
         boolean isFromJDK = isFromJDK(classMirror);
         boolean isCeylon = (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null);
+        boolean isNativeHeaderMember = klass.isNativeHeader();
         
         // now that everything has containers, do the inner classes
         if(klass instanceof Class == false || !((Class)klass).isOverloaded()){
@@ -2244,11 +2245,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // When for each value constructor getter we can add a Value+Constructor
                 if (ctorMirror == null) {
                     // Only add a Constructor using the getter if we couldn't find a matching java constructor
-                    c = addConstructor((Class)klass, classMirror, ctor, false);
+                    c = addConstructor((Class)klass, classMirror, ctor, isNativeHeaderMember);
                 } else {
-                    c = addConstructor((Class)klass, classMirror, ctorMirror, false);
+                    c = addConstructor((Class)klass, classMirror, ctorMirror, isNativeHeaderMember);
                 }
-                addConstructorMethorOrValue((Class)klass, classMirror, ctor, c, false);
+                addConstructorMethorOrValue((Class)klass, classMirror, ctor, c, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(c, klass)) {
                     Constructor hdr;
                     if (ctorMirror == null) {
@@ -2264,8 +2265,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             // Everything left must be a callable constructor, so add Function+Constructor
             for (MethodMirror ctorMirror : m.values()) {
-                Constructor c = addConstructor((Class)klass, classMirror, ctorMirror, false);
-                addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, c, false);
+                Constructor c = addConstructor((Class)klass, classMirror, ctorMirror, isNativeHeaderMember);
+                addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, c, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(c, klass)) {
                     Constructor hdr = addConstructor((Class)klass, classMirror, ctorMirror, true);
                     addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, hdr, true);
@@ -2347,7 +2348,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(isHashAttribute(getterMethod)) {
                     // ERASURE
                     // Un-erasing 'hash' attribute from 'hashCode' method
-                    Declaration decl = addValue(klass, getterMethod, "hash", isCeylon, false);
+                    Declaration decl = addValue(klass, getterMethod, "hash", isCeylon, isNativeHeaderMember);
                     if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
                         Declaration hdr = addValue(klass, getterMethod, "hash", true, true);
                         setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
@@ -2364,7 +2365,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(isStringAttribute(getterMethod)) {
                     // ERASURE
                     // Un-erasing 'string' attribute from 'toString' method
-                    Declaration decl = addValue(klass, getterMethod, "string", isCeylon, false);
+                    Declaration decl = addValue(klass, getterMethod, "string", isCeylon, isNativeHeaderMember);
                     if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
                         Declaration hdr = addValue(klass, getterMethod, "string", true, true);
                         setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
@@ -2384,7 +2385,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // FTW!
                 MethodMirror getterMethod = getterList.get(0);
                 // simple attribute
-                Declaration decl = addValue(klass, getterMethod, propertyName, isCeylon, false);
+                Declaration decl = addValue(klass, getterMethod, propertyName, isCeylon, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
                     Declaration hdr = addValue(klass, getterMethod, propertyName, true, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
@@ -2434,7 +2435,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     if(bestGetter != null){
                         // got it!
                         // simple attribute
-                        Declaration decl = addValue(klass, bestGetter, propertyName, isCeylon, false);
+                        Declaration decl = addValue(klass, bestGetter, propertyName, isCeylon, isNativeHeaderMember);
                         if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
                             Declaration hdr = addValue(klass, bestGetter, propertyName, true, true);
                             setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
@@ -2471,7 +2472,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         bestGetter = getMethod;
                     }
                     // simple attribute
-                    Declaration decl = addValue(klass, bestGetter, propertyName, isCeylon, false);
+                    Declaration decl = addValue(klass, bestGetter, propertyName, isCeylon, isNativeHeaderMember);
                     if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
                         Declaration hdr = addValue(klass, bestGetter, propertyName, true, true);
                         setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
@@ -2508,7 +2509,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     || "string".equals(name)
                     || "hash".equals(name);
             if (!conflicts) {
-                Declaration decl = addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon, false);
+                Declaration decl = addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
                     Declaration hdr = addValue(klass, fieldMirror.getName(), fieldMirror, true, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
@@ -2590,7 +2591,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<Declaration> overloads = null;
             for (MethodMirror methodMirror : methodMirrors) {
                 // normal method
-                Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded, false);
+                Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded, isNativeHeaderMember);
                 if (!isOverloaded && isCeylon && shouldCreateNativeHeader(m, klass)) {
                     Declaration hdr = addMethod(klass, methodMirror, classMirror, true, isOverloaded, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
@@ -2635,7 +2636,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setExtendedType(klass, classMirror);
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
-        setAnnotations(klass, classMirror, klass.isNativeHeader());
+        setAnnotations(klass, classMirror, isNativeHeaderMember);
         
         // local declarations come last, because they need all members to be completed first
         if(!klass.isAlias()){
