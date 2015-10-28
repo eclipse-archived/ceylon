@@ -92,7 +92,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
 
     @Option
-    @Description("Include everything (jvm,js,docs,src) (default: false)")
+    @Description("Include everything (jvm,js,docs,src,scripts) (default: false)")
     public void setAll(boolean all) {
         this.all = all;
     }
