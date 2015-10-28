@@ -1,6 +1,5 @@
 package com.redhat.ceylon.tools.copy;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,13 +62,13 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
 
     @Option
-    @Description("Include modules compiled for the JVM (.car) (default: true)")
+    @Description("Include artifacts compiled for the JVM (.car and .jar) (default: true)")
     public void setJvm(boolean jvm) {
         this.jvm = jvm;
     }
 
     @Option
-    @Description("Include modules compiled for the JSVM (.js) (default: true)")
+    @Description("Include artifacts compiled for JavaScript (.js and -model.js) (default: true)")
     public void setJs(boolean js) {
         this.js = js;
     }
