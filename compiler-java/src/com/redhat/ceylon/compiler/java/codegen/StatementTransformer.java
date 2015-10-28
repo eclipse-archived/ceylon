@@ -2006,7 +2006,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected boolean isIndexedAccessBoxed() {
-            return false;
+            return isOptional(elementType);
         }
     }
     
