@@ -55,10 +55,7 @@ shared class CeylonExamplePluginTool() extends CeylonBaseTool() {
         if (exists v=cwd) {
             print("The current working directory is set to: '``v``'");
         }
-        if (exists v=defines) {
-            print("The following defines were passed: ``v``");
-        }
-        if (!simpleFlag && !stringOption exists && !arguments exists && !verbose exists && !cwd exists && !defines exists) {
+        if (!simpleFlag && !stringOption exists && !arguments exists && !verbose exists && !cwd exists) {
             print("No options or arguments were passed, try typing `ceylon example-plugin --help`");
         }
     }
