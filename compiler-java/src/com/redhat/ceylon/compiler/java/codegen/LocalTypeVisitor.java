@@ -214,11 +214,16 @@ public class LocalTypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SequenceEnumeration that) {
-        String prefix = this.prefix;
-        enterAnonymousClass();
-        super.visit(that);
-        exitAnonymousClass();
-        this.prefix = prefix;
+        if(that.getSequencedArgument() == null){
+            // empty literals do not generate any class
+            super.visit(that);
+        }else{
+            String prefix = this.prefix;
+            enterAnonymousClass();
+            super.visit(that);
+            exitAnonymousClass();
+            this.prefix = prefix;
+        }
     }
 
     @Override
