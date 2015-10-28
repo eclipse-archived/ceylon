@@ -154,18 +154,21 @@ public class ModuleCopycat {
                 }
                 boolean copiedModule = false;
                 if (copyModule) {
-                    List<ArtifactResult> results = srcRepoman.getArtifactResults(context);
-                    int artCnt = 0;
-                    for (ArtifactResult r : results) {
-                        boolean copyArtifact = true;
-                        if (feedback != null) {
-                            copyArtifact = feedback.beforeCopyArtifact(context, r.artifact(), artCnt++, results.size());
+                    for (String suffix : context.getSuffixes()) {
+                        context.setSuffixes(suffix);
+                        List<ArtifactResult> results = srcRepoman.getArtifactResults(context);
+                        int artCnt = 0;
+                        for (ArtifactResult r : results) {
+                            boolean copyArtifact = true;
+                            if (feedback != null) {
+                                copyArtifact = feedback.beforeCopyArtifact(context, r.artifact(), artCnt++, results.size());
+                            }
+                            boolean copied = copyArtifact && copyArtifact(context, r.artifact());
+                            if (feedback != null) {
+                                feedback.afterCopyArtifact(context, r.artifact(), artCnt, results.size(), copied);
+                            }
+                            copiedModule |= copied;
                         }
-                        boolean copied = copyArtifact && copyArtifact(context, r.artifact());
-                        if (feedback != null) {
-                            feedback.afterCopyArtifact(context, r.artifact(), artCnt, results.size(), copied);
-                        }
-                        copiedModule |= copied;
                     }
                 }
                 if (feedback != null) {
