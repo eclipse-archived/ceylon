@@ -4124,7 +4124,7 @@ public abstract class AbstractTransformer implements Transformation {
         /** Make a type test using {@code Util.isBasic()} */
         public R isBasic(JCExpression varExpr);
         /** Make a type test using {@code instanceof} */
-        public R isInstanceof(JCExpression varExpr, Type testedType);
+        public R isInstanceof(JCExpression varExpr, Type testedType, Type expressionType);
         /** Make a type test using {@code Util.isReified()} */
         public R isReified(JCExpression varExpr, Type testedType);
         /** ceylon.language.true_.get().equals(expr) */
@@ -4171,7 +4171,17 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public JCExpression isInstanceof(JCExpression varExpr,
-                Type testedType) {
+                Type testedType, Type expressionType) {
+            TypeDeclaration declaration = testedType.getDeclaration();
+            if (declaration instanceof Class
+                    && expressionType.getDeclaration() instanceof Class
+                    && !testedType.isSubtypeOf(expressionType)) {
+                // things like "Integer e; e instanceof String;" will 
+                // be rejected by java. But can't just return false in this 
+                // case because of weird erasures of things like Error
+                // so upcase to Object before the instanceof to shut javac up.
+                varExpr = make().TypeCast(make().Type(syms().objectType), varExpr);
+            } 
             JCExpression rawTypeExpr = makeJavaType(testedType, JT_NO_PRIMITIVES | JT_RAW | JT_IS);
             return make().TypeTest(varExpr, rawTypeExpr);
         }
@@ -4247,7 +4257,7 @@ public abstract class AbstractTransformer implements Transformation {
 
         @Override
         public Boolean isInstanceof(JCExpression varExpr,
-                Type testedType) {
+                Type testedType, Type expressionType) {
             // instanceof is cheap
             return Boolean.TRUE;
         }
@@ -4375,12 +4385,12 @@ public abstract class AbstractTransformer implements Transformation {
                 return typeTester.isBasic(varExpr);
             } else if (testedType.getDeclaration().getQualifiedNameString().equals("java.lang::Error")){
                 // need to exclude AssertionError
-                return typeTester.andOr(typeTester.isInstanceof(varExpr, testedType), 
-                        typeTester.not(typeTester.isInstanceof(varName.makeIdent(), typeFact().getAssertionErrorDeclaration().getType())), 
+                return typeTester.andOr(typeTester.isInstanceof(varExpr, testedType, expressionType), 
+                        typeTester.not(typeTester.isInstanceof(varName.makeIdent(), typeFact().getAssertionErrorDeclaration().getType(), expressionType)), 
                         JCTree.AND);
             } else if (!hasTypeArguments(testedType)) {
                 // non-generic Class or interface, use instanceof
-                return typeTester.isInstanceof(varExpr, testedType);
+                return typeTester.isInstanceof(varExpr, testedType, expressionType);
             } else {// generic class or interface...
                 if (declaration.getSelfType() != null 
                         && declaration.getSelfType().getDeclaration() instanceof TypeParameter // of TypeArg
@@ -4401,7 +4411,7 @@ public abstract class AbstractTransformer implements Transformation {
                 } 
                 if (canOptimiseReifiedTypeTest(testedType)) {
                     // Use an instanceof
-                    return typeTester.isInstanceof(varExpr, testedType);
+                    return typeTester.isInstanceof(varExpr, testedType, expressionType);
                 } else {
                     // Have to use a reified test
                     if (!Decl.equal(declaration, expressionType.getDeclaration())
@@ -4413,7 +4423,7 @@ public abstract class AbstractTransformer implements Transformation {
                         // in an `assert` we expect the result to be true, so 
                         // instanceof shortcircuit doesn't achieve anything
                         return typeTester.andOr(
-                                typeTester.isInstanceof(varExpr, testedType),
+                                typeTester.isInstanceof(varExpr, testedType, expressionType),
                                 typeTester.isReified(varName.makeIdent(), testedType), JCTree.AND);
                     } else {
                         return typeTester.isReified(varExpr, testedType);
@@ -4458,7 +4468,7 @@ public abstract class AbstractTransformer implements Transformation {
                     Type type = iterator.next();
                     ClassOrInterface c = ((ClassOrInterface)type.resolveAliases().getDeclaration());
                     result = typeTester.andOr(
-                            typeTester.isInstanceof(iterator.hasNext() ? varName.makeIdent() : varExpr, c.getType()),
+                            typeTester.isInstanceof(iterator.hasNext() ? varName.makeIdent() : varExpr, c.getType(), expressionType),
                             result, JCTree.AND);
                 }
                 return result;
