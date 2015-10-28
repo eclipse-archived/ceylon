@@ -57,8 +57,8 @@ public class ModuleCopycat {
     public static interface CopycatFeedback {
         boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws Exception;
         void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws Exception;
-        boolean beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws Exception;
-        void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max, boolean copied) throws Exception;
+        boolean beforeCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max) throws Exception;
+        void afterCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max, boolean copied) throws Exception;
         void notFound(ArtifactContext ac) throws Exception;
     }
     
@@ -159,11 +159,11 @@ public class ModuleCopycat {
                     for (ArtifactResult r : results) {
                         boolean copyArtifact = true;
                         if (feedback != null) {
-                            copyArtifact = feedback.beforeCopyArtifact(context, r.artifact(), artCnt++, results.size());
+                            copyArtifact = feedback.beforeCopyArtifact(context, r, artCnt++, results.size());
                         }
-                        boolean copied = copyArtifact && copyArtifact(context, r.artifact());
+                        boolean copied = copyArtifact && copyArtifact(context, r);
                         if (feedback != null) {
-                            feedback.afterCopyArtifact(context, r.artifact(), artCnt, results.size(), copied);
+                            feedback.afterCopyArtifact(context, r, artCnt, results.size(), copied);
                         }
                         copiedModule |= copied;
                     }
@@ -212,15 +212,15 @@ public class ModuleCopycat {
         return versionMap.values();
     }
     
-    private boolean copyArtifact(ArtifactContext orgac, File archive) throws Exception {
+    private boolean copyArtifact(ArtifactContext orgac, ArtifactResult ar) throws Exception {
         ArtifactContext ac = orgac.copy();
         // Make sure we set the correct suffix for the put
-        String suffix = ArtifactContext.getSuffixFromFilename(archive.getName());
+        String suffix = ArtifactContext.getSuffixFromFilename(ar.artifact().getName());
         ac.setSuffixes(suffix);
         // Store the artifact
-        dstRepoman.putArtifact(ac, archive);
+        dstRepoman.putArtifact(ac, ar.artifact());
         // SHA1 it if required
-        signArtifact(ac, archive);
+        signArtifact(ac, ar.artifact());
         return true;
     }
 
