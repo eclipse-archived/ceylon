@@ -23,6 +23,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 @Summary("Copies modules from one module repository to another")
 @Description("Copies a module or a set of modules from one repository " +
@@ -192,11 +193,6 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             public boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
                 String module = ModuleUtil.makeModuleName(ac.getName(), ac.getVersion());
                 msg("copying.module", module, count+1, max).flush();
-                if (logArtifacts) {
-                    newline().flush();
-                } else {
-                    append(" (");
-                }
                 return true;
             }
             @Override
@@ -206,23 +202,32 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 }
             }
             @Override
-            public boolean beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
+            public boolean beforeCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max) throws IOException {
                 if (logArtifacts) {
-                    append("    ").msg("copying.artifact", archive.getName(), count+1, max).flush();
+                    if (count == 0) {
+                        append(" -- ");
+                        append(ar.repositoryDisplayString());
+                        newline().flush();
+                    }
+                    append("    ").msg("copying.artifact", ar.artifact().getName(), count+1, max).flush();
                 } else {
                     if (count > 0) {
                         append(", ");
+                    } else {
+                        append(" (");
                     }
-                    String name = ArtifactContext.getSuffixFromFilename(archive.getName());
+                    String name = ArtifactContext.getSuffixFromFilename(ar.artifact().getName());
                     if (name.startsWith(".") || name.startsWith("-")) {
                         name = name.substring(1);
+                    } else if ("module-doc".equals(name)) {
+                        name = "doc";
                     }
                     append(name);
                 }
                 return true;
             }
             @Override
-            public void afterCopyArtifact(ArtifactContext ac, File archive, int count, int max, boolean copied) throws IOException {
+            public void afterCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max, boolean copied) throws IOException {
                 if (logArtifacts) {
                     append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
                 }
