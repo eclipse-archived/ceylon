@@ -154,7 +154,8 @@ public class ControlFlowVisitor extends Visitor {
                 name = "'" + name + "'";
             }
             that.addError("does not definitely return: " + 
-                    name + " has branches which do not end in a return statement");
+                    name + " has branches which do not end in a 'return' statement",
+                    12100);
         }
     }
 
