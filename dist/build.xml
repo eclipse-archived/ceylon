@@ -624,6 +624,7 @@ Used with another target such as 'package'">
             <arg value="--out=${ceylon.dist.dir}/repo"/>
             <arg value="--src=${ceylon.language.dir}/src/"/>
             <arg value="--source-code"/>
+            <arg value="--bootstrap-ceylon"/>
             <arg value="ceylon.language"/>
         </exec>
     </target>
