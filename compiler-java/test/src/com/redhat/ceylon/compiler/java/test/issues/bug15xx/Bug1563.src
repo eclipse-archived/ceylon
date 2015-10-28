@@ -21,7 +21,7 @@ final class bug1563_helper_ {
             {
                 .java.lang.Object $ceylontmp$1 = array1;
             }
-            returning $ceylontmp$1 instanceof .ceylon.language.Integer[];
+            returning (.java.lang.Object)$ceylontmp$1 instanceof .ceylon.language.Integer[];
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array1 is ObjectArray<Integer>"));
@@ -32,7 +32,7 @@ final class bug1563_helper_ {
             {
                 .java.lang.Object $ceylontmp$3 = array2;
             }
-            returning $ceylontmp$3 instanceof .ceylon.language.Integer[][];
+            returning (.java.lang.Object)$ceylontmp$3 instanceof .ceylon.language.Integer[][];
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array2 is ObjectArray<ObjectArray<Integer>>"));
@@ -44,7 +44,7 @@ final class bug1563_helper_ {
             {
                 .java.lang.Object $ceylontmp$5 = array4;
             }
-            returning $ceylontmp$5 instanceof .ceylon.language.Integer[];
+            returning (.java.lang.Object)$ceylontmp$5 instanceof .ceylon.language.Integer[];
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array4 is ObjectArray<Integer>"));

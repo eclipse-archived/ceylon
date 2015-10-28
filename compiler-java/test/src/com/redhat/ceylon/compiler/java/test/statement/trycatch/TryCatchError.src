@@ -22,7 +22,7 @@ final class tryCatchError_ {
             try {
                 throw new .ceylon.language.AssertionError("oops");
             } catch (final .java.lang.Error exception$0) {
-                if (exception$0 instanceof .java.lang.Error && !(exception$0 instanceof .ceylon.language.AssertionError)) {
+                if (exception$0 instanceof .java.lang.Error && !((.java.lang.Object)exception$0 instanceof .ceylon.language.AssertionError)) {
                     final .java.lang.Error error = (.java.lang.Error)exception$0;
                     throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), error);
                 } else throw exception$0;
@@ -66,7 +66,7 @@ final class tryCatchError_ {
             try {
                 throw new .ceylon.language.AssertionError("oops");
             } catch (final .java.lang.Error exception$4) {
-                if (exception$4 instanceof .java.lang.Error && !(exception$4 instanceof .ceylon.language.AssertionError)) {
+                if (exception$4 instanceof .java.lang.Error && !((.java.lang.Object)exception$4 instanceof .ceylon.language.AssertionError)) {
                     final .java.lang.Error error = (.java.lang.Error)exception$4;
                     throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), error);
                 } else throw exception$4;
@@ -77,7 +77,7 @@ final class tryCatchError_ {
             try {
                 throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.AssertionErrorSubclass("oops");
             } catch (final .java.lang.Error exception$5) {
-                if (exception$5 instanceof .java.lang.Error && !(exception$5 instanceof .ceylon.language.AssertionError)) {
+                if (exception$5 instanceof .java.lang.Error && !((.java.lang.Object)exception$5 instanceof .ceylon.language.AssertionError)) {
                     final .java.lang.Error error = (.java.lang.Error)exception$5;
                     throw new .ceylon.language.Exception(.ceylon.language.String.instance(""), error);
                 } else throw exception$5;
