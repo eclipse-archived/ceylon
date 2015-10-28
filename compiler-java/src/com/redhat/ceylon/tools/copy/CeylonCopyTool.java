@@ -194,19 +194,30 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 msg("copying.module", module, count+1, max).flush();
                 if (logArtifacts) {
                     newline().flush();
+                } else {
+                    append(" (");
                 }
                 return true;
             }
             @Override
             public void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws IOException {
                 if (!logArtifacts) {
-                    append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
+                    append(") ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
                 }
             }
             @Override
             public boolean beforeCopyArtifact(ArtifactContext ac, File archive, int count, int max) throws IOException {
                 if (logArtifacts) {
                     append("    ").msg("copying.artifact", archive.getName(), count+1, max).flush();
+                } else {
+                    if (count > 0) {
+                        append(", ");
+                    }
+                    String name = ArtifactContext.getSuffixFromFilename(archive.getName());
+                    if (name.startsWith(".") || name.startsWith("-")) {
+                        name = name.substring(1);
+                    }
+                    append(name);
                 }
                 return true;
             }
