@@ -285,7 +285,10 @@ Used with another target such as 'package'">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
         <zip destfile="${basedir}/${dist.name}.zip">
             <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
+                <include name="**" />
                 <exclude name="bin/ceylon*" />
+            </zipfileset>
+            <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
                 <include name="bin/*.plugin" />
             </zipfileset>
             <zipfileset dir="${ceylon.dist.dir}" filemode="755"  prefix="${dist.name}">
