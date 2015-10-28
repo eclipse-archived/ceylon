@@ -34,7 +34,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 To begin, make sure you have:
 
-- the [Java 7 JDK][] and [Ant 1.8+][] installed and that both are working
+- the [Java 7 JDK][] or [Java 8 JDK][] and [Ant 1.8+][] installed and that both are working
 correctly (if you installed Ant using your platform's package manager make
 sure it installed the `ant-junit.jar` as well, which can be found in a package
 named `ant-junit` or `ant-optional` depending on your distribution)
@@ -43,6 +43,7 @@ named `ant-junit` or `ant-optional` depending on your distribution)
 - opened a terminal and changed to the newly created directory
 
 [Java 7 JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[Java 8 JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [Ant 1.8+]: http://ant.apache.org/
 [Git set up]: https://help.github.com/articles/set-up-git
 
@@ -115,25 +116,30 @@ After the build finishes the command line tools will be located in
 the `bin` directory.
 
 - `bin/ceylon`     - The ceylon tool which provides at least the following subcommands:
-    * `new`        - Create a new Ceylon project
+    * `browse`     - Open module documentation in the browser
+    * `classpath`  - Print a classpath suitable for passing to Java tools to run a given Ceylon module
     * `compile`    - Compile a Ceylon program for the Java backend
     * `compile-js` - Compile a Ceylon program for the JavaScript backend
+    * `config`     - Manage Ceylon configuration files
+    * `copy`       - Copy modules from one module repository to another
     * `doc`        - Document a Ceylon program
-    * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
+    * `help`       - Display help about another tool
     * `info`       - Print information about modules in repositories
+    * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
     * `new`        - Generate a new Ceylon project
     * `plugin`     - Package or install command-line plugins
     * `run`        - Run a Ceylon program on the Java VM
     * `run-js`     - Run a Ceylon program on node.js (JavaScript)
     * `src`        - Fetch source archives from a repository and extract them
     * `test`       - Test a Ceylon program on the Java VM
+    * `test-js`    - Test a Ceylon program on node.js (JavaScript)
     * `version`    - Show and update version numbers in module descriptors
-    * `help`       - Displays help about another tool
+    * `war`        - Generate a WAR file from a compiled `.car` file
 
 The API documentation for the language module `ceylon.language` may 
 be found here:
 
-- `repo/ceylon/language/1.1.0/module-doc/api`
+- `repo/ceylon/language/1.2.0/module-doc/api`
 
 ## Running the sample programs
 
@@ -151,7 +157,7 @@ tool:
 ## Ant tasks for Ceylon
 
 We include support for Ceylon ant tasks which are documented at 
-<http://ceylon-lang.org/documentation/1.0/reference/tool/ant/>.
+<http://ceylon-lang.org/documentation/1.2/reference/tool/ant/>.
 
 To run the "hello world" program using ant, type:
 
@@ -171,7 +177,7 @@ Bugs and suggestions may be reported in GitHub's issue tracker.
 ## Systems where Ceylon is known to work
 
 Since Ceylon is running on the JVM it should work on every platform 
-that supports a Java 7 compatible JVM. However we have tested the 
+that supports a Java 7 or 8 compatible JVM. However we have tested the 
 following platforms to make sure it works:
 
 ### Linux
