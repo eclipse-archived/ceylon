@@ -1,8 +1,8 @@
-ceylon-1.1.1 (1.1.1) precise; urgency=low
+ceylon-1.2.0 (1.2.0) precise; urgency=low
 
-  * 1.1.1 release
+  * 1.2.0 release
 
- -- Stephane Epardaud <stephane@ceylon-lang.org>  Wed, 29 Oct 2014 09:42:24 +0200
+ -- Stephane Epardaud <stephane@ceylon-lang.org>  Wed, 28 Oct 2014 09:42:24 +0200
 
 ceylon-1.1.0 (1.1.0) precise; urgency=low
 
