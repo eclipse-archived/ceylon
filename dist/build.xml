@@ -244,7 +244,7 @@ Used with another target such as 'package'">
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
                      copy-licenses, install-runtime-libs, install-language, install-runtime,
-                     add-module-descriptors"
+                     add-module-descriptors, copy-dist-bin"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
@@ -300,6 +300,13 @@ Used with another target such as 'package'">
     
     <target name="setup-repo">
         <mkdir dir="${ceylon.dist.dir}/repo"/>
+    </target>
+
+    <target name="copy-dist-bin">
+        <mkdir dir="${ceylon.dist.dir}/bin"/>
+        <copy todir="${ceylon.dist.dir}/bin">
+            <fileset dir="${basedir}/bin" />
+        </copy>
     </target>
 
     <target name="copy-compiler-binaries">
