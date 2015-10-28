@@ -5191,34 +5191,31 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         continue;
                     }
                     
+                    Scope container = decl.getContainer();
+                    boolean isNativeHeaderMember = container instanceof Declaration 
+                            && ((Declaration) container).isNativeHeader();
+                    
                     Map<String, Declaration> firstCache = null;
                     Map<String, Declaration> secondCache = null;
-//                    String firstCacheName = null;
-//                    String secondCacheName = null;
                     if(decl.isToplevel()){
                         if(JvmBackendUtil.isValue(decl)){
                             firstCache = valueDeclarationsByName;
-//                            firstCacheName = "value declarations cache";
                             TypeDeclaration typeDeclaration = ((Value)decl).getTypeDeclaration();
                             if (typeDeclaration != null) {
                                 if(typeDeclaration.isAnonymous()) {
                                     secondCache = typeDeclarationsByName;
-//                                    secondCacheName = "type declarations cache";
                                 }
                             } else {
                                 // The value declaration has probably not been fully loaded yet.
                                 // => still try to clean the second cache also, just in case it is an anonymous object
                                 secondCache = typeDeclarationsByName;
-//                                secondCacheName = "type declarations cache";
                             }
                         }else if(JvmBackendUtil.isMethod(decl)) {
                             firstCache = valueDeclarationsByName;
-//                            firstCacheName = "value declarations cache";
                         }
                     }
                     if(decl instanceof ClassOrInterface){
                         firstCache = typeDeclarationsByName;
-//                        firstCacheName = "type declarations cache";
                     }
 
                     Module module = ModelUtil.getModuleContainer(decl.getContainer());
@@ -5227,17 +5224,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     for (ClassMirror classMirror : classMirrors) {
                         qualifiedNames.add(classMirror.getQualifiedName());
                         String key = classMirror.getCacheKey(module);
+                        key = isNativeHeaderMember ? key + "$header" : key;
 
-//                        String notRemovedMessageFromFirstCache = "No non-null declaration removed from the " + firstCacheName + " for key :" + key;
-//                        String notRemovedMessageFromSecondCache = "No non-null declaration removed from the " + secondCacheName + " for key :" + key;
                         if(firstCache != null) {
                             if (firstCache.remove(key) == null) {
-//                                System.out.println(notRemovedMessageFromFirstCache);
+                              System.out.println("No non-null declaration removed from the first cache for key : " + key);
                             }
 
                             if(secondCache != null) {
                                 if (secondCache.remove(key) == null) {
-//                                    System.out.println(notRemovedMessageFromSecondCache);
+                                  System.out.println("No non-null declaration removed from the second cache for key : " + key);
                                 }
                             }
                         }
