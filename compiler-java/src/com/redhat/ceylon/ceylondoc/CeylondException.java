@@ -29,8 +29,15 @@ public class CeylondException extends ToolError {
         super(CeylondMessages.msg(msgKey), cause);
     }
 
+    public CeylondException(String msgKey) {
+        super(CeylondMessages.msg(msgKey));
+    }
+
     public CeylondException(String msgKey, Object[] msgArgs, Exception cause) {
         super(CeylondMessages.msg(msgKey, msgArgs), cause);
     }
 
+    public CeylondException(String msgKey, Object[] msgArgs) {
+        super(CeylondMessages.msg(msgKey, msgArgs));
+    }
 }

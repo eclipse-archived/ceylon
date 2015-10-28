@@ -132,7 +132,13 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     @Override
     public void modulesVisited() {
         // this is very important!
-        super.modulesVisited();
+        try{
+            super.modulesVisited();
+        }catch(Exception x){
+            // this can only throw if we're trying to document the language module and it's missing
+            throw new CeylondException("error.languageModuleSourcesMissing", 
+                    tool.getSourceDirs().toArray());
+        }
         for(Module module : getModules().getListOfModules()){
             if(isModuleLoadedFromSource(module.getNameAsString())){
                 addOutputModuleToClassPath(module);

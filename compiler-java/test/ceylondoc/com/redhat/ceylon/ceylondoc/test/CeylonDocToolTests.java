@@ -20,7 +20,9 @@
 package com.redhat.ceylon.ceylondoc.test;
 
 import static com.redhat.ceylon.compiler.typechecker.TypeChecker.LANGUAGE_MODULE_VERSION;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,6 +65,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
+import com.redhat.ceylon.ceylondoc.CeylondException;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -470,6 +473,28 @@ public class CeylonDocToolTests {
         
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "Nothing.type.html");
+    }
+
+    @Test
+    public void ceylonLanguageMissingBootstrap() throws Exception {
+        String moduleName = AbstractModelLoader.CEYLON_LANGUAGE;
+        try{
+            tool("source", moduleName, true, false);
+            fail();
+        }catch(CeylondException x){
+            assertEquals("To generate the ceylon.language module documentation you must set the --bootstrap-ceylon option", x.getMessage());
+        }
+    }
+
+    @Test
+    public void ceylonLanguageMissingSource() throws Exception {
+        String moduleName = AbstractModelLoader.CEYLON_LANGUAGE;
+        try{
+            tool("source", moduleName, true, true);
+            fail();
+        }catch(CeylondException x){
+            assertEquals("Failed to find the language module sources in the specified source paths: source", x.getMessage());
+        }
     }
 
     @Test

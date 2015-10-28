@@ -416,6 +416,9 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         List<String> moduleFilters = new LinkedList<String>();
         for(ModuleSpec spec : modules){
             moduleFilters.add(spec.getName());
+            if(spec.getName().equals(Module.LANGUAGE_MODULE_NAME) && !bootstrapCeylon){
+                throw new CeylondException("error.languageModuleBootstrapOptionMissing");
+            }
         }
         builder.setModuleFilters(moduleFilters);
         String fileEncoding  = getEncoding();
