@@ -2763,25 +2763,31 @@ public class ModelUtil {
         return header;
     }
     
+    public static Declaration getNativeHeader(Scope container, String name) {
+        return getNativeDeclaration(container, name, Backends.HEADER);
+    }
+    
     /**
-     * Find the header with the given name that occurs
-     * directly in the given scope or if that scope is
-     * itself a native implementation first look up
-     * the scope's native header and find the requested
-     * header there.
+     * Find the declaration with the given name and backend
+     * that occurs directly in the given scope or if that
+     * scope is itself native first look up the scope's
+     * proper backend declaration and find the requested
+     * declaration there.
      *  
      * @param scope any scope
      * @param name the name of a declaration
+     * @param backends the backends to obtain
      * 
      * @return the matching declaration
      */
-    public static Declaration getNativeHeader(Scope container, String name) {
+    public static Declaration getNativeDeclaration(Scope container, String name, Backends backends) {
         if (container instanceof Declaration) {
             Declaration cd = (Declaration) container;
-            if (cd.isNativeImplementation()) {
+            if (backends.header() && cd.isNativeImplementation() ||
+                    !backends.header() && cd.isNativeHeader()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
-                Declaration c = getNativeHeader(cd.getContainer(), cd.getName());
+                Declaration c = getNativeDeclaration(cd.getContainer(), cd.getName(), backends);
                 if (c != null) {
                     // Is this the Value part of an object?
                     if (c instanceof Value) {
@@ -2795,20 +2801,20 @@ public class ModelUtil {
                 }
             }
         }
-        // Find the header
-        Declaration header;
+        // Find the declaration
+        Declaration decl;
         if (container instanceof Class && name == null) {
             // Special case for the default constructor
             Class c = (Class) container;
-            header = c.getDefaultConstructorFunctionOrValue();
+            decl = c.getDefaultConstructorFunctionOrValue();
         }
         else {
-            header =
+            decl =
                     container.getDirectMemberForBackend(
                             name,
-                            Backend.Header.asSet());
+                            backends);
         }
-        return header;
+        return decl;
     }
     
     // Check if the Value is part of an object or value constructor
