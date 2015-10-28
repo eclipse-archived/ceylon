@@ -599,7 +599,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             module = getJDKBaseModule();
         }
         
-        Declaration decl = findCachedDeclaration(module, classMirror, declarationType);
+        Declaration decl = findCachedDeclaration(module, container, classMirror, declarationType);
         if (decl != null) {
             return decl;
         }
@@ -625,7 +625,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
         decl = createDeclaration(module, container, classMirror, declarationType, decls);
-        cacheDeclaration(module, classMirror, declarationType, decl, decls);
+        cacheDeclaration(module, container, classMirror, declarationType, decl, decls);
 
         // find/make its Unit
         Unit unit = getCompiledUnit(pkg, classMirror);
@@ -1008,19 +1008,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
-    private Declaration findCachedDeclaration(Module module, ClassMirror classMirror,
-            DeclarationType declarationType) {
+    private Declaration findCachedDeclaration(Module module, Declaration container,
+            ClassMirror classMirror, DeclarationType declarationType) {
         ClassType type = getClassType(classMirror);
         String key = classMirror.getCacheKey(module);
+        boolean isNativeHeaderMember = container != null && container.isNativeHeader();
+        if (isNativeHeaderMember) {
+            key = key + "$header";
+        }
         // see if we already have it
         Map<String, Declaration> declarationCache = getCacheByType(type, declarationType);
         return declarationCache.get(key);
     }
     
-    private void cacheDeclaration(Module module, ClassMirror classMirror,
+    private void cacheDeclaration(Module module, Declaration container, ClassMirror classMirror,
             DeclarationType declarationType, Declaration decl, List<Declaration> decls) {
         ClassType type = getClassType(classMirror);
         String key = classMirror.getCacheKey(module);
+        boolean isNativeHeaderMember = container != null && container.isNativeHeader();
+        if (isNativeHeaderMember) {
+            key = key + "$header";
+        }
         if(type == ClassType.OBJECT){
             typeDeclarationsByName.put(key, getByType(decls, Class.class));
             valueDeclarationsByName.put(key, getByType(decls, Value.class));
@@ -1269,7 +1277,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private void initNativeHeaderMember(Declaration hdr) {
-        Declaration impl = ModelUtil.getNativeDeclaration(hdr, Backend.Java);
+        Declaration impl = ModelUtil.getNativeDeclaration(hdr.getContainer(), hdr.getName(), Backends.JAVA);
         initNativeHeader(hdr, impl);
     }
     
