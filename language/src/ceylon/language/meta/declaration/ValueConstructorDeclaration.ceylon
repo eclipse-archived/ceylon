@@ -26,8 +26,12 @@ shared sealed interface ValueConstructorDeclaration
     "The class this constructor constructs"
     shared actual formal ClassDeclaration container; 
     
+    "Apply the given closed type argument to this toplevel value constructor 
+     to obtain as value constructor model."
     shared formal ValueConstructor<Result> apply<Result=Anything>();
     
+    "Apply the given closed type argument to this member value constructor 
+     to obtain as value constructor model."
     shared formal MemberClassValueConstructor<Container, Result> memberApply
             <Container=Nothing, Result=Anything>
             (Type<Object> containerType);
