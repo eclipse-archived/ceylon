@@ -654,7 +654,7 @@ Used with another target such as 'package'">
                     <arg value="--all-plumbing"/>
                     <arg value="--all-porcelain"/>
                 </exec>
-                <foreach target="generate-tooldoc-man" param="toolfile">
+                <foreach target="generate-tooldoc-man" param="toolfile" inheritall="true">
                     <path>
                         <fileset dir="${ceylon.dist.dir}/doc/en/toolset">
                             <include name="**/*.xml"/>
