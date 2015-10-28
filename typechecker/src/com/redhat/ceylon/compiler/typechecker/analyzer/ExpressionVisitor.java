@@ -2598,16 +2598,31 @@ public class ExpressionVisitor extends Visitor {
             }
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
-                    that.addError("non-void function or getter must return a value: " +
-                            name + " is not a void function");
+                	if (returnDeclaration instanceof Function) {
+	                    that.addError("function must return a value: " +
+	                    		name + " is not a 'void' function", 12000);
+                	}
+                	else {
+	                    that.addError("getter must return a value: " +
+	                            name + " is a getter");
+                	}
                 }
             }
             else {
                 Type et = returnType.getTypeModel();
                 Type at = e.getTypeModel();
                 if (returnType instanceof Tree.VoidModifier) {
-                    that.addError("void function, setter, or class initializer may not return a value: " +
-                            name + " is declared 'void'");
+                	if (returnDeclaration instanceof Function) {
+                        that.addError("function may not return a value: " +
+                                name + " is a 'void' function", 13000);
+                	}
+                	else if (returnDeclaration instanceof TypedDeclaration) {
+	                    that.addError("setter may not return a value: " +
+	                            name + " is a setter");
+                	}
+                	else {
+	                    that.addError("class initializer may not return a value");
+                	}
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
                     inferReturnType(et, at);
