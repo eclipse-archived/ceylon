@@ -42,6 +42,7 @@ import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
@@ -55,6 +56,7 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
         "Given a list of modules, and optionally a category file and prefix, this tool " +
         "generates `content.xml` and `artifacts.xml` files in the output directory, and " +
         "packs the folders in `${output}/features/*` into jars.")
+@Hidden
 public class CeylonP2Tool extends OutputRepoUsingTool {
 
     private static final String KNOWN_EXPRESSION_TYPE = "providedCapabilities.exists(p | p.namespace == 'osgi.bundle')";
