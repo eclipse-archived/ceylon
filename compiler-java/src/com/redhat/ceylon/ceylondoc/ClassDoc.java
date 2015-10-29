@@ -667,7 +667,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         if (constructors.isEmpty()){
             return;
         }
-        openTable("section-constructors", "Constructors", 1, true);
+        openTable("section-constructors", "Constructors", 2, true);
         for (Entry<String, Declaration> entry : constructors.entrySet()) {
             doc(entry.getKey(), entry.getValue());
         }
