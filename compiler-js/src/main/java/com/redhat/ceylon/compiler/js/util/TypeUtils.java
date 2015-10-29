@@ -42,9 +42,6 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 /** A convenience class to help with the handling of certain type declarations. */
 public class TypeUtils {
 
-    static final List<String> splitMetamodelAnnotations = Arrays.asList("ceylon.language::doc",
-            "ceylon.language::throws", "ceylon.language::see", "ceylon.language::by");
-
     /** Prints the type arguments, usually for their reification. */
     public static void printTypeArguments(final Node node, final Map<TypeParameter,Type> targs,
             final GenerateJsVisitor gen, final boolean skipSelfDecl, final Map<TypeParameter, SiteVariance> overrides) {
