@@ -85,15 +85,15 @@ never copy and paste `sudo` commands!!! So read them carefully and type them by 
     $ unzip /var/www/downloads.ceylonlang/cli/ceylon-0.6.zip
 2. Remove the old API
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/api/ceylon/language
-3. Put the new API
-    $ sudo cp -r ceylon-0.6/repo/ceylon/language/0.6/module-doc /var/www/ceylonlang/documentation/1.0/api/ceylon/language
-    $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/api/ceylon/language
-4. Remove the old spec
+3. Remove the old spec
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/spec/{html,html_single,pdf,shared}
-5. Put the new spec
-    $ sudo cp -r ceylon-0.6/doc/en/spec/* /var/www/ceylonlang/documentation/1.0/spec/
+4. Put the new spec
+    $ sudo cp -r ceylon-0.6/doc/en/spec/{html,html_single,shared} /var/www/ceylonlang/documentation/1.0/spec/
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/spec
     $ sudo mv /var/www/ceylonlang/documentation/1.0/spec/pdf/Ceylon\* /var/www/ceylonlang/documentation/1.0/spec/pdf/ceylon-language-specification.pdf
+5. Put the new tooldocs
+    $ sudo cp -r ceylon-0.6/doc/en/toolset /var/www/ceylonlang/documentation/1.0/reference/tool/ceylon/subcommands
+    $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/reference/tool/ceylon/subcommands
 
 # Update the brew formula for ceylon
 
