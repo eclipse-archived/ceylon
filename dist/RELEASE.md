@@ -87,11 +87,13 @@ never copy and paste `sudo` commands!!! So read them carefully and type them by 
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/api/ceylon/language
 3. Remove the old spec
     $ sudo rm -rf /var/www/ceylonlang/documentation/1.0/spec/{html,html_single,pdf,shared}
-4. Put the new spec
-    $ sudo cp -r ceylon-0.6/doc/en/spec/{html,html_single,shared} /var/www/ceylonlang/documentation/1.0/spec/
+4. Make sure you tell the website hooks to not remove your precious files:
+    $ sudo vim /var/www/ceylonlang/hooks/rsync-excludes
+5. Put the new spec
+    $ sudo cp -r ceylon-0.6/doc/en/spec/{html,html_single,shared,pdf} /var/www/ceylonlang/documentation/1.0/spec/
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/spec
-    $ sudo mv /var/www/ceylonlang/documentation/1.0/spec/pdf/Ceylon\* /var/www/ceylonlang/documentation/1.0/spec/pdf/ceylon-language-specification.pdf
-5. Put the new tooldocs
+    $ sudo mv /var/www/ceylonlang/documentation/1.0/spec/pdf/Ceylon* /var/www/ceylonlang/documentation/1.0/spec/pdf/ceylon-language-specification.pdf
+6. Put the new tooldocs
     $ sudo cp -r ceylon-0.6/doc/en/toolset /var/www/ceylonlang/documentation/1.0/reference/tool/ceylon/subcommands
     $ sudo chown -R webhook. /var/www/ceylonlang/documentation/1.0/reference/tool/ceylon/subcommands
 
