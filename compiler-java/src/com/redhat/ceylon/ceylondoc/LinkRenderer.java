@@ -317,7 +317,7 @@ public class LinkRenderer {
             result = "<code>" + result + "</code>";
         }
         if (customText != null) {
-            result = customText + " (" + result + ")";
+            result = customText;
         }
         return result;
     }
