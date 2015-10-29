@@ -5,8 +5,8 @@
 %define section free
 
 %define major_version 1
-%define minor_version 1
-%define micro_version 1
+%define minor_version 2
+%define micro_version 0
 %define ceylon_home /usr/lib/ceylon/%{major_version}.%{minor_version}.%{micro_version}
 
 # The name of the source zip file (without .zip)
@@ -22,7 +22,7 @@
 Name: ceylon-%{version}
 Epoch: 0
 Version: %{major_version}.%{minor_version}.%{micro_version}
-Release: 1%{?dist}
+Release: 0%{?dist}
 Summary: Ceylon language
 
 Group: Development/Languages
@@ -57,6 +57,7 @@ rm -rf $RPM_BUILD_ROOT%{ceylon_home}
 # CEYLON_HOME and subdirs
 mkdir -p $RPM_BUILD_ROOT%{ceylon_home}/{bin,lib,repo,doc,doc/en,samples,templates}
 install -d -m 755 %{buildroot}%{_mandir}/man1
+install -d -m 755 %{buildroot}%{_infodir}
 
 rm -f bin/*.bat
 cp -pr bin/* $RPM_BUILD_ROOT%{ceylon_home}/bin
@@ -67,9 +68,8 @@ cp -pr samples/* $RPM_BUILD_ROOT%{ceylon_home}/samples
 cp -pr templates/* $RPM_BUILD_ROOT%{ceylon_home}/templates
 cp -pr contrib/* $RPM_BUILD_ROOT%{ceylon_home}/contrib
 cp -pr doc/man/man1/ceylon.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-%{version}.1
-cp -pr doc/man/man1/ceylon-all.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-all-%{version}.1
 cp -pr doc/man/man1/ceylon-bash-completion.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-bash-completion-%{version}.1
-cp -pr doc/man/man1/ceylon-build.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-build-%{version}.1
+cp -pr doc/man/man1/ceylon-browse.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-browse-%{version}.1
 cp -pr doc/man/man1/ceylon-classpath.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-classpath-%{version}.1
 cp -pr doc/man/man1/ceylon-compile-js.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-compile-js-%{version}.1
 cp -pr doc/man/man1/ceylon-compile.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-compile-%{version}.1
@@ -80,6 +80,7 @@ cp -pr doc/man/man1/ceylon-doc.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-doc-%{ver
 cp -pr doc/man/man1/ceylon-help.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-help-%{version}.1
 cp -pr doc/man/man1/ceylon-import-jar.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-import-jar-%{version}.1
 cp -pr doc/man/man1/ceylon-info.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-info-%{version}.1
+cp -pr doc/man/man1/ceylon-p2.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-p2-%{version}.1
 cp -pr doc/man/man1/ceylon-plugin.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-plugin-%{version}.1
 cp -pr doc/man/man1/ceylon-run-js.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-run-js-%{version}.1
 cp -pr doc/man/man1/ceylon-run.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-run-%{version}.1
@@ -87,14 +88,17 @@ cp -pr doc/man/man1/ceylon-src.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-src-%{ver
 cp -pr doc/man/man1/ceylon-test-js.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-test-js-%{version}.1
 cp -pr doc/man/man1/ceylon-test.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-test-%{version}.1
 cp -pr doc/man/man1/ceylon-version.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-version-%{version}.1
+cp -pr doc/man/man1/ceylon-war.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-war-%{version}.1
+cp -pr doc/en/spec/info/ceylon-spec.info $RPM_BUILD_ROOT%{_infodir}/ceylon-spec-%{version}.info
+cp -pr doc/en/spec/info/ceylon-spec.info-1 $RPM_BUILD_ROOT%{_infodir}/ceylon-spec-%{version}.info-1
+cp -pr doc/en/spec/info/ceylon-spec.info-2 $RPM_BUILD_ROOT%{_infodir}/ceylon-spec-%{version}.info-2
 
 %post
-%{_sbindir}/update-alternatives --install %{_bindir}/ceylon ceylon %{ceylon_home}/bin/ceylon 11000 \
+%{_sbindir}/update-alternatives --install %{_bindir}/ceylon ceylon %{ceylon_home}/bin/ceylon 12000 \
     --slave %{_prefix}/lib/ceylon/ceylon ceylon-dir %{_prefix}/lib/ceylon/%{version} \
-    --slave %{_mandir}/man1/ceylon.1.gz ceylon-man %{_mandir}/man1/ceylon-%{version}.1.gz \
-    --slave %{_mandir}/man1/ceylon-all.1 ceylon-all-man %{_mandir}/man1/ceylon-all-%{version}.1.gz \
+    --slave %{_mandir}/man1/ceylon.1 ceylon-main-man %{_mandir}/man1/ceylon-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-bash-completion.1 ceylon-bash-completion-man %{_mandir}/man1/ceylon-bash-completion-%{version}.1.gz \
-    --slave %{_mandir}/man1/ceylon-build.1 ceylon-build-man %{_mandir}/man1/ceylon-build-%{version}.1.gz \
+    --slave %{_mandir}/man1/ceylon-browse.1 ceylon-browse-man %{_mandir}/man1/ceylon-browse-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-classpath.1 ceylon-classpath-man %{_mandir}/man1/ceylon-classpath-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-compile-js.1 ceylon-compile-js-man %{_mandir}/man1/ceylon-compile-js-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-compile.1 ceylon-compile-man %{_mandir}/man1/ceylon-compile-%{version}.1.gz \
@@ -105,13 +109,18 @@ cp -pr doc/man/man1/ceylon-version.1 $RPM_BUILD_ROOT%{_mandir}/man1/ceylon-versi
     --slave %{_mandir}/man1/ceylon-help.1 ceylon-help-man %{_mandir}/man1/ceylon-help-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-import-jar.1 ceylon-import-jar-man %{_mandir}/man1/ceylon-import-jar-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-info.1 ceylon-info-man %{_mandir}/man1/ceylon-info-%{version}.1.gz \
+    --slave %{_mandir}/man1/ceylon-p2.1 ceylon-p2-man %{_mandir}/man1/ceylon-p2-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-plugin.1 ceylon-plugin-man %{_mandir}/man1/ceylon-plugin-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-run-js.1 ceylon-run-js-man %{_mandir}/man1/ceylon-run-js-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-run.1 ceylon-run-man %{_mandir}/man1/ceylon-run-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-src.1 ceylon-src-man %{_mandir}/man1/ceylon-src-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-test-js.1 ceylon-test-js-man %{_mandir}/man1/ceylon-test-js-%{version}.1.gz \
     --slave %{_mandir}/man1/ceylon-test.1 ceylon-test-man %{_mandir}/man1/ceylon-test-%{version}.1.gz \
-    --slave %{_mandir}/man1/ceylon-version.1 ceylon-version-man %{_mandir}/man1/ceylon-version-%{version}.1.gz
+    --slave %{_mandir}/man1/ceylon-version.1 ceylon-version-man %{_mandir}/man1/ceylon-version-%{version}.1.gz \
+    --slave %{_mandir}/man1/ceylon-war.1 ceylon-war-man %{_mandir}/man1/ceylon-war-%{version}.1.gz \
+    --slave %{_infodir}/ceylon-spec.info ceylon-info %{_infodir}/ceylon-spec-%{version}.info.gz \
+    --slave %{_infodir}/ceylon-spec.info-1 ceylon-info-1 %{_infodir}/ceylon-spec-%{version}.info-1.gz \
+    --slave %{_infodir}/ceylon-spec.info-2 ceylon-info-2 %{_infodir}/ceylon-spec-%{version}.info-2.gz
 
 %postun
 if [ $1 -eq 0 ] ; then
@@ -122,16 +131,21 @@ fi
 %defattr(-,root,root)
 %attr(755,root,root) %{ceylon_home}/bin/ceylon
 %{ceylon_home}/bin/ceylon-sh-setup
+%{ceylon_home}/bin/*.plugin
 %{ceylon_home}/repo/*
 %{ceylon_home}/lib/*
 %doc %{ceylon_home}/doc/*
 %doc %{_mandir}/man1/*
+%doc %{_infodir}/*
 %{ceylon_home}/samples/*
 %{ceylon_home}/templates/*
 %{ceylon_home}/contrib/*
 
 
 %changelog
+* Wed Oct 28 2015 Tako Schotanus <tschotan@redhat.com> 1.2.0-0
+- Update for 1.2.0
+- Now installing .info files as well
 * Fri Oct 10 2014 Tako Schotanus <tschotan@redhat.com> 1.1.0-2
 - Fixed installation of man pages and main folder link
 * Thu Oct 09 2014 Tako Schotanus <tschotan@redhat.com> 1.1.0-1
