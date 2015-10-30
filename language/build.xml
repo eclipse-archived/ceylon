@@ -501,6 +501,7 @@
     <target name="ceylon.language.doc">
         <ceylon-doc
             executable="${ceylon.compiler.loc}"
+            includesourcecode="true"
             src="${module.language.src}"
             encoding="UTF-8"
             out="${build.dist.repo}"
