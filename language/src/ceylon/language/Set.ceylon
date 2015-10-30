@@ -72,6 +72,13 @@ shared interface Set<out Element=Object>
     "Returns a new `Set` containing all the elements of this 
      set and all the elements of the given `Set`.
      
+     For example:
+     
+         set { \"hello\", \"world\" } | set { 1, 2, \"hello\" }
+     
+     Produces the set `{ \"hello\", \"world\", 1, 2 }` of 
+     type `Set<String|Integer>`.
+     
      Note that it is possible for two sets of disjoint 
      element type to be considered to have elements in 
      common. For example, since \`1==1.0\` 
@@ -91,6 +98,12 @@ shared interface Set<out Element=Object>
      that are instances of the intersection `Element&Other` 
      of the element types of the two sets.
      
+     For example:
+     
+         set { \"hello\", \"world\" } & set { 1, 2, \"hello\" }
+     
+     Produces the set `{ \"hello\" }` of type `Set<String>`.
+     
      Note that, according to this definition, and even 
      though `1==1.0` [[evaluates to true|Integer.equals]], 
      the expression
@@ -105,7 +118,13 @@ shared interface Set<out Element=Object>
         .narrow<Other>());
     
     "Returns a new `Set` containing all the elements in this 
-     set that are not contained in the given `Set`."
+     set that are not contained in the given `Set`.
+     
+     For example:
+     
+         set { \"hello\", \"world\" } ~ set { 1, 2, \"hello\" }
+     
+     Produces the set `{ \"world\" }` of type `Set<String>`."
     shared default Set<Element> 
             complement<Other>(Set<Other> set)
             given Other satisfies Object 
