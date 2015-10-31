@@ -1011,11 +1011,11 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, ".resources/index.js", 
                 Pattern.compile("var tagIndex = \\[\\n'stubInnerMethodTag1',"));
         assertMatchInFile(destDir, ".resources/index.js", 
-                Pattern.compile("\\{'name': 'StubClass', 'type': 'class', 'url': 'StubClass.type.html', 'doc': '<p>This is <code>StubClass</code></p>\\\\n', 'tags': \\['stubTag1', 'stubTag2'\\]"));
+                Pattern.compile("\\{'name': 'StubClass', 'type': 'class', 'url': 'StubClass.type.html', 'doc': '<p>This is <code>StubClass</code></p>', 'tags': \\['stubTag1', 'stubTag2'\\]"));
         assertMatchInFile(destDir, ".resources/index.js", 
-                Pattern.compile("\\{'name': 'StubClass.attributeWithTagged', 'type': 'value', 'url': 'StubClass.type.html#attributeWithTagged', 'doc': '<p>The stub attribute with <code>tagged</code>.</p>\\\\n', 'tags': \\['stubTag1'\\]"));
+                Pattern.compile("\\{'name': 'StubClass.attributeWithTagged', 'type': 'value', 'url': 'StubClass.type.html#attributeWithTagged', 'doc': '<p>The stub attribute with <code>tagged</code>.</p>', 'tags': \\['stubTag1'\\]"));
         assertMatchInFile(destDir, ".resources/index.js", 
-                Pattern.compile("\\{'name': 'StubClass.methodWithTagged', 'type': 'function', 'url': 'StubClass.type.html#methodWithTagged', 'doc': '<p>The stub method with <code>tagged</code> .*?</p>\\\\n', 'tags': \\['stubTag2'\\]"));
+                Pattern.compile("\\{'name': 'StubClass.methodWithTagged', 'type': 'function', 'url': 'StubClass.type.html#methodWithTagged', 'doc': '<p>The stub method with <code>tagged</code> .*?</p>', 'tags': \\['stubTag2'\\]"));
         
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<div class='tags section'><a class='tag label' name='stubTag1' href='javascript:;' title='Enable/disable tag filter'>stubTag1</a><a class='tag label' name='stubTag2' href='javascript:;' title='Enable/disable tag filter'>stubTag2</a>"));

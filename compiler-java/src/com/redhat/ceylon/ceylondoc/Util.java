@@ -20,9 +20,12 @@
 
 package com.redhat.ceylon.ceylondoc;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,6 +34,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.html.HTML.Tag;
+import javax.swing.text.html.HTMLEditorKit.ParserCallback;
+import javax.swing.text.html.parser.DTD;
+import javax.swing.text.html.parser.DocumentParser;
+import javax.swing.text.html.parser.ParserDelegator;
 
 import com.github.rjeschke.txtmark.BlockEmitter;
 import com.github.rjeschke.txtmark.Configuration;
@@ -108,15 +118,165 @@ public class Util {
     }
 
     public static String getDocFirstLine(Declaration decl, LinkRenderer linkRenderer) {
-        return wikiToHTML(getFirstLine(getRawDoc(decl)), linkRenderer.useScope(decl));
+        return getDocFirstLine(getRawDoc(decl), linkRenderer.useScope(decl));
     }
-
+    
     public static String getDocFirstLine(Package pkg, LinkRenderer linkRenderer) {
-        return wikiToHTML(getFirstLine(getRawDoc(pkg.getUnit(), pkg.getAnnotations())), linkRenderer.useScope(pkg));
+        return getDocFirstLine(getRawDoc(pkg.getUnit(), pkg.getAnnotations()), linkRenderer.useScope(pkg));
     }
 
     public static String getDocFirstLine(Module module, LinkRenderer linkRenderer) {
-        return wikiToHTML(getFirstLine(getRawDoc(module.getUnit(), module.getAnnotations())), linkRenderer.useScope(module));
+        return getDocFirstLine(getRawDoc(module.getUnit(), module.getAnnotations()), linkRenderer.useScope(module));
+    }
+    
+    public static String getDocFirstLine(String text, LinkRenderer linkRenderer) {
+        String html = wikiToHTML(text, linkRenderer);
+        FirstLineParser parser = new FirstLineParser();
+        return parser.parseFirstLine(html);
+    }
+    
+    private static class FirstLineParser extends DocumentParser {
+        
+        private boolean done = false;
+        private boolean dots = false;
+        private int lastPosition = 0;
+        private List<Tag> impliedTags = new ArrayList<Tag>();
+        private List<Tag> openedTags = new ArrayList<Tag>();
+        private StringBuilder textBuilder = new StringBuilder();
+        
+        private class FirstLineParserCallback extends ParserCallback {
+            
+            @Override
+            public void handleStartTag(Tag t, MutableAttributeSet a, int pos) {
+                if( done ) {
+                    return;
+                }
+                if (a.isDefined(IMPLIED)) {
+                    impliedTags.add(t);
+                    return;
+                }
+                if( t.isBlock() && textBuilder.length() > 0 ) {
+                    done = true;
+                    return;
+                }
+                openedTags.add(t);
+                lastPosition = getCurrentPos();
+            }
+            
+            @Override
+            public void handleEndTag(Tag t, int pos) {
+                if( done ) {
+                    return;
+                }
+                if( impliedTags.contains(t) ) {
+                    impliedTags.remove(t);
+                    return;
+                }
+                int lastIndexOf = openedTags.lastIndexOf(t);
+                if( lastIndexOf != -1 ) {
+                    openedTags.remove(lastIndexOf);
+                }
+                lastPosition = getCurrentPos();
+            }
+            
+            @Override
+            public void handleSimpleTag(Tag t, MutableAttributeSet a, int pos) {
+                if( done ) {
+                    return;
+                }
+                lastPosition = getCurrentPos();
+            }
+            
+            @Override
+            public void handleText(char[] data, int pos) {
+                if( done ) {
+                    return;
+                }
+                
+                textBuilder.append(data);
+                
+                String text = textBuilder.toString().replaceAll("\\s*$", "");
+                String firstLine = trimFirstLine(text);
+                if( !text.equals(firstLine) ) {
+                    done = true;
+                    lastPosition = pos + (data.length - (text.length() - firstLine.length()));
+                    return;
+                }
+                
+                lastPosition = getCurrentPos();
+            }
+            
+            private String trimFirstLine(String text) {
+                // be lenient for Package and Module
+                if(text == null)
+                    return "";
+                // First try to get the first sentence
+                BreakIterator breaker = BreakIterator.getSentenceInstance();
+                breaker.setText(text);
+                breaker.first();
+                int dot = breaker.next();
+                // First sentence is sufficiently short
+                if (dot != BreakIterator.DONE
+                        && dot <= FIRST_LINE_MAX_SIZE) {
+                    return text.substring(0, dot).replaceAll("\\s*$", "");
+                }
+                if (text.length() <= FIRST_LINE_MAX_SIZE) {
+                    return text;
+                }
+                // First sentence is really long, to try to break on a word
+                breaker = BreakIterator.getWordInstance();
+                breaker.setText(text);
+                int pos = breaker.first();
+                while (pos < FIRST_LINE_MAX_SIZE
+                        && pos != BreakIterator.DONE) {
+                    pos = breaker.next();
+                }
+                if (pos != BreakIterator.DONE
+                        && breaker.previous() != BreakIterator.DONE) {
+                    dots = true;
+                    return text.substring(0, breaker.current()).replaceAll("\\s*$", "");
+                }
+                dots = true;
+                return text.substring(0, FIRST_LINE_MAX_SIZE-1);
+            }
+            
+        };
+
+        private static DTD getDTD() {
+            try {
+                new ParserDelegator(); // initialize DTD
+                return DTD.getDTD("html32");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private FirstLineParser() {
+            super(getDTD());
+        }
+
+        private String parseFirstLine(String html) {
+            try {
+                parse(new StringReader(html), new FirstLineParserCallback(), true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            
+            StringBuilder result = new StringBuilder();
+            result.append(html.substring(0, lastPosition).replaceAll("\\s*$", ""));
+            if( dots ) {
+                result.append("…");
+            }
+            if( !openedTags.isEmpty() ) {
+                Collections.reverse(openedTags);
+                for(Tag t : openedTags) {
+                    result.append("</").append(t).append(">");
+                }
+            }
+            
+            return result.toString();
+        }
+
     }
     
     public static <T extends Referenceable & Annotated> List<String> getTags(T decl) {
@@ -140,38 +300,6 @@ public class Util {
                 .build();
         
         return Processor.process(text, config);
-    }
-
-    private static String getFirstLine(String text) {
-        // be lenient for Package and Module
-        if(text == null)
-            return "";
-        // First try to get the first sentence
-        BreakIterator breaker = BreakIterator.getSentenceInstance();
-        breaker.setText(text);
-        breaker.first();
-        int dot = breaker.next();
-        // First sentence is sufficiently short
-        if (dot != BreakIterator.DONE
-                && dot <= FIRST_LINE_MAX_SIZE) {
-            return text.substring(0, dot).replaceAll("\\s*$", "");
-        }
-        if (text.length() <= FIRST_LINE_MAX_SIZE) {
-            return text;
-        }
-        // First sentence is really long, to try to break on a word
-        breaker = BreakIterator.getWordInstance();
-        breaker.setText(text);
-        int pos = breaker.first();
-        while (pos < FIRST_LINE_MAX_SIZE
-                && pos != BreakIterator.DONE) {
-            pos = breaker.next();
-        }
-        if (pos != BreakIterator.DONE
-                && breaker.previous() != BreakIterator.DONE) {
-            return text.substring(0, breaker.current()).replaceAll("\\s*$", "") + "…";
-        }
-        return text.substring(0, FIRST_LINE_MAX_SIZE-1) + "…";
     }
 
     private static String getRawDoc(Declaration decl) {

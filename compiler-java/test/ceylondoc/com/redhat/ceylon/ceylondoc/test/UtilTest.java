@@ -19,7 +19,6 @@
  */
 package com.redhat.ceylon.ceylondoc.test;
 
-import java.lang.reflect.Method;
 import java.util.Locale;
 
 import org.junit.AfterClass;
@@ -46,27 +45,31 @@ public class UtilTest {
         Locale.setDefault(defaultLocale);
     }
     
-    private void assertFirstLine(String expect, String text) throws Exception {
-        Method m = Util.class.getDeclaredMethod("getFirstLine", String.class);
-        m.setAccessible(true);
-        Assert.assertEquals(expect, m.invoke(null, text));
-    }
-    
     @Test
-    public void testFirstLine() throws Exception {
-        assertFirstLine("Blah blah blah", "Blah blah blah");
-        assertFirstLine("Blah blah blah.", "Blah blah blah. Foo bar baz.");
-        assertFirstLine("Blah blah blah!", "Blah blah blah! Foo bar baz.");
-        assertFirstLine("Blah blah e.g. blah!", "Blah blah e.g. blah! Foo bar baz.");
-        assertFirstLine("Blah blah i.e. blah!", "Blah blah i.e. blah! Foo bar baz.");
-        assertFirstLine("Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah", 
-                        "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");
-        assertFirstLine("Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahh", 
-                        "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahh");
-        assertFirstLine("Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah…", 
-                        "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahhh");
-        assertFirstLine("Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah…", 
-                        "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");        
+    public void testFirstLine() {
+        assertFirstLine("", "");
+        assertFirstLine("<p>Blah blah blah</p>", "Blah blah blah");
+        assertFirstLine("<p>Blah blah blah.</p>", "Blah blah blah. Foo bar baz.");
+        assertFirstLine("<p>Blah blah blah!</p>", "Blah blah blah! Foo bar baz.");
+        assertFirstLine("<p>Blah blah e.g. blah!</p>", "Blah blah e.g. blah! Foo bar baz.");
+        assertFirstLine("<p>Blah blah i.e. blah?</p>", "Blah blah i.e. blah? Foo bar baz.");
+        
+        assertFirstLine("<p>Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah</p>", 
+                         "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");
+        assertFirstLine("<p>Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahh</p>", 
+                         "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahh");
+        assertFirstLine("<p>Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah…</p>", 
+                         "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahhh");
+        assertFirstLine("<p>Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah…</p>", 
+                         "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");
+        
+        assertFirstLine("<p>Blah blah blah</p>", "Blah blah blah \n\n Foo bar baz");
+        assertFirstLine("<p>Blah blah <em>blah</em>.</p>", "Blah blah *blah*. Foo bar baz.");
+        assertFirstLine("<p>Blah <a href=\"http://example.com\">link</a> blah.</p>", "Blah [link][] blah. Foo bar baz \n\n [link]: http://example.com");
+    }
+
+    private void assertFirstLine(String expected, String text) {
+        Assert.assertEquals(expected, Util.getDocFirstLine(text, null));
     }
     
 }
