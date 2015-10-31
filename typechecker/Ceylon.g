@@ -1848,11 +1848,10 @@ primary returns [Primary primary]
 
 specifierParametersStart
     : LPAREN 
-    ( 
-      RPAREN (SPECIFY|COMPUTE|specifierParametersStart)
-    | 
-      compilerAnnotations annotatedDeclarationStart
-    )
+      ( 
+        compilerAnnotations annotatedDeclarationStart
+      | RPAREN (SPECIFY | COMPUTE | specifierParametersStart)
+      )
     ;
 
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 
@@ -2422,16 +2421,27 @@ spreadArgument returns [SpreadArgument positionalArgument]
 
 anonParametersStart
     : typeParameters?
-    LPAREN 
-    ( 
-      RPAREN
-    | LIDENTIFIER (COMMA | RPAREN (COMPUTE|LBRACE|TYPE_CONSTRAINT|anonParametersStart)) 
-    | compilerAnnotations annotatedDeclarationStart 
-    )
+      LPAREN
+      ( 
+        RPAREN
+      | compilerAnnotations annotatedDeclarationStart 
+      | LIDENTIFIER (COMMA | RPAREN anonParametersStart2)
+      )
     ;
 
-nonemptyParametersStart
-    : LPAREN compilerAnnotations annotatedDeclarationStart
+anonParametersStart2
+    : LPAREN
+      (
+        RPAREN anonParametersStart2
+      | (LIDENTIFIER COMMA)*
+        (
+          compilerAnnotations annotatedDeclarationStart
+        | LIDENTIFIER RPAREN anonParametersStart2 
+        )
+      )
+    | COMPUTE
+    | LBRACE
+    | TYPE_CONSTRAINT
     ;
 
 functionOrExpression returns [Expression expression]
