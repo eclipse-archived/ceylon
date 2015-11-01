@@ -407,7 +407,8 @@ public class TypeUtils {
         return targs;
     }
 
-    public static Map<TypeParameter, Type> matchTypeParametersWithArguments(List<TypeParameter> params, List<Type> targs) {
+    public static Map<TypeParameter, Type> matchTypeParametersWithArguments(
+            List<TypeParameter> params, List<Type> targs) {
         if (params != null) {
             if (targs == null) {
                 targs = getDefaultTypeArguments(params);
