@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.js.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,7 +43,8 @@ public class TypeUtils {
 
     /** Prints the type arguments, usually for their reification. */
     public static void printTypeArguments(final Node node, final Map<TypeParameter,Type> targs,
-            final GenerateJsVisitor gen, final boolean skipSelfDecl, final Map<TypeParameter, SiteVariance> overrides) {
+            final GenerateJsVisitor gen, final boolean skipSelfDecl,
+            final Map<TypeParameter, SiteVariance> overrides) {
         if (targs==null) return;
         gen.out("{");
         boolean first = true;
@@ -73,7 +73,8 @@ public class TypeUtils {
                 }
                 if (hasParams) {
                     gen.out(",a:");
-                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl, pt.getVarianceOverrides());
+                    printTypeArguments(node, pt.getTypeArguments(), gen, skipSelfDecl,
+                            pt.getVarianceOverrides());
                 }
                 SiteVariance siteVariance = overrides == null ? null : overrides.get(e.getKey());
                 printSiteVariance(siteVariance, gen);
@@ -168,7 +169,8 @@ public class TypeUtils {
      * the property "a", or a union/intersection type with "u" or "i" under property "t" and the list
      * of types that compose it in an array under the property "l", or a type parameter as a reference to
      * already existing params. */
-    public static void typeNameOrList(final Node node, final Type pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+    public static void typeNameOrList(final Node node, final Type pt,
+            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration type = pt.getDeclaration();
         if (!outputTypeList(node, pt, gen, skipSelfDecl)) {
             if (pt.isTypeParameter()) {
@@ -219,7 +221,8 @@ public class TypeUtils {
     }
 
     /** Appends an object with the type's type and list of union/intersection types. */
-    public static boolean outputTypeList(final Node node, final Type pt, final GenerateJsVisitor gen, final boolean skipSelfDecl) {
+    public static boolean outputTypeList(final Node node, final Type pt,
+            final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         final List<Type> subs;
         int seq=0;
         if (pt.isIntersection()) {
@@ -344,8 +347,9 @@ public class TypeUtils {
                 }
                 gen.out("'", tp.getName(), "'");
                 //gen.out.spitOut("Passing reference to " + tp.getQualifiedNameString() + " as a string...");
-                //gen.out("/*Please report this to the ceylon-js team: METHOD TYPEPARM plist ", Integer.toString(plistCount), "#",
-                //        tp.getName(), "*/'", type.getProducedTypeQualifiedName(), "' container " + tp.getContainer() + " at " + node);
+                //gen.out("/*Please report this to the ceylon-js team: METHOD TYPEPARM plist ",
+                //Integer.toString(plistCount), "#", tp.getName(), "*/'", type.getProducedTypeQualifiedName(),
+                //"' container " + tp.getContainer() + " at " + node);
             }
         }
     }
@@ -376,7 +380,8 @@ public class TypeUtils {
         return null;
     }
 
-    /** Find the type with the specified declaration among the specified type's supertypes, case types, satisfied types, etc. */
+    /** Find the type with the specified declaration among the specified type's supertypes,
+     * case types, satisfied types, etc. */
     public static Type findSupertype(TypeDeclaration d, Type pt) {
         if (pt.getDeclaration().equals(d)) {
             return pt;
@@ -1173,8 +1178,10 @@ public class TypeUtils {
             anns = new ArrayList<>(annotations.getAnnotations().size());
             anns.addAll(annotations.getAnnotations());
             for (Iterator<Tree.Annotation> iter = anns.iterator(); iter.hasNext();) {
-                final String qn = ((Tree.StaticMemberOrTypeExpression)iter.next().getPrimary()).getDeclaration().getQualifiedNameString();
-                if (!qn.equals("ceylon.language::native") && qn.startsWith("ceylon.language::") && MetamodelGenerator.annotationBits.contains(qn.substring(17))) {
+                final String qn = ((Tree.StaticMemberOrTypeExpression)iter.next().getPrimary()
+                        ).getDeclaration().getQualifiedNameString();
+                if (!qn.equals("ceylon.language::native") && qn.startsWith("ceylon.language::")
+                        && MetamodelGenerator.annotationBits.contains(qn.substring(17))) {
                     iter.remove();
                 }
             }
@@ -1272,7 +1279,8 @@ public class TypeUtils {
                 anns.addAll(d.getAnnotations());
                 for (Iterator<Annotation> iter = anns.iterator(); iter.hasNext();) {
                     final Annotation a = iter.next();
-                    final Declaration ad = d.getUnit().getPackage().getMemberOrParameter(d.getUnit(), a.getName(), null, false);
+                    final Declaration ad = d.getUnit().getPackage().getMemberOrParameter(
+                            d.getUnit(), a.getName(), null, false);
                     final String qn = ad.getQualifiedNameString();
                     if (qn.startsWith("ceylon.language::") && MetamodelGenerator.annotationBits.contains(qn.substring(17))) {
                         iter.remove();
@@ -1337,7 +1345,8 @@ public class TypeUtils {
             final String methodName, final String rightTpName, final String leftTpName) {
         Function md = (Function)expr.getLeftTerm().getTypeModel().getDeclaration().getMember(methodName, null, false);
         if (md == null) {
-            expr.addUnexpectedError("Left term of intersection operator should have method named " + methodName, Backend.JavaScript);
+            expr.addUnexpectedError("Left term of intersection operator should have method named " +
+                    methodName, Backend.JavaScript);
             return null;
         }
         Map<TypeParameter, Type> targs = expr.getRightTerm().getTypeModel().getTypeArguments();
@@ -1349,7 +1358,8 @@ public class TypeUtils {
             }
         }
         if (otherType == null) {
-            expr.addUnexpectedError("Right term of intersection operator should have type parameter named " + rightTpName, Backend.JavaScript);
+            expr.addUnexpectedError("Right term of intersection operator should have type parameter named " +
+                    rightTpName, Backend.JavaScript);
             return null;
         }
         targs = new HashMap<>();
@@ -1361,7 +1371,8 @@ public class TypeUtils {
             }
         }
         if (mtp == null) {
-            expr.addUnexpectedError("Left term of intersection should have type parameter named " + leftTpName, Backend.JavaScript);
+            expr.addUnexpectedError("Left term of intersection should have type parameter named " +
+                        leftTpName, Backend.JavaScript);
         }
         targs.put(mtp, otherType);
         return targs;
