@@ -101,6 +101,9 @@ public class IndexDoc extends CeylonDoc {
                 null);
         write(",\n");
         indexMembers(pkg, pkg.getMembers());
+        
+        List<String> tags = Util.getTags(pkg);
+        tagIndex.addAll(tags);
     }
 
     private void indexMembers(Scope container, List<Declaration> members) throws IOException {
