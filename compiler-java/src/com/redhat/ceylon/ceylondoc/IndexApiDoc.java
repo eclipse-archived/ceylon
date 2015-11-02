@@ -78,6 +78,7 @@ public class IndexApiDoc extends CeylonDoc {
 
         open("td");
         write(Util.getDocFirstLine(declaration, linkRenderer()));
+        writeTagged(declaration);
         close("td");
 
         close("tr");
@@ -112,11 +113,6 @@ public class IndexApiDoc extends CeylonDoc {
 
     @Override
     protected void writeNavBarIndexMenu() throws IOException {
-        // noop
-    }
-
-    @Override
-    protected void writeNavBarFilterMenu() throws IOException {
         // noop
     }
 
