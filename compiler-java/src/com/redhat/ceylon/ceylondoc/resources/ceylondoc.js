@@ -190,6 +190,7 @@ $(document).ready(function() {
         $('#filterActionAll').click(function() {
             $('#filterDropdownPanelTags .tag:visible').addClass('tagSelected');
             $('#filterDropdownPanelTags input[type="checkbox"]:visible').attr('checked', true);
+            $('tbody a.tag').addClass('tagSelected');
             executeFilter();
         });
     };
@@ -198,6 +199,7 @@ $(document).ready(function() {
         $('#filterActionNone').click(function() {
             $('#filterDropdownPanelTags .tag').removeClass('tagSelected');
             $('#filterDropdownPanelTags input[type="checkbox"]').attr('checked', false);
+            $('tbody a.tag').removeClass('tagSelected');
             executeFilter();                    
         });
     };
