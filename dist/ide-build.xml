@@ -56,6 +56,7 @@
              dir="${projects.base.dir}/ceylon-ide-eclipse"
              inheritall="false"
              useNativeBasedir="true">
+            <property name="build-against" value="${build-against}"/>
         </ant>
     </target>
 
@@ -263,6 +264,40 @@ Used with another target such as 'package'">
                     <arg value="--short"/>
                     <arg value="--branch"/>
                 </exec>
+            </then>
+        </if>
+    </target>
+
+    <property name="branch-for-last-release-updates" value="1.2.0-fixes"/>
+    
+    <target name="check-branch-for-last-release-updates" depends="siblings">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="ceylon-ide-common,ceylon-ide-eclipse"
+                 target="check-branch-for-last-release-updates-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="check-branch-for-last-release-updates-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+                <echo>Checking current branch for project : ${project.item.name}</echo>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes" outputproperty="gitOutput">
+                    <arg value="branch"/>
+                    <arg value="--contains"/>
+                </exec>
+                <echo>${gitOutput}</echo>
+                <if>
+                    <not>
+                        <contains string="${gitOutput}" substring="* ${branch-for-last-release-updates}"/>
+                    </not>
+                    <then>
+                        <fail message="The 'ceylon-ide-eclipse' and 'ceylon-ide-common' projects should be on branch '${branch-for-last-release-updates}' to build against the last release"/>
+                    </then>
+                </if>
             </then>
         </if>
     </target>

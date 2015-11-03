@@ -1070,6 +1070,27 @@ You can now build the package by executing:
         </ant>
     </target>
     
+    <target name="eclipse-rebuild-against-last-release">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="check-branch-for-last-release-updates"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+        <ant antfile="${basedir}/ide-build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+            <property name="gitprojects" value="ceylon-ide-common,ceylon-ide-eclipse"/>
+        </ant>
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse"
+             inheritall="false"
+             useNativeBasedir="true">
+            <property name="ceylonmodules" value="ceylon-ide-common"/>
+            <property name="build-against" value="last-release"/>
+        </ant>
+    </target>
+
     <target name="intellij">
         <ant antfile="${basedir}/ide-build.xml"
              target="intellij"
