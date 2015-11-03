@@ -84,8 +84,45 @@ function $init$tpl$(){
         },{Element$Iterator:this.t$});
       }
       tuple.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
-      tuple.contains=function(i) { return this.elem$.contains(i) || (this.sp$&&this.sp$.contains(i)); }
+      //That stupid last "||false" is needed otherwise this returns undefined
+      tuple.contains=function(i) { return this.elem$.contains(i) || (this.sp$&&this.sp$.contains(i)) || false; }
       tuple.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
+      tuple.count=function(f){
+        var c=0;
+        for (var i=0;i<this.elem$.size;i++) {
+          if (f(this.elem$[i])) {
+            c++;
+          }
+        }
+        if (this.sp$)c+=this.sp$.count(f);
+        return c;
+      };
+      tuple.count.$crtmm$=Tuple.$$.prototype.count.$crtmm$;
+      tuple.select=function(f){
+        var a=[];
+        for (var i=0;i<this.elem$.size;i++) {
+          if (f(this.elem$[i])) {
+            a.push(this.elem$[i]);
+          }
+        }
+        if (this.sp$)for (i=0;i<this.sp$.size;i++) {
+          if (f(this.sp$.getFromFirst(i)))a.push(this.sp$.getFromFirst(i));
+        }
+        return a.length>0?ArraySequence(a,{Element$ArraySequence:this.t$}):empty();
+      };
+      tuple.select.$crtmm$=Tuple.$$.prototype.select.$crtmm$;
+      tuple.collect=function(f,$m){
+        var a=new Array(this.elem$.size+(this.sp$?this.sp$.size:0));
+        var j=0;
+        for (var i=0;i<this.elem$.size;i++) {
+          a[j++]=f(this.elem$[i]);
+        }
+        if (this.sp$)for (i=0;i<this.sp$.size;i++) {
+          a[j++]=f(this.sp$.getFromFirst(i));
+        }
+        return ArraySequence(a,{Element$ArraySequence:$m.Result$collect});
+      };
+      tuple.collect.$crtmm$=Tuple.$$.prototype.collect.$crtmm$;
       tuple.withLeading=function(a,b){
         var e2 = this.elem$.slice(0); e2.unshift(a);
         var t2 = this.tps$.l.slice(0); t2.unshift(b.Other$withLeading);
