@@ -51,7 +51,19 @@ Some super-charged ant tasks:
     ant eclipse            - Builds all IDE related projects + the Eclipse plugin
     ant intellij           - Builds all IDE related projects + the IntelliJ plugin
 
-    ant help-release       - Shows help on the commands for building a release</echo>
+    ant help-release       - Shows help on the commands for building a release
+
+    ant eclipse-switch-to-last-release-updates
+                           - switches the Eclipse plugin and the 'ceylon-ide-common' projects
+                             against to the last release maintenance branch
+    ant eclipse-rebuild-last-release-updates
+                           - Builds (after cleaning) the last release maintenance branch of the
+                             Eclipse plugin and the 'ceylon-ide-common' projects, against
+                             all the other dependencies found in the main release
+                             update site : http://ceylon-lang.org/eclipse/updatesite/
+    ant eclipse-switch-back-to-master
+                           - switches the Eclipse plugin and the 'ceylon-ide-common' projects
+                             back to the master branch</echo>
 
     </target>
 
@@ -1070,7 +1082,23 @@ You can now build the package by executing:
         </ant>
     </target>
     
-    <target name="eclipse-rebuild-against-last-release">
+    <target name="eclipse-switch-to-last-release-updates" depends="siblings">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse-switch-to-last-release-updates"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-switch-back-to-master" depends="siblings">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse-switch-back-to-master"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-rebuild-last-release-updates">
         <ant antfile="${basedir}/ide-build.xml"
              target="check-branch-for-last-release-updates"
              inheritall="false"

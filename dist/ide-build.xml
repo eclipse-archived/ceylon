@@ -270,9 +270,28 @@ Used with another target such as 'package'">
 
     <property name="branch-for-last-release-updates" value="1.2.0-fixes"/>
     
+    <target name="eclipse-switch-to-last-release-updates" depends="siblings">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <foreach list="ceylon-ide-common,ceylon-ide-eclipse"
+                 target="checkout-internal-item"
+                 param="project.item.name"
+                 inheritall="true" >
+            <param name="tag-internal" value="${branch-for-last-release-updates}" />
+        </foreach>
+    </target>
+    
+    <target name="eclipse-switch-back-to-master" depends="siblings">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <foreach list="ceylon-ide-common,ceylon-ide-eclipse"
+                 target="checkout-internal-item"
+                 param="project.item.name"
+                 inheritall="true" >
+            <param name="tag-internal" value="master" />
+        </foreach>
+    </target>
+
     <target name="check-branch-for-last-release-updates" depends="siblings">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
-        <mkdir dir="${projects.base.dir}"/>
         <foreach list="ceylon-ide-common,ceylon-ide-eclipse"
                  target="check-branch-for-last-release-updates-item"
                  param="project.item.name"
@@ -295,7 +314,7 @@ Used with another target such as 'package'">
                         <contains string="${gitOutput}" substring="* ${branch-for-last-release-updates}"/>
                     </not>
                     <then>
-                        <fail message="The 'ceylon-ide-eclipse' and 'ceylon-ide-common' projects should be on branch '${branch-for-last-release-updates}' to build against the last release"/>
+                        <fail message="The 'ceylon-ide-eclipse' and 'ceylon-ide-common' projects should be on branch '${branch-for-last-release-updates}' to build against the last release\n To switch to the last release maintenance branch run:\n    'ant eclipse-swicth-to-last-release-updates'"/>
                     </then>
                 </if>
             </then>
