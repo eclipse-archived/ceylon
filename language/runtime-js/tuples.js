@@ -111,6 +111,29 @@ function $init$tpl$(){
         return a.length>0?ArraySequence(a,{Element$ArraySequence:this.t$}):empty();
       };
       tuple.select.$crtmm$=Tuple.$$.prototype.select.$crtmm$;
+      tuple.$_filter=function(f){
+        var elems=this.elem$;
+        var spr=this.sp$;
+        return for$(function(){
+          var i=0;
+          return function(){
+            while (i<elems.size) {
+              var e=elems[i];
+              i++;
+              if (f(e))return e;
+            }
+            if (spr) {
+              while(i<elems.size+spr.size) {
+                var e=spr.getFromFirst(i-elems.size-1);
+                i++;
+                if (f(e))return e;
+              }
+            }
+            return finished();
+          };
+        },{Element$Iterable:this.t$,Absent$Iterable:{t:Null}});
+      };
+      tuple.$_filter.$crtmm$=Tuple.$$.prototype.$_filter.$crtmm$;
       tuple.collect=function(f,$m){
         var a=new Array(this.elem$.size+(this.sp$?this.sp$.size:0));
         var j=0;
@@ -123,6 +146,31 @@ function $init$tpl$(){
         return ArraySequence(a,{Element$ArraySequence:$m.Result$collect});
       };
       tuple.collect.$crtmm$=Tuple.$$.prototype.collect.$crtmm$;
+      tuple.$_map=function(f,$m){
+        var elems=this.elem$;
+        var spr=this.sp$;
+        return for$(function(){
+          var i=0;
+          return function(){
+            if (i<elems.size) {
+              i++;
+              return f(elems[i-1]);
+            }
+            if (spr && elems.size+spr.size>i) {
+              i++;
+              return f(spr.getFromFirst(i-elems.size-1));
+            }
+            return finished();
+          };
+        },{Element$Iterable:$m.Result$map,Absent$Iterable:{t:Null}});
+        for (var i=0;i<this.elem$.size;i++) {
+          a[j++]=f(this.elem$[i]);
+        }
+        if (this.sp$)for (i=0;i<this.sp$.size;i++) {
+          a[j++]=f(this.sp$.getFromFirst(i));
+        }
+      };
+      tuple.$_map.$crtmm$=Tuple.$$.prototype.$_map.$crtmm$;
       tuple.withLeading=function(a,b){
         var e2 = this.elem$.slice(0); e2.unshift(a);
         var t2 = this.tps$.l.slice(0); t2.unshift(b.Other$withLeading);
