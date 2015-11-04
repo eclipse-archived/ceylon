@@ -116,8 +116,9 @@ function convert$params(mm,a,$$targs$$) {
   } else {
     a=sequenceToArray(a);
   }
+  var type0;
   if (a.length===1 && (Array.isArray(a[0]) || is$(a[0],{t:Sequential}))
-      && (ps.length!=1 || !extendsType(restype2$(ps[0].$t,$$targs$$),{t:Sequential}))) {
+      && (ps.length!=1 || (!extendsType((type0=restype2$(ps[0].$t,$$targs$$)),{t:Sequential}) && !is$(a[0],type0)))) {
     //We sometimes get an array with a single array (double wrapping)
     a=sequenceToArray(a[0]);
   }
