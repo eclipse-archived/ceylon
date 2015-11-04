@@ -38,6 +38,13 @@ class Issue669<Z,A>() {
   }
 }
 
+void foo666(List<Integer> l) {
+    `function bar666`.invoke([], l);
+}
+void bar666(List<Integer> l) {
+    check(l.size == 1, "#666");
+}
+
 void issues() {
     try {
         value g1 = `function Fuera.Dentro.Cebolla.g`;
@@ -118,4 +125,5 @@ void issues() {
     } else {
         fail("Annotations #661");
     }
+    foo666([1]);
 }
