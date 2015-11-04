@@ -9,6 +9,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.loader.model.OutputElement;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Class;
 
 public class UnsupportedVisitor extends Visitor {
     
@@ -55,6 +57,17 @@ public class UnsupportedVisitor extends Visitor {
         }
     }
 
+    public void visit(Tree.Declaration that) {
+        Declaration decl = that.getDeclarationModel();
+        if (decl.isClassMember()
+                && ((Class)decl.getContainer()).isSerializable()) {
+            if ((ClassTransformer.hasField(decl) & ClassTransformer.FLD_METHOD) != 0) {
+                that.addError("requires a Callable field: " + decl.getNameAsString(), Backend.Java);
+            }
+        }
+        super.visit(that);
+    }
+    
     public void visit(Tree.AttributeGetterDefinition that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;

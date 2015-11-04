@@ -1481,28 +1481,30 @@ public class ClassTransformer extends AbstractTransformer {
         
     }
     
-    private boolean hasField(Declaration member) {
+    static final int FLD_VALUE = 1<<0;
+    static final int FLD_METHOD = 1<<1;
+    
+    static int hasField(Declaration member) {
         if (member instanceof Value) {
             Value value = (Value)member;
             if (!value.isTransient()
                     && !value.isFormal()
                     && !ModelUtil.isConstructor(value)
                     && (value.isShared() || value.isCaptured())) {
-                return true;
+                return FLD_VALUE;
             }
         } else if (member instanceof Function) {
             Function function = (Function)member;
             
-            if (function.isShortcutRefinement()
-                    || (function.isDeferred() && function.isCaptured())
+            if ((function.isDeferred() && function.isCaptured())
                     || function.isParameter() 
                        && (function.isCaptured()
                            || function.isShared()
                            || function.isActual())) {
-                return true;
+                return FLD_METHOD;
             }
         }
-        return false;
+        return 0;
     }
     
     /** 
@@ -1759,7 +1761,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         
         for (Declaration member : model.getMembers()) {
-            if (hasField(member)) {
+            if ((hasField(member) & FLD_VALUE) != 0) {
                 // Obtain a ValueDeclaration
                 JCExpression valueDeclaration = expressionGen().makeMemberValueOrFunctionDeclarationLiteral(null, member, false);
                 // Create a MemberImpl
@@ -1810,7 +1812,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
         boolean[] needsLookup = new boolean[]{false};
         for (Declaration member : model.getMembers()) {
-            if (hasField(member)) {
+            if ((hasField(member) & FLD_VALUE) != 0) {
                 if (member instanceof Function)
                     continue; // TODO: This class is not serializable
                 ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
@@ -1948,7 +1950,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
         boolean[] needsLookup = new boolean[]{false};
         for (Declaration member : model.getMembers()) {
-            if (hasField(member)) {
+            if ((hasField(member) & FLD_VALUE) != 0) {
                 if (member instanceof Function)
                     continue; // TODO: This class is not serializable 
                 ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
