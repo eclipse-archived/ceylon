@@ -506,12 +506,18 @@ shared void strings() {
     check(!"helloworld".getFromLast(-1) exists, "string getFromLast(-1)");
     check(!"helloworld".getFromLast(10) exists, "string getFromLast(9)");
     
-    check("hello".pad(10)=="  hello   ", "string pad");
-    check("hello".padLeading(10)=="     hello", "string padLeading");
-    check("hello".padTrailing(10)=="hello     ", "string padTrailing");
-    check("hello".pad(10,'-')=="--hello---", "string pad");
-    check("hello".padLeading(10,'-')=="-----hello", "string padLeading");
-    check("hello".padTrailing(10,'-')=="hello-----", "string padTrailing");
+    check("hello".pad(10)=="  hello   ", "string pad 1");
+    check("hello".pad(10,'-')=="--hello---", "string pad 2");
+    check("hello".pad(5)=="hello", "pad 3");
+    check("hello".pad(3)=="hello", "pad 4");
+    check("hello".padLeading(10)=="     hello", "string padLeading 1");
+    check("hello".padTrailing(10)=="hello     ", "string padTrailing 1");
+    check("hello".padLeading(10,'-')=="-----hello", "string padLeading 2");
+    check("hello".padTrailing(10,'-')=="hello-----", "string padTrailing 2");
+    check("12.3".padLeading(5,'-')=="-12.3", "string padLeading 3");
+    check("12.3".padTrailing(5,'-')=="12.3-", "string padTrailing 3");
+    check("hello".padLeading(5)=="hello", "padLeading 4");
+    check("hello".padTrailing(5)=="hello", "padTrailing 4");
     
     check("".every(Character.digit), "empty string every");
     check("123".every(Character.digit), "string every");
