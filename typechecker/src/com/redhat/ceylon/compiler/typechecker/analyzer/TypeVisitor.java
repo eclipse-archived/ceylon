@@ -577,7 +577,8 @@ public class TypeVisitor extends Visitor {
                                     "use-site variant instantiation of declaration-site variant types is not supported: type parameter '" + 
                                     p.getName() + "' of '" + 
                                     dec.getName(unit) + 
-                                    "' is not declared invariant");
+                                    "' is declared " + 
+                                    (p.isCovariant() ? "covariant" : "contravariant"));
                         }
                     }
                 }
