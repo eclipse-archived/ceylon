@@ -542,7 +542,7 @@ public class TypeVisitor extends Visitor {
         }
         else {
             if (params.isEmpty()) {
-                that.addError("does not accept type arguments: '" + 
+                that.addError("type declaration does not accept type arguments: '" + 
                         dec.getName(unit) + 
                         "' is not a generic type");
             }
@@ -578,7 +578,8 @@ public class TypeVisitor extends Visitor {
                                     p.getName() + "' of '" + 
                                     dec.getName(unit) + 
                                     "' is declared " + 
-                                    (p.isCovariant() ? "covariant" : "contravariant"));
+                                    (p.isCovariant() ? "covariant" : "contravariant") +
+                                    " (remove the '" + var + "')");
                         }
                     }
                 }
