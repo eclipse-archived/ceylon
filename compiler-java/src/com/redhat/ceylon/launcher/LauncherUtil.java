@@ -176,4 +176,15 @@ public class LauncherUtil {
         }
         return null;
     }
+
+    public static File absoluteFile(File file) {
+        if (file != null) {
+            try {
+                file = file.getCanonicalFile();
+            } catch (IOException e) {
+                file = file.getAbsoluteFile();
+            }
+        }
+        return file;
+    }
 }

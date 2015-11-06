@@ -102,6 +102,7 @@ public class Launcher {
                 try{
                     if (hasVerboseFlag(verbose, "loader")) {
                         Logger log = Logger.getLogger("com.redhat.ceylon.log.loader");
+                        log.info("Current directory is '" + LauncherUtil.absoluteFile(new File(".")).getPath() + "'");
                         log.info("Ceylon home directory is '" + LauncherUtil.determineHome() + "'");
                         for (File f : CeylonClassLoader.getClassPath()) {
                             log.info("path = " + f + " (" + (f.exists() ? "OK" : "Not found!") + ")");
