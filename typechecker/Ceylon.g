@@ -1564,10 +1564,40 @@ unambiguousType
 statement returns [Statement statement]
     : directiveStatement
       { $statement = $directiveStatement.directive; }
+    | (noArgsPrimary parameters LBRACE) => 
+      customControlStatement
+      { $statement = $customControlStatement.statement; } 
+    | (DYNAMIC LBRACKET | ~(DYNAMIC)) => expressionOrSpecificationStatement
+      { $statement = $expressionOrSpecificationStatement.statement; }
     | controlStatement
       { $statement = $controlStatement.controlStatement; }
-    | expressionOrSpecificationStatement
-      { $statement = $expressionOrSpecificationStatement.statement; }
+    ;
+
+customControlStatement returns [ExpressionStatement statement]
+    @init { InvocationExpression ie = new InvocationExpression(null); }
+    : noArgsPrimary
+      { $statement=new ExpressionStatement(null); 
+        Expression e = new Expression(null);
+        ie.setPrimary($noArgsPrimary.primary);
+        e.setTerm(ie);
+        $statement.setExpression(e); }
+      f=customAnonymousFunction 
+      { Expression e = new Expression(null);
+        e.setTerm($f.term);
+        ListedArgument la = new ListedArgument(null);
+        la.setExpression(e); 
+        PositionalArgumentList pal = new PositionalArgumentList(null);        
+        pal.addPositionalArgument(la); 
+        ie.setPositionalArgumentList(pal); }
+    ;
+
+customAnonymousFunction returns [FunctionArgument term]
+    : parameters 
+      { $term = new FunctionArgument(null);
+        $term.setType(new VoidModifier(null));
+        $term.addParameterList($parameters.parameterList); }
+      block
+      { $term.setBlock($block.block); }
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
@@ -1771,6 +1801,13 @@ baseReferenceOrParameterized returns [Primary primary]
         else
             be.setTypeArguments(new InferredTypeArguments(null));
         $primary=be; }
+      ( 
+        namedArguments
+        { InvocationExpression ie = new InvocationExpression(null);
+          ie.setPrimary($primary);
+          ie.setNamedArgumentList($namedArguments.namedArgumentList);
+          $primary=ie; }
+      )?
     | selfReference
       { $primary=$selfReference.atom; }
       (
@@ -1796,6 +1833,84 @@ baseReferenceOrParameterized returns [Primary primary]
       )?
     ;
 
+primary returns [Primary primary]
+    : base
+      { $primary=$base.primary; }
+	    (
+	      qualifiedReference
+	      { QualifiedMemberOrTypeExpression qe;
+	        if ($qualifiedReference.isMember)
+	            qe = new QualifiedMemberExpression(null);
+	        else
+	            qe = new QualifiedTypeExpression(null);
+	        qe.setPrimary($primary);
+	        qe.setMemberOperator($qualifiedReference.operator);
+	        qe.setIdentifier($qualifiedReference.identifier);
+	        if ($qualifiedReference.typeArgumentList!=null)
+	            qe.setTypeArguments($qualifiedReference.typeArgumentList);
+	        else 
+	            qe.setTypeArguments( new InferredTypeArguments(null) );
+	        $primary=qe; }
+	      (
+	        namedArguments
+	        { InvocationExpression ie = new InvocationExpression(null);
+	          ie.setPrimary($primary);
+	          ie.setNamedArgumentList($namedArguments.namedArgumentList);
+	          $primary=ie; }
+	      )?
+	    | 
+	      indexOrIndexRange 
+	      { $indexOrIndexRange.indexExpression.setPrimary($primary);
+	        $primary = $indexOrIndexRange.indexExpression; }
+	    |
+	      positionalArguments 
+	      { InvocationExpression ie = new InvocationExpression(null);
+	        ie.setPrimary($primary);
+	        ie.setPositionalArgumentList($positionalArguments.positionalArgumentList); 
+	        $primary=ie; }
+	    )*
+    ;
+
+noArgsPrimary returns [Primary primary]
+    : base
+      { $primary=$base.primary; }
+      (
+        qualifiedReference
+        { QualifiedMemberOrTypeExpression qe;
+          if ($qualifiedReference.isMember)
+              qe = new QualifiedMemberExpression(null);
+          else
+              qe = new QualifiedTypeExpression(null);
+          qe.setPrimary($primary);
+          qe.setMemberOperator($qualifiedReference.operator);
+          qe.setIdentifier($qualifiedReference.identifier);
+          if ($qualifiedReference.typeArgumentList!=null)
+              qe.setTypeArguments($qualifiedReference.typeArgumentList);
+          else 
+              qe.setTypeArguments( new InferredTypeArguments(null) );
+          $primary=qe; }
+        (
+          namedArguments
+          { InvocationExpression ie = new InvocationExpression(null);
+            ie.setPrimary($primary);
+            ie.setNamedArgumentList($namedArguments.namedArgumentList);
+            $primary=ie; }
+        )?
+      | 
+        indexOrIndexRange 
+        { $indexOrIndexRange.indexExpression.setPrimary($primary);
+          $primary = $indexOrIndexRange.indexExpression; }
+      )*
+    ;
+
+specifierParametersStart
+    : LPAREN 
+      ( 
+        compilerAnnotations annotatedDeclarationStart
+      | RPAREN (SPECIFY | COMPUTE | specifierParametersStart)
+      )
+    ;
+
 baseReference returns [Identifier identifier, 
                        TypeArgumentList typeArgumentList, 
                        boolean isMember]
@@ -1810,48 +1925,6 @@ baseReference returns [Identifier identifier,
         $typeArgumentList = $typeReference.typeArgumentList;
         $isMember = false; }
     )
-    ;
-
-primary returns [Primary primary]
-    : base
-      { $primary=$base.primary; }
-    (
-      qualifiedReference
-      { QualifiedMemberOrTypeExpression qe;
-        if ($qualifiedReference.isMember)
-            qe = new QualifiedMemberExpression(null);
-        else
-            qe = new QualifiedTypeExpression(null);
-        qe.setPrimary($primary);
-        qe.setMemberOperator($qualifiedReference.operator);
-        qe.setIdentifier($qualifiedReference.identifier);
-        if ($qualifiedReference.typeArgumentList!=null)
-            qe.setTypeArguments($qualifiedReference.typeArgumentList);
-        else 
-            qe.setTypeArguments( new InferredTypeArguments(null) );
-        $primary=qe; }
-      | indexOrIndexRange 
-        { $indexOrIndexRange.indexExpression.setPrimary($primary);
-          $primary = $indexOrIndexRange.indexExpression; }
-      | positionalArguments 
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary($primary);
-          ie.setPositionalArgumentList($positionalArguments.positionalArgumentList); 
-          $primary=ie; }
-      | namedArguments
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary($primary);
-          ie.setNamedArgumentList($namedArguments.namedArgumentList);
-          $primary=ie; }
-    )*
-    ;
-
-specifierParametersStart
-    : LPAREN 
-      ( 
-        compilerAnnotations annotatedDeclarationStart
-      | RPAREN (SPECIFY | COMPUTE | specifierParametersStart)
-      )
     ;
 
 qualifiedReference returns [Identifier identifier, MemberOperator operator, 

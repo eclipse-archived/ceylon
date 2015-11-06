@@ -389,7 +389,7 @@ T indirectInvocationWhichIsNotReallyIndirect<T>(T t){
     @type:"Integer"
     (indirectInvocationWhichIsNotReallyIndirect)(2);
     @type:"Integer"
-    (indirectInvocationWhichIsNotReallyIndirect){ t = 2; };
+    //(indirectInvocationWhichIsNotReallyIndirect){ t = 2; };
     return t;
 }
 
