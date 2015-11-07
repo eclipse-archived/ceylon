@@ -2167,8 +2167,7 @@ public abstract class DeclarationVisitor extends Visitor {
         if (model instanceof Value) {
             Value value = (Value) model;
             if (value.isVariable() && value.isTransient()) {
-                that.addError("getter may not be annotated variable: '" + 
-                        model.getName() + "'", 
+                that.addError("getter may not be annotated variable (define a setter with 'assign' instead)", 
                         1501);
             }
         }
