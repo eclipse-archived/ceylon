@@ -7,8 +7,6 @@ arrprot$.ser$$=function(d){
     d.putElement(i,this[i],elemtarg);
   }
 }
-var origArrToString = arrprot$.toString;
-arrprot$.toString = origArrToString;
 arrprot$.rt$=function(t,ne) {
     if (t===null || t===undefined)t={t:Anything};
     if (this.$$targs$$===undefined)this.$$targs$$=={};
@@ -43,6 +41,19 @@ arrprot$.getT$all = function() {
     return $_Array.$$.T$all;
 }
 
+atr$(arrprot$,'string', function() {
+  if (this.length===0)return '{}';
+  var s="{ ";
+  for (var i=0; i<this.length;i++) {
+    var e=this[i];
+    if (i>0)s+=", ";
+    if (e===null)s+="<null>";
+    else if (e===undefined)s+="<undefined>";
+    else s+=e.string;
+  }
+  s+=" }";
+  return s;
+},undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
 atr$(arrprot$,'reversed', function() {
   this._elemTarg();
   return this.Reversed$List();
