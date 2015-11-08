@@ -34,7 +34,7 @@ public class Versions {
 
     public static final int CEYLON_VERSION_MAJOR = 1;
     public static final int CEYLON_VERSION_MINOR = 2;
-    public static final int CEYLON_VERSION_RELEASE = 0;
+    public static final int CEYLON_VERSION_RELEASE = 1;
     /**
      * The MAJOR.MINOR.RELEASE version.
      */
