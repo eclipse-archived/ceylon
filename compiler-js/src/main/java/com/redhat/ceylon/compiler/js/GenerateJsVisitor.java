@@ -1590,7 +1590,7 @@ public class GenerateJsVisitor extends Visitor {
         //TODO we can later optimize this, to replace this getter with the plain one
         //once the value has been defined
         out("if(", privname, "===undefined)throw ", getClAlias(),
-                "InitializationError('Attempt to read unitialized attribute «", pubname, "»');");
+                "InitializationError('Attempt to read uninitialized attribute «", pubname, "»');");
     }
     void generateImmutableAttributeReassignmentCheck(FunctionOrValue decl, String privname, String pubname) {
         if (decl.isLate() && !decl.isVariable()) {
