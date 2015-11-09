@@ -15,7 +15,7 @@ shared native object language {
     shared Integer minorVersion => 2;
     
     "The Ceylon language release version."
-    shared Integer releaseVersion => 0;
+    shared Integer releaseVersion => 1;
     
     "The Ceylon language release name."
     shared String versionName => "A Series Of Unlikely Explanations";
