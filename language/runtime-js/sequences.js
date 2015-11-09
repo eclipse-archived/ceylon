@@ -49,7 +49,7 @@ atr$(arrprot$,'string', function() {
     if (i>0)s+=", ";
     if (e===null)s+="<null>";
     else if (e===undefined)s+="<undefined>";
-    else s+=e.string;
+    else s+= e===this?"<CIRCULAR>":e.string;
   }
   s+=" }";
   return s;

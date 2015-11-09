@@ -1,14 +1,24 @@
 function flatten(tf, $$$mptypes) {
   if (tf.$unflattened$)return tf.$unflattened$;
-  if (tf.jsc$)tf=tf.jsc$;
-  else if (tf.c2$)tf=tf.c2$;
+  var tf_targs;
+  if (tf.jsc$) {
+    tf_targs=tf.$$targs$$;
+    tf=tf.jsc$;
+  } else if (tf.c2$) {
+    tf_targs=tf.$$targs$$;
+    tf=tf.c2$;
+  }
   var mm=getrtmm$$(tf);
   var t0,iadic,argx;
   if (mm && mm.ps) {
     if (mm.ps.length===1) {
       t0=mm.ps[0].$t;
       if (!(t0.t===Sequential || t0.t===Sequence)) {
-        t0=detpl$(mm.ps[0].$t);
+        var ps0t=mm.ps[0].$t;
+        if (typeof(ps0t)==='string') {
+          ps0t=tf_targs[ps0t];
+        }
+        t0=detpl$(ps0t);
       }
       iadic=variadicness(t0);
       argx = t0.t==='T' ? t0.l.length : 1;
