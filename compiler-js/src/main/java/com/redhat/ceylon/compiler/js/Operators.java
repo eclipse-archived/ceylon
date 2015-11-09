@@ -364,7 +364,7 @@ public class Operators {
             return;
         }
         final Type d = term.getTypeModel();
-        final boolean isint = d.isSubtypeOf(that.getUnit().getIntegerType())
+        final boolean isint = (d != null && d.isSubtypeOf(that.getUnit().getIntegerType()))
                 || (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel()));
         Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", gen);
     }
