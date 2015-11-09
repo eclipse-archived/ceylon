@@ -835,6 +835,12 @@ public class TypeUtils {
 
             satisfies = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getSatisfiedTypes();
             caseTypes = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getCaseTypes();
+            if (((com.redhat.ceylon.model.typechecker.model.Interface) d).isAlias()) {
+                ArrayList<Type> s2 = new ArrayList<>(satisfies.size()+1);
+                s2.add(((com.redhat.ceylon.model.typechecker.model.Interface) d).getExtendedType());
+                s2.addAll(satisfies);
+                satisfies = s2;
+            }
 
         } else if (d instanceof FunctionOrValue) {
 
