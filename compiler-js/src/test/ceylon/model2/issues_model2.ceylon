@@ -45,6 +45,19 @@ void bar666(List<Integer> l) {
     check(l.size == 1, "#666");
 }
 
+void foo671(Alias671 x) {
+  `function bar671`.invoke([],x);
+}
+void bar671(Alias671 x) {
+  check(x.size == 1, "#671.1");
+  if (exists f=x.first) {
+    check(f==1, "#671.2");
+  } else {
+    fail("#671.3");
+  }
+}
+interface Alias671 => List<Integer>;
+
 void issues() {
     try {
         value g1 = `function Fuera.Dentro.Cebolla.g`;
@@ -126,4 +139,5 @@ void issues() {
         fail("Annotations #661");
     }
     foo666([1]);
+    foo671([1]);
 }
