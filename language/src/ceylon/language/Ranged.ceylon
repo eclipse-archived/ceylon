@@ -13,13 +13,13 @@
  The _span_ operator accepts the first and last indices of 
  the subrange.
  
-     print(\"hello world\"[0..5]); //prints \"hello\"
+     print(\"hello world\"[0..4]); //prints \"hello\"
      print(\"hello world\"[6..6]); //prints \"w\"
  
  If the last index is smaller than the first index, the
  subrange is reversed.
  
-     print(\"hello world\"[5..0]); //prints \"olleh\"
+     print(\"hello world\"[4..0]); //prints \"olleh\"
  
  If the range of indices identified by the first and last
  indices is outside the range of indices of this object, an
@@ -32,13 +32,12 @@
  extends forward from the smallest possible index (in this
  case `runtime.minIntegerValue-1`) to the given index.
  
-     print(\"hello world\"[...5]) //prints \"hello\"
+     print(\"hello world\"[...4]) //prints \"hello\"
  
  If the first index is before the first index of this object, 
- an empty subrange is produced. (A reversed subrange is 
- never produced.)
+ the first index of the object is used.
  
-     print(\"hello world\"[-5...]); //prints \"\"
+     print(\"hello world\"[-5...]); //prints \"hello world\"
  
  The last index may be omitted, implying that the subrange 
  extends forward from the given index to the largest 
