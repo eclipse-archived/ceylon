@@ -46,10 +46,27 @@ void test628() {
   check(a.b.identBS()=="Bs",  "#628.8");
 }
 
+void test665() {
+    interface I {
+        shared interface J {}
+    }
+
+    class C() satisfies I {
+        shared Integer b => 2;
+        shared class Middle() {
+            shared class D() satisfies J {
+                shared Integer ob => b; // TypeError: Cannot read property 'b' of undefined
+            }
+        }
+    }
+    check(C().Middle().D().ob == 2, "#665");
+}
+
 shared void testIssues() {
   value a = Fuera327(1);
   value b = a.Parent(2);
   value c = a.Child(b);
   check(c.t == 1, "Issue 327");
   test628();
+  test665();
 }
