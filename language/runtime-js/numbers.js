@@ -151,7 +151,12 @@ $specialiseForNumber$(Float, 'timesInteger', function(){return {mod:$CCMM$,$t:{t
 
 JSNum$proto.divided = function(other) {
   if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
-  if (this.fmz$)return this;
+  if (this.fmz$) {
+    if (other == 0 || other.$_undefined) {
+        return NaN;
+    }
+    return this;
+  }
     if (nflt$(this)||nflt$(other)) { 
         var ret = Float(this/other);
         // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
