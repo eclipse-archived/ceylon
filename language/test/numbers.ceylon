@@ -378,8 +378,8 @@ shared void numbers() {
     check(1.0!=-infinity, "1 != -infinity");
 
     check((0.0/0.0).string == "NaN", "NaN undefined string");
-    check(infinity.string == "infinity", "Infinity string");
-    check((-infinity).string == "-infinity", "-Infinity string");
+    check(infinity.string == "Infinity", "Infinity string");
+    check((-infinity).string == "-Infinity", "-Infinity string");
     
     check((0.0/0.0).undefined, "NaN undefined");
     check(!(1.0).undefined, "1 not undefined");
@@ -946,8 +946,8 @@ void checkWholePart(){
     check(1 / +0.4.wholePart > 0.0, "preserve positive 0.d");
     check(1 / (-0.6).wholePart < 0.0, "preserve negative 0.e");
     check(1 / +0.6.wholePart > 0.0, "preserve positive 0.f");
-    check(1.0/-0 == Infinity, "1.0/-0 should be Infinity");
-    check(1.0/-0.0 == -Infinity, "1.0/-0.0 should be -Infinity");
+    check(1.0/-0 == infinity, "1.0/-0 should be Infinity");
+    check(1.0/-0.0 == -infinity, "1.0/-0.0 should be -Infinity");
     
     check((-infinity).wholePart == -infinity);
     check(infinity.wholePart == infinity);
