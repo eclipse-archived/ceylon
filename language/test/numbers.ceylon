@@ -946,6 +946,8 @@ void checkWholePart(){
     check(1 / +0.4.wholePart > 0.0, "preserve positive 0.d");
     check(1 / (-0.6).wholePart < 0.0, "preserve negative 0.e");
     check(1 / +0.6.wholePart > 0.0, "preserve positive 0.f");
+    check(1.0/-0 == Infinity, "1.0/-0 should be Infinity");
+    check(1.0/-0.0 == -Infinity, "1.0/-0.0 should be -Infinity");
     
     check((-infinity).wholePart == -infinity);
     check(infinity.wholePart == infinity);
