@@ -157,10 +157,11 @@ JSNum$proto.divided = function(other) {
     }
     return this;
   }
-    if (nflt$(this)||nflt$(other)) { 
-        var ret = Float(this/other);
-        // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
-        if(!this.negative && other.fmz$ && !ret.negative){ ret = ret.negated; }
+  var otherFloat=nflt$(other);
+  if (nflt$(this)||otherFloat) { 
+    var ret = Float(this/other);
+    // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
+    if((!this.negative && other.fmz$ && !ret.negative)||(!otherFloat&&ret==-Infinity)){ ret = ret.negated; }
         return ret;
     }
     if (other == 0) {
@@ -250,7 +251,7 @@ $specialiseForNumber$(Integer, 'negated', function(){return {mod:$CCMM$,$t:{t:In
 $specialiseForNumber$(Float, 'negated', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,d:['$','Float','$at','negated']};})
 
 atr$(JSNum$proto, 'negative', function(){
-  return nflt$(this) ? this < 0.0 : this.valueOf() < 0;
+  return nflt$(this) ? this < 0.0 || this == -Infinity : this.valueOf() < 0;
 },undefined,function(){return{$t:{t:$_Boolean},an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Number,d:['$','Number','$at','negative']};});
 $specialiseForNumber$(Integer, 'negative', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,d:['$','Integer','$at','negative']};})
 $specialiseForNumber$(Float, 'negative', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,d:['$','Float','$at','negative']};})
