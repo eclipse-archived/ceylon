@@ -159,12 +159,24 @@ public class ModuleVisitor extends Visitor {
             }
             else {
                 String initialName = name.get(0);
+                Backends unitBackends = unit.getUnit().getSupportedBackends();
                 if (initialName.equals(DEFAULT_MODULE_NAME)) {
                     importPath.addError("reserved module name: 'default'");
                 }
                 else if (name.size()==1 && 
                          initialName.equals("ceylon")) {
                     importPath.addError("reserved module name: 'ceylon'");
+                }
+                else if (!moduleBackends.none()
+                        && moduleBackends.header()) {
+                    that.addError("missing backend argument for native annotation on module: "
+                        + formatPath(that.getImportPath().getIdentifiers()));
+                }
+                else if (!moduleBackends.none()
+                        && !unitBackends.none()
+                        && !unitBackends.supports(moduleBackends)) {
+                    that.addError("module not meant for this backend: "
+                        + formatPath(that.getImportPath().getIdentifiers()));
                 }
                 else {
                     if (initialName.equals("ceylon")) {
