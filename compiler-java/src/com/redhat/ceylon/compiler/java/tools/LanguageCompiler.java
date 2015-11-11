@@ -522,7 +522,6 @@ public class LanguageCompiler extends JavaCompiler {
     }
 
     private List<JCCompilationUnit> loadCompiledModules(List<JCCompilationUnit> trees, LinkedList<JCCompilationUnit> moduleTrees) {
-        checkInvalidNativeModules();
         compilerDelegate.visitModules(phasedUnits);
         Modules modules = ceylonContext.getModules();
         // now make sure the phase units have their modules and packages set correctly
@@ -530,7 +529,6 @@ public class LanguageCompiler extends JavaCompiler {
             Package pkg = pu.getPackage();
             loadModuleFromSource(pkg, modules, moduleTrees, trees);
         }
-        checkInvalidNativeImports();
         // also make sure we have packages and modules set up for every Java file we compile
         for(JCCompilationUnit cu : trees){
             // skip Ceylon CUs
@@ -559,40 +557,6 @@ public class LanguageCompiler extends JavaCompiler {
         return trees;
     }
 
-    private void checkInvalidNativeModules() {
-        for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
-            ModuleDescriptor md = pu.findModuleDescriptor();
-            if (md != null) {
-                Backends bs = getNativeBackend(md.getAnnotationList(), md.getUnit());
-                if (!bs.none()) {
-                    if (bs.header()) {
-                        md.addError("missing backend argument for native annotation on module: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
-                    } else if (!ModelUtil.isForBackend(bs, Backend.Java)) {
-                        md.addError("module not meant for this backend: " + formatPath(md.getImportPath().getIdentifiers()), Backend.Java);
-                    }
-                }
-            }
-        }
-    }
-    
-    private void checkInvalidNativeImports() {
-        for (PhasedUnit pu : phasedUnits.getPhasedUnits()) {
-            ModuleDescriptor md = pu.findModuleDescriptor();
-            if (md != null) {
-                for (ImportModule im : md.getImportModuleList().getImportModules()) {
-                    Backends bs = getNativeBackend(im.getAnnotationList(), im.getUnit());
-                    if (im.getImportPath() != null) {
-                        Module m = (Module)im.getImportPath().getModel();
-                        if (!bs.none() && m.isNative() && !bs.supports(m.getNativeBackends())) {
-                            im.addError("native backend name conflicts with imported module: '\"" + 
-                                    bs.names() + "\"' is not '\"" + m.getNativeBackends().names() + "\"'", Backend.Java);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     private void loadModuleFromSource(Package pkg, Modules modules, LinkedList<JCCompilationUnit> moduleTrees, List<JCCompilationUnit> parsedTrees) {
         // skip it if we already resolved the package
         if(pkg.getModule() != null){
