@@ -1,0 +1,37 @@
+<overrides>
+  <replace module="ceylon.language" version="1.2.0">
+    <with module="ceylon.language" version="1.2.1"/>
+  </replace>
+  
+  <replace module="ceylon.runtime" version="1.2.0">
+    <with module="ceylon.runtime" version="1.2.1"/>
+  </replace>
+  
+  <replace module="ceylon.bootstrap" version="1.2.0">
+    <with module="ceylon.bootstrap" version="1.2.1"/>
+  </replace>
+  
+  <replace module="com.redhat.ceylon.common" version="1.2.0">
+    <with module="com.redhat.ceylon.common" version="1.2.1"/>
+  </replace>
+  
+  <replace module="com.redhat.ceylon.typechecker" version="1.2.0">
+    <with module="com.redhat.ceylon.typechecker" version="1.2.1"/>
+  </replace>
+  
+  <replace module="com.redhat.ceylon.module-resolver" version="1.2.0">
+    <with module="com.redhat.ceylon.module-resolver" version="1.2.1"/>
+  </replace>
+  
+  <replace module="com.redhat.ceylon.model" version="1.2.0">
+    <with module="com.redhat.ceylon.model" version="1.2.1"/>
+  </replace>
+  
+  <replace module="com.redhat.ceylon.compiler.java" version="1.2.0">
+    <with module="com.redhat.ceylon.compiler.java" version="1.2.1"/>
+  </replace>
+  
+  <replace module="com.redhat.ceylon.compiler.js" version="1.2.0">
+    <with module="com.redhat.ceylon.compiler.js" version="1.2.1"/>
+  </replace>
+</overrides>

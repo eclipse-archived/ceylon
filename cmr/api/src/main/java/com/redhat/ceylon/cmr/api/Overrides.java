@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -77,6 +78,12 @@ public class Overrides {
 
     private Map<String, String> setVersions = new HashMap<>();
 
+    private String source = null;
+    
+    public String toString() {
+        return this.source == null ? super.toString() : "Overrides("+source+")";
+    }
+    
     public void addArtifactOverride(ArtifactOverrides ao) {
         overrides.put(ao.getOwner(), ao);
         if(ao.getOwner().getVersion() == null)
@@ -213,7 +220,18 @@ public class Overrides {
             throw new IllegalArgumentException("No such overrides file: " + overridesFile);
         }
         try(InputStream is = new FileInputStream(overridesFile)){
-            return Overrides.parse(is);
+            Overrides overrides = Overrides.parse(is);
+            overrides.source = overridesFile.getAbsolutePath();
+            return overrides;
+        }
+    }
+    
+    public static Overrides parseDistOverrides() throws FileNotFoundException, Exception{
+        URL resource = Overrides.class.getResource("/com/redhat/ceylon/cmr/api/dist-overrides.xml");
+        try(InputStream is = resource.openStream()){
+            Overrides overrides = Overrides.parse(is);
+            overrides.source = resource.toString();
+            return overrides;
         }
     }
     
