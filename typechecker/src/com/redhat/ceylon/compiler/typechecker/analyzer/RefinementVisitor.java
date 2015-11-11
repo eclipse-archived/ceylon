@@ -1109,7 +1109,13 @@ public class RefinementVisitor extends Visitor {
 	                        "' of " + message(refined) + 
 	                        " does not satisfy: '" + 
 	                        bound.asString(unit) + 
-	                        "'");
+	                        "' ('" +
+                            refiningTypeParam.getName() +
+                            "' should be upper bounded by '" +
+                            intersectionOfSupertypes(refinedTypeParam)
+                                .substitute(args, variances)
+                                .asString(unit) + 
+                            "')");
 	            }
 	        }
             for (Type bound: refinedBounds) {
@@ -1130,14 +1136,16 @@ public class RefinementVisitor extends Visitor {
                             "refined member type parameter '" + 
                             refinedTypeParam.getName() + 
                             "' of " + message(refined) +
-                            " with upper bound which refining member type parameter '" + 
+                            " has upper bound which refining member type parameter '" + 
                             refiningTypeParam.getName() + 
-                            "' does not satisfy not yet supported: '" + 
+                            "' does not satisfy: '" + 
                             bound.asString(unit) + 
                             "' ('" +
                             refiningTypeParam.getName() +
                             "' should be upper bounded by '" +
-                            refinedBound.asString(unit) + 
+                            intersectionOfSupertypes(refinedTypeParam)
+                                .substitute(args, variances)
+                                .asString(unit) + 
                             "')");
                 }
             }
