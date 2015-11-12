@@ -29,6 +29,7 @@ import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTests;
 import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cargeneration.CarGenerationTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTests;
+import com.redhat.ceylon.compiler.java.test.compat.CompatTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTests;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTests2;
@@ -104,6 +105,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     LanguageSatisfactionSuite.class,
     LanguageSuite.class,
     BcTests.class,
+    CompatTests.class,
     ComprehensionTests.class,
     StaticRefTests.class,
     // FIXME Disabled: it does not run currently in parallel
