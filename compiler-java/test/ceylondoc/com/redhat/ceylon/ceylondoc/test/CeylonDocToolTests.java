@@ -91,6 +91,11 @@ public class CeylonDocToolTests {
     private CeylonDocTool tool(List<File> sourceFolders, List<File> docFolders, List<String> moduleName, 
             boolean haltOnError, boolean deleteDestDir, boolean bootstrapCeylon, String... repositories)
             throws Exception {
+        return tool(sourceFolders, repositories, null, docFolders, moduleName, haltOnError, deleteDestDir, bootstrapCeylon);
+    }
+    private CeylonDocTool tool(List<File> sourceFolders, String[] repositories, String overrides, List<File> docFolders, List<String> moduleName, 
+            boolean haltOnError, boolean deleteDestDir, boolean bootstrapCeylon)
+            throws Exception {
         
         CeylonDocTool tool = new CeylonDocTool();
         tool.setSourceFolders(sourceFolders);
@@ -104,6 +109,9 @@ public class CeylonDocToolTests {
             FileUtil.delete(dir);
         }
         tool.setOut(dir.getAbsolutePath());
+        if (overrides != null) {
+            tool.setOverrides(overrides);
+        }
         tool.initialize(new CeylonTool());
         return tool;
     }
@@ -528,6 +536,8 @@ public class CeylonDocToolTests {
         compileSdkJavaFiles();
 
         CeylonDocTool tool = tool(Arrays.asList(new File("../../ceylon-sdk/source")),
+                new String[0],
+                "../ceylon-sdk/overrides.xml",
                 Collections.<File>emptyList(),
                 Arrays.asList(fullModuleNames), true, false, false);
         tool.setIncludeNonShared(false);
