@@ -5475,7 +5475,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && importedModule.getVersion().equals(Versions.CEYLON_VERSION_NUMBER))
                 return true;
             if(importedModuleName.equals("org.jboss.modules")
-                    && importedModule.getVersion().equals("1.3.3.Final"))
+                    && importedModule.getVersion().equals(Versions.DEPENDENCY_JBOSS_MODULES_VERSION))
                 return true;
         }
         return false;
