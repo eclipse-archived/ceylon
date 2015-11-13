@@ -375,7 +375,7 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>native</literal> specifies that a program
-                    element is implementation is specific to a certain platform,
+                    element implementation is specific to a certain platform,
                     and should be ignored by the compiler backend when compiling 
                     for any other platform, or that it is actually implemented 
                     in a different language, and that the program element should 
