@@ -110,7 +110,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
-        archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", "1.4.0.Final"));
+        archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION));
         // Maven support for CMR
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.maven-support", "2.0")); // optional
         // For the typechecker

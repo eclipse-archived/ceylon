@@ -54,6 +54,7 @@ import org.junit.Before;
 
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -99,7 +100,7 @@ public abstract class CompilerTests {
         "./../ceylon-module-resolver/build/classes",
         "./../ceylon-common/build/classes",
         "./../ceylon-runtime/build/classes",
-        "./../ceylon-runtime/lib/jboss-modules-1.3.3.Final.jar",
+        "./../ceylon-runtime/lib/jboss-modules"+Versions.DEPENDENCY_JBOSS_MODULES_VERSION+".jar",
         "./../ceylon-module-resolver/lib/slf4j-api-1.6.1.jar",
         LANGUAGE_MODULE_CAR,
     };

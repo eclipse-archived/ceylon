@@ -18,6 +18,6 @@
  * MA  02110-1301, USA.
  */
 module com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1572.test "1" {
-    import org.jboss.modules "1.3.3.Final";
+    import org.jboss.modules "1.4.4.Final";
     import ceylon.runtime "1.1.1";
 }
