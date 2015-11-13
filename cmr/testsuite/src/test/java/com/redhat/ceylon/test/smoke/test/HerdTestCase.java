@@ -36,6 +36,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
+import com.redhat.ceylon.common.Versions;
 
 //
 // HOW TO SET UP HERD FOR TESTING
@@ -144,8 +145,8 @@ public class HerdTestCase extends AbstractTest {
     static final ModuleDependencyInfo undertow = new ModuleDependencyInfo("io.undertow.core", "1.0.0.Beta20", false, false);
     static final ModuleDependencyInfo xnioapi = new ModuleDependencyInfo("org.jboss.xnio.api", "3.1.0.CR7", false, false);
     static final ModuleDependencyInfo xnionio = new ModuleDependencyInfo("org.jboss.xnio.nio", "3.1.0.CR7", false, false);
-    static final ModuleDependencyInfo logman = new ModuleDependencyInfo("org.jboss.logmanager", "1.4.0.Final", false, false);
-    static final ModuleDependencyInfo jbossmods = new ModuleDependencyInfo("org.jboss.modules", "1.3.3.Final", false, false);
+    static final ModuleDependencyInfo logman = new ModuleDependencyInfo("org.jboss.logmanager", "2.0.3.Final", false, false);
+    static final ModuleDependencyInfo jbossmods = new ModuleDependencyInfo("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, false, false);
     static final ModuleDependencyInfo httpclient = new ModuleDependencyInfo("org.apache.httpcomponents.httpclient", "4.3.2", false, false);
     static final ModuleDependencyInfo slf4japi = new ModuleDependencyInfo("org.slf4j.api", "1.6.1", false, false);
     static final ModuleDependencyInfo hello = new ModuleDependencyInfo("hello", "1.0.0", false, false);
@@ -583,7 +584,7 @@ public class HerdTestCase extends AbstractTest {
             new ModuleDetails("org.apache.commons.logging", null, null, set(), set(CEYLON_RELEASE), deps(), types(), true, "The Herd"),
             new ModuleDetails("org.apache.httpcomponents.httpclient", null, null, set(), set("4.3.2"), deps(), types(), true, "The Herd"),
             new ModuleDetails("org.apache.httpcomponents.httpcore", null, null, set(), set("4.3.2"), deps(), types(), true, "The Herd"),
-            new ModuleDetails("org.jboss.jandex", null, null, set(), set("1.0.3.Final"), deps(), types(), true, "The Herd"),
+            new ModuleDetails("org.jboss.jandex", null, null, set(), set("2.0.0.Final"), deps(), types(), true, "The Herd"),
     };
 
     @Test
