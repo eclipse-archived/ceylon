@@ -97,7 +97,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support", "2.0");
         MODULES = ModuleIdentifier.create("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION);
         JANDEX = ModuleIdentifier.create("org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION);
-        LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", "1.4.0.Final");
+        LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION);
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
         ANTLR_ANTLR = ModuleIdentifier.create("org.antlr.antlr", "2.7.7");
         ANTLR_STRINGTEMPLATE = ModuleIdentifier.create("org.antlr.stringtemplate", "3.2.1");

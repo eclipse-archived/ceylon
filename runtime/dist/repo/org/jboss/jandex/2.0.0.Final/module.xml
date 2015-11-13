@@ -38,9 +38,9 @@
 ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<module xmlns="urn:jboss:module:1.1" name="org.jboss.jandex" slot="1.0.3.Final">
+<module xmlns="urn:jboss:module:1.1" name="org.jboss.jandex" slot="2.0.0.Final">
     <resources>
-        <resource-root path="org.jboss.jandex-1.0.3.Final.jar"/>
+        <resource-root path="org.jboss.jandex-2.0.0.Final.jar"/>
     </resources>
 
     <dependencies>

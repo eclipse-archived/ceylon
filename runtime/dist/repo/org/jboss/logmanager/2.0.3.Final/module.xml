@@ -22,9 +22,9 @@
 ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 -->
 
-<module xmlns="urn:jboss:module:1.1" name="org.jboss.logmanager" slot="1.4.0.Final">
+<module xmlns="urn:jboss:module:1.1" name="org.jboss.logmanager" slot="2.0.3.Final">
     <resources>
-        <resource-root path="org.jboss.logmanager-1.4.0.Final.jar"/>
+        <resource-root path="org.jboss.logmanager-2.0.3.Final.jar"/>
     </resources>
 
     <dependencies>
