@@ -15,9 +15,12 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
+import static java.lang.Character.isUpperCase;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +32,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
+import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -59,6 +63,9 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  *
  */
 public class AnalyzerUtil {
+    
+//    static final JaroWinkler distance = new JaroWinkler();
+    static final NormalizedLevenshtein distance = new NormalizedLevenshtein();
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
@@ -123,7 +130,7 @@ public class AnalyzerUtil {
         	return null;
         }
     }
-
+    
     static TypedDeclaration getPackageTypedDeclaration(
             String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
@@ -172,6 +179,56 @@ public class AnalyzerUtil {
         return null;
     }
     
+    static String correct(Scope scope, Unit unit, final String name) {
+        final boolean ucase = isUpperCase(name.charAt(0));
+        Set<String> names = 
+                scope.getMatchingDeclarations(unit, "", 0)
+                    .keySet();
+        return Collections.max(
+                names, 
+                new Comparator<String>() {
+            @Override
+            public int compare(String x, String y) {
+                boolean xucase = isUpperCase(x.charAt(0));
+                boolean yucase = isUpperCase(y.charAt(0));
+                if (ucase==xucase && ucase!=yucase) {
+                    return 1;
+                }
+                if (ucase==yucase && ucase!=xucase) {
+                    return -1;
+                }
+                return Double.compare(
+                        distance.similarity(name, x),
+                        distance.similarity(name, y));
+            }
+        });
+    }
+
+    static String correct(TypeDeclaration type, Scope scope, Unit unit, final String name) {
+        final boolean ucase = isUpperCase(name.charAt(0));
+        Set<String> names = 
+                type.getMatchingMemberDeclarations(unit, scope, "", 0)
+                    .keySet();
+        return Collections.max(
+                names, 
+                new Comparator<String>() {
+            @Override
+            public int compare(String x, String y) {
+                boolean xucase = isUpperCase(x.charAt(0));
+                boolean yucase = isUpperCase(y.charAt(0));
+                if (ucase==xucase && ucase!=yucase) {
+                    return 1;
+                }
+                if (ucase==yucase && ucase!=xucase) {
+                    return -1;
+                }
+                return Double.compare(
+                        distance.similarity(name, x),
+                        distance.similarity(name, y));
+            }
+        });
+    }
+
     /**
      * Get the type arguments specified explicitly in the
      * code, or an empty list if no type arguments were

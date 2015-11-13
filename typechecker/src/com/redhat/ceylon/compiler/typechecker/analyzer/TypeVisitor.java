@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
@@ -374,8 +375,12 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 if (!isNativeForWrongBackend(
                         scope.getScopedBackends())) {
+                    String correction = correct(scope, unit, name);
+                    String message = correction==null ? "" :
+                        " (did you mean '" + correction + "'?)";
                     that.addError("type declaration does not exist: '" + 
-                            name + "'", 102);
+                            name + "'" + message, 
+                            102);
                     unit.getUnresolvedReferences().add(id);
                 }
             }
@@ -472,9 +477,14 @@ public class TypeVisitor extends Visitor {
                                     d.getName() + "'");
                         }
                         else {
+                            String correction = 
+                                    correct(d, null, unit, name);
+                            String message = correction==null ? "" :
+                                " (did you mean '" + correction + "'?)";
                             that.addError("member type declaration does not exist: '" + 
                                     name + "' in type '" + 
-                                    d.getName() + "'", 100);
+                                    d.getName() + "'" + 
+                                    message, 100);
                             unit.getUnresolvedReferences()
                                 .add(id);
                         }

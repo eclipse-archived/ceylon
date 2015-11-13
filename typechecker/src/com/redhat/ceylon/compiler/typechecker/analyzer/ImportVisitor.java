@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
@@ -289,8 +290,12 @@ public class ImportVisitor extends Visitor {
         Declaration d = 
                 importedPackage.getMember(name, null, false);
         if (d==null) {
+            String correction = 
+                    correct(importedPackage, unit, name);
+            String message = correction==null ? "" :
+                " (did you mean '" + correction + "'?)";
             id.addError("imported declaration not found: '" + 
-                    name + "'", 
+                    name + "'" + message, 
                     100);
             unit.getUnresolvedReferences().add(id);
         }
@@ -345,9 +350,14 @@ public class ImportVisitor extends Visitor {
         }
         Declaration m = td.getMember(name, null, false);
         if (m==null) {
+            String correction = 
+                    correct(td, null, unit, name);
+            String message = correction==null ? "" :
+                " (did you mean '" + correction + "'?)";
             id.addError("imported declaration not found: '" + 
                     name + "' of '" + 
-                    td.getName() + "'", 
+                    td.getName() + "'" + 
+                    message, 
                     100);
             unit.getUnresolvedReferences().add(id);
         }

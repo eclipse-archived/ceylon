@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkSupertype;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getMatchingParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
@@ -6116,9 +6117,12 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends()) &&
                     error) {
+                String correction = correct(scope, unit, name);
+                String message = correction==null ? "" :
+                    " (did you mean '" + correction + "'?)";
                 that.addError(
                         "function or value does not exist: '" +
-                        name + "'", 
+                        name + "'" + message, 
                         100);
                 unit.getUnresolvedReferences()
                     .add(id);
@@ -6353,6 +6357,12 @@ public class ExpressionVisitor extends Visitor {
                 ambiguous = member==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
+                if (member==null) {
+                    String correction =
+                            correct(d, scope, unit, name);
+                    container += correction==null ? "" :
+                        " (did you mean '" + correction + "'?)";
+                }
             }
             if (member==null) {
                 if (error) {
@@ -6737,8 +6747,13 @@ public class ExpressionVisitor extends Visitor {
                     !dynamic &&
                     !isNativeForWrongBackend(
                             scope.getScopedBackends())) {
+                String correction = 
+                        correct(scope, unit, name);
+                String message = correction==null ? "" :
+                    " (did you mean '" + correction + "'?)";
                 that.addError(
-                        "type does not exist: '" + name + "'", 
+                        "type does not exist: '" + name + "'"
+                                + message, 
                         102);
                 unit.getUnresolvedReferences()
                     .add(id);
@@ -7092,6 +7107,12 @@ public class ExpressionVisitor extends Visitor {
                 ambiguous = type==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
+                if (type==null) {
+                    String correction =
+                            correct(d, scope, unit, name);
+                    container += correction==null ? "" :
+                        " (did you mean '" + correction + "'?)";
+                }
             }
             if (type==null) {
                 if (error) {
