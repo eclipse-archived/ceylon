@@ -53,6 +53,7 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeResolver;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
@@ -64,7 +65,8 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class CeylonModuleLoader extends ModuleLoader {
+public class CeylonModuleLoader extends ModuleLoader 
+    implements RuntimeResolver {
     private static final ModuleIdentifier LANGUAGE;
     private static final ModuleIdentifier COMMON;
     private static final ModuleIdentifier MODEL;
@@ -248,10 +250,15 @@ public class CeylonModuleLoader extends ModuleLoader {
         return repository.getArtifactResult(context);
     }
     
-    public ModuleIdentifier findOverride(ModuleIdentifier mi) {
+    protected ModuleIdentifier findOverride(ModuleIdentifier mi) {
         final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactContext override = repository.getArtifactOverride(context);
         return ModuleIdentifier.create(override.getName(), override.getVersion());
+    }
+    
+    @Override
+    public String resolveVersion(String moduleName, String moduleVersion) {
+        return findOverride(ModuleIdentifier.create(moduleName, moduleVersion)).getSlot();
     }
 
     protected boolean isLogging(List<DependencySpec> deps, Builder builder, ArtifactResult result) {
