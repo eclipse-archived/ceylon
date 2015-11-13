@@ -39,7 +39,7 @@ native class NativeClassMismatch2(Integer i) {}
 
 @error native("jvm") class NativeClassMismatch2(Integer i, Boolean b) {}
 
-native("js") class NativeClassMismatch2(@error String s) {}
+@error native("js") class NativeClassMismatch2(@error String s) {}
 
 
 native class NativeClassMismatch3() extends NativeClassMismatchSuper() {}
@@ -133,7 +133,7 @@ native class NativeClassMismatch9() {
 
 @error native("jvm") class NativeClassMismatch9() {
     native("jvm") shared void test1(Integer i) {}
-    native("jvm") shared void test2(@error String s) {}
+    @error native("jvm") shared void test2(@error String s) {}
     @error native("jvm") shared String test3(Integer i) { return ""; }
     @error native("jvm") shared void test4() {}
     @error native("jvm") shared void testX(Integer i) {}
@@ -142,7 +142,7 @@ native class NativeClassMismatch9() {
 
 @error native("js") class NativeClassMismatch9() {
     native("js") shared void test1(Integer i) {}
-    native("js") shared void test2(@error String s) {}
+    @error native("js") shared void test2(@error String s) {}
     @error native("js") shared String test3(Integer i) { return ""; }
     @error native("js") shared void test4() {}
     @error native("js") shared void testX(Integer i) {}

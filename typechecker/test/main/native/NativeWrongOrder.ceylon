@@ -17,19 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native shared Integer nativeMissingMethod();
-native shared class NativeMissingClass() {
-    native shared void foo();
+native("jvm") class NativeWrongOrder() {
 }
 
-native Integer nativeMissingMethod2();
-native("js") Integer nativeMissingMethod2() => 1;
-
-shared void testNativeMissingMethod() {
-    nativeMissingMethod();
-    nativeMissingMethod2();
-    NativeMissingClass nmc = NativeMissingClass();
+native("js") class NativeWrongOrder() {
 }
 
-shared void testNativeMissingMethod2(NativeMissingClass nmc) {
+@error native class NativeWrongOrder() {
+}
+
+class NativeWrongOrder2() {
+    native("jvm") void test() {}
+    native("js") void test() {}
+    @error native void test();
 }
