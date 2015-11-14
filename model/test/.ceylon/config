@@ -1,0 +1,13 @@
+
+[local]
+foo=bar
+dir=${DIR}
+dir2=${DIR}/..
+
+[test]
+string-hello=hallo
+
+[test.multiple]
+strings=one
+strings=two
+

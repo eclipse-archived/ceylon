@@ -1,0 +1,178 @@
+<project name="Ceylon model module" default="publish" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
+    <property file="../ceylon-common/common-build.properties"/>
+    <property file="build.properties" />
+
+    <!-- Set build directories for all formats. -->
+    <property name="build.dir" value="${basedir}/build" />
+    <property name="build.dist" value="${build.dir}/dist" />
+    <property name="build.dist.repo" value="${build.dist}/repo" />
+    <property name="build.classes" location="${build.dir}/classes" />
+
+    <property name="src" location="src" />
+    <property name="test.src" location="test/src" />
+    <property name="test.reports" location="${build.dir}/test-reports" />
+
+    <!-- Local repository -->
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
+    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}" />
+    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar" />
+    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}" />
+    <property name="ceylon.model.repo" value="${ceylon.repo.dir}/${ceylon.model.dir}" />
+    <property name="ceylon.model.dist" value="${build.dist}/${ceylon.model.dir}" />
+
+    <!-- Classpath for the build tools. -->
+    <path id="classpath">
+        <pathelement path="${ceylon.common.lib}" />
+    </path>
+
+    <path id="test.run.classpath">
+        <pathelement path="${build.classes}" />
+        <pathelement path="${junit.lib}" />
+    </path>
+
+    <!-- ################################################################## -->
+
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+
+    <!-- project compilation -->
+    <target name="compile" description="compile Ceylon model">
+        <mkdir dir="${build.classes}" />
+        <javac
+            srcdir="${src}"
+            destdir="${build.classes}"
+            debug="true"
+            encoding="UTF8"
+            classpathref="classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}">
+            <include name="**/*.java" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${src}">
+                <include name="**/*" />
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="ceylon-model.jar" depends="compile">
+        <mkdir dir="${build.dist.repo}/${ceylon.model.dir}"/>
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>    	
+        <jar destfile="${build.dist.repo}/${ceylon.model.jar}">
+            <fileset dir="${build.classes}">
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.model"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.model.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.model.jar}" />
+        </antcall>
+    </target>
+
+    <target name="build" depends="ceylon-model.jar">
+    </target>
+
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo" description="Init local ceylon repository and add ceylon.model">
+        <mkdir dir="${ceylon.model.repo}" />
+    </target>
+
+    <target name="clean.repo" description="Clean local ceylon repository">
+        <delete dir="${ceylon.model.repo}" />
+    </target>
+
+    <target name="ide-quick-internal">
+        <property name="archivePath" value="${ceylon.model.lib}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+    </target>
+
+    <target name="dist" depends="build">
+    </target>
+
+    <target name="publish"
+        depends="dist,clean.repo,init.repo,publish-internal"
+        description="Publish both type checker and ceylon.language template module">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}" />
+        </copy>
+    </target>
+
+    <target name="compile.tests">
+        <mkdir dir="${build.classes}" />
+        <javac
+            srcdir="${test.src}"
+            destdir="${build.classes}"
+            debug="true"
+            encoding="UTF8"
+            classpathref="test.run.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}">
+            <include name="**/*.java" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${test.src}">
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="test"
+        depends="publish,compile.tests"
+        description="Run tests">
+        <mkdir dir="${test.reports}" />
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="test.run.classpath" />
+
+            <formatter type="xml" />
+            <test
+                name="com.redhat.ceylon.model.test.AllTests"
+                fork="yes"
+                todir="${test.reports}" />
+        </junit>
+        <junitreport todir="${test.reports}">
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${test.reports}" />
+        </junitreport>
+    </target>
+</project>
