@@ -86,11 +86,11 @@ which are documented in the `NOTICE` file that accompanied this code.
 
 ### Repository
 
-The content of this code repository, [available here on GitHub][ceylon-dist], 
+The content of this code repository, [available here on GitHub][ceylon], 
 is released under the ASL v2.0 as provided in the `LICENSE-ASL` file 
 that accompanied this code.
 
-[ceylon-dist]: https://github.com/ceylon/ceylon-dist
+[ceylon]: https://github.com/ceylon/ceylon
 
 By submitting a "pull request" or otherwise contributing to this 
 repository, you agree to license your contribution under the license 
