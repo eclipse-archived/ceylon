@@ -1,0 +1,160 @@
+package com.redhat.ceylon.compiler.js;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
+
+public class TryCatchGenerator {
+
+    private final GenerateJsVisitor gen;
+    private final Set<Declaration> directAccess;
+
+    TryCatchGenerator(GenerateJsVisitor generator, Set<Declaration> da) {
+        gen = generator;
+        directAccess = da;
+    }
+
+    void generate(Tree.TryCatchStatement that) {
+        List<Tree.Resource> resources = that.getTryClause().getResourceList() == null ? null :
+            that.getTryClause().getResourceList().getResources();
+        if (resources != null && resources.isEmpty()) {
+            resources = null;
+        }
+        List<Res> resourceVars = null;
+        String tvar = null;
+        if (resources != null && !resources.isEmpty()) {
+            //Declare the resource variables
+            resourceVars = new ArrayList<>(resources.size());
+            gen.out("var ");
+            for (Tree.Resource res : resources) {
+                if (!resourceVars.isEmpty()) {
+                    gen.out(",");
+                }
+                final Res r = new Res(res);
+                gen.out(r.var, "=null");
+                resourceVars.add(r);
+            }
+            tvar = gen.getNames().createTempVariable();
+            gen.out(",", tvar, "=null");
+            if (tvar != null) {
+            }
+            gen.endLine(true);
+        }
+        gen.out("try");
+        Set<Value> caps = null;
+        if (resources != null) {
+            gen.out("{");
+            //Initialize the resources
+            for (Res resourceVar : resourceVars) {
+                if (resourceVar.destroy) {
+                    gen.out(resourceVar.var, "=");
+                    resourceVar.r.visit(gen);
+                } else {
+                    gen.out(tvar, "=");
+                    resourceVar.r.visit(gen);
+                    gen.out(";", tvar, ".obtain();", resourceVar.var, "=", tvar);
+                }
+                gen.endLine(true);
+                if (resourceVar.captured != null) {
+                    if (caps == null) {
+                        caps = new HashSet<>(resourceVars.size());
+                    }
+                    caps.add(resourceVar.captured);
+                }
+            }
+        }
+        gen.encloseBlockInFunction(that.getTryClause().getBlock(), true, caps);
+        if (resources != null) {
+            //Destroy/release resources
+            Collections.reverse(resourceVars);
+            for (Res r : resourceVars) {
+                gen.out(tvar,"=",r.var,";", r.var, "=null;", tvar);
+                if (r.destroy) {
+                    gen.out(".destroy(null);");
+                } else {
+                    gen.out(".release(null);");
+                }
+                gen.endLine();
+            }
+            gen.out("}");
+        }
+
+        if (!that.getCatchClauses().isEmpty() || resources != null) {
+            String catchVarName = gen.getNames().createTempVariable();
+            gen.out("catch(", catchVarName, ")");
+            gen.beginBlock();
+            //Check if it's native and if so, wrap it
+            gen.out("if(", catchVarName, ".getT$name===undefined)", catchVarName, "=",
+                    gen.getClAlias(), "NatErr(", catchVarName, ")");
+            gen.endLine(true);
+            if (resources != null) {
+                for (Res r : resourceVars) {
+                    gen.out("try{if(", r.var, "!==null)", r.var,
+                            r.destroy?".destroy(":".release(",
+                            catchVarName, ");}catch(", r.var,"e$){",
+                            catchVarName, ".addSuppressed(", r.var, "e$);}");
+                    gen.endLine();
+                }
+            }
+            boolean firstCatch = true;
+            for (Tree.CatchClause catchClause : that.getCatchClauses()) {
+                Tree.Variable variable = catchClause.getCatchVariable().getVariable();
+                if (!firstCatch) {
+                    gen.out("else ");
+                }
+                firstCatch = false;
+                gen.out("if(");
+                gen.generateIsOfType(variable, catchVarName, variable.getType().getTypeModel(), null, false);
+                gen.out(")");
+
+                if (catchClause.getBlock().getStatements().isEmpty()) {
+                    gen.out("{}");
+                } else {
+                    gen.beginBlock();
+                    directAccess.add(variable.getDeclarationModel());
+                    gen.getNames().forceName(variable.getDeclarationModel(), catchVarName);
+
+                    gen.visitStatements(catchClause.getBlock().getStatements());
+                    gen.endBlock();
+                }
+            }
+            if (!that.getCatchClauses().isEmpty()) {
+                gen.out("else{throw ", catchVarName, "}");
+            }
+            gen.endBlockNewLine();
+        }
+
+        if (that.getFinallyClause() != null) {
+            gen.out("finally");
+            gen.encloseBlockInFunction(that.getFinallyClause().getBlock(), true, caps);
+        }
+    }
+
+    private class Res {
+        final boolean destroy;
+        final String var;
+        final Tree.Resource r;
+        final Value captured;
+        Res(Tree.Resource r) {
+            this.r = r;
+            if (r.getVariable() != null) {
+                destroy = r.getVariable().getType().getTypeModel().isSubtypeOf(
+                        r.getUnit().getDestroyableType());
+                var = gen.getNames().name(r.getVariable().getDeclarationModel());
+                captured = r.getVariable().getDeclarationModel().isCaptured() ?
+                        r.getVariable().getDeclarationModel() : null;
+            } else {
+                destroy = r.getExpression().getTypeModel().isSubtypeOf(
+                        r.getUnit().getDestroyableType());
+                var = gen.getNames().createTempVariable();
+                captured = null;
+            }
+        }
+    }
+}

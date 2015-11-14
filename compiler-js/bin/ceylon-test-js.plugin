@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon test-js" tool
+summary=Executes tests
+module=com.redhat.ceylon.compiler.js/@ceylon-version@
+class=com.redhat.ceylon.compiler.js.CeylonTestJsTool
+

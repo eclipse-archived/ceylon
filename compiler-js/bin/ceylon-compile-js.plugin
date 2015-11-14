@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon compile-js" tool
+summary=Compiles Ceylon source code to JavaScript and directly produces module and source archives in a module repository
+module=com.redhat.ceylon.compiler.js/@ceylon-version@
+class=com.redhat.ceylon.compiler.js.CeylonCompileJsTool
+

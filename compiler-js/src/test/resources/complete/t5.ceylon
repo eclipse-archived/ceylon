@@ -1,0 +1,2 @@
+void test() {
+  print("x".

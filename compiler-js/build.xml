@@ -1,0 +1,264 @@
+<project name="Ceylon JS compiler" default="test" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
+    <property file="../ceylon-common/common-build.properties"/>
+    <property file="build.properties" />
+
+    <!-- Set build directories for all formats. -->
+    <property name="build.dir" value="${basedir}/build" />
+    <property name="build.classes" location="${build.dir}/classes/main" />
+    <property name="build.test-classes" location="${build.dir}/classes/test" />
+    <property name="build.dist" location="${build.dir}/dist" />
+    <property name="build.dist.repo" location="${build.dist}/repo" />
+    <property name="build.bin" location="${build.dir}/bin" />
+    <property name="build.lib" location="${build.dir}/lib" />
+    <property name="build.test" location="${build.dir}/test" />
+
+    <property name="test-src" location="${basedir}/src/test/java" />
+    <property name="test-lib" location="${build.lib}/compiler.js.test.jar" />
+    <property name="src" location="${basedir}/src/main/java" />
+    <property name="js-src" location="${basedir}/src/main/js" />
+    <property name="runtime" value="${build.dir}/runtime" />
+
+    <property name="jslangpath" value="ceylon/language/${module.com.redhat.ceylon.compiler.js.version}" />
+    <property name="jslangmodule" value="${jslangpath}/ceylon.language-${module.com.redhat.ceylon.compiler.js.version}.js" />
+    <property name="jslangmodel" value="${jslangpath}/ceylon.language-${module.com.redhat.ceylon.compiler.js.version}-model.js" />
+    
+    <tstamp />
+
+    <!-- Local repository -->
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
+    <property name="ceylon.js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}" />
+    <property name="ceylon.js.repo" value="${ceylon.repo.dir}/${ceylon.js.dir}" />
+    <property name="ceylon.js.dist" value="${build.dist.repo}/${ceylon.js.dir}"/>
+    <property name="ceylon.js.jar" value="com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar" />
+    <property name="ceylon.js.lib" location="${ceylon.js.dist}/${ceylon.js.jar}" />
+
+    <!-- module archives -->
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
+    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}" />
+    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar" />
+    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}" />
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
+    <property name="ceylon.module-resolver.lib" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
+    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
+    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
+    <property name="ceylon.compiler.lib" value="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
+
+    <path id="test.run.classpath">
+        <pathelement path="${antlr.lib}"/>
+        <pathelement path="${json.lib}" />
+        <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.model.lib}" />
+        <pathelement path="${ceylon.module-resolver.lib}" />
+        <pathelement path="${ceylon.compiler.lib}" />
+        <pathelement path="${ceylon.typechecker.lib}" />
+        <pathelement path="${build.classes}" />
+        <pathelement path="${build.test-classes}" />
+    </path>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean" description="Clean up everything">
+        <delete dir="${build.dir}" />
+    </target>
+
+    <!-- project compilation -->
+    <target name="compile" description="compile the js compiler">
+        <mkdir dir="${runtime}/${jslangpath}" />
+        <mkdir dir="${build.classes}" />
+        <!-- compile Java sources -->
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" encoding="UTF-8" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}">
+            <classpath>
+                <pathelement path="${antlr.lib}"/>
+                <pathelement path="${ceylon.common.lib}" />
+                <pathelement path="${ceylon.model.lib}" />
+                <pathelement path="${ceylon.typechecker.lib}" />
+                <pathelement path="${ceylon.module-resolver.lib}" />
+                <pathelement path="${ceylon.compiler.lib}" />
+                <pathelement path="${json.lib}" />
+            </classpath>
+            <include name="**/*.java" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${src}">
+                <include name="META-INF/**/*"/>
+                <include name="com/redhat/**/resources/**" />
+                <include name="com/redhat/**/*.properties" />
+            </fileset>
+        </copy>
+        <!-- 
+         We need a second compilation step to compile entry points compatible with Java 5
+         to be able to produce nice error messages for older Java versions 
+        -->
+        <delete dir="${build.classes}">
+            <include name="**/*Main5.class"/>
+        </delete>
+        <javac srcdir="${src}" destdir="${build.classes}" debug="true" encoding="UTF-8" source="1.5" target="1.5">
+            <classpath>
+                <pathelement path="${antlr.lib}"/>
+                <pathelement path="${ceylon.common.lib}" />
+                <pathelement path="${ceylon.model.lib}" />
+                <pathelement path="${ceylon.typechecker.lib}" />
+                <pathelement path="${ceylon.module-resolver.lib}" />
+                <pathelement path="${ceylon.compiler.lib}" />
+            </classpath>
+            <include name="**/*Main5.java" />
+        </javac>
+    </target>
+
+    <!-- build jscompiler jar -->
+    <target name="ceylon.js.jar" depends="compile">
+        <mkdir dir="${build.dist.repo}/${ceylon.js.dir}"/>
+        <mkdir dir="${build.bin}"/>
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>        
+        <jar destfile="${ceylon.js.lib}">
+            <fileset dir="${build.classes}">
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.js"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.js.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${ceylon.js.lib}" />
+        </antcall>
+    </target>
+
+    <!-- generate the ceylon.language.js file -->
+    <target name="build-js-language-module" depends="compile" unless="skip.language.module">
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true" failonerror="yes">
+            <arg value="../ceylon.language/runtime-js/MASTER.txt" />
+            <arg value="${runtime}/${jslangmodule}" />
+        </java>
+        <antcall target="sha1sum">
+            <param name="file" value="${runtime}/${jslangmodel}" />
+        </antcall>
+    </target>
+
+    <target name="build" depends="ceylon.js.jar,build-js-language-module">
+    </target>
+
+    <target name="test-compile" depends="build">
+        <mkdir dir="${build.test-classes}" />
+        <javac srcdir="${test-src}" destdir="${build.test-classes}" debug="true" encoding="UTF-8" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}">
+            <classpath>
+                <pathelement location="${ceylon.common.lib}" />
+                <pathelement location="${ceylon.model.lib}" />
+                <pathelement location="${ceylon.typechecker.lib}" />
+                <pathelement location="${ceylon.module-resolver.lib}" />
+                <pathelement location="${ceylon.compiler.lib}" />
+                <pathelement location="${build.classes}" />
+                <fileset dir="lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+        <jar destfile="${test-lib}">
+            <fileset dir="${build.test-classes}">
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="compiletest" depends="test-compile">
+        <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
+            <sysproperty key="file.encoding" value="UTF-8" />
+            <arg value="src/test/ceylon"/>
+            <arg value="../ceylon.language/test"/>
+            <arg value="X:../ceylon.language/test/jvm"/>
+            <arg value="R:../ceylon.language/test-resource" />
+            <arg value="r:../ceylon.language/test-resource/resource.txt" />
+            <arg value="r:../ceylon.language/test-resource/resmod/modres.txt" />
+        </java>
+    </target>
+
+    <target name="test" depends="compiletest" description="Run generated source comparison tests" />
+
+    <target name="noderun">
+        <echo message="Running tests on node.js (node must be installed)" />
+        <java classname="NodeTest" classpathref="test.run.classpath">
+            <arg value="${build.test}/lexical" />
+            <arg value="${build.test}/proto" />
+        </java>
+    </target>
+
+    <target name="nodetest" depends="build-js-language-module,compiletest,noderun" description="Run tests on node.js (requires node)">
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo"
+            description="Initialize the default local Ceylon module repository">
+        <mkdir dir="${ceylon.js.repo}"/>
+    </target>
+    <target name="clean.repo"
+            description="Clean default local Ceylon module repository">
+        <delete dir="${ceylon.js.repo}"/>
+    </target>
+
+    <target name="dist" depends="build"
+            description="Create Ceylon JS compiler distribution">
+        <copy overwrite="true"
+              file="${json.lib}"
+              tofile="${build.dist.repo}/${json.repo}"/>
+    </target>
+
+    <target name="publish"
+            depends="dist,clean.repo,init.repo,publish-internal"
+            description="Publish Ceylon JS compiler module to default repo">
+        <mkdir dir="${build.bin}" />
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
+            <fileset dir="${runtime}"/>
+        </copy>
+        <copy todir="${ceylon.bin.dir}" overwrite="true">
+            <fileset dir="${build.bin}"/>
+        </copy>
+    </target>
+
+    <target name="ide-quick-internal">
+        <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.js.dir}/${ceylon.js.jar}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+    </target>
+
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}"/>
+    </target>
+
+</project>
