@@ -1,0 +1,757 @@
+<project name="Ceylon Language module" default="publish" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
+    <property file="../ceylon-common/common-build.properties"/>
+    <property file="build.properties"/>
+
+    <!-- Set build directories for all formats. -->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.classes" location="${build.dir}/classes"/>
+    <property name="build.dist" location="${build.dir}/dist"/>
+    <property name="build.dist.repo" location="${build.dist}/repo"/>
+    <property name="build.lib" location="${build.dir}/lib"/>
+    <property name="build.test" location="${build.dir}/test"/>
+    <property name="build.tools-test" location="${build.dir}/toolsTest/launcher-classes"/>
+    <property name="build.test.repo" location="${build.dir}/test-repo"/>
+    <property name="ide.dist" location="${basedir}/ide-dist"/>
+    
+    <!-- The Java/JS source files for the runtime -->
+    <property name="runtime.src" location="runtime"/> 
+    <property name="runtime-js.src" location="runtime-js"/> 
+
+    <property name="test.src" location="test"/>
+    <property name="test.res" location="test-resource"/>
+    <property name="test.java.src" location="test-java"/>
+    <property name="test-jvm.src" location="test-jvm"/>
+    <property name="test-jvm-tools.src" location="test-jvm-tools"/>
+    <property name="test-js.src" location="test-js"/>
+    <property name="test.reports" location="${build.dir}/test-reports"/>
+
+    <tstamp/>
+
+    <!-- Local repository -->
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.dist.dir" location="${basedir}/../ceylon-dist/dist"/>
+    
+    <!-- ceylon.language -->
+    <property name="module.language.src" value="${basedir}/src"/>
+    <property name="module.language.dir" value="ceylon/language"/>
+    <property name="module.language.name" value="ceylon.language"/>
+    <property name="module.language.runtime" value="${basedir}/runtime"/>
+
+    <!-- module archives -->
+    <property name="ceylon.language.name" value="${module.language.name}-${module.ceylon.language.version}"/>
+    <property name="ceylon.language.dir" value="${module.language.dir}/${module.ceylon.language.version}"/>
+    <property name="ceylon.language.src" value="${ceylon.language.dir}/${ceylon.language.name}.src"/>
+    <property name="ceylon.language.car" value="${ceylon.language.dir}/${ceylon.language.name}.car"/>
+    <property name="ceylon.language.js" value="${ceylon.language.dir}/${ceylon.language.name}.js"/> 
+    <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
+    <property name="ceylon.language.dist" value="${build.dist.repo}/${ceylon.language.dir}"/>
+    <property name="ceylon.compiler.loc" value="${ceylon.dist.dir}/bin/ceylon"/>
+    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
+    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
+    <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
+    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
+    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
+    <!-- For JS -->
+    <property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
+    <property name="ceylon.compiler-js.jar" value="${ceylon.compiler-js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar"/>
+    <property name="ceylon.compiler-js.lib" location="${ceylon.repo.dir}/${ceylon.compiler-js.jar}"/>
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+
+    <property name="ceylon.ant.lib" location="${ceylon.dist.dir}/lib/ceylon-ant.jar"/>
+
+    <property name="tests.car" value="${build.test}/default/default.car"/>
+
+    <path id="compile.classpath">
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+    </path>
+    
+    <path id="test.compile.classpath">
+    	<pathelement path="${build.tools-test}"/>
+        <pathelement path="${build.dist.repo}/${ceylon.language.car}"/>
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${junit.lib}"/>
+    </path>
+    
+    <path id="test.run.classpath">
+        <path refid="test.compile.classpath"/>
+        <pathelement path="${build.test}"/>
+        <pathelement path="${ceylon.typechecker.lib}"/>
+        <pathelement path="${ceylon.compiler.lib}"/>
+        <pathelement path="${jandex.lib}"/>
+    </path>
+    
+    <path id="ant-tasks">
+        <pathelement path="${ceylon.ant.lib}"/>
+    </path>
+    
+    <path id="js.compiler.classpath">
+        <pathelement path="${antlr.lib}"/>
+        <pathelement path="${json.lib}" />
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${ceylon.typechecker.lib}"/>
+        <pathelement path="${ceylon.compiler-js.lib}"/>
+    </path>
+    
+    <path id="js.test.compile.classpath">
+        <path refid="js.compiler.classpath"/>
+        <pathelement path="${basedir}/../ceylon-js/build/lib/compiler.js.test.jar"/>
+    </path>
+
+    <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+
+    <!-- ################################################################## -->
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}"/>
+    </target>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean" description="Clean up everything">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="ide-quick-internal">
+        <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.language.car}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+    </target>
+
+    <target name="dist"
+            depends="build"
+            description="Create Ceylon language distribution">
+        <delete file="${build.dist.repo}/${ceylon.language.src}"/>
+        <delete file="${build.dist.repo}/${ceylon.language.src}.sha1"/>
+        <zip destfile="${build.dist.repo}/${ceylon.language.src}">
+            <fileset dir="${module.language.src}">
+                <include name="ceylon/language/**/*.ceylon"/>
+            </fileset>
+            <fileset dir="${module.language.runtime}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.language.src}" />
+        </antcall>
+    </target>
+
+    <!-- Repository targets -->
+    <target name="publish"
+            depends="clean.repo,init.repo,dist,publish-internal"
+            description="Publish Ceylon language module to default repo">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
+        </copy>
+    </target>
+
+    <target name="init.repo"
+            description="Create default local Ceylon module repository">
+        <mkdir dir="${ceylon.language.repo}"/>
+    </target>
+
+    <target name="clean.repo"
+            description="Clean default local Ceylon module repository">
+        <delete dir="${ceylon.language.repo}"/>
+    </target>
+
+    <target name="generate.sources.java">
+        <!-- Short -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/ShortArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Short"/>
+            <filter token="Classname" value="ShortArray"/>
+            
+            <filter token="PrimitiveType" value="short"/>
+            
+            <filter token="BoxedType" value="ceylon.language.Integer"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
+            <filter token="UnboxMethod" value="longValue"/>
+            
+            <filter token="JavaBoxedType" value="java.lang.Short"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Short"/>
+            
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value="/*"/>
+            <filter token="OptionalEnd" value="*/"/>
+          	<filter token="Optional" value="//"/>
+            <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
+            <filter token="CeylonArrayGetter" value="NOTUSED"/>
+          </filterset>
+        </copy>
+        <!-- Int -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/IntArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Int"/>
+            <filter token="Classname" value="IntArray"/>
+            
+            <filter token="PrimitiveType" value="int"/>
+            
+            <filter token="BoxedType" value="ceylon.language.Integer"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
+            <filter token="UnboxMethod" value="longValue"/>
+            
+            <filter token="JavaBoxedType" value="java.lang.Integer"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Integer"/>
+            
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value=""/>
+            <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
+            <filter token="ArrayInstanceWrapper" value="instanceForCodePoints"/>
+            <filter token="CeylonArrayGetter" value="getCodePointArray"/>
+            <filter token="CeylonArrayGetterType" value="ceylon.language.Character"/>
+            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Character"/>
+          </filterset>
+        </copy>
+        <!-- Long -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/LongArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Long"/>
+            <filter token="Classname" value="LongArray"/>
+            <filter token="PrimitiveType" value="long"/>
+            <filter token="BoxedType" value="ceylon.language.Integer"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
+            <filter token="UnboxMethod" value="longValue"/>
+            <filter token="JavaBoxedType" value="java.lang.Long"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Long"/>
+            
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value=""/>
+            <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
+            <filter token="ArrayInstanceWrapper" value="instanceForIntegers"/>
+            <filter token="CeylonArrayGetter" value="getIntegerArray"/>
+            <filter token="CeylonArrayGetterType" value="ceylon.language.Integer"/>
+            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Integer"/>
+          </filterset>
+        </copy>
+        <!-- Byte -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/ByteArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Byte"/>
+            <filter token="Classname" value="ByteArray"/>
+            <filter token="PrimitiveType" value="byte"/>
+            <filter token="BoxedType" value="ceylon.language.Byte"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Byte"/>
+            <filter token="JavaBoxedType" value="java.lang.Byte"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Byte"/>
+            <filter token="UnboxMethod" value="byteValue"/>
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value=""/>
+            <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
+            <filter token="ArrayInstanceWrapper" value="instanceForBytes"/>
+            <filter token="CeylonArrayGetter" value="getByteArray"/>
+            <filter token="CeylonArrayGetterType" value="ceylon.language.Byte"/>
+            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Byte"/>
+          </filterset>
+        </copy>
+        <!-- Boolean -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/BooleanArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Boolean"/>
+            <filter token="Classname" value="BooleanArray"/>
+            <filter token="PrimitiveType" value="boolean"/>
+            <filter token="BoxedType" value="ceylon.language.Boolean"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Boolean"/>
+            <filter token="JavaBoxedType" value="java.lang.Boolean"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Boolean"/>
+            <filter token="UnboxMethod" value="booleanValue"/>
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value=""/>
+            <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
+            <filter token="ArrayInstanceWrapper" value="instanceForBooleans"/>
+            <filter token="CeylonArrayGetter" value="getBooleanArray"/>
+            <filter token="CeylonArrayGetterType" value="ceylon.language.Boolean"/>
+            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Boolean"/>
+          </filterset>
+        </copy>
+        <!-- Character -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/CharArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Char"/>
+            <filter token="Classname" value="CharArray"/>
+            <filter token="PrimitiveType" value="char"/>
+            <filter token="BoxedType" value="ceylon.language.Character"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Character"/>
+            <filter token="JavaBoxedType" value="java.lang.Character"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Character"/>
+            <filter token="UnboxMethod" value="intValue"/>
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value="/*"/>
+            <filter token="OptionalEnd" value="*/"/>
+          	<filter token="Optional" value="//"/>
+            <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
+            <filter token="CeylonArrayGetter" value="NOTUSED"/>
+          </filterset>
+        </copy>
+        <!-- Float -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/FloatArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Float"/>
+            <filter token="Classname" value="FloatArray"/>
+            <filter token="PrimitiveType" value="float"/>
+            <filter token="BoxedType" value="ceylon.language.Float"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Float"/>
+            <filter token="JavaBoxedType" value="java.lang.Float"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Float"/>
+            <filter token="UnboxMethod" value="doubleValue"/>
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value="/*"/>
+            <filter token="OptionalEnd" value="*/"/>
+          	<filter token="Optional" value="//"/>
+            <filter token="ArrayInstanceWrapper" value="NOT USED"/>
+            <filter token="CeylonArrayGetter" value="NOT USED"/>
+            <filter token="CeylonArrayGetterType" value="NOT USED"/>
+            <filter token="CeylonArrayGetterTypeName" value="NOT USED"/>
+          </filterset>
+        </copy>
+        <!-- Double -->
+        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/DoubleArray.java"
+            overwrite="true">
+          <filterset>
+            <filter token="Name" value="Double"/>
+            <filter token="Classname" value="DoubleArray"/>
+            <filter token="PrimitiveType" value="double"/>
+            <filter token="BoxedType" value="ceylon.language.Float"/>
+            <filter token="BoxedTypeName" value="ceylon.language::Float"/>
+            <filter token="JavaBoxedType" value="java.lang.Double"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Double"/>
+            <filter token="UnboxMethod" value="doubleValue"/>
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value=""/>
+            <filter token="OptionalEnd" value=""/>
+          	<filter token="Optional" value=""/>
+            <filter token="ArrayInstanceWrapper" value="instanceForFloats"/>
+            <filter token="CeylonArrayGetter" value="getFloatArray"/>
+            <filter token="CeylonArrayGetterType" value="ceylon.language.Float"/>
+            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Float"/>
+          </filterset>
+        </copy>
+        <!-- Object -->
+        <!--<copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/com/redhat/ceylon/compiler/java/language/ObjectArray.java">
+          <filterset>
+            <filter token="Name" value="Object"/>
+            <filter token="Classname" value="ObjectArray"/>
+            <filter token="PrimitiveType" value="T"/>
+            <filter token="BoxedType" value="T"/>
+            <filter token="BoxedTypeName" value="T|ceylon.language::Null"/>
+            <filter token="JavaBoxedType" value="java.lang.Object"/>
+            <filter token="JavaBoxedTypeName" value="java.lang::Object"/>
+            <filter token="UnboxMethod" value="longValue"/>
+            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+            <filter token="OptionalStart" value="/*"/>
+            <filter token="OptionalEnd" value="*/"/>
+            <filter token="Optional" value="//"/>
+            <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
+            <filter token="CeylonArrayGetter" value="NOTUSED"/>
+          </filterset>
+        </copy>-->
+    </target>
+    
+    <!-- Tasks related to building the ceylon.language module -->
+    <!-- Rule to build runtime classes from their Java and Ceylon sources -->
+    <target name="ceylon.language.java"
+            depends="generate.sources.java">
+        <!-- first removing any previous compiled artifact from
+             the output repo because otherwise the build will fail -->
+        <delete file="${build.dist.repo}/${ceylon.language.car}" failonerror="false" />
+        <!-- toplevel types -->
+        <ceylon-compile
+            executable="${ceylon.compiler.loc}"
+            fork="true"
+            verbose="false"
+            encoding="UTF-8"
+            noMtimeCheck="true"
+            src="${module.language.src}:${runtime.src}"
+            out="${build.dist.repo}">
+            <suppressWarning>ceylonNamespace</suppressWarning>
+            <suppressWarning>unusedDeclaration</suppressWarning>
+            <suppressWarning>unusedImport</suppressWarning>
+            <suppressWarning>expressionTypeNothing</suppressWarning>
+            <javacoption>-Xbootstrapceylon</javacoption>
+            <javacoption>-g</javacoption>
+            <files>
+                <include name="**/*.ceylon"/>
+                <include name="com/redhat/**/*.java"/>
+                <!-- We swap the nativily implemented files for their Java counter parts -->
+                <exclude name="ceylon/language/Array.ceylon"/>
+                <include name="ceylon/language/Array.java"/>
+                <exclude name="ceylon/language/Boolean.ceylon"/>
+                <include name="ceylon/language/Boolean.java"/>
+                <include name="ceylon/language/true_.java"/>
+                <include name="ceylon/language/false_.java"/>
+                <exclude name="ceylon/language/Byte.ceylon"/>
+                <include name="ceylon/language/Byte.java"/>
+                <exclude name="ceylon/language/Callable.ceylon"/>
+                <include name="ceylon/language/Callable.java"/>
+                <exclude name="ceylon/language/Character.ceylon"/>
+                <include name="ceylon/language/Character.java"/>
+                <exclude name="ceylon/language/className.ceylon"/>
+                <include name="ceylon/language/className_.java"/>
+                <exclude name="ceylon/language/Throwable.ceylon"/>
+                <include name="ceylon/language/Throwable.java"/>
+                <exclude name="ceylon/language/AssertionError.ceylon"/>
+                <include name="ceylon/language/AssertionError.java"/>
+                <exclude name="ceylon/language/Exception.ceylon"/>
+                <include name="ceylon/language/Exception.java"/>
+                <exclude name="ceylon/language/suppressedExceptions.ceylon"/>
+                <include name="ceylon/language/suppressedExceptions_.java"/>
+                <exclude name="ceylon/language/Float.ceylon"/>
+                <include name="ceylon/language/Float.java"/>
+                <exclude name="ceylon/language/Integer.ceylon"/>
+                <include name="ceylon/language/Integer.java"/>
+                <exclude name="ceylon/language/process.ceylon"/>
+                <include name="ceylon/language/process_.java"/>
+                <exclude name="ceylon/language/printStackTrace.ceylon"/>
+                <include name="ceylon/language/printStackTrace_.java"/>
+                <exclude name="ceylon/language/String.ceylon"/>
+                <include name="ceylon/language/String.java"/>
+                <exclude name="ceylon/language/Tuple.ceylon"/>
+                <include name="ceylon/language/Tuple.java"/>
+                <exclude name="ceylon/language/flatten.ceylon"/>
+                <include name="ceylon/language/flatten_.java"/>
+                <exclude name="ceylon/language/unflatten.ceylon"/>
+                <include name="ceylon/language/unflatten_.java"/>
+                
+                <exclude name="ceylon/language/meta/annotations.ceylon"/>
+                <include name="ceylon/language/meta/annotations_.java"/>
+                <exclude name="ceylon/language/meta/classDeclaration.ceylon"/>
+                <include name="ceylon/language/meta/classDeclaration_.java"/>
+                <exclude name="ceylon/language/meta/modules.ceylon"/>
+                <include name="ceylon/language/meta/modules_.java"/>
+                <exclude name="ceylon/language/meta/type.ceylon"/>
+                <include name="ceylon/language/meta/type_.java"/>
+                <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
+                <include name="ceylon/language/meta/typeLiteral_.java"/>
+                
+                <exclude name="ceylon/language/serialization/PartialImpl.ceylon"/>
+                <include name="ceylon/language/serialization/PartialImpl.java"/>
+                <exclude name="ceylon/language/impl/reach.ceylon"/>
+                <include name="ceylon/language/impl/reach_.java"/>
+            </files>
+        </ceylon-compile>
+    </target>
+    
+    <!-- generate the ceylon.language.js file -->
+    <target name="ceylon.language.js">
+        <mkdir dir="${ceylon.language.dist}"/>
+        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true" failonerror="yes">
+            <arg value="${runtime-js.src}/MASTER.txt" />
+            <arg value="${build.dist.repo}/${ceylon.language.js}" />
+        </java>
+    </target>
+
+    <target name="doc" depends="ceylon.language.doc">
+    </target>
+
+    <!-- Rule to generate the documentation from the Ceylon sources -->
+    <target name="ceylon.language.doc">
+        <ceylon-doc
+            executable="${ceylon.compiler.loc}"
+            includesourcecode="true"
+            src="${module.language.src}"
+            encoding="UTF-8"
+            out="${build.dist.repo}"
+            bootstrapceylon="true">
+            <module name="ceylon.language"/>
+        </ceylon-doc>
+    </target>
+
+    <!-- Rule to compile and test -->
+    <target name="build" depends="ceylon.language.java,ceylon.language.js">
+        <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
+        <mkdir dir="${ide.dist}"/>
+        <copy todir="${ide.dist}">
+            <fileset dir="${build.dist.repo}/${ceylon.language.dir}">
+                <include name="${ceylon.language.name}.car"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="compile.tests.setup">
+        <delete dir="${build.test.repo}"/>
+        <mkdir dir="${build.test.repo}"/>
+        <copy todir="${build.test.repo}">
+            <fileset dir="${ceylon.dist.dir}/repo">
+                <exclude name="ceylon/language/**"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.test.repo}">
+            <fileset dir="${build.dist.repo}">
+                <include name="ceylon/language/**"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.test.repo}">
+            <fileset dir="${ceylon.dist.dir}/repo">
+                <include name="ceylon/language/${module.ceylon.language.version}/module.xml"/>
+            </fileset>
+        </copy>
+        <delete dir="${build.test}"/>
+        <mkdir dir="${build.test}"/>
+        <mkdir dir="${build.tools-test}"/>
+    </target>
+
+    <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup,compile.tests.java.quick">
+    </target>
+
+    <target name="compile.tests.java.quick">
+        <ceylon-compile
+            executable="${ceylon.compiler.loc}"
+            fork="true"
+            src="${test.src}:${test.java.src}"
+            resource="${test.res}"
+            sysrep="${build.test.repo}"
+            encoding="UTF-8"
+            out="${build.test}">
+            <suppressWarning>unusedDeclaration</suppressWarning>
+            <suppressWarning>unusedImport</suppressWarning>
+            <suppressWarning>expressionTypeNothing</suppressWarning>
+            <files>
+                <include name="**/*.ceylon"/>
+                <include name="**/*.java"/>
+                <include name="**/*.txt"/>
+            </files>
+            <rep url="aether"/>
+        </ceylon-compile>
+        <javac
+            srcdir="${test-jvm-tools.src}"
+            destdir="${build.tools-test}"
+            debug="true"
+            encoding="UTF-8"
+            classpathref="test.compile.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}"
+            includeantruntime="false">
+            <include name="**/*.java"/>
+        </javac>
+        <javac
+            srcdir="${test-jvm.src}"
+            destdir="${build.test}"
+            debug="true"
+            encoding="UTF-8"
+            classpathref="test.compile.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}"
+            includeantruntime="false">
+            <include name="**/*.java"/>
+        </javac>
+        <!-- Remove the modules.optional module to check for its unavailability at runtime -->
+        <delete dir="${build.test}/modules/optional"/>
+    </target>
+    
+    <target name="test.java" depends="compile.tests.java,test.java.quick">
+    </target>
+
+    <target name="test.java.quick"
+        description="compile and run the JVM tests">
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            run="runAndAssert"
+            module="default"
+            resultproperty="test.ceylon.result.1">
+            <rep url="${build.test}"/>
+        </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="javaa/1"
+            resultproperty="test.ceylon.result.2">
+            <rep url="${build.test}"/>
+            <rep url="aether"/>
+        </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="metamodel/0.1"
+            resultproperty="test.ceylon.result.3">
+            <rep url="${build.test}"/>
+        </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="annotations/0.1"
+            resultproperty="test.ceylon.result.4">
+            <rep url="${build.test}"/>
+        </ceylon-run>
+            <ceylon-run
+                executable="${ceylon.compiler.loc}"
+                sysrep="${build.test.repo}"
+                module="jvm/0.1"
+                resultproperty="test.ceylon.result.5">
+                <rep url="${build.test}"/>
+            </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="resmod/0.1"
+            resultproperty="test.ceylon.result.6">
+            <rep url="${build.test}"/>
+        </ceylon-run>
+        <ceylon-run
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="serialization/0.1"
+            resultproperty="test.ceylon.result.7">
+            <rep url="${build.test}"/>
+        </ceylon-run>
+        
+        <condition property="test.fail.ceylon">
+            <and>
+                <not><equals arg1="${test.ceylon.result.1}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.2}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.3}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.4}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.5}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.6}" arg2="0"/></not>
+                <not><equals arg1="${test.ceylon.result.7}" arg2="0"/></not>
+            </and>
+        </condition>
+        
+        <mkdir dir="${test.reports}"/>
+        <junit printsummary="yes" haltonfailure="no" 
+            errorproperty="test.fail.junit"
+            failureproperty="test.fail.junit">
+          <classpath refid="test.run.classpath"/>
+          <formatter type="xml"/>
+
+          <batchtest fork="yes" todir="${test.reports}">
+            <fileset dir="${build.test}">
+              <include name="**/*Test.class"/>
+            </fileset>
+          </batchtest>
+        </junit>
+     
+        <!--<junitreport todir="${test.reports}">
+          <fileset dir="${test.reports}">
+            <include name="TEST-*.xml"/>
+          </fileset>
+          <report format="frames" todir="${test.reports}"/>
+        </junitreport>-->
+        
+        <fail if="${test.fail.ceylon}" message="There were failures in the Ceylon tests"/>
+        <fail if="${test.fail.junit}"  message="There were Junit test failures"/>
+        
+    </target>
+
+    <target name="compile.tests.js" depends="ceylon.language.js,compile.tests.setup,compile.tests.js.quick">
+    </target>
+
+    <target name="compile.tests.js.quick">
+        <ceylon-compile-js
+            executable="${ceylon.compiler.loc}"
+            fork="true"
+            encoding="UTF-8"
+            src="${test.src}"
+            resource="${test.res}"
+            sysrep="${build.test.repo}"
+            out="${build.test}">
+            <suppressWarning>unusedDeclaration</suppressWarning>
+            <suppressWarning>unusedImport</suppressWarning>
+            <suppressWarning>expressionTypeNothing</suppressWarning>
+            <files>
+                <include name="**/*.ceylon"/>
+                <include name="**/*.txt"/>
+                <exclude name="jvm/**"/>
+            </files>
+        </ceylon-compile-js>
+        <!-- Remove the modules.optional module to check for its unavailability at runtime -->
+        <delete dir="${build.test}/modules/optional"/>
+    </target>
+
+    <target name="test.js" depends="compile.tests.js,test.js.quick">
+    </target>
+
+    <target name="test.js.quick"
+        description="compile and run the Node.js tests (requires node)">
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="default">
+            <rep url="build/test" />
+        </ceylon-run-js>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="metamodel/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="annotations/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="resmod/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+        <ceylon-run-js
+            executable="${ceylon.compiler.loc}"
+            sysrep="${build.test.repo}"
+            module="serialization/0.1">
+            <rep url="${build.test}"/>
+        </ceylon-run-js>
+    </target>
+
+    <target name="test" depends="test.java,test.js" 
+        description="compile and run the tests for JVM and Node.js (requires node)">
+    </target>
+</project>

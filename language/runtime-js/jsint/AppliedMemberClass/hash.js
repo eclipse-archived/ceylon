@@ -1,0 +1,1 @@
+return coihash$(this);
