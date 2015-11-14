@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# resolve links - $0 may be a softlink
+PRG="$0"
+while [ -h "$PRG" ]; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
+done
+
+DIR=$(dirname "$PRG")
+
+CEYLON_HOME="$DIR/.."
+
+if test -z "$JAVA_HOME"
+then 
+    JAVA="java"
+else
+    JAVA="$JAVA_HOME/bin/java"
+fi
+
+# Make sure we have java installed
+if hash java 2>&-
+then
+    true #nothing
+else
+    echo "Java not found, you must install Java in order to compiler and run Ceylon programs"
+    echo "Go to http://www.java.com/getjava/ to download the latest version of Java"
+fi
+
+LIB="$CEYLON_HOME/lib"
+
+#JAVA_DEBUG_OPTS="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
+
+if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
+    PREPEND_JAVA_OPTS="$JAVA_DEBUG_OPTS"
+    if stty size 2>/dev/null >/dev/null; then
+        CEYL_COLS=`stty size 2>/dev/null | cut -d' ' -f2`
+    else
+        CEYL_COLS=`tput 2>/dev/null cols`
+    fi
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$CEYL_COLS"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.reset=$(tput 2>/dev/null sgr0)"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.green=$(tput 2>/dev/null setaf 2)"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=$(tput 2>/dev/null setaf 1)"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename $PRG)"
+fi
+JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
+
+exec "$JAVA" \
+ $JAVA_OPTS \
+ -jar "$LIB/ceylon-bootstrap.jar" \
+ "$@"

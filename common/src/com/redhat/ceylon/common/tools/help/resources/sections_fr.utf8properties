@@ -1,0 +1,17 @@
+section.NAME=Nom
+section.SYNOPSIS=Synopsis
+section.DESCRIPTION=Description
+section.DESCRIPTION.sub=La sous-commande `{0}`
+section.OPTIONS=Options
+section.OPTIONS.sub=Options de sous-commande {0}
+#section.SUBCOMMANDS=Subcommands
+option.undocumented=Cette option n''est pas documentée.
+
+more.info=Voir `{0} help <commande>` pour plus d''informations sur une \
+commande particulière.
+
+index.title=Les outils Ceylon
+index.overview=Vue d''ensemble
+index.porcelain.tools=Les outils suivants sont des outils de haut niveau: 
+index.plumbing.tools=Les outils qui suivent sont des utilitaires de bas niveau, que \
+les utilisateurs ne devraient normalement pas avoir besoin d''exécuter (du moins, pas directement):
