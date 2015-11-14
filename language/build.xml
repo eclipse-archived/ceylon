@@ -1,7 +1,7 @@
 <project name="Ceylon Language module" default="publish" basedir=".">
 
-    <property file="../ceylon-common/user-build.properties"/>
-    <property file="../ceylon-common/common-build.properties"/>
+    <property file="../common/user-build.properties"/>
+    <property file="../common/common-build.properties"/>
     <property file="build.properties"/>
 
     <!-- Set build directories for all formats. -->
@@ -31,7 +31,7 @@
 
     <!-- Local repository -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
-    <property name="ceylon.dist.dir" location="${basedir}/../ceylon-dist/dist"/>
+    <property name="ceylon.dist.dir" location="${basedir}/../dist/dist"/>
     
     <!-- ceylon.language -->
     <property name="module.language.src" value="${basedir}/src"/>
@@ -110,7 +110,7 @@
     
     <path id="js.test.compile.classpath">
         <path refid="js.compiler.classpath"/>
-        <pathelement path="${basedir}/../ceylon-js/build/lib/compiler.js.test.jar"/>
+        <pathelement path="${basedir}/../compiler-js/build/lib/compiler.js.test.jar"/>
     </path>
 
     <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
@@ -137,7 +137,7 @@
     <target name="ide-quick-internal">
         <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.language.car}"/>
         <basename file="${archivePath}" property="archiveFileName"/>
-        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <property name="proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
         <delete failonerror="false" dir="${proxy-project}/META-INF"/>
         <copy toDir="${proxy-project}" overwrite="true">

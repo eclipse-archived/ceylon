@@ -29,7 +29,7 @@
 
     <!--
       WARNING! Make sure this list is always the same as the one in
-      /ceylon-compiler/src/com/redhat/ceylon/compiler/loader/AbstractModelLoader.java
+      /compiler-java/src/com/redhat/ceylon/compiler/loader/AbstractModelLoader.java
     -->
     <dependencies>
         <module name="com.redhat.ceylon.compiler.java" slot="@ceylon-version@"/>

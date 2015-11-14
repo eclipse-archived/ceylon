@@ -38,7 +38,7 @@
   </target>
 	
   <target name="sdk-test" depends="ant-tasks">
-    <ceylonmd module="com.redhat.ceylon.sdk.test" src="../ceylon-sdk/sdk-test/source"
+    <ceylonmd module="com.redhat.ceylon.sdk.test" src="../../ceylon-sdk/sdk-test/source"
           versionProperty="module.version"
           nameProperty="module.name"/>
     <echo message="RESULT version: ${module.version}"/>

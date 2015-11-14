@@ -14,6 +14,7 @@
     <property name="ceylon.bin.dir" value="${ceylon.dist.dir}/bin"/>
 
     <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
+    <property name="moddirs" value="common,model,cmr,typechecker,compiler-java,compiler-js,language,runtime" />
 
     <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
 
@@ -119,7 +120,7 @@ Some more basic ant tasks:
     <target name="publish" depends="siblings,clean-projects,install-all,publish-quick"
             description="Publishes all sibling projects" />
     <target name="publish-quick" depends="siblings">
-        <foreach list="${modules}"
+        <foreach list="${moddirs}"
                  target="publish-item"
                  param="project.item.name"
                  inheritall="true" />
@@ -168,7 +169,7 @@ Some more basic ant tasks:
         <antcall target="ide-quick"/>
     </target>
     <target name="ide-quick" depends="siblings">
-        <foreach list="${modules}"
+        <foreach list="${moddirs}"
                  target="ide-item"
                  param="project.item.name"
                  inheritall="true" />
@@ -219,14 +220,14 @@ Use this when NOT doing a release!">
             description="Builds using dependent projects in the ${projects.dir} directory.
 Used with another target such as 'package'.">
         <property name="projects.base.dir" value="${projects.dir}"/>
-        <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
-        <property name="ceylon-model.dir" value="${projects.base.dir}/ceylon-model"/>
-        <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
-        <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
-        <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
-        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
-        <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
-        <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="ceylon-common.dir" value="${projects.base.dir}/common"/>
+        <property name="ceylon-model.dir" value="${projects.base.dir}/model"/>
+        <property name="ceylon-compiler.dir" value="${projects.base.dir}/compiler-java"/>
+        <property name="ceylon-spec.dir" value="${projects.base.dir}/typechecker"/>
+        <property name="ceylon.language.dir" value="${projects.base.dir}/language"/>
+        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/cmr"/>
+        <property name="ceylon-runtime.dir" value="${projects.base.dir}/runtime"/>
+        <property name="ceylon-js.dir" value="${projects.base.dir}/compiler-js"/>
         <property name="dist.name" value="ceylon-${ceylon.version}"/>
         <property name="github-url" value="https://github.com/"/>
     </target>
@@ -235,14 +236,14 @@ Used with another target such as 'package'.">
             description="Builds using dependent projects in existing sibling project folders.
 Used with another target such as 'package'">
         <property name="projects.base.dir" value="${basedir}/.." />
-        <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
-        <property name="ceylon-model.dir" value="${projects.base.dir}/ceylon-model"/>
-        <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
-        <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
-        <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
-        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
-        <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
-        <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="ceylon-common.dir" value="${projects.base.dir}/common"/>
+        <property name="ceylon-model.dir" value="${projects.base.dir}/model"/>
+        <property name="ceylon-compiler.dir" value="${projects.base.dir}/compiler-java"/>
+        <property name="ceylon-spec.dir" value="${projects.base.dir}/typechecker"/>
+        <property name="ceylon.language.dir" value="${projects.base.dir}/language"/>
+        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/cmr"/>
+        <property name="ceylon-runtime.dir" value="${projects.base.dir}/runtime"/>
+        <property name="ceylon-js.dir" value="${projects.base.dir}/compiler-js"/>
         <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
         <property name="github-url" value="https://github.com/"/>
     </target>
@@ -959,7 +960,7 @@ You can now build the package by executing:
     <target name="clean-projects" 
             description="Cleans all sub projects">
         <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
-        <foreach list="${modules}"
+        <foreach list="${moddirs}"
                  target="clean-projects-item"
                  param="project.item.name"
                  inheritall="true" />

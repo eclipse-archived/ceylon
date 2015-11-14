@@ -499,7 +499,7 @@ public class CeylonDocToolTests {
 
     @Test
     public void ceylonSdk() throws Exception {
-        File sdkDir = new File("../ceylon-sdk");
+        File sdkDir = new File("../../ceylon-sdk");
         if (!sdkDir.exists()
                 || !sdkDir.isDirectory()) {
             Assert.fail("You don't have ceylon-sdk checked out at " + sdkDir.getAbsolutePath() + " so this test doesn't apply");
@@ -527,7 +527,7 @@ public class CeylonDocToolTests {
         
         compileSdkJavaFiles();
 
-        CeylonDocTool tool = tool(Arrays.asList(new File("../ceylon-sdk/source")),
+        CeylonDocTool tool = tool(Arrays.asList(new File("../../ceylon-sdk/source")),
                 Collections.<File>emptyList(),
                 Arrays.asList(fullModuleNames), true, false, false);
         tool.setIncludeNonShared(false);
@@ -567,7 +567,7 @@ public class CeylonDocToolTests {
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         assertNotNull("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", compiler);
-        List<String> options = Arrays.asList("-sourcepath", "../ceylon-sdk/source", "-d", dir.getAbsolutePath(), 
+        List<String> options = Arrays.asList("-sourcepath", "../../ceylon-sdk/source", "-d", dir.getAbsolutePath(), 
                 "-classpath", undertowCoreModule.getAbsolutePath()+File.pathSeparator
                 +narnyaModule.getAbsolutePath()+File.pathSeparator
                 +languageModule.getAbsolutePath());
@@ -590,7 +590,7 @@ public class CeylonDocToolTests {
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
-            qualifiedNames.add("../ceylon-sdk/source/" + name);
+            qualifiedNames.add("../../ceylon-sdk/source/" + name);
         }
         Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjectsFromStrings(qualifiedNames);
         CompilationTask task = compiler.getTask(null, null, null, options, null, fileObjects);

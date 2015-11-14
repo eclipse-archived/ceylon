@@ -45,7 +45,7 @@ public class ToolsTest {
 
     @BeforeClass
     public static void initFlatRepo() throws IOException{
-        final File repo = new File("../ceylon-dist/dist/repo");
+        final File repo = new File("../dist/dist/repo");
 
         // create the output repo
         File outputRepo = new File(OutputRepository);

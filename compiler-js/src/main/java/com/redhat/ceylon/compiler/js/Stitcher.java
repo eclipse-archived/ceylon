@@ -41,7 +41,7 @@ public class Stitcher {
     private static TypeCheckerBuilder langmodtc;
     private static Path tmpDir;
     
-    private static final File baseDir = new File("../ceylon.language");
+    private static final File baseDir = new File("../language");
     private static final File clSrcDir = new File(baseDir, "src");
     private static final File clSrcFileDir = new File(clSrcDir, "ceylon/language/");
     public static final File LANGMOD_JS_SRC = new File(baseDir, "runtime-js");

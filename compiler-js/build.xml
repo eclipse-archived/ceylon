@@ -1,7 +1,7 @@
 <project name="Ceylon JS compiler" default="test" basedir=".">
 
-    <property file="../ceylon-common/user-build.properties"/>
-    <property file="../ceylon-common/common-build.properties"/>
+    <property file="../common/user-build.properties"/>
+    <property file="../common/common-build.properties"/>
     <property file="build.properties" />
 
     <!-- Set build directories for all formats. -->
@@ -136,7 +136,7 @@
     <!-- generate the ceylon.language.js file -->
     <target name="build-js-language-module" depends="compile" unless="skip.language.module">
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true" failonerror="yes">
-            <arg value="../ceylon.language/runtime-js/MASTER.txt" />
+            <arg value="../language/runtime-js/MASTER.txt" />
             <arg value="${runtime}/${jslangmodule}" />
         </java>
         <antcall target="sha1sum">
@@ -172,11 +172,11 @@
         <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
             <sysproperty key="file.encoding" value="UTF-8" />
             <arg value="src/test/ceylon"/>
-            <arg value="../ceylon.language/test"/>
-            <arg value="X:../ceylon.language/test/jvm"/>
-            <arg value="R:../ceylon.language/test-resource" />
-            <arg value="r:../ceylon.language/test-resource/resource.txt" />
-            <arg value="r:../ceylon.language/test-resource/resmod/modres.txt" />
+            <arg value="../language/test"/>
+            <arg value="X:../language/test/jvm"/>
+            <arg value="R:../language/test-resource" />
+            <arg value="r:../language/test-resource/resource.txt" />
+            <arg value="r:../language/test-resource/resmod/modres.txt" />
         </java>
     </target>
 
@@ -236,7 +236,7 @@
     <target name="ide-quick-internal">
         <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.js.dir}/${ceylon.js.jar}"/>
         <basename file="${archivePath}" property="archiveFileName"/>
-        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <property name="proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
         <delete failonerror="false" dir="${proxy-project}/META-INF"/>
         <copy toDir="${proxy-project}" overwrite="true">

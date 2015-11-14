@@ -1634,7 +1634,7 @@ public class ModelLoaderTests extends CompilerTests {
     
     private static final ClosableVirtualFile getLatestZippedLanguageSourceFile() {
         VFS vfs = new VFS();
-        File langDir = new File("../ceylon-dist/dist/repo/ceylon/language");
+        File langDir = new File("../dist/dist/repo/ceylon/language");
         if (!langDir.exists()) {
             System.err.println("Unable to test language module, not found in repository: " + langDir);
             System.exit(-1);

@@ -1,7 +1,7 @@
 <project name="Ceylon module-resolver module" default="publish" basedir=".">
 
-    <property file="../ceylon-common/user-build.properties"/>
-    <property file="../ceylon-common/common-build.properties"/>
+    <property file="../common/user-build.properties"/>
+    <property file="../common/common-build.properties"/>
     <property file="build.properties"/>
 
     <!-- Set build directories for all formats. -->
@@ -128,7 +128,7 @@
     <target name="ide-quick-internal">
         <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
         <basename file="${archivePath}" property="archiveFileName"/>
-        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <property name="proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
         <delete failonerror="false" dir="${proxy-project}/META-INF"/>
         <copy toDir="${proxy-project}" overwrite="true">
@@ -141,7 +141,7 @@
         
         <property name="archivePath2" value="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
         <basename file="${archivePath2}" property="archiveFileName2"/>
-        <property name="proxy-project2" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName2}"/>
+        <property name="proxy-project2" value="../../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName2}"/>
         <mkdir dir="${proxy-project2}"/>
         <delete failonerror="false" dir="${proxy-project2}/META-INF"/>
         <copy toDir="${proxy-project2}" overwrite="true">

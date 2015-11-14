@@ -38,7 +38,7 @@ public class ModuleDescriptorReaderTest {
         // Launcher+CeylonClassLoader that dynamically find and load the necessary
         // jar and car files. But when running from within Eclipse it doesn't know
         // where to look, so we need to give it a hint
-        System.setProperty("ceylon.home", "../ceylon-dist/dist");
+        System.setProperty("ceylon.home", "../dist/dist");
         
         ModuleDescriptorReader r = new ModuleDescriptorReader("com.redhat.ceylon.ant.modules.a", new File("test/src"));
         Assert.assertEquals("1.0", r.getModuleVersion());

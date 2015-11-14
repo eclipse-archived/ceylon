@@ -7,16 +7,16 @@ public class Versions {
     
     /****************************************************************************************************
     * WARNING Don't forget to update:
-    * - ceylon.language/src/ceylon/language/module.ceylon
-    * - ceylon.language/src/ceylon/language/language.ceylon
-    * - ceylon.language/test/process.ceylon (versions, name, binary version)
-    * - ceylon-dist/build.properties (versions)
-    * - ceylon-dist/osgi/module.properties (versions)
-    * - ceylon-dist/osgi/META-INF/MANIFEST.MF (versions)
-    * - ceylon-dist/osgi/embeddedRepository/META-INF/MANIFEST.MF (versions)
-    * - ceylon-dist/samples (versions, but not sure why we do that)
-    * - ceylon-dist/README.MD (versions, name)
-    * - ceylon-common/common-build.properties (version)
+    * - language/src/ceylon/language/module.ceylon
+    * - language/src/ceylon/language/language.ceylon
+    * - language/test/process.ceylon (versions, name, binary version)
+    * - dist/build.properties (versions)
+    * - dist/osgi/module.properties (versions)
+    * - dist/osgi/META-INF/MANIFEST.MF (versions)
+    * - dist/osgi/embeddedRepository/META-INF/MANIFEST.MF (versions)
+    * - dist/samples (versions, but not sure why we do that)
+    * - dist/README.MD (versions, name)
+    * - common/common-build.properties (version)
     * - ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/about.ini (version, name)
     *   Find all files on IDE which need to be updated:
     *    grep -rl --exclude-dir 'target' --exclude-dir required-bundle-proxies --exclude-dir .git --exclude '*.class' --exclude '*.car' --exclude '*.idx' '1\.1\.0' .

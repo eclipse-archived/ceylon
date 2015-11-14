@@ -94,14 +94,14 @@ public abstract class CompilerTests {
     protected final List<String> defaultOptions;
 
     public static final String[] CLASS_PATH = new String[] {
-        "../ceylon-spec/bin",
+        "../spec/bin",
         "./build/classes",
-        "./../ceylon-model/build/classes",
-        "./../ceylon-module-resolver/build/classes",
-        "./../ceylon-common/build/classes",
-        "./../ceylon-runtime/build/classes",
-        "./../ceylon-runtime/lib/jboss-modules"+Versions.DEPENDENCY_JBOSS_MODULES_VERSION+".jar",
-        "./../ceylon-module-resolver/lib/slf4j-api-1.6.1.jar",
+        "./../model/build/classes",
+        "./../cmr/build/classes",
+        "./../common/build/classes",
+        "./../runtime/build/classes",
+        "./../runtime/lib/jboss-modules"+Versions.DEPENDENCY_JBOSS_MODULES_VERSION+".jar",
+        "./../cmr/lib/slf4j-api-1.6.1.jar",
         LANGUAGE_MODULE_CAR,
     };
 
@@ -905,7 +905,7 @@ public abstract class CompilerTests {
         // So we restore them immediatly
         __redirected.__JAXPRedirected.restorePlatformFactory();
 
-        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../ceylon-dist/dist");
+        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../dist/dist");
 
         int exit = -1;
         try (ExitManager em = new ExitManager()) {

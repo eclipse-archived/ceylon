@@ -700,7 +700,7 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     @Test
     public void testBug2388() throws Throwable {
 //        runInJBossModules("test", "test.ceylon.transaction/1.2.0", 
-//                Arrays.asList("--rep", "../ceylon-sdk/modules", "--rep", "../ceylon-sdk/test-deps"));
+//                Arrays.asList("--rep", "../../ceylon-sdk/modules", "--rep", "../../ceylon-sdk/test-deps"));
         compile("bug23xx/Bug2388Java.java");
         compareWithJavaSource("bug23xx/Bug2388");
         compile("bug23xx/Bug2388b.ceylon");

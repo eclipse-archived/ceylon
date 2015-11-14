@@ -228,24 +228,24 @@ public class MiscTests extends CompilerTests {
     public void debugIncrementalCompilationBug(){
         java.util.List<File> sourceFiles = new ArrayList<File>();
         
-        String sdkSourcePath = "../ceylon-sdk/source";
-        String testSourcePath = "../ceylon-sdk/test-source";
+        String sdkSourcePath = "../../ceylon-sdk/source";
+        String testSourcePath = "../../ceylon-sdk/test-source";
         
         for(String s : new String[]{
-                "../ceylon-sdk/source/ceylon/json/StringPrinter.ceylon",
-                "../ceylon-sdk/test-source/test/ceylon/json/print.ceylon",
-                "../ceylon-sdk/source/ceylon/json/Array.ceylon",
-                "../ceylon-sdk/test-source/test/ceylon/json/use.ceylon",
-                "../ceylon-sdk/source/ceylon/net/uri/Path.ceylon",
-                "../ceylon-sdk/test-source/test/ceylon/net/run.ceylon",
-                "../ceylon-sdk/source/ceylon/json/Printer.ceylon",
-                "../ceylon-sdk/source/ceylon/json/Object.ceylon",
-                "../ceylon-sdk/source/ceylon/net/uri/Query.ceylon",
-                "../ceylon-sdk/test-source/test/ceylon/json/run.ceylon",
-                "../ceylon-sdk/test-source/test/ceylon/net/connection.ceylon",
-                "../ceylon-sdk/source/ceylon/json/parse.ceylon",
-                "../ceylon-sdk/test-source/test/ceylon/json/parse.ceylon",
-                "../ceylon-sdk/source/ceylon/net/uri/PathSegment.ceylon",
+                "../../ceylon-sdk/source/ceylon/json/StringPrinter.ceylon",
+                "../../ceylon-sdk/test-source/test/ceylon/json/print.ceylon",
+                "../../ceylon-sdk/source/ceylon/json/Array.ceylon",
+                "../../ceylon-sdk/test-source/test/ceylon/json/use.ceylon",
+                "../../ceylon-sdk/source/ceylon/net/uri/Path.ceylon",
+                "../../ceylon-sdk/test-source/test/ceylon/net/run.ceylon",
+                "../../ceylon-sdk/source/ceylon/json/Printer.ceylon",
+                "../../ceylon-sdk/source/ceylon/json/Object.ceylon",
+                "../../ceylon-sdk/source/ceylon/net/uri/Query.ceylon",
+                "../../ceylon-sdk/test-source/test/ceylon/json/run.ceylon",
+                "../../ceylon-sdk/test-source/test/ceylon/net/connection.ceylon",
+                "../../ceylon-sdk/source/ceylon/json/parse.ceylon",
+                "../../ceylon-sdk/test-source/test/ceylon/json/parse.ceylon",
+                "../../ceylon-sdk/source/ceylon/net/uri/PathSegment.ceylon",
         }){
             sourceFiles.add(new File(s));
         }
@@ -262,7 +262,7 @@ public class MiscTests extends CompilerTests {
             fileManager.getJavaFileObjectsFromFiles(sourceFiles);
         String compilerSourcePath = sdkSourcePath + File.pathSeparator + testSourcePath;
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
-                Arrays.asList("-sourcepath", compilerSourcePath, "-d", "../ceylon-sdk/modules"/*, "-verbose"*/), 
+                Arrays.asList("-sourcepath", compilerSourcePath, "-d", "../../ceylon-sdk/modules"/*, "-verbose"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
@@ -310,7 +310,7 @@ public class MiscTests extends CompilerTests {
     }
 
     private void compileSDKOnly(String[] modules, String[] extraModules){
-        String sourceDir = "../ceylon-sdk/source";
+        String sourceDir = "../../ceylon-sdk/source";
         // don't run this if the SDK is not checked out
         File sdkFile = new File(sourceDir);
         if(!sdkFile.exists())
@@ -343,8 +343,8 @@ public class MiscTests extends CompilerTests {
     }
 
     private void compileSDKTests(String[] modules, String[] extraModules){
-        String sourceDir = "../ceylon-sdk/test-source";
-        String depsDir = "../ceylon-sdk/test-deps";
+        String sourceDir = "../../ceylon-sdk/test-source";
+        String depsDir = "../../ceylon-sdk/test-deps";
         // don't run this if the SDK is not checked out
         File sdkFile = new File(sourceDir);
         if(!sdkFile.exists())
@@ -444,9 +444,9 @@ public class MiscTests extends CompilerTests {
     
     private String script() {
         if (OSUtil.isWindows()) {
-            return "../ceylon-dist/dist/bin/ceylon.bat";
+            return "../dist/dist/bin/ceylon.bat";
         } else {
-            return "../ceylon-dist/dist/bin/ceylon";
+            return "../dist/dist/bin/ceylon";
         }
     }
     
@@ -455,7 +455,7 @@ public class MiscTests extends CompilerTests {
                 script(),
                 "compile",
                 "--src",
-                "../ceylon-dist/dist/samples/" + sampleDir + "/source",
+                "../dist/dist/samples/" + sampleDir + "/source",
                 "--out",
                 "build/test-cars",
                 sampleModule
@@ -465,7 +465,7 @@ public class MiscTests extends CompilerTests {
                 script(),
                 "doc",
                 "--src",
-                "../ceylon-dist/dist/samples/" + sampleDir + "/source",
+                "../dist/dist/samples/" + sampleDir + "/source",
                 "--out",
                 "build/test-cars",
                 sampleModule

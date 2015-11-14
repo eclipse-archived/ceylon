@@ -22,7 +22,7 @@ public class TestStaticTypeComparator {
     @BeforeClass
     public static void setup() {
         final TypeCheckerBuilder tcb = new TypeCheckerBuilder().statistics(true).encoding("UTF-8");
-        tcb.addSrcDirectory(new File("../ceylon.language/src"));
+        tcb.addSrcDirectory(new File("../language/src"));
         tc = tcb.getTypeChecker();
         tc.process();
     }

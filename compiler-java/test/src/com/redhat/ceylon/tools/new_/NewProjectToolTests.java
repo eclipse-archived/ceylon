@@ -136,7 +136,7 @@ public class NewProjectToolTests extends AbstractToolTests {
         File tmpDir = tmpPath.toFile();
         try {
             CeylonNewTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    args("--from=../ceylon-dist/templates", 
+                    args("--from=../dist/templates", 
                             "hello-world",
                             "--module-name=org.example.hello",
                             "--module-version=1",
@@ -166,7 +166,7 @@ public class NewProjectToolTests extends AbstractToolTests {
         File tmpDir = tmpPath.toFile();
         try {
             CeylonNewTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    args("--from=../ceylon-dist/templates", 
+                    args("--from=../dist/templates", 
                             "hello-world",
                             "--module-name=long.module",
                             "--module-version=1",
@@ -195,7 +195,7 @@ public class NewProjectToolTests extends AbstractToolTests {
         Path tmpPath = Files.createTempDirectory("ceylon-new-");
         File tmpDir = tmpPath.toFile();
         
-        File srcTemplates = new File("../ceylon-dist/templates");
+        File srcTemplates = new File("../dist/templates");
         File dstTemplates = new File(tmpDir, "templates");
         FileUtil.copyAll(srcTemplates, dstTemplates);
         
@@ -232,7 +232,7 @@ public class NewProjectToolTests extends AbstractToolTests {
         File tmpDir = tmpPath.toFile();
         try {
             CeylonNewTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    args("--from=../ceylon-dist/templates", 
+                    args("--from=../dist/templates", 
                             "hello-world",
                             "--module-name=org.example.hello",
                             "--module-version=1",
@@ -261,7 +261,7 @@ public class NewProjectToolTests extends AbstractToolTests {
         File tmpDir = tmpPath.toFile();
         try {
             CeylonNewTool newTool = pluginFactory.bindArguments(newModel, getMainTool(),
-                    args("--from=../ceylon-dist/templates", 
+                    args("--from=../dist/templates", 
                             "hello-world",
                             "--module-name=org.example.hello",
                             "--module-version=1",

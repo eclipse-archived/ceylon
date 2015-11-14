@@ -391,9 +391,9 @@ public class CompileJsToolTest {
 
     private String script() {
         if (OSUtil.isWindows()) {
-            return "../ceylon-dist/dist/bin/ceylon.bat";
+            return "../dist/dist/bin/ceylon.bat";
         } else {
-            return "../ceylon-dist/dist/bin/ceylon";
+            return "../dist/dist/bin/ceylon";
         }
     }
     
@@ -402,7 +402,7 @@ public class CompileJsToolTest {
                 script(),
                 "compile-js",
                 "--src",
-                "../ceylon-dist/dist/samples/" + sampleDir + "/source",
+                "../dist/dist/samples/" + sampleDir + "/source",
                 "--out",
                 "build/test-cars",
                 sampleModule
