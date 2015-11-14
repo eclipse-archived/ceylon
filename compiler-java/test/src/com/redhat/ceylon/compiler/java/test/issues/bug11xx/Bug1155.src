@@ -1,0 +1,85 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+class Bug1155 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug1155() {
+    }
+    
+    public final .java.lang.String narySequenced(final .java.lang.String s1) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = narySequenced$s(s1);
+            }
+            returning narySequenced(s1, $ceylontmp$s$0);
+        );
+    }
+    
+    public final .ceylon.language.Sequential<? extends .ceylon.language.String> narySequenced$s(final .java.lang.String s1) {
+        return (.ceylon.language.Sequential).ceylon.language.empty_.$get();
+    }
+    
+    public final .java.lang.String narySequenced(final .java.lang.String s1, final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+        return new .java.lang.StringBuilder().append("narySequenced(").append(s1).append("; ").append(s.toString()).append(")").toString();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155.$TypeDescriptor;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155.class);
+}
+final class bug1155_ {
+    
+    private bug1155_() {
+    }
+    
+    static void bug1155() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155 b = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155();
+        final .ceylon.language.Callable<? extends .ceylon.language.String> r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, .ceylon.language.String.$TypeDescriptor, .ceylon.language.String.$TypeDescriptor, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor)), "String(String, String*)", (short)1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0) {
+                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(b.narySequenced($$s1));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Sequential $$s;
+                if ($param$1 instanceof .java.lang.String) {
+                    $$s = singleton
+                } else {
+                    $$s = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1;
+                }
+                return .ceylon.language.String.instance(b.narySequenced($$s1, $$s));
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .java.lang.String $$s1 = ((.ceylon.language.String)$param$0).toString();
+                final .java.lang.String $$s2 = ((.ceylon.language.String)$param$1).toString();
+                final .ceylon.language.Sequential $$s;
+                if ($param$1 instanceof .java.lang.String) {
+                    $$s = pair($$s2, $param$1);
+                } else {
+                    $$s = $$s2 + (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$1;
+                }
+                return .ceylon.language.String.instance(b.narySequenced($$s1, $$s));
+            }
+        };
+        .ceylon.language.print_.print(r.$call(.ceylon.language.String.instance("nary1"), .ceylon.language.String.instance("rest1")));
+        .ceylon.language.print_.print(r.$call(.ceylon.language.String.instance("nary1"), .ceylon.language.String.instance("rest1"), .ceylon.language.ArraySequence.<.ceylon.language.String>instance(.ceylon.language.String.$TypeDescriptor, new .java.lang.Object[]{.ceylon.language.String.instance("rest2")})));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1155_.bug1155();
+    }
+}

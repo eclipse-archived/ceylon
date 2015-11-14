@@ -1,0 +1,659 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class testInlineObjects_ {
+    
+    private testInlineObjects_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void testInlineObjects() {
+        .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<.ceylon.language.String>inlineObject(.ceylon.language.String.$TypeDescriptor$);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1anonymous_0_",
+        "1anonymous_1_"})
+final class inlineObject_ {
+    
+    private inlineObject_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static <T>void inlineObject(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$param$13 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$param($reified$T);
+                .java.lang.Object $ceylontmp$p$14 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$p($reified$T, $ceylontmp$param$13);
+                .java.lang.Object $ceylontmp$l$15 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$l($reified$T, $ceylontmp$param$13, $ceylontmp$p$14);
+                boolean $ceylontmp$check$16 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$check($reified$T, $ceylontmp$param$13, $ceylontmp$p$14, $ceylontmp$l$15);
+                inlineObject($reified$T, $ceylontmp$param$13, $ceylontmp$p$14, $ceylontmp$l$15, $ceylontmp$check$16);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final <T>.java.lang.Object inlineObject$param(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_0_() {
+                        this.a = 2L;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final long a;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                    public final long getA() {
+                        return a;
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+                    public final void f() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static <T>void inlineObject(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object param) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$p$17 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$p($reified$T, param);
+                .java.lang.Object $ceylontmp$l$18 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$l($reified$T, param, $ceylontmp$p$17);
+                boolean $ceylontmp$check$19 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$check($reified$T, param, $ceylontmp$p$17, $ceylontmp$l$18);
+                inlineObject($reified$T, param, $ceylontmp$p$17, $ceylontmp$l$18, $ceylontmp$check$19);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final <T>.java.lang.Object inlineObject$p(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object param) {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static <T>void inlineObject(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object param, final .java.lang.Object p) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$l$20 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$l($reified$T, param, p);
+                boolean $ceylontmp$check$21 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$check($reified$T, param, p, $ceylontmp$l$20);
+                inlineObject($reified$T, param, p, $ceylontmp$l$20, $ceylontmp$check$21);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final <T>.java.lang.Object inlineObject$l(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object param, final .java.lang.Object p) {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static <T>void inlineObject(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object param, final .java.lang.Object p, final .java.lang.Object l) {
+        (
+            let
+            {
+                boolean $ceylontmp$check$22 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$check($reified$T, param, p, l);
+                inlineObject($reified$T, param, p, l, $ceylontmp$check$22);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final <T>boolean inlineObject$check(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object param, final .java.lang.Object p, final .java.lang.Object l) {
+        return false;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <T>void inlineObject(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object param, @.com.redhat.ceylon.compiler.java.metadata.Name("p")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object p, @.com.redhat.ceylon.compiler.java.metadata.Name("l")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object l, @.com.redhat.ceylon.compiler.java.metadata.Name("check")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    final boolean check) {
+        final .java.lang.Object local = (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                class anonymous_1_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_1_() {
+                        this.a = 2L;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final long a;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                    public final long getA() {
+                        return a;
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+                    public final void f() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
+                    }
+                }
+            }
+            returning new anonymous_1_();
+        );
+        if (check) {
+            if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, param).typeOf(p)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(param).typeOf(p)"));
+            }
+            if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, param).typeOf(param)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(param).typeOf(param)"));
+            }
+            if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Basic.$TypeDescriptor$, local).typeOf(l)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(local).typeOf(l)"));
+            }
+            if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Basic.$TypeDescriptor$, local).typeOf(local)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(local).typeOf(local)"));
+            }
+            return;
+        }
+        final .ceylon.language.meta.declaration.ClassDeclaration paramDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, param).getDeclaration();
+        .java.lang.String $ceylontmp$assert$5 = null;
+        if (paramDecl.getAnonymous()) {
+            if (paramDecl.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.klass").getFunction("inlineObject"))) {
+            } else {
+                $ceylontmp$assert$5 = .java.lang.System.lineSeparator() + "\tunviolated " + "paramDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "paramDecl.container == `function inlineObject`";
+            }
+        } else {
+            $ceylontmp$assert$5 = .java.lang.System.lineSeparator() + "\tviolated " + "paramDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "paramDecl.container == `function inlineObject`";
+        }
+        if ($ceylontmp$assert$5 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$5);
+        final .ceylon.language.meta.declaration.ClassDeclaration localDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Basic.$TypeDescriptor$, local).getDeclaration();
+        .java.lang.String $ceylontmp$assert$6 = null;
+        if (localDecl.getAnonymous()) {
+            if (localDecl.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.klass").getFunction("inlineObject"))) {
+            } else {
+                $ceylontmp$assert$6 = .java.lang.System.lineSeparator() + "\tunviolated " + "localDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "localDecl.container == `function inlineObject`";
+            }
+        } else {
+            $ceylontmp$assert$6 = .java.lang.System.lineSeparator() + "\tviolated " + "localDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "localDecl.container == `function inlineObject`";
+        }
+        if ($ceylontmp$assert$6 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$6);
+        final .ceylon.language.meta.declaration.ClassDeclaration inlineObjectTopLevelDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObjectTopLevel_.get_()).getDeclaration();
+        .java.lang.String $ceylontmp$assert$7 = null;
+        if (inlineObjectTopLevelDecl.getAnonymous()) {
+            if (inlineObjectTopLevelDecl.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.klass"))) {
+            } else {
+                $ceylontmp$assert$7 = .java.lang.System.lineSeparator() + "\tunviolated " + "inlineObjectTopLevelDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inlineObjectTopLevelDecl.container == `package`";
+            }
+        } else {
+            $ceylontmp$assert$7 = .java.lang.System.lineSeparator() + "\tviolated " + "inlineObjectTopLevelDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inlineObjectTopLevelDecl.container == `package`";
+        }
+        if ($ceylontmp$assert$7 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$7);
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String> inClass = new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+        final .ceylon.language.meta.declaration.ClassDeclaration inClassParamDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inClass.getParam()).getDeclaration();
+        .java.lang.String $ceylontmp$assert$8 = null;
+        if (inClassParamDecl.getAnonymous()) {
+            if (inClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
+            } else {
+                $ceylontmp$assert$8 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassParamDecl.container == `class InlineObjectInDefaultClassParam`";
+            }
+        } else {
+            $ceylontmp$assert$8 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inClassParamDecl.container == `class InlineObjectInDefaultClassParam`";
+        }
+        if ($ceylontmp$assert$8 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$8);
+        final .ceylon.language.meta.declaration.ClassDeclaration inClassAttributeDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inClass.getAttribute()).getDeclaration();
+        .java.lang.String $ceylontmp$assert$9 = null;
+        if (inClassAttributeDecl.getAnonymous()) {
+            if (inClassAttributeDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
+            } else {
+                $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassAttributeDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassAttributeDecl.container == `class InlineObjectInDefaultClassParam`";
+            }
+        } else {
+            $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassAttributeDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inClassAttributeDecl.container == `class InlineObjectInDefaultClassParam`";
+        }
+        if ($ceylontmp$assert$9 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$9);
+        final .ceylon.language.meta.declaration.ClassDeclaration inClassMethodDefaultParamDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inClass.method()).getDeclaration();
+        .java.lang.String $ceylontmp$assert$10 = null;
+        if (inClassMethodDefaultParamDecl.getAnonymous()) {
+            if (inClassMethodDefaultParamDecl.getContainer().equals(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)).<.ceylon.language.meta.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, "method"))) {
+            } else {
+                $ceylontmp$assert$10 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassMethodDefaultParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassMethodDefaultParamDecl.container == `function InlineObjectInDefaultClassParam.method`";
+            }
+        } else {
+            $ceylontmp$assert$10 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassMethodDefaultParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inClassMethodDefaultParamDecl.container == `function InlineObjectInDefaultClassParam.method`";
+        }
+        if ($ceylontmp$assert$10 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$10);
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam inSuperClass = new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam();
+        final .ceylon.language.meta.declaration.ClassDeclaration inSuperClassParamDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inSuperClass.getParam()).getDeclaration();
+        .java.lang.String $ceylontmp$assert$11 = null;
+        if (inSuperClassParamDecl.getAnonymous()) {
+            if (inSuperClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class))) {
+            } else {
+                $ceylontmp$assert$11 = .java.lang.System.lineSeparator() + "\tunviolated " + "inSuperClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inSuperClassParamDecl.container == `class InlineObjectInSuperClassParam`";
+            }
+        } else {
+            $ceylontmp$assert$11 = .java.lang.System.lineSeparator() + "\tviolated " + "inSuperClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inSuperClassParamDecl.container == `class InlineObjectInSuperClassParam`";
+        }
+        if ($ceylontmp$assert$11 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$11);
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.Integer> inClass2 = new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+        inClass2.check(inClass.getParam(), inClass.getAttribute(), inClass.method());
+        (
+            let
+            {
+                .java.lang.Object arg$12$1 = param;
+                .java.lang.Object arg$12$2 = local;
+                boolean arg$12$3 = true;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$12$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .java.lang.Object arg$12$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.inlineObject$param(arg$12$reified$0);
+                .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<.ceylon.language.Integer>inlineObject(arg$12$reified$0, arg$12$0, arg$12$1, arg$12$2, arg$12$3);
+            }
+            returning null;
+        );
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1anonymous_3_",
+        "1anonymous_4_",
+        "1anonymous_5_"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    InlineObjectInDefaultClassParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        (
+            let
+            {
+                .java.lang.Object $ceylontmp$param$23 = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.<T>$default$param($reified$T);
+                this($reified$T, $ceylontmp$param$23);
+            }
+            returning null;
+        );
+    }
+    
+    InlineObjectInDefaultClassParam(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object param) {
+        this.$reified$T = $reified$T;
+        this.param = param;
+        this.attribute = (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                class anonymous_4_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_4_() {
+                        this.a = 2L;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final long a;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                    public final long getA() {
+                        return a;
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+                    public final void f() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_4_.class));
+                    }
+                }
+            }
+            returning new anonymous_4_();
+        );
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object param;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    public final .java.lang.Object getParam() {
+        return param;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <T>.java.lang.Object $default$param(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                class anonymous_3_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_3_() {
+                        this.a = 2L;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final long a;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                    public final long getA() {
+                        return a;
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+                    public final T f() {
+                        return (T).ceylon.language.nothing_.get_();
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_3_.class));
+                    }
+                }
+            }
+            returning new anonymous_3_();
+        );
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object attribute;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    public final .java.lang.Object getAttribute() {
+        return attribute;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.Object method() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$param$24 = method$param();
+            }
+            returning method$canonical$($ceylontmp$param$24);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.Object method$param() {
+        return (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                class anonymous_5_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_5_() {
+                        this.a = 2L;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final long a;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                    public final long getA() {
+                        return a;
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+                    public final void f() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_5_.class));
+                    }
+                }
+            }
+            returning new anonymous_5_();
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object method$canonical$(final .java.lang.Object param) {
+        return param;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    public final .java.lang.Object method(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object param) {
+        return method$canonical$(param);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void check(@.com.redhat.ceylon.compiler.java.metadata.Name("p")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object p, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object a, @.com.redhat.ceylon.compiler.java.metadata.Name("mp")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object mp) {
+        if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getParam()).typeOf(p)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(param).typeOf(p)"));
+        }
+        if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getParam()).typeOf(getParam())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(param).typeOf(param)"));
+        }
+        if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getAttribute()).typeOf(a)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(attribute).typeOf(a)"));
+        }
+        if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getAttribute()).typeOf(getAttribute())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(attribute).typeOf(attribute)"));
+        }
+        if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, method()).typeOf(mp)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!type(method()).typeOf(mp)"));
+        }
+        if (.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, method()).typeOf(method())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "type(method()).typeOf(method())"));
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class, $reified$T);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_6_"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::InlineObjectInDefaultClassParam<ceylon.language::String>")
+class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String> {
+    
+    InlineObjectInSuperClassParam() {
+        super(.ceylon.language.String.$TypeDescriptor$, (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6")
+                @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class)
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                class anonymous_6_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_6_() {
+                        this.a = 2L;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final long a;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                    public final long getA() {
+                        return a;
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+                    public final void f() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_6_.class));
+                    }
+                }
+            }
+            returning new anonymous_6_();
+        ));
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("inlineObjectTopLevel")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_2_"})
+final class inlineObjectTopLevel_ {
+    
+    private inlineObjectTopLevel_() {
+    }
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (
+                let
+                {
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                    @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2")
+                    @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
+                            isPackageLocal = true,
+                            qualifier = "1inlineObjectTopLevel$1")
+                    @.com.redhat.ceylon.compiler.java.metadata.Object
+                    class anonymous_2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        private anonymous_2_() {
+                            this.a = 2L;
+                        }
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        private final long a;
+                        
+                        @.ceylon.language.SharedAnnotation$annotation$
+                        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                        public final long getA() {
+                            return a;
+                        }
+                        
+                        @.ceylon.language.SharedAnnotation$annotation$
+                        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+                        public final void f() {
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_2_.class);
+                        }
+                    }
+                }
+                returning new anonymous_2_();
+            );
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    public static .java.lang.Object get_() {
+        if (inlineObjectTopLevel_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'inlineObjectTopLevel\' before it was set");
+        }
+    }
+}

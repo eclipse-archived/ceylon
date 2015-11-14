@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class KlassTypeParamsSatisfies<U extends .ceylon.language.Invertible<.ceylon.language.Integer>, V extends .ceylon.language.Summable<.ceylon.language.Integer>, W extends .ceylon.language.Invertible<.ceylon.language.Integer> & .ceylon.language.Summable<.ceylon.language.Integer>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KlassTypeParamsSatisfies(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W) {
+        this.$reified$U = $reified$U;
+        this.$reified$V = $reified$V;
+        this.$reified$W = $reified$W;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassTypeParamsSatisfies.class, $reified$U, $reified$V, $reified$W);
+    }
+}

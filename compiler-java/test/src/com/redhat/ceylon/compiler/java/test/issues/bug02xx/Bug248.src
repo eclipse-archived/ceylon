@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+final class bug248_ {
+    
+    private bug248_() {
+    }
+    
+    static void bug248() {
+        loop_0: while (true) {
+            if (false) {
+                throw new .ceylon.language.Exception(null, null);
+            } else {
+                break loop_0;
+            }
+        }
+    }
+}

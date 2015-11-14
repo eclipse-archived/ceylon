@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+class SwitchIsVarSubst implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SwitchIsVarSubst() {
+    }
+    
+    private final .java.lang.String m$priv$(final .java.lang.Object b) {
+        final .java.lang.String name;
+        {
+            .java.lang.Object sel$0 = b;
+            if (sel$0 instanceof .ceylon.language.String) {
+                final .java.lang.String b$2 = ((.ceylon.language.String)sel$0).toString();
+                name = "String: " + b$2;
+            } else if (sel$0 instanceof .java.lang.Exception) {
+                final .java.lang.Exception b$1 = (.java.lang.Exception)sel$0;
+                name = "Exception: " + .com.redhat.ceylon.compiler.java.Util.throwableMessage(b$1);
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+        return name;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsVarSubst.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchIsVarSubst.class);
+}

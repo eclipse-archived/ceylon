@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+interface Bug1849Foo {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl.Bar Bar$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo.class);
+}
+final class Bug1849Foo$impl implements .java.io.Serializable {
+    
+    Bug1849Foo$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo $this;
+    
+    public abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Bar() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl.Bar.class));
+        }
+    }
+}
+abstract class Bug1849Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo, .java.io.Serializable {
+    
+    Bug1849Baz() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Baz.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1849Baz.class);
+}

@@ -1,0 +1,481 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+public interface Visitor {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitor$impl();
+    
+    public .java.lang.Object openTag(final .java.lang.String name);
+    
+    public .java.lang.Object closeTag(final .java.lang.String name);
+    
+    public .java.lang.Object text(final .java.lang.String text);
+    
+    public void tag(final .java.lang.String name);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor.class);
+}
+public final class Visitor$impl implements .java.io.Serializable {
+    
+    public Visitor$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor $this;
+    
+    public .java.lang.Object openTag(final .java.lang.String name) {
+        return null;
+    }
+    
+    public .java.lang.Object closeTag(final .java.lang.String name) {
+        return null;
+    }
+    
+    public .java.lang.Object text(final .java.lang.String text) {
+        return null;
+    }
+    
+    public void tag(final .java.lang.String name) {
+    }
+}
+public interface Visitable {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$impl();
+    
+    public abstract .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor);
+    
+    public void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text);
+    
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text);
+    
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name);
+    
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable.class);
+}
+public final class Visitable$impl implements .java.io.Serializable {
+    
+    public Visitable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable $this;
+    
+    public void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+    }
+    
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return null;
+    }
+    
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                visitAroundTags$canonical$(visitor, name, $ceylontmp$tags$0);
+            }
+            returning null;
+        );
+    }
+    
+    private void visitAroundTags$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+    }
+    
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        (
+            let
+            {
+                visitAroundTags$canonical$(visitor, name, tags);
+            }
+            returning null;
+        );
+    }
+}
+public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable, .java.io.Serializable {
+    
+    public Html() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $ceylontmp$head$1 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$default$head();
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$2 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$default$body($ceylontmp$head$1);
+                this($ceylontmp$head$1, $ceylontmp$body$2);
+            }
+            returning null;
+        );
+    }
+    
+    public Html(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head) {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $ceylontmp$body$3 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$default$body(head);
+                this(head, $ceylontmp$body$3);
+            }
+            returning null;
+        );
+    }
+    
+    public Html(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head, final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body body) {
+        this.head = head;
+        this.body = body;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head $default$head() {
+        return null;
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body $default$body(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head) {
+        return null;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$;
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                visitAroundTags$canonical$(visitor, name, $ceylontmp$tags$4);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    
+    private void visitAroundTags$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head;
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head getHead() {
+        return head;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body body;
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body getBody() {
+        return body;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Html.class);
+}
+public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable, .java.io.Serializable {
+    
+    public Head() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$title$5 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$default$title();
+                this($ceylontmp$title$5);
+            }
+            returning null;
+        );
+    }
+    
+    public Head(final .ceylon.language.String title) {
+        this.title = title;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+    }
+    
+    public static .ceylon.language.String $default$title() {
+        return null;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$;
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$6 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                visitAroundTags$canonical$(visitor, name, $ceylontmp$tags$6);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    
+    private void visitAroundTags$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    private final .ceylon.language.String title;
+    
+    public final .ceylon.language.String getTitle() {
+        return title;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head.class);
+}
+public interface Tag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.class);
+}
+public interface InlineTag extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.class);
+}
+public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable, .java.io.Serializable {
+    
+    public Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TagType, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$initialTags$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($reified$TagType, name, $ceylontmp$initialTags$7);
+            }
+            returning null;
+        );
+    }
+    
+    protected Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TagType) {
+        super();
+        this.$reified$TagType = $reified$TagType;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+        this.tags = null;
+    }
+    
+    public Container(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TagType, final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
+        this.$reified$TagType = $reified$TagType;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl(this);
+        this.tags = initialTags;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TagType;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitable$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$;
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                visitAroundTags$canonical$(visitor, name, $ceylontmp$tags$8);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    
+    private void visitAroundTags$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    private final .ceylon.language.Sequential tags;
+    
+    public final .ceylon.language.Sequential getTags() {
+        return tags;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object visit(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor) {
+        visitAroundTags(visitor, "body", getTags());
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container.class, $reified$TagType);
+    }
+}
+public class Body extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> {
+    
+    public Body() {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$initialTags$9 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$initialTags$9);
+            }
+            returning null;
+        );
+    }
+    
+    public Body(final .ceylon.language.Sequential initialTags) {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor$, "body", initialTags);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body.class);
+}
+public class Block extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag {
+    
+    public Block(final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$initialTags$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(name, $ceylontmp$initialTags$10);
+            }
+            returning null;
+        );
+    }
+    
+    protected Block() {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor$);
+    }
+    
+    public Block(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Tag.$TypeDescriptor$, name, initialTags);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block.class);
+}
+public class P extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Block {
+    
+    public P() {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$11 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$tags$11);
+            }
+            returning null;
+        );
+    }
+    
+    public P(final .ceylon.language.Sequential tags) {
+        super("p", tags);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.P.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.P.class);
+}
+public class Inline extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Container<.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag> implements .com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag {
+    
+    public Inline(final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$initialTags$12 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(name, $ceylontmp$initialTags$12);
+            }
+            returning null;
+        );
+    }
+    
+    protected Inline() {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.$TypeDescriptor$);
+    }
+    
+    public Inline(final .java.lang.String name, final .ceylon.language.Sequential initialTags) {
+        super(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.InlineTag.$TypeDescriptor$, name, initialTags);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline.class);
+}
+public class B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Inline {
+    
+    public B() {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$tags$13 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$tags$13);
+            }
+            returning null;
+        );
+    }
+    
+    public B(final .ceylon.language.Sequential tags) {
+        super("b", tags);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.B.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.B.class);
+}

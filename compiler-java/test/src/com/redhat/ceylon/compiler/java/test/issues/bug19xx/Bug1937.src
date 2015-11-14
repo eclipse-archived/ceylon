@@ -1,0 +1,227 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1937_check_ {
+    
+    private bug1937_check_() {
+    }
+    
+    static void bug1937_check(final boolean $boolean) {
+    }
+}
+final class bug1937_ {
+    
+    private bug1937_() {
+    }
+    
+    static void bug1937() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1937_check_.bug1937_check((
+            let
+            {
+                boolean $ceylontmp$ifResult$0;
+                if (true) {
+                    $ceylontmp$ifResult$0 = false;
+                } else {
+                    $ceylontmp$ifResult$0 = true;
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        ));
+        final boolean b = (
+            let
+            {
+                boolean $ceylontmp$ifResult$2;
+                if (true) {
+                    $ceylontmp$ifResult$2 = false;
+                } else {
+                    $ceylontmp$ifResult$2 = true;
+                }
+            }
+            returning $ceylontmp$ifResult$2;
+        );
+        final .java.lang.Object obj = .ceylon.language.String.instance("Hey");
+        final boolean b1 = !((
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$ifResult$4;
+                .java.lang.Object obj$6;
+                if ((obj$6 = obj) instanceof .ceylon.language.Integer) {
+                    final long obj$7 = ((.ceylon.language.Integer)obj$6).longValue();
+                    $ceylontmp$ifResult$4 = .ceylon.language.Integer.instance(.ceylon.language.Integer.getSuccessor(obj$7));
+                } else {
+                    $ceylontmp$ifResult$4 = null;
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        ) != null);
+        final boolean b2 = (
+            let
+            {
+                boolean $ceylontmp$ifResult$8;
+                boolean $ceylontmp$if$9 = false;
+                .java.lang.Object obj$10;
+                final .java.lang.String obj$11;
+                .ceylon.language.Character c$12;
+                final int c$13;
+                if ((obj$10 = obj) instanceof .ceylon.language.String) {
+                    obj$11 = ((.ceylon.language.String)obj$10).toString();
+                    if ((c$12 = .ceylon.language.String.instance(obj$11).getFromFirst(2L)) != null) {
+                        c$13 = c$12.intValue();
+                        if (c$13 == 121) {
+                            $ceylontmp$if$9 = true;
+                        }
+                    } else {
+                        c$13 = 0;
+                    }
+                } else {
+                    obj$11 = null;
+                    c$13 = 0;
+                }
+                if ($ceylontmp$if$9) {
+                    $ceylontmp$ifResult$8 = true;
+                } else {
+                    $ceylontmp$ifResult$8 = false;
+                }
+            }
+            returning $ceylontmp$ifResult$8;
+        );
+        final boolean b3 = (
+            let
+            {
+                boolean $ceylontmp$ifResult$14;
+                if (obj.equals(.ceylon.language.String.instance("HEY"))) {
+                    $ceylontmp$ifResult$14 = false;
+                } else {
+                    $ceylontmp$ifResult$14 = (
+                        let
+                        {
+                            boolean $ceylontmp$ifResult$16;
+                            if (obj.equals(.ceylon.language.Integer.instance(1L))) {
+                                $ceylontmp$ifResult$16 = false;
+                            } else {
+                                $ceylontmp$ifResult$16 = true;
+                            }
+                        }
+                        returning $ceylontmp$ifResult$16;
+                    );
+                }
+            }
+            returning $ceylontmp$ifResult$14;
+        );
+        final boolean b4 = (
+            let
+            {
+                boolean $ceylontmp$ifResult$18;
+                .java.lang.Object obj$20;
+                if ((obj$20 = obj) instanceof .ceylon.language.Integer) {
+                    final long obj$27 = ((.ceylon.language.Integer)obj$20).longValue();
+                    $ceylontmp$ifResult$18 = false;
+                } else {
+                    $ceylontmp$ifResult$18 = (
+                        let
+                        {
+                            boolean $ceylontmp$ifResult$21;
+                            boolean $ceylontmp$if$22 = false;
+                            .java.lang.Object obj$23;
+                            final .java.lang.String obj$24;
+                            .ceylon.language.Character c$25;
+                            final int c$26;
+                            if ((obj$23 = obj) instanceof .ceylon.language.String) {
+                                obj$24 = ((.ceylon.language.String)obj$23).toString();
+                                if ((c$25 = .ceylon.language.String.instance(obj$24).getFromFirst(2L)) != null) {
+                                    c$26 = c$25.intValue();
+                                    if (c$26 == 121) {
+                                        $ceylontmp$if$22 = true;
+                                    }
+                                } else {
+                                    c$26 = 0;
+                                }
+                            } else {
+                                obj$24 = null;
+                                c$26 = 0;
+                            }
+                            if ($ceylontmp$if$22) {
+                                $ceylontmp$ifResult$21 = true;
+                            } else {
+                                $ceylontmp$ifResult$21 = false;
+                            }
+                        }
+                        returning $ceylontmp$ifResult$21;
+                    );
+                }
+            }
+            returning $ceylontmp$ifResult$18;
+        );
+        final boolean b5 = (
+            let
+            {
+                boolean $ceylontmp$ifResult$28;
+                if (obj.equals(.ceylon.language.String.instance("nay"))) {
+                    $ceylontmp$ifResult$28 = false;
+                } else {
+                    $ceylontmp$ifResult$28 = (
+                        let
+                        {
+                            boolean $ceylontmp$ifResult$30;
+                            boolean $ceylontmp$if$31 = false;
+                            .java.lang.Object obj$32;
+                            final .java.lang.String obj$33;
+                            .ceylon.language.Character c$34;
+                            final int c$35;
+                            if ((obj$32 = obj) instanceof .ceylon.language.String) {
+                                obj$33 = ((.ceylon.language.String)obj$32).toString();
+                                if ((c$34 = .ceylon.language.String.instance(obj$33).getFromFirst(2L)) != null) {
+                                    c$35 = c$34.intValue();
+                                    if (c$35 == 121) {
+                                        $ceylontmp$if$31 = true;
+                                    }
+                                } else {
+                                    c$35 = 0;
+                                }
+                            } else {
+                                obj$33 = null;
+                                c$35 = 0;
+                            }
+                            if ($ceylontmp$if$31) {
+                                $ceylontmp$ifResult$30 = true;
+                            } else {
+                                $ceylontmp$ifResult$30 = false;
+                            }
+                        }
+                        returning $ceylontmp$ifResult$30;
+                    );
+                }
+            }
+            returning $ceylontmp$ifResult$28;
+        );
+        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1937_check_.bug1937_check((
+            let
+            {
+                boolean $ceylontmp$ifResult$36;
+                {
+                    long sel$37 = 1L;
+                    if (sel$37 == 1L) {
+                        $ceylontmp$ifResult$36 = false;
+                    } else {
+                        $ceylontmp$ifResult$36 = true;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$36;
+        ));
+        final boolean s = (
+            let
+            {
+                boolean $ceylontmp$ifResult$38;
+                {
+                    long sel$39 = 1L;
+                    if (sel$39 == 1L) {
+                        $ceylontmp$ifResult$38 = false;
+                    } else {
+                        $ceylontmp$ifResult$38 = true;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$38;
+        );
+    }
+}

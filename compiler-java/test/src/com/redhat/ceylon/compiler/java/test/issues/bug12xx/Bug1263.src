@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+final class bug1263_ {
+    
+    private bug1263_() {
+    }
+    
+    static void bug1263() {
+        
+        final class Node$impl implements .java.io.Serializable {
+            
+            private final Node $default$foo() {
+                return null;
+            }
+        }
+        
+        class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Node() {
+                (
+                    let
+                    {
+                        Node$impl $ceylontmp$impl$0 = new Node$impl();
+                        Node $ceylontmp$foo$1 = $ceylontmp$impl$0.$default$foo();
+                        this($ceylontmp$foo$1);
+                    }
+                    returning null;
+                );
+            }
+            
+            Node(final Node foo) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1263_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Node.class));
+            }
+        }
+    }
+}

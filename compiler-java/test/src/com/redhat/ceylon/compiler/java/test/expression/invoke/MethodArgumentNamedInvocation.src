@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class methodArgumentNamedIncovation_ {
+    
+    private methodArgumentNamedIncovation_() {
+    }
+    
+    static void methodArgumentNamedIncovation() {
+        
+        final class callFunction_ {
+            
+            private callFunction_() {
+            }
+            
+            void callFunction(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+            }
+        }
+        final callFunction_ callFunction = new callFunction_();
+        (
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                        return .ceylon.language.String.instance(.ceylon.language.Integer.toString((
+                            let
+                            {
+                                long base$1 = i;
+                            }
+                            returning base$1 * base$1;
+                        )));
+                    }
+                };
+                callFunction.callFunction(arg$0$0);
+            }
+            returning null;
+        );
+    }
+}

@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWhile() {
+    }
+    
+    public final void m() {
+        boolean cont = true;
+        loop_0: while (true) {
+            if (cont) {
+                cont = false;
+            } else {
+                break loop_0;
+            }
+        }
+    }
+    
+    public final void whileExists() {
+        .ceylon.language.Boolean cont = .ceylon.language.Boolean.instance(true);
+        loop_1: while (true) {
+            .ceylon.language.Boolean c$0;
+            if ((c$0 = cont) != null) {
+                final boolean c$1 = c$0.booleanValue();
+                cont = null;
+            } else {
+                break loop_1;
+            }
+        }
+    }
+    
+    public final void whileNonEmpty() {
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        loop_2: while (true) {
+            .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$2;
+            if ((s$2 = seq) instanceof .ceylon.language.Sequence) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$2;
+                seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            } else {
+                break loop_2;
+            }
+        }
+    }
+    
+    public final void whileIs() {
+        .java.lang.Object $int = .ceylon.language.Integer.instance(1L);
+        loop_3: while (true) {
+            .java.lang.Object i$4;
+            if ((i$4 = $int) instanceof .ceylon.language.Integer) {
+                final long i$5 = ((.ceylon.language.Integer)i$4).longValue();
+                $int = .ceylon.language.String.instance("");
+            } else {
+                break loop_3;
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhile.class);
+}

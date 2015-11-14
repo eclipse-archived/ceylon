@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+public final class bug2170_ {
+    
+    private bug2170_() {
+    }
+    
+    public static void bug2170() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                {
+                    long sel$1 = 3L;
+                    if (sel$1 == 1L) {
+                        $ceylontmp$ifResult$0 = new .java.lang.StringBuilder().append("one ").append(sel$1).toString();
+                    } else if (sel$1 == 2L) {
+                        $ceylontmp$ifResult$0 = "two";
+                    } else {
+                        $ceylontmp$ifResult$0 = new .java.lang.StringBuilder().append(sel$1).toString();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        )));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2170_.bug2170();
+    }
+}

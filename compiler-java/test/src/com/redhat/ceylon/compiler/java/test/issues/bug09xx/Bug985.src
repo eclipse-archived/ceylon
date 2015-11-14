@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug985 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug985() {
+    }
+    
+    private final <T>.ceylon.language.Array<T> array$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> vals) {
+        return new .ceylon.language.Array<T>($reified$T, vals);
+    }
+    
+    private final void m$priv$() {
+        .ceylon.language.Integer l$1;
+        if ((l$1 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$);
+                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 4, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Integer.instance(1L);
+                        
+                        case 1: 
+                            return .ceylon.language.Integer.instance(2L);
+                        
+                        case 2: 
+                            return null;
+                        
+                        case 3: 
+                            return .ceylon.language.Integer.instance(3L);
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning <.ceylon.language.Integer>array$priv$(arg$2$reified$0, arg$2$0);
+        ).getLast()) != null) {
+            final long l$3 = l$1.longValue();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug985.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug985.class);
+}

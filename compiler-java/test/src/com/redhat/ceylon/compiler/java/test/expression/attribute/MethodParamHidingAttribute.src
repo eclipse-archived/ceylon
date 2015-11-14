@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class MethodParamHidingAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodParamHidingAttribute() {
+        final boolean b = true;
+    }
+    
+    private final void m$priv$(final boolean b) {
+        final boolean b2 = b;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamHidingAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodParamHidingAttribute.class);
+}

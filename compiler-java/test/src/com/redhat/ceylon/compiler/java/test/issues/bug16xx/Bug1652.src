@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+final class bug1652_ {
+    
+    private bug1652_() {
+    }
+    
+    static void bug1652() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> v = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.null_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                null,
+                .ceylon.language.String.instance("a")});
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$1 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)v).iterator();
+        loop_0: while (!((elem$0 = item$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            final .ceylon.language.String item = (.ceylon.language.String)elem$0;
+            .ceylon.language.print_.print(item);
+        }
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> v2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("a")});
+        .java.lang.Object elem$2;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$3 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)v2).iterator();
+        loop_1: while (!((elem$2 = item$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.String item = ((.ceylon.language.String)elem$2).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(item));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> v3 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.null_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return null;
+                
+                case 1: 
+                    return .ceylon.language.String.instance("a");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        .java.lang.Object elem$4;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$5 = v3.iterator();
+        loop_2: while (!((elem$4 = item$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+            final .ceylon.language.String item = (.ceylon.language.String)elem$4;
+            .ceylon.language.print_.print(item);
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> v4 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("b");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("a");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        .java.lang.Object elem$6;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$7 = v4.iterator();
+        loop_3: while (!((elem$6 = item$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.String item = ((.ceylon.language.String)elem$6).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(item));
+        }
+    }
+}

@@ -1,0 +1,54 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1892_1_ {
+    
+    private bug1892_1_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation(
+            value = "val",
+            foo = (int)2L)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1892_1() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1892_2_ {
+    
+    private bug1892_2_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation("val")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1892_2() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1892_3_ {
+    
+    private bug1892_3_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation("val")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1892_3() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1892_4_ {
+    
+    private bug1892_4_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation(
+            value = "val",
+            foo = (int)2L)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1892_4() {
+    }
+}

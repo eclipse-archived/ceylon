@@ -1,0 +1,128 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodForIterator() {
+    }
+    
+    public final void m(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = seq.iterator();
+        loop_0: while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            final long i = ((.ceylon.language.Integer)elem$0).longValue();
+            if (i > 5L) {
+            }
+        }
+    }
+    
+    public final void m2() {
+        .java.lang.Object elem$3;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$4 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("aap");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("noot");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("mies");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.iterator();
+        loop_1: while (!((elem$3 = s$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.String s = ((.ceylon.language.String)elem$3).toString();
+        }
+        .java.lang.Object elem$5;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$6 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("aap");
+                
+                case 1: 
+                    return null;
+                
+                case 2: 
+                    return .ceylon.language.String.instance("mies");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.iterator();
+        loop_2: while (!((elem$5 = s$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            final .ceylon.language.String s = (.ceylon.language.String)elem$5;
+        }
+        .java.lang.Object elem$7;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$8 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.Integer.instance(2L);
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.iterator();
+        loop_3: while (!((elem$7 = n$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
+            final long n = ((.ceylon.language.Integer)elem$7).longValue();
+        }
+        .java.lang.Object elem$9;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$10 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return null;
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.iterator();
+        loop_4: while (!((elem$9 = n$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
+            final .ceylon.language.Integer n = (.ceylon.language.Integer)elem$9;
+        }
+        .java.lang.String s$11 = "wim";
+        int length$12 = s$11.length();
+        loop_5: for (int index$13 = 0; index$13 < length$12; ) {
+            final int c = s$11.codePointAt(index$13);
+            index$13 += .java.lang.Character.charCount(c);
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodForIterator.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodForIterator.class);
+}

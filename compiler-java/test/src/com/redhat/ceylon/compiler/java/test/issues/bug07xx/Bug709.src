@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
+
+final class bug709_ {
+    
+    private bug709_() {
+    }
+    
+    static void bug709(final .ceylon.language.List<? extends .ceylon.language.String> list) {
+        if (list instanceof .ceylon.language.Sequential) {
+        }
+    }
+}

@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.expression.literal;
+
+class StringLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    StringLiteral() {
+    }
+    
+    public final void m() {
+        final .java.lang.String s1 = "";
+        final .java.lang.String s2 = "This is a test";
+        final .java.lang.String s3 = "This\nis\nanother\ntest";
+        final .java.lang.String s4 = "\\\b\t\n\f\r\'\"`\\b";
+        final .java.lang.String s5 = "\ud834\udd1e\ud834\udd1e";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.literal.StringLiteral.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.literal.StringLiteral.class);
+}

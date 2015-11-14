@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+final class run1824_ {
+    
+    private run1824_() {
+    }
+    
+    static void run1824() {
+        (
+            let
+            {
+                long $ceylontmp$opV$1 = .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.get_();
+                .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.set_($ceylontmp$opV$1 + 1);
+            }
+            returning $ceylontmp$opV$1;
+        );
+    }
+}
+final class i1824_ {
+    
+    private i1824_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    public static long get_() {
+        if (i1824_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'i1824\' before it was set");
+        }
+    }
+    
+    public static void set_(final long i1824) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = i1824;
+    }
+}

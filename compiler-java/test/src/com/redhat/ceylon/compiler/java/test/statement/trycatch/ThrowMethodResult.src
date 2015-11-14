@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class ThrowMethodResult implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ThrowMethodResult() {
+    }
+    
+    private final .java.lang.Exception e$priv$() {
+        return new .ceylon.language.Exception(.ceylon.language.String.instance("Bang!"), null);
+    }
+    
+    private final void t$priv$() {
+        throw e$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowMethodResult.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowMethodResult.class);
+}

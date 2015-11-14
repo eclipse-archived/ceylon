@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface SatisfiesWithMembers {
+    
+    public abstract boolean getB();
+    
+    public abstract boolean getB2();
+    
+    public abstract void setB2(final boolean b2);
+    
+    public abstract .java.lang.Object m();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers.class);
+}
+class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembers, .java.io.Serializable {
+    
+    SatisfiesWithMembersClass() {
+        this.b = true;
+        this.b2 = false;
+    }
+    private final boolean b;
+    
+    @.java.lang.Override
+    public final boolean getB() {
+        return b;
+    }
+    private boolean b2;
+    
+    @.java.lang.Override
+    public boolean getB2() {
+        return b2;
+    }
+    
+    @.java.lang.Override
+    public void setB2(final boolean b2) {
+        this.b2 = b2;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembersClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SatisfiesWithMembersClass.class);
+}

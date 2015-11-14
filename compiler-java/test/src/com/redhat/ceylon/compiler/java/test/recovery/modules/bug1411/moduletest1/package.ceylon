@@ -1,0 +1,1 @@
+shared package moduletest1;

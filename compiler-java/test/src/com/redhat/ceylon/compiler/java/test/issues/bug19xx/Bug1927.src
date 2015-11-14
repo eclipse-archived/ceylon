@@ -1,0 +1,44 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+interface Out1927<Element> {
+}
+interface In1927<Element extends .ceylon.language.Sequence<? extends .java.lang.Object>> extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Out1927<.java.lang.Object> {
+    
+    public abstract boolean add(final Element element);
+}
+class Test1927 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Test1927() {
+    }
+    
+    public final void construct() {
+        
+        class State<CompilerBugWorkaround> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            State(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CompilerBugWorkaround, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927<? super .ceylon.language.Sequence<? extends .java.lang.Object>> positions) {
+                this.$reified$CompilerBugWorkaround = $reified$CompilerBugWorkaround;
+                this.positions = positions;
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927<? super .ceylon.language.Sequence<? extends .java.lang.Object>>)(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927)getPositions()).add((.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.meta.model.Method.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                        (.ceylon.language.meta.model.Method<? super .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927, ? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Method)((.ceylon.language.meta.model.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927.$TypeDescriptor$)).getMethod(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "construct"),
+                        .ceylon.language.Integer.instance(0L)}));
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CompilerBugWorkaround;
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927<? super .ceylon.language.Sequence<? extends .java.lang.Object>> positions;
+            
+            public final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927<? super .ceylon.language.Sequence<? extends .java.lang.Object>> getPositions() {
+                return positions;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("construct")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(State.class, $reified$CompilerBugWorkaround));
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Test1927.class);
+}

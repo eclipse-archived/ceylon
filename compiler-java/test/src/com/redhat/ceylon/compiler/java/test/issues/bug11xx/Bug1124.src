@@ -1,0 +1,69 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+interface Bug1124Interface<Key, Value> {
+    
+    public abstract Value get1(final Key k);
+    
+    public abstract Value get2(final Key k);
+    
+    public abstract .java.lang.Object get3(final Key k);
+}
+class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124Interface<.ceylon.language.Integer, .ceylon.language.Boolean>, .java.io.Serializable {
+    
+    protected Bug1124() {
+        super();
+        this.i = 0L;
+        this.f = null;
+    }
+    
+    Bug1124(final long i, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f) {
+        this.i = i;
+        this.f = f;
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> g = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Boolean?(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final long j = ((.ceylon.language.Integer)$param$0).longValue();
+                return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.getI$priv$() == j ? .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.f$priv$()) : null;
+            }
+        };
+    }
+    private final long i;
+    
+    private final long getI$priv$() {
+        return i;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
+    
+    private final boolean f$priv$() {
+        return f.$call$().booleanValue();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean get1(final .ceylon.language.Integer k) {
+        return .ceylon.language.Integer.instance(getI$priv$()).equals(k) ? .ceylon.language.Boolean.instance(f$priv$()) : null;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean get2(final .ceylon.language.Integer k) {
+        return .ceylon.language.Integer.instance(getI$priv$()).equals(k) ? .ceylon.language.Boolean.instance(f$priv$()) : null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object get3(final .ceylon.language.Integer j) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Boolean?(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final long j = ((.ceylon.language.Integer)$param$0).longValue();
+                return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.getI$priv$() == j ? .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.this.f$priv$()) : null;
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1124.class);
+}

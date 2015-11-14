@@ -1,0 +1,192 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class JavaxInjectInject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected JavaxInjectInject() {
+        super();
+        this.dave = null;
+        this.steve = null;
+        this.darren = null;
+    }
+    private .java.lang.String dave;
+    
+    @.ceylon.language.LateAnnotation$annotation$
+    private final .java.lang.String getDave$priv$() {
+        if (this.dave != null) {
+            return dave;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'dave\'");
+        }
+    }
+    
+    @.javax.inject.Inject
+    @.javax.inject.Named("dave")
+    private final void setDave$priv$(final .java.lang.String dave) {
+        if (this.dave == null) {
+            this.dave = dave;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    private .java.lang.String steve;
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    private final .java.lang.String getSteve$priv$() {
+        return steve;
+    }
+    
+    @.javax.inject.Inject
+    private final void setSteve$priv$(final .java.lang.String steve) {
+        this.steve = steve;
+    }
+    @.javax.inject.Inject
+    private .java.lang.String darren;
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    private final .java.lang.String getDarren$priv$() {
+        return darren;
+    }
+    
+    private final void setDarren$priv$(final .java.lang.String darren) {
+        this.darren = darren;
+    }
+    
+    @.javax.inject.Inject
+    @.ceylon.language.SharedAnnotation$annotation$
+    public JavaxInjectInject(final .java.lang.String x$param$) {
+        $return$$0: do {
+        }         while (false);
+        this.steve = "";
+        this.darren = "";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JavaxInjectInject.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaxInjectInject.class);
+}
+@.javax.inject.Singleton
+class JavaxInjectSingleton implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaxInjectSingleton() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JavaxInjectSingleton.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaxInjectSingleton.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.javax.inject.Qualifier
+@.java.lang.annotation.Target({})
+@interface JavaxInjectQualifier$annotation$ {
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class JavaxInjectQualifier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaxInjectQualifier(.com.redhat.ceylon.compiler.java.test.interop.JavaxInjectQualifier$annotation$ anno) {
+        this();
+    }
+    
+    JavaxInjectQualifier() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JavaxInjectQualifier.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaxInjectQualifier.class);
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.javax.inject.Scope
+@.java.lang.annotation.Target({})
+@interface JavaxInjectScope$annotation$ {
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class JavaxInjectScope implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaxInjectScope(.com.redhat.ceylon.compiler.java.test.interop.JavaxInjectScope$annotation$ anno) {
+        this();
+    }
+    
+    JavaxInjectScope() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JavaxInjectScope.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaxInjectScope.class);
+}
+final class javaxInjectInjectSetter_ {
+    
+    private javaxInjectInjectSetter_() {
+    }
+    private static .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = "";
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    public static .java.lang.String get_() {
+        if (javaxInjectInjectSetter_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaxInjectInjectSetter\' before it was set");
+        }
+    }
+    
+    public static void set_(final .java.lang.String javaxInjectInjectSetter) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = javaxInjectInjectSetter;
+    }
+}
+final class javaxInjectInjectField_ {
+    
+    private javaxInjectInjectField_() {
+    }
+    private static .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = "";
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    public static .java.lang.String get_() {
+        if (javaxInjectInjectField_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaxInjectInjectField\' before it was set");
+        }
+    }
+    
+    public static void set_(final .java.lang.String javaxInjectInjectField) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = javaxInjectInjectField;
+    }
+}

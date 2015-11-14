@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class ExceptionAttr implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ExceptionAttr() {
+        this.e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+    }
+    private .java.lang.Exception e;
+    
+    public final .java.lang.Exception getE() {
+        return e;
+    }
+    
+    public final void setE(final .java.lang.Exception e) {
+        this.e = e;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttr.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttr.class);
+}

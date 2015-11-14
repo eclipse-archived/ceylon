@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class getterArgumentNamedInvocationGeneric_ {
+    
+    private getterArgumentNamedInvocationGeneric_() {
+    }
+    
+    static <T>void getterArgumentNamedInvocationGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        
+        final class callFunction_ {
+            
+            private callFunction_() {
+            }
+            
+            void callFunction(final T i) {
+            }
+        }
+        final callFunction_ callFunction = new callFunction_();
+        long i = 3L;
+        (
+            let
+            {
+                
+                final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<T> {
+                    
+                    private i$getter$_() {
+                    }
+                    
+                    public T get_() {
+                        return t;
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<T> i$getter$_ = new i$getter$_();
+                final T arg$0$0 = i$getter$_.get_();
+                callFunction.callFunction(arg$0$0);
+            }
+            returning null;
+        );
+        i++;
+    }
+}

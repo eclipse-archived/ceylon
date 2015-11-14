@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+final class localClassCtor_ {
+    
+    private localClassCtor_() {
+    }
+    
+    static void localClassCtor(final long i) {
+        
+        abstract class LocalClassCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            private LocalClassCtor(final long j$param$) {
+                final long sum;
+                sum = i + j$param$;
+            }
+            
+            class other_ {
+                
+                private other_() {
+                }
+            }
+            
+            private LocalClassCtor(LocalClassCtor.other_ $name$, final long j$param$) {
+                final long sum;
+                sum = i + j$param$;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localClassCtor_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClassCtor.class));
+            }
+        }
+        
+        class LocalClassCtorSub extends LocalClassCtor {
+            
+            private LocalClassCtorSub(final long j$param$) {
+                super(j$param$);
+            }
+            
+            class other_ {
+                
+                private other_() {
+                }
+            }
+            
+            private LocalClassCtorSub(LocalClassCtorSub.other_ $name$, final long j$param$) {
+                super((LocalClassCtor.other_)null, j$param$);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localClassCtor_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClassCtorSub.class));
+            }
+        }
+        new LocalClassCtorSub(0L);
+        new LocalClassCtorSub(0L);
+        new LocalClassCtorSub((LocalClassCtorSub.other_)null, 0L);
+    }
+}

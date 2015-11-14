@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1134Toplevel1_ {
+    
+    private bug1134Toplevel1_() {
+    }
+    private static final .ceylon.language.Callable<? extends .ceylon.language.String> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Callable<? extends .ceylon.language.String>).ceylon.language.nothing_.get_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
+        if (bug1134Toplevel1_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1134Toplevel1\' before it was set");
+        }
+    }
+}
+final class bug1134Toplevel2_ {
+    
+    private bug1134Toplevel2_() {
+    }
+    private static final .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.get_().$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Anything.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, .ceylon.language.empty_.get_())).toString();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.String get_() {
+        if (bug1134Toplevel2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1134Toplevel2\' before it was set");
+        }
+    }
+}

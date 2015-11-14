@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug01xx;
+
+class Bug111 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug111() {
+    }
+    
+    private final void m1$priv$() {
+        final long nat = 0L;
+        final long neg = .ceylon.language.Integer.getNegated(nat);
+    }
+    
+    private final void m2$priv$() {
+        final long num = 0L;
+        final long mag = .ceylon.language.Integer.getNegated(num);
+    }
+    
+    private final void m3$priv$() {
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> nums = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)});
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> nums$1;
+        if ((nums$1 = nums) instanceof .ceylon.language.Sequence) {
+            final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nums$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)nums$1;
+            final .ceylon.language.Integer first = (.ceylon.language.Integer)(.java.lang.Object)nums$2.getFirst();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug01xx.Bug111.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug01xx.Bug111.class);
+}

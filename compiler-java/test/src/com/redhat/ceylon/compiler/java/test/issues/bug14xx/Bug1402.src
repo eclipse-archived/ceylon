@@ -1,0 +1,80 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+class Bug1402Parent implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1402Parent() {
+        super();
+        this.attrs = null;
+    }
+    
+    Bug1402Parent(final .java.lang.String name, final boolean status, final .ceylon.language.Sequence<? extends .ceylon.language.String> attrs) {
+        this.attrs = attrs;
+    }
+    private final .ceylon.language.Sequence<? extends .ceylon.language.String> attrs;
+    
+    private final .ceylon.language.Sequence<? extends .ceylon.language.String> getAttrs$priv$() {
+        return attrs;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return getAttrs$priv$().toString();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Parent.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Parent.class);
+}
+class Bug1402Child extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Parent {
+    
+    protected Bug1402Child() {
+        super();
+    }
+    
+    Bug1402Child(final .java.lang.String name, final boolean flag) {
+        super(name, true, .com.redhat.ceylon.compiler.java.Util.asSequence((flag ? new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("def");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("abc");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        } : new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("ghi");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("abc");
+                
+                case 2: 
+                    return .ceylon.language.String.instance("xyz");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }).sequence()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Child.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1402Child.class);
+}

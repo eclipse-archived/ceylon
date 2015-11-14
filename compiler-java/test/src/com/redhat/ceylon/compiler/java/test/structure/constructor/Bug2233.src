@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class ParentConstr2233 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ParentConstr2233() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ParentConstr2233.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ParentConstr2233.class);
+}
+class Test2233<F> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ParentConstr2233 {
+    
+    protected Test2233(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F) {
+        super();
+        this.$reified$F = $reified$F;
+        this.f = null;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F;
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final F f;
+    
+    public final F getF() {
+        return f;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.bar$delegation$_ bar$delegation$_ = null;
+    
+    private static final class bar$delegation$_ {
+        
+        private bar$delegation$_() {
+        }
+    }
+    
+    private Test2233(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.bar$delegation$_ $name$, final F f$param$) {
+        super();
+        this.$reified$F = $reified$F;
+        this.f = f$param$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.bar_ bar_ = null;
+    
+    public static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    public Test2233(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.bar_ $name$, final F f$param$) {
+        this($reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.bar$delegation$_, f$param$);
+    }
+    
+    public Test2233(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, final F f$param$) {
+        this($reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.bar$delegation$_, f$param$);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.class, $reified$F);
+    }
+}

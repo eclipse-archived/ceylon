@@ -1,0 +1,304 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+class Bug2099_C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2099_C() {
+    }
+    
+    private final .java.lang.String foo$priv$(final .java.lang.String x) {
+        return (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$others$0 = foo$others(x);
+            }
+            returning foo$priv$$canonical$(x, $ceylontmp$others$0);
+        );
+    }
+    
+    private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> foo$others(final .java.lang.String x) {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    private .java.lang.String foo$priv$$canonical$(final .java.lang.String x, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> others) {
+        return "";
+    }
+    
+    private final .java.lang.String foo$priv$(final .java.lang.String x, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> others) {
+        return foo$priv$$canonical$(x, others);
+    }
+    
+    public final .java.lang.Object getBar() {
+        return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance((
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C arg$1$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C.this;
+                            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C arg$1$argthis$ = arg$1$callable$;
+                            .java.lang.String arg$1$0 = "";
+                            .ceylon.language.Iterable arg$1$1 = arg$1$argthis$.foo$others(arg$1$0);
+                        }
+                        returning arg$1$callable$.foo$priv$(arg$1$0, arg$1$1);
+                    ));
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+    }
+    
+    public final .java.lang.Object getBar2() {
+        return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance((
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C arg$2$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C.this;
+                            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C arg$2$argthis$ = arg$2$callable$;
+                            .java.lang.String arg$2$0 = "";
+                            .ceylon.language.Iterable arg$2$1 = arg$2$argthis$.foo$others(arg$2$0);
+                        }
+                        returning arg$2$callable$.foo$priv$(arg$2$0, arg$2$1);
+                    ));
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_C.class);
+}
+class Bug2099_D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2099_D() {
+        
+        final class bar$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
+            
+            private bar$getter$_() {
+            }
+            
+            public .java.lang.Object get_() {
+                return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return (
+                                let
+                                {
+                                    .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D arg$4$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D.this;
+                                    .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D arg$4$argthis$ = arg$4$callable$;
+                                    .java.lang.Object arg$4$0 = arg$4$argthis$.foo$y();
+                                }
+                                returning arg$4$callable$.foo$priv$(arg$4$0);
+                            );
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> bar$getter$_ = new bar$getter$_();
+        
+        final class bat$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
+            
+            private bat$getter$_() {
+            }
+            
+            public .java.lang.Object get_() {
+                return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return (
+                                let
+                                {
+                                    .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D arg$5$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D.this;
+                                    .java.lang.Object arg$5$0 = null;
+                                }
+                                returning arg$5$callable$.foo$priv$(arg$5$0);
+                            );
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> bat$getter$_ = new bat$getter$_();
+        
+        final class baz$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
+            
+            private baz$getter$_() {
+            }
+            
+            public .java.lang.Object get_() {
+                return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return (
+                                let
+                                {
+                                    .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D arg$6$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D.this;
+                                    .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D arg$6$argthis$ = arg$6$callable$;
+                                    .java.lang.Object arg$6$0 = arg$6$argthis$.foo$y();
+                                }
+                                returning arg$6$callable$.foo$priv$(arg$6$0);
+                            );
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> baz$getter$_ = new baz$getter$_();
+    }
+    
+    private final .java.lang.Object foo$priv$() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$y$3 = foo$y();
+            }
+            returning foo$priv$$canonical$($ceylontmp$y$3);
+        );
+    }
+    
+    private final .java.lang.Object foo$y() {
+        return null;
+    }
+    
+    private .java.lang.Object foo$priv$$canonical$(final .java.lang.Object y) {
+        return null;
+    }
+    
+    private final .java.lang.Object foo$priv$(final .java.lang.Object y) {
+        return foo$priv$$canonical$(y);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_D.class);
+}
+class Bug2099_E implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2099_E() {
+        
+        final class bar$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
+            
+            private bar$getter$_() {
+            }
+            
+            public .java.lang.Object get_() {
+                return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Anything.$TypeDescriptor$, new .java.lang.Object[]{(
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E arg$8$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E.this;
+                        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E arg$8$argthis$ = arg$8$callable$;
+                        .java.lang.Object arg$8$0 = arg$8$argthis$.foo$y();
+                    }
+                    returning arg$8$callable$.foo$priv$(arg$8$0);
+                )});
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> bar$getter$_ = new bar$getter$_();
+        
+        final class bat$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
+            
+            private bat$getter$_() {
+            }
+            
+            public .java.lang.Object get_() {
+                return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Anything.$TypeDescriptor$, new .java.lang.Object[]{(
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E arg$9$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E.this;
+                        .java.lang.Object arg$9$0 = null;
+                    }
+                    returning arg$9$callable$.foo$priv$(arg$9$0);
+                )});
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> bat$getter$_ = new bat$getter$_();
+        
+        final class baz$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> {
+            
+            private baz$getter$_() {
+            }
+            
+            public .java.lang.Object get_() {
+                return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.ceylon.language.Anything.$TypeDescriptor$, new .java.lang.Object[]{(
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E arg$10$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E.this;
+                        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E arg$10$argthis$ = arg$10$callable$;
+                        .java.lang.Object arg$10$0 = arg$10$argthis$.foo$y();
+                    }
+                    returning arg$10$callable$.foo$priv$(arg$10$0);
+                )});
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.Object> baz$getter$_ = new baz$getter$_();
+    }
+    
+    private final .java.lang.Object foo$priv$() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$y$7 = foo$y();
+            }
+            returning foo$priv$$canonical$($ceylontmp$y$7);
+        );
+    }
+    
+    private final .java.lang.Object foo$y() {
+        return null;
+    }
+    
+    private .java.lang.Object foo$priv$$canonical$(final .java.lang.Object y) {
+        return null;
+    }
+    
+    private final .java.lang.Object foo$priv$(final .java.lang.Object y) {
+        return foo$priv$$canonical$(y);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2099_E.class);
+}

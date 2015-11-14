@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class constructors_ {
+    
+    private constructors_() {
+    }
+    
+    static void constructors() {
+        final .java.io.File f1 = new .java.io.File("parent");
+        final .java.io.File f2 = new .java.io.File("parent", "test");
+        final .java.io.File f3 = new .java.io.File(f1, "test");
+    }
+}

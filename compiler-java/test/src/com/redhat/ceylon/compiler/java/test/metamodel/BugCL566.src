@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.metamodel;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class BugCl566 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected BugCl566() {
+        super();
+        this.a = null;
+    }
+    
+    BugCl566(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    final .java.lang.Object a) {
+        this.a = a;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object a;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final .java.lang.Object getA() {
+        return a;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bugCl566_ {
+    
+    private bugCl566_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bugCl566() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object> iterable$2 = (.ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object>)(.ceylon.language.Iterable)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$);
+        final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$4;
+        int i$5 = 0;
+        final int length$6;
+        if (isTuple$3) {
+            array$4 = ((.ceylon.language.Tuple)iterable$2).$getArray$();
+            i$5 = ((.ceylon.language.Tuple)iterable$2).$getFirst$();
+            length$6 = i$5 + ((.ceylon.language.Tuple)iterable$2).$getLength$();
+        } else {
+            array$4 = null;
+            length$6 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.meta.declaration.ValueDeclaration> option$iterator$$1 = isTuple$3 ? null : iterable$2.iterator();
+        loop_0: while (isTuple$3 ? i$5 < length$6 : !((elem$0 = option$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
+            final .ceylon.language.meta.declaration.ValueDeclaration option = (.ceylon.language.meta.declaration.ValueDeclaration)elem$0;
+            .ceylon.language.print_.print(option);
+        }
+        if (((.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>)(.ceylon.language.Sequential)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$)).getSize() == 1L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`class BugCl566`.declaredMemberDeclarations<ValueDeclaration>().size == 1"));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.metamodel.bugCl566_.bugCl566();
+    }
+}

@@ -1,0 +1,116 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+class DestroyableCategory implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable, .ceylon.language.Category<.ceylon.language.String>, .java.io.Serializable {
+    
+    DestroyableCategory() {
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
+    }
+    protected final .ceylon.language.Category$impl<.ceylon.language.String> $ceylon$language$Category$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Category$impl<? super .ceylon.language.String> $ceylon$language$Category$impl() {
+        return $ceylon$language$Category$this$;
+    }
+    
+    @.java.lang.Override
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this$.containsEvery(elements);
+    }
+    
+    @.java.lang.Override
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this$.containsAny(elements);
+    }
+    
+    @.java.lang.Override
+    public final boolean contains(final .ceylon.language.String s) {
+        return false;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object destroy(final .java.lang.Throwable er) {
+        return (
+            let
+            {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("asd"));
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.DestroyableCategory.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.DestroyableCategory.class);
+}
+final class bug1887_ {
+    
+    private bug1887_() {
+    }
+    
+    static void bug1887() {
+        {
+            final .java.lang.Object y = .ceylon.language.nothing_.get_();
+            .java.lang.Throwable $ceylontmp$ex$0 = null;
+            try {
+            } catch (final .java.lang.Throwable $ceylontmp$ex$1) {
+                $ceylontmp$ex$0 = $ceylontmp$ex$1;
+                throw $ceylontmp$ex$1;
+            } finally {
+                if ($ceylontmp$ex$0 != null) try {
+                    ((.ceylon.language.Destroyable)y).destroy($ceylontmp$ex$0);
+                } catch (final .java.lang.Throwable $ceylontmp$closex$2) {
+                    $ceylontmp$ex$0.addSuppressed($ceylontmp$closex$2);
+                } else ((.ceylon.language.Destroyable)y).destroy($ceylontmp$ex$0);
+            }
+        }
+        {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.DestroyableCategory y = new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.DestroyableCategory();
+            .java.lang.Throwable $ceylontmp$ex$3 = null;
+            try {
+            } catch (final .java.lang.Throwable $ceylontmp$ex$4) {
+                $ceylontmp$ex$3 = $ceylontmp$ex$4;
+                throw $ceylontmp$ex$4;
+            } finally {
+                if ($ceylontmp$ex$3 != null) try {
+                    y.destroy($ceylontmp$ex$3);
+                } catch (final .java.lang.Throwable $ceylontmp$closex$5) {
+                    $ceylontmp$ex$3.addSuppressed($ceylontmp$closex$5);
+                } else y.destroy($ceylontmp$ex$3);
+            }
+        }
+        final .java.lang.Object obtainableCategory = .ceylon.language.nothing_.get_();
+        {
+            final .java.lang.Object y = obtainableCategory;
+            ((.ceylon.language.Obtainable)y).obtain();
+            .java.lang.Throwable $ceylontmp$ex$6 = null;
+            try {
+            } catch (final .java.lang.Throwable $ceylontmp$ex$7) {
+                $ceylontmp$ex$6 = $ceylontmp$ex$7;
+                throw $ceylontmp$ex$7;
+            } finally {
+                if ($ceylontmp$ex$6 != null) try {
+                    ((.ceylon.language.Obtainable)y).release($ceylontmp$ex$6);
+                } catch (final .java.lang.Throwable $ceylontmp$closex$8) {
+                    $ceylontmp$ex$6.addSuppressed($ceylontmp$closex$8);
+                } else ((.ceylon.language.Obtainable)y).release($ceylontmp$ex$6);
+            }
+        }
+        {
+            final .java.lang.Object $ceylontmp$try$9 = .ceylon.language.nothing_.get_();
+            .java.lang.Throwable $ceylontmp$ex$10 = null;
+            try {
+            } catch (final .java.lang.Throwable $ceylontmp$ex$11) {
+                $ceylontmp$ex$10 = $ceylontmp$ex$11;
+                throw $ceylontmp$ex$11;
+            } finally {
+                if ($ceylontmp$ex$10 != null) try {
+                    ((.ceylon.language.Destroyable)$ceylontmp$try$9).destroy($ceylontmp$ex$10);
+                } catch (final .java.lang.Throwable $ceylontmp$closex$12) {
+                    $ceylontmp$ex$10.addSuppressed($ceylontmp$closex$12);
+                } else ((.ceylon.language.Destroyable)$ceylontmp$try$9).destroy($ceylontmp$ex$10);
+            }
+        }
+    }
+}

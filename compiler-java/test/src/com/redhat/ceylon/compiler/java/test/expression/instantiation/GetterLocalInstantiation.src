@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class GetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    GetterLocalInstantiation() {
+        
+        final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private i$getter$_() {
+            }
+            
+            public long get_() {
+                
+                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    LocalClass() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("i")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+                    }
+                }
+                final LocalClass l = new LocalClass();
+                return 0L;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.GetterLocalInstantiation.class);
+}

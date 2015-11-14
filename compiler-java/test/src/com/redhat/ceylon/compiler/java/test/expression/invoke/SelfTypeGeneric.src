@@ -1,0 +1,70 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+interface Self<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.Self<T>> {
+}
+final class Self$impl<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.Self<T>> {
+    
+    Self$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Self<T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Self<T> $this;
+}
+class X implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Self<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> {
+    
+    X() {
+        this.$com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>(this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> $com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this;
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.X();
+    }
+}
+interface Inv<T> {
+}
+final class Inv$impl<T> {
+    
+    Inv$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<T> $this;
+}
+final class selfTypeGeneric_ {
+    
+    private selfTypeGeneric_() {
+    }
+    
+    static void selfTypeGeneric() {
+        
+        final class l1$getter_ {
+            
+            private l1$getter_() {
+            }
+            
+            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.Self<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>> getL1() {
+                throw new .ceylon.language.Exception(null, null);
+            }
+        }
+        final l1$getter_ l1$getter_ = new l1$getter_();
+        
+        final class l2$getter_ {
+            
+            private l2$getter_() {
+            }
+            
+            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> getL2() {
+                throw new .ceylon.language.Exception(null, null);
+            }
+        }
+        final l2$getter_ l2$getter_ = new l2$getter_();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.Self<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>> l3 = (.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.Self<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv)l2$getter_.getL2();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> l4 = (.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.X>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv)l1$getter_.getL1();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.selfTypeGeneric_.selfTypeGeneric();
+    }
+}

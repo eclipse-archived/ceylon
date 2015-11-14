@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class caseMismatch_ {
+    
+    private caseMismatch_() {
+    }
+    
+    static void caseMismatch() {
+        final .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch klass = new .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch();
+        final long i = klass.Field;
+        klass.Method();
+        final .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch.subClass klass2 = new .com.redhat.ceylon.compiler.java.test.interop.javaCaseMismatch.subClass();
+    }
+}

@@ -1,0 +1,361 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected RefiningAnythingMembersClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.t = null;
+    }
+    
+    RefiningAnythingMembersClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
+        this.t = t;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final T t;
+    
+    private final T getT$priv$() {
+        return t;
+    }
+    
+    public final void notRefinable() {
+    }
+    
+    public .java.lang.Object getDefaultGetterAnything() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public T getDefaultGetterT() {
+        return getT$priv$();
+    }
+    
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsvoidExplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsAnythingImplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public .java.lang.Object defaultReturnsAnythingExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public T defaultReturnsT() {
+        return getT$priv$();
+    }
+    
+    public abstract .java.lang.Object getFormalGetterAnything();
+    
+    public abstract T getFormalGetterT();
+    
+    public abstract .java.lang.Object formalReturnsvoid();
+    
+    public abstract .java.lang.Object formalReturnsAnything();
+    
+    public abstract T formalReturnsT();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass.class, $reified$T);
+    }
+}
+abstract class RefiningAnythingMembersClass_Boxed extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass<.java.lang.Object> {
+    
+    RefiningAnythingMembersClass_Boxed() {
+        super(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getDefaultGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsvoidExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getFormalGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsvoid() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Boxed.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Boxed.class);
+}
+abstract class RefiningAnythingMembersClass_Unboxed extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass<.java.lang.Object> {
+    
+    RefiningAnythingMembersClass_Unboxed() {
+        super(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsAnythingExplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsAnythingImplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsAnything() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Unboxed.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersClass_Unboxed.class);
+}
+interface RefiningAnythingMembersInterface<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$impl();
+    
+    public void notRefinable();
+    
+    public .java.lang.Object getDefaultGetterAnything();
+    
+    public T getDefaultGetterT();
+    
+    public .java.lang.Object defaultReturnsvoidImplicit();
+    
+    public .java.lang.Object defaultReturnsvoidExplicit();
+    
+    public .java.lang.Object defaultReturnsAnythingImplicit();
+    
+    public .java.lang.Object defaultReturnsAnythingExplicit();
+    
+    public T defaultReturnsT();
+    
+    public abstract .java.lang.Object getFormalGetterAnything();
+    
+    public abstract T getFormalGetterT();
+    
+    public abstract .java.lang.Object formalReturnsvoid();
+    
+    public abstract .java.lang.Object formalReturnsAnything();
+    
+    public abstract T formalReturnsT();
+}
+final class RefiningAnythingMembersInterface$impl<T> implements .java.io.Serializable {
+    
+    RefiningAnythingMembersInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public void notRefinable() {
+    }
+    
+    public final .java.lang.Object getDefaultGetterAnything() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public final T getDefaultGetterT() {
+        return $this.defaultReturnsT();
+    }
+    
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsvoidExplicit() {
+        return null;
+    }
+    
+    public .java.lang.Object defaultReturnsAnythingImplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public .java.lang.Object defaultReturnsAnythingExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    public T defaultReturnsT() {
+        return $this.getDefaultGetterT();
+    }
+}
+abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object>, .java.io.Serializable {
+    
+    RefiningAnythingMembersInterface_Boxed() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public final void notRefinable() {
+        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.notRefinable();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getDefaultGetterAnything() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.getDefaultGetterAnything();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidImplicit();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsAnythingImplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsAnythingImplicit();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsAnythingExplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsAnythingExplicit();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getDefaultGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsvoidExplicit() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object getFormalGetterT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsvoid() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Boxed.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Boxed.class);
+}
+abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface<.java.lang.Object>, .java.io.Serializable {
+    
+    RefiningAnythingMembersInterface_Unboxed() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public final void notRefinable() {
+        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.notRefinable();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getDefaultGetterAnything() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.getDefaultGetterAnything();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object getDefaultGetterT() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.getDefaultGetterT();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidImplicit();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultReturnsvoidExplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidExplicit();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsAnythingExplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsAnythingImplicit() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultReturnsT() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsAnything() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object formalReturnsT() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Unboxed.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface_Unboxed.class);
+}

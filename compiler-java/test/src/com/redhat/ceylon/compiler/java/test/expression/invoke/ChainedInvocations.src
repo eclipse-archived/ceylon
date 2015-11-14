@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class ChainedInvocations implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ChainedInvocations() {
+    }
+    
+    private final long m$priv$() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.invoke.ChainedInvocations().foo$priv$();
+    }
+    
+    private final long foo$priv$() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.ChainedInvocations.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.ChainedInvocations.class);
+}

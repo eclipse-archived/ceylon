@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface InterfaceAliasWithTypeParameters_Foo<T> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::InterfaceAliasWithTypeParameters_Foo<T>")
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface InterfaceAliasWithTypeParameters<T> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::InterfaceAliasWithTypeParameters_Foo<ceylon.language::Integer>")
+public interface InterfaceAliasWithTypeParameters2 {
+}
+final class interfaceAliasWithTypeParametersMethod_ {
+    
+    private interfaceAliasWithTypeParametersMethod_() {
+    }
+    
+    static void interfaceAliasWithTypeParametersMethod(final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<.ceylon.language.Integer> a, final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<.ceylon.language.Integer> b) {
+    }
+}

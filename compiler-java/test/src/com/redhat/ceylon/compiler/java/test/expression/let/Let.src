@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.expression.let;
+
+interface LetA {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.let.LetA.class);
+}
+interface LetB {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.let.LetB.class);
+}
+final class letMethod_ {
+    
+    private letMethod_() {
+    }
+    
+    static void letMethod() {
+        final .java.lang.String s = (
+            let
+            {
+                final .java.lang.String x = "hello";
+                final .java.lang.String y = "world";
+            }
+            returning x + " " + y;
+        );
+        final .ceylon.language.String sOrNull = null;
+        final .java.lang.String s2 = (
+            let
+            {
+                final .ceylon.language.String x = sOrNull;
+                final .java.lang.String y = "world";
+            }
+            returning y;
+        );
+        final .ceylon.language.String s3 = (
+            let
+            {
+                final .ceylon.language.String x = sOrNull;
+                final .java.lang.String y = "world";
+            }
+            returning x;
+        );
+        final .java.lang.String s4 = (
+            let
+            {
+                final .java.lang.Object x = .ceylon.language.String.instance("hello");
+                final .java.lang.Object y = .ceylon.language.String.instance("world");
+            }
+            returning new .java.lang.StringBuilder().append(x.toString()).append(" ").append(y.toString()).toString();
+        );
+        final .com.redhat.ceylon.compiler.java.test.expression.let.LetA a = (.com.redhat.ceylon.compiler.java.test.expression.let.LetA)(
+            let
+            {
+                final .java.lang.Object x = .ceylon.language.nothing_.get_();
+            }
+            returning x;
+        );
+    }
+}

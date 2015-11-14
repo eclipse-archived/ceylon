@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentTernary_f_ {
+    
+    private callableArgumentTernary_f_() {
+    }
+    
+    static void callableArgumentTernary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+}
+final class callableArgumentTernary_bar_ {
+    
+    private callableArgumentTernary_bar_() {
+    }
+    
+    static void callableArgumentTernary_bar(final long i, final .java.lang.String s, final boolean b) {
+    }
+}
+final class callableArgumentTernary_m_ {
+    
+    private callableArgumentTernary_m_() {
+    }
+    
+    static void callableArgumentTernary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_f_.callableArgumentTernary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), "Anything(Integer, String, Boolean)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$1).toString();
+                final boolean $ceylontmp$b = ((.ceylon.language.Boolean)$param$2).booleanValue();
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentTernary_bar_.callableArgumentTernary_bar($ceylontmp$i, $ceylontmp$s, $ceylontmp$b);
+                    }
+                    returning null;
+                );
+            }
+        });
+    }
+}

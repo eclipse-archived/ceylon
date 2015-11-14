@@ -1,0 +1,170 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class spreadMethodReference_ {
+    
+    private spreadMethodReference_() {
+    }
+    
+    static void spreadMethodReference(final .ceylon.language.Integer i, final .ceylon.language.Callable<? extends .ceylon.language.Integer> im) {
+        .ceylon.language.Callable<? extends .ceylon.language.Integer> nullSafeMethodRef = (
+            let
+            {
+                final .ceylon.language.Integer $instance$ = i;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                    return (
+                        let
+                        {
+                            .ceylon.language.Integer safe$1 = $instance$;
+                        }
+                        returning safe$1 != null ? $instance$.plus($ceylontmp$other) : null;
+                    );
+                }
+            };
+        );
+        nullSafeMethodRef = (
+            let
+            {
+                final .ceylon.language.Integer $instance$ = im.$call$();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                    return (
+                        let
+                        {
+                            .ceylon.language.Integer safe$3 = im.$call$();
+                        }
+                        returning safe$3 != null ? $instance$.plus($ceylontmp$other) : null;
+                    );
+                }
+            };
+        );
+        final VariableBox<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>> spreadMethodRef = new VariableBox<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>>((
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$4$iterable$ = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.Integer.instance(2L)});
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "[Integer+](Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                    return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        @.java.lang.Override
+                        public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$5$iterator$ = spread$4$iterable$.iterator();
+                                
+                                @.java.lang.Override
+                                public final .java.lang.Object next() {
+                                    .java.lang.Object spread$5$element$;
+                                    if (!((spread$5$element$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                        spread$5$element$ = ((.ceylon.language.Integer)spread$5$element$).plus($ceylontmp$other);
+                                    }
+                                    return spread$5$element$;
+                                }
+                            };
+                        }
+                    }.sequence();
+                }
+            };
+        ));
+        spreadMethodRef.ref = (
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$6$iterable$ = spreadMethodRef.ref.$call$((.java.lang.Object).ceylon.language.Integer.instance(5L));
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "[Integer+](Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                    return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        @.java.lang.Override
+                        public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$7$iterator$ = spread$6$iterable$.iterator();
+                                
+                                @.java.lang.Override
+                                public final .java.lang.Object next() {
+                                    .java.lang.Object spread$7$element$;
+                                    if (!((spread$7$element$ = spread$7$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                        spread$7$element$ = ((.ceylon.language.Integer)spread$7$element$).times($ceylontmp$other);
+                                    }
+                                    return spread$7$element$;
+                                }
+                            };
+                        }
+                    }.sequence();
+                }
+            };
+        );
+        spreadMethodRef.ref = (
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$8$iterable$ = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
+                    let
+                    {
+                        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$9$iterable$ = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                                .ceylon.language.Integer.instance(1L),
+                                .ceylon.language.Integer.instance(2L)});
+                    }
+                    returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        @.java.lang.Override
+                        public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$9$iterator$ = spread$9$iterable$.iterator();
+                                
+                                @.java.lang.Override
+                                public final .java.lang.Object next() {
+                                    .java.lang.Object spread$9$element$;
+                                    if (!((spread$9$element$ = spread$9$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                        spread$9$element$ = ((.ceylon.language.Integer)spread$9$element$).getNegated();
+                                    }
+                                    return spread$9$element$;
+                                }
+                            };
+                        }
+                    }.sequence();
+                );
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "[Integer+](Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Sequence<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Integer $ceylontmp$other = (.ceylon.language.Integer)$param$0;
+                    return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        @.java.lang.Override
+                        public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$10$iterator$ = spread$8$iterable$.iterator();
+                                
+                                @.java.lang.Override
+                                public final .java.lang.Object next() {
+                                    .java.lang.Object spread$10$element$;
+                                    if (!((spread$10$element$ = spread$10$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                        spread$10$element$ = ((.ceylon.language.Integer)spread$10$element$).plus($ceylontmp$other);
+                                    }
+                                    return spread$10$element$;
+                                }
+                            };
+                        }
+                    }.sequence();
+                }
+            };
+        );
+    }
+}

@@ -1,0 +1,126 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug2039() {
+        super();
+        this.somefunc = null;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> somefunc;
+    
+    public final .ceylon.language.Callable<? extends .java.lang.Object> getSomefunc() {
+        return somefunc;
+    }
+    
+    public Bug2039(final .ceylon.language.Callable<? extends .java.lang.Object> somefunc$param$) {
+        this.somefunc = somefunc$param$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.test2_ test2_ = null;
+    
+    public static final class test2_ {
+        
+        private test2_() {
+        }
+    }
+    
+    public Bug2039(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.test2_ $name$, final .java.lang.Object ret) {
+        
+        final class somef_ {
+            
+            private somef_() {
+            }
+            
+            .java.lang.Object somef() {
+                return (
+                    let
+                    {
+                        .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                    }
+                    returning somef($ceylontmp$b$0);
+                );
+            }
+            
+            .java.lang.Object somef(final .ceylon.language.Sequential<? extends .java.lang.Object> b) {
+                return ret;
+            }
+        }
+        final somef_ somef = new somef_();
+        this.somefunc = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$)), "Object(Object?*)", (short)0){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(b$variadic$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(b);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(b$variadic$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), 0, 1, new .java.lang.Object[]{$param$0}, $param$1));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(b$variadic$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), 0, 2, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .java.lang.Object> b$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(b$variadic$);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), 0, 3, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), 0, $param$0));
+            }
+            
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequential<? extends .java.lang.Object> b) {
+                return somef.somef(b);
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.class);
+}

@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorOfObjectSubclass extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CtorOfObjectSubclass() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$1 = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+            }
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+        );
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.default$delegation$_ default$delegation$_ = null;
+    
+    private static final class default$delegation$_ {
+        
+        private default$delegation$_() {
+        }
+    }
+    
+    private CtorOfObjectSubclass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.default$delegation$_ $name$, final long i$param$) {
+        super();
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.default_ default_ = null;
+    
+    public static final class default_ {
+        
+        private default_() {
+        }
+    }
+    
+    public CtorOfObjectSubclass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.default_ $name$, final long i$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.default$delegation$_, i$param$);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.nnew_ nnew_ = null;
+    
+    public static final class nnew_ {
+        
+        private nnew_() {
+        }
+    }
+    
+    public CtorOfObjectSubclass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.nnew_ $name$, final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass other$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.default$delegation$_, 1L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorOfObjectSubclass.class);
+}

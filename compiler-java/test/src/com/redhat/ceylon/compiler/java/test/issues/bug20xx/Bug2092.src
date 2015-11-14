@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+interface I<Element> {
+    
+    public abstract <Result>.com.redhat.ceylon.compiler.java.test.issues.bug20xx.I<? extends Result> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting);
+}
+interface J<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.I<Element> {
+    
+    @.java.lang.Override
+    public abstract <Result>.com.redhat.ceylon.compiler.java.test.issues.bug20xx.J<? extends Result> map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting);
+}
+interface K extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.J<.java.lang.Object> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.K$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$K$impl();
+    
+    @.java.lang.Override
+    public <Result>.com.redhat.ceylon.compiler.java.test.issues.bug20xx.J map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.K.class);
+}
+final class K$impl {
+    
+    K$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.K $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.K $this;
+    
+    public <Result>.com.redhat.ceylon.compiler.java.test.issues.bug20xx.J map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.J<? extends Result>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.J)$this;
+    }
+}
+final class k_ implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.K {
+    
+    private k_() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$K$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.K$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.K$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$K$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.K$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$K$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$K$this$;
+    }
+    
+    @.java.lang.Override
+    public final <Result>.com.redhat.ceylon.compiler.java.test.issues.bug20xx.J map(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.J)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.I)$com$redhat$ceylon$compiler$java$test$issues$bug20xx$K$this$.map($reified$Result, collecting);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.k_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.k_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.k_ get_() {
+        if (k_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'k\' before it was set");
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.k_.class);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.k_.$TypeDescriptor$;
+    }
+}

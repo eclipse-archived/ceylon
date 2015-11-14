@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public final class objectDeclContainingClassWithCtor_ {
+    
+    private objectDeclContainingClassWithCtor_() {
+    }
+    
+    public static void objectDeclContainingClassWithCtor() {
+        
+        final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private foo_() {
+            }
+            
+            .java.lang.Object Bar$new$(foo_.Bar$baz $name$) {
+                return new Bar($name$);
+            }
+            
+            class Bar$baz {
+                
+                private Bar$baz() {
+                }
+            }
+            
+            class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                private Bar(foo_.Bar$baz $name$) {
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.objectDeclContainingClassWithCtor_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.Bar.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.objectDeclContainingClassWithCtor_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
+            }
+        }
+        final foo_ foo = new foo_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.objectDeclContainingClassWithCtor_.objectDeclContainingClassWithCtor();
+    }
+}

@@ -1,0 +1,190 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SerializableAnnotation$annotation$
+class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public SerializableLate(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.late = null;
+        this.lateVariable = null;
+        this.lateOpt = null;
+        this.$init$lateOpt = false;
+        this.lateVariableOpt = null;
+        this.$init$lateVariableOpt = false;
+    }
+    
+    SerializableLate() {
+        this.$init$lateOpt = false;
+        this.$init$lateVariableOpt = false;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String late;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public final .java.lang.String getLate() {
+        if (this.late != null) {
+            return late;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'late\'");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final void setLate(@.com.redhat.ceylon.compiler.java.metadata.Name("late")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String late) {
+        if (this.late == null) {
+            this.late = late;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.String lateVariable;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public final .java.lang.String getLateVariable() {
+        if (this.lateVariable != null) {
+            return lateVariable;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateVariable\'");
+        }
+    }
+    
+    public final void setLateVariable(@.com.redhat.ceylon.compiler.java.metadata.Name("lateVariable")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String lateVariable) {
+        this.lateVariable = lateVariable;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .ceylon.language.String lateOpt;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private volatile transient boolean $init$lateOpt;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public final .ceylon.language.String getLateOpt() {
+        if (this.$init$lateOpt) {
+            return lateOpt;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateOpt\'");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final void setLateOpt(@.com.redhat.ceylon.compiler.java.metadata.Name("lateOpt")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String lateOpt) {
+        if (!this.$init$lateOpt) {
+            this.lateOpt = lateOpt;
+            this.$init$lateOpt = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .ceylon.language.String lateVariableOpt;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private volatile transient boolean $init$lateVariableOpt;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public final .ceylon.language.String getLateVariableOpt() {
+        if (this.$init$lateVariableOpt) {
+            return lateVariableOpt;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateVariableOpt\'");
+        }
+    }
+    
+    public final void setLateVariableOpt(@.com.redhat.ceylon.compiler.java.metadata.Name("lateVariableOpt")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String lateVariableOpt) {
+        this.lateVariableOpt = lateVariableOpt;
+        this.$init$lateVariableOpt = true;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableLate.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableLate.class);
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "late")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "lateVariable")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "lateOpt")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "lateVariableOpt")));
+        return reference;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.late": 
+            if (this.late == null) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return .ceylon.language.String.instance(this.getLate());
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariable": 
+            if (this.lateVariable == null) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return .ceylon.language.String.instance(this.getLateVariable());
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateOpt": 
+            if (!$init$lateOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return this.getLateOpt();
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariableOpt": 
+            if (!$init$lateVariableOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return this.getLateVariableOpt();
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.late": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLate(((.ceylon.language.String)instance).toString());
+            break;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariable": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLateVariable(((.ceylon.language.String)instance).toString());
+            break;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateOpt": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLateOpt((.ceylon.language.String)instance);
+            break;
+        
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariableOpt": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLateVariableOpt((.ceylon.language.String)instance);
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

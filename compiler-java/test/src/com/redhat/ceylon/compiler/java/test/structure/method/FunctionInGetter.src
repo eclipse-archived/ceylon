@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class FunctionInGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    FunctionInGetter() {
+        
+        final class foo$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private foo$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                if (true || true) {
+                    final long i = 1L;
+                    
+                    final class bar_ {
+                        
+                        private bar_() {
+                        }
+                        
+                        .java.lang.String bar() {
+                            return .ceylon.language.Integer.toString(i);
+                        }
+                    }
+                    final bar_ bar = new bar_();
+                    return bar.bar();
+                }
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter$_ = new foo$getter$_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.FunctionInGetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.FunctionInGetter.class);
+}

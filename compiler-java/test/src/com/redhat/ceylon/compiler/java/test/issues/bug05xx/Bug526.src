@@ -1,0 +1,190 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+abstract class Bug526Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug526Top() {
+        this.defaultAttr = 3L;
+        this.defaultVar = 3L;
+    }
+    
+    public abstract long getFormalAttr();
+    
+    public abstract long getFormalVar();
+    
+    public abstract void setFormalVar(final long formalVar);
+    private final long defaultAttr;
+    
+    public long getDefaultAttr() {
+        return defaultAttr;
+    }
+    private long defaultVar;
+    
+    public long getDefaultVar() {
+        return defaultVar;
+    }
+    
+    public void setDefaultVar(final long defaultVar) {
+        this.defaultVar = defaultVar;
+    }
+    
+    public long getDefaultGetter() {
+        return 3L;
+    }
+    
+    public long getDefaultSetter() {
+        return 3L;
+    }
+    
+    public void setDefaultSetter(final long defaultSetter) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top.class);
+}
+class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top {
+    
+    Bug526Bottom1() {
+        super();
+        this.formalAttr = 2L;
+        this.formalVar = 2L;
+        this.defaultAttr = 2L;
+        this.defaultVar = 2L;
+        this.defaultGetter = 2L;
+        this.defaultSetter = 2L;
+    }
+    private long formalAttr;
+    
+    @.java.lang.Override
+    public final long getFormalAttr() {
+        return formalAttr;
+    }
+    
+    public final void setFormalAttr(final long formalAttr) {
+        this.formalAttr = formalAttr;
+    }
+    private long formalVar;
+    
+    @.java.lang.Override
+    public final long getFormalVar() {
+        return formalVar;
+    }
+    
+    @.java.lang.Override
+    public final void setFormalVar(final long formalVar) {
+        this.formalVar = formalVar;
+    }
+    private long defaultAttr;
+    
+    @.java.lang.Override
+    public final long getDefaultAttr() {
+        return defaultAttr;
+    }
+    
+    public final void setDefaultAttr(final long defaultAttr) {
+        this.defaultAttr = defaultAttr;
+    }
+    private long defaultVar;
+    
+    @.java.lang.Override
+    public final long getDefaultVar() {
+        return defaultVar;
+    }
+    
+    @.java.lang.Override
+    public final void setDefaultVar(final long defaultVar) {
+        this.defaultVar = defaultVar;
+    }
+    private long defaultGetter;
+    
+    @.java.lang.Override
+    public final long getDefaultGetter() {
+        return defaultGetter;
+    }
+    
+    public final void setDefaultGetter(final long defaultGetter) {
+        this.defaultGetter = defaultGetter;
+    }
+    private long defaultSetter;
+    
+    @.java.lang.Override
+    public final long getDefaultSetter() {
+        return defaultSetter;
+    }
+    
+    @.java.lang.Override
+    public final void setDefaultSetter(final long defaultSetter) {
+        this.defaultSetter = defaultSetter;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom1.class);
+}
+class Bug526Bottom2 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Top {
+    
+    Bug526Bottom2() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long getFormalAttr() {
+        return 2L;
+    }
+    
+    public final void setFormalAttr(final long formalAttr) {
+    }
+    
+    @.java.lang.Override
+    public final long getFormalVar() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final void setFormalVar(final long formalVar) {
+    }
+    
+    @.java.lang.Override
+    public final long getDefaultAttr() {
+        return 2L;
+    }
+    
+    public final void setDefaultAttr(final long defaultAttr) {
+    }
+    
+    @.java.lang.Override
+    public final long getDefaultVar() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final void setDefaultVar(final long defaultVar) {
+    }
+    
+    @.java.lang.Override
+    public final long getDefaultGetter() {
+        return 2L;
+    }
+    
+    public final void setDefaultGetter(final long defaultGetter) {
+    }
+    
+    @.java.lang.Override
+    public final long getDefaultSetter() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final void setDefaultSetter(final long defaultSetter) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug526Bottom2.class);
+}

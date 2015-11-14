@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug911 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug911$impl();
+    
+    @.java.lang.Override
+    public .java.lang.String toString();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911.class);
+}
+final class Bug911$impl implements .java.io.Serializable {
+    
+    Bug911$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911 $this;
+    
+    private final .java.lang.String getText$priv$() {
+        return "bar";
+    }
+    
+    public final .java.lang.String toString() {
+        return getText$priv$();
+    }
+}

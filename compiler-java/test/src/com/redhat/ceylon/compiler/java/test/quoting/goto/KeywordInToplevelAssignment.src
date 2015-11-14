@@ -1,0 +1,44 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+final class keywordInToplevelAssignment_ {
+    
+    private keywordInToplevelAssignment_() {
+    }
+    
+    static void keywordInToplevelAssignment() {
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.set_(1L);
+    }
+}
+final class goto_ {
+    
+    private goto_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    public static long get_() {
+        if (goto_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'goto\' before it was set");
+        }
+    }
+    
+    public static void set_(final long $goto) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = $goto;
+    }
+}

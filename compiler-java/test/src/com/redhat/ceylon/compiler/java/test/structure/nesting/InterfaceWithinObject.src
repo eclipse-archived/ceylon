@@ -1,0 +1,81 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+public interface interfaceWithinObject$Z_ {
+}
+final class interfaceWithinObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private interfaceWithinObject_() {
+        this.z = null;
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class);
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI ZI$new$() {
+        return new ZI();
+    }
+    
+    public class ZI implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_, .java.io.Serializable {
+        
+        protected ZI() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.ZI.class));
+        }
+    }
+    private transient .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ z;
+    
+    public final class z_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject$Z_ {
+        
+        private z_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getZ";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.this, .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.class, $name$);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_.class));
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_ getZ() {
+        if (z == null) z = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.z_();
+        return z;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_ get_() {
+        if (interfaceWithinObject_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'interfaceWithinObject\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.$TypeDescriptor$;
+    }
+}

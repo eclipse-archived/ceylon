@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class SequenceInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SequenceInstantiation() {
+    }
+    
+    public final .ceylon.language.Sequence<? extends .ceylon.language.Integer> m() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L),
+                .ceylon.language.Integer.instance(getN1$priv$()),
+                .ceylon.language.Integer.instance(n2$priv$())});
+    }
+    
+    private final long getN1$priv$() {
+        return 4L;
+    }
+    
+    private final long n2$priv$() {
+        return 5L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SequenceInstantiation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SequenceInstantiation.class);
+}

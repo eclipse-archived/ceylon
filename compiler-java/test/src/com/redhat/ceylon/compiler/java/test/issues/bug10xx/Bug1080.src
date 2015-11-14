@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1080_ {
+    
+    private bug1080_() {
+    }
+    
+    static void bug1080() {
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.get_() != null) {
+            final .java.lang.Object a = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.get_();
+        }
+    }
+}
+final class bug1080Attr_ {
+    
+    private bug1080Attr_() {
+    }
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .ceylon.language.Integer.instance(1L);
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.Object get_() {
+        if (bug1080Attr_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1080Attr\' before it was set");
+        }
+    }
+}

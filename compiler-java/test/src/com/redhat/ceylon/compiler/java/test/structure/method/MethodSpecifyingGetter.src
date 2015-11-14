@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodSpecifierGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodSpecifierGetter() {
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getF$priv$() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final long foo$priv$(final boolean b) {
+        return getF$priv$().$call$((.java.lang.Object).ceylon.language.Boolean.instance(b)).longValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierGetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierGetter.class);
+}

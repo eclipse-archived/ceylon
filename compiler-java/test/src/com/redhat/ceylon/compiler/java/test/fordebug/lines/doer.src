@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
+ // line 1
+class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
+     // line 1
+    protected Doer() { // line 1
+        super();
+    }
+     // line 1
+    Doer(final .ceylon.language.Callable<? extends .java.lang.Object> $do) { // line 1
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class);
+} // line 2
+final class id_ {
+     // line 2
+    private id_() { // line 2
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer value; // line 2
+    private static volatile boolean $init$value = false; // line 2
+    private static final .java.lang.Throwable $initException$; // line 2
+    static { // line 2
+        try { // line 2
+            value = ( // line 2
+                let
+                {
+                    .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1){ // line 3
+                         // line 3
+                        @.java.lang.Override // line 3
+                        public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 3
+                            final .java.lang.Object t = $param$0; // line 3
+                            .ceylon.language.print_.print(t); // line 4
+                            return t; // line 5
+                        }
+                    };
+                }
+                returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 2
+            );
+            $initException$ = null; // line 2
+            $init$value = true; // line 2
+        } catch (.java.lang.Throwable x) { // line 2
+            $initException$ = x; // line 2
+            value = null; // line 2
+            $init$value = false; // line 2
+        }
+    }
+     // line 2
+    public static .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer get_() { // line 2
+        if (id_.$init$value) { // line 2
+            return value; // line 2
+        } else { // line 2
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$); // line 2
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'id\' before it was set"); // line 2
+        }
+    }
+}

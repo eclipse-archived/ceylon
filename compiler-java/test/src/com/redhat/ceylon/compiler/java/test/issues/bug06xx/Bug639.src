@@ -1,0 +1,66 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+interface Bug639Widening {
+    
+    public abstract .java.lang.Object getImplementation();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening.class);
+}
+class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening, .java.io.Serializable {
+    
+    protected Bug639WideningImpl() {
+        super();
+        this.implementation = null;
+    }
+    
+    Bug639WideningImpl(final .java.lang.String impl) {
+        this.implementation = .ceylon.language.String.instance(impl);
+    }
+    private final .ceylon.language.String implementation;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getImplementation() {
+        return implementation;
+    }
+    
+    public final long getLength() {
+        return getImplementation().getSize();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl.class);
+}
+class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening, .java.io.Serializable {
+    
+    protected Bug639WideningImpl2() {
+        super();
+        this.implementation = null;
+    }
+    
+    Bug639WideningImpl2(final long impl) {
+        this.implementation = .ceylon.language.Integer.instance(impl);
+    }
+    private final .ceylon.language.Integer implementation;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getImplementation() {
+        return implementation;
+    }
+    
+    public final void neg(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening w) {
+        .java.lang.Object w$1;
+        if ((w$1 = w) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2 w$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2)w$1;
+            final .ceylon.language.Number<.ceylon.language.Integer> a = getImplementation().getNegated();
+            final .ceylon.language.Number<.ceylon.language.Integer> b = w$2.getImplementation().getNegated();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639WideningImpl2.class);
+}

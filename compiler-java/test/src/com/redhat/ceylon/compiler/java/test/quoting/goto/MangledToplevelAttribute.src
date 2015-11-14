@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+public final class mangledToplevelAttribute_ {
+    
+    private mangledToplevelAttribute_() {
+    }
+    
+    public static void mangledToplevelAttribute() {
+        final .ceylon.language.Empty leeg = .ceylon.language.empty_.get_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.mangledToplevelAttribute_.mangledToplevelAttribute();
+    }
+}

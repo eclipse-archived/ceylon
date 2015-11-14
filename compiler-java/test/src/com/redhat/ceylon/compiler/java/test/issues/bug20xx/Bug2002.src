@@ -1,0 +1,146 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+final class bug2002Builder1_ {
+    
+    private bug2002Builder1_() {
+    }
+    
+    static <Head, Tail>.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> bug2002Builder1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Head, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Tail, final Head head, final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends Tail>> tail) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Head, $reified$Tail)), .ceylon.language.Empty.$TypeDescriptor$, "<Head|Tail>[]()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Sequential $call$() {
+                return tail.$call$().<Head>withLeading($reified$Head, head);
+            }
+        };
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug2002Builder2_ {
+    
+    private bug2002Builder2_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Head|Tail>[]()",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Head",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Tail",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {"ceylon.language::Boolean"},
+                    caseTypes = {})})
+    static <Head, Tail extends .ceylon.language.Boolean>.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> bug2002Builder2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Head, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Tail, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Head")
+    final Head head, @.com.redhat.ceylon.compiler.java.metadata.Name("tail")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "Tail[]()",
+            erased = true)
+    final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends Tail>> tail) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Head, $reified$Tail)), .ceylon.language.Empty.$TypeDescriptor$, "<Head|Tail>[]()", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Sequential $call$() {
+                return ((.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends Tail>>)(.ceylon.language.Callable)tail).$call$().<Head>withLeading($reified$Head, head);
+            }
+        };
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug2002BuilderTest1")
+final class bug2002BuilderTest1_ {
+    
+    private bug2002BuilderTest1_() {
+    }
+    private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>).com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder1_.<.ceylon.language.String, .ceylon.language.Integer>bug2002Builder1(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.instance("A"), .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder1_.<.ceylon.language.Integer, .java.lang.Object>bug2002Builder1(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Integer.instance(1L), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1)
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+            @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+            @.com.redhat.ceylon.compiler.java.metadata.Method
+            {
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Empty $call$() {
+                    return .ceylon.language.empty_.get_();
+                }
+            }));
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<ceylon.language::String|ceylon.language::Integer>[]()",
+            erased = true)
+    public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> get_() {
+        if (bug2002BuilderTest1_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2002BuilderTest1\' before it was set");
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug2002BuilderTest2")
+final class bug2002BuilderTest2_ {
+    
+    private bug2002BuilderTest2_() {
+    }
+    private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>).com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder2_.<.ceylon.language.Boolean, .ceylon.language.Boolean>bug2002Builder2(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Boolean.instance(true), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1)
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+            @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
+            @.com.redhat.ceylon.compiler.java.metadata.Method
+            {
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Empty $call$() {
+                    return .ceylon.language.empty_.get_();
+                }
+            });
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean[]()")
+    public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> get_() {
+        if (bug2002BuilderTest2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2002BuilderTest2\' before it was set");
+        }
+    }
+}

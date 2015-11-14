@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1925_ {
+    
+    private bug1925_() {
+    }
+    
+    static void bug1925(final .ceylon.language.String string) {
+        final .java.lang.String val = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                .ceylon.language.String string$2;
+                if (!((string$2 = string) != null)) {
+                    final .java.lang.Object string$4 = string$2;
+                    $ceylontmp$ifResult$0 = "hello";
+                } else {
+                    final .java.lang.String string$3 = string$2.toString();
+                    $ceylontmp$ifResult$0 = string$3;
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+        final .java.lang.String val2;
+        .ceylon.language.String string$6;
+        if (!((string$6 = string) != null)) {
+            final .java.lang.Object string$8 = string$6;
+            val2 = "hello";
+        } else {
+            final .java.lang.String string$7 = string$6.toString();
+            val2 = string$7;
+        }
+    }
+}

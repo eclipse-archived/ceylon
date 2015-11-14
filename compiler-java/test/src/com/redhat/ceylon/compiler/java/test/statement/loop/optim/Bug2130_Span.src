@@ -1,0 +1,1291 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class compareSpanInteger2130_ {
+    
+    private compareSpanInteger2130_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanInteger2130(final long start, final long end) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$expect$51 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(start, end);
+                .ceylon.language.Integer $ceylontmp$breakAfter$52 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(start, end, $ceylontmp$expect$51);
+                compareSpanInteger2130(start, end, $ceylontmp$expect$51, $ceylontmp$breakAfter$52);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> compareSpanInteger2130$expect(final long start, final long end) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanInteger2130(final long start, final long end, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$breakAfter$53 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(start, end, expect);
+                compareSpanInteger2130(start, end, expect, $ceylontmp$breakAfter$53);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Integer compareSpanInteger2130$breakAfter(final long start, final long end, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void compareSpanInteger2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long end, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]?")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    final .ceylon.language.Integer breakAfter) {
+        final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>> problems = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>>((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t1 = null;
+        try {
+            .java.lang.Object elem$0;
+            .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(start), .ceylon.language.Integer.instance(end)).iterator();
+            loop_0: while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+                final long i = ((.ceylon.language.Integer)elem$0).longValue();
+                (
+                    let
+                    {
+                        long $ceylontmp$op$2 = ss.ref + (
+                            let
+                            {
+                                long base$3 = i;
+                            }
+                            returning base$3 * base$3;
+                        );
+                        ss.ref = $ceylontmp$op$2;
+                    }
+                    returning $ceylontmp$op$2;
+                );
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$5;
+                if ((expect$5 = expect) != null) {
+                    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$6 = expect$5;
+                    .ceylon.language.Integer expected$8;
+                    if ((expected$8 = expect$6.getFromFirst(index.ref)) != null) {
+                        final long expected$9 = expected$8.longValue();
+                        if (!(i == expected$9)) {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").append(i).append(" expected ").append(expected$9).toString())}, problems.ref);
+                        }
+                    } else {
+                        problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$6.getSize()).append(" iterations, but index ").append(index.ref).append(" had value ").append(i).toString())}, problems.ref);
+                    }
+                }
+                .ceylon.language.Integer breakAfter$12;
+                if ((breakAfter$12 = breakAfter) != null) {
+                    final long breakAfter$13 = breakAfter$12.longValue();
+                    if (index.ref >= breakAfter$13) {
+                        break loop_0;
+                    }
+                }
+                (
+                    let
+                    {
+                        long $ceylontmp$op$14 = index.ref;
+                        index.ref = $ceylontmp$op$14 + 1;
+                    }
+                    returning $ceylontmp$op$14;
+                );
+            }
+        } catch (final .java.lang.Throwable t) {
+            t1 = t;
+        }
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t2 = null;
+        try {
+            final long $ceylontmp$first$16 = start;
+            final long $ceylontmp$last$17 = end;
+            final boolean $ceylontmp$increasing$18 = .ceylon.language.Integer.offset($ceylontmp$last$17, $ceylontmp$first$16) >= 0;
+            final long $ceylontmp$incr$19 = $ceylontmp$increasing$18 ? 1L : -1L;
+            long i$22 = $ceylontmp$first$16;
+            long $ceylontmp$element$21 = $ceylontmp$first$16;
+            boolean $ceylontmp$f$20 = false;
+            loop_1: do {
+                if ($ceylontmp$f$20) $ceylontmp$element$21 += $ceylontmp$incr$19;
+                $ceylontmp$f$20 = true;
+                i$22 = $ceylontmp$element$21;
+                final long i = i$22;
+                $ceylontmp$continue$15: do {
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$23 = ss2.ref + (
+                                let
+                                {
+                                    long base$24 = i;
+                                }
+                                returning base$24 * base$24;
+                            );
+                            ss2.ref = $ceylontmp$op$23;
+                        }
+                        returning $ceylontmp$op$23;
+                    );
+                    .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$26;
+                    if ((expect$26 = expect) != null) {
+                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$27 = expect$26;
+                        .ceylon.language.Integer expected$29;
+                        if ((expected$29 = expect$27.getFromFirst(index2.ref)) != null) {
+                            final long expected$30 = expected$29.longValue();
+                            if (!(i == expected$30)) {
+                                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").append(i).append(" expected ").append(expected$30).toString())}, problems.ref);
+                            }
+                        } else {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$27.getSize()).append(" iterations, but index ").append(index2.ref).append(" had value ").append(i).toString())}, problems.ref);
+                        }
+                    }
+                    .ceylon.language.Integer breakAfter$33;
+                    if ((breakAfter$33 = breakAfter) != null) {
+                        final long breakAfter$34 = breakAfter$33.longValue();
+                        if (index2.ref >= breakAfter$34) {
+                            break loop_1;
+                        }
+                    }
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$35 = index2.ref;
+                            index2.ref = $ceylontmp$op$35 + 1;
+                        }
+                        returning $ceylontmp$op$35;
+                    );
+                }                 while (false);
+            }             while ($ceylontmp$increasing$18 ? i$22 - $ceylontmp$last$17 != 0L : i$22 - $ceylontmp$last$17 != 0L);
+        } catch (final .java.lang.Throwable t) {
+            t2 = t;
+        }
+        if (!(index.ref == index2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different number of iterations: expected ").append(index.ref).append(" but was ").append(index2.ref).toString())}, problems.ref);
+        }
+        if (!(ss.ref == ss2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different sums: expected ").append(ss.ref).append(" but was ").append(ss2.ref).toString())}, problems.ref);
+        }
+        .java.lang.Throwable got1$39;
+        if ((got1$39 = t1) != null) {
+            final .java.lang.Throwable got1$43 = got1$39;
+            .java.lang.Throwable got2$45;
+            if ((got2$45 = t2) != null) {
+                final .java.lang.Throwable got2$46 = got2$45;
+                if (!.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$43).equals(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$46))) {
+                    problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different exception types: expected ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$43).toString()).append(" but got ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$46).toString()).toString())}, problems.ref);
+                }
+                if (!.com.redhat.ceylon.compiler.java.Util.throwableMessage(got1$43).equals(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got2$46))) {
+                }
+            } else {
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("unoptimized threw ").append(got1$43.toString()).append(", but optimized ran normally").toString())}, problems.ref);
+            }
+        } else {
+            .java.lang.Throwable got2$41;
+            if ((got2$41 = t2) != null) {
+                final .java.lang.Throwable got2$42 = got2$41;
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("optimized threw ").append(got2$42.toString()).append(", but unoptimized ran normally").toString())}, problems.ref);
+            }
+        }
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$50 = problems.ref;
+            }
+            returning $ceylontmp$50 instanceof .ceylon.language.Sequence;
+        )) {
+            throw new .ceylon.language.Exception(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("(").append(start).append("..").append(end).append("): ").append(problems.ref.toString()).toString()));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class compareSpanIntegerBy2130_ {
+    
+    private compareSpanIntegerBy2130_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanIntegerBy2130(final long start, final long end, final long by) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$expect$108 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(start, end, by);
+                .ceylon.language.Integer $ceylontmp$breakAfter$109 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(start, end, by, $ceylontmp$expect$108);
+                boolean $ceylontmp$debug$110 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(start, end, by, $ceylontmp$expect$108, $ceylontmp$breakAfter$109);
+                compareSpanIntegerBy2130(start, end, by, $ceylontmp$expect$108, $ceylontmp$breakAfter$109, $ceylontmp$debug$110);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> compareSpanIntegerBy2130$expect(final long start, final long end, final long by) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanIntegerBy2130(final long start, final long end, final long by, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$breakAfter$111 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(start, end, by, expect);
+                boolean $ceylontmp$debug$112 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(start, end, by, expect, $ceylontmp$breakAfter$111);
+                compareSpanIntegerBy2130(start, end, by, expect, $ceylontmp$breakAfter$111, $ceylontmp$debug$112);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Integer compareSpanIntegerBy2130$breakAfter(final long start, final long end, final long by, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanIntegerBy2130(final long start, final long end, final long by, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect, final .ceylon.language.Integer breakAfter) {
+        (
+            let
+            {
+                boolean $ceylontmp$debug$113 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(start, end, by, expect, breakAfter);
+                compareSpanIntegerBy2130(start, end, by, expect, breakAfter, $ceylontmp$debug$113);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final boolean compareSpanIntegerBy2130$debug(final long start, final long end, final long by, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect, final .ceylon.language.Integer breakAfter) {
+        return false;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void compareSpanIntegerBy2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long end, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]?")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    final .ceylon.language.Integer breakAfter, @.com.redhat.ceylon.compiler.java.metadata.Name("debug")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    final boolean debug) {
+        final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>> problems = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>>((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t1 = null;
+        try {
+            .java.lang.Object elem$54;
+            .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$55 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(start), .ceylon.language.Integer.instance(end)).by(by).iterator();
+            loop_2: while (!((elem$54 = i$iterator$$55.next()) instanceof .ceylon.language.Finished)) {
+                final long i = ((.ceylon.language.Integer)elem$54).longValue();
+                if (debug) {
+                    .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("unoptimized (").append(start).append("..").append(end).append(").by(").append(by).append(")[").append(index.ref).append("]: ").append(i).toString()));
+                }
+                (
+                    let
+                    {
+                        long $ceylontmp$op$57 = ss.ref + (
+                            let
+                            {
+                                long base$58 = i;
+                            }
+                            returning base$58 * base$58;
+                        );
+                        ss.ref = $ceylontmp$op$57;
+                    }
+                    returning $ceylontmp$op$57;
+                );
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$60;
+                if ((expect$60 = expect) != null) {
+                    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$61 = expect$60;
+                    .ceylon.language.Integer expected$63;
+                    if ((expected$63 = expect$61.getFromFirst(index.ref)) != null) {
+                        final long expected$64 = expected$63.longValue();
+                        if (!(i == expected$64)) {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").append(i).append(" expected ").append(expected$64).toString())}, problems.ref);
+                        }
+                    } else {
+                        problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$61.getSize()).append(" iterations, but index ").append(index.ref).append(" had value ").append(i).toString())}, problems.ref);
+                    }
+                }
+                .ceylon.language.Integer breakAfter$67;
+                if ((breakAfter$67 = breakAfter) != null) {
+                    final long breakAfter$68 = breakAfter$67.longValue();
+                    if (index.ref >= breakAfter$68) {
+                        break loop_2;
+                    }
+                }
+                (
+                    let
+                    {
+                        long $ceylontmp$op$69 = index.ref;
+                        index.ref = $ceylontmp$op$69 + 1;
+                    }
+                    returning $ceylontmp$op$69;
+                );
+            }
+        } catch (final .java.lang.Throwable t) {
+            t1 = t;
+        }
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t2 = null;
+        try {
+            final long $ceylontmp$step$78 = by;
+            if ($ceylontmp$step$78 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+            final long $ceylontmp$first$71 = start;
+            final long $ceylontmp$last$72 = end;
+            final boolean $ceylontmp$increasing$73 = $ceylontmp$step$78 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$72, $ceylontmp$first$71) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$72, $ceylontmp$first$71) >= 0;
+            final long $ceylontmp$incr$74 = $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? $ceylontmp$step$78 : -1L : $ceylontmp$increasing$73 ? $ceylontmp$step$78 : -$ceylontmp$step$78;
+            long i$77 = $ceylontmp$first$71;
+            long $ceylontmp$element$76 = $ceylontmp$first$71;
+            boolean $ceylontmp$f$75 = false;
+            loop_3: do {
+                if ($ceylontmp$f$75 && $ceylontmp$step$78 == 1L) $ceylontmp$step$78 == 1 ? ($ceylontmp$element$76 += $ceylontmp$incr$74) : ($ceylontmp$element$76 = .ceylon.language.Integer.neighbour($ceylontmp$element$76, $ceylontmp$incr$74));
+                $ceylontmp$f$75 = true;
+                i$77 = $ceylontmp$element$76;
+                final long i = i$77;
+                $ceylontmp$continue$70: do {
+                    if (debug) {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("optimized (").append(start).append("..").append(end).append(").by(").append(by).append(")[").append(index.ref).append("]: ").append(i).toString()));
+                    }
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$80 = ss2.ref + (
+                                let
+                                {
+                                    long base$81 = i;
+                                }
+                                returning base$81 * base$81;
+                            );
+                            ss2.ref = $ceylontmp$op$80;
+                        }
+                        returning $ceylontmp$op$80;
+                    );
+                    .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$83;
+                    if ((expect$83 = expect) != null) {
+                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$84 = expect$83;
+                        .ceylon.language.Integer expected$86;
+                        if ((expected$86 = expect$84.getFromFirst(index2.ref)) != null) {
+                            final long expected$87 = expected$86.longValue();
+                            if (!(i == expected$87)) {
+                                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").append(i).append(" expected ").append(expected$87).toString())}, problems.ref);
+                            }
+                        } else {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$84.getSize()).append(" iterations, but index ").append(index2.ref).append(" had value ").append(i).toString())}, problems.ref);
+                        }
+                    }
+                    .ceylon.language.Integer breakAfter$90;
+                    if ((breakAfter$90 = breakAfter) != null) {
+                        final long breakAfter$91 = breakAfter$90.longValue();
+                        if (index2.ref >= breakAfter$91) {
+                            break loop_3;
+                        }
+                    }
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$92 = index2.ref;
+                            index2.ref = $ceylontmp$op$92 + 1;
+                        }
+                        returning $ceylontmp$op$92;
+                    );
+                }                 while (false);
+                if ($ceylontmp$step$78 != 1L) $ceylontmp$step$78 == 1 ? ($ceylontmp$element$76 += $ceylontmp$incr$74) : ($ceylontmp$element$76 = .ceylon.language.Integer.neighbour($ceylontmp$element$76, $ceylontmp$incr$74));
+            }             while ($ceylontmp$step$78 == 1L ? $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? i$77 - $ceylontmp$last$72 != 0L : i$77 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) <= 0L : $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) <= 0L);
+        } catch (final .java.lang.Throwable t) {
+            t2 = t;
+        }
+        if (!(index.ref == index2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different number of iterations: expected ").append(index.ref).append(" but was ").append(index2.ref).toString())}, problems.ref);
+        }
+        if (!(ss.ref == ss2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different sums: expected ").append(ss.ref).append(" but was ").append(ss2.ref).toString())}, problems.ref);
+        }
+        .java.lang.Throwable got1$96;
+        if ((got1$96 = t1) != null) {
+            final .java.lang.Throwable got1$100 = got1$96;
+            .java.lang.Throwable got2$102;
+            if ((got2$102 = t2) != null) {
+                final .java.lang.Throwable got2$103 = got2$102;
+                if (!.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$100).equals(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$103))) {
+                    problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different exception types: expected ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$100).toString()).append(" but got ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$103).toString()).toString())}, problems.ref);
+                }
+                if (!.com.redhat.ceylon.compiler.java.Util.throwableMessage(got1$100).equals(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got2$103))) {
+                }
+            } else {
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("unoptimized threw ").append(got1$100.toString()).append(", but optimized ran normally").toString())}, problems.ref);
+            }
+        } else {
+            .java.lang.Throwable got2$98;
+            if ((got2$98 = t2) != null) {
+                final .java.lang.Throwable got2$99 = got2$98;
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("optimized threw ").append(got2$99.toString()).append(", but unoptimized ran normally").toString())}, problems.ref);
+            }
+        }
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$107 = problems.ref;
+            }
+            returning $ceylontmp$107 instanceof .ceylon.language.Sequence;
+        )) {
+            throw new .ceylon.language.Exception(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("(").append(start).append("..").append(end).append(").by(").append(by).append("): ").append(problems.ref.toString()).toString()));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class compareSpanCharacter2130_ {
+    
+    private compareSpanCharacter2130_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanCharacter2130(final int start, final int end) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$expect$166 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$expect(start, end);
+                .ceylon.language.Integer $ceylontmp$breakAfter$167 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$breakAfter(start, end, $ceylontmp$expect$166);
+                compareSpanCharacter2130(start, end, $ceylontmp$expect$166, $ceylontmp$breakAfter$167);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Character> compareSpanCharacter2130$expect(final int start, final int end) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanCharacter2130(final int start, final int end, final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$breakAfter$168 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$breakAfter(start, end, expect);
+                compareSpanCharacter2130(start, end, expect, $ceylontmp$breakAfter$168);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Integer compareSpanCharacter2130$breakAfter(final int start, final int end, final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void compareSpanCharacter2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
+    final int start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
+    final int end, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]?")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    final .ceylon.language.Integer breakAfter) {
+        final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>> problems = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>>((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t1 = null;
+        try {
+            .java.lang.Object elem$114;
+            .ceylon.language.Iterator<? extends .ceylon.language.Character> i$iterator$$115 = .ceylon.language.span_.<.ceylon.language.Character>span(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(start), .ceylon.language.Character.instance(end)).iterator();
+            loop_4: while (!((elem$114 = i$iterator$$115.next()) instanceof .ceylon.language.Finished)) {
+                final int i = ((.ceylon.language.Character)elem$114).intValue();
+                (
+                    let
+                    {
+                        long $ceylontmp$op$116 = ss.ref + (
+                            let
+                            {
+                                long base$117 = .ceylon.language.Character.getInteger(i);
+                            }
+                            returning base$117 * base$117;
+                        );
+                        ss.ref = $ceylontmp$op$116;
+                    }
+                    returning $ceylontmp$op$116;
+                );
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$119;
+                if ((expect$119 = expect) != null) {
+                    final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$120 = expect$119;
+                    .ceylon.language.Character expected$122;
+                    if ((expected$122 = expect$120.getFromFirst(index.ref)) != null) {
+                        final int expected$123 = expected$122.intValue();
+                        if (!(i == expected$123)) {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$123).toString())}, problems.ref);
+                        }
+                    } else {
+                        problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$120.getSize()).append(" iterations, but index ").append(index.ref).append(" had value ").appendCodePoint(i).toString())}, problems.ref);
+                    }
+                }
+                .ceylon.language.Integer breakAfter$126;
+                if ((breakAfter$126 = breakAfter) != null) {
+                    final long breakAfter$127 = breakAfter$126.longValue();
+                    if (index.ref >= breakAfter$127) {
+                        break loop_4;
+                    }
+                }
+                (
+                    let
+                    {
+                        long $ceylontmp$op$128 = index.ref;
+                        index.ref = $ceylontmp$op$128 + 1;
+                    }
+                    returning $ceylontmp$op$128;
+                );
+            }
+        } catch (final .java.lang.Throwable t) {
+            t1 = t;
+        }
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t2 = null;
+        try {
+            final int $ceylontmp$first$130 = start;
+            final int $ceylontmp$last$131 = end;
+            final boolean $ceylontmp$increasing$132 = .ceylon.language.Character.offset($ceylontmp$last$131, $ceylontmp$first$130) >= 0;
+            boolean $ceylontmp$137 = .ceylon.language.Character.offsetSign($ceylontmp$first$130, .ceylon.language.Character.getSuccessor($ceylontmp$first$130)) > 0L && .ceylon.language.Character.offsetSign(.ceylon.language.Character.getPredecessor($ceylontmp$last$131), $ceylontmp$last$131) > 0L;
+            final long $ceylontmp$incr$133 = $ceylontmp$increasing$132 ? 1 : -1;
+            int i$136 = $ceylontmp$first$130;
+            int $ceylontmp$element$135 = $ceylontmp$first$130;
+            boolean $ceylontmp$f$134 = false;
+            loop_5: do {
+                if ($ceylontmp$f$134) $ceylontmp$element$135 = .ceylon.language.Character.neighbour($ceylontmp$element$135, $ceylontmp$incr$133);
+                $ceylontmp$f$134 = true;
+                i$136 = $ceylontmp$element$135;
+                final int i = i$136;
+                $ceylontmp$continue$129: do {
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$138 = ss2.ref + (
+                                let
+                                {
+                                    long base$139 = .ceylon.language.Character.getInteger(i);
+                                }
+                                returning base$139 * base$139;
+                            );
+                            ss2.ref = $ceylontmp$op$138;
+                        }
+                        returning $ceylontmp$op$138;
+                    );
+                    .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$141;
+                    if ((expect$141 = expect) != null) {
+                        final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$142 = expect$141;
+                        .ceylon.language.Character expected$144;
+                        if ((expected$144 = expect$142.getFromFirst(index2.ref)) != null) {
+                            final int expected$145 = expected$144.intValue();
+                            if (!(i == expected$145)) {
+                                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$145).toString())}, problems.ref);
+                            }
+                        } else {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$142.getSize()).append(" iterations, but index ").append(index2.ref).append(" had value ").appendCodePoint(i).toString())}, problems.ref);
+                        }
+                    }
+                    .ceylon.language.Integer breakAfter$148;
+                    if ((breakAfter$148 = breakAfter) != null) {
+                        final long breakAfter$149 = breakAfter$148.longValue();
+                        if (index2.ref >= breakAfter$149) {
+                            break loop_5;
+                        }
+                    }
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$150 = index2.ref;
+                            index2.ref = $ceylontmp$op$150 + 1;
+                        }
+                        returning $ceylontmp$op$150;
+                    );
+                }                 while (false);
+            }             while ($ceylontmp$increasing$132 ? i$136 - $ceylontmp$last$131 != 0 : i$136 - $ceylontmp$last$131 != 0);
+        } catch (final .java.lang.Throwable t) {
+            t2 = t;
+        }
+        if (!(index.ref == index2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different number of iterations: expected ").append(index.ref).append(" but was ").append(index2.ref).toString())}, problems.ref);
+        }
+        if (!(ss.ref == ss2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different sums: expected ").append(ss.ref).append(" but was ").append(ss2.ref).toString())}, problems.ref);
+        }
+        .java.lang.Throwable got1$154;
+        if ((got1$154 = t1) != null) {
+            final .java.lang.Throwable got1$158 = got1$154;
+            .java.lang.Throwable got2$160;
+            if ((got2$160 = t2) != null) {
+                final .java.lang.Throwable got2$161 = got2$160;
+                if (!.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$158).equals(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$161))) {
+                    problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different exception types: expected ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$158).toString()).append(" but got ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$161).toString()).toString())}, problems.ref);
+                }
+                if (!.com.redhat.ceylon.compiler.java.Util.throwableMessage(got1$158).equals(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got2$161))) {
+                    problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different exception messages: expected ").append(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got1$158)).append(" but got ").append(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got2$161)).toString())}, problems.ref);
+                }
+            } else {
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("unoptimized threw ").append(got1$158.toString()).append(", but optimized ran normally").toString())}, problems.ref);
+            }
+        } else {
+            .java.lang.Throwable got2$156;
+            if ((got2$156 = t2) != null) {
+                final .java.lang.Throwable got2$157 = got2$156;
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("optimized threw ").append(got2$157.toString()).append(", but unoptimized ran normally").toString())}, problems.ref);
+            }
+        }
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$165 = problems.ref;
+            }
+            returning $ceylontmp$165 instanceof .ceylon.language.Sequence;
+        )) {
+            throw new .ceylon.language.Exception(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("(").append(.ceylon.language.Character.getInteger(start)).append("..").append(.ceylon.language.Character.getInteger(end)).append("): ").append(problems.ref.toString()).toString()));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class compareSpanCharacterBy2130_ {
+    
+    private compareSpanCharacterBy2130_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanCharacterBy2130(final int start, final int end, final long by) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$expect$222 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130$expect(start, end, by);
+                .ceylon.language.Integer $ceylontmp$breakAfter$223 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130$breakAfter(start, end, by, $ceylontmp$expect$222);
+                compareSpanCharacterBy2130(start, end, by, $ceylontmp$expect$222, $ceylontmp$breakAfter$223);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.Character> compareSpanCharacterBy2130$expect(final int start, final int end, final long by) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static void compareSpanCharacterBy2130(final int start, final int end, final long by, final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$breakAfter$224 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130$breakAfter(start, end, by, expect);
+                compareSpanCharacterBy2130(start, end, by, expect, $ceylontmp$breakAfter$224);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Integer compareSpanCharacterBy2130$breakAfter(final int start, final int end, final long by, final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect) {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void compareSpanCharacterBy2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
+    final int start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
+    final int end, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]?")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    final .ceylon.language.Integer breakAfter) {
+        final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>> problems = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>>((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t1 = null;
+        try {
+            .java.lang.Object elem$169;
+            .ceylon.language.Iterator<? extends .ceylon.language.Character> i$iterator$$170 = .ceylon.language.span_.<.ceylon.language.Character>span(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(start), .ceylon.language.Character.instance(end)).by(by).iterator();
+            loop_6: while (!((elem$169 = i$iterator$$170.next()) instanceof .ceylon.language.Finished)) {
+                final int i = ((.ceylon.language.Character)elem$169).intValue();
+                (
+                    let
+                    {
+                        long $ceylontmp$op$171 = ss.ref + (
+                            let
+                            {
+                                long base$172 = .ceylon.language.Character.getInteger(i);
+                            }
+                            returning base$172 * base$172;
+                        );
+                        ss.ref = $ceylontmp$op$171;
+                    }
+                    returning $ceylontmp$op$171;
+                );
+                .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$174;
+                if ((expect$174 = expect) != null) {
+                    final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$175 = expect$174;
+                    .ceylon.language.Character expected$177;
+                    if ((expected$177 = expect$175.getFromFirst(index.ref)) != null) {
+                        final int expected$178 = expected$177.intValue();
+                        if (!(i == expected$178)) {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$178).toString())}, problems.ref);
+                        }
+                    } else {
+                        problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$175.getSize()).append(" iterations, but index ").append(index.ref).append(" had value ").appendCodePoint(i).toString())}, problems.ref);
+                    }
+                }
+                .ceylon.language.Integer breakAfter$181;
+                if ((breakAfter$181 = breakAfter) != null) {
+                    final long breakAfter$182 = breakAfter$181.longValue();
+                    if (index.ref >= breakAfter$182) {
+                        break loop_6;
+                    }
+                }
+                (
+                    let
+                    {
+                        long $ceylontmp$op$183 = index.ref;
+                        index.ref = $ceylontmp$op$183 + 1;
+                    }
+                    returning $ceylontmp$op$183;
+                );
+            }
+        } catch (final .java.lang.Throwable t) {
+            t1 = t;
+        }
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong ss2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        .java.lang.Throwable t2 = null;
+        try {
+            final long $ceylontmp$step$192 = by;
+            if ($ceylontmp$step$192 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+            final int $ceylontmp$first$185 = start;
+            final int $ceylontmp$last$186 = end;
+            final boolean $ceylontmp$increasing$187 = $ceylontmp$step$192 == 1 ? .ceylon.language.Character.offset($ceylontmp$last$186, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$last$186, $ceylontmp$first$185) >= 0;
+            boolean $ceylontmp$193 = .ceylon.language.Character.offsetSign($ceylontmp$first$185, .ceylon.language.Character.getSuccessor($ceylontmp$first$185)) > 0L && .ceylon.language.Character.offsetSign(.ceylon.language.Character.getPredecessor($ceylontmp$last$186), $ceylontmp$last$186) > 0L;
+            final long $ceylontmp$incr$188 = $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? $ceylontmp$step$192 : -1 : $ceylontmp$increasing$187 ? $ceylontmp$step$192 : -$ceylontmp$step$192;
+            int i$191 = $ceylontmp$first$185;
+            int $ceylontmp$element$190 = $ceylontmp$first$185;
+            boolean $ceylontmp$f$189 = false;
+            loop_7: do {
+                if ($ceylontmp$f$189 && $ceylontmp$step$192 == 1L) $ceylontmp$step$192 == 1 ? ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188)) : ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188));
+                $ceylontmp$f$189 = true;
+                i$191 = $ceylontmp$element$190;
+                final int i = i$191;
+                $ceylontmp$continue$184: do {
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$194 = ss2.ref + (
+                                let
+                                {
+                                    long base$195 = .ceylon.language.Character.getInteger(i);
+                                }
+                                returning base$195 * base$195;
+                            );
+                            ss2.ref = $ceylontmp$op$194;
+                        }
+                        returning $ceylontmp$op$194;
+                    );
+                    .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$197;
+                    if ((expect$197 = expect) != null) {
+                        final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$198 = expect$197;
+                        .ceylon.language.Character expected$200;
+                        if ((expected$200 = expect$198.getFromFirst(index2.ref)) != null) {
+                            final int expected$201 = expected$200.intValue();
+                            if (!(i == expected$201)) {
+                                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$201).toString())}, problems.ref);
+                            }
+                        } else {
+                            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("more iterations than expected: expected ").append(expect$198.getSize()).append(" iterations, but index ").append(index2.ref).append(" had value ").appendCodePoint(i).toString())}, problems.ref);
+                        }
+                    }
+                    .ceylon.language.Integer breakAfter$204;
+                    if ((breakAfter$204 = breakAfter) != null) {
+                        final long breakAfter$205 = breakAfter$204.longValue();
+                        if (index2.ref >= breakAfter$205) {
+                            break loop_7;
+                        }
+                    }
+                    (
+                        let
+                        {
+                            long $ceylontmp$op$206 = index2.ref;
+                            index2.ref = $ceylontmp$op$206 + 1;
+                        }
+                        returning $ceylontmp$op$206;
+                    );
+                }                 while (false);
+                if ($ceylontmp$step$192 != 1L) $ceylontmp$step$192 == 1 ? ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188)) : ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188));
+            }             while ($ceylontmp$step$192 == 1L ? $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? i$191 - $ceylontmp$last$186 != 0 : i$191 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) <= 0 : $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) <= 0);
+        } catch (final .java.lang.Throwable t) {
+            t2 = t;
+        }
+        if (!(index.ref == index2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different number of iterations: expected ").append(index.ref).append(" but was ").append(index2.ref).toString())}, problems.ref);
+        }
+        if (!(ss.ref == ss2.ref)) {
+            problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different sums: expected ").append(ss.ref).append(" but was ").append(ss2.ref).toString())}, problems.ref);
+        }
+        .java.lang.Throwable got1$210;
+        if ((got1$210 = t1) != null) {
+            final .java.lang.Throwable got1$214 = got1$210;
+            .java.lang.Throwable got2$216;
+            if ((got2$216 = t2) != null) {
+                final .java.lang.Throwable got2$217 = got2$216;
+                if (!.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$214).equals(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$217))) {
+                    problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different exception types: expected ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got1$214).toString()).append(" but got ").append(.ceylon.language.meta.type_.<.java.lang.Throwable>type(.ceylon.language.Throwable.$TypeDescriptor$, got2$217).toString()).toString())}, problems.ref);
+                }
+                if (!.com.redhat.ceylon.compiler.java.Util.throwableMessage(got1$214).equals(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got2$217))) {
+                    problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("different exception messages: expected ").append(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got1$214)).append(" but got ").append(.com.redhat.ceylon.compiler.java.Util.throwableMessage(got2$217)).toString())}, problems.ref);
+                }
+            } else {
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("unoptimized threw ").append(got1$214.toString()).append(", but optimized ran normally").toString())}, problems.ref);
+            }
+        } else {
+            .java.lang.Throwable got2$212;
+            if ((got2$212 = t2) != null) {
+                final .java.lang.Throwable got2$213 = got2$212;
+                problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("optimized threw ").append(got2$213.toString()).append(", but unoptimized ran normally").toString())}, problems.ref);
+            }
+        }
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$221 = problems.ref;
+            }
+            returning $ceylontmp$221 instanceof .ceylon.language.Sequence;
+        )) {
+            throw new .ceylon.language.Exception(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("(").appendCodePoint(start).append("..").appendCodePoint(end).append(").by(").append(by).append("): ").append(problems.ref.toString()).toString()));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug2130Span_ {
+    
+    private bug2130Span_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug2130Span() {
+        (
+            let
+            {
+                long arg$225$0 = 0L;
+                long arg$225$1 = 0L;
+                .ceylon.language.Sequential arg$225$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$225$0, arg$225$1);
+                .ceylon.language.Integer arg$225$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$225$0, arg$225$1, arg$225$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$225$0, arg$225$1, arg$225$2, arg$225$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$226$0 = 0L;
+                long arg$226$1 = 1L;
+                .ceylon.language.Sequential arg$226$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$226$0, arg$226$1);
+                .ceylon.language.Integer arg$226$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$226$0, arg$226$1, arg$226$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$226$0, arg$226$1, arg$226$2, arg$226$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$227$0 = 1L;
+                long arg$227$1 = 0L;
+                .ceylon.language.Sequential arg$227$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$227$0, arg$227$1);
+                .ceylon.language.Integer arg$227$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$227$0, arg$227$1, arg$227$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$227$0, arg$227$1, arg$227$2, arg$227$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$228$0 = 1L;
+                long arg$228$1 = 1L;
+                .ceylon.language.Sequential arg$228$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$228$0, arg$228$1);
+                .ceylon.language.Integer arg$228$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$228$0, arg$228$1, arg$228$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$228$0, arg$228$1, arg$228$2, arg$228$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$229$0 = -2L;
+                long arg$229$1 = 2L;
+                .ceylon.language.Sequential arg$229$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$229$0, arg$229$1);
+                .ceylon.language.Integer arg$229$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$229$0, arg$229$1, arg$229$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$229$0, arg$229$1, arg$229$2, arg$229$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$230$0 = 2L;
+                long arg$230$1 = -2L;
+                .ceylon.language.Sequential arg$230$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$230$0, arg$230$1);
+                .ceylon.language.Integer arg$230$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$230$0, arg$230$1, arg$230$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$230$0, arg$230$1, arg$230$2, arg$230$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$231$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                long arg$231$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                .ceylon.language.Sequential arg$231$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$231$0, arg$231$1);
+                .ceylon.language.Integer arg$231$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$231$0, arg$231$1, arg$231$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$231$0, arg$231$1, arg$231$2, arg$231$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$232$0 = .ceylon.language.runtime_.get_().getMinIntegerValue();
+                long arg$232$1 = .ceylon.language.runtime_.get_().getMinIntegerValue();
+                .ceylon.language.Sequential arg$232$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$232$0, arg$232$1);
+                .ceylon.language.Integer arg$232$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$232$0, arg$232$1, arg$232$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$232$0, arg$232$1, arg$232$2, arg$232$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$233$0 = -2L;
+                long arg$233$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                .ceylon.language.Sequential arg$233$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$233$0, arg$233$1);
+                .ceylon.language.Integer arg$233$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$233$0, arg$233$1, arg$233$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$233$0, arg$233$1, arg$233$2, arg$233$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                long arg$234$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                long arg$234$1 = -2L;
+                .ceylon.language.Sequential arg$234$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$expect(arg$234$0, arg$234$1);
+                .ceylon.language.Integer arg$234$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130$breakAfter(arg$234$0, arg$234$1, arg$234$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanInteger2130_.compareSpanInteger2130(arg$234$0, arg$234$1, arg$234$2, arg$234$3);
+            }
+            returning null;
+        );
+        .java.lang.Object elem$235;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> step$iterator$$236 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(-1L),
+                .ceylon.language.Integer.instance(0L),
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(.ceylon.language.runtime_.get_().getMaxIntegerValue())})).iterator();
+        loop_8: while (!((elem$235 = step$iterator$$236.next()) instanceof .ceylon.language.Finished)) {
+            final long step = ((.ceylon.language.Integer)elem$235).longValue();
+            (
+                let
+                {
+                    long arg$237$0 = 0L;
+                    long arg$237$1 = 0L;
+                    long arg$237$2 = step;
+                    .ceylon.language.Sequential arg$237$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$237$0, arg$237$1, arg$237$2);
+                    .ceylon.language.Integer arg$237$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$237$0, arg$237$1, arg$237$2, arg$237$3);
+                    boolean arg$237$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$237$0, arg$237$1, arg$237$2, arg$237$3, arg$237$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$237$0, arg$237$1, arg$237$2, arg$237$3, arg$237$4, arg$237$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$238$0 = 0L;
+                    long arg$238$1 = 1L;
+                    long arg$238$2 = step;
+                    .ceylon.language.Sequential arg$238$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$238$0, arg$238$1, arg$238$2);
+                    .ceylon.language.Integer arg$238$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$238$0, arg$238$1, arg$238$2, arg$238$3);
+                    boolean arg$238$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$238$0, arg$238$1, arg$238$2, arg$238$3, arg$238$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$238$0, arg$238$1, arg$238$2, arg$238$3, arg$238$4, arg$238$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$239$0 = 1L;
+                    long arg$239$1 = 0L;
+                    long arg$239$2 = step;
+                    .ceylon.language.Sequential arg$239$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$239$0, arg$239$1, arg$239$2);
+                    .ceylon.language.Integer arg$239$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$239$0, arg$239$1, arg$239$2, arg$239$3);
+                    boolean arg$239$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$239$0, arg$239$1, arg$239$2, arg$239$3, arg$239$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$239$0, arg$239$1, arg$239$2, arg$239$3, arg$239$4, arg$239$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$240$0 = 1L;
+                    long arg$240$1 = 1L;
+                    long arg$240$2 = step;
+                    .ceylon.language.Sequential arg$240$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$240$0, arg$240$1, arg$240$2);
+                    .ceylon.language.Integer arg$240$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$240$0, arg$240$1, arg$240$2, arg$240$3);
+                    boolean arg$240$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$240$0, arg$240$1, arg$240$2, arg$240$3, arg$240$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$240$0, arg$240$1, arg$240$2, arg$240$3, arg$240$4, arg$240$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$241$0 = 1L;
+                    long arg$241$1 = 10L;
+                    long arg$241$2 = step;
+                    .ceylon.language.Sequential arg$241$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$241$0, arg$241$1, arg$241$2);
+                    .ceylon.language.Integer arg$241$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$241$0, arg$241$1, arg$241$2, arg$241$3);
+                    boolean arg$241$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$241$0, arg$241$1, arg$241$2, arg$241$3, arg$241$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$241$0, arg$241$1, arg$241$2, arg$241$3, arg$241$4, arg$241$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$242$0 = -2L;
+                    long arg$242$1 = 2L;
+                    long arg$242$2 = step;
+                    .ceylon.language.Sequential arg$242$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$242$0, arg$242$1, arg$242$2);
+                    .ceylon.language.Integer arg$242$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$242$0, arg$242$1, arg$242$2, arg$242$3);
+                    boolean arg$242$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$242$0, arg$242$1, arg$242$2, arg$242$3, arg$242$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$242$0, arg$242$1, arg$242$2, arg$242$3, arg$242$4, arg$242$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$243$0 = 2L;
+                    long arg$243$1 = -2L;
+                    long arg$243$2 = step;
+                    .ceylon.language.Sequential arg$243$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$243$0, arg$243$1, arg$243$2);
+                    .ceylon.language.Integer arg$243$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$243$0, arg$243$1, arg$243$2, arg$243$3);
+                    boolean arg$243$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$243$0, arg$243$1, arg$243$2, arg$243$3, arg$243$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$243$0, arg$243$1, arg$243$2, arg$243$3, arg$243$4, arg$243$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$244$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                    long arg$244$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                    long arg$244$2 = step;
+                    .ceylon.language.Sequential arg$244$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$244$0, arg$244$1, arg$244$2);
+                    .ceylon.language.Integer arg$244$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$244$0, arg$244$1, arg$244$2, arg$244$3);
+                    boolean arg$244$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$244$0, arg$244$1, arg$244$2, arg$244$3, arg$244$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$244$0, arg$244$1, arg$244$2, arg$244$3, arg$244$4, arg$244$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$245$0 = .ceylon.language.runtime_.get_().getMinIntegerValue();
+                    long arg$245$1 = .ceylon.language.runtime_.get_().getMinIntegerValue();
+                    long arg$245$2 = step;
+                    .ceylon.language.Sequential arg$245$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$245$0, arg$245$1, arg$245$2);
+                    .ceylon.language.Integer arg$245$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$breakAfter(arg$245$0, arg$245$1, arg$245$2, arg$245$3);
+                    boolean arg$245$5 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$debug(arg$245$0, arg$245$1, arg$245$2, arg$245$3, arg$245$4);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$245$0, arg$245$1, arg$245$2, arg$245$3, arg$245$4, arg$245$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$246$0 = -2L;
+                    long arg$246$1 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                    long arg$246$2 = step;
+                    .ceylon.language.Integer arg$246$4 = (
+                        let
+                        {
+                            .ceylon.language.Integer $ceylontmp$ifResult$247;
+                            if (step == 1L || step == 2L) {
+                                $ceylontmp$ifResult$247 = .ceylon.language.Integer.instance(3L);
+                            } else {
+                                $ceylontmp$ifResult$247 = null;
+                            }
+                        }
+                        returning $ceylontmp$ifResult$247;
+                    );
+                    boolean arg$246$5 = false;
+                    .ceylon.language.Sequential arg$246$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$246$0, arg$246$1, arg$246$2);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$246$0, arg$246$1, arg$246$2, arg$246$3, arg$246$4, arg$246$5);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    long arg$249$0 = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+                    long arg$249$1 = -2L;
+                    long arg$249$2 = step;
+                    .ceylon.language.Integer arg$249$4 = (
+                        let
+                        {
+                            .ceylon.language.Integer $ceylontmp$ifResult$250;
+                            if (step == 1L || step == 2L) {
+                                $ceylontmp$ifResult$250 = .ceylon.language.Integer.instance(3L);
+                            } else {
+                                $ceylontmp$ifResult$250 = null;
+                            }
+                        }
+                        returning $ceylontmp$ifResult$250;
+                    );
+                    boolean arg$249$5 = false;
+                    .ceylon.language.Sequential arg$249$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130$expect(arg$249$0, arg$249$1, arg$249$2);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanIntegerBy2130_.compareSpanIntegerBy2130(arg$249$0, arg$249$1, arg$249$2, arg$249$3, arg$249$4, arg$249$5);
+                }
+                returning null;
+            );
+        }
+        (
+            let
+            {
+                int arg$252$0 = 0;
+                int arg$252$1 = 0;
+                .ceylon.language.Sequential arg$252$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$expect(arg$252$0, arg$252$1);
+                .ceylon.language.Integer arg$252$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$breakAfter(arg$252$0, arg$252$1, arg$252$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(arg$252$0, arg$252$1, arg$252$2, arg$252$3);
+            }
+            returning null;
+        );
+        .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(0, (
+            let
+            {
+                int arg$253$callable$ = 0;
+                long arg$253$0 = 1L;
+            }
+            returning .ceylon.language.Character.neighbour(arg$253$callable$, arg$253$0);
+        ));
+        (
+            let
+            {
+                int arg$254$0 = 122;
+                int arg$254$1 = 97;
+                .ceylon.language.Sequential arg$254$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$expect(arg$254$0, arg$254$1);
+                .ceylon.language.Integer arg$254$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$breakAfter(arg$254$0, arg$254$1, arg$254$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(arg$254$0, arg$254$1, arg$254$2, arg$254$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                int arg$255$0 = .ceylon.language.Character.neighbour(0, 1L);
+                int arg$255$1 = 0;
+                .ceylon.language.Sequential arg$255$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$expect(arg$255$0, arg$255$1);
+                .ceylon.language.Integer arg$255$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$breakAfter(arg$255$0, arg$255$1, arg$255$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(arg$255$0, arg$255$1, arg$255$2, arg$255$3);
+            }
+            returning null;
+        );
+        .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(.ceylon.language.Character.neighbour(0, 1L), (
+            let
+            {
+                int arg$256$callable$ = 0;
+                long arg$256$0 = 1L;
+            }
+            returning .ceylon.language.Character.neighbour(arg$256$callable$, arg$256$0);
+        ));
+        .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(1114111, 1114111);
+        .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(0, 1114111);
+        (
+            let
+            {
+                int arg$257$0 = 97;
+                int arg$257$1 = 122;
+                .ceylon.language.Sequential arg$257$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$expect(arg$257$0, arg$257$1);
+                .ceylon.language.Integer arg$257$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$breakAfter(arg$257$0, arg$257$1, arg$257$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(arg$257$0, arg$257$1, arg$257$2, arg$257$3);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                int arg$258$0 = 122;
+                int arg$258$1 = 97;
+                .ceylon.language.Sequential arg$258$2 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$expect(arg$258$0, arg$258$1);
+                .ceylon.language.Integer arg$258$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130$breakAfter(arg$258$0, arg$258$1, arg$258$2);
+                .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacter2130_.compareSpanCharacter2130(arg$258$0, arg$258$1, arg$258$2, arg$258$3);
+            }
+            returning null;
+        );
+        .java.lang.Object elem$259;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> step$iterator$$260 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(-1L),
+                .ceylon.language.Integer.instance(0L),
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(.ceylon.language.runtime_.get_().getMaxIntegerValue())})).iterator();
+        loop_9: while (!((elem$259 = step$iterator$$260.next()) instanceof .ceylon.language.Finished)) {
+            final long step = ((.ceylon.language.Integer)elem$259).longValue();
+            (
+                let
+                {
+                    int arg$261$0 = 97;
+                    int arg$261$1 = 122;
+                    long arg$261$2 = step;
+                    .ceylon.language.Sequential arg$261$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130$expect(arg$261$0, arg$261$1, arg$261$2);
+                    .ceylon.language.Integer arg$261$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130$breakAfter(arg$261$0, arg$261$1, arg$261$2, arg$261$3);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130(arg$261$0, arg$261$1, arg$261$2, arg$261$3, arg$261$4);
+                }
+                returning null;
+            );
+            (
+                let
+                {
+                    int arg$262$0 = 122;
+                    int arg$262$1 = 97;
+                    long arg$262$2 = step;
+                    .ceylon.language.Sequential arg$262$3 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130$expect(arg$262$0, arg$262$1, arg$262$2);
+                    .ceylon.language.Integer arg$262$4 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130$breakAfter(arg$262$0, arg$262$1, arg$262$2, arg$262$3);
+                    .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareSpanCharacterBy2130_.compareSpanCharacterBy2130(arg$262$0, arg$262$1, arg$262$2, arg$262$3, arg$262$4);
+                }
+                returning null;
+            );
+        }
+    }
+}

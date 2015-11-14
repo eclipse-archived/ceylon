@@ -1,0 +1,115 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassMemberCtorChaining() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member Member$new$(final long i$param$) {
+        return new Member(i$param$);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member Member$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$other $name$, final long i$param$) {
+        return new Member($name$, i$param$);
+    }
+    
+    public static final class Member$other {
+        
+        private Member$other() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$other Member$other = null;
+    
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Member(final long i$param$) {
+        }
+        
+        public Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$other $name$, final long i$param$) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.class);
+}
+class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining {
+    
+    ClassMemberCtorChainingSub() {
+        super();
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(final long i$param$) {
+        return new Sub(i$param$);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub3 $name$, final long i$param$) {
+        return new Sub($name$, i$param$);
+    }
+    
+    public static final class Sub$sub3 {
+        
+        private Sub$sub3() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub3 Sub$sub3 = null;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub4 $name$, final long i$param$) {
+        return new Sub($name$, i$param$);
+    }
+    
+    public static final class Sub$sub4 {
+        
+        private Sub$sub4() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub4 Sub$sub4 = null;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub Sub$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$other $name$, final long i$param$) {
+        return new Sub($name$, i$param$);
+    }
+    
+    public static final class Sub$other {
+        
+        private Sub$other() {
+        }
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$other Sub$other = null;
+    
+    public class Sub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member {
+        
+        public Sub(final long i$param$) {
+            super(i$param$);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub3 $name$, final long i$param$) {
+            super(i$param$);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub4 $name$, final long i$param$) {
+            super(i$param$);
+        }
+        
+        public Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$other $name$, final long i$param$) {
+            super(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$other, i$param$);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.class);
+}

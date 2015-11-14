@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+final class bug1735_ {
+    
+    private bug1735_() {
+    }
+    
+    static void bug1735() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735 b = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735();
+        b.setType(true ? .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T : .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T);
+        final long i = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T;
+        b.setType(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1735.T);
+        b.setType(.com.redhat.ceylon.compiler.java.Util.toInt(i));
+    }
+}

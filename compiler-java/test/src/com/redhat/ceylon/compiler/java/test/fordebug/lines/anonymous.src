@@ -1,0 +1,75 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
+ // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
+     // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Doer() { // line 1
+        super();
+    }
+     // line 1
+    Doer(@.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(t)") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything(ceylon.language::Anything)") // line 1
+    final .ceylon.language.Callable<? extends .java.lang.Object> $do) { // line 1
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class);
+} // line 6
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Method // line 1
+final class anonymous_ {
+     // line 6
+    private anonymous_() { // line 6
+    }
+     // line 6
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything") // line 6
+    static void anonymous() { // line 6
+        .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer id = ( // line 3
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 4
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1") // line 4
+                @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 4
+                @.com.redhat.ceylon.compiler.java.metadata.Method // line 4
+                {
+                     // line 4
+                    @.java.lang.Override // line 4
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 4
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 4
+                        final .java.lang.Object t = $param$0; // line 4
+                        return t; // line 4
+                    }
+                };
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 3
+        );
+        id = ( // line 6
+            let
+            {
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 7
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") // line 9
+                @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 9
+                @.com.redhat.ceylon.compiler.java.metadata.Method // line 9
+                {
+                     // line 7
+                    @.java.lang.Override // line 7
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 7
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 7
+                        final .java.lang.Object t = $param$0; // line 7
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("f")); // line 8
+                        return t; // line 9
+                    }
+                };
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$1$0); // line 6
+        );
+    }
+}

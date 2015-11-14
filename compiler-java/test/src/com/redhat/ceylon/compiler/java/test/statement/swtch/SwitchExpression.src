@@ -1,0 +1,195 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+final class switchExpression_ {
+    
+    private switchExpression_() {
+    }
+    
+    static void switchExpression(final .java.lang.Object val) {
+        final .java.lang.String s1 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                {
+                    .java.lang.Object sel$1 = val;
+                    if (sel$1 == .ceylon.language.Boolean.instance(true)) {
+                        $ceylontmp$ifResult$0 = "true";
+                    } else if (sel$1 == .ceylon.language.Boolean.instance(false)) {
+                        $ceylontmp$ifResult$0 = "false";
+                    } else if (sel$1 instanceof .ceylon.language.Float) {
+                        final double val$3 = ((.ceylon.language.Float)sel$1).doubleValue();
+                        $ceylontmp$ifResult$0 = .ceylon.language.Float.toString(val$3 + val$3);
+                    } else {
+                        final .java.lang.Object val$2 = (.java.lang.Object)sel$1;
+                        $ceylontmp$ifResult$0 = val$2.toString();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+        final .java.lang.Object val2 = val;
+        final .ceylon.language.String s2 = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$ifResult$4;
+                {
+                    .java.lang.Object sel$5 = val2;
+                    if (sel$5 == null || sel$5 instanceof .ceylon.language.String) {
+                        final .ceylon.language.String val2$7 = (.ceylon.language.String)sel$5;
+                        $ceylontmp$ifResult$4 = val2$7;
+                    } else {
+                        final .java.lang.Object val2$6 = (.java.lang.Object)sel$5;
+                        $ceylontmp$ifResult$4 = .ceylon.language.String.instance("asd");
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        );
+        {
+            .java.lang.Object sel$8 = val2;
+            if (sel$8 == null || sel$8 instanceof .ceylon.language.String) {
+                final .ceylon.language.String val2$10 = (.ceylon.language.String)sel$8;
+                .ceylon.language.print_.print(val2$10);
+            } else {
+                final .java.lang.Object val2$9 = (.java.lang.Object)sel$8;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("asd"));
+            }
+        }
+    }
+}
+class SwitchExpressionTop implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected SwitchExpressionTop() {
+        super();
+    }
+    
+    SwitchExpressionTop(final .java.lang.Object a) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionTop.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionTop.class);
+}
+class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionTop {
+    
+    protected SwitchExpressionBottom() {
+        super();
+    }
+    
+    SwitchExpressionBottom(final .java.lang.Object val) {
+        super((
+            let
+            {
+                .ceylon.language.String $ceylontmp$ifResult$11;
+                {
+                    .java.lang.Object sel$12 = val;
+                    if (sel$12 == null || sel$12 instanceof .ceylon.language.String) {
+                        final .ceylon.language.String val$14 = (.ceylon.language.String)sel$12;
+                        $ceylontmp$ifResult$11 = val$14;
+                    } else {
+                        final .java.lang.Object val$13 = (.java.lang.Object)sel$12;
+                        $ceylontmp$ifResult$11 = .ceylon.language.String.instance("asd");
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$11;
+        ));
+        final .ceylon.language.Integer arg = null;
+        final double y0 = (
+            let
+            {
+                double $ceylontmp$ifResult$15;
+                {
+                    .ceylon.language.Integer sel$16 = arg;
+                    if (sel$16 == null) {
+                        $ceylontmp$ifResult$15 = 0.0;
+                    } else if (sel$16 != null) {
+                        final long arg$17 = ((.ceylon.language.Integer)sel$16).longValue();
+                        $ceylontmp$ifResult$15 = 1.0;
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$15 = 0.0;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$15;
+        );
+        final .java.lang.String y1 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$18;
+                {
+                    .ceylon.language.Integer sel$19 = arg;
+                    if (sel$19 == null) {
+                        $ceylontmp$ifResult$18 = "null";
+                    } else if (sel$19 != null) {
+                        final long arg$20 = ((.ceylon.language.Integer)sel$19).longValue();
+                        $ceylontmp$ifResult$18 = .ceylon.language.Integer.toString(arg$20);
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$18 = null;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$18;
+        );
+        final .java.lang.Object y2 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$21;
+                {
+                    .ceylon.language.Integer sel$22 = arg;
+                    if (sel$22 == null) {
+                        $ceylontmp$ifResult$21 = .ceylon.language.Float.instance(0.0);
+                    } else if (sel$22 != null) {
+                        final long arg$23 = ((.ceylon.language.Integer)sel$22).longValue();
+                        $ceylontmp$ifResult$21 = .ceylon.language.String.instance(.ceylon.language.Integer.toString(arg$23));
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$21 = null;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$21;
+        );
+        final .ceylon.language.Float y3 = (
+            let
+            {
+                .ceylon.language.Float $ceylontmp$ifResult$24;
+                {
+                    .ceylon.language.Integer sel$25 = arg;
+                    if (sel$25 == null) {
+                        $ceylontmp$ifResult$24 = .ceylon.language.Float.instance(0.0);
+                    } else if (sel$25 != null) {
+                        final long arg$26 = ((.ceylon.language.Integer)sel$25).longValue();
+                        $ceylontmp$ifResult$24 = null;
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$24 = null;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$24;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionBottom.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionBottom.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class switchExpressionTest_ {
+    
+    private switchExpressionTest_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void switchExpressionTest() {
+        new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchExpressionBottom(.ceylon.language.String.instance("asd"));
+    }
+}

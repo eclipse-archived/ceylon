@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+public abstract class RefinedMethodWithDefaultTypeParameter_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public RefinedMethodWithDefaultTypeParameter_Foo() {
+    }
+    
+    public <T>T task(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name) {
+        return (T).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.RefinedMethodWithDefaultTypeParameter_Foo.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.RefinedMethodWithDefaultTypeParameter_Foo.class);
+}
+class RefinedMethodWithDefaultTypeParameter_Bar extends .com.redhat.ceylon.compiler.java.test.structure.concrete.RefinedMethodWithDefaultTypeParameter_Foo {
+    
+    RefinedMethodWithDefaultTypeParameter_Bar() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final <T>T task(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name) {
+        return (T).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.RefinedMethodWithDefaultTypeParameter_Bar.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.RefinedMethodWithDefaultTypeParameter_Bar.class);
+}
+final class formalMethodWithDefaultTypeParameter_ {
+    
+    private formalMethodWithDefaultTypeParameter_() {
+    }
+    
+    static void formalMethodWithDefaultTypeParameter(final .com.redhat.ceylon.compiler.java.test.structure.concrete.RefinedMethodWithDefaultTypeParameter_Bar b) {
+        final long i = b.<.ceylon.language.Integer>task(.ceylon.language.Integer.$TypeDescriptor$, "").longValue();
+        final .java.lang.String s = b.<.ceylon.language.String>task(.ceylon.language.String.$TypeDescriptor$, "").toString();
+        final .java.lang.String s2 = ((.ceylon.language.String)b.<.java.lang.Object>task(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "")).toString();
+    }
+}

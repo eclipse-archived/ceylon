@@ -1,0 +1,80 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    private static final class fieldAnnotated_ {
+        
+        private fieldAnnotated_() {
+        }
+    }
+    
+    private SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_ $name$) {
+    }
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets fieldAnnotated;
+    static {
+        fieldAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$fieldAnnotated() {
+        return fieldAnnotated;
+    }
+    
+    private static final class methodAnnotated_ {
+        
+        private methodAnnotated_() {
+        }
+    }
+    
+    private SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets methodAnnotated;
+    static {
+        methodAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated_)null);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$methodAnnotated() {
+        return methodAnnotated;
+    }
+    
+    private static final class constructorAnnotated_ {
+        
+        private constructorAnnotated_() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorTarget
+    @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
+    private SingletonConstructorTargets(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets constructorAnnotated;
+    static {
+        constructorAnnotated = new SingletonConstructorTargets((.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$constructorAnnotated() {
+        return constructorAnnotated;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == constructorAnnotated) {
+            $name$ = "getSingletonConstructorTargets$constructorAnnotated";
+        } else if (this == methodAnnotated) {
+            $name$ = "getSingletonConstructorTargets$methodAnnotated";
+        } else if (this == fieldAnnotated) {
+            $name$ = "getSingletonConstructorTargets$fieldAnnotated";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.class, $name$);
+    }
+}

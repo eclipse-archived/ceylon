@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.interop.access;
+
+class ExtendsDefaultAccessClass extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ExtendsDefaultAccessClass() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass.class);
+}
+class ExtendsDefaultAccessClass2 extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ExtendsDefaultAccessClass2() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass2.class);
+}
+class ExtendsDefaultAccessClass3 extends .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ExtendsDefaultAccessClass3() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.ExtendsDefaultAccessClass3.class);
+}

@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableAndDefaultedArguments_bar_ {
+    
+    private callableAndDefaultedArguments_bar_() {
+    }
+    
+    static void callableAndDefaultedArguments_bar() {
+    }
+}
+final class callableAndDefaultedArguments_ {
+    
+    private callableAndDefaultedArguments_() {
+    }
+    
+    static void callableAndDefaultedArguments() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_foo_.callableAndDefaultedArguments_foo(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableAndDefaultedArguments_bar_.callableAndDefaultedArguments_bar();
+                    }
+                    returning null;
+                );
+            }
+        }, .ceylon.language.String.instance(""));
+    }
+}

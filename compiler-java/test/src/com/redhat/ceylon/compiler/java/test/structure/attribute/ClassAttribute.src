@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+abstract class ClassAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassAttribute() {
+        final .java.lang.String uncapturedvar;
+        publicvar = "";
+        uncapturedvar = "";
+        capturedvar = "";
+    }
+    private final .java.lang.String publicvar;
+    
+    public final .java.lang.String getPublicvar() {
+        return publicvar;
+    }
+    private final .java.lang.String capturedvar;
+    
+    private final .java.lang.String getCapturedvar$priv$() {
+        return capturedvar;
+    }
+    
+    public abstract .java.lang.String getFormalvar();
+    
+    public abstract .java.lang.String getFormalvarShortcut();
+    
+    private final .java.lang.String m$priv$() {
+        return getCapturedvar$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute.class);
+}
+class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttribute {
+    
+    SubClassAttribute() {
+        super();
+        this.formalvar = "";
+        this.formalvarShortcut = "";
+    }
+    private final .java.lang.String formalvar;
+    
+    @.java.lang.Override
+    public final .java.lang.String getFormalvar() {
+        return formalvar;
+    }
+    private final .java.lang.String formalvarShortcut;
+    
+    @.java.lang.Override
+    public final .java.lang.String getFormalvarShortcut() {
+        return formalvarShortcut;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttribute.class);
+}

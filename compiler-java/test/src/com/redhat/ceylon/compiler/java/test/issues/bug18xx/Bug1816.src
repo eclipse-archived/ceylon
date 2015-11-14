@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+final class bug1816_ {
+    
+    private bug1816_() {
+    }
+    
+    static void bug1816() {
+        final boolean normalize = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        
+        final class mpl_ {
+            
+            private mpl_() {
+                this.mpl = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> mpl;
+            
+            .ceylon.language.Callable<? extends .ceylon.language.String> mpl(final .java.lang.String first) {
+                if (mpl == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return mpl.$call$(.ceylon.language.String.instance(first));
+            }
+        }
+        final mpl_ mpl = new mpl_();
+        if (normalize) {
+            mpl.mpl = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)(String)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.String foo = ((.ceylon.language.String)$param$0).toString();
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+                        
+                        @.java.lang.Override
+                        public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                            final .java.lang.String baz = ((.ceylon.language.String)$param$0).toString();
+                            return .ceylon.language.String.instance(.ceylon.language.String.getNormalized(foo) + .ceylon.language.String.getNormalized(baz));
+                        }
+                    };
+                }
+            };
+        } else {
+            mpl.mpl = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)(String)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.String alpha = ((.ceylon.language.String)$param$0).toString();
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+                        
+                        @.java.lang.Override
+                        public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                            final .java.lang.String beta = ((.ceylon.language.String)$param$0).toString();
+                            return .ceylon.language.String.instance(alpha + beta);
+                        }
+                    };
+                }
+            };
+        }
+    }
+}

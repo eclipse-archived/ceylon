@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class multipleParameterLists_ {
+    
+    private multipleParameterLists_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(x)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String(ceylon.language::Integer)")
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> multipleParameterLists() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final long x = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.String.instance(.ceylon.language.Integer.toString(x));
+            }
+        };
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class multipleParameterLists2_ {
+    
+    private multipleParameterLists2_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(b)(c)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String(ceylon.language::Object)(ceylon.language::Float)")
+    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterLists2(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long a) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Float.$TypeDescriptor$), "String(Object)(Float)", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                final double b = ((.ceylon.language.Float)$param$0).doubleValue();
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "String(Object)", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object c = $param$0;
+                        return .ceylon.language.String.instance(.ceylon.language.Integer.toString(a) + .ceylon.language.Float.toString(b) + c.toString());
+                    }
+                };
+            }
+        };
+    }
+}

@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1059(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$SomeType) {
+        super();
+        this.$reified$SomeType = $reified$SomeType;
+        this.i = null;
+    }
+    
+    public Bug1059(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$SomeType, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i) {
+        this.$reified$SomeType = $reified$SomeType;
+        this.i = i;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$SomeType;
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i;
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getI$priv$() {
+        return i;
+    }
+    
+    public final .ceylon.language.Iterator<? extends SomeType> iterator() {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(getI$priv$(), $reified$SomeType)) {
+            return new .ceylon.language.Singleton<SomeType>($reified$SomeType, (SomeType)getI$priv$()).iterator();
+        }
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i$2 = (.ceylon.language.Callable)getI$priv$();
+        return (.ceylon.language.Iterator<? extends SomeType>).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1059.class, $reified$SomeType);
+    }
+}

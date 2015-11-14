@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfFalse_ {
+    
+    private methodIfFalse_() {
+    }
+    
+    static .java.lang.String methodIfFalse() {
+        if (false) {
+        }
+        return "";
+    }
+}

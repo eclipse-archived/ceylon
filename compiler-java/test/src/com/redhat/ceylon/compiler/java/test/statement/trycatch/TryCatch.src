@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class TryCatch implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    TryCatch() {
+    }
+    
+    private final void t$priv$() {
+    }
+    
+    private final void c$priv$(final .java.lang.Exception e) {
+    }
+    
+    private final void m$priv$() {
+        try {
+            t$priv$();
+        } catch (final .java.lang.Exception e) {
+            c$priv$(e);
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatch.class);
+}

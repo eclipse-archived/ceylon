@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug1659")
+final class bug1659_ {
+    
+    private bug1659_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    
+    @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public static long get_() {
+        if (bug1659_.$init$value) {
+            return value;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'bug1659\'");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1659")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long bug1659) {
+        if (!bug1659_.$init$value) {
+            value = bug1659;
+            bug1659_.$init$value = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+}

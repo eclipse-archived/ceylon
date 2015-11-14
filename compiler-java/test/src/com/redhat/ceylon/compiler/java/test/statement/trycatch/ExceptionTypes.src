@@ -1,0 +1,173 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
+class ExceptionTypesException extends .ceylon.language.Exception {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    ExceptionTypesException() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$description$0 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$description();
+                .java.lang.Throwable $ceylontmp$cause$1 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause($ceylontmp$description$0);
+                this($ceylontmp$description$0, $ceylontmp$cause$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    ExceptionTypesException(final .ceylon.language.String description) {
+        (
+            let
+            {
+                .java.lang.Throwable $ceylontmp$cause$2 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause(description);
+                this(description, $ceylontmp$cause$2);
+            }
+            returning null;
+        );
+    }
+    
+    ExceptionTypesException(@.com.redhat.ceylon.compiler.java.metadata.Name("description")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String description, @.com.redhat.ceylon.compiler.java.metadata.Name("cause")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable?")
+    final .java.lang.Throwable cause) {
+        super(description, cause);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .ceylon.language.String $default$description() {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .java.lang.Throwable $default$cause(final .ceylon.language.String description) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::AssertionError")
+class ExceptionTypesAssertionError extends .ceylon.language.AssertionError {
+    
+    ExceptionTypesAssertionError() {
+        super("");
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class exceptionTypesUsage_ {
+    
+    private exceptionTypesUsage_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void exceptionTypesUsage(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable()")
+    final .ceylon.language.Callable<? extends .java.lang.Throwable> f) {
+        {
+            long sel$3 = i;
+            if (sel$3 == 0L) {
+                throw f.$call$();
+            } else if (sel$3 == 1L) {
+                throw new .ceylon.language.Exception();
+            } else if (sel$3 == 2L) {
+                throw new .ceylon.language.AssertionError("");
+            } else if (sel$3 == 3L) {
+                throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException();
+            } else if (sel$3 == 4L) {
+                throw new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError();
+            } else {
+            }
+        }
+        {
+            long sel$4 = i;
+            if (sel$4 == 10L) {
+                try {
+                    f.$call$();
+                } catch (final .java.lang.Throwable t) {
+                }
+            } else if (sel$4 == 11L) {
+                try {
+                    f.$call$();
+                } catch (final .java.lang.Exception t) {
+                }
+            } else if (sel$4 == 13L) {
+                try {
+                    f.$call$();
+                } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException t) {
+                }
+            } else if (sel$4 == 14L) {
+                try {
+                    f.$call$();
+                } catch (final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError t) {
+                }
+            } else {
+            }
+        }
+        final .ceylon.language.Sequence<? extends .java.lang.Throwable> throwables = (.ceylon.language.Sequence<? extends .java.lang.Throwable>).ceylon.language.Tuple.instance(.ceylon.language.Throwable.$TypeDescriptor$, new .java.lang.Object[]{
+                f.$call$(),
+                f.$call$()});
+        final .ceylon.language.Sequence<? extends .java.lang.Exception> exceptions = (.ceylon.language.Sequence<? extends .java.lang.Exception>).ceylon.language.Tuple.instance(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
+                new .ceylon.language.Exception(),
+                new .ceylon.language.Exception()});
+        final .ceylon.language.Sequence<? extends .java.lang.Throwable> throwablesAndExceptions = (.ceylon.language.Sequence<? extends .java.lang.Throwable>).ceylon.language.Tuple.instance(.ceylon.language.Throwable.$TypeDescriptor$, new .java.lang.Object[]{
+                f.$call$(),
+                new .ceylon.language.Exception()});
+        final .ceylon.language.Sequence subclasses = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError.$TypeDescriptor$), new .java.lang.Object[]{
+                new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException(),
+                new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError()});
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class exceptionTypeAssignment_ {
+    
+    private exceptionTypeAssignment_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void exceptionTypeAssignment() {
+        final .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
+        .java.lang.Throwable t = null;
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveThrowable());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveError());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveOome());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveException());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveIoException());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveRuntimeException());
+        t = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveNpe());
+        .java.lang.Exception ex = null;
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveException());
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveIoException());
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveRuntimeException());
+        ex = .com.redhat.ceylon.compiler.java.Util.checkNull(jt.getGiveNpe());
+        jt.takeThrowable(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError());
+        jt.takeThrowable(new .ceylon.language.Exception());
+        jt.takeThrowable(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
+        jt.takeException(new .ceylon.language.Exception());
+        jt.takeException(new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
+    }
+}

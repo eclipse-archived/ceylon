@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+interface bug674$X_<T> {
+}
+interface bug674$Y_ {
+}
+final class bug674_ {
+    
+    private bug674_() {
+    }
+    
+    static void bug674() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_> y = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_>).ceylon.language.nothing_.get_();
+    }
+}

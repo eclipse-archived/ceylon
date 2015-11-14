@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class Bug1975 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug1975() {
+        super();
+        this.g = null;
+        this.h = null;
+        this.i = null;
+    }
+    
+    Bug1975(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> f, @.com.redhat.ceylon.compiler.java.metadata.Name("g")
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> g, @.com.redhat.ceylon.compiler.java.metadata.Name("h")
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> h, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
+    final .ceylon.language.Callable<? extends .ceylon.language.Integer> i) {
+        this.g = g;
+        this.h = h;
+        this.i = i;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> g;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long g(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String a) {
+        return g.$call$(.ceylon.language.String.instance(a)).longValue();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> h;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long h(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String a) {
+        return h.$call$(.ceylon.language.String.instance(a)).longValue();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> i;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    private final long i$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String a) {
+        return i.$call$(.ceylon.language.String.instance(a)).longValue();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void capture$priv$() {
+        i$priv$("");
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1975.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1975.class);
+}

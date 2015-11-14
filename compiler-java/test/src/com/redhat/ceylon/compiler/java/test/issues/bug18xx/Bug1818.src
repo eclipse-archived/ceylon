@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+class Bug1818 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1818() {
+        .java.lang.String s$0 = null;
+        boolean doforelse$1 = true;
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = .ceylon.language.empty_.get_();
+        final boolean isArray$6 = iterable$5 instanceof .ceylon.language.Array;
+        final boolean isTuple$7 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
+        .java.lang.Object elem$2 = null;
+        final .java.lang.Object array$8;
+        int i$9 = 0;
+        final int length$10;
+        if (isTuple$7) {
+            array$8 = ((.ceylon.language.Tuple)iterable$5).$getArray$();
+            i$9 = ((.ceylon.language.Tuple)iterable$5).$getFirst$();
+            length$10 = i$9 + ((.ceylon.language.Tuple)iterable$5).$getLength$();
+        } else if (isArray$6) {
+            array$8 = ((.ceylon.language.Array)iterable$5).toArray();
+            length$10 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$8);
+        } else {
+            array$8 = null;
+            length$10 = 0;
+        }
+        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$3 = isTuple$7 || isArray$6 ? null : iterable$5.iterator();
+        loop_0: while (isTuple$7 || isArray$6 ? i$9 < length$10 : !((elem$2 = arg$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$7 || isArray$6) elem$2 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$8, i$9++);
+            final .java.lang.Object arg = elem$2;
+            s$0 = ((.ceylon.language.String)arg).toString();
+            .java.lang.String s$4 = s$0;
+            doforelse$1 = false;
+            break loop_0;
+        }
+        if (doforelse$1) {
+            s$0 = "";
+            .java.lang.String s$11 = s$0;
+        }
+        s = s$0;
+    }
+    private final .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return s;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1818.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1818.class);
+}

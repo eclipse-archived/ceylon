@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.structure.type;
+
+class OptionalType implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    OptionalType() {
+    }
+    
+    public final void m() {
+        final .ceylon.language.Integer n1 = .ceylon.language.Integer.instance(1L);
+        final .ceylon.language.Integer n2 = null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.OptionalType.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.OptionalType.class);
+}

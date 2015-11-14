@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorUnsharedField implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CtorUnsharedField() {
+        super();
+        this.who = null;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final .java.lang.String who;
+    
+    private final .java.lang.String getWho$priv$() {
+        return who;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.for_$delegation$_ for_$delegation$_ = null;
+    
+    private static final class for_$delegation$_ {
+        
+        private for_$delegation$_() {
+        }
+    }
+    
+    private CtorUnsharedField(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.for_$delegation$_ $name$, final .java.lang.String who$param$) {
+        this.who = who$param$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.for__ for__ = null;
+    
+    public static final class for__ {
+        
+        private for__() {
+        }
+    }
+    
+    public CtorUnsharedField(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.for__ $name$, final .java.lang.String who$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.for_$delegation$_, who$param$);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("Hello " + getWho$priv$()));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.world_ world_ = null;
+    
+    public static final class world_ {
+        
+        private world_() {
+        }
+    }
+    
+    public CtorUnsharedField(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.world_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.for_$delegation$_, "world");
+        $return$$0: do {
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("Hello " + getWho$priv$()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.class);
+}

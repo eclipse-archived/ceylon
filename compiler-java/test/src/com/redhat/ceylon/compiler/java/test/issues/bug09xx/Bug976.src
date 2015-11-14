@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public final class bug976method_ {
+    
+    private bug976method_() {
+    }
+    
+    public static <Default>.ceylon.language.Callable<? extends .java.lang.Object> bug976method(final Default defaultValue) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>("Object()"){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call(final .java.lang.Object $param$0) {
+                final .java.lang.Object anything = $param$0;
+                return (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)(
+                    let
+                    {
+                        .java.lang.Object $ceylontmp0 = anything;
+                    }
+                    returning $ceylontmp0 != null ? $ceylontmp0 : defaultValue;
+                );
+            }
+        };
+    }
+}
+final class bug976_ {
+    
+    private bug976_() {
+    }
+    
+    static void bug976() {
+        new .com.redhat.ceylon.compiler.java.language.ArraySequence<.ceylon.language.Integer>(null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).collect(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug976method_.<.ceylon.language.Integer>bug976method(.ceylon.language.Integer.instance(0L)));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug976_.bug976();
+    }
+}

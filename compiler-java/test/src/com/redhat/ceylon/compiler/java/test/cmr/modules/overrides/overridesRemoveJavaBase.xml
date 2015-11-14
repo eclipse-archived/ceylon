@@ -1,0 +1,3 @@
+<maven-overrides>
+    <remove module="java.base"/>
+</maven-overrides>

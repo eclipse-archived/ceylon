@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+public final class bug151 {
+    
+    private bug151() {
+    }
+    
+    public static void bug151() {
+        for (.ceylon.language.Iterator<? extends .ceylon.language.Integer> $n$iter$0 = new .ceylon.language.Range<.ceylon.language.Integer>(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(50L)).getIterator(); $n$iter$0.getHead() != null; $n$iter$0 = $n$iter$0.getTail()) {
+            final long n = $n$iter$0.getHead().longValue();
+            .ceylon.language.process.getProcess().writeLine(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.fib.fib(n)).toString());
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug151.bug151();
+    }
+}

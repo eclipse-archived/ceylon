@@ -1,0 +1,85 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug2220() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar Bar$new$() {
+        return new Bar();
+    }
+    
+    public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Bar() {
+        }
+        
+        final class Baz$baz {
+            
+            private Baz$baz() {
+            }
+        }
+        private transient Baz $instance$Baz$baz = null;
+        
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz getBaz$baz() {
+            if ($instance$Baz$baz == null) $instance$Baz$baz = new Baz((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$baz)null);
+            return $instance$Baz$baz;
+        }
+        
+        public .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz Baz$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$gee $name$) {
+            return new Baz($name$);
+        }
+        
+        class Baz$gee {
+            
+            private Baz$gee() {
+            }
+        }
+        
+        public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            private Baz(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$baz $name$) {
+            }
+            
+            public Baz(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$gee $name$) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz.class));
+            }
+            
+            private final .java.lang.Object writeReplace() {
+                final .java.lang.String $name$;
+                if (this == $instance$Baz$baz) {
+                    $name$ = "getBaz$baz";
+                } else return this;
+                return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.this, .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.class, $name$);
+            }
+        }
+        
+        public final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz m() {
+            return getBaz$baz();
+        }
+        
+        public final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz n() {
+            return Baz$new$((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.Baz$gee)null);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.Bar.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2220.class);
+}

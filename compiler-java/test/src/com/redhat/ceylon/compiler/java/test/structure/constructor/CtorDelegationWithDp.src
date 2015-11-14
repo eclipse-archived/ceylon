@@ -1,0 +1,123 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public CtorDelegationWithDp(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$ $name$) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$name$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
+                this($ceylontmp$name$0);
+            }
+            returning null;
+        );
+    }
+    
+    public CtorDelegationWithDp() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
+                this($ceylontmp$name$1);
+            }
+            returning null;
+        );
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        private $delegation$() {
+        }
+    }
+    
+    private CtorDelegationWithDp(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$ $name$, final .java.lang.String name$param$) {
+    }
+    
+    public static final .java.lang.String CtorDelegationWithDp$name() {
+        return "";
+    }
+    
+    public CtorDelegationWithDp(final .java.lang.String name$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$, name$param$);
+    }
+    
+    private static final class foo_ {
+        
+        private foo_() {
+        }
+    }
+    
+    private CtorDelegationWithDp(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.foo_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$, "");
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp foo;
+    static {
+        foo = new CtorDelegationWithDp((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.foo_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp getCtorDelegationWithDp$foo() {
+        return foo;
+    }
+    
+    private static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    private CtorDelegationWithDp(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.bar_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp bar;
+    static {
+        bar = new CtorDelegationWithDp((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.bar_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp getCtorDelegationWithDp$bar() {
+        return bar;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.baz_ baz_ = null;
+    
+    public static final class baz_ {
+        
+        private baz_() {
+        }
+    }
+    
+    public CtorDelegationWithDp(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.baz_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$, "");
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.qux_ qux_ = null;
+    
+    public static final class qux_ {
+        
+        private qux_() {
+        }
+    }
+    
+    public CtorDelegationWithDp(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.qux_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getCtorDelegationWithDp$bar";
+        } else if (this == foo) {
+            $name$ = "getCtorDelegationWithDp$foo";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.class, $name$);
+    }
+}

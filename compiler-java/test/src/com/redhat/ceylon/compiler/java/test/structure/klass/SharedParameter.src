@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class SharedParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected SharedParameter() {
+        super();
+        this.s = null;
+    }
+    
+    SharedParameter(final .java.lang.String s) {
+        this.s = s;
+    }
+    private final .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return s;
+    }
+    
+    private final .java.lang.String m$priv$() {
+        return getS();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SharedParameter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SharedParameter.class);
+}

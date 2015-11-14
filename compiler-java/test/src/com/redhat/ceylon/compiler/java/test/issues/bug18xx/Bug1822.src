@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+public class AnythingVoidHandler1822 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected AnythingVoidHandler1822() {
+        super();
+        this.done = null;
+    }
+    
+    public AnythingVoidHandler1822(final .ceylon.language.Callable<? extends .java.lang.Object> done) {
+        this.done = done;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> done;
+    
+    private final void done$priv$(final .java.lang.Object n) {
+        done.$call$(n);
+    }
+    
+    public final void handle() {
+        done$priv$(.ceylon.language.String.instance(""));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.AnythingVoidHandler1822.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.AnythingVoidHandler1822.class);
+}

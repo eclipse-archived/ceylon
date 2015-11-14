@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+final class deferredFunctionInitialization_ {
+    
+    private deferredFunctionInitialization_() {
+    }
+    
+    static void deferredFunctionInitialization() {
+        
+        final class s_ {
+            
+            private s_() {
+                this.s = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.String> s;
+            
+            .java.lang.String s() {
+                if (s == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return s.$call$().toString();
+            }
+        }
+        final s_ s = new s_();
+        s.s = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance("hello");
+            }
+        };
+        .ceylon.language.print_.print(.ceylon.language.String.instance(s.s()));
+    }
+}

@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+final class bug2359_ {
+    
+    private bug2359_() {
+    }
+    private static final .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.String get_() {
+        if (bug2359_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2359\' before it was set");
+        }
+    }
+}

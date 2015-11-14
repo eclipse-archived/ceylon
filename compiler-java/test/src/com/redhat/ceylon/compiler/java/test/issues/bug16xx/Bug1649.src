@@ -1,0 +1,106 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+interface Bug1649Superinterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Superinterface$impl();
+    
+    public abstract .java.lang.Object defaultedVar();
+    
+    public abstract .java.lang.Object defaultedVar$var();
+    
+    public abstract .java.lang.Object defaultedVar(final .java.lang.Object var);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface.class);
+}
+final class Bug1649Superinterface$impl implements .java.io.Serializable {
+    
+    Bug1649Superinterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface $this;
+    
+    public final .java.lang.Object defaultedVar$var() {
+        return .ceylon.language.nothing_.get_();
+    }
+}
+interface Bug1649Subinterface extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$impl();
+    
+    public .java.lang.Object defaultedVar();
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultedVar(final .java.lang.Object var);
+    
+    public abstract .java.lang.Object refinedDelegate();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface.class);
+}
+final class Bug1649Subinterface$impl implements .java.io.Serializable {
+    
+    Bug1649Subinterface$impl(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface $this;
+    
+    private .java.lang.Object defaultedVar$canonical$(final .java.lang.Object var) {
+        return $this.refinedDelegate();
+    }
+    
+    public .java.lang.Object defaultedVar(final .java.lang.Object var) {
+        return defaultedVar$canonical$(var);
+    }
+}
+class Bug1649Clazz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface, .java.io.Serializable {
+    
+    Bug1649Clazz() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Superinterface$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$this$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultedVar() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$var$0 = defaultedVar$var();
+            }
+            returning defaultedVar$canonical$($ceylontmp$var$0);
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultedVar(final .java.lang.Object var) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$this$.defaultedVar(var);
+    }
+    
+    private .java.lang.Object defaultedVar$canonical$(final .java.lang.Object var) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$this$.defaultedVar(var);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Superinterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Superinterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Superinterface$this$;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultedVar$var() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Superinterface$this$.defaultedVar$var();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object refinedDelegate() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Clazz.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Clazz.class);
+}

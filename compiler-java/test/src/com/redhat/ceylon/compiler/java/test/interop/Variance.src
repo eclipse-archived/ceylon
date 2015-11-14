@@ -1,0 +1,85 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class variance_ {
+    
+    private variance_() {
+    }
+    
+    static void variance() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance var = new .com.redhat.ceylon.compiler.java.test.interop.JavaVariance();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> klass = var;
+        final .com.redhat.ceylon.compiler.java.test.interop.Interface<? extends .java.lang.Object> interf = var;
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.interop.Interface<? extends .java.lang.Object>> interfaceMethod = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance $instance$ = var;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.interop.Interface<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Interface.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{.com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Object.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Interface.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{.com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Object.$TypeDescriptor$))), "Interface<out Object>(Interface<out Object>?)", (short)-1){
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.test.interop.Interface<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.interop.Interface $ceylontmp$arg0 = (.com.redhat.ceylon.compiler.java.test.interop.Interface<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.interop.Interface)$param$0;
+                    return $instance$.interfaceMethod($ceylontmp$arg0);
+                }
+            };
+        );
+        final .com.redhat.ceylon.compiler.java.test.interop.Interface<? extends .java.lang.Object> ret1 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.interfaceMethod(var));
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object>> classMethod = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance $instance$ = var;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Class.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{.com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Object.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Class.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{.com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Object.$TypeDescriptor$))), "Class<out Object>(Class<out Object>?)", (short)-1){
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.interop.Class $ceylontmp$arg0 = (.com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.interop.Class)$param$0;
+                    return $instance$.classMethod($ceylontmp$arg0);
+                }
+            };
+        );
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> ret2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.classMethod(var));
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaVariance m = .com.redhat.ceylon.compiler.java.Util.checkNull(var.<.com.redhat.ceylon.compiler.java.test.interop.JavaVariance>method(var));
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v1 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.roField);
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v2 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.rwField);
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v3 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.getRoProperty());
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v4 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.getRwProperty());
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v5 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.getRwCovariantProperty());
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? super .com.redhat.ceylon.compiler.java.test.interop.JavaVariance> v6 = .com.redhat.ceylon.compiler.java.Util.checkNull(var.getRwContravariantProperty());
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v7 = (.com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object>).com.redhat.ceylon.compiler.java.Util.checkNull(var.getRwRawProperty());
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> anythingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.ceylon.language.Integer> integerClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.ceylon.language.Integer>).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> nothingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> outNothingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> inAnythingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class inNothing1 = anythingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class inNothing2 = integerClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class inNothing3 = nothingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> inAnything1 = anythingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> inAnything2 = integerClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> inAnything3 = nothingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> nothing1 = outNothingClass;
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> anything1 = inAnythingClass;
+    }
+}
+abstract class MyMap implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map<.ceylon.language.String, .java.lang.Object>, .java.io.Serializable {
+    
+    MyMap() {
+    }
+    
+    @.java.lang.Override
+    public final void putAll(final .java.util.Map<? extends .ceylon.language.String, ? extends .java.lang.Object> map) {
+    }
+    
+    @.java.lang.Override
+    public abstract int hashCode();
+    
+    @.java.lang.Override
+    public abstract boolean equals(final .java.lang.Object o);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.MyMap.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.MyMap.class);
+}

@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.interop.access;
+
+final class callsDefaultAccessClass_ {
+    
+    private callsDefaultAccessClass_() {
+    }
+    
+    static void callsDefaultAccessClass() {
+        new .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass();
+        new .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass2();
+        new .com.redhat.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass3();
+    }
+}

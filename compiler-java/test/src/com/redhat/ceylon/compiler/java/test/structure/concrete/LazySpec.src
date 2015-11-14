@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+public interface LazySpec {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$LazySpec$impl();
+    
+    public .java.lang.Object a();
+    
+    public abstract .java.lang.Object b();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec.class);
+}
+public final class LazySpec$impl implements .java.io.Serializable {
+    
+    public LazySpec$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec $this;
+    
+    public .java.lang.Object a() {
+        return $this.b();
+    }
+}
+public interface LazySpecSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$LazySpecSub$impl();
+    
+    @.java.lang.Override
+    public .java.lang.Object a();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub.class);
+}
+public final class LazySpecSub$impl implements .java.io.Serializable {
+    
+    public LazySpecSub$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub $this;
+    
+    public .java.lang.Object a() {
+        return .ceylon.language.nothing_.get_();
+    }
+}

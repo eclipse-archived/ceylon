@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class namedArgumentNoArgs_ {
+    
+    private namedArgumentNoArgs_() {
+    }
+    
+    static void namedArgumentNoArgs() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentNoArgs_.namedArgumentNoArgs();
+    }
+}

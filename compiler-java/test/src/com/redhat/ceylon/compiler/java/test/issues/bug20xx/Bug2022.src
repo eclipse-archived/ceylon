@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+final class bug2022_ {
+    
+    private bug2022_() {
+    }
+    
+    static void bug2022() {
+        new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Boolean.instance(true);
+                
+                case 1: 
+                    return .ceylon.language.Boolean.instance(false);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.<.ceylon.language.Integer>map(.ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$)), "Integer(true|false)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final boolean x = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return .ceylon.language.Integer.instance(1L);
+            }
+        });
+    }
+}

@@ -1,0 +1,121 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class SatisfiesFileFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FileFilter, .java.io.Serializable {
+    
+    SatisfiesFileFilter() {
+    }
+    
+    @.java.lang.Override
+    public final boolean accept(final .java.io.File f) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter.class);
+}
+class SatisfiesFilenameFilter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.FilenameFilter, .java.io.Serializable {
+    
+    SatisfiesFilenameFilter() {
+    }
+    
+    @.java.lang.Override
+    public final boolean accept(final .java.io.File dir, final .java.lang.String name) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter.class);
+}
+final class test_ {
+    
+    private test_() {
+    }
+    
+    static void test() {
+        final .java.io.File f1 = new .java.io.File("file1");
+        f1.listFiles(new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFileFilter());
+        f1.listFiles(new .com.redhat.ceylon.compiler.java.test.interop.SatisfiesFilenameFilter());
+    }
+}
+class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaInterface<.ceylon.language.Boolean, .ceylon.language.Integer>, .java.io.Serializable {
+    
+    JavaInterfaceImpl() {
+    }
+    
+    @.java.lang.Override
+    public final boolean booleanMethod(final boolean b) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Boolean boxedBooleanMethod(final .java.lang.Boolean b) {
+        return new .java.lang.Boolean(true);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean ceylonBooleanMethod(final .ceylon.language.Boolean b) {
+        return .ceylon.language.Boolean.instance(true);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean classTypeParamMethodB(final .ceylon.language.Boolean b) {
+        return .ceylon.language.Boolean.instance(true);
+    }
+    
+    @.java.lang.Override
+    public final long longMethod(final long i) {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Long boxedLongMethod(final .java.lang.Long i) {
+        return new .java.lang.Long(1L);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer ceylonIntegerMethod(final .ceylon.language.Integer i) {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer classTypeParamMethodI(final .ceylon.language.Integer i) {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public final int intMethod(final int i) {
+        return .com.redhat.ceylon.compiler.java.Util.toInt(1L);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Integer boxedIntegerMethod(final .java.lang.Integer i) {
+        return new .java.lang.Integer(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String stringMethod(final .java.lang.String i) {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String ceylonStringMethod(final .ceylon.language.String i) {
+        return .ceylon.language.String.instance("");
+    }
+    
+    @.java.lang.Override
+    public final <M>M methodTypeParamMethod(final M b) {
+        return (M).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JavaInterfaceImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaInterfaceImpl.class);
+}

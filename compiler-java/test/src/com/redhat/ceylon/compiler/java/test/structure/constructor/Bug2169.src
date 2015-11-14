@@ -1,0 +1,83 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1Foo"})
+public final class bug2169_ {
+    
+    private bug2169_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bug2169() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Foo")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+        class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            @.com.redhat.ceylon.compiler.java.metadata.ConstructorName(
+                    delegation = true,
+                    value = "")
+            class $delegation$ {
+                
+                private $delegation$() {
+                }
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            Foo.$delegation$ $name$) {
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            private Foo() {
+                this((Foo.$delegation$)null);
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("e");
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("baz")
+            class baz_ {
+                
+                private baz_() {
+                }
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.Name("baz")
+            private Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            Foo.baz_ $name$) {
+                this((Foo.$delegation$)null);
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
+                $return$$0: do {
+                    .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("d");
+                }                 while (false);
+                .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("e");
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.bug2169_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class));
+            }
+        }
+        new Foo((Foo.baz_)null);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[a, b, c, d, e]");
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2169_.bug2169();
+    }
+}

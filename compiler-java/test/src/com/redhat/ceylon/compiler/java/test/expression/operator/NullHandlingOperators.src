@@ -1,0 +1,126 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public NullHandlingOperators() {
+    }
+    
+    private final <T>T box$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        return t;
+    }
+    
+    private final void nullHandling$priv$() {
+        final .ceylon.language.Integer natOrNothing1 = .ceylon.language.Integer.instance(0L);
+        final .ceylon.language.Integer intOrNothing = .ceylon.language.Integer.instance(0L);
+        final long n = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$0 = natOrNothing1;
+            }
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Integer.instance(2L);
+        ).longValue();
+        final .ceylon.language.Integer nBoxed = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$1 = natOrNothing1;
+            }
+            returning $ceylontmp$1 != null ? $ceylontmp$1 : <.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L));
+        );
+        .ceylon.language.Integer nullSafeMember = (
+            let
+            {
+                .ceylon.language.Integer safe$2 = intOrNothing;
+            }
+            returning safe$2 != null ? safe$2.getNegated() : null;
+        );
+        .ceylon.language.Integer nullSafeInvoke = (
+            let
+            {
+                .ceylon.language.Integer safe$3 = intOrNothing;
+            }
+            returning safe$3 != null ? safe$3.plus(.ceylon.language.Integer.instance(1L)) : null;
+        );
+        nullSafeInvoke = (
+            let
+            {
+                .ceylon.language.Integer safe$5 = intOrNothing;
+            }
+            returning safe$5 != null ? (
+                let
+                {
+                    .ceylon.language.Integer arg$4$callable$ = safe$5;
+                    .ceylon.language.Integer arg$4$0 = .ceylon.language.Integer.instance(1L);
+                }
+                returning arg$4$callable$.plus(arg$4$0);
+            ) : null;
+        );
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> s1 = null;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> s2 = (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$6 = s1;
+            }
+            returning $ceylontmp$6 != null ? $ceylontmp$6 : (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        );
+    }
+    
+    private final void testEmpty$priv$() {
+        boolean sync = false;
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp$7 = .ceylon.language.String.sequence("");
+            }
+            returning $ceylontmp$7 instanceof .ceylon.language.Sequence;
+        );
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp$8 = seq;
+            }
+            returning $ceylontmp$8 instanceof .ceylon.language.Sequence;
+        );
+        final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance((
+            let
+            {
+                .java.lang.Object $ceylontmp$9 = seq;
+            }
+            returning $ceylontmp$9 instanceof .ceylon.language.Sequence;
+        ));
+    }
+    
+    private final void testExists$priv$() {
+        boolean sync = false;
+        final .java.lang.Object foo = .ceylon.language.Boolean.instance(sync);
+        sync = foo != null;
+        final .ceylon.language.Boolean boxed = .ceylon.language.Boolean.instance(foo != null);
+    }
+    
+    private final void testThenElse$priv$() {
+        final long n = 5L;
+        final .ceylon.language.String foo = n > 0L ? .ceylon.language.String.instance("yes") : null;
+        final .ceylon.language.String bar = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$10 = foo;
+            }
+            returning $ceylontmp$10 != null ? $ceylontmp$10 : .ceylon.language.String.instance("yes");
+        );
+        final .ceylon.language.String baz = .ceylon.language.String.instance(n > 0L ? "yes" : "no");
+        final double x = 5.0;
+        final double y = x > 0.0 ? x : 1.0;
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.get_() : .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L)));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.NullHandlingOperators.class);
+}

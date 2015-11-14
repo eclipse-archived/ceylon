@@ -1,0 +1,640 @@
+package com.redhat.ceylon.compiler.java.test.structure.type;
+
+public final class globalMethodInteger_ {
+    
+    private globalMethodInteger_() {
+    }
+    
+    public static long globalMethodInteger(final long i) {
+        return i;
+    }
+}
+public final class globalMethodFloat_ {
+    
+    private globalMethodFloat_() {
+    }
+    
+    public static double globalMethodFloat(final double i) {
+        return i;
+    }
+}
+public final class globalMethodString_ {
+    
+    private globalMethodString_() {
+    }
+    
+    public static .java.lang.String globalMethodString(final .java.lang.String i) {
+        return i;
+    }
+}
+public final class globalMethodBoolean_ {
+    
+    private globalMethodBoolean_() {
+    }
+    
+    public static boolean globalMethodBoolean(final boolean i) {
+        return i;
+    }
+}
+public final class globalMethodCharacter_ {
+    
+    private globalMethodCharacter_() {
+    }
+    
+    public static int globalMethodCharacter(final int i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalInteger_ {
+    
+    private globalMethodOptionalInteger_() {
+    }
+    
+    public static .ceylon.language.Integer globalMethodOptionalInteger(final .ceylon.language.Integer i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalFloat_ {
+    
+    private globalMethodOptionalFloat_() {
+    }
+    
+    public static .ceylon.language.Float globalMethodOptionalFloat(final .ceylon.language.Float i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalString_ {
+    
+    private globalMethodOptionalString_() {
+    }
+    
+    public static .ceylon.language.String globalMethodOptionalString(final .ceylon.language.String i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalBoolean_ {
+    
+    private globalMethodOptionalBoolean_() {
+    }
+    
+    public static .ceylon.language.Boolean globalMethodOptionalBoolean(final .ceylon.language.Boolean i) {
+        return i;
+    }
+}
+public final class globalMethodOptionalCharacter_ {
+    
+    private globalMethodOptionalCharacter_() {
+    }
+    
+    public static .ceylon.language.Character globalMethodOptionalCharacter(final .ceylon.language.Character i) {
+        return i;
+    }
+}
+class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected BasicTypes() {
+        super();
+        this.privateAttrInteger = 0L;
+        this.privateAttrFloat = 0.0;
+        this.privateAttrString = null;
+        this.privateAttrBoolean = false;
+        this.privateAttrCharacter = 0;
+        this.privateAttrOptionalInteger = null;
+        this.privateAttrOptionalFloat = null;
+        this.privateAttrOptionalString = null;
+        this.privateAttrOptionalBoolean = null;
+        this.privateAttrOptionalCharacter = null;
+        this.sharedAttrInteger = 0L;
+        this.sharedAttrFloat = 0.0;
+        this.sharedAttrString = null;
+        this.sharedAttrBoolean = false;
+        this.sharedAttrCharacter = 0;
+        this.sharedAttrOptionalInteger = null;
+        this.sharedAttrOptionalFloat = null;
+        this.sharedAttrOptionalString = null;
+        this.sharedAttrOptionalBoolean = null;
+        this.sharedAttrOptionalCharacter = null;
+    }
+    
+    BasicTypes(final long paramInteger, final double paramFloat, final .java.lang.String paramString, final boolean paramBoolean, final int paramCharacter, final .ceylon.language.Integer paramOptionalInteger, final .ceylon.language.Float paramOptionalFloat, final .ceylon.language.String paramOptionalString, final .ceylon.language.Boolean paramOptionalBoolean, final .ceylon.language.Character paramOptionalCharacter) {
+        final long privateNonCapturedAttrInteger;
+        final double privateNonCapturedAttrFloat;
+        final .java.lang.String privateNonCapturedAttrString;
+        final boolean privateNonCapturedAttrBoolean;
+        final int privateNonCapturedAttrCharacter;
+        final .ceylon.language.Integer privateNonCapturedAttrOptionalInteger;
+        final .ceylon.language.Float privateNonCapturedAttrOptionalFloat;
+        final .ceylon.language.String privateNonCapturedAttrOptionalString;
+        final .ceylon.language.Boolean privateNonCapturedAttrOptionalBoolean;
+        final .ceylon.language.Character privateNonCapturedAttrOptionalCharacter;
+        this.privateAttrInteger = 1L;
+        this.privateAttrFloat = 1.0;
+        this.privateAttrString = "a";
+        this.privateAttrBoolean = true;
+        this.privateAttrCharacter = 97;
+        this.privateAttrOptionalInteger = null;
+        this.privateAttrOptionalFloat = null;
+        this.privateAttrOptionalString = null;
+        this.privateAttrOptionalBoolean = null;
+        this.privateAttrOptionalCharacter = null;
+        this.sharedAttrInteger = 1L;
+        this.sharedAttrFloat = 1.0;
+        this.sharedAttrString = "a";
+        this.sharedAttrBoolean = true;
+        this.sharedAttrCharacter = 97;
+        this.sharedAttrOptionalInteger = null;
+        this.sharedAttrOptionalFloat = null;
+        this.sharedAttrOptionalString = null;
+        this.sharedAttrOptionalBoolean = null;
+        this.sharedAttrOptionalCharacter = null;
+    }
+    private final long privateAttrInteger;
+    
+    private final long getPrivateAttrInteger$priv$() {
+        return privateAttrInteger;
+    }
+    private final double privateAttrFloat;
+    
+    private final double getPrivateAttrFloat$priv$() {
+        return privateAttrFloat;
+    }
+    private final .java.lang.String privateAttrString;
+    
+    private final .java.lang.String getPrivateAttrString$priv$() {
+        return privateAttrString;
+    }
+    private final boolean privateAttrBoolean;
+    
+    private final boolean getPrivateAttrBoolean$priv$() {
+        return privateAttrBoolean;
+    }
+    private final int privateAttrCharacter;
+    
+    private final int getPrivateAttrCharacter$priv$() {
+        return privateAttrCharacter;
+    }
+    private final .ceylon.language.Integer privateAttrOptionalInteger;
+    
+    private final .ceylon.language.Integer getPrivateAttrOptionalInteger$priv$() {
+        return privateAttrOptionalInteger;
+    }
+    private final .ceylon.language.Float privateAttrOptionalFloat;
+    
+    private final .ceylon.language.Float getPrivateAttrOptionalFloat$priv$() {
+        return privateAttrOptionalFloat;
+    }
+    private final .ceylon.language.String privateAttrOptionalString;
+    
+    private final .ceylon.language.String getPrivateAttrOptionalString$priv$() {
+        return privateAttrOptionalString;
+    }
+    private final .ceylon.language.Boolean privateAttrOptionalBoolean;
+    
+    private final .ceylon.language.Boolean getPrivateAttrOptionalBoolean$priv$() {
+        return privateAttrOptionalBoolean;
+    }
+    private final .ceylon.language.Character privateAttrOptionalCharacter;
+    
+    private final .ceylon.language.Character getPrivateAttrOptionalCharacter$priv$() {
+        return privateAttrOptionalCharacter;
+    }
+    private final long sharedAttrInteger;
+    
+    public final long getSharedAttrInteger() {
+        return sharedAttrInteger;
+    }
+    private final double sharedAttrFloat;
+    
+    public final double getSharedAttrFloat() {
+        return sharedAttrFloat;
+    }
+    private final .java.lang.String sharedAttrString;
+    
+    public final .java.lang.String getSharedAttrString() {
+        return sharedAttrString;
+    }
+    private final boolean sharedAttrBoolean;
+    
+    public final boolean getSharedAttrBoolean() {
+        return sharedAttrBoolean;
+    }
+    private final int sharedAttrCharacter;
+    
+    public final int getSharedAttrCharacter() {
+        return sharedAttrCharacter;
+    }
+    private final .ceylon.language.Integer sharedAttrOptionalInteger;
+    
+    public final .ceylon.language.Integer getSharedAttrOptionalInteger() {
+        return sharedAttrOptionalInteger;
+    }
+    private final .ceylon.language.Float sharedAttrOptionalFloat;
+    
+    public final .ceylon.language.Float getSharedAttrOptionalFloat() {
+        return sharedAttrOptionalFloat;
+    }
+    private final .ceylon.language.String sharedAttrOptionalString;
+    
+    public final .ceylon.language.String getSharedAttrOptionalString() {
+        return sharedAttrOptionalString;
+    }
+    private final .ceylon.language.Boolean sharedAttrOptionalBoolean;
+    
+    public final .ceylon.language.Boolean getSharedAttrOptionalBoolean() {
+        return sharedAttrOptionalBoolean;
+    }
+    private final .ceylon.language.Character sharedAttrOptionalCharacter;
+    
+    public final .ceylon.language.Character getSharedAttrOptionalCharacter() {
+        return sharedAttrOptionalCharacter;
+    }
+    
+    private final void m$priv$() {
+        final long localAttrInteger = getPrivateAttrInteger$priv$();
+        final double localAttrFloat = getPrivateAttrFloat$priv$();
+        final .java.lang.String localAttrString = getPrivateAttrString$priv$();
+        final boolean localAttrBoolean = getPrivateAttrBoolean$priv$();
+        final int localAttrCharacter = getPrivateAttrCharacter$priv$();
+        final .ceylon.language.Integer localAttrOptionalInteger = getPrivateAttrOptionalInteger$priv$();
+        final .ceylon.language.Float localAttrOptionalFloat = getPrivateAttrOptionalFloat$priv$();
+        final .ceylon.language.String localAttrOptionalString = getPrivateAttrOptionalString$priv$();
+        final .ceylon.language.Boolean localAttrOptionalBoolean = getPrivateAttrOptionalBoolean$priv$();
+        final .ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter$priv$();
+    }
+    
+    private final long methodInteger$priv$(final long i) {
+        return i;
+    }
+    
+    private final double methodFloat$priv$(final double i) {
+        return i;
+    }
+    
+    private final .java.lang.String methodString$priv$(final .java.lang.String i) {
+        return i;
+    }
+    
+    private final boolean methodBoolean$priv$(final boolean i) {
+        return i;
+    }
+    
+    private final int methodCharacter$priv$(final int i) {
+        return i;
+    }
+    
+    private final .ceylon.language.Integer methodOptionalInteger$priv$(final .ceylon.language.Integer i) {
+        return i;
+    }
+    
+    private final .ceylon.language.Float methodOptionalFloat$priv$(final .ceylon.language.Float i) {
+        return i;
+    }
+    
+    private final .ceylon.language.String methodOptionalString$priv$(final .ceylon.language.String i) {
+        return i;
+    }
+    
+    private final .ceylon.language.Boolean methodOptionalBoolean$priv$(final .ceylon.language.Boolean i) {
+        return i;
+    }
+    
+    private final .ceylon.language.Character methodOptionalCharacter$priv$(final .ceylon.language.Character i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.BasicTypes.class);
+}
+abstract class TypeParameterClass<ClassParam> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam) {
+        super();
+        this.$reified$ClassParam = $reified$ClassParam;
+    }
+    
+    TypeParameterClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam, final ClassParam classParam) {
+        this.$reified$ClassParam = $reified$ClassParam;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ClassParam;
+    
+    public abstract ClassParam getAttr();
+    
+    public abstract ClassParam classParamMethod(final ClassParam param);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass.class, $reified$ClassParam);
+    }
+}
+class IntegerParameterClass extends .com.redhat.ceylon.compiler.java.test.structure.type.TypeParameterClass<.ceylon.language.Integer> {
+    
+    protected IntegerParameterClass() {
+        super(.ceylon.language.Integer.$TypeDescriptor$);
+        this.attr = null;
+    }
+    
+    IntegerParameterClass(final long classParam) {
+        super(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(classParam));
+        this.attr = .ceylon.language.Integer.instance(classParam);
+    }
+    private final .ceylon.language.Integer attr;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getAttr() {
+        return attr;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer classParamMethod(final .ceylon.language.Integer param) {
+        return param;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.type.IntegerParameterClass.class);
+}
+public final class globalAttrInteger_ {
+    
+    private globalAttrInteger_() {
+    }
+    private static final long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 1L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    public static long get_() {
+        if (globalAttrInteger_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrInteger\' before it was set");
+        }
+    }
+}
+public final class globalAttrFloat_ {
+    
+    private globalAttrFloat_() {
+    }
+    private static final double value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 1.0;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0.0;
+            $init$value = false;
+        }
+    }
+    
+    public static double get_() {
+        if (globalAttrFloat_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrFloat\' before it was set");
+        }
+    }
+}
+public final class globalAttrString_ {
+    
+    private globalAttrString_() {
+    }
+    private static final .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = "a";
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.String get_() {
+        if (globalAttrString_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrString\' before it was set");
+        }
+    }
+}
+public final class globalAttrBoolean_ {
+    
+    private globalAttrBoolean_() {
+    }
+    private static final boolean value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = true;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = false;
+            $init$value = false;
+        }
+    }
+    
+    public static boolean get_() {
+        if (globalAttrBoolean_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrBoolean\' before it was set");
+        }
+    }
+}
+public final class globalAttrCharacter_ {
+    
+    private globalAttrCharacter_() {
+    }
+    private static final int value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 97;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0;
+            $init$value = false;
+        }
+    }
+    
+    public static int get_() {
+        if (globalAttrCharacter_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrCharacter\' before it was set");
+        }
+    }
+}
+public final class globalAttrOptionalInteger_ {
+    
+    private globalAttrOptionalInteger_() {
+    }
+    private static final .ceylon.language.Integer value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = null;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Integer get_() {
+        if (globalAttrOptionalInteger_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalInteger\' before it was set");
+        }
+    }
+}
+public final class globalAttrOptionalFloat_ {
+    
+    private globalAttrOptionalFloat_() {
+    }
+    private static final .ceylon.language.Float value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = null;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Float get_() {
+        if (globalAttrOptionalFloat_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalFloat\' before it was set");
+        }
+    }
+}
+public final class globalAttrOptionalString_ {
+    
+    private globalAttrOptionalString_() {
+    }
+    private static final .ceylon.language.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = null;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.String get_() {
+        if (globalAttrOptionalString_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalString\' before it was set");
+        }
+    }
+}
+public final class globalAttrOptionalBoolean_ {
+    
+    private globalAttrOptionalBoolean_() {
+    }
+    private static final .ceylon.language.Boolean value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = null;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Boolean get_() {
+        if (globalAttrOptionalBoolean_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalBoolean\' before it was set");
+        }
+    }
+}
+public final class globalAttrOptionalCharacter_ {
+    
+    private globalAttrOptionalCharacter_() {
+    }
+    private static final .ceylon.language.Character value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = null;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Character get_() {
+        if (globalAttrOptionalCharacter_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'globalAttrOptionalCharacter\' before it was set");
+        }
+    }
+}

@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    static long foo(final boolean b) {
+        return 2L;
+    }
+}
+class RefinedMethodSpecifyingTopLevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RefinedMethodSpecifyingTopLevel() {
+    }
+    
+    public long f(final boolean b) {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.class);
+}
+class RefinedMethodSpecifyingTopLevelSub extends .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel {
+    
+    RefinedMethodSpecifyingTopLevelSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long f(final boolean b) {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.foo_.foo(b);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.class);
+}

@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+public final class bug1914_ {
+    
+    private bug1914_() {
+    }
+    
+    public static .java.lang.String bug1914(final .ceylon.language.String arg) {
+        {
+            .ceylon.language.String sel$0 = arg;
+            if (sel$0 != null || sel$0 == null) {
+                final .ceylon.language.String arg$1 = (.ceylon.language.String)sel$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$2 = arg$1;
+                    }
+                    returning $ceylontmp$2 != null ? $ceylontmp$2 : .ceylon.language.String.instance("null");
+                ).toString();
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+}

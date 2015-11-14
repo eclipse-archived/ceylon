@@ -1,0 +1,323 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWithDefaultParams() {
+        this.prop = 42L;
+    }
+    private final long prop;
+    
+    public final long getProp() {
+        return prop;
+    }
+    
+    private final void f1$priv$() {
+        (
+            let
+            {
+                long $ceylontmp$n$0 = f1$n();
+                f1$priv$$canonical$($ceylontmp$n$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final long f1$n() {
+        return 5L;
+    }
+    
+    private void f1$priv$$canonical$(final long n) {
+    }
+    
+    private final void f1$priv$(final long n) {
+        (
+            let
+            {
+                f1$priv$$canonical$(n);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f2(final long n) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$1 = f2$s(n);
+                f2$canonical$(n, $ceylontmp$s$1);
+            }
+            returning null;
+        );
+    }
+    
+    public final .java.lang.String f2$s(final long n) {
+        return "test";
+    }
+    
+    private void f2$canonical$(final long n, final .java.lang.String s) {
+    }
+    
+    public final void f2(final long n, final .java.lang.String s) {
+        (
+            let
+            {
+                f2$canonical$(n, s);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f3() {
+        (
+            let
+            {
+                long $ceylontmp$n$2 = f3$n();
+                long $ceylontmp$m$3 = f3$m($ceylontmp$n$2);
+                f3$canonical$($ceylontmp$n$2, $ceylontmp$m$3);
+            }
+            returning null;
+        );
+    }
+    
+    public final long f3$n() {
+        return 5L;
+    }
+    
+    public final void f3(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$4 = f3$m(n);
+                f3$canonical$(n, $ceylontmp$m$4);
+            }
+            returning null;
+        );
+    }
+    
+    public final long f3$m(final long n) {
+        return n;
+    }
+    
+    private void f3$canonical$(final long n, final long m) {
+    }
+    
+    public final void f3(final long n, final long m) {
+        (
+            let
+            {
+                f3$canonical$(n, m);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f4() {
+        (
+            let
+            {
+                long $ceylontmp$n$5 = f4$n();
+                long $ceylontmp$m$6 = f4$m($ceylontmp$n$5);
+                f4$canonical$($ceylontmp$n$5, $ceylontmp$m$6);
+            }
+            returning null;
+        );
+    }
+    
+    public final long f4$n() {
+        return 5L;
+    }
+    
+    public final void f4(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$7 = f4$m(n);
+                f4$canonical$(n, $ceylontmp$m$7);
+            }
+            returning null;
+        );
+    }
+    
+    public final long f4$m(final long n) {
+        return n + 1L;
+    }
+    
+    private void f4$canonical$(final long n, final long m) {
+    }
+    
+    public final void f4(final long n, final long m) {
+        (
+            let
+            {
+                f4$canonical$(n, m);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f5() {
+        (
+            let
+            {
+                long $ceylontmp$n$8 = f5$n();
+                f5$canonical$($ceylontmp$n$8);
+            }
+            returning null;
+        );
+    }
+    
+    public final long f5$n() {
+        return getProp();
+    }
+    
+    private void f5$canonical$(final long n) {
+    }
+    
+    public final void f5(final long n) {
+        (
+            let
+            {
+                f5$canonical$(n);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f6() {
+        (
+            let
+            {
+                long $ceylontmp$n$9 = f6$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f6$canonical$($ceylontmp$n$9, $ceylontmp$seq$10);
+            }
+            returning null;
+        );
+    }
+    
+    public final long f6$n() {
+        return getProp();
+    }
+    
+    public final void f6(final long n) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f6$canonical$(n, $ceylontmp$seq$11);
+            }
+            returning null;
+        );
+    }
+    
+    private void f6$canonical$(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    }
+    
+    public final void f6(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+        (
+            let
+            {
+                f6$canonical$(n, seq);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams.class);
+}
+interface MethodWithDefaultParams2 {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2$impl $com$redhat$ceylon$compiler$java$test$structure$method$MethodWithDefaultParams2$impl();
+    
+    public abstract long getProp();
+    
+    public abstract .java.lang.Object f1();
+    
+    public abstract long f1$n();
+    
+    public abstract .java.lang.Object f1(final long n);
+    
+    public abstract .java.lang.Object f2(final long n);
+    
+    public abstract .java.lang.String f2$s(final long n);
+    
+    public abstract .java.lang.Object f2(final long n, final .java.lang.String s);
+    
+    public abstract .java.lang.Object f3();
+    
+    public abstract long f3$n();
+    
+    public abstract .java.lang.Object f3(final long n);
+    
+    public abstract long f3$m(final long n);
+    
+    public abstract .java.lang.Object f3(final long n, final long m);
+    
+    public abstract .java.lang.Object f4();
+    
+    public abstract long f4$n();
+    
+    public abstract .java.lang.Object f4(final long n);
+    
+    public abstract long f4$m(final long n);
+    
+    public abstract .java.lang.Object f4(final long n, final long m);
+    
+    public abstract .java.lang.Object f5();
+    
+    public abstract long f5$n();
+    
+    public abstract .java.lang.Object f5(final long n);
+    
+    public abstract .java.lang.Object f6();
+    
+    public abstract long f6$n();
+    
+    public abstract .java.lang.Object f6(final long n);
+    
+    public abstract .java.lang.Object f6(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2.class);
+}
+final class MethodWithDefaultParams2$impl implements .java.io.Serializable {
+    
+    MethodWithDefaultParams2$impl(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithDefaultParams2 $this;
+    
+    public final long f1$n() {
+        return 5L;
+    }
+    
+    public final .java.lang.String f2$s(final long n) {
+        return "test";
+    }
+    
+    public final long f3$n() {
+        return 5L;
+    }
+    
+    public final long f3$m(final long n) {
+        return n;
+    }
+    
+    public final long f4$n() {
+        return 5L;
+    }
+    
+    public final long f4$m(final long n) {
+        return n + 1L;
+    }
+    
+    public final long f5$n() {
+        return $this.getProp();
+    }
+    
+    public final long f6$n() {
+        return $this.getProp();
+    }
+}

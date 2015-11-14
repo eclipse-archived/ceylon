@@ -1,0 +1,50 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    private static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    private Bug2262(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.bar_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 bar;
+    static {
+        bar = new Bug2262((.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.bar_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 getBug2262$bar() {
+        return bar;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getBug2262$bar";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.class, $name$);
+    }
+}
+public final class bug2262_ {
+    
+    private bug2262_() {
+    }
+    
+    public static void bug2262() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 f1 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.getBug2262$bar();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 f2 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.getBug2262$bar();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2262_.bug2262();
+    }
+}

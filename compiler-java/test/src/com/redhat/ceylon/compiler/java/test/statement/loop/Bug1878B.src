@@ -1,0 +1,122 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1878Init_ {
+    
+    private bug1878Init_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1878Init() {
+        final long $ceylontmp$first$1 = 1L;
+        final long $ceylontmp$last$2 = 1L;
+        final boolean $ceylontmp$increasing$3 = .ceylon.language.Integer.offset($ceylontmp$last$2, $ceylontmp$first$1) >= 0;
+        final long $ceylontmp$incr$4 = $ceylontmp$increasing$3 ? 1L : -1L;
+        long _$7 = $ceylontmp$first$1;
+        long $ceylontmp$element$6 = $ceylontmp$first$1;
+        boolean $ceylontmp$f$5 = false;
+        loop_0: do {
+            if ($ceylontmp$f$5) $ceylontmp$element$6 += $ceylontmp$incr$4;
+            $ceylontmp$f$5 = true;
+            _$7 = $ceylontmp$element$6;
+            final long _ = _$7;
+            $ceylontmp$continue$0: do {
+                .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.set_(false);
+            }             while (false);
+        }         while ($ceylontmp$increasing$3 ? _$7 - $ceylontmp$last$2 != 0L : _$7 - $ceylontmp$last$2 != 0L);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1878() {
+        this.$init$foo = false;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private boolean foo;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private volatile transient boolean $init$foo;
+    
+    @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    private final boolean getFoo$priv$() {
+        if (this.$init$foo) {
+            return foo;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'foo\'");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final void setFoo$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    final boolean foo) {
+        if (!this.$init$foo) {
+            this.foo = foo;
+            this.$init$foo = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void loopInit$priv$() {
+        final long $ceylontmp$first$9 = 1L;
+        final long $ceylontmp$last$10 = 1L;
+        final boolean $ceylontmp$increasing$11 = .ceylon.language.Integer.offset($ceylontmp$last$10, $ceylontmp$first$9) >= 0;
+        final long $ceylontmp$incr$12 = $ceylontmp$increasing$11 ? 1L : -1L;
+        long _$15 = $ceylontmp$first$9;
+        long $ceylontmp$element$14 = $ceylontmp$first$9;
+        boolean $ceylontmp$f$13 = false;
+        loop_1: do {
+            if ($ceylontmp$f$13) $ceylontmp$element$14 += $ceylontmp$incr$12;
+            $ceylontmp$f$13 = true;
+            _$15 = $ceylontmp$element$14;
+            final long _ = _$15;
+            $ceylontmp$continue$8: do {
+                setFoo$priv$(false);
+            }             while (false);
+        }         while ($ceylontmp$increasing$11 ? _$15 - $ceylontmp$last$10 != 0L : _$15 - $ceylontmp$last$10 != 0L);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.Bug1878.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.Bug1878.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug1878")
+final class bug1878_ {
+    
+    private bug1878_() {
+    }
+    private static boolean value;
+    private static volatile boolean $init$value = false;
+    
+    @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public static boolean get_() {
+        if (bug1878_.$init$value) {
+            return value;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'bug1878\'");
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1878")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    final boolean bug1878) {
+        if (!bug1878_.$init$value) {
+            value = bug1878;
+            bug1878_.$init$value = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+}

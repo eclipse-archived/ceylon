@@ -1,0 +1,138 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2280_ {
+    
+    private bug2280_() {
+    }
+    
+    public static void bug2280() {
+        
+        final class bar_ {
+            
+            private bar_() {
+            }
+            
+            void bar(final .ceylon.language.String f) {
+            }
+        }
+        final bar_ bar = new bar_();
+        
+        final class baz_ {
+            
+            private baz_() {
+            }
+            
+            void baz(final .ceylon.language.Integer f) {
+            }
+        }
+        final baz_ baz = new baz_();
+        
+        final class gee_ {
+            
+            private gee_() {
+            }
+            
+            void gee(final .ceylon.language.Comparison f) {
+            }
+        }
+        final gee_ gee = new gee_();
+        bar.bar((.ceylon.language.String)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$0;
+                if (true) {
+                    $ceylontmp$ifResult$0 = null;
+                } else {
+                    $ceylontmp$ifResult$0 = null;
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        ));
+        baz.baz((.ceylon.language.Integer)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$2;
+                if (true) {
+                    $ceylontmp$ifResult$2 = null;
+                } else {
+                    $ceylontmp$ifResult$2 = null;
+                }
+            }
+            returning $ceylontmp$ifResult$2;
+        ));
+        gee.gee((.ceylon.language.Comparison)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$4;
+                if (true) {
+                    $ceylontmp$ifResult$4 = null;
+                } else {
+                    $ceylontmp$ifResult$4 = null;
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        ));
+        (
+            let
+            {
+                .ceylon.language.String arg$6$0 = (.ceylon.language.String)(
+                    let
+                    {
+                        .java.lang.Object $ceylontmp$ifResult$7;
+                        if (true) {
+                            $ceylontmp$ifResult$7 = null;
+                        } else {
+                            $ceylontmp$ifResult$7 = null;
+                        }
+                    }
+                    returning $ceylontmp$ifResult$7;
+                );
+                bar.bar(arg$6$0);
+            }
+            returning null;
+        );
+        final long i = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        bar.bar((.ceylon.language.String)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$9;
+                {
+                    long sel$10 = i;
+                    if (sel$10 == 1L) {
+                        $ceylontmp$ifResult$9 = null;
+                    } else {
+                        $ceylontmp$ifResult$9 = null;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$9;
+        ));
+        (
+            let
+            {
+                .ceylon.language.String arg$11$0 = (.ceylon.language.String)(
+                    let
+                    {
+                        .java.lang.Object $ceylontmp$ifResult$12;
+                        {
+                            long sel$13 = i;
+                            if (sel$13 == 1L) {
+                                $ceylontmp$ifResult$12 = null;
+                            } else {
+                                $ceylontmp$ifResult$12 = null;
+                            }
+                        }
+                    }
+                    returning $ceylontmp$ifResult$12;
+                );
+                bar.bar(arg$11$0);
+            }
+            returning null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2280_.bug2280();
+    }
+}

@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1930_check_ {
+    
+    private bug1930_check_() {
+    }
+    
+    static void bug1930_check(final boolean $boolean, final .java.lang.String string) {
+    }
+}
+final class bug1930_ {
+    
+    private bug1930_() {
+    }
+    
+    static void bug1930() {
+        final .java.lang.Object str = .ceylon.language.String.instance("xxx");
+        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1930_check_.bug1930_check((
+            let
+            {
+                long $ceylontmp$ifResult$0;
+                .java.lang.Object str$2;
+                if ((str$2 = str) instanceof .ceylon.language.String) {
+                    final .java.lang.String str$4 = ((.ceylon.language.String)str$2).toString();
+                    $ceylontmp$ifResult$0 = .ceylon.language.String.getSize(str$4);
+                } else {
+                    final long str$3 = ((.ceylon.language.Integer)str$2).longValue();
+                    $ceylontmp$ifResult$0 = str$3;
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        ) == 3L, "inline if 1");
+        .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1930_check_.bug1930_check((
+            let
+            {
+                long $ceylontmp$ifResult$5;
+                .java.lang.Object str$7;
+                if ((str$7 = str) instanceof .ceylon.language.Integer) {
+                    final long str$9 = ((.ceylon.language.Integer)str$7).longValue();
+                    $ceylontmp$ifResult$5 = str$9;
+                } else {
+                    final .java.lang.String str$8 = ((.ceylon.language.String)str$7).toString();
+                    $ceylontmp$ifResult$5 = .ceylon.language.String.getSize(str$8);
+                }
+            }
+            returning $ceylontmp$ifResult$5;
+        ) == 3L, "inline if 2");
+    }
+}

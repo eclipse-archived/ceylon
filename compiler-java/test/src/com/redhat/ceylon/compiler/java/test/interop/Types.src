@@ -1,0 +1,388 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class box_ {
+    
+    private box_() {
+    }
+    
+    static <T>T box(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        return t;
+    }
+}
+final class booleanTypes_ {
+    
+    private booleanTypes_() {
+    }
+    
+    static void booleanTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final boolean b1 = java.return_boolean();
+        final boolean b2 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Boolean()).booleanValue();
+        final .java.lang.Object b4 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Boolean());
+        final .java.lang.Object b5 = java.return_Boolean();
+        java.booleanParams(true, new .java.lang.Boolean(true), .ceylon.language.Boolean.instance(true));
+        java.booleanParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(true)).booleanValue(), new .java.lang.Boolean(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(true)).booleanValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Boolean>box(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(true)));
+        java.booleanParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Boolean()).booleanValue(), java.return_Boolean(), .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Boolean()).booleanValue()));
+        java.booleanParams(java.return_boolean(), new .java.lang.Boolean(java.return_boolean()), .ceylon.language.Boolean.instance(java.return_boolean()));
+    }
+}
+final class byteTypes_ {
+    
+    private byteTypes_() {
+    }
+    
+    static void byteTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final byte n1 = java.return_byte();
+        final .ceylon.language.Byte n2 = .ceylon.language.Byte.instance(java.return_byte());
+        final long n3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Byte()).longValue();
+        java.byteParams((byte)1L, new .java.lang.Byte((byte)1L));
+        java.byteParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Byte>box(.ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.instance((byte)1L)).byteValue(), new .java.lang.Byte(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Byte>box(.ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Byte.instance((byte)1L)).byteValue()));
+        java.byteParams(java.return_byte(), new .java.lang.Byte(java.return_byte()));
+        java.byteParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Byte()).byteValue(), java.return_Byte());
+    }
+}
+final class shortTypes_ {
+    
+    private shortTypes_() {
+    }
+    
+    static void shortTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final long n1 = java.return_short();
+        final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_short());
+        final long n3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Short()).longValue();
+        java.shortParams(.com.redhat.ceylon.compiler.java.Util.toShort(1L), new .java.lang.Short(.com.redhat.ceylon.compiler.java.Util.toShort(1L)));
+        java.shortParams(.com.redhat.ceylon.compiler.java.Util.toShort(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue()), new .java.lang.Short(.com.redhat.ceylon.compiler.java.Util.toShort(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue())));
+        java.shortParams(java.return_short(), new .java.lang.Short(java.return_short()));
+        java.shortParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Short()).shortValue(), java.return_Short());
+    }
+}
+final class integerTypes_ {
+    
+    private integerTypes_() {
+    }
+    
+    static void integerTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final long n1 = java.return_int();
+        final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_int());
+        final long n3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Integer()).longValue();
+        java.intParams(.com.redhat.ceylon.compiler.java.Util.toInt(1L), new .java.lang.Integer(.com.redhat.ceylon.compiler.java.Util.toInt(1L)));
+        java.intParams(.com.redhat.ceylon.compiler.java.Util.toInt(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue()), new .java.lang.Integer(.com.redhat.ceylon.compiler.java.Util.toInt(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue())));
+        java.intParams(java.return_int(), new .java.lang.Integer(java.return_int()));
+        java.intParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Integer()).intValue(), java.return_Integer());
+    }
+}
+final class longTypes_ {
+    
+    private longTypes_() {
+    }
+    
+    static void longTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final long n1 = java.return_long();
+        final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_long());
+        final long n3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Long()).longValue();
+        java.longParams(1L, new .java.lang.Long(1L), .ceylon.language.Integer.instance(1L));
+        java.longParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue(), new .java.lang.Long(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)));
+        java.longParams(java.return_long(), new .java.lang.Long(java.return_long()), .ceylon.language.Integer.instance(java.return_long()));
+        java.longParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Long()).longValue(), java.return_Long(), .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Long()).longValue()));
+    }
+}
+final class floatTypes_ {
+    
+    private floatTypes_() {
+    }
+    
+    static void floatTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final double f1 = java.return_float();
+        final .ceylon.language.Float f2 = .ceylon.language.Float.instance(java.return_float());
+        final double f3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Float()).doubleValue();
+        java.floatParams((float)1.0, new .java.lang.Float(1.0));
+        java.floatParams((float).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(1.0)).doubleValue(), new .java.lang.Float(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(1.0)).doubleValue()));
+        java.floatParams(java.return_float(), new .java.lang.Float(java.return_float()));
+        java.floatParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Float()).floatValue(), java.return_Float());
+    }
+}
+final class doubleTypes_ {
+    
+    private doubleTypes_() {
+    }
+    
+    static void doubleTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final double f1 = java.return_double();
+        final .ceylon.language.Float f2 = .ceylon.language.Float.instance(java.return_double());
+        final double f3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Double()).doubleValue();
+        java.doubleParams(1.0, new .java.lang.Double(1.0), .ceylon.language.Float.instance(1.0));
+        java.doubleParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(1.0)).doubleValue(), new .java.lang.Double(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(1.0)).doubleValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Float>box(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Float.instance(1.0)));
+        java.doubleParams(java.return_double(), new .java.lang.Double(java.return_double()), .ceylon.language.Float.instance(java.return_double()));
+        java.doubleParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Double()).doubleValue(), java.return_Double(), .ceylon.language.Float.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Double()).doubleValue()));
+    }
+}
+final class characterTypes_ {
+    
+    private characterTypes_() {
+    }
+    
+    static void characterTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final int c1 = java.return_char();
+        final .ceylon.language.Character c2 = .ceylon.language.Character.instance(java.return_char());
+        final int c3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Character()).charValue();
+        java.charParams((char)97, new .java.lang.Character((char)97), .ceylon.language.Character.instance(97));
+        java.charParams((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(97)).intValue(), new .java.lang.Character((char).com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(97)).intValue()), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Character>box(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(97)));
+        java.charParams(java.return_char(), new .java.lang.Character(java.return_char()), .ceylon.language.Character.instance(java.return_char()));
+        java.charParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Character()).charValue(), java.return_Character(), .ceylon.language.Character.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Character()).charValue()));
+    }
+}
+final class stringTypes_ {
+    
+    private stringTypes_() {
+    }
+    
+    static void stringTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .java.lang.String s1 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_String());
+        final .ceylon.language.String s2 = (
+            let
+            {
+                .java.lang.String $ceylontmp$0 = java.return_String();
+            }
+            returning $ceylontmp$0 != null ? .ceylon.language.String.instance($ceylontmp$0) : null;
+        );
+        java.stringParams("a", .ceylon.language.String.instance("a"));
+        java.stringParams(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.String>box(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a")).toString(), .com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.String>box(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a")));
+        java.stringParams(java.return_String(), (
+            let
+            {
+                .java.lang.String $ceylontmp$1 = java.return_String();
+            }
+            returning $ceylontmp$1 != null ? .ceylon.language.String.instance($ceylontmp$1) : null;
+        ));
+    }
+}
+final class objectTypes_ {
+    
+    private objectTypes_() {
+    }
+    
+    static void objectTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .java.lang.Object o1 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Object());
+        final .java.lang.Object o2 = java.return_Object();
+        java.objectParams(o1);
+        java.objectParams(java.return_Object());
+    }
+}
+final class operationsOnBytes_ {
+    
+    private operationsOnBytes_() {
+    }
+    
+    static void operationsOnBytes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        java.byte_attr = (byte)(java.byte_attr + java.byte_attr);
+        java.byte_attr = (byte)(java.byte_attr - java.byte_attr);
+        java.byte_attr = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$2 = java;
+                byte $ceylontmp$opV$3 = $ceylontmp$opE$2.byte_attr;
+                $ceylontmp$opE$2.byte_attr = (byte)($ceylontmp$opV$3 + 1);
+            }
+            returning $ceylontmp$opV$3;
+        );
+        java.byte_attr = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$4 = java;
+                byte $ceylontmp$opV$5 = (byte)($ceylontmp$opE$4.byte_attr + 1);
+                $ceylontmp$opE$4.byte_attr = $ceylontmp$opV$5;
+            }
+            returning $ceylontmp$opV$5;
+        );
+        java.byte_attr = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$6 = java;
+                byte $ceylontmp$opV$7 = (byte)($ceylontmp$opE$6.byte_attr + java.byte_attr);
+                $ceylontmp$opE$6.byte_attr = $ceylontmp$opV$7;
+            }
+            returning $ceylontmp$opV$7;
+        );
+        java.byte_attr = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$8 = java;
+                byte $ceylontmp$opV$9 = (byte)($ceylontmp$opE$8.byte_attr - java.byte_attr);
+                $ceylontmp$opE$8.byte_attr = $ceylontmp$opV$9;
+            }
+            returning $ceylontmp$opV$9;
+        );
+        boolean sync = false;
+        sync = java.byte_attr == java.byte_attr;
+        sync = !(java.byte_attr == java.byte_attr);
+    }
+}
+final class operationsOnBytes2_ {
+    
+    private operationsOnBytes2_() {
+    }
+    
+    static void operationsOnBytes2() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        java.setByte((byte)(java.getByte() + java.getByte()));
+        java.setByte((byte)(java.getByte() - java.getByte()));
+        java.setByte((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$10 = java;
+                byte $ceylontmp$opV$11 = $ceylontmp$opE$10.getByte();
+                $ceylontmp$opE$10.setByte((byte)($ceylontmp$opV$11 + 1));
+            }
+            returning $ceylontmp$opV$11;
+        ));
+        java.setByte((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$12 = java;
+                byte $ceylontmp$opV$13 = (byte)($ceylontmp$opE$12.getByte() + 1);
+                $ceylontmp$opE$12.setByte($ceylontmp$opV$13);
+            }
+            returning $ceylontmp$opV$13;
+        ));
+        java.setByte((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$14 = java;
+                byte $ceylontmp$opV$15 = (byte)($ceylontmp$opE$14.getByte() + java.getByte());
+                $ceylontmp$opE$14.setByte($ceylontmp$opV$15);
+            }
+            returning $ceylontmp$opV$15;
+        ));
+        java.setByte((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$16 = java;
+                byte $ceylontmp$opV$17 = (byte)($ceylontmp$opE$16.getByte() - java.getByte());
+                $ceylontmp$opE$16.setByte($ceylontmp$opV$17);
+            }
+            returning $ceylontmp$opV$17;
+        ));
+        boolean sync = false;
+        sync = java.getByte() == java.getByte();
+        sync = !(java.getByte() == java.getByte());
+    }
+}
+class OperationsOnBytes extends .com.redhat.ceylon.compiler.java.test.interop.TypesJava implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    OperationsOnBytes() {
+        super();
+    }
+    
+    private final void m$priv$() {
+        byte_attr = (byte)(byte_attr + byte_attr);
+        byte_attr = (byte)(byte_attr - byte_attr);
+        byte_attr = (
+            let
+            {
+                byte $ceylontmp$op$18 = byte_attr;
+                byte_attr = (byte)($ceylontmp$op$18 + 1);
+            }
+            returning $ceylontmp$op$18;
+        );
+        byte_attr = (
+            let
+            {
+                byte $ceylontmp$op$19 = (byte)(byte_attr + 1);
+                byte_attr = $ceylontmp$op$19;
+            }
+            returning $ceylontmp$op$19;
+        );
+        byte_attr = (
+            let
+            {
+                byte $ceylontmp$op$20 = (byte)(byte_attr + byte_attr);
+                byte_attr = $ceylontmp$op$20;
+            }
+            returning $ceylontmp$op$20;
+        );
+        byte_attr = (
+            let
+            {
+                byte $ceylontmp$op$21 = (byte)(byte_attr - byte_attr);
+                byte_attr = $ceylontmp$op$21;
+            }
+            returning $ceylontmp$op$21;
+        );
+        boolean sync = false;
+        sync = byte_attr == byte_attr;
+        sync = !(byte_attr == byte_attr);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.OperationsOnBytes.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.OperationsOnBytes.class);
+}
+final class operationsOnMixedTypes_ {
+    
+    private operationsOnMixedTypes_() {
+    }
+    
+    static void operationsOnMixedTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        java.byte_attr = (byte)(java.byte_attr + .ceylon.language.Integer.getByte(java.int_attr));
+        java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Byte.getUnsigned(java.byte_attr) + (long)java.int_attr);
+        java.byte_attr = (byte)(.ceylon.language.Integer.getByte(java.int_attr) + java.byte_attr);
+        java.int_attr = .com.redhat.ceylon.compiler.java.Util.toInt((long)java.int_attr + .ceylon.language.Byte.getUnsigned(java.byte_attr));
+        java.byte_attr = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.TypesJava $ceylontmp$opE$22 = java;
+                byte $ceylontmp$opV$23 = (byte)($ceylontmp$opE$22.byte_attr + .ceylon.language.Integer.getByte(java.int_attr));
+                $ceylontmp$opE$22.byte_attr = $ceylontmp$opV$23;
+            }
+            returning $ceylontmp$opV$23;
+        );
+        boolean sync = false;
+        sync = .ceylon.language.Byte.instance(java.byte_attr).equals(.ceylon.language.Integer.instance(java.int_attr));
+        sync = !.ceylon.language.Byte.instance(java.byte_attr).equals(.ceylon.language.Integer.instance(java.int_attr));
+    }
+}
+final class typeParameters_ {
+    
+    private typeParameters_() {
+    }
+    
+    static void typeParameters() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .java.util.List<.ceylon.language.String> stringList = .com.redhat.ceylon.compiler.java.Util.checkNull(java.stringList());
+        stringList.add(.ceylon.language.String.instance("foo"));
+        final .java.util.List<.java.lang.String> jstringList = .com.redhat.ceylon.compiler.java.Util.checkNull(java.jstringList());
+        jstringList.add(new .java.lang.String("foo"));
+        final .java.util.List<.java.lang.Object> objectList = .com.redhat.ceylon.compiler.java.Util.checkNull(java.objectList());
+        objectList.add(.ceylon.language.String.instance("foo"));
+    }
+}
+final class optionalTypes_ {
+    
+    private optionalTypes_() {
+    }
+    
+    static void optionalTypes() {
+        final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
+        final .ceylon.language.String string = .ceylon.language.String.instance("foo");
+        java.stringParams((
+            let
+            {
+                .ceylon.language.String $ceylontmp$24 = string;
+            }
+            returning $ceylontmp$24 != null ? $ceylontmp$24.toString() : null;
+        ), string);
+    }
+}

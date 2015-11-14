@@ -1,0 +1,2 @@
+class DeclarationRecoveryClassExtends() extends Asdf() {
+}

@@ -1,0 +1,113 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected ClassDefaultMemberClassWithTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.tt = null;
+    }
+    
+    ClassDefaultMemberClassWithTypeParams(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T tt) {
+        this.$reified$T = $reified$T;
+        this.tt = tt;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final T tt;
+    
+    private final T getTt$priv$() {
+        return tt;
+    }
+    
+    public <U>.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<T>.Member<U> Member$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final T t, final U u) {
+        return new Member<U>($reified$U, t, u);
+    }
+    
+    public class Member<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final T t, final U u) {
+            this.$reified$U = $reified$U;
+        }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams.Member.class, $reified$U));
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<T>.Member<.ceylon.language.Integer> m1() {
+        (
+            let
+            {
+                .ceylon.language.Integer arg$0$1 = .ceylon.language.Integer.instance(1L);
+                T arg$0$0 = getTt$priv$();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+            }
+            returning Member$new$(arg$0$reified$0, arg$0$0, arg$0$1);
+        );
+        return Member$new$(.ceylon.language.Integer.$TypeDescriptor$, getTt$priv$(), .ceylon.language.Integer.instance(1L));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams.class, $reified$T);
+    }
+}
+class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X> {
+    
+    protected ClassDefaultMemberClassWithTypeParams_sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        super($reified$X);
+        this.$reified$X = $reified$X;
+        this.xx = null;
+    }
+    
+    ClassDefaultMemberClassWithTypeParams_sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final X xx) {
+        super($reified$X, xx);
+        this.$reified$X = $reified$X;
+        this.xx = xx;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final X xx;
+    
+    private final X getXx$priv$() {
+        return xx;
+    }
+    
+    @.java.lang.Override
+    public <Y>.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub<X>.Member<Y> Member$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x, final Y y) {
+        return new Member<Y>($reified$Y, x, y);
+    }
+    
+    public class Member<Y> extends .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<X>.Member<Y> {
+        
+        protected Member(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x, final Y y) {
+            super($reified$Y, x, y);
+            this.$reified$Y = $reified$Y;
+        }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub.class, .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub.Member.class, $reified$Y));
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub<X>.Member<.ceylon.language.String> m2() {
+        (
+            let
+            {
+                .ceylon.language.String arg$1$1 = .ceylon.language.String.instance("");
+                X arg$1$0 = getXx$priv$();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.String.$TypeDescriptor$;
+            }
+            returning Member$new$(arg$1$reified$0, arg$1$0, arg$1$1);
+        );
+        return Member$new$(.ceylon.language.String.$TypeDescriptor$, getXx$priv$(), .ceylon.language.String.instance(""));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams_sub.class, $reified$X);
+    }
+}

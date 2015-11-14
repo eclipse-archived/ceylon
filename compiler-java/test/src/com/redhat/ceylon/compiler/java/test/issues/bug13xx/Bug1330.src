@@ -1,0 +1,79 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+class Bug1330_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1330_2() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node Node$new$() {
+        return new Node();
+    }
+    
+    public class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Node() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node.class));
+        }
+    }
+    
+    private final void m$priv$() {
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node> nodes = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        nodes.filter(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node.class))), "Boolean(Bug1330_2.Node)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node elem = (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.Node)$param$0;
+                return .ceylon.language.Boolean.instance(false);
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330_2.class);
+}
+class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1330(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N) {
+        this.$reified$N = $reified$N;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N;
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node Node$new$() {
+        return new Node();
+    }
+    
+    public class Node implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Node() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.this.$reified$N), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.Node.class));
+        }
+    }
+    
+    private final void m$priv$() {
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node> nodes = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        nodes.filter(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.class, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.this.$reified$N), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.Node.class))), "Boolean(Bug1330<N>.Node)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node elem = (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node)$param$0;
+                return .ceylon.language.Boolean.instance(false);
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.class, $reified$N);
+    }
+}

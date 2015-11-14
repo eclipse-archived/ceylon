@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class MethodLocalAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodLocalAccess() {
+    }
+    
+    private final long m1$priv$() {
+        final long n1 = 1L;
+        return n1;
+    }
+    
+    private final long m2$priv$() {
+        
+        final class n2$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private n2$getter$_() {
+            }
+            
+            public long get_() {
+                return 1L;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong n2$getter$_ = new n2$getter$_();
+        return n2$getter$_.get_();
+    }
+    
+    private final long m3$priv$() {
+        
+        final class selfref$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private selfref$getter$_() {
+            }
+            
+            public long get_() {
+                if (1L > 0L) {
+                    return 1L;
+                } else {
+                    return 0L;
+                }
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong selfref$getter$_ = new selfref$getter$_();
+        return selfref$getter$_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAccess.class);
+}

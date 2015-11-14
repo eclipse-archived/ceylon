@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentParameterCtor_f {
+    
+    private callableArgumentParameterCtor_f() {
+    }
+    
+    static <T>void callableArgumentParameterCtor_f(final T t) {
+    }
+}
+class CallableArgumentParameterCtor {
+    
+    CallableArgumentParameterCtor(.java.lang.String s) {
+    }
+}
+final class callableArgumentParameterCtor_m {
+    
+    private callableArgumentParameterCtor_m() {
+    }
+    
+    static void callableArgumentParameterCtor_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterCtor_f.<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.C>>callableArgumentParameterCtor_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterCtor>("Callable<Anything,String>") {
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterCtor $call(.java.lang.String arg0) {
+                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterCtor((.java.lang.String)arg0);
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterCtor_m.callableArgumentParameterCtor_m();
+    }
+}

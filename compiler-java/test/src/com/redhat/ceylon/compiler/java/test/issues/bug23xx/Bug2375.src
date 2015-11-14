@@ -1,0 +1,234 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+public interface Bug2375 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$impl();
+    
+    public .java.lang.Object writeStringAsynchronous();
+    
+    public abstract .ceylon.language.Callable<? extends .java.lang.Object> writeStringAsynchronous$onCompletion();
+    
+    public .java.lang.Object writeStringAsynchronous(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion);
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion);
+    
+    public abstract .ceylon.language.Callable<? extends .java.lang.Object> $default$CWithPl$onCompletion();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375.class);
+}
+public final class Bug2375$impl implements .java.io.Serializable {
+    
+    public Bug2375$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375 $this;
+    
+    public .java.lang.Object writeStringAsynchronous() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$0 = writeStringAsynchronous$onCompletion();
+            }
+            returning writeStringAsynchronous$canonical$($ceylontmp$onCompletion$0);
+        );
+    }
+    
+    public final .ceylon.language.Callable<? extends .java.lang.Object> writeStringAsynchronous$onCompletion() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .ceylon.language.noop_.noop();
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    private .java.lang.Object writeStringAsynchronous$canonical$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return null;
+    }
+    
+    public .java.lang.Object writeStringAsynchronous(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return writeStringAsynchronous$canonical$(onCompletion);
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return new CWithPl(onCompletion);
+    }
+    
+    public final .ceylon.language.Callable<? extends .java.lang.Object> $default$CWithPl$onCompletion() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .ceylon.language.noop_.noop();
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$1 = $default$CWithPl$onCompletion();
+            }
+            returning new CWithPl($ceylontmp$onCompletion$1);
+        );
+    }
+    
+    public class CWithPl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected CWithPl(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl.class));
+        }
+    }
+}
+class Bug2375Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375, .java.io.Serializable {
+    
+    Bug2375Impl() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> writeStringAsynchronous$onCompletion() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.writeStringAsynchronous$onCompletion();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object writeStringAsynchronous() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$2 = writeStringAsynchronous$onCompletion();
+            }
+            returning writeStringAsynchronous$canonical$($ceylontmp$onCompletion$2);
+        );
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object writeStringAsynchronous(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.writeStringAsynchronous(onCompletion);
+    }
+    
+    private .java.lang.Object writeStringAsynchronous$canonical$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.writeStringAsynchronous(onCompletion);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> $default$CWithPl$onCompletion() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.$default$CWithPl$onCompletion();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.CWithPl$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.CWithPl$new$(onCompletion);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl.class);
+}
+class Bug2375Impl2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375, .java.io.Serializable {
+    
+    Bug2375Impl2() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> writeStringAsynchronous$onCompletion() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.writeStringAsynchronous$onCompletion();
+    }
+    
+    public final .java.lang.Object writeStringAsynchronous() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$3 = writeStringAsynchronous$onCompletion();
+            }
+            returning writeStringAsynchronous$canonical$($ceylontmp$onCompletion$3);
+        );
+    }
+    
+    private .java.lang.Object writeStringAsynchronous$canonical$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object writeStringAsynchronous(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return writeStringAsynchronous$canonical$(onCompletion);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl2.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return new CWithPl(onCompletion);
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> $default$CWithPl$onCompletion() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.$default$CWithPl$onCompletion();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl2.CWithPl CWithPl$new$() {
+        return (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$4 = $default$CWithPl$onCompletion();
+            }
+            returning new CWithPl($ceylontmp$onCompletion$4);
+        );
+    }
+    
+    public class CWithPl extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl {
+        
+        protected CWithPl(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+            $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.super(onCompletion);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl2.CWithPl.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375Impl2.class);
+}

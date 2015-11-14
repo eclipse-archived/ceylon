@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface interfaceWithinFunction$Foo_ {
+}
+final class interfaceWithinFunction_ {
+    
+    private interfaceWithinFunction_() {
+    }
+    
+    static void interfaceWithinFunction() {
+    }
+}

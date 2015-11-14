@@ -1,0 +1,104 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface CollidingLiteralDefaults$annotation$ {
+    
+    public abstract long i1();
+    
+    public abstract long i2();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+@interface CollidingLiteralDefaults$annotations$ {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation$[] value();
+}
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected CollidingLiteralDefaults() {
+        super();
+        this.i1 = 0L;
+        this.i2 = 0L;
+    }
+    
+    CollidingLiteralDefaults(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation$ anno) {
+        this(anno.i1(), anno.i2());
+    }
+    
+    CollidingLiteralDefaults(final long i1, final long i2) {
+        this.i1 = i1;
+        this.i2 = i2;
+    }
+    private final long i1;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long getI1() {
+        return i1;
+    }
+    private final long i2;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long getI2() {
+        return i2;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults.class)
+@.com.redhat.ceylon.compiler.java.metadata.IntegerExprs({@.com.redhat.ceylon.compiler.java.metadata.IntegerValue(
+        name = "$arg$i1",
+        value = 1L)})
+final class collidingLiteralDefaults_ {
+    
+    private collidingLiteralDefaults_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults collidingLiteralDefaults() {
+        return (
+            let
+            {
+                long $ceylontmp$i1$0 = .com.redhat.ceylon.compiler.java.test.annotations.collidingLiteralDefaults_.collidingLiteralDefaults$i1();
+            }
+            returning collidingLiteralDefaults($ceylontmp$i1$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.IntegerValue(2L)
+    public static final long collidingLiteralDefaults$i1() {
+        return 2L;
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults collidingLiteralDefaults(final long i1) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults(1L, i1);
+    }
+}
+final class collidingLiteralDefaults_callsite_ {
+    
+    private collidingLiteralDefaults_callsite_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotations$({@.com.redhat.ceylon.compiler.java.test.annotations.CollidingLiteralDefaults$annotation$(
+            i1 = 1L,
+            i2 = 2L)})
+    static void collidingLiteralDefaults_callsite() {
+    }
+}

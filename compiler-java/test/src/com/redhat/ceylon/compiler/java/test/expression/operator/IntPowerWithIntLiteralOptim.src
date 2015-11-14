@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class intPowerWithIntLiteralOptim_ {
+    
+    private intPowerWithIntLiteralOptim_() {
+    }
+    
+    static void intPowerWithIntLiteralOptim() {
+        final long x = 20L;
+        final long x1 = x;
+        final long xSquared = (
+            let
+            {
+                long base$0 = x;
+            }
+            returning base$0 * base$0;
+        );
+        final long xCubed = (
+            let
+            {
+                long base$1 = x;
+            }
+            returning base$1 * base$1 * base$1;
+        );
+        final long x0 = .ceylon.language.Integer.power(x, 0L);
+        final long xm1 = .ceylon.language.Integer.power(x, -1L);
+    }
+}

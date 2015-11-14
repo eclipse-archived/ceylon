@@ -1,0 +1,616 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Binary<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger, .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>, .java.io.Serializable {
+    
+    BWMyInteger() {
+        super();
+        this.$ceylon$language$Binary$this$ = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Number$this$ = new .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Invertible$this$ = new .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$, this);
+    }
+    protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Binary$impl() {
+        return $ceylon$language$Binary$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean set$bit(final long index) {
+        return $ceylon$language$Binary$this$.set$bit(index);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger clear(final long index) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Binary$this$.clear(index);
+    }
+    protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$impl() {
+        return $ceylon$language$Integral$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulus) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Integral$this$.modulo(modulus);
+    }
+    
+    @.java.lang.Override
+    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Integral$this$.divides(other);
+    }
+    protected final .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Number$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Number$impl() {
+        return $ceylon$language$Number$this$;
+    }
+    
+    @.java.lang.Override
+    public long getSign() {
+        return $ceylon$language$Number$this$.getSign();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getMagnitude() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Number$this$.getMagnitude();
+    }
+    protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertible$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertible$impl() {
+        return $ceylon$language$Invertible$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Invertible$this$.minus(other);
+    }
+    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Comparable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Comparable$impl() {
+        return $ceylon$language$Comparable$this$;
+    }
+    
+    @.java.lang.Override
+    public boolean largerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Comparable$this$.largerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notSmallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Comparable$this$.notSmallerThan(other);
+    }
+    
+    @.java.lang.Override
+    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    }
+    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$this$;
+    
+    @.java.lang.Override
+    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$impl() {
+        return $ceylon$language$Enumerable$this$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getPredecessor();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    }
+    
+    @.java.lang.Override
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger.class);
+}
+class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected BitwiseOperators() {
+        super();
+        this.initN = null;
+        this.initI = null;
+        this.n1 = 0L;
+        this.n2 = 0L;
+        this.i1 = 0L;
+        this.boxedN1 = null;
+        this.boxedN2 = null;
+        this.boxedI1 = null;
+    }
+    
+    BitwiseOperators(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
+        this.initN = initN;
+        this.initI = initI;
+        this.n1 = 0L;
+        this.n2 = 0L;
+        this.i1 = 0L;
+        this.boxedN1 = getInitN$priv$();
+        this.boxedN2 = getInitN$priv$();
+        this.boxedI1 = getInitI$priv$();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitN$priv$() {
+        return initN;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getInitI$priv$() {
+        return initI;
+    }
+    private long n1;
+    
+    public final long getN1() {
+        return n1;
+    }
+    
+    public final void setN1(final long n1) {
+        this.n1 = n1;
+    }
+    private long n2;
+    
+    public final long getN2() {
+        return n2;
+    }
+    
+    public final void setN2(final long n2) {
+        this.n2 = n2;
+    }
+    private long i1;
+    
+    public final long getI1() {
+        return i1;
+    }
+    
+    public final void setI1(final long i1) {
+        this.i1 = i1;
+    }
+    
+    public final long getGetterN1() {
+        return getN1();
+    }
+    
+    public final void setGetterN1(final long getterN1) {
+        setN1(getterN1);
+    }
+    
+    public final long getGetterN2() {
+        return getN2();
+    }
+    
+    public final void setGetterN2(final long getterN2) {
+        setN2(getterN2);
+    }
+    
+    public final long getGetterI1() {
+        return getI1();
+    }
+    
+    public final void setGetterI1(final long getterI1) {
+        setI1(getterI1);
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN1;
+    
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN1() {
+        return boxedN1;
+    }
+    
+    public final void setBoxedN1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN1) {
+        this.boxedN1 = boxedN1;
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN2;
+    
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedN2() {
+        return boxedN2;
+    }
+    
+    public final void setBoxedN2(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedN2) {
+        this.boxedN2 = boxedN2;
+    }
+    private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedI1;
+    
+    public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getBoxedI1() {
+        return boxedI1;
+    }
+    
+    public final void setBoxedI1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger boxedI1) {
+        this.boxedI1 = boxedI1;
+    }
+    
+    private final void unboxedAttributes$priv$() {
+        setI1(~getN1());
+        setN1(getN1() & getN2());
+        setI1(getN1() | getN2());
+        setN1(getN1() ^ getN2());
+        setN1(getN1() << getN2());
+        setN1(getN1() >>> getN2());
+        setN1(getN1() >> getN2());
+    }
+    
+    private final void unboxedGetterAttributes$priv$() {
+        setGetterI1(~getGetterN1());
+        setGetterN1(getGetterN1() & getGetterN2());
+        setGetterI1(getGetterN1() | getGetterN2());
+        setGetterN1(getGetterN1() ^ getGetterN2());
+        setGetterN1(getGetterN1() << getGetterN2());
+        setGetterN1(getGetterN1() >>> getGetterN2());
+        setGetterN1(getGetterN1() >> getGetterN2());
+    }
+    
+    public .java.lang.Object unboxedQualifiedAttributes() {
+        this.setI1(~this.getN1());
+        this.setN1(this.getN1() & this.getN2());
+        this.setI1(this.getN1() | this.getN2());
+        this.setN1(this.getN1() ^ this.getN2());
+        this.setN1(this.getN1() << this.getN2());
+        this.setN1(this.getN1() >>> this.getN2());
+        this.setN1(this.getN1() >> this.getN2());
+        return null;
+    }
+    
+    public .java.lang.Object unboxedQualifiedGetterAttributes() {
+        this.setGetterI1(~this.getGetterN1());
+        this.setGetterN1(this.getGetterN1() & this.getGetterN2());
+        this.setGetterI1(this.getGetterN1() | this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() ^ this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() << this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() >>> this.getGetterN2());
+        this.setGetterN1(this.getGetterN1() >> this.getGetterN2());
+        return null;
+    }
+    
+    public .java.lang.Object boxedQualifiedAttributes() {
+        this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().getNot());
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().and(this.getBoxedN2()));
+        this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().or(this.getBoxedN2()));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().xor(this.getBoxedN2()));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().leftLogicalShift(1L));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().rightLogicalShift(1L));
+        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().rightArithmeticShift(1L));
+        return null;
+    }
+    
+    private final void unboxedLocals$priv$() {
+        long n1 = 0L;
+        long n2 = 0L;
+        long i1 = 0L;
+        i1 = ~n1;
+        n1 = n1 & n2;
+        i1 = n1 | n2;
+        n1 = n1 ^ n2;
+        n1 = n1 << n2;
+        n1 = n1 >>> n2;
+        n1 = n1 >> n2;
+    }
+    
+    private final void unboxedLocalGetters$priv$() {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong n2 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        
+        final class getterN1$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private getterN1$getter$_() {
+            }
+            
+            public long get_() {
+                return n1.ref;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong getterN1$getter$_ = new getterN1$getter$_();
+        
+        final class getterN1$setter$_ {
+            
+            private getterN1$setter$_() {
+            }
+            private long value;
+            
+            public void set_(final long getterN1) {
+                n1.ref = getterN1;
+            }
+        }
+        final getterN1$setter$_ getterN1$setter$_ = new getterN1$setter$_();
+        
+        final class getterN2$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private getterN2$getter$_() {
+            }
+            
+            public long get_() {
+                return n2.ref;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong getterN2$getter$_ = new getterN2$getter$_();
+        
+        final class getterN2$setter$_ {
+            
+            private getterN2$setter$_() {
+            }
+            private long value;
+            
+            public void set_(final long getterN2) {
+                n2.ref = getterN2;
+            }
+        }
+        final getterN2$setter$_ getterN2$setter$_ = new getterN2$setter$_();
+        
+        final class getterI1$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private getterI1$getter$_() {
+            }
+            
+            public long get_() {
+                return i1.ref;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong getterI1$getter$_ = new getterI1$getter$_();
+        
+        final class getterI1$setter$_ {
+            
+            private getterI1$setter$_() {
+            }
+            private long value;
+            
+            public void set_(final long getterI1) {
+                i1.ref = getterI1;
+            }
+        }
+        final getterI1$setter$_ getterI1$setter$_ = new getterI1$setter$_();
+        getterI1$setter$_.set_(~getterN1$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() & getterN2$getter$_.get_());
+        getterI1$setter$_.set_(getterN1$getter$_.get_() | getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() ^ getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() << getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() >>> getterN2$getter$_.get_());
+        getterN1$setter$_.set_(getterN1$getter$_.get_() >> getterN2$getter$_.get_());
+    }
+    
+    private final void boxedLocals$priv$() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n1 = getInitN$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger n2 = getInitN$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger i1 = getInitI$priv$();
+        i1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.getNot();
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.and(n2);
+        i1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.or(n2);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.xor(n2);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.leftLogicalShift(1L);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.rightLogicalShift(1L);
+        n1 = (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)n1.rightArithmeticShift(1L);
+    }
+    
+    private final void unboxedToplevel$priv$() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.set_(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_());
+    }
+    
+    private final void unboxedToplevelGetter$priv$() {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.set_(~.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterI1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() << .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.set_(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN1_.get_() >> .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterN2_.get_());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.class);
+}
+class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators {
+    
+    protected BitwiseOperatorsSub() {
+        super();
+    }
+    
+    BitwiseOperatorsSub(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initN, final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger initI) {
+        super(initN, initI);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedAttributes() {
+        super.setI1(~super.getN1());
+        super.setN1(super.getN1() & super.getN2());
+        super.setI1(super.getN1() | super.getN2());
+        super.setN1(super.getN1() ^ super.getN2());
+        super.setN1(super.getN1() << super.getN2());
+        super.setN1(super.getN1() >>> super.getN2());
+        super.setN1(super.getN1() >> super.getN2());
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object unboxedQualifiedGetterAttributes() {
+        super.setGetterI1(~super.getGetterN1());
+        super.setGetterN1(super.getGetterN1() & super.getGetterN2());
+        super.setGetterI1(super.getGetterN1() | super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() ^ super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() << super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() >>> super.getGetterN2());
+        super.setGetterN1(super.getGetterN1() >> super.getGetterN2());
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object boxedQualifiedAttributes() {
+        super.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().getNot());
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().and(super.getBoxedN2()));
+        super.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().or(super.getBoxedN2()));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().xor(super.getBoxedN2()));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().leftLogicalShift(1L));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().rightLogicalShift(1L));
+        super.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)super.getBoxedN1().rightArithmeticShift(1L));
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperatorsSub.class);
+}
+final class bwToplevelN1_ {
+    
+    private bwToplevelN1_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    public static long get_() {
+        if (bwToplevelN1_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelN1\' before it was set");
+        }
+    }
+    
+    public static void set_(final long bwToplevelN1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = bwToplevelN1;
+    }
+}
+final class bwToplevelN2_ {
+    
+    private bwToplevelN2_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    public static long get_() {
+        if (bwToplevelN2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelN2\' before it was set");
+        }
+    }
+    
+    public static void set_(final long bwToplevelN2) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = bwToplevelN2;
+    }
+}
+final class bwToplevelI1_ {
+    
+    private bwToplevelI1_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    public static long get_() {
+        if (bwToplevelI1_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelI1\' before it was set");
+        }
+    }
+    
+    public static void set_(final long bwToplevelI1) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = bwToplevelI1;
+    }
+}
+final class bwToplevelGetterN1_ {
+    
+    private bwToplevelGetterN1_() {
+    }
+    
+    public static long get_() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.get_();
+    }
+    
+    public static void set_(final long bwToplevelGetterN1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.set_(bwToplevelGetterN1);
+    }
+}
+final class bwToplevelGetterN2_ {
+    
+    private bwToplevelGetterN2_() {
+    }
+    
+    public static long get_() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.get_();
+    }
+    
+    public static void set_(final long bwToplevelGetterN2) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.set_(bwToplevelGetterN2);
+    }
+}
+final class bwToplevelGetterI1_ {
+    
+    private bwToplevelGetterI1_() {
+    }
+    
+    public static long get_() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.get_();
+    }
+    
+    public static void set_(final long bwToplevelGetterI1) {
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.set_(bwToplevelGetterI1);
+    }
+}

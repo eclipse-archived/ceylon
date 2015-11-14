@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class DelegationWithTypeParameter<F> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        private $delegation$() {
+        }
+    }
+    
+    private DelegationWithTypeParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.$delegation$ $name$) {
+        this.$reified$F = $reified$F;
+    }
+    
+    public DelegationWithTypeParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F) {
+        this($reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.$delegation$);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.bar_ bar_ = null;
+    
+    public static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    public DelegationWithTypeParameter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.bar_ $name$, final F f$param$) {
+        this($reified$F, .com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.$delegation$);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.DelegationWithTypeParameter.class, $reified$F);
+    }
+}

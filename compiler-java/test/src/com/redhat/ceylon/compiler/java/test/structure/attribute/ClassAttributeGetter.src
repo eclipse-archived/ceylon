@@ -1,0 +1,73 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+abstract class ClassAttributeGetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassAttributeGetter() {
+        
+        final class f$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f$getter$_ = new f$getter$_();
+        
+        final class f4$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f4$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f4$getter$_ = new f4$getter$_();
+    }
+    
+    public final .java.lang.String getF2() {
+        return "";
+    }
+    
+    public .java.lang.String getF3() {
+        return "";
+    }
+    
+    public final .java.lang.String getF5() {
+        return "";
+    }
+    
+    public .java.lang.String getF6() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter.class);
+}
+class SubClassAttributeGetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetter {
+    
+    SubClassAttributeGetter() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF3() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF6() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetter.class);
+}

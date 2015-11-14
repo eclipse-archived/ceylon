@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class NamedArgumentInvocationInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected NamedArgumentInvocationInit() {
+        super();
+    }
+    
+    NamedArgumentInvocationInit(final .java.lang.String a, final long b) {
+    }
+    
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner(final boolean x, final .java.lang.String y, final long z) {
+        }
+        
+        public final void m2() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.Inner.class));
+        }
+    }
+    
+    private final void m$priv$() {
+        (
+            let
+            {
+                long arg$0$1 = 13L;
+                .java.lang.String arg$0$0 = "a";
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit(arg$0$0, arg$0$1);
+        ).m$priv$();
+        (
+            let
+            {
+                .java.lang.String arg$1$1 = "";
+                long arg$1$2 = -4L;
+                boolean arg$1$0 = true;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.Inner(arg$1$0, arg$1$1, arg$1$2);
+        ).m2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInit.class);
+}

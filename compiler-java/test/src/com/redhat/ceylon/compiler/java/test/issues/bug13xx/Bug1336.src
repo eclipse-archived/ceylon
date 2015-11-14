@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx;
+
+final class bug1336_ {
+    
+    private bug1336_() {
+    }
+    
+    static void bug1336() {
+        final .ceylon.language.Sequential itemsSequence = .ceylon.language.empty_.get_();
+        final .ceylon.language.Sequence itemsSequence$2;
+        .ceylon.language.Sequential itemsSequence$1 = null;
+        if ((itemsSequence$1 = itemsSequence) instanceof .ceylon.language.Sequence) {
+            itemsSequence$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)itemsSequence$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty itemsSequence"));
+        }
+    }
+}

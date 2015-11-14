@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+class ThisReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ThisReference() {
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference m() {
+        return this;
+    }
+    
+    public final void test() {
+        this.test();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference.class);
+}

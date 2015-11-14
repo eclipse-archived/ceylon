@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class LocalMethodSpecifyingMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LocalMethodSpecifyingMethod() {
+    }
+    
+    private final long bar$priv$(final .java.lang.String s) {
+        return 1L;
+    }
+    
+    private final void m$priv$() {
+        
+        final class foo_ {
+            
+            private foo_() {
+            }
+            
+            long foo(final .java.lang.String x) {
+                return .com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.this.bar$priv$(x);
+            }
+        }
+        final foo_ foo = new foo_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.LocalMethodSpecifyingMethod.class);
+}

@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.misc.helloworld;
+
+public final class helloworld_ {
+    
+    private helloworld_() {
+    }
+    
+    public static void helloworld() {
+        .ceylon.language.Sequential<? extends .ceylon.language.String> args$1;
+        if ((args$1 = .ceylon.language.process_.get_().getArguments()) instanceof .ceylon.language.Sequence) {
+            final .ceylon.language.Sequence<? extends .ceylon.language.String> args$2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)args$1;
+            .ceylon.language.process_.get_().write("Hello ");
+            .ceylon.language.process_.get_().writeLine(((.ceylon.language.String)(.java.lang.Object)args$2.getFirst()).toString());
+        } else {
+            .ceylon.language.process_.get_().writeLine("Hello World");
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.misc.helloworld.helloworld_.helloworld();
+    }
+}

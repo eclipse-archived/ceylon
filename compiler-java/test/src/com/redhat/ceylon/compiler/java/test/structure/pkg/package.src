@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.structure.pkg;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Package(
+        name = "com.redhat.ceylon.compiler.java.test.structure.pkg",
+        doc = "Great documentation",
+        shared = true)
+@.ceylon.language.DocAnnotation$annotation$(description = "Great documentation")
+@.ceylon.language.SharedAnnotation$annotation$
+final class $package_ {
+    
+    private $package_() {
+    }
+}

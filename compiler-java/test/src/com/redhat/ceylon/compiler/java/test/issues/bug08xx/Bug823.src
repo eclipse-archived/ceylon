@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+final class bug823_ {
+    
+    private bug823_() {
+    }
+    
+    static void bug823(final .ceylon.language.Sequential<? extends .java.lang.Object> xx) {
+        .java.lang.String $ceylontmp$assert$0 = null;
+        final int z$4;
+        final .ceylon.language.Sequence<? extends .java.lang.Object> xx$2;
+        .ceylon.language.Sequential<? extends .java.lang.Object> xx$1 = null;
+        if ((xx$1 = xx) instanceof .ceylon.language.Sequence) {
+            xx$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)xx$1;
+            .java.lang.Object z$3 = null;
+            if ((z$3 = xx$2.getFromFirst(0L)) instanceof .ceylon.language.Character) {
+                z$4 = ((.ceylon.language.Character)z$3).intValue();
+            } else {
+                z$4 = 0;
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Character z=xx[0]";
+            }
+        } else {
+            xx$2 = null;
+            z$4 = 0;
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "nonempty xx" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Character z=xx[0]";
+        }
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
+    }
+}

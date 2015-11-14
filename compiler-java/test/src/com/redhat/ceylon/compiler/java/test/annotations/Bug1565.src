@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+final class bug1565_ {
+    
+    private bug1565_() {
+    }
+    
+    static void bug1565(@.ceylon.language.VariableAnnotation$annotation$
+    long p) {
+    }
+}

@@ -1,0 +1,77 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+class Sup2395 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Sup2395() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395.class);
+}
+class Sub2395 extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395 {
+    
+    Sub2395() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395.class);
+}
+class Other2395 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Other2395() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Other2395.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Other2395.class);
+}
+final class f23951_ {
+    
+    private f23951_() {
+    }
+    
+    static void f23951(final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395 s) {
+        {
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395 sel$0 = s;
+            if (sel$0 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395 || (.java.lang.Object)sel$0 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Other2395) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395 s$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395)sel$0;
+            } else {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395 s$1 = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395)sel$0;
+            }
+        }
+    }
+}
+final class f23952_ {
+    
+    private f23952_() {
+    }
+    
+    static long f23952(final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395 s) {
+        return (
+            let
+            {
+                long $ceylontmp$ifResult$3;
+                {
+                    .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395 sel$4 = s;
+                    if (sel$4 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395 || (.java.lang.Object)sel$4 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Other2395) {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395 s$6 = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sub2395)sel$4;
+                        $ceylontmp$ifResult$3 = 0L;
+                    } else {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395 s$5 = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Sup2395)sel$4;
+                        $ceylontmp$ifResult$3 = 1L;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$3;
+        );
+    }
+}

@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class toplevelMethod_ {
+    
+    private toplevelMethod_() {
+    }
+    
+    static void toplevelMethod() {
+    }
+}
+final class anotherToplevelMethod_ {
+    
+    private anotherToplevelMethod_() {
+    }
+    
+    static long anotherToplevelMethod(final long n) {
+        return 0L;
+    }
+}

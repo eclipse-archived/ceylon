@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class specialFields_ {
+    
+    private specialFields_() {
+    }
+    
+    static void specialFields() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaFields();
+        final long h = java.hashCode();
+        final .java.lang.String s = java.toString();
+    }
+}

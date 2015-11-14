@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInClassValue implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KeywordInClassValue() {
+        this.$goto = "";
+        this.$abstract = "";
+        final .java.lang.String $volatile = "";
+        this.$implements = "";
+    }
+    private final .java.lang.String $goto;
+    
+    public final .java.lang.String getGoto() {
+        return $goto;
+    }
+    private .java.lang.String $abstract;
+    
+    public final .java.lang.String getAbstract() {
+        return $abstract;
+    }
+    
+    public final void setAbstract(final .java.lang.String $abstract) {
+        this.$abstract = $abstract;
+    }
+    private .java.lang.String $implements;
+    
+    private final .java.lang.String getImplements$priv$() {
+        return $implements;
+    }
+    
+    private final void setImplements$priv$(final .java.lang.String $implements) {
+        this.$implements = $implements;
+    }
+    
+    public final void m() {
+        setAbstract("");
+        setImplements$priv$("");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassValue.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassValue.class);
+}

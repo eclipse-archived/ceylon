@@ -1,0 +1,166 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class getterArgumentNamedInvocation_ {
+    
+    private getterArgumentNamedInvocation_() {
+    }
+    
+    static void getterArgumentNamedInvocation(final long num) {
+        
+        final class callFunction_ {
+            
+            private callFunction_() {
+            }
+            
+            void callFunction() {
+                (
+                    let
+                    {
+                        long $ceylontmp$i$0 = callFunction$i();
+                        .java.lang.String $ceylontmp$s$1 = callFunction$s($ceylontmp$i$0);
+                        callFunction($ceylontmp$i$0, $ceylontmp$s$1);
+                    }
+                    returning null;
+                );
+            }
+            
+            private final long callFunction$i() {
+                return 2L;
+            }
+            
+            void callFunction(final long i) {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$s$2 = callFunction$s(i);
+                        callFunction(i, $ceylontmp$s$2);
+                    }
+                    returning null;
+                );
+            }
+            
+            private final .java.lang.String callFunction$s(final long i) {
+                return "";
+            }
+            
+            void callFunction(final long i, final .java.lang.String s) {
+            }
+        }
+        final callFunction_ callFunction = new callFunction_();
+        long i = 3L;
+        (
+            let
+            {
+                
+                final class s$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private s$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return "s";
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$getter$_ = new s$getter$_();
+                final .java.lang.String arg$3$1 = s$getter$_.get_();
+                
+                final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    
+                    private i$getter$_() {
+                    }
+                    
+                    public long get_() {
+                        if (num < 0L) {
+                            return 0L;
+                        }
+                        return 1L;
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
+                final long arg$3$0 = i$getter$_.get_();
+                callFunction.callFunction(arg$3$0, arg$3$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                
+                final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    
+                    private i$getter$_() {
+                    }
+                    
+                    public long get_() {
+                        if (num < 0L) {
+                            return 0L;
+                        }
+                        return 1L;
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
+                final long arg$5$0 = i$getter$_.get_();
+                
+                final class s$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private s$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return "s";
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$getter$_ = new s$getter$_();
+                final .java.lang.String arg$5$1 = s$getter$_.get_();
+                callFunction.callFunction(arg$5$0, arg$5$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                callFunction_ arg$7$argthis$ = callFunction;
+                
+                final class s$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private s$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return "s";
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$getter$_ = new s$getter$_();
+                final .java.lang.String arg$7$1 = s$getter$_.get_();
+                long arg$7$0 = arg$7$argthis$.callFunction$i();
+                callFunction.callFunction(arg$7$0, arg$7$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                callFunction_ arg$8$argthis$ = callFunction;
+                
+                final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    
+                    private i$getter$_() {
+                    }
+                    
+                    public long get_() {
+                        if (num < 0L) {
+                            return 0L;
+                        }
+                        return 1L;
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
+                final long arg$8$0 = i$getter$_.get_();
+                .java.lang.String arg$8$1 = arg$8$argthis$.callFunction$s(arg$8$0);
+                callFunction.callFunction(arg$8$0, arg$8$1);
+            }
+            returning null;
+        );
+        i++;
+    }
+}

@@ -1,0 +1,168 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface Observer2118<T> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Bar.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Baz.class)})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_0_"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface Observable2118<T> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observable2118<U>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "U",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <U>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Baz Baz$new$();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <V>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Bar<V> Bar$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class Observable2118$impl<T> implements .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Observable2118$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<T> $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <U>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        return (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observable2118<U>"})
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> {
+                    
+                    private anonymous_0_() {
+                        this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>($reified$U, this);
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U> $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$;
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U> $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$impl() {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$;
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public <U>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.lift($reified$U);
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>.Baz Baz$new$() {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.Baz$new$();
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public final <V>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>.Bar<V> Bar$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.Bar$new$($reified$V);
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("lift", $reified$U)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Baz Baz$new$() {
+        return new Baz();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class)
+    @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observer2118<T>"})
+    public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observer2118<T>, .java.io.Serializable {
+        
+        protected Baz() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Baz.class));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <V>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<T>.Bar<V> Bar$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+        return new Bar<V>($reified$V);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class)
+    @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observer2118<V>"})
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "V",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public class Bar<V> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observer2118<V>, .java.io.Serializable {
+        
+        protected Bar(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+            this.$reified$V = $reified$V;
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Bar.class, $reified$V));
+        }
+    }
+}

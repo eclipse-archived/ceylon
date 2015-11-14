@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1918_ {
+    
+    private bug1918_() {
+    }
+    
+    static void bug1918() {
+        final .ceylon.language.Iterable valList = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 4, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.Float.instance(30.0);
+                
+                case 2: 
+                    return .ceylon.language.String.instance("");
+                
+                case 3: 
+                    return null;
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        .java.lang.Object current$1;
+        if ((current$1 = valList.getFirst()) != null) {
+            final .java.lang.Object current$2 = current$1;
+            .java.lang.Object current$4;
+            if ((current$4 = current$2) instanceof .ceylon.language.Integer) {
+                final long current$2$6 = ((.ceylon.language.Integer)current$4).longValue();
+                .ceylon.language.print_.print(.ceylon.language.Integer.instance(current$2$6 + 2L));
+            } else {
+                final .java.lang.Object current$2$5 = current$4;
+                .ceylon.language.print_.print(current$2$5);
+            }
+            .ceylon.language.print_.print(current$2);
+            .java.lang.Object current$8;
+            if ((current$8 = current$2) instanceof .ceylon.language.Integer) {
+                final long current$2$13 = ((.ceylon.language.Integer)current$8).longValue();
+                .ceylon.language.print_.print(.ceylon.language.Integer.instance(current$2$13 + 2L));
+            } else {
+                final .java.lang.Object current$2$9 = current$8;
+                .java.lang.Object current$11;
+                if ((current$11 = current$2$9) instanceof .ceylon.language.String) {
+                    final .java.lang.String current$12 = ((.ceylon.language.String)current$11).toString();
+                    .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getLowercased(current$12)));
+                }
+            }
+        }
+    }
+}

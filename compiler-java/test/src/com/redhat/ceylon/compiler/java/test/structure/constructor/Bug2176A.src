@@ -1,0 +1,54 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class Bug2176A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    private static final class true_ {
+        
+        private true_() {
+        }
+    }
+    
+    private Bug2176A(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.true_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A $true;
+    static {
+        $true = new Bug2176A((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.true_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A getBug2176A$true() {
+        return $true;
+    }
+    
+    private static final class false_ {
+        
+        private false_() {
+        }
+    }
+    
+    private Bug2176A(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.false_ $name$) {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A $false;
+    static {
+        $false = new Bug2176A((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.false_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A getBug2176A$false() {
+        return $false;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == $false) {
+            $name$ = "getBug2176A$false";
+        } else if (this == $true) {
+            $name$ = "getBug2176A$true";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.class, $name$);
+    }
+}

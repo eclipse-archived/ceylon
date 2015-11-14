@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableReturnNullary_foo_ {
+    
+    private callableReturnNullary_foo_() {
+    }
+    
+    static void callableReturnNullary_foo() {
+    }
+}
+final class callableReturnNullary_bar_ {
+    
+    private callableReturnNullary_bar_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> callableReturnNullary_bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnNullary_foo_.callableReturnNullary_foo();
+                    }
+                    returning null;
+                );
+            }
+        };
+    }
+}

@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+interface I {
+    
+    public abstract .ceylon.language.Integer getX();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.I.class);
+}
+class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.I, .java.io.Serializable {
+    
+    protected C() {
+        super();
+        this.x = null;
+    }
+    
+    C(final .ceylon.language.Integer x) {
+        this.x = x;
+    }
+    private final .ceylon.language.Integer x;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getX() {
+        return x;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.C.class);
+}

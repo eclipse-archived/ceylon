@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.expression.optimisations;
+
+class CharacterAsInteger implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CharacterAsInteger() {
+    }
+    
+    public final void m() {
+        final long x = 97;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.optimisations.CharacterAsInteger.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.optimisations.CharacterAsInteger.class);
+}

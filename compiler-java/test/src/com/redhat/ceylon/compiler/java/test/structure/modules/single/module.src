@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.structure.modules.single;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Module(
+        name = "com.redhat.ceylon.compiler.java.test.structure.modules.single",
+        doc = "Bla bla.",
+        license = "http://www.gnu.org/licenses/gpl.html",
+        by = {"Stef FroMage"},
+        version = "6.6.6",
+        dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(
+                name = "ceylon.language",
+                version = "1.2.0")})
+@.ceylon.language.DocAnnotation$annotation$(description = "Bla bla.")
+@.ceylon.language.AuthorsAnnotation$annotation$(authors = "Stef FroMage")
+@.ceylon.language.LicenseAnnotation$annotation$(description = "http://www.gnu.org/licenses/gpl.html")
+final class $module_ {
+    
+    private $module_() {
+    }
+}

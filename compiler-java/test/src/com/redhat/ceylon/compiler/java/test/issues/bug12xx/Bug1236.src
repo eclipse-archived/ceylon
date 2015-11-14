@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+public class Bug1236<P> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1236(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$P, final .ceylon.language.Callable<? extends .ceylon.language.String> parent) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.<P>$default$a($reified$P, parent);
+                this($reified$P, parent, $ceylontmp$a$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1236(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$P) {
+        super();
+        this.$reified$P = $reified$P;
+        this.parent = null;
+    }
+    
+    public Bug1236(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$P, final .ceylon.language.Callable<? extends .ceylon.language.String> parent, final .java.lang.String a) {
+        this.$reified$P = $reified$P;
+        this.parent = parent;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$P;
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> parent;
+    
+    private final .java.lang.String parent$priv$(final P p) {
+        return parent.$call$(p).toString();
+    }
+    
+    public static <P>.java.lang.String $default$a(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$P, final .ceylon.language.Callable<? extends .ceylon.language.String> parent) {
+        return "";
+    }
+    
+    private final void f$priv$(final P p) {
+        parent$priv$(p);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1236.class, $reified$P);
+    }
+}

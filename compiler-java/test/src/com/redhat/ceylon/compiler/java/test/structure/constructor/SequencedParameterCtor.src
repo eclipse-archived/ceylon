@@ -1,0 +1,96 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ $name$) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$6 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($name$, $ceylontmp$s$6);
+            }
+            returning null;
+        );
+    }
+    
+    protected SequencedParameterCtor() {
+        super();
+    }
+    
+    private final void use$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, .ceylon.language.empty_.get_()));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, .ceylon.language.empty_.get_()));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, .ceylon.language.empty_.get_()));
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")}, .ceylon.language.empty_.get_()));
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$0$0 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_, arg$0$0);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_, arg$1$0);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$2$0 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_, arg$2$0);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$3$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_, arg$3$0);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequence<? extends .ceylon.language.String> arg$4$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_, arg$4$0);
+        );
+        (
+            let
+            {
+                .ceylon.language.Sequence<? extends .ceylon.language.String> arg$5$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_, arg$5$0);
+        );
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ possiblyEmpty_ = null;
+    
+    public static final class possiblyEmpty_ {
+        
+        private possiblyEmpty_() {
+        }
+    }
+    
+    public SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.possiblyEmpty_ $name$, final .ceylon.language.Sequential<? extends .ceylon.language.String> s$param$) {
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_ nonEmpty_ = null;
+    
+    public static final class nonEmpty_ {
+        
+        private nonEmpty_() {
+        }
+    }
+    
+    public SequencedParameterCtor(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.nonEmpty_ $name$, final .ceylon.language.Sequence<? extends .ceylon.language.String> s$param$) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SequencedParameterCtor.class);
+}

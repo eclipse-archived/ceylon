@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+abstract class TypeFamilyGeneric<N extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<N>.Node> {
+    
+    TypeFamilyGeneric() {
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<N>.Node Node$new();
+    
+    public abstract class Node {
+        
+        protected Node() {
+        }
+    }
+}
+interface Inv<T> {
+}
+final class Inv$impl<T> {
+    
+    Inv$impl(.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<T> $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<T> $this;
+}
+final class typeFamilyGeneric_ {
+    
+    private typeFamilyGeneric_() {
+    }
+    
+    static <X extends .com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<X>.Node>void typeFamilyGeneric() {
+        
+        final class l1$getter_ {
+            
+            private l1$getter_() {
+            }
+            
+            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<X>.Node> getL1() {
+                throw new .ceylon.language.Exception(null, null);
+            }
+        }
+        final l1$getter_ l1$getter_ = new l1$getter_();
+        
+        final class l2$getter_ {
+            
+            private l2$getter_() {
+            }
+            
+            .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<X> getL2() {
+                throw new .ceylon.language.Exception(null, null);
+            }
+        }
+        final l2$getter_ l2$getter_ = new l2$getter_();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<X>.Node> l3 = (.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<.com.redhat.ceylon.compiler.java.test.expression.invoke.TypeFamilyGeneric<X>.Node>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv)l2$getter_.getL2();
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<X> l4 = (.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv<X>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.Inv)l1$getter_.getL1();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.typeFamilyGeneric_.typeFamilyGeneric();
+    }
+}

@@ -1,0 +1,125 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    NamedArgumentWithSequence() {
+    }
+    
+    private final void m$priv$(final long a) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m$priv$$canonical$(a, $ceylontmp$b$0);
+            }
+            returning null;
+        );
+    }
+    
+    private void m$priv$$canonical$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    }
+    
+    private final void m$priv$(final long a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+        (
+            let
+            {
+                m$priv$$canonical$(a, b);
+            }
+            returning null;
+        );
+    }
+    
+    private final void m2$priv$(final .java.lang.Exception a) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .java.lang.Exception> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m2$priv$$canonical$(a, $ceylontmp$b$1);
+            }
+            returning null;
+        );
+    }
+    
+    private void m2$priv$$canonical$(final .java.lang.Exception a, final .ceylon.language.Sequential<? extends .java.lang.Exception> b) {
+    }
+    
+    private final void m2$priv$(final .java.lang.Exception a, final .ceylon.language.Sequential<? extends .java.lang.Exception> b) {
+        (
+            let
+            {
+                m2$priv$$canonical$(a, b);
+            }
+            returning null;
+        );
+    }
+    
+    private final void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> $ceylontmp$b$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                m3$priv$$canonical$(a, $ceylontmp$b$2);
+            }
+            returning null;
+        );
+    }
+    
+    private void m3$priv$$canonical$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
+    }
+    
+    private final void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence a, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> b) {
+        (
+            let
+            {
+                m3$priv$$canonical$(a, b);
+            }
+            returning null;
+        );
+    }
+    
+    private final void invoke$priv$() {
+        (
+            let
+            {
+                long arg$3$0 = 1L;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$3$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(2L),
+                        .ceylon.language.Integer.instance(3L),
+                        .ceylon.language.Integer.instance(4L)});
+                m$priv$(arg$3$0, arg$3$1);
+            }
+            returning null;
+        );
+        final .java.lang.Exception e = new .ceylon.language.Exception(.ceylon.language.String.instance(""), null);
+        (
+            let
+            {
+                .java.lang.Exception arg$4$0 = e;
+                .ceylon.language.Sequential<? extends .java.lang.Exception> arg$4$1 = (.ceylon.language.Sequence<? extends .java.lang.Exception>).ceylon.language.Tuple.instance(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
+                        e,
+                        e,
+                        e});
+                m2$priv$(arg$4$0, arg$4$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence arg$5$0 = this;
+                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> arg$5$1 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.$TypeDescriptor$, new .java.lang.Object[]{
+                        this,
+                        this,
+                        this});
+                m3$priv$(arg$5$0, arg$5$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.class);
+}

@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class SingletonCtorExtendingGenericClass<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SingletonCtorExtendingGenericClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass.class, $reified$Element);
+    }
+}
+class SingletonCtorExtendingGenericClass_Sub extends .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass<.ceylon.language.String> implements .java.io.Serializable {
+    
+    private static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    private SingletonCtorExtendingGenericClass_Sub(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub.bar_ $name$) {
+        super(.ceylon.language.String.$TypeDescriptor$);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub bar;
+    static {
+        bar = new SingletonCtorExtendingGenericClass_Sub((.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub.bar_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub getSingletonCtorExtendingGenericClass_Sub$bar() {
+        return bar;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getSingletonCtorExtendingGenericClass_Sub$bar";
+        } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorExtendingGenericClass_Sub.class, $name$);
+    }
+}

@@ -1,0 +1,671 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1011_ {
+    
+    private bug1011_() {
+    }
+    
+    static void bug1011(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it) {
+        (
+            let
+            {
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                                
+                                public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                        {
+                                            $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                                                
+                                                @.java.lang.Override
+                                                protected final .java.lang.Object $evaluate$(int $index$) {
+                                                    switch ($index$) {
+                                                    case 0: 
+                                                        return .ceylon.language.Integer.instance(1L);
+                                                    
+                                                    default: 
+                                                        return null;
+                                                    
+                                                    }
+                                                }
+                                            }.iterator();
+                                        }
+                                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                        private .ceylon.language.Integer x;
+                                        private boolean x$exhausted$;
+                                        
+                                        private final boolean x() {
+                                            final .java.lang.Object $ceylontmp$item$1 = $iterator$0.next();
+                                            x$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
+                                            if (x$exhausted$) {
+                                                return false;
+                                            } else {
+                                                x = (.ceylon.language.Integer)$ceylontmp$item$1;
+                                                return true;
+                                            }
+                                        }
+                                        
+                                        public final .java.lang.Object next() {
+                                            if (this.x()) {
+                                                final .ceylon.language.Integer x = this.x;
+                                                return x;
+                                            } else return .ceylon.language.finished_.get_();
+                                        }
+                                    };
+                                }
+                            };
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1011_.bug1011(arg$0$0);
+            }
+            returning null;
+        );
+    }
+}
+public class LazyMap<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected LazyMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
+    
+    public LazyMap(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>, ? extends .java.lang.Object> entries) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazyMap.class, $reified$Key, $reified$Item);
+    }
+}
+public class LazySet<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected LazySet(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public LazySet(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> elements) {
+        this.$reified$Element = $reified$Element;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Element);
+    }
+}
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    static <Key, Item>.ceylon.language.Map<? extends Item, ? extends .ceylon.language.Set<? extends Key>> foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .ceylon.language.Map<? extends Key, ? extends Item> map, final .ceylon.language.Entry<? extends Item, ? extends .ceylon.language.Set<? extends Key>> extra) {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = $reified$Item;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key);
+                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
+                                
+                                public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>> iterator() {
+                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))){
+                                        {
+                                            $iterator$0 = map.iterator();
+                                        }
+                                        private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                        private Key key;
+                                        private Item item;
+                                        private boolean $pattern$entry$4$exhausted$;
+                                        
+                                        private final boolean $pattern$entry$4() {
+                                            final .java.lang.Object $ceylontmp$item$3 = $iterator$0.next();
+                                            $pattern$entry$4$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                                            if ($pattern$entry$4$exhausted$) {
+                                                return false;
+                                            } else {
+                                                key = (Key)((.ceylon.language.Entry)$ceylontmp$item$3).getKey();
+                                                item = (Item)((.ceylon.language.Entry)$ceylontmp$item$3).getItem();
+                                                return true;
+                                            }
+                                        }
+                                        
+                                        public final .java.lang.Object next() {
+                                            if (this.$pattern$entry$4()) {
+                                                final Item item = this.item;
+                                                final Key key = this.key;
+                                                return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
+                                                    
+                                                    public final .ceylon.language.Iterator<Key> iterator() {
+                                                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
+                                                            {
+                                                                $iterator$0 = map.iterator();
+                                                            }
+                                                            private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                                            private Key k;
+                                                            private Item i;
+                                                            private boolean $pattern$entry$6$exhausted$;
+                                                            
+                                                            private final boolean $pattern$entry$6() {
+                                                                final .java.lang.Object $ceylontmp$item$5 = $iterator$0.next();
+                                                                $pattern$entry$6$exhausted$ = $ceylontmp$item$5 == .ceylon.language.finished_.get_();
+                                                                if ($pattern$entry$6$exhausted$) {
+                                                                    return false;
+                                                                } else {
+                                                                    k = (Key)((.ceylon.language.Entry)$ceylontmp$item$5).getKey();
+                                                                    i = (Item)((.ceylon.language.Entry)$ceylontmp$item$5).getItem();
+                                                                    return true;
+                                                                }
+                                                            }
+                                                            
+                                                            private final boolean $next$1() {
+                                                                ifcomp_1: while (true) {
+                                                                    if (!this.$pattern$entry$6()) break ifcomp_1;
+                                                                    final Item i = this.i;
+                                                                    final Key k = this.k;
+                                                                    if (i.equals(item)) {
+                                                                        break ifcomp_1;
+                                                                    }
+                                                                }
+                                                                return !$pattern$entry$6$exhausted$;
+                                                            }
+                                                            
+                                                            public final .java.lang.Object next() {
+                                                                if (this.$next$1()) {
+                                                                    final Item i = this.i;
+                                                                    final Key k = this.k;
+                                                                    return k;
+                                                                } else return .ceylon.language.finished_.get_();
+                                                            }
+                                                        };
+                                                    }
+                                                }.sequence()));
+                                            } else return .ceylon.language.finished_.get_();
+                                        }
+                                    };
+                                }
+                            };
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazyMap<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>(arg$2$reified$0, arg$2$reified$1, arg$2$0);
+        );
+        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazyMap<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))){
+                    {
+                        $iterator$0 = map.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                    private Key key;
+                    private Item item;
+                    private boolean $pattern$entry$8$exhausted$;
+                    
+                    private final boolean $pattern$entry$8() {
+                        final .java.lang.Object $ceylontmp$item$7 = $iterator$0.next();
+                        $pattern$entry$8$exhausted$ = $ceylontmp$item$7 == .ceylon.language.finished_.get_();
+                        if ($pattern$entry$8$exhausted$) {
+                            return false;
+                        } else {
+                            key = (Key)((.ceylon.language.Entry)$ceylontmp$item$7).getKey();
+                            item = (Item)((.ceylon.language.Entry)$ceylontmp$item$7).getItem();
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$pattern$entry$8()) {
+                            final Item item = this.item;
+                            final Key key = this.key;
+                            return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
+                                
+                                public final .ceylon.language.Iterator<Key> iterator() {
+                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
+                                        {
+                                            $iterator$0 = map.iterator();
+                                        }
+                                        private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                        private Key k;
+                                        private Item i;
+                                        private boolean $pattern$entry$10$exhausted$;
+                                        
+                                        private final boolean $pattern$entry$10() {
+                                            final .java.lang.Object $ceylontmp$item$9 = $iterator$0.next();
+                                            $pattern$entry$10$exhausted$ = $ceylontmp$item$9 == .ceylon.language.finished_.get_();
+                                            if ($pattern$entry$10$exhausted$) {
+                                                return false;
+                                            } else {
+                                                k = (Key)((.ceylon.language.Entry)$ceylontmp$item$9).getKey();
+                                                i = (Item)((.ceylon.language.Entry)$ceylontmp$item$9).getItem();
+                                                return true;
+                                            }
+                                        }
+                                        
+                                        private final boolean $next$1() {
+                                            ifcomp_1: while (true) {
+                                                if (!this.$pattern$entry$10()) break ifcomp_1;
+                                                final Item i = this.i;
+                                                final Key k = this.k;
+                                                if (i.equals(item)) {
+                                                    break ifcomp_1;
+                                                }
+                                            }
+                                            return !$pattern$entry$10$exhausted$;
+                                        }
+                                        
+                                        public final .java.lang.Object next() {
+                                            if (this.$next$1()) {
+                                                final Item i = this.i;
+                                                final Key k = this.k;
+                                                return k;
+                                            } else return .ceylon.language.finished_.get_();
+                                        }
+                                    };
+                                }
+                            }.sequence()));
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$0 = $reified$Item;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$11$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key));
+                .ceylon.language.Iterable arg$11$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
+                    
+                    @.java.lang.Override
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return extra;
+                        
+                        case 1: 
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
+                                
+                                public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>> iterator() {
+                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))){
+                                        {
+                                            $iterator$0 = map.iterator();
+                                        }
+                                        private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                        private Key key;
+                                        private Item item;
+                                        private boolean $pattern$entry$13$exhausted$;
+                                        
+                                        private final boolean $pattern$entry$13() {
+                                            final .java.lang.Object $ceylontmp$item$12 = $iterator$0.next();
+                                            $pattern$entry$13$exhausted$ = $ceylontmp$item$12 == .ceylon.language.finished_.get_();
+                                            if ($pattern$entry$13$exhausted$) {
+                                                return false;
+                                            } else {
+                                                key = (Key)((.ceylon.language.Entry)$ceylontmp$item$12).getKey();
+                                                item = (Item)((.ceylon.language.Entry)$ceylontmp$item$12).getItem();
+                                                return true;
+                                            }
+                                        }
+                                        
+                                        public final .java.lang.Object next() {
+                                            if (this.$pattern$entry$13()) {
+                                                final Item item = this.item;
+                                                final Key key = this.key;
+                                                return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
+                                                    
+                                                    public final .ceylon.language.Iterator<Key> iterator() {
+                                                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
+                                                            {
+                                                                $iterator$0 = map.iterator();
+                                                            }
+                                                            private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                                            private Key k;
+                                                            private Item i;
+                                                            private boolean $pattern$entry$15$exhausted$;
+                                                            
+                                                            private final boolean $pattern$entry$15() {
+                                                                final .java.lang.Object $ceylontmp$item$14 = $iterator$0.next();
+                                                                $pattern$entry$15$exhausted$ = $ceylontmp$item$14 == .ceylon.language.finished_.get_();
+                                                                if ($pattern$entry$15$exhausted$) {
+                                                                    return false;
+                                                                } else {
+                                                                    k = (Key)((.ceylon.language.Entry)$ceylontmp$item$14).getKey();
+                                                                    i = (Item)((.ceylon.language.Entry)$ceylontmp$item$14).getItem();
+                                                                    return true;
+                                                                }
+                                                            }
+                                                            
+                                                            private final boolean $next$1() {
+                                                                ifcomp_1: while (true) {
+                                                                    if (!this.$pattern$entry$15()) break ifcomp_1;
+                                                                    final Item i = this.i;
+                                                                    final Key k = this.k;
+                                                                    if (i.equals(item)) {
+                                                                        break ifcomp_1;
+                                                                    }
+                                                                }
+                                                                return !$pattern$entry$15$exhausted$;
+                                                            }
+                                                            
+                                                            public final .java.lang.Object next() {
+                                                                if (this.$next$1()) {
+                                                                    final Item i = this.i;
+                                                                    final Key k = this.k;
+                                                                    return k;
+                                                                } else return .ceylon.language.finished_.get_();
+                                                            }
+                                                        };
+                                                    }
+                                                }.sequence()));
+                                            } else return .ceylon.language.finished_.get_();
+                                        }
+                                    };
+                                }
+                            };
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazyMap(arg$11$reified$0, arg$11$reified$1, arg$11$0);
+        );
+        new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazyMap($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return extra;
+                
+                case 1: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))){
+                                {
+                                    $iterator$0 = map.iterator();
+                                }
+                                private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                private Key key;
+                                private Item item;
+                                private boolean $pattern$entry$17$exhausted$;
+                                
+                                private final boolean $pattern$entry$17() {
+                                    final .java.lang.Object $ceylontmp$item$16 = $iterator$0.next();
+                                    $pattern$entry$17$exhausted$ = $ceylontmp$item$16 == .ceylon.language.finished_.get_();
+                                    if ($pattern$entry$17$exhausted$) {
+                                        return false;
+                                    } else {
+                                        key = (Key)((.ceylon.language.Entry)$ceylontmp$item$16).getKey();
+                                        item = (Item)((.ceylon.language.Entry)$ceylontmp$item$16).getItem();
+                                        return true;
+                                    }
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.$pattern$entry$17()) {
+                                        final Item item = this.item;
+                                        final Key key = this.key;
+                                        return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
+                                            
+                                            public final .ceylon.language.Iterator<Key> iterator() {
+                                                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
+                                                    {
+                                                        $iterator$0 = map.iterator();
+                                                    }
+                                                    private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                                    private Key k;
+                                                    private Item i;
+                                                    private boolean $pattern$entry$19$exhausted$;
+                                                    
+                                                    private final boolean $pattern$entry$19() {
+                                                        final .java.lang.Object $ceylontmp$item$18 = $iterator$0.next();
+                                                        $pattern$entry$19$exhausted$ = $ceylontmp$item$18 == .ceylon.language.finished_.get_();
+                                                        if ($pattern$entry$19$exhausted$) {
+                                                            return false;
+                                                        } else {
+                                                            k = (Key)((.ceylon.language.Entry)$ceylontmp$item$18).getKey();
+                                                            i = (Item)((.ceylon.language.Entry)$ceylontmp$item$18).getItem();
+                                                            return true;
+                                                        }
+                                                    }
+                                                    
+                                                    private final boolean $next$1() {
+                                                        ifcomp_1: while (true) {
+                                                            if (!this.$pattern$entry$19()) break ifcomp_1;
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
+                                                            if (i.equals(item)) {
+                                                                break ifcomp_1;
+                                                            }
+                                                        }
+                                                        return !$pattern$entry$19$exhausted$;
+                                                    }
+                                                    
+                                                    public final .java.lang.Object next() {
+                                                        if (this.$next$1()) {
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
+                                                            return k;
+                                                        } else return .ceylon.language.finished_.get_();
+                                                    }
+                                                };
+                                            }
+                                        }.sequence()));
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        });
+        final .java.lang.Object v1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))){
+                    {
+                        $iterator$0 = map.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                    private Key key;
+                    private Item item;
+                    private boolean $pattern$entry$21$exhausted$;
+                    
+                    private final boolean $pattern$entry$21() {
+                        final .java.lang.Object $ceylontmp$item$20 = $iterator$0.next();
+                        $pattern$entry$21$exhausted$ = $ceylontmp$item$20 == .ceylon.language.finished_.get_();
+                        if ($pattern$entry$21$exhausted$) {
+                            return false;
+                        } else {
+                            key = (Key)((.ceylon.language.Entry)$ceylontmp$item$20).getKey();
+                            item = (Item)((.ceylon.language.Entry)$ceylontmp$item$20).getItem();
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$pattern$entry$21()) {
+                            final Item item = this.item;
+                            final Key key = this.key;
+                            return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
+                                
+                                public final .ceylon.language.Iterator<Key> iterator() {
+                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
+                                        {
+                                            $iterator$0 = map.iterator();
+                                        }
+                                        private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                        private Key k;
+                                        private Item i;
+                                        private boolean $pattern$entry$23$exhausted$;
+                                        
+                                        private final boolean $pattern$entry$23() {
+                                            final .java.lang.Object $ceylontmp$item$22 = $iterator$0.next();
+                                            $pattern$entry$23$exhausted$ = $ceylontmp$item$22 == .ceylon.language.finished_.get_();
+                                            if ($pattern$entry$23$exhausted$) {
+                                                return false;
+                                            } else {
+                                                k = (Key)((.ceylon.language.Entry)$ceylontmp$item$22).getKey();
+                                                i = (Item)((.ceylon.language.Entry)$ceylontmp$item$22).getItem();
+                                                return true;
+                                            }
+                                        }
+                                        
+                                        private final boolean $next$1() {
+                                            ifcomp_1: while (true) {
+                                                if (!this.$pattern$entry$23()) break ifcomp_1;
+                                                final Item i = this.i;
+                                                final Key k = this.k;
+                                                if (i.equals(item)) {
+                                                    break ifcomp_1;
+                                                }
+                                            }
+                                            return !$pattern$entry$23$exhausted$;
+                                        }
+                                        
+                                        public final .java.lang.Object next() {
+                                            if (this.$next$1()) {
+                                                final Item i = this.i;
+                                                final Key k = this.k;
+                                                return k;
+                                            } else return .ceylon.language.finished_.get_();
+                                        }
+                                    };
+                                }
+                            }.sequence()));
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+        final .java.lang.Object v2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return extra;
+                
+                case 1: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))){
+                                {
+                                    $iterator$0 = map.iterator();
+                                }
+                                private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                private Key key;
+                                private Item item;
+                                private boolean $pattern$entry$25$exhausted$;
+                                
+                                private final boolean $pattern$entry$25() {
+                                    final .java.lang.Object $ceylontmp$item$24 = $iterator$0.next();
+                                    $pattern$entry$25$exhausted$ = $ceylontmp$item$24 == .ceylon.language.finished_.get_();
+                                    if ($pattern$entry$25$exhausted$) {
+                                        return false;
+                                    } else {
+                                        key = (Key)((.ceylon.language.Entry)$ceylontmp$item$24).getKey();
+                                        item = (Item)((.ceylon.language.Entry)$ceylontmp$item$24).getItem();
+                                        return true;
+                                    }
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.$pattern$entry$25()) {
+                                        final Item item = this.item;
+                                        final Key key = this.key;
+                                        return new .ceylon.language.Entry<Item, .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>($reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key), item, new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<Key>($reified$Key, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Key, .java.lang.Object>($reified$Key, .ceylon.language.Null.$TypeDescriptor$){
+                                            
+                                            public final .ceylon.language.Iterator<Key> iterator() {
+                                                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Key>($reified$Key){
+                                                    {
+                                                        $iterator$0 = map.iterator();
+                                                    }
+                                                    private final .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $iterator$0;
+                                                    private Key k;
+                                                    private Item i;
+                                                    private boolean $pattern$entry$27$exhausted$;
+                                                    
+                                                    private final boolean $pattern$entry$27() {
+                                                        final .java.lang.Object $ceylontmp$item$26 = $iterator$0.next();
+                                                        $pattern$entry$27$exhausted$ = $ceylontmp$item$26 == .ceylon.language.finished_.get_();
+                                                        if ($pattern$entry$27$exhausted$) {
+                                                            return false;
+                                                        } else {
+                                                            k = (Key)((.ceylon.language.Entry)$ceylontmp$item$26).getKey();
+                                                            i = (Item)((.ceylon.language.Entry)$ceylontmp$item$26).getItem();
+                                                            return true;
+                                                        }
+                                                    }
+                                                    
+                                                    private final boolean $next$1() {
+                                                        ifcomp_1: while (true) {
+                                                            if (!this.$pattern$entry$27()) break ifcomp_1;
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
+                                                            if (i.equals(item)) {
+                                                                break ifcomp_1;
+                                                            }
+                                                        }
+                                                        return !$pattern$entry$27$exhausted$;
+                                                    }
+                                                    
+                                                    public final .java.lang.Object next() {
+                                                        if (this.$next$1()) {
+                                                            final Item i = this.i;
+                                                            final Key k = this.k;
+                                                            return k;
+                                                        } else return .ceylon.language.finished_.get_();
+                                                    }
+                                                };
+                                            }
+                                        }.sequence()));
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        return (.ceylon.language.Map<? extends Item, ? extends .ceylon.language.Set<? extends Key>>).ceylon.language.nothing_.get_();
+    }
+}

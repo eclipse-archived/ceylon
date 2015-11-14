@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+class Bug2299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug2299() {
+        super();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$ $delegation$ = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName(
+            delegation = true,
+            value = "")
+    private static final class $delegation$ {
+        
+        private $delegation$() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private Bug2299(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s$param$) {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public Bug2299(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$, s$param$);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("_ROOT")
+    private static final class _ROOT_ {
+        
+        private _ROOT_() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Name("_ROOT")
+    @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    private Bug2299(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299._ROOT_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$, "/");
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299 _ROOT;
+    static {
+        _ROOT = new Bug2299((.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299._ROOT_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::Bug2299._ROOT")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("_ROOT")
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299 getBug2299$_ROOT() {
+        return _ROOT;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.class);
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == _ROOT) {
+            $name$ = "getBug2299$_ROOT";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.class, $name$);
+    }
+}

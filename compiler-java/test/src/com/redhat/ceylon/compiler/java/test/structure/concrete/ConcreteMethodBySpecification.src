@@ -1,0 +1,301 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+final class concreteMethodBySpecificationMethod_ {
+    
+    private concreteMethodBySpecificationMethod_() {
+    }
+    
+    static long concreteMethodBySpecificationMethod() {
+        return 1L;
+    }
+}
+interface ConcreteMethodBySpecification {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$impl();
+    
+    public abstract long mFormal(final long i);
+    
+    public long mSharedFn();
+    
+    public long mSharedMem();
+    
+    public abstract long mSharedMem$i();
+    
+    public long mSharedMem(final long i);
+    
+    public long mDefaultFn();
+    
+    public long mDefaultMem();
+    
+    public abstract long mDefaultMem$i();
+    
+    public long mDefaultMem(final long i);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification.class);
+}
+final class ConcreteMethodBySpecification$impl implements .java.io.Serializable {
+    
+    ConcreteMethodBySpecification$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification $this;
+    
+    public long mSharedFn() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.concreteMethodBySpecificationMethod_.concreteMethodBySpecificationMethod();
+    }
+    
+    public long mSharedMem() {
+        return (
+            let
+            {
+                long $ceylontmp$i$0 = mSharedMem$i();
+            }
+            returning mSharedMem$canonical$($ceylontmp$i$0);
+        );
+    }
+    
+    public final long mSharedMem$i() {
+        return 1L;
+    }
+    
+    private long mSharedMem$canonical$(final long i) {
+        return $this.mFormal(i);
+    }
+    
+    public long mSharedMem(final long i) {
+        return mSharedMem$canonical$(i);
+    }
+    
+    public long mDefaultFn() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.concreteMethodBySpecificationMethod_.concreteMethodBySpecificationMethod();
+    }
+    
+    public long mDefaultMem() {
+        return (
+            let
+            {
+                long $ceylontmp$i$1 = mDefaultMem$i();
+            }
+            returning mDefaultMem$canonical$($ceylontmp$i$1);
+        );
+    }
+    
+    public final long mDefaultMem$i() {
+        return 1L;
+    }
+    
+    private long mDefaultMem$canonical$(final long i) {
+        return $this.mFormal(i);
+    }
+    
+    public long mDefaultMem(final long i) {
+        return mDefaultMem$canonical$(i);
+    }
+}
+interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$impl();
+    
+    public long mSharedSup();
+    
+    public abstract long mSharedSup$i();
+    
+    public long mSharedSup(final long i);
+    
+    public long mDefaultSup();
+    
+    public abstract long mDefaultSup$i();
+    
+    public long mDefaultSup(final long i);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub.class);
+}
+final class ConcreteMethodBySpecificationSub$impl implements .java.io.Serializable {
+    
+    ConcreteMethodBySpecificationSub$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub $this;
+    
+    public long mSharedSup() {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = mSharedSup$i();
+            }
+            returning mSharedSup$canonical$($ceylontmp$i$2);
+        );
+    }
+    
+    public final long mSharedSup$i() {
+        return 1L;
+    }
+    
+    private long mSharedSup$canonical$(final long i) {
+        return $this.mFormal(i);
+    }
+    
+    public long mSharedSup(final long i) {
+        return mSharedSup$canonical$(i);
+    }
+    
+    public long mDefaultSup() {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = mDefaultSup$i();
+            }
+            returning mDefaultSup$canonical$($ceylontmp$i$3);
+        );
+    }
+    
+    public final long mDefaultSup$i() {
+        return 1L;
+    }
+    
+    private long mDefaultSup$canonical$(final long i) {
+        return $this.mFormal(i);
+    }
+    
+    public long mDefaultSup(final long i) {
+        return mDefaultSup$canonical$(i);
+    }
+}
+class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub, .java.io.Serializable {
+    
+    ConcreteMethodBySpecificationImpl() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$;
+    }
+    
+    @.java.lang.Override
+    public final long mSharedSup$i() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$.mSharedSup$i();
+    }
+    
+    @.java.lang.Override
+    public long mSharedSup() {
+        return (
+            let
+            {
+                long $ceylontmp$i$4 = mSharedSup$i();
+            }
+            returning mSharedSup$canonical$($ceylontmp$i$4);
+        );
+    }
+    
+    @.java.lang.Override
+    public final long mSharedSup(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$.mSharedSup(i);
+    }
+    
+    private long mSharedSup$canonical$(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$.mSharedSup(i);
+    }
+    
+    @.java.lang.Override
+    public final long mDefaultSup$i() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$.mDefaultSup$i();
+    }
+    
+    @.java.lang.Override
+    public long mDefaultSup() {
+        return (
+            let
+            {
+                long $ceylontmp$i$5 = mDefaultSup$i();
+            }
+            returning mDefaultSup$canonical$($ceylontmp$i$5);
+        );
+    }
+    
+    @.java.lang.Override
+    public long mDefaultSup(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$.mDefaultSup(i);
+    }
+    
+    private long mDefaultSup$canonical$(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$this$.mDefaultSup(i);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$;
+    }
+    
+    @.java.lang.Override
+    public final long mSharedFn() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mSharedFn();
+    }
+    
+    @.java.lang.Override
+    public final long mSharedMem$i() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mSharedMem$i();
+    }
+    
+    @.java.lang.Override
+    public long mSharedMem() {
+        return (
+            let
+            {
+                long $ceylontmp$i$6 = mSharedMem$i();
+            }
+            returning mSharedMem$canonical$($ceylontmp$i$6);
+        );
+    }
+    
+    @.java.lang.Override
+    public final long mSharedMem(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mSharedMem(i);
+    }
+    
+    private long mSharedMem$canonical$(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mSharedMem(i);
+    }
+    
+    @.java.lang.Override
+    public long mDefaultFn() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mDefaultFn();
+    }
+    
+    @.java.lang.Override
+    public final long mDefaultMem$i() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mDefaultMem$i();
+    }
+    
+    @.java.lang.Override
+    public long mDefaultMem() {
+        return (
+            let
+            {
+                long $ceylontmp$i$7 = mDefaultMem$i();
+            }
+            returning mDefaultMem$canonical$($ceylontmp$i$7);
+        );
+    }
+    
+    @.java.lang.Override
+    public long mDefaultMem(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mDefaultMem(i);
+    }
+    
+    private long mDefaultMem$canonical$(final long i) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecification$this$.mDefaultMem(i);
+    }
+    
+    @.java.lang.Override
+    public final long mFormal(final long i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl.class);
+}

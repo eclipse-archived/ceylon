@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class staticMethods_ {
+    
+    private staticMethods_() {
+    }
+    
+    static void staticMethods() {
+        .java.io.File sync = null;
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
+        final .java.lang.Object roots1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
+        sync = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
+        final .java.lang.Object roots2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
+    }
+}
+final class staticMethodsAndSubClassesOnInstance_ {
+    
+    private staticMethodsAndSubClassesOnInstance_() {
+    }
+    
+    static void staticMethodsAndSubClassesOnInstance() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass inst = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = inst.field;
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = inst.topField;
+    }
+}
+final class staticMethodsAndSubClassesOnType_ {
+    
+    private staticMethodsAndSubClassesOnType_() {
+    }
+    
+    static void staticMethodsAndSubClassesOnType() {
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
+    }
+}
+class StaticMethodsAndSubClasses extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    StaticMethodsAndSubClasses() {
+        super();
+    }
+    
+    private final void test$priv$() {
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
+        .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.class);
+}
+final class staticFields_ {
+    
+    private staticFields_() {
+    }
+    
+    static void staticFields() {
+        final .java.lang.Boolean $false = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Boolean.FALSE);
+    }
+}

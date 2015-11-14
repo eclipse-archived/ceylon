@@ -1,0 +1,14 @@
+com.redhat.ceylon.tools.bashcompletion.CeylonBashCompletionTool
+com.redhat.ceylon.compiler.CeylonCompileTool
+com.redhat.ceylon.ceylondoc.CeylonDocTool
+com.redhat.ceylon.tools.importjar.CeylonImportJarTool
+com.redhat.ceylon.tools.new_.CeylonNewTool
+com.redhat.ceylon.tools.src.CeylonSrcTool
+com.redhat.ceylon.tools.info.CeylonInfoTool
+com.redhat.ceylon.tools.version.CeylonVersionTool
+com.redhat.ceylon.tools.copy.CeylonCopyTool
+com.redhat.ceylon.tools.classpath.CeylonClasspathTool
+com.redhat.ceylon.tools.plugin.CeylonPluginTool
+com.redhat.ceylon.tools.war.CeylonWarTool
+com.redhat.ceylon.tools.browse.CeylonBrowseTool
+com.redhat.ceylon.tools.p2.CeylonP2Tool

@@ -1,0 +1,44 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class MethodLocalAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodLocalAssign() {
+    }
+    
+    private final void m$priv$() {
+        boolean b = true;
+        b = false;
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean b1 = new .com.redhat.ceylon.compiler.java.language.VariableBoxBoolean(true);
+        b1.ref = false;
+        
+        final class b2$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterBoolean {
+            
+            private b2$getter$_() {
+            }
+            
+            public boolean get_() {
+                return b1.ref;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterBoolean b2$getter$_ = new b2$getter$_();
+        
+        final class b2$setter$_ {
+            
+            private b2$setter$_() {
+            }
+            private boolean value;
+            
+            public void set_(final boolean b2) {
+                b1.ref = b2;
+            }
+        }
+        final b2$setter$_ b2$setter$_ = new b2$setter$_();
+        b2$setter$_.set_(true);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.MethodLocalAssign.class);
+}

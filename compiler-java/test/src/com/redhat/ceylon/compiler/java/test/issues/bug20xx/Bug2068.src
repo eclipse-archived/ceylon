@@ -1,0 +1,389 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+public interface IBug2068 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IShared IShared$new$();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IFormal IFormal$new$();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault IDefault$new$();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IFormal2 IFormal2$new$();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault2 IDefault2$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068.class);
+}
+public final class IBug2068$impl implements .java.io.Serializable {
+    
+    public IBug2068$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068 $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IShared IShared$new$() {
+        return new IShared();
+    }
+    
+    public class IShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected IShared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IShared.class));
+        }
+    }
+    
+    public abstract class IFormal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected IFormal() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IFormal.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault IDefault$new$() {
+        return new IDefault();
+    }
+    
+    public class IDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected IDefault() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault.class));
+        }
+    }
+    
+    public abstract class IFormal2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected IFormal2() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IFormal2.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault2 IDefault2$new$() {
+        return new IDefault2();
+    }
+    
+    public class IDefault2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected IDefault2() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault2.class));
+        }
+    }
+}
+public interface IBug2068_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$impl();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IFormal2 IFormal2$new$();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IDefault2 IDefault2$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2.class);
+}
+public final class IBug2068_2$impl implements .java.io.Serializable {
+    
+    public IBug2068_2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2 $this;
+    
+    public abstract class IFormal2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IFormal2 {
+        
+        protected IFormal2() {
+            $this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$impl().super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IFormal2.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IDefault2 IDefault2$new$() {
+        return new IDefault2();
+    }
+    
+    public class IDefault2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault2 {
+        
+        protected IDefault2() {
+            $this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$impl().super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IDefault2.class));
+        }
+    }
+}
+public abstract class CBug2068 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public CBug2068() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CShared CShared$new$() {
+        return new CShared();
+    }
+    
+    public class CShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected CShared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CShared.class));
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal CFormal$new$();
+    
+    public abstract class CFormal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected CFormal() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CDefault CDefault$new$() {
+        return new CDefault();
+    }
+    
+    public class CDefault implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected CDefault() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CDefault.class));
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal2 CFormal2$new$();
+    
+    public abstract class CFormal2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected CFormal2() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal2.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CDefault2 CDefault2$new$() {
+        return new CDefault2();
+    }
+    
+    public class CDefault2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected CDefault2() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CDefault2.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.class);
+}
+public abstract class CBug2068_2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068 {
+    
+    public CBug2068_2() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.CFormal2 CFormal2$new$();
+    
+    public abstract class CFormal2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal2 {
+        
+        protected CFormal2() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.CFormal2.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.CDefault2 CDefault2$new$() {
+        return new CDefault2();
+    }
+    
+    public class CDefault2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CDefault2 {
+        
+        protected CDefault2() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.CDefault2.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.class);
+}
+public abstract class AbstractBug2068 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2 implements .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2 {
+    
+    public AbstractBug2068() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$this$;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IDefault2 IDefault2$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$this$.IDefault2$new$();
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IShared IShared$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$.IShared$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault IDefault$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$.IDefault$new$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.AbstractBug2068.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.AbstractBug2068.class);
+}
+public class ConcreteBug2068 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.AbstractBug2068 {
+    
+    public ConcreteBug2068() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.IFormal IFormal$new$() {
+        return new IFormal();
+    }
+    
+    public class IFormal extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IFormal {
+        
+        protected IFormal() {
+            $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$.super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.IFormal.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.IFormal2 IFormal2$new$() {
+        return new IFormal2();
+    }
+    
+    public class IFormal2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068_2$impl.IFormal2 {
+        
+        protected IFormal2() {
+            $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068_2$this$.super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.IFormal2.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.CFormal CFormal$new$() {
+        return new CFormal();
+    }
+    
+    public class CFormal extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068.CFormal {
+        
+        protected CFormal() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.CFormal.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.CFormal2 CFormal2$new$() {
+        return new CFormal2();
+    }
+    
+    public class CFormal2 extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.CBug2068_2.CFormal2 {
+        
+        protected CFormal2() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.CFormal2.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068.class);
+}

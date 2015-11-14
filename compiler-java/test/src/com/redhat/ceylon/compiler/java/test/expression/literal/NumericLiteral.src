@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.expression.literal;
+
+class NumericLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    NumericLiteral() {
+    }
+    
+    public final void m() {
+        final long i1 = 9223372036854775807L;
+        final long i2 = -9223372036854775808L;
+        final long i3 = 2147483647L;
+        final long i4 = -2147483648L;
+        final long i5 = 0L;
+        final long i6 = 0L;
+        final double f1 = 1.7976931348623157E308;
+        final double f2 = -1.7976931348623157E308;
+        final double f3 = 4.9E-324;
+        final double f4 = -4.9E-324;
+        final double f5 = 0.0;
+        final double f6 = -0.0;
+    }
+    
+    public final void hexBin() {
+        final long x1 = 3405691582L;
+        final long x2 = 3405691582L;
+        final long x3 = -1L;
+        final long b1 = 13L;
+        final long b2 = -2459565876494606883L;
+    }
+    
+    public final void bytes() {
+        final byte b1 = (byte)123L;
+        final byte b2 = (byte)123L;
+        final byte b1n = .ceylon.language.Integer.getByte(-123L);
+        final byte b2n = (byte)-123L;
+        final byte b3 = (byte)255L;
+        final byte b4 = (byte)255L;
+        final byte b5 = (byte)13L;
+        final byte b6 = (byte)13L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.literal.NumericLiteral.class);
+}

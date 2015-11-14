@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class methodSpecifyingUnaryTopLevel_f_ {
+    
+    private methodSpecifyingUnaryTopLevel_f_() {
+    }
+    
+    static void methodSpecifyingUnaryTopLevel_f(final .java.lang.String s) {
+    }
+}
+class MethodSpecifyingUnaryTopLevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodSpecifyingUnaryTopLevel() {
+    }
+    
+    private final .java.lang.Object foo$priv$(final .java.lang.String s) {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingUnaryTopLevel_f_.methodSpecifyingUnaryTopLevel_f(s);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingUnaryTopLevel.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingUnaryTopLevel.class);
+}

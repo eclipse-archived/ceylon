@@ -1,0 +1,99 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+public final class bug2042_ {
+    
+    private bug2042_() {
+    }
+    
+    public static void bug2042() {
+        final .java.lang.Object[] javaArray = new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt(10L)];
+        final .ceylon.language.Array<.java.lang.Object> ceylonArray = (
+            let
+            {
+                .java.lang.Object[] safe$0 = javaArray;
+            }
+            returning safe$0 != null ? .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends .java.lang.Object>.getArray(safe$0) : null;
+        );
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> ceylonIterable = (
+            let
+            {
+                .java.lang.Object[] safe$1 = javaArray;
+            }
+            returning safe$1 != null ? .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends .java.lang.Object>.getIterable(safe$1) : null;
+        );
+        final .ceylon.language.Integer ceylonHash = (
+            let
+            {
+                .java.lang.Object[] safe$2 = javaArray;
+            }
+            returning safe$2 != null ? .ceylon.language.Integer.instance(safe$2.hashCode()) : null;
+        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> ceylonItem = (
+            let
+            {
+                final .java.lang.Object[] $instance$ = javaArray;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Object?(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final int $ceylontmp$index = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                    return (
+                        let
+                        {
+                            .java.lang.Object[] safe$4 = $instance$;
+                        }
+                        returning safe$4 != null ? $instance$[$ceylontmp$index] : null;
+                    );
+                }
+            };
+        );
+        final int[] javaIntArray = new int[.com.redhat.ceylon.compiler.java.Util.toInt(10L)];
+        final .ceylon.language.Array<.java.lang.Integer> ceylonIntegerArray = (
+            let
+            {
+                int[] safe$5 = javaIntArray;
+            }
+            returning safe$5 != null ? .com.redhat.ceylon.compiler.java.language.IntArray.getArray(safe$5) : null;
+        );
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> ceylonIntegerIterable = (
+            let
+            {
+                int[] safe$6 = javaIntArray;
+            }
+            returning safe$6 != null ? .com.redhat.ceylon.compiler.java.language.IntArray.getIterable(safe$6) : null;
+        );
+        final .ceylon.language.Integer ceylonIntegerHash = (
+            let
+            {
+                int[] safe$7 = javaIntArray;
+            }
+            returning safe$7 != null ? .ceylon.language.Integer.instance(safe$7.hashCode()) : null;
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> ceylonIntegerItem = (
+            let
+            {
+                final int[] $instance$ = javaIntArray;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final int $ceylontmp$index = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                    return (
+                        let
+                        {
+                            int[] safe$9 = $instance$;
+                        }
+                        returning safe$9 != null ? .ceylon.language.Integer.instance($instance$[$ceylontmp$index]) : null;
+                    );
+                }
+            };
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.bug2042_.bug2042();
+    }
+}

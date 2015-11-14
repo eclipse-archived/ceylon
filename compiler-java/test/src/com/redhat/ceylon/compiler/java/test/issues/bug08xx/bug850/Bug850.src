@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug850;
+
+final class bug850_ {
+    
+    private bug850_() {
+    }
+    
+    static void bug850() {
+        final .java.lang.String x = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$1 = (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug850.Bug850().foo();
+                    }
+                    returning $ceylontmp$0 != null ? .ceylon.language.String.instance($ceylontmp$0) : null;
+                );
+            }
+            returning $ceylontmp$1 != null ? $ceylontmp$1 : .ceylon.language.String.instance("");
+        ).toString();
+    }
+}

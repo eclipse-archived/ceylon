@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+class Bug1095B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1095B() {
+    }
+    
+    private final <Summand extends .ceylon.language.Summable<Summand>>void selfType$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Summand, final Summand x) {
+        final Summand y = (Summand)(.java.lang.Object)(
+            let
+            {
+                .ceylon.language.Summable<Summand> arg$0$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand arg$0$0 = (Summand)x;
+            }
+            returning arg$0$callable$.plus(arg$0$0);
+        );
+        final .ceylon.language.Summable<Summand> y2 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)(
+            let
+            {
+                .ceylon.language.Summable<Summand> arg$1$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand arg$1$0 = (Summand)x;
+            }
+            returning arg$1$callable$.plus(arg$1$0);
+        );
+        final .ceylon.language.Summable<Summand> x2 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+        final .ceylon.language.Summable<Summand> y3 = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)(
+            let
+            {
+                .ceylon.language.Summable<Summand> arg$2$callable$ = (.ceylon.language.Summable<Summand>)(.ceylon.language.Summable)x;
+                Summand arg$2$0 = (Summand)(.ceylon.language.Summable)x2;
+            }
+            returning arg$2$callable$.plus(arg$2$0);
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095B.class);
+}

@@ -1,0 +1,163 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+interface Bug2013Car {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Car.class);
+}
+interface Bug2013BigCar extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Car {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar.class);
+}
+class Bug2013Truck implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar, .java.io.Serializable {
+    
+    Bug2013Truck() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Truck.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Truck.class);
+}
+interface Bug2013Driver {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013Driver$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Car driveCar();
+    
+    public abstract double driveCar$speed();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Car driveCar(final double speed);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver.class);
+}
+final class Bug2013Driver$impl implements .java.io.Serializable {
+    
+    Bug2013Driver$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver $this;
+    
+    public final double driveCar$speed() {
+        return 0.0;
+    }
+}
+interface Bug2013ExperiencedDriver extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013ExperiencedDriver$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar driveCar();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar driveCar(final double speed);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver.class);
+}
+final class Bug2013ExperiencedDriver$impl implements .java.io.Serializable {
+    
+    Bug2013ExperiencedDriver$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver $this;
+}
+class Bug2013Trucker implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver, .java.io.Serializable {
+    
+    Bug2013Trucker() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013ExperiencedDriver$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013Driver$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013ExperiencedDriver$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013ExperiencedDriver$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013ExperiencedDriver$this$;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013Driver$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Driver$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013Driver$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013Driver$this$;
+    }
+    
+    @.java.lang.Override
+    public final double driveCar$speed() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2013Driver$this$.driveCar$speed();
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar driveCar() {
+        return (
+            let
+            {
+                double $ceylontmp$speed$0 = driveCar$speed();
+            }
+            returning driveCar$canonical$($ceylontmp$speed$0);
+        );
+    }
+    
+    private .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar driveCar$canonical$(final double speed) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Truck();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar driveCar(final double speed) {
+        return driveCar$canonical$(speed);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker.class);
+}
+final class d_ {
+    
+    private d_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver get_() {
+        if (d_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'d\' before it was set");
+        }
+    }
+}
+final class carBigB_ {
+    
+    private carBigB_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.get_().driveCar();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar get_() {
+        if (carBigB_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'carBigB\' before it was set");
+        }
+    }
+}

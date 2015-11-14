@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorAliasBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CtorAliasBoxing() {
+        super();
+        this.string = null;
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_ bar_ = null;
+    
+    public static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    public CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_ $name$, final .java.lang.String string$param$) {
+        this.string = string$param$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.class);
+}
+final class CtorAliasBoxingAlias {
+    
+    private CtorAliasBoxingAlias() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing CtorAliasBoxingAlias$aliased$$priv$(final .java.lang.String str) {
+        throw new .ceylon.language.Exception();
+    }
+}
+final class CtorAliasBoxingAlias2 {
+    
+    private CtorAliasBoxingAlias2() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing CtorAliasBoxingAlias2$aliased$$priv$(final .java.lang.String str) {
+        throw new .ceylon.language.Exception();
+    }
+}
+final class ctorAliasBoxing_ {
+    
+    private ctorAliasBoxing_() {
+    }
+    
+    static void ctorAliasBoxing() {
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing x = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_, "hello");
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing x2 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_, "hello");
+    }
+}

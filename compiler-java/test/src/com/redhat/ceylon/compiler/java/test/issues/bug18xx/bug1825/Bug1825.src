@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1825;
+
+final class bug1825_ {
+    
+    private bug1825_() {
+    }
+    
+    static void bug1825() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> fun = (
+            let
+            {
+                final .ceylon.collection.HashMap<.java.lang.Object, .java.lang.Object> $instance$ = (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                        .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                        .ceylon.collection.Stability arg$1$0 = .ceylon.collection.HashMap.HashMap$stability(arg$1$reified$0, arg$1$reified$1);
+                        .ceylon.collection.Hashtable arg$1$1 = .ceylon.collection.HashMap.HashMap$hashtable(arg$1$reified$0, arg$1$reified$1, arg$1$0);
+                        .ceylon.language.Iterable arg$1$2 = .ceylon.collection.HashMap.HashMap$entries(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
+                    }
+                    returning new .ceylon.collection.HashMap(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1, arg$1$2);
+                );
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Null(Object)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$key = $param$0;
+                    return $instance$.get($ceylontmp$key);
+                }
+            };
+        );
+    }
+}

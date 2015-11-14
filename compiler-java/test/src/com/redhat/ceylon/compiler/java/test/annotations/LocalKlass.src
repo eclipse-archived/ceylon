@@ -1,0 +1,239 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1Local",
+        "2Local",
+        "3Local",
+        "4Local",
+        "5Local"})
+public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public LocalKlass() {
+        if (true) {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
+            @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = Local.Inner.class)})
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+            class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                Local() {
+                }
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("Inner")
+                @.com.redhat.ceylon.compiler.java.metadata.Container(klass = Local.class)
+                class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Inner() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.Inner.class));
+                    }
+                }
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                }
+            }
+        } else {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
+            @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
+            class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                Local() {
+                }
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                }
+            }
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Attribute(setterClass = getter$setter$_.class)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("getter")
+        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.language::Getter<java.lang::String>"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1Local"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        final class getter$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private getter$getter$_() {
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Transient
+            public .java.lang.String get_() {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Local() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("getter")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                    }
+                }
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> getter$getter$_ = new getter$getter$_();
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.compiler.java.metadata.Setter(getterClass = getter$getter$_.class)
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1Local"})
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        final class getter$setter$_ {
+            
+            private getter$setter$_() {
+            }
+            private .java.lang.String value;
+            
+            public void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
+            final .java.lang.String getter) {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Local() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("getter")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                    }
+                }
+            }
+        }
+        final getter$setter$_ getter$setter$_ = new getter$setter$_();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void m$priv$() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>>"})
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "T",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+        class Local<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>>, .java.io.Serializable {
+            
+            Local(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                this.$reified$T = $reified$T;
+                this.i1 = 1L;
+            }
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final long i1;
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+            public final long getI1() {
+                return i1;
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+            @.com.redhat.ceylon.compiler.java.metadata.Transient
+            public final long getI2() {
+                return 1L;
+            }
+            
+            public final void setI2(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+            final long i2) {
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public final void m2(final long arg1) {
+                (
+                    let
+                    {
+                        .ceylon.language.Sequential<? extends T> $ceylontmp$t$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        m2$canonical$(arg1, $ceylontmp$t$1);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private void m2$canonical$(final long arg1, final .ceylon.language.Sequential<? extends T> t) {
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+            public final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+            final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+            @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
+            final .ceylon.language.Sequential<? extends T> t) {
+                (
+                    let
+                    {
+                        m2$canonical$(arg1, t);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.ceylon.language.ActualAnnotation$annotation$
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                    value = "com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>",
+                    erased = true,
+                    untrusted = true)
+            public final Local plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>")
+            final Local<T> other) {
+                return (Local<T>).ceylon.language.nothing_.get_();
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T));
+            }
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.LocalKlass();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.class);
+}

@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class Shadowing implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Shadowing() {
+        super();
+    }
+    
+    public Shadowing(final .java.lang.String name$param$, final long i$param$) {
+        final long i = 0L;
+        final long j;
+        if (true) {
+            final .java.lang.String name = "0";
+            .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+        }
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name$param$));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i$param$));
+        j = i$param$;
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(j));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Shadowing.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Shadowing.class);
+}

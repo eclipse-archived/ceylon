@@ -1,0 +1,80 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+final class localConstructors_ {
+    
+    private localConstructors_() {
+    }
+    
+    static <X>void localConstructors(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$localConstructors$X, final X x) {
+        
+        final class C$impl<Y> implements .java.io.Serializable {
+            
+            public final <Y>Y C$y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x$param$) {
+                return null;
+            }
+        }
+        
+        class C<Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x$param$) {
+                (
+                    let
+                    {
+                        C$impl<Y> $ceylontmp$impl$0 = new C$impl<Y>();
+                        Y $ceylontmp$y$1 = $ceylontmp$impl$0.C$y($reified$Y, x$param$);
+                        this($reified$Y, x$param$, $ceylontmp$y$1);
+                    }
+                    returning null;
+                );
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+            
+            private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x$param$, final Y y$param$) {
+                this.$reified$Y = $reified$Y;
+            }
+            
+            class nonDefault_ {
+                
+                private nonDefault_() {
+                }
+            }
+            
+            private C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, C.nonDefault_ $name$, final Y y$param$) {
+                this.$reified$Y = $reified$Y;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localConstructors_.class, $reified$localConstructors$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class, $reified$Y));
+            }
+        }
+        C<.ceylon.language.String> c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, x);
+        c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, x, .ceylon.language.String.instance(""));
+        c = new C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, (C.nonDefault_)null, .ceylon.language.String.instance(""));
+        
+        class Sub<Z> extends C<Z> {
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z;
+            
+            private Sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, final Z z$param$) {
+                super($reified$Z, x, z$param$);
+                this.$reified$Z = $reified$Z;
+            }
+            
+            class nonDefault_ {
+                
+                private nonDefault_() {
+                }
+            }
+            
+            private Sub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z, Sub.nonDefault_ $name$, final Z z$param$) {
+                super($reified$Z, (C.nonDefault_)null, z$param$);
+                this.$reified$Z = $reified$Z;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localConstructors_.class, $reified$localConstructors$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Sub.class, $reified$Z));
+            }
+        }
+    }
+}

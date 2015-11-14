@@ -1,0 +1,181 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+public final class f1_ {
+    
+    private f1_() {
+    }
+    
+    public static void f1() {
+        (
+            let
+            {
+                long $ceylontmp$n$0 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f1_.f1$n();
+                f1($ceylontmp$n$0);
+            }
+            returning null;
+        );
+    }
+    
+    public static final long f1$n() {
+        return 5L;
+    }
+    
+    public static void f1(final long n) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f1_.f1();
+    }
+}
+public final class f2_ {
+    
+    private f2_() {
+    }
+    
+    public static void f2(final long n) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f2_.f2$s(n);
+                f2(n, $ceylontmp$s$1);
+            }
+            returning null;
+        );
+    }
+    
+    public static final .java.lang.String f2$s(final long n) {
+        return "test";
+    }
+    
+    public static void f2(final long n, final .java.lang.String s) {
+    }
+}
+public final class f3_ {
+    
+    private f3_() {
+    }
+    
+    public static void f3() {
+        (
+            let
+            {
+                long $ceylontmp$n$2 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f3_.f3$n();
+                long $ceylontmp$m$3 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f3_.f3$m($ceylontmp$n$2);
+                f3($ceylontmp$n$2, $ceylontmp$m$3);
+            }
+            returning null;
+        );
+    }
+    
+    public static final long f3$n() {
+        return 5L;
+    }
+    
+    public static void f3(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$4 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f3_.f3$m(n);
+                f3(n, $ceylontmp$m$4);
+            }
+            returning null;
+        );
+    }
+    
+    public static final long f3$m(final long n) {
+        return n;
+    }
+    
+    public static void f3(final long n, final long m) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f3_.f3();
+    }
+}
+public final class f4_ {
+    
+    private f4_() {
+    }
+    
+    public static void f4() {
+        (
+            let
+            {
+                long $ceylontmp$n$5 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f4_.f4$n();
+                long $ceylontmp$m$6 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f4_.f4$m($ceylontmp$n$5);
+                f4($ceylontmp$n$5, $ceylontmp$m$6);
+            }
+            returning null;
+        );
+    }
+    
+    public static final long f4$n() {
+        return 5L;
+    }
+    
+    public static void f4(final long n) {
+        (
+            let
+            {
+                long $ceylontmp$m$7 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f4_.f4$m(n);
+                f4(n, $ceylontmp$m$7);
+            }
+            returning null;
+        );
+    }
+    
+    public static final long f4$m(final long n) {
+        return n + 1L;
+    }
+    
+    public static void f4(final long n, final long m) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f4_.f4();
+    }
+}
+public final class f5_ {
+    
+    private f5_() {
+    }
+    
+    public static void f5() {
+        (
+            let
+            {
+                long $ceylontmp$n$8 = .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5$n();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$9 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f5($ceylontmp$n$8, $ceylontmp$seq$9);
+            }
+            returning null;
+        );
+    }
+    
+    public static final long f5$n() {
+        return 5L;
+    }
+    
+    public static void f5(final long n) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f5(n, $ceylontmp$seq$10);
+            }
+            returning null;
+        );
+    }
+    
+    public static void f5(final long n, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5();
+    }
+}

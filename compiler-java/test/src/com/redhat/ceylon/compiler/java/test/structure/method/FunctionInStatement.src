@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class FunctionInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    FunctionInStatement() {
+    }
+    
+    private final void m$priv$() {
+        if (true) {
+            final long i = 1L;
+            
+            final class foo_ {
+                
+                private foo_() {
+                }
+                
+                .java.lang.String foo() {
+                    return .ceylon.language.Integer.toString(i);
+                }
+            }
+            final foo_ foo = new foo_();
+            final .java.lang.String s = foo.foo();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.FunctionInStatement.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.FunctionInStatement.class);
+}

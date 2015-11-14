@@ -1,0 +1,79 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug2256() {
+        super();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        private $delegation$() {
+        }
+    }
+    
+    private Bug2256(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.$delegation$ $name$, final long i$param$) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("1"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("A"));
+    }
+    
+    public Bug2256(final long i$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.$delegation$, i$param$);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("2"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("3"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("4"));
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.init$delegation$_ init$delegation$_ = null;
+    
+    private static final class init$delegation$_ {
+        
+        private init$delegation$_() {
+        }
+    }
+    
+    private Bug2256(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.init$delegation$_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.$delegation$, 42L);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("2"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("B"));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.init_ init_ = null;
+    
+    public static final class init_ {
+        
+        private init_() {
+        }
+    }
+    
+    public Bug2256(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.init_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.$delegation$, 42L);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("2"));
+        $return$$0: do {
+            .ceylon.language.print_.print(.ceylon.language.String.instance("B"));
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("3"));
+        .ceylon.language.print_.print(.ceylon.language.String.instance("4"));
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.init2_ init2_ = null;
+    
+    public static final class init2_ {
+        
+        private init2_() {
+        }
+    }
+    
+    public Bug2256(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.init2_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.init$delegation$_);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("3"));
+        $return$$1: do {
+            .ceylon.language.print_.print(.ceylon.language.String.instance("C"));
+        }         while (false);
+        .ceylon.language.print_.print(.ceylon.language.String.instance("4"));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2256.class);
+}

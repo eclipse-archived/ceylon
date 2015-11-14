@@ -1,0 +1,117 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface AnnotationClassFloat$annotation$ {
+    
+    public abstract double f();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassFloat$annotations$ {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat$annotation$[] value();
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected AnnotationClassFloat() {
+        super();
+    }
+    
+    AnnotationClassFloat(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat$annotation$ anno) {
+        this(anno.f());
+    }
+    
+    AnnotationClassFloat(final double f) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat$annotation$.class;
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface AnnotationClassFloatDefaulted$annotation$ {
+    
+    public abstract double f() default 3.141;
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassFloatDefaulted$annotations$ {
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted$annotation$[] value();
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    AnnotationClassFloatDefaulted() {
+        (
+            let
+            {
+                double $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$default$f();
+                this($ceylontmp$f$0);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassFloatDefaulted(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted$annotation$ anno) {
+        this(anno.f());
+    }
+    
+    AnnotationClassFloatDefaulted(final double f) {
+    }
+    
+    public static double $default$f() {
+        return 3.141;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.class)
+final class annotationClassFloat_ {
+    
+    private annotationClassFloat_() {
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat annotationClassFloat() {
+        return (
+            let
+            {
+                double $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat$f();
+            }
+            returning annotationClassFloat($ceylontmp$f$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.FloatValue(1.0)
+    public static final double annotationClassFloat$f() {
+        return 1.0;
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat annotationClassFloat(final double f) {
+        return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat(f);
+    }
+}

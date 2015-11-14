@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class Foo<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Foo(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public final void bar(final T t) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.Foo.class, $reified$T);
+    }
+}
+final class m_ {
+    
+    private m_() {
+    }
+    
+    static void m() {
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> f = new .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$);
+        final .java.lang.Object o = .ceylon.language.Integer.instance(1L);
+        f.bar(o);
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.Foo<.java.lang.Object> arg$0$callable$ = f;
+                .java.lang.Object arg$0$0 = o;
+                arg$0$callable$.bar(arg$0$0);
+            }
+            returning null;
+        );
+    }
+}

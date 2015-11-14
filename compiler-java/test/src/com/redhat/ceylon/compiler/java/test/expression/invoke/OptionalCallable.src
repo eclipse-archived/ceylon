@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class optionalCallable_ {
+    
+    private optionalCallable_() {
+    }
+    
+    static void optionalCallable(final .ceylon.language.Callable<? extends .java.lang.Object> onRead) {
+        .ceylon.language.Callable<? extends .java.lang.Object> callback$1;
+        if ((callback$1 = onRead) != null) {
+            final .ceylon.language.Callable<? extends .java.lang.Object> callback$2 = callback$1;
+            callback$2.$call$();
+        }
+    }
+}

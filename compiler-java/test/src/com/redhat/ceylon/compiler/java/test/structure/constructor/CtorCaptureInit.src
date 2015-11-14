@@ -1,0 +1,145 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CtorCaptureInit() {
+        super();
+        this.sharedName = null;
+        this.init = 0L;
+        this.sharedInit = 0L;
+        this.count = 0L;
+        this.sharedCount = 0L;
+        this.captured = null;
+    }
+    private final .java.lang.String sharedName;
+    
+    public final .java.lang.String getSharedName() {
+        return sharedName;
+    }
+    private final long init;
+    
+    private final long getInit$priv$() {
+        return init;
+    }
+    private final long sharedInit;
+    
+    public final long getSharedInit() {
+        return sharedInit;
+    }
+    private long count;
+    
+    private final long getCount$priv$() {
+        return count;
+    }
+    
+    private final void setCount$priv$(final long count) {
+        this.count = count;
+    }
+    private long sharedCount;
+    
+    public final long getSharedCount() {
+        return sharedCount;
+    }
+    
+    public final void setSharedCount(final long sharedCount) {
+        this.sharedCount = sharedCount;
+    }
+    private final .java.lang.String captured;
+    
+    private final .java.lang.String getCaptured$priv$() {
+        return captured;
+    }
+    
+    private final void inc$priv$() {
+        (
+            let
+            {
+                long $ceylontmp$op$1 = getCount$priv$();
+                setCount$priv$($ceylontmp$op$1 + 1);
+            }
+            returning $ceylontmp$op$1;
+        );
+    }
+    
+    private final void reset$priv$() {
+        setCount$priv$(getInit$priv$());
+    }
+    
+    public final void sharedInc() {
+        (
+            let
+            {
+                long $ceylontmp$op$2 = getSharedCount();
+                setSharedCount($ceylontmp$op$2 + 1);
+            }
+            returning $ceylontmp$op$2;
+        );
+    }
+    
+    public final void sharedReset() {
+        setSharedCount(getSharedInit());
+    }
+    
+    public final .java.lang.String m() {
+        return getCaptured$priv$();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.withAttributes_ withAttributes_ = null;
+    
+    private static final class withAttributes_ {
+        
+        private withAttributes_() {
+        }
+    }
+    
+    private CtorCaptureInit(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.withAttributes_ $name$) {
+        final .java.lang.String name = "Trompon";
+        this.sharedName = "Trompon";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getSharedName()));
+        final .java.lang.String capturedByCtor;
+        long local = 0L;
+        (
+            let
+            {
+                long $ceylontmp$op$0 = local + 2L;
+                local = $ceylontmp$op$0;
+            }
+            returning $ceylontmp$op$0;
+        );
+        setCount$priv$(0L);
+        setSharedCount(0L);
+        init = getCount$priv$();
+        sharedInit = getSharedCount();
+        captured = "WithAttributes";
+        capturedByCtor = "WithAttributes";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(capturedByCtor));
+    }
+    
+    public CtorCaptureInit(final long initial$param$) {
+        final .java.lang.String name = "Trompon";
+        this.sharedName = "Trompon";
+        .ceylon.language.print_.print(.ceylon.language.String.instance(name));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(getSharedName()));
+        final .java.lang.String capturedByCtor;
+        long local = 0L;
+        (
+            let
+            {
+                long $ceylontmp$op$0 = local + 2L;
+                local = $ceylontmp$op$0;
+            }
+            returning $ceylontmp$op$0;
+        );
+        setCount$priv$(initial$param$);
+        setSharedCount(initial$param$);
+        init = initial$param$;
+        sharedInit = initial$param$;
+        captured = "ConstWithParameter";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorCaptureInit.class);
+}

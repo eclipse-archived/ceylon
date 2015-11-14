@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon version" tool
+summary=Shows and updates version numbers in module descriptors
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.tools.version.CeylonVersionTool
+

@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+public class NullaryConstructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void use() {
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o1 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors();
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o3 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.foo_);
+        final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors o4 = new .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.foo_);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public NullaryConstructors() {
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.foo_ foo_ = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
+    private static final class foo_ {
+        
+        private foo_() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    private NullaryConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.foo_ $name$) {
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.bar_ bar_ = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
+    public static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
+    public NullaryConstructors(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.bar_ $name$) {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.NullaryConstructors.class);
+}

@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class InnerAttributeGetterLateInitialisation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    InnerAttributeGetterLateInitialisation() {
+    }
+    
+    private final void m$priv$() {
+        final long m;
+        m = 2L;
+        
+        final class innerGetter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private innerGetter$getter$_() {
+            }
+            
+            public long get_() {
+                return m;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter$_ = new innerGetter$getter$_();
+        final long n = innerGetter$getter$_.get_();
+    }
+    
+    private final void m2$priv$() {
+        final long m;
+        m = 2L;
+        
+        final class innerGetter$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private innerGetter$getter$_() {
+            }
+            
+            public long get_() {
+                return m;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong innerGetter$getter$_ = new innerGetter$getter$_();
+        final long n = innerGetter$getter$_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterLateInitialisation.class);
+}

@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfTrueElse_ {
+    
+    private methodIfTrueElse_() {
+    }
+    
+    static .java.lang.String methodIfTrueElse() {
+        if (true) {
+            return "true branch";
+        } else {
+        }
+        throw new .java.lang.Error("Ceylon flow error");
+    }
+}
+final class methodIfTrueElse2_ {
+    
+    private methodIfTrueElse2_() {
+    }
+    
+    static .java.lang.String methodIfTrueElse2() {
+        if (true) {
+            return "true branch";
+        } else {
+            return "impossible branch";
+        }
+    }
+}

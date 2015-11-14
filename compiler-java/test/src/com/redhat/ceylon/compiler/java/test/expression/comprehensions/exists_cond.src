@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+final class existsCond_ {
+    
+    private existsCond_() {
+    }
+    
+    static void existsCond() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.null_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                null,
+                .ceylon.language.String.instance("a"),
+                null,
+                .ceylon.language.String.instance("b"),
+                null});
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$){
+                    {
+                        $iterator$0 = seq.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.String)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    private .java.lang.String x$2;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
+                            final .ceylon.language.String x = this.x;
+                            .ceylon.language.String x$1 = null;
+                            if ((x$1 = x) != null) {
+                                x$2 = x$1.toString();
+                                break ifcomp_1;
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    private int c$4;
+                    
+                    private final boolean $next$2() {
+                        ifcomp_2: while (true) {
+                            if (!this.$next$1()) break ifcomp_2;
+                            final .java.lang.String x$2 = this.x$2;
+                            final .ceylon.language.String x = this.x;
+                            .ceylon.language.Character c$3 = null;
+                            if ((c$3 = .ceylon.language.String.instance(.ceylon.language.String.initial(x$2, 1L)).getFromFirst(0L)) != null) {
+                                c$4 = c$3.intValue();
+                                break ifcomp_2;
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$2()) {
+                            final int c$4 = this.c$4;
+                            final .java.lang.String x$2 = this.x$2;
+                            final .ceylon.language.String x = this.x;
+                            return .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased(c$4));
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+    }
+}

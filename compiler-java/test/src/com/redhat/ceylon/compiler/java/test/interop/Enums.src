@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class enums_ {
+    
+    private enums_() {
+    }
+    
+    static void enums() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e = .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE;
+        e.field = e.field;
+        .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e2 = .com.redhat.ceylon.compiler.java.Util.checkNull(e.enumField);
+        e.setProperty(e.getProperty());
+        e2 = .com.redhat.ceylon.compiler.java.Util.checkNull(e.getEnumProperty());
+        e.method();
+        e2 = .com.redhat.ceylon.compiler.java.Util.checkNull(e.enumMethod());
+    }
+}

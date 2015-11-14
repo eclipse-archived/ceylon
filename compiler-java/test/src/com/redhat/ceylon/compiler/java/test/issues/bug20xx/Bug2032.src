@@ -1,0 +1,73 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("Foo")
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(javaClassName = "Bar")})
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"bug2032"},
+        companionClassName = "1Foo$impl")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface bug2032$Foo_ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object Foo$impl();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    abstract .java.lang.Object Bar$new$();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"::bug2032$Foo_"})
+public final class bug2032_ {
+    
+    private bug2032_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bug2032() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final class Foo$impl implements .java.io.Serializable {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            Foo$impl(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_ $this) {
+                this.$this = $this;
+            }
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_ $this;
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.ceylon.language.FormalAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)
+            abstract class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                protected Bar() {
+                }
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo$impl.Bar.class));
+                }
+            }
+        }
+        if ((
+            let
+            {
+                .ceylon.language.meta.declaration.ClassWithInitializerDeclaration $ceylontmp$1 = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(Foo$impl.Bar.class);
+            }
+            returning ((.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)((.ceylon.language.meta.declaration.InterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)).<.ceylon.language.meta.declaration.NestableDeclaration>memberDeclarations(.ceylon.language.meta.declaration.NestableDeclaration.$TypeDescriptor$)).contains($ceylontmp$1);
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`class Foo.Bar` in `interface Foo`.memberDeclarations<NestableDeclaration>()"));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032_.bug2032();
+    }
+}

@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class multipleParameterLists_call_ {
+    
+    private multipleParameterLists_call_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void multipleParameterLists_call() {
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists().$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).toString();
+        final .ceylon.language.Callable<? extends .ceylon.language.String> c = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_.multipleParameterLists();
+        s = c.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).toString();
+        s = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists2_.multipleParameterLists2(1L).$call$((.java.lang.Object).ceylon.language.Float.instance(1.0)).$call$((.java.lang.Object).ceylon.language.String.instance(s)).toString();
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> c2 = .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists2_.multipleParameterLists2(1L);
+        final .ceylon.language.Callable<? extends .ceylon.language.String> c3 = c2.$call$((.java.lang.Object).ceylon.language.Float.instance(1.0));
+        s = c3.$call$((.java.lang.Object).ceylon.language.String.instance(s)).toString();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.multipleParameterLists_call_.multipleParameterLists_call();
+    }
+}

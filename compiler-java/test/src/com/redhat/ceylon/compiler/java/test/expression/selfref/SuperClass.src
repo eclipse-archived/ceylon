@@ -1,0 +1,148 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SuperClass() {
+        this.a = 2L;
+    }
+    private long a;
+    
+    public final long getA() {
+        return a;
+    }
+    
+    public final void setA(final long a) {
+        this.a = a;
+    }
+    
+    public final long getI() {
+        return 2L;
+    }
+    
+    public long m() {
+        return 2L;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Local Local$new$() {
+        return new Local();
+    }
+    
+    public class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Local() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Local.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Default Default$new$() {
+        return new Default();
+    }
+    
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Default() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Default.class));
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Formal Formal$new$();
+    
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Formal() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.Formal.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass.class);
+}
+abstract class SuperClass_Sub extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass {
+    
+    SuperClass_Sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long m() {
+        (
+            let
+            {
+                long $ceylontmp$opV$1 = super.getA();
+                super.setA($ceylontmp$opV$1 + 1);
+            }
+            returning $ceylontmp$opV$1;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$3 = super.getA() + 1;
+                super.setA($ceylontmp$opV$3);
+            }
+            returning $ceylontmp$opV$3;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$5 = super.getA() + 1L;
+                super.setA($ceylontmp$opV$5);
+            }
+            returning $ceylontmp$opV$5;
+        );
+        return super.getI() + super.m();
+    }
+    
+    public final long m2() {
+        (
+            let
+            {
+                long $ceylontmp$opV$7 = super.getA();
+                super.setA($ceylontmp$opV$7 + 1);
+            }
+            returning $ceylontmp$opV$7;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$9 = super.getA() + 1;
+                super.setA($ceylontmp$opV$9);
+            }
+            returning $ceylontmp$opV$9;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$11 = super.getA() + 1L;
+                super.setA($ceylontmp$opV$11);
+            }
+            returning $ceylontmp$opV$11;
+        );
+        return super.getI() + super.m();
+    }
+    
+    public final void m3() {
+        super.Local$new$();
+        super.Default$new$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass_Sub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperClass_Sub.class);
+}

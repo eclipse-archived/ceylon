@@ -1,0 +1,95 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+public final class bug2328Name_ {
+    
+    private bug2328Name_() {
+    }
+    private static final .java.lang.String value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = "Gavin";
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.String get_() {
+        if (bug2328Name_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328Name\' before it was set");
+        }
+    }
+}
+public final class bug2328Name2_ {
+    
+    private bug2328Name2_() {
+    }
+    
+    public static .java.lang.String get_() {
+        return "Gavin";
+    }
+}
+public final class bug2328ReferenceDeclaration_ {
+    
+    private bug2328ReferenceDeclaration_() {
+    }
+    private static final .ceylon.language.meta.declaration.ValueDeclaration value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name");
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.meta.declaration.ValueDeclaration get_() {
+        if (bug2328ReferenceDeclaration_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328ReferenceDeclaration\' before it was set");
+        }
+    }
+}
+public final class bug2328ReferenceDeclaration2_ {
+    
+    private bug2328ReferenceDeclaration2_() {
+    }
+    private static final .ceylon.language.meta.declaration.ValueDeclaration value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name2");
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.meta.declaration.ValueDeclaration get_() {
+        if (bug2328ReferenceDeclaration2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328ReferenceDeclaration2\' before it was set");
+        }
+    }
+}

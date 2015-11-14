@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon src" tool
+summary=Fetches source archives from a repository and extracts their contents into a source directory
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.tools.src.CeylonSrcTool
+

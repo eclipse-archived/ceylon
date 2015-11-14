@@ -1,0 +1,107 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug2335() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D D$new$() {
+        return new D();
+    }
+    
+    public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected D() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D.class));
+        }
+    }
+    
+    private final long m$priv$() {
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335, ? extends .java.lang.Object> arr = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.this;
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D> ds = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D>)(.ceylon.language.Sequence)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335, ? extends .java.lang.Object> spread$0$iterable$ = arr;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D.class))){
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335> spread$0$iterator$ = spread$0$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$0$element$;
+                            if (!((spread$0$element$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$0$element$ = ((.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335)spread$0$element$).D$new$();
+                            }
+                            return spread$0$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ds2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335, ? extends .java.lang.Object> spread$1$iterable$ = arr;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335> spread$1$iterator$ = spread$1$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$1$element$;
+                            if (!((spread$1$element$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$1$element$ = .ceylon.language.Integer.instance(((.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335)spread$1$element$).m$priv$());
+                            }
+                            return spread$1$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335 opt = this;
+        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D ds3 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335 safe$2 = opt;
+            }
+            returning safe$2 != null ? safe$2.D$new$() : null;
+        );
+        return 1L;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.class);
+}

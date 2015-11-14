@@ -1,0 +1,151 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug955_ {
+    
+    private bug955_() {
+    }
+    
+    static void bug955(final .ceylon.language.Callable<? extends .ceylon.language.String> str) {
+        .ceylon.language.print_.print(str.$call$());
+    }
+}
+class Bug595 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug595() {
+        super();
+    }
+    
+    Bug595(final .ceylon.language.Callable<? extends .ceylon.language.String> str, final .java.lang.String att) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595.class);
+}
+final class testbug955_ {
+    
+    private testbug955_() {
+    }
+    
+    static void testbug955() {
+        (
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug955_.bug955(arg$0$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug955_.bug955(arg$1$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug955_.bug955(arg$2$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                
+                final class att$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private att$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return "";
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> att$getter$_ = new att$getter$_();
+                final .java.lang.String arg$3$1 = att$getter$_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595(arg$3$0, arg$3$1);
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                
+                final class att$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private att$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return "";
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> att$getter$_ = new att$getter$_();
+                final .java.lang.String arg$4$1 = att$getter$_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595(arg$4$0, arg$4$1);
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable arg$5$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$() {
+                        return .ceylon.language.String.instance("hello world");
+                    }
+                };
+                
+                final class att$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private att$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return "";
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> att$getter$_ = new att$getter$_();
+                final .java.lang.String arg$5$1 = att$getter$_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug595(arg$5$0, arg$5$1);
+        );
+    }
+}

@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2288_ {
+    
+    private bug2288_() {
+    }
+    
+    public static void bug2288(final boolean b) {
+        final long i = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$ifResult$0;
+                {
+                    boolean sel$1 = b;
+                    if (sel$1 == true) {
+                        $ceylontmp$ifResult$0 = .ceylon.language.Integer.instance(42L);
+                    } else if (sel$1 == false) {
+                        $ceylontmp$ifResult$0 = (.ceylon.language.Integer).ceylon.language.nothing_.get_();
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$0 = .ceylon.language.Integer.instance(0L);
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        ).longValue();
+    }
+}

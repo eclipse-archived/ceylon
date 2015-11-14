@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.annotations.modules.a;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Module(
+        name = "com.redhat.ceylon.compiler.java.test.annotations.modules.a",
+        doc = "Module A doc",
+        license = "http://www.apache.org/licenses/LICENSE-2.0.html",
+        by = {"Tom"},
+        version = "0.1",
+        dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(
+                name = "ceylon.language",
+                version = "1.2.0")})
+@.ceylon.language.DocAnnotation$annotation$(description = "Module A doc")
+@.ceylon.language.AuthorsAnnotation$annotation$(authors = "Tom")
+@.ceylon.language.LicenseAnnotation$annotation$(description = "http://www.apache.org/licenses/LICENSE-2.0.html")
+@.ceylon.language.TagsAnnotation$annotation$(tags = {
+        "test",
+        "annotations"})
+@.ceylon.language.DeprecationAnnotation$annotation$(description = "doesn\'t _do_ anything")
+@.java.lang.Deprecated
+final class $module_ {
+    
+    private $module_() {
+    }
+}

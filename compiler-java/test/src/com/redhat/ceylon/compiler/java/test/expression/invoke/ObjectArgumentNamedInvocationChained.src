@@ -1,0 +1,179 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ObjectArgumentNamedInvocationChained() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke::ObjectArgumentNamedInvocationChained")
+    public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object o) {
+        .ceylon.language.print_.print(.ceylon.language.String.instance(o.toString()));
+        return this;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1o_",
+        "2o_"})
+public final class objectArgumentNamedInvocationChained_ {
+    
+    private objectArgumentNamedInvocationChained_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void objectArgumentNamedInvocationChained() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained arg$0$callable$ = (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained arg$1$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained();
+                        
+                        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                        @.com.redhat.ceylon.compiler.java.metadata.Name("o")
+                        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                        @.com.redhat.ceylon.compiler.java.metadata.Object
+                        @.com.redhat.ceylon.compiler.java.metadata.Class(
+                                identifiable = false,
+                                basic = false,
+                                extendsType = "ceylon.language::Object")
+                        final class o_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                            
+                            private o_() {
+                                super();
+                                this.string = "Foo";
+                                this.hash = 0L;
+                            }
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            private final .java.lang.String string;
+                            
+                            @.ceylon.language.SharedAnnotation$annotation$
+                            @.ceylon.language.ActualAnnotation$annotation$
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+                            public final .java.lang.String toString() {
+                                return string;
+                            }
+                            
+                            @.ceylon.language.SharedAnnotation$annotation$
+                            @.ceylon.language.ActualAnnotation$annotation$
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+                            public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+                            final .java.lang.Object other) {
+                                return false;
+                            }
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            private final long hash;
+                            
+                            @.ceylon.language.SharedAnnotation$annotation$
+                            @.ceylon.language.ActualAnnotation$annotation$
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                            public final int hashCode() {
+                                return (int)(
+                                    let
+                                    {
+                                        long $ceylontmp$hash$2 = hash;
+                                    }
+                                    returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
+                                );
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocationChained_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+                            }
+                        }
+                        final o_ arg$1$0 = new o_();
+                    }
+                    returning arg$1$callable$.callFunction(arg$1$0);
+                );
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("o")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                @.com.redhat.ceylon.compiler.java.metadata.Class(
+                        identifiable = false,
+                        basic = false,
+                        extendsType = "ceylon.language::Object")
+                final class o_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private o_() {
+                        super();
+                        this.string = "Bar";
+                        this.hash = 0L;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final .java.lang.String string;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+                    public final .java.lang.String toString() {
+                        return string;
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+                    public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+                    final .java.lang.Object other) {
+                        return false;
+                    }
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private final long hash;
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+                    public final int hashCode() {
+                        return (int)(
+                            let
+                            {
+                                long $ceylontmp$hash$3 = hash;
+                            }
+                            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
+                        );
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocationChained_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+                    }
+                }
+                final o_ arg$0$0 = new o_();
+            }
+            returning arg$0$callable$.callFunction(arg$0$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocationChained_.objectArgumentNamedInvocationChained();
+    }
+}

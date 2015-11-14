@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1958_ {
+    
+    private bug1958_() {
+    }
+    
+    static void bug1958() {
+        final .ceylon.language.Entry e = null;
+        final .ceylon.language.String s = (.ceylon.language.String)(
+            let
+            {
+                .ceylon.language.Entry safe$0 = (.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Entry)e;
+            }
+            returning safe$0 != null ? safe$0.getKey() : null;
+        );
+    }
+}

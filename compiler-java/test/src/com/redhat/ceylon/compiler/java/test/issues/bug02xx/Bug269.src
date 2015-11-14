@@ -1,0 +1,127 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+class Bug269 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug269() {
+        this.string = "";
+        this.hash = 0L;
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$0 = hash;
+            }
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269.class);
+}
+class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug269_2() {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$2 = 0L;
+            }
+            returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
+        );
+    }
+    
+    private final void test$priv$() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance(this.toString()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(this.hashCode()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.class);
+}
+final class string_ {
+    
+    private string_() {
+    }
+    
+    static void string() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.string_.string();
+    }
+}
+final class hash_ {
+    
+    private hash_() {
+    }
+    
+    static void hash() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.hash_.hash();
+    }
+}
+final class bug269_ {
+    
+    private bug269_() {
+    }
+    
+    static void bug269() {
+        final .java.lang.String string = "hello";
+        final long hash = 0L;
+        .ceylon.language.print_.print(.ceylon.language.String.instance(string));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(hash));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269().toString()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269().hashCode()));
+    }
+}
+final class bug269_2_ {
+    
+    private bug269_2_() {
+    }
+    
+    static void bug269_2() {
+        
+        final class string_ {
+            
+            private string_() {
+            }
+            
+            void string() {
+            }
+        }
+        final string_ string = new string_();
+        
+        final class hash_ {
+            
+            private hash_() {
+            }
+            
+            void hash() {
+            }
+        }
+        final hash_ hash = new hash_();
+        string.string();
+        hash.hash();
+    }
+}

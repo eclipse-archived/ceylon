@@ -1,0 +1,163 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodSpecifierMethod() {
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam$priv$() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam1$priv$() {
+        return noParam$priv$();
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod noParam2$priv$() {
+        return noParam$priv$();
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam$priv$(final long i) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam1$priv$() {
+        return oneParam$priv$(1L);
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneParam2$priv$() {
+        return (
+            let
+            {
+                long arg$1$0 = 1L;
+            }
+            returning oneParam$priv$(arg$1$0);
+        );
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$() {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = oneDefaultedParam$i();
+            }
+            returning oneDefaultedParam$priv$$canonical$($ceylontmp$i$2);
+        );
+    }
+    
+    private final long oneDefaultedParam$i() {
+        return 2L;
+    }
+    
+    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$$canonical$(final long i) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam$priv$(final long i) {
+        return oneDefaultedParam$priv$$canonical$(i);
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam1$priv$() {
+        return oneDefaultedParam$priv$();
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneDefaultedParam2$priv$() {
+        return (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod arg$3$argthis$ = this;
+                long arg$3$0 = arg$3$argthis$.oneDefaultedParam$i();
+            }
+            returning oneDefaultedParam$priv$(arg$3$0);
+        );
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning oneSequencedParam$priv$$canonical$($ceylontmp$i$4);
+        );
+    }
+    
+    private .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+        return oneSequencedParam$priv$$canonical$(i);
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam1$priv$() {
+        return oneSequencedParam$priv$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L)}, .ceylon.language.empty_.get_()));
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam2$priv$() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$5$0 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(2L),
+                        .ceylon.language.Integer.instance(3L)});
+            }
+            returning oneSequencedParam$priv$(arg$5$0);
+        );
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod oneSequencedParam3$priv$() {
+        return oneSequencedParam$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                            
+                            @.java.lang.Override
+                            protected final .java.lang.Object $evaluate$(int $index$) {
+                                switch ($index$) {
+                                case 0: 
+                                    return .ceylon.language.Integer.instance(1L);
+                                
+                                default: 
+                                    return null;
+                                
+                                }
+                            }
+                        }.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$6 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$6 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmp$item$6;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.class);
+}

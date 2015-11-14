@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Method // line 1
+public final class foo_ {
+    
+    private foo_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void foo() { // line 4
+        ( // line 1
+            let
+            {
+                long $ceylontmp$integer$0 = .com.redhat.ceylon.compiler.java.test.fordebug.lines.foo_.foo$integer(); // line 2
+                foo($ceylontmp$integer$0); // line 3
+            }
+            returning null; // line 1
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final long foo$integer() { // line 2
+        return 1L; // line 2
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$ // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything") // line 1
+    public static void foo(@.com.redhat.ceylon.compiler.java.metadata.Name("integer") // line 1
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer") // line 4
+    final long integer) { // line 4
+        .ceylon.language.print_.print(.ceylon.language.String.instance("goodbye")); // line 4
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.fordebug.lines.foo_.foo();
+    }
+}

@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+final class run_ {
+    
+    private run_() {
+    }
+    
+    static void run() {
+        
+        final class holaMundo_ {
+            
+            private holaMundo_() {
+            }
+            
+            void holaMundo() {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$name$0 = holaMundo$name();
+                        holaMundo($ceylontmp$name$0);
+                    }
+                    returning null;
+                );
+            }
+            
+            private final .java.lang.String holaMundo$name() {
+                return "mundo";
+            }
+            
+            void holaMundo(final .java.lang.String name) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("hola " + name));
+            }
+        }
+        final holaMundo_ holaMundo = new holaMundo_();
+        .ceylon.language.String arg$2;
+        if ((arg$2 = (.ceylon.language.String)(.java.lang.Object).ceylon.language.process_.get_().getArguments().getFirst()) != null) {
+            final .java.lang.String arg$3 = arg$2.toString();
+            holaMundo.holaMundo(arg$3);
+        } else {
+            holaMundo.holaMundo();
+        }
+    }
+}

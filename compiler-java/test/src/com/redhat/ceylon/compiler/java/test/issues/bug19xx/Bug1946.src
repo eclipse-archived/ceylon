@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1946_ {
+    
+    private bug1946_() {
+    }
+    
+    static void bug1946(final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> m, final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object> m2) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object> iterable$1 = (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)m;
+        final boolean isArray$2 = iterable$1 instanceof .ceylon.language.Array;
+        final boolean isTuple$3 = iterable$1 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$1).$getArray$() != null;
+        .java.lang.Object elem$0 = null;
+        final .java.lang.Object array$4;
+        int i$5 = 0;
+        final int length$6;
+        if (isTuple$3) {
+            array$4 = ((.ceylon.language.Tuple)iterable$1).$getArray$();
+            i$5 = ((.ceylon.language.Tuple)iterable$1).$getFirst$();
+            length$6 = i$5 + ((.ceylon.language.Tuple)iterable$1).$getLength$();
+        } else if (isArray$2) {
+            array$4 = ((.ceylon.language.Array)iterable$1).toArray();
+            length$6 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$4);
+        } else {
+            array$4 = null;
+            length$6 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> elem$0$iterator$ = isTuple$3 || isArray$2 ? null : iterable$1.iterator();
+        loop_0: while (isTuple$3 || isArray$2 ? i$5 < length$6 : !((elem$0 = elem$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$3 || isArray$2) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
+            final long k = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getKey()).longValue();
+            final .java.lang.Object v = ((.ceylon.language.Entry)elem$0).getItem();
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object> iterable$8 = (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)m2;
+        final boolean isArray$9 = iterable$8 instanceof .ceylon.language.Array;
+        final boolean isTuple$10 = iterable$8 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$8).$getArray$() != null;
+        .java.lang.Object elem$7 = null;
+        final .java.lang.Object array$11;
+        int i$12 = 0;
+        final int length$13;
+        if (isTuple$10) {
+            array$11 = ((.ceylon.language.Tuple)iterable$8).$getArray$();
+            i$12 = ((.ceylon.language.Tuple)iterable$8).$getFirst$();
+            length$13 = i$12 + ((.ceylon.language.Tuple)iterable$8).$getLength$();
+        } else if (isArray$9) {
+            array$11 = ((.ceylon.language.Array)iterable$8).toArray();
+            length$13 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$11);
+        } else {
+            array$11 = null;
+            length$13 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .ceylon.language.Integer>> elem$7$iterator$ = isTuple$10 || isArray$9 ? null : iterable$8.iterator();
+        loop_1: while (isTuple$10 || isArray$9 ? i$12 < length$13 : !((elem$7 = elem$7$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$10 || isArray$9) elem$7 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$11, i$12++);
+            final .java.lang.Object k = ((.ceylon.language.Entry)elem$7).getKey();
+            final long v = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$7).getItem()).longValue();
+        }
+    }
+}

@@ -1,0 +1,164 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1530_ {
+    
+    private bug1530_() {
+    }
+    
+    static void bug1530() {
+        final VariableBox<.java.lang.Object> o = new VariableBox<.java.lang.Object>(.ceylon.language.Integer.instance(1L));
+        final VariableBox<foo_> foo = new VariableBox<foo_>();
+        foo.ref = new foo_();
+        
+        final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private foo_() {
+            }
+            
+            public final void t() {
+                .ceylon.language.print_.print(o.ref);
+                .ceylon.language.print_.print(foo.ref);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
+            }
+        }
+        foo.ref.t();
+        
+        final class capturedNotSelfCaptured_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private capturedNotSelfCaptured_() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(capturedNotSelfCaptured_.class));
+            }
+        }
+        final capturedNotSelfCaptured_ capturedNotSelfCaptured = new capturedNotSelfCaptured_();
+        
+        class T implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            T() {
+                .ceylon.language.print_.print(capturedNotSelfCaptured);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(T.class));
+            }
+        }
+        new T();
+    }
+}
+final class bug1530_foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private bug1530_foo_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.class);
+    
+    public final void t() {
+        .ceylon.language.print_.print(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.get_());
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_ get_() {
+        if (bug1530_foo_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1530_foo\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_.$TypeDescriptor$;
+    }
+}
+class Bug1530 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1530() {
+        this.foo = null;
+        this.bar = null;
+    }
+    private transient .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_ foo;
+    
+    final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private foo_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getFoo$priv$";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.this, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.class, $name$);
+        }
+        
+        public final void t() {
+            .ceylon.language.print_.print(getFoo$priv$());
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_.class));
+        }
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_ getFoo$priv$() {
+        if (foo == null) foo = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.foo_();
+        return foo;
+    }
+    private transient .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ bar;
+    
+    public final class bar_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private bar_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getBar";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.this, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.class, $name$);
+        }
+        
+        public final void t() {
+            .ceylon.language.print_.print(getBar());
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_.class));
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_ getBar() {
+        if (bar == null) bar = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.bar_();
+        return bar;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1530.class);
+}

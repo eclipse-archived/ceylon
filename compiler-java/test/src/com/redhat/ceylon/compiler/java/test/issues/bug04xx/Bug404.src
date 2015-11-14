@@ -1,0 +1,126 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
+
+class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug404() {
+    }
+    
+    private final void test$priv$() {
+        boolean sync = false;
+        sync = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$0 = .ceylon.language.String.instance(.ceylon.language.Float.toString(1.0));
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                
+                @.java.lang.Override
+                protected final .java.lang.Object $evaluate$(int $index$) {
+                    switch ($index$) {
+                    case 0: 
+                        return .ceylon.language.String.instance("1");
+                    
+                    case 1: 
+                        return .ceylon.language.String.instance("1.0");
+                    
+                    default: 
+                        return null;
+                    
+                    }
+                }
+            }.contains($ceylontmp$0);
+        );
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        sync = !(
+            let
+            {
+                .java.lang.Object $ceylontmp$2 = (
+                    let
+                    {
+                        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$1$iterable$ = empty;
+                    }
+                    returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        @.java.lang.Override
+                        public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                                final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$1$iterator$ = spread$1$iterable$.iterator();
+                                
+                                @.java.lang.Override
+                                public final .java.lang.Object next() {
+                                    .java.lang.Object spread$1$element$;
+                                    if (!((spread$1$element$ = spread$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                        spread$1$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$1$element$).getUppercased());
+                                    }
+                                    return spread$1$element$;
+                                }
+                            };
+                        }
+                    }.sequence();
+                );
+            }
+            returning $ceylontmp$2 instanceof .ceylon.language.Sequence;
+        );
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> full = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("foo")});
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp$4 = (
+                    let
+                    {
+                        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$3$iterable$ = full;
+                    }
+                    returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        @.java.lang.Override
+                        public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                                final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$3$iterator$ = spread$3$iterable$.iterator();
+                                
+                                @.java.lang.Override
+                                public final .java.lang.Object next() {
+                                    .java.lang.Object spread$3$element$;
+                                    if (!((spread$3$element$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                        spread$3$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$3$element$).getUppercased());
+                                    }
+                                    return spread$3$element$;
+                                }
+                            };
+                        }
+                    }.sequence();
+                );
+            }
+            returning $ceylontmp$4 instanceof .ceylon.language.Sequence;
+        );
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> spread1 = (
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$5$iterable$ = full;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$5$iterator$ = spread$5$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$5$element$;
+                            if (!((spread$5$element$ = spread$5$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$5$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$5$element$).getUppercased());
+                            }
+                            return spread$5$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug404.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug404.class);
+}

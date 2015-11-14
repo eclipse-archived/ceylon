@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug01xx;
+
+final class bug192_ {
+    
+    private bug192_() {
+    }
+    
+    static void bug192() {
+        final .java.lang.String foo;
+        if (true) {
+            foo = "hello";
+        } else {
+            foo = "goodbye";
+        }
+        
+        final class printFoo_ {
+            
+            private printFoo_() {
+            }
+            
+            void printFoo() {
+                .ceylon.language.print_.print(.ceylon.language.String.instance(foo));
+            }
+        }
+        final printFoo_ printFoo = new printFoo_();
+        printFoo.printFoo();
+    }
+}

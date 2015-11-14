@@ -1,0 +1,88 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+abstract class Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Top() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top.class);
+}
+class Left extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top {
+    
+    Left() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.class);
+}
+abstract class Right extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top {
+    
+    Right() {
+        super();
+    }
+    
+    public abstract .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> getChildren();
+    
+    public abstract .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> getChildren2();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.class);
+}
+class Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right {
+    
+    protected Bottom() {
+        super();
+        this.sides = null;
+        this.children = null;
+        this.children2 = null;
+    }
+    
+    Bottom(final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right mid, final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> sides) {
+        super();
+        this.sides = sides;
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right mid$1;
+        if ((mid$1 = mid) != null) {
+            final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right mid$3 = mid$1;
+            children = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$), new .java.lang.Object[]{mid$3}, getSides$priv$());
+            children2 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$), new .java.lang.Object[]{mid$3}, getSides$priv$());
+        } else {
+            final .java.lang.Object mid$2 = mid$1;
+            children = getSides$priv$();
+            children2 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.nothing_.get_()}, getSides$priv$());
+        }
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> sides;
+    
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> getSides$priv$() {
+        return sides;
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> children;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential getChildren() {
+        return children;
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> children2;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential getChildren2() {
+        return children2;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bottom.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bottom.class);
+}

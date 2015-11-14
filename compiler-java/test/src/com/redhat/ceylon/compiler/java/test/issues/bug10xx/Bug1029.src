@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1029_ {
+    
+    private bug1029_() {
+    }
+    
+    static void bug1029() {
+        .ceylon.language.print_.print(.ceylon.language.String.replace("hello", "h", "H"));
+    }
+}

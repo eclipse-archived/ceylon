@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class topLevelObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private topLevelObject_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.class);
+    
+    public final void y() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ get_() {
+        if (topLevelObject_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObject\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$TypeDescriptor$;
+    }
+}
+final class accessTopLevelObject_ {
+    
+    private accessTopLevelObject_() {
+    }
+    
+    static void accessTopLevelObject() {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.get_().y();
+    }
+}

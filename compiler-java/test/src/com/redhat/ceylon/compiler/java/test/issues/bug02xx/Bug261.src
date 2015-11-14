@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+final class bug261_ {
+    
+    private bug261_() {
+    }
+    
+    static void bug261() {
+        long vk = 0L;
+        long vl = 0L;
+        
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Inner() {
+                this.vi = 0L;
+                this.vj = 0L;
+            }
+            private long vi;
+            
+            public final long getVi() {
+                return vi;
+            }
+            
+            public final void setVi(final long vi) {
+                this.vi = vi;
+            }
+            private long vj;
+            
+            public final long getVj() {
+                return vj;
+            }
+            
+            public final void setVj(final long vj) {
+                this.vj = vj;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug261_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class));
+            }
+        }
+        final Inner inner = new Inner();
+        inner.setVi((
+            let
+            {
+                Inner $ceylontmp$opE$0 = inner;
+                long $ceylontmp$opV$1 = 2L;
+                $ceylontmp$opE$0.setVj($ceylontmp$opV$1);
+            }
+            returning $ceylontmp$opV$1;
+        ));
+        vk = (
+            let
+            {
+                long $ceylontmp$op$2 = 2L;
+                vl = $ceylontmp$op$2;
+            }
+            returning $ceylontmp$op$2;
+        );
+    }
+}

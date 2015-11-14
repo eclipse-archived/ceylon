@@ -1,0 +1,54 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class CtorInitializingMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CtorInitializingMethod() {
+        super();
+        this.name$priv$ = null;
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.String> name$priv$;
+    
+    private final .java.lang.String name$priv$(final long $int) {
+        if (name$priv$ == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return name$priv$.$call$(.ceylon.language.Integer.instance($int)).toString();
+    }
+    
+    public CtorInitializingMethod(final .ceylon.language.Callable<? extends .ceylon.language.String> name$param$) {
+        this.name$priv$ = null;
+        this.name$priv$ = name$param$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorInitializingMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorInitializingMethod.class);
+}
+class CtorInitializerMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CtorInitializerMethod() {
+        super();
+    }
+    
+    CtorInitializerMethod(final .ceylon.language.Callable<? extends .ceylon.language.String> nom) {
+        
+        final class name_ {
+            
+            private name_() {
+                this.name$priv$ = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.String> name$priv$;
+            
+            private final .java.lang.String name$priv$(final long $int) {
+                if (name$priv$ == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return name$priv$.$call$(.ceylon.language.Integer.instance($int)).toString();
+            }
+        }
+        final name_ name = new name_();
+        name.name$priv$ = nom;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorInitializerMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorInitializerMethod.class);
+}

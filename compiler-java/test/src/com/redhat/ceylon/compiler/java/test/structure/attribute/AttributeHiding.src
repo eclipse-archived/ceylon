@@ -1,0 +1,55 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class AttributeHiding implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AttributeHiding() {
+        this.name = "";
+    }
+    private .java.lang.String name;
+    
+    public final .java.lang.String getName() {
+        return name;
+    }
+    
+    public final void setName(final .java.lang.String name) {
+        this.name = name;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return getName();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding.class);
+}
+class AttributeHidingSub extends .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHiding {
+    
+    AttributeHidingSub() {
+        super();
+        this.name = "";
+    }
+    private .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return name;
+    }
+    
+    private final void setName$priv$(final .java.lang.String name) {
+        this.name = name;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return getName$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.class);
+}

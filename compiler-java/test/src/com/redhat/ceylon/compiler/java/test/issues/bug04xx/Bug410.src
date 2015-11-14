@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
+
+final class bug410_ {
+    
+    private bug410_() {
+    }
+    
+    static void bug410() {
+        final .ceylon.language.Collection<? extends .ceylon.language.Character> s = .ceylon.language.String.instance("foo");
+    }
+}

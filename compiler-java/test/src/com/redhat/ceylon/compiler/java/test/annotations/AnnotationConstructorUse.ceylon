@@ -1,0 +1,2 @@
+annotationConstructor()
+class AnnotationConstructorUse() {}

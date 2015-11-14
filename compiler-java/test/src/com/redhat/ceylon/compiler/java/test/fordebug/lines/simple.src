@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
+ // line 21
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 20
+@.com.redhat.ceylon.compiler.java.metadata.Method // line 20
+final class name_ {
+     // line 21
+    private name_() { // line 21
+    }
+     // line 21
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String") // line 21
+    static .java.lang.String name(@.com.redhat.ceylon.compiler.java.metadata.Name("firstName") // line 21
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String") // line 21
+    final .java.lang.String firstName, @.com.redhat.ceylon.compiler.java.metadata.Name("lastName") // line 21
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String") // line 21
+    final .java.lang.String lastName) { // line 21
+        return new .java.lang.StringBuilder().append("My name is ").append(firstName).append(" ").append(lastName).append(". Hello !").toString(); // line 21
+    }
+} // line 24
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 21
+@.ceylon.language.SharedAnnotation$annotation$ // line 24
+public class Main2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 24
+     // line 24
+    public Main2() { // line 24
+        final .java.lang.String firstName = "David"; // line 25
+        final .java.lang.String lastName = "Festal"; // line 26
+        .ceylon.language.process_.get_().writeLine(.com.redhat.ceylon.compiler.java.test.fordebug.lines.name_.name(firstName, lastName)); // line 27
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Main2();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Main2.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Main2.class);
+}

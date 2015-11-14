@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+final class bug2293_ {
+    
+    private bug2293_() {
+    }
+    
+    static void bug2293() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> tuples = (.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.String.instance("")}),
+                (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(2L),
+                        .ceylon.language.String.instance("")}),
+                (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(3L),
+                        .ceylon.language.String.instance("")})});
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> firsts = ((.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)tuples).<.ceylon.language.Integer>map(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Callable<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), "Integer([Integer, String])", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence $instance$ = (.ceylon.language.Sequence)$param$0;
+                return (.ceylon.language.Integer)$instance$.getFirst();
+            }
+        });
+    }
+}

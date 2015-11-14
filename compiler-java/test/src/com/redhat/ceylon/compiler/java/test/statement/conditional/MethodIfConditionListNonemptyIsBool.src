@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfConditionList() {
+    }
+    
+    private final boolean m$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+        boolean $ceylontmp$if$0 = false;
+        .ceylon.language.Sequential<? extends .java.lang.Object> x$1;
+        final .ceylon.language.Sequence<? extends .java.lang.Object> x$2;
+        .java.lang.Object y$3;
+        final long y$4;
+        if ((x$1 = x) instanceof .ceylon.language.Sequence) {
+            x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)x$1;
+            if ((y$3 = x$2.getFromFirst(0L)) instanceof .ceylon.language.Integer) {
+                y$4 = ((.ceylon.language.Integer)y$3).longValue();
+                if (y$4 > 0L) {
+                    $ceylontmp$if$0 = true;
+                }
+            } else {
+                y$4 = 0L;
+            }
+        } else {
+            x$2 = null;
+            y$4 = 0L;
+        }
+        if ($ceylontmp$if$0) {
+            return y$4 == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionList.class);
+}

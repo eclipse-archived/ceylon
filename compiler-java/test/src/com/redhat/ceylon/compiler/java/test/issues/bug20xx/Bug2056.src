@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class Bug2056 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2056() {
+        .com.redhat.ceylon.compiler.java.language.Getter<.ceylon.language.Callable<? extends .ceylon.language.String>> s$getter$_;
+        s$getter$_ = (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Attribute
+                @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+                @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.language::Getter<ceylon.language::String()>"})
+                final class s$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.ceylon.language.Callable<? extends .ceylon.language.String>> {
+                    
+                    private s$getter$_() {
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Transient
+                    public .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1)
+                        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+                        @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+                        @.com.redhat.ceylon.compiler.java.metadata.Method
+                        {
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .ceylon.language.String $call$() {
+                                return .ceylon.language.String.instance("");
+                            }
+                        };
+                    }
+                }
+            }
+            returning new s$getter$_();
+        );
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2056.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2056.class);
+}

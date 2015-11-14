@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ObjectInStatement() {
+    }
+    
+    private final void m$priv$() {
+        if (true) {
+            final long i = 1L;
+            
+            final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private foo_() {
+                    this.string = .ceylon.language.Integer.toString(i);
+                }
+                private final .java.lang.String string;
+                
+                @.java.lang.Override
+                public final .java.lang.String toString() {
+                    return string;
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInStatement.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
+                }
+            }
+            final foo_ foo = new foo_();
+            final .java.lang.String s = foo.toString();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInStatement.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.ObjectInStatement.class);
+}

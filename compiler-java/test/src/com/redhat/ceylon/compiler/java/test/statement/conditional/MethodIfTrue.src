@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfTrue_ {
+    
+    private methodIfTrue_() {
+    }
+    
+    static .java.lang.String methodIfTrue() {
+        if (true) {
+            return "";
+        }
+        throw new .java.lang.Error("Ceylon flow error");
+    }
+}

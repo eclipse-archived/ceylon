@@ -1,0 +1,99 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug903$foo$I {
+    
+    public .java.lang.Object I$impl();
+    
+    public .java.lang.Object m();
+}
+public interface Bug903 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug903$impl();
+    
+    public abstract .java.lang.Object item(final long index);
+    
+    public abstract long getI();
+    
+    public abstract void setI(final long i);
+    
+    public .java.lang.Object foo();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903.class);
+}
+public final class Bug903$impl implements .java.io.Serializable {
+    
+    public Bug903$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 $this;
+    
+    public .java.lang.Object foo() {
+        
+        final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private obj_() {
+            }
+            
+            public final .java.lang.Object m() {
+                (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 arg$0$callable$ = $this;
+                        long arg$0$0 = 0L;
+                    }
+                    returning arg$0$callable$.item(arg$0$0);
+                );
+                return $this.item(0L);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("foo")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(obj_.class));
+            }
+        }
+        final obj_ obj = new obj_();
+        
+        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            C() {
+            }
+            
+            public final .java.lang.Object m() {
+                (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 arg$1$callable$ = $this;
+                        long arg$1$0 = 0L;
+                    }
+                    returning arg$1$callable$.item(arg$1$0);
+                );
+                return $this.item(0L);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("foo")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
+            }
+        }
+        
+        final class I$impl implements .java.io.Serializable {
+            
+            I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$I $this) {
+                this.$this = $this;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$foo$I $this;
+            
+            public .java.lang.Object m() {
+                (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903 arg$2$callable$ = .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl.this.$this;
+                        long arg$2$0 = 0L;
+                    }
+                    returning arg$2$callable$.item(arg$2$0);
+                );
+                return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug903$impl.this.$this.item(0L);
+            }
+        }
+        return null;
+    }
+}

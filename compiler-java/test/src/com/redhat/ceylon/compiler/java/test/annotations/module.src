@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Module(
+        name = "com.redhat.ceylon.compiler.java.test.annotations",
+        doc = "Bla bla.",
+        license = "http://www.gnu.org/licenses/gpl.html",
+        by = {
+                "Stef FroMage",
+                "Tomas Hradec"},
+        version = "1.2.3",
+        dependencies = {
+                @.com.redhat.ceylon.compiler.java.metadata.Import(
+                        name = "java.base",
+                        version = "7"),
+                @.com.redhat.ceylon.compiler.java.metadata.Import(
+                        name = "javax.xml",
+                        version = "7"),
+                @.com.redhat.ceylon.compiler.java.metadata.Import(
+                        name = "ceylon.language",
+                        version = "1.2.0")},
+        nativeBackends = {"jvm"})
+@.ceylon.language.DocAnnotation$annotation$(description = "Bla bla.")
+@.ceylon.language.AuthorsAnnotation$annotation$(authors = {
+        "Stef FroMage",
+        "Tomas Hradec"})
+@.ceylon.language.LicenseAnnotation$annotation$(description = "http://www.gnu.org/licenses/gpl.html")
+@.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+final class $module_ {
+    
+    private $module_() {
+    }
+    public static final .java.lang.String java$base = null;
+    public static final .java.lang.String javax$xml = null;
+}

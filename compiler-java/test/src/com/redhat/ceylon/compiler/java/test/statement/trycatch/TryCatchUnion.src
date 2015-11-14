@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class E1 extends .ceylon.language.Exception {
+    
+    protected E1() {
+        super();
+    }
+    
+    E1(final .ceylon.language.String description, final .java.lang.Exception cause) {
+        super(description, cause);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.E1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E1.class);
+}
+class E2 extends .ceylon.language.Exception {
+    
+    protected E2() {
+        super();
+    }
+    
+    E2(final .ceylon.language.String description, final .java.lang.Exception cause) {
+        super(description, cause);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.E2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.E2.class);
+}
+class TryCatchUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    TryCatchUnion() {
+    }
+    
+    private final void t$priv$() {
+    }
+    
+    private final void c$priv$(final .java.lang.Exception e) {
+    }
+    
+    private final void m$priv$() {
+        try {
+            t$priv$();
+        } catch (final .java.lang.Throwable exception$0) {
+            if (exception$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.E1 || exception$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.E2) {
+                final .java.lang.Object e = exception$0;
+                c$priv$((.java.lang.Exception)e);
+            } else throw exception$0;
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchUnion.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryCatchUnion.class);
+}

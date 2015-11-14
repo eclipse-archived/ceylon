@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+interface Bug202_ReadList<T> {
+    
+    public abstract T get(final long i);
+}
+class Bug202_Tricky implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky>>, .java.io.Serializable {
+    
+    Bug202_Tricky() {
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList<? extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky> get(final long i) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky.class);
+}
+final class bug202_tricky_ {
+    
+    private bug202_tricky_() {
+    }
+    
+    static .java.lang.Object bug202_tricky(final long i) {
+        if (i <= 0L) {
+            return new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_Tricky();
+        } else {
+            return ((.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug202_ReadList).com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug202_tricky_.bug202_tricky(i - 1L)).get(i);
+        }
+    }
+}

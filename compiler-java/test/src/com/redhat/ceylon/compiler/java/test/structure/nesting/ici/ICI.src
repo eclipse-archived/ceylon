@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting.ici;
+
+interface I$IC$ICI<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X>.IC.ICI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl$IC$ICI$impl();
+}
+interface I<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl<? extends T, ? super X> $com$redhat$ceylon$compiler$java$test$structure$nesting$ici$I$impl();
+    
+    public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b);
+    
+    public abstract <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b);
+    
+    public abstract <U>T m1(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u);
+}
+final class I$impl<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> implements .java.io.Serializable {
+    
+    I$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this) {
+        this.$reified$T = $reified$T;
+        this.$reified$X = $reified$X;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I<? extends T, ? super X> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+        this.$reified$T = $reified$T;
+    }
+    
+    public final <U>U m1$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b) {
+        return null;
+    }
+    
+    class IC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        IC() {
+        }
+        
+        final class ICI$impl implements .java.io.Serializable {
+            
+            ICI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this) {
+                this.$this = $this;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$IC$ICI<? extends T, ? super X> $this;
+            
+            private T m2$priv$() {
+                return (T)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$this.<.java.lang.Object>m1(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null);
+            }
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I.class, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$reified$T, .com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.this.$reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.ici.I$impl.IC.class));
+        }
+    }
+}

@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.positions;
+/* 21 : 5([Return - return]) */
+/* 20 : 1 */@/* 20 : 1 */.com.redhat.ceylon.compiler.java.metadata.Ceylon(/* 20 : 1 */major = /* 20 : 1 */7)
+/* 20 : 1 */@/* 20 : 1 */.com.redhat.ceylon.compiler.java.metadata.Method
+final class name_ {
+    /* 21 : 5([Return - return]) */
+    /* 21 : 5([Return - return]) */private name_() /* 21 : 5([Return - return]) */{
+    }
+    /* 21 : 5([Return - return]) */
+    /* 21 : 5([Return - return]) */@/* 21 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.TypeInfo(/* 21 : 5([Return - return]) */"ceylon.language::String")
+    static /* 21 : 5([Return - return]) */.java.lang.String name(/* 21 : 5([Return - return]) */@/* 21 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.Name(/* 21 : 5([Return - return]) */"firstName")
+    /* 21 : 5([Return - return]) */@/* 21 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.TypeInfo(/* 21 : 5([Return - return]) */"ceylon.language::String")
+    final /* 21 : 5([Return - return]) */.java.lang.String firstName, /* 21 : 5([Return - return]) */@/* 21 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.Name(/* 21 : 5([Return - return]) */"lastName")
+    /* 21 : 5([Return - return]) */@/* 21 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.TypeInfo(/* 21 : 5([Return - return]) */"ceylon.language::String")
+    final /* 21 : 5([Return - return]) */.java.lang.String lastName) /* 21 : 5([Return - return]) */{
+        /* 21 : 5([Return - return]) */return /* 21 : 48([StringLiteral - ``. Hello !"]) *//* 21 : 40([Expression - lastName]) *//* 21 : 35([StringLiteral - `` ``]) *//* 21 : 26([Expression - firstName]) *//* 21 : 12([StringTemplate - "My name is ``, StringLiteral - "My name is ``]) */new /* 21 : 12([StringTemplate - "My name is ``, StringLiteral - "My name is ``]) */.java.lang.StringBuilder().append(/* 21 : 12([StringTemplate - "My name is ``, StringLiteral - "My name is ``]) */"My name is ").append(/* 21 : 26([Expression - firstName]) */firstName).append(/* 21 : 35([StringLiteral - `` ``]) */" ").append(/* 21 : 40([Expression - lastName]) */lastName).append(/* 21 : 48([StringLiteral - ``. Hello !"]) */". Hello !").toString();
+    }
+}
+/* 21 : 5([Return - return]) */@/* 21 : 5([Return - return]) */.com.redhat.ceylon.compiler.java.metadata.Ceylon(/* 21 : 5([Return - return]) */major = /* 21 : 5([Return - return]) */7)
+/* 24 : 1([Annotation - shared, ClassDefinition - shared]) */@/* 24 : 1([Annotation - shared, ClassDefinition - shared]) */.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Annotations({@.com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
+public class Main2 implements /* 24 : 1([Annotation - shared, ClassDefinition - shared]) */.com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Main2() {
+        /* 25 : 5([AttributeDeclaration - String]) */final /* 25 : 5([AttributeDeclaration - String]) */.java.lang.String firstName = /* 25 : 24([Expression - "David", StringLiteral - "David"]) */"David";
+        /* 26 : 5([AttributeDeclaration - String]) */final /* 26 : 5([AttributeDeclaration - String]) */.java.lang.String lastName = /* 26 : 23([Expression - "Festal", StringLiteral - "Festal"]) */"Festal";
+        /* 27 : 22([PositionalArgumentList - (]) *//* 27 : 27([PositionalArgumentList - (]) *//* 27 : 5([ExpressionStatement - process, Expression - process, InvocationExpression - process, BaseMemberExpression - process]) */.ceylon.language.process_.get_().writeLine(/* 27 : 27([PositionalArgumentList - (]) *//* 27 : 23([Expression - name, InvocationExpression - name]) */.com.redhat.ceylon.compiler.java.test.fordebug.positions.name_.name(/* 27 : 28([Expression - firstName]) */firstName, /* 27 : 39([Expression - lastName]) */lastName));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.fordebug.positions.Main2();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.fordebug.positions.Main2.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.positions.Main2.class);
+}

@@ -1,0 +1,7 @@
+; Plugin definition for the "ceylon bash-completion" tool
+summary=A tool which provides completion suggestions for the Bash shell
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.tools.bashcompletion.CeylonBashCompletionTool
+hidden=true
+
+

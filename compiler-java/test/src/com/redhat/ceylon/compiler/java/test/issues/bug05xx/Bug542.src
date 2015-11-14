@@ -1,0 +1,8 @@
+final class ceylon_ {
+    
+    private ceylon_() {
+    }
+    
+    static void ceylon() {
+    }
+}

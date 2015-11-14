@@ -1,0 +1,174 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+public interface Bug2338I$J {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$impl$J$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C C$new$();
+}
+interface Bug2338I {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J getJ();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.class);
+}
+final class Bug2338I$impl implements .java.io.Serializable {
+    
+    Bug2338I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I $this;
+    
+    public final class J$impl implements .java.io.Serializable {
+        
+        public J$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J $this;
+        
+        public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C C$new$() {
+            return new C();
+        }
+        
+        public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected C() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C.class));
+            }
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J getJ() {
+        return (
+            let
+            {
+                
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J {
+                    
+                    private anonymous_0_() {
+                        this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$J$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.this.new J$impl(this);
+                    }
+                    protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$J$this$;
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$impl$J$impl() {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$J$this$;
+                    }
+                    
+                    @.java.lang.Override
+                    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C C$new$() {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$J$this$.C$new$();
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("j")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+}
+final class bug2338J_ {
+    
+    private bug2338J_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (
+                let
+                {
+                    
+                    class anonymous_1_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I {
+                        
+                        private anonymous_1_() {
+                            this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl(this);
+                        }
+                        protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$this$;
+                        
+                        @.java.lang.Override
+                        public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$impl() {
+                            return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$this$;
+                        }
+                        
+                        @.java.lang.Override
+                        public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J getJ() {
+                            return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2338I$this$.getJ();
+                        }
+                        
+                        @.java.lang.Override
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class);
+                        }
+                    }
+                }
+                returning new anonymous_1_();
+            ).getJ();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J get_() {
+        if (bug2338J_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2338J\' before it was set");
+        }
+    }
+}
+final class bug2338NewC_ {
+    
+    private bug2338NewC_() {
+    }
+    private static final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C.class)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class))), "Bug2338I.J.C()(Bug2338I.J)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J)$param$0;
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C.class)), .ceylon.language.Empty.$TypeDescriptor$, "Bug2338I.J.C()", (short)-1){
+                        
+                        @.java.lang.Override
+                        public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C $call$() {
+                            return $instance$.C$new$();
+                        }
+                    };
+                }
+            }.$call$(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.get_());
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> get_() {
+        if (bug2338NewC_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2338NewC\' before it was set");
+        }
+    }
+}

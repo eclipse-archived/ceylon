@@ -1,0 +1,11 @@
+package bug187;
+
+final class bar_ {
+    
+    private bar_() {
+    }
+    
+    static void bar() {
+        .bug187.main_.$main();
+    }
+}

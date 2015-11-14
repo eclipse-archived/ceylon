@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+final class bug1873_ {
+    
+    private bug1873_() {
+    }
+    
+    static void bug1873() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("hello");
+                
+                case 1: 
+                    return .ceylon.language.String.instance("world");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> strs2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = iter;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$0$element$;
+                            if (!((spread$0$element$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$0$element$ = ((.ceylon.language.String)spread$0$element$).$clone();
+                            }
+                            return spread$0$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+    }
+}

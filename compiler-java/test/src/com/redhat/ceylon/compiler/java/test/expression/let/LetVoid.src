@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.expression.let;
+
+final class letVoidAnything_ {
+    
+    private letVoidAnything_() {
+    }
+    
+    static .java.lang.Object letVoidAnything() {
+        return null;
+    }
+}
+final class letVoid_ {
+    
+    private letVoid_() {
+    }
+    
+    static void letVoid() {
+        (
+            let
+            {
+                long $ceylontmp$x$1 = .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid$x();
+                letVoid($ceylontmp$x$1);
+            }
+            returning null;
+        );
+    }
+    
+    public static final long letVoid$x() {
+        return 1L;
+    }
+    
+    static void letVoid(final long x) {
+        final .java.lang.Object x1 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid();
+            }
+            returning null;
+        );
+        final .java.lang.Object x2 = (
+            let
+            {
+                (
+                    let
+                    {
+                        final long a = 42L;
+                        .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid();
+                    }
+                    returning null;
+                );
+            }
+            returning null;
+        );
+        final .java.lang.Object x5 = (
+            let
+            {
+                (
+                    let
+                    {
+                        final long a = 42L;
+                        (
+                            let
+                            {
+                                long arg$0$0 = .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid$x();
+                                .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid(arg$0$0);
+                            }
+                            returning null;
+                        );
+                    }
+                    returning null;
+                );
+            }
+            returning null;
+        );
+        final .java.lang.Object x3 = .com.redhat.ceylon.compiler.java.test.expression.let.letVoidAnything_.letVoidAnything();
+        final .java.lang.Object x4 = (
+            let
+            {
+                final long a = 42L;
+            }
+            returning .com.redhat.ceylon.compiler.java.test.expression.let.letVoidAnything_.letVoidAnything();
+        );
+    }
+}

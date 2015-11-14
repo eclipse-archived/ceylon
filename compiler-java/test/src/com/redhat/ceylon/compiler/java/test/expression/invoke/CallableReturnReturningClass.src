@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class CallableReturnReturningClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CallableReturnReturningClass() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass.class);
+}
+final class callableReturnReturningClass_bar_ {
+    
+    private callableReturnReturningClass_bar_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass> callableReturnReturningClass_bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass>(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CallableReturnReturningClass()", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass $call$() {
+                return new .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableReturnReturningClass();
+            }
+        };
+    }
+}

@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+public final class bug2016_ {
+    
+    private bug2016_() {
+    }
+    
+    public static void bug2016() {
+        final .ceylon.language.Integer wordBoundary = null;
+        {
+            .ceylon.language.Integer sel$0 = wordBoundary;
+            if (sel$0 == null) {
+                final .java.lang.Object wordBoundary$2 = (.java.lang.Object)sel$0;
+            } else if (sel$0 != null && sel$0.longValue() == 0L) {
+            } else {
+                final long wordBoundary$1 = ((.ceylon.language.Integer)sel$0).longValue();
+            }
+        }
+        final .ceylon.language.Sequence enums = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Float.instance(2.0)});
+        final long e0 = ((.ceylon.language.Integer)enums.getFromFirst(0L)).longValue();
+        {
+            .ceylon.language.Integer sel$3 = .ceylon.language.Integer.instance(e0);
+            if (sel$3 instanceof .ceylon.language.Integer) {
+                final long e0$5 = ((.ceylon.language.Integer)sel$3).longValue();
+            } else {
+                final .java.lang.Object e0$4 = sel$3;
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2016_.bug2016();
+    }
+}

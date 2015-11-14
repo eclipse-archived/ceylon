@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
+
+class Bug799 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug799() {
+    }
+    
+    private final void mNothing$priv$(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
+        final .ceylon.language.Array<.java.lang.Object> n = a.getFromFirst(0L);
+    }
+    
+    private final void mNothing2$priv$(final .ceylon.language.List<? extends .ceylon.language.List<? extends .java.lang.Object>> a) {
+        final .ceylon.language.List<? extends .java.lang.Object> n = a.getFromFirst(0L);
+    }
+    
+    private final void mNothing3$priv$(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object>> a) {
+        final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .java.lang.Object> n = a.get(.ceylon.language.Integer.instance(0L));
+    }
+    
+    private final void mObject$priv$(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
+        final .ceylon.language.Array<.java.lang.Object> n = a.getFromFirst(0L);
+    }
+    
+    private final void mUnion$priv$(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
+        final .ceylon.language.Array n = ((.ceylon.language.List<? extends .ceylon.language.Array<.java.lang.Object>>)(.ceylon.language.List)a).getFromFirst(0L);
+    }
+    
+    private final void mAnything$priv$(final .ceylon.language.Array<.ceylon.language.Array<.java.lang.Object>> a) {
+        final .ceylon.language.Array<.java.lang.Object> n = a.getFromFirst(0L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug799.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug799.class);
+}

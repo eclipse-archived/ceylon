@@ -1,0 +1,49 @@
+pre {
+    word-wrap: break-word;
+    margin: 0;
+    margin-left: 15px;
+    color: #000;
+    font-size: 95%;
+}
+
+pre, code {
+    //font-family: monospace;
+}
+
+pre .comment {
+    color: darkcyan;
+    letter-spacing: -1px;
+}
+
+pre .constant.numeric {
+    color: blue;
+}
+
+pre .string, pre .char {
+    color: darkcyan;
+}
+
+pre .entity.function {
+    color: rgb(51,153,204);
+}
+
+pre .entity.class {
+    color: rgb(153,0,102);
+}
+
+pre .variable.global {
+    color: rgb(0,51,153);
+}
+
+pre .variable.instance {
+    color: rgb(102,51,153);
+}
+
+pre .keyword {
+    color: rgb(76,76,76);
+    //font-weight: bold;
+}
+
+pre .support.namespace {
+    color: darkgray;
+}

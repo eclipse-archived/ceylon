@@ -1,0 +1,67 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class fn1989_ {
+    
+    private fn1989_() {
+    }
+    
+    static .java.lang.Object fn1989(final .ceylon.language.String x) {
+        return .ceylon.language.nothing_.get_();
+    }
+}
+public class Bug1989 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1989(final .ceylon.language.Callable<? extends .java.lang.Object> fp2) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$fp$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1989.$default$fp(fp2);
+                this(fp2, $ceylontmp$fp$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1989() {
+        super();
+        this.fp2 = null;
+        this.fp = null;
+    }
+    
+    public Bug1989(final .ceylon.language.Callable<? extends .java.lang.Object> fp2, final .ceylon.language.Callable<? extends .java.lang.Object> fp) {
+        this.fp2 = fp2;
+        this.fp = fp;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> fp2;
+    
+    private final .java.lang.Object fp2$priv$(final .java.lang.Object x, final .java.lang.String a, final .ceylon.language.String b, final long c, final .ceylon.language.Integer d) {
+        return fp2.$call$(x, .ceylon.language.String.instance(a), b, .ceylon.language.Integer.instance(c), d);
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> fp;
+    
+    private final .java.lang.Object fp$priv$(final .ceylon.language.String x) {
+        return fp.$call$(x);
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$fp(final .ceylon.language.Callable<? extends .java.lang.Object> fp2) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), "Anything(String?)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String x = (.ceylon.language.String)$param$0;
+                return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.fn1989_.fn1989(x);
+            }
+        };
+    }
+    
+    public final void m() {
+        fp$priv$(.ceylon.language.String.instance(""));
+        fp2$priv$(null, "", null, 1L, null);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1989.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1989.class);
+}

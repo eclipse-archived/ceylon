@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.fordebug.trace;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bug2046_ {
+    
+    private bug2046_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bug2046() {
+        (
+            let
+            {
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 4, false){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Float.instance(1.0);
+                        
+                        case 1: 
+                            return .ceylon.language.Float.instance(2.0);
+                        
+                        case 2: 
+                            return .ceylon.language.Float.instance(3.0);
+                        
+                        case 3: 
+                            return .ceylon.language.Float.instance(4.0);
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+                .java.lang.String arg$0$1 = .ceylon.language.printAll_.printAll$separator(arg$0$0);
+                .ceylon.language.printAll_.printAll(arg$0$0, arg$0$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.fordebug.trace.bug2046_.bug2046();
+    }
+}

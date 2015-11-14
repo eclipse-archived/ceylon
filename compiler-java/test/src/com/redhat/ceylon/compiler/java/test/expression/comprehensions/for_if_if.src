@@ -1,0 +1,82 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+final class forIfIf_ {
+    
+    private forIfIf_() {
+    }
+    private static final .ceylon.language.Sequential<? extends .ceylon.language.Integer> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        {
+                            $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+                        }
+                        private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                        private .ceylon.language.Integer x;
+                        private boolean x$exhausted$;
+                        
+                        private final boolean x() {
+                            final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                            x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                            if (x$exhausted$) {
+                                return false;
+                            } else {
+                                x = (.ceylon.language.Integer)$ceylontmp$item$0;
+                                return true;
+                            }
+                        }
+                        
+                        private final boolean $next$1() {
+                            ifcomp_1: while (true) {
+                                if (!this.x()) break ifcomp_1;
+                                final .ceylon.language.Integer x = this.x;
+                                if (x.longValue() % 2L == 0L) {
+                                    break ifcomp_1;
+                                }
+                            }
+                            return !x$exhausted$;
+                        }
+                        
+                        private final boolean $next$2() {
+                            ifcomp_2: while (true) {
+                                if (!this.$next$1()) break ifcomp_2;
+                                final .ceylon.language.Integer x = this.x;
+                                if (x.longValue() > 5L) {
+                                    break ifcomp_2;
+                                }
+                            }
+                            return !x$exhausted$;
+                        }
+                        
+                        public final .java.lang.Object next() {
+                            if (this.$next$2()) {
+                                final .ceylon.language.Integer x = this.x;
+                                return x;
+                            } else return .ceylon.language.finished_.get_();
+                        }
+                    };
+                }
+            }.sequence();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> get_() {
+        if (forIfIf_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'forIfIf\' before it was set");
+        }
+    }
+}

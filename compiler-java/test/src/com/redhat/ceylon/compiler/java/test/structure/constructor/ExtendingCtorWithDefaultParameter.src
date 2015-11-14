@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class ExtendingCtorWithDefaultParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ExtendingCtorWithDefaultParameter(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_ $name$) {
+        (
+            let
+            {
+                long $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
+                this($name$, $ceylontmp$a$0);
+            }
+            returning null;
+        );
+    }
+    
+    ExtendingCtorWithDefaultParameter(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar_ $name$) {
+        (
+            let
+            {
+                long $ceylontmp$a$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
+                this($name$, $ceylontmp$a$1);
+            }
+            returning null;
+        );
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_ bar$delegation$_ = null;
+    
+    private static final class bar$delegation$_ {
+        
+        private bar$delegation$_() {
+        }
+    }
+    
+    private ExtendingCtorWithDefaultParameter(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_ $name$, final long a$param$) {
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar_ bar_ = null;
+    
+    public static final long ExtendingCtorWithDefaultParameter$bar$a() {
+        return 1L;
+    }
+    
+    public static final class bar_ {
+        
+        private bar_() {
+        }
+    }
+    
+    public ExtendingCtorWithDefaultParameter(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar_ $name$, final long a$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_, a$param$);
+    }
+    
+    public ExtendingCtorWithDefaultParameter() {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.class);
+}

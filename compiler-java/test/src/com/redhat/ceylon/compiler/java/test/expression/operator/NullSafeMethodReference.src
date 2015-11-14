@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class nullSafeMethodReference_ {
+    
+    private nullSafeMethodReference_() {
+    }
+    
+    static void nullSafeMethodReference(final .ceylon.language.String s) {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f = (
+            let
+            {
+                final .ceylon.language.String $instance$ = s;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String?(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                    final long $ceylontmp$length = ((.ceylon.language.Integer)$param$0).longValue();
+                    return (
+                        let
+                        {
+                            .ceylon.language.String safe$1 = $instance$;
+                        }
+                        returning safe$1 != null ? $instance$.initial($ceylontmp$length) : null;
+                    );
+                }
+            };
+        );
+    }
+}

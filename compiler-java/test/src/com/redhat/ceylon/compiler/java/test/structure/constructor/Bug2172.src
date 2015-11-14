@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class Point implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Point() {
+        super();
+        this.x = 0.0;
+        this.y = 0.0;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final double x;
+    
+    public final double getX() {
+        return x;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
+    private final double y;
+    
+    public final double getY() {
+        return y;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return new .java.lang.StringBuilder().append("(").append(getX()).append(", ").append(getY()).append(")").toString();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Point.cartesian$delegation$_ cartesian$delegation$_ = null;
+    
+    private static final class cartesian$delegation$_ {
+        
+        private cartesian$delegation$_() {
+        }
+    }
+    
+    private Point(.com.redhat.ceylon.compiler.java.test.structure.constructor.Point.cartesian$delegation$_ $name$, final double x$param$, final double y$param$) {
+        super();
+        this.x = x$param$;
+        this.y = y$param$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Point.cartesian_ cartesian_ = null;
+    
+    public static final class cartesian_ {
+        
+        private cartesian_() {
+        }
+    }
+    
+    public Point(.com.redhat.ceylon.compiler.java.test.structure.constructor.Point.cartesian_ $name$, final double x$param$, final double y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Point.cartesian$delegation$_, x$param$, y$param$);
+    }
+    
+    public Point(final double x$param$, final double y$param$) {
+        this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Point.cartesian$delegation$_, x$param$, y$param$);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Point.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Point.class);
+}

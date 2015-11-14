@@ -1,0 +1,10 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+final class interfaceAliasFromModelLoader_ {
+    
+    private interfaceAliasFromModelLoader_() {
+    }
+    
+    static void interfaceAliasFromModelLoader(final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAlias_Foo a, final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<.ceylon.language.Integer> b, final .com.redhat.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<.ceylon.language.Integer> c) {
+    }
+}

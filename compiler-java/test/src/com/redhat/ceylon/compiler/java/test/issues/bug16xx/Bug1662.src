@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+class Bug1662 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662>, .java.io.Serializable {
+    
+    protected Bug1662() {
+        super();
+        this.$float = 0.0;
+    }
+    
+    Bug1662(final double $float) {
+        this.$float = $float;
+    }
+    private final double $float;
+    
+    private final double getFloat$priv$() {
+        return $float;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662 plus(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662 other) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662(getFloat$priv$() + other.getFloat$priv$());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662.class);
+}

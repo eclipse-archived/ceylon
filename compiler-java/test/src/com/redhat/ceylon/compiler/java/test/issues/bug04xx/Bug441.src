@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
+
+public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<? extends Clone>> {
+    
+    public abstract Clone getClone();
+}
+interface IBug441 extends .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441> {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441.class);
+}
+class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.IBug441, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Cloneable<.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441>, .java.io.Serializable {
+    
+    Bug441() {
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441 getClone() {
+        return this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441.class);
+}

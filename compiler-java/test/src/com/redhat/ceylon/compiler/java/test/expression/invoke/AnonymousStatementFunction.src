@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class anonymousStatementFunction_ {
+    
+    private anonymousStatementFunction_() {
+    }
+    
+    static void anonymousStatementFunction() {
+        
+        final class fff_ {
+            
+            private fff_() {
+            }
+            
+            void fff(final .ceylon.language.Callable<? extends .java.lang.Object> callable) {
+            }
+        }
+        final fff_ fff = new fff_();
+        
+        final class ggg_ {
+            
+            private ggg_() {
+            }
+            
+            void ggg(final .ceylon.language.Callable<? extends .ceylon.language.Float> callable) {
+            }
+        }
+        final ggg_ ggg = new ggg_();
+        fff.fff(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object o = $param$0;
+                .ceylon.language.print_.print(o);
+                return null;
+            }
+        });
+        (
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Anything(Object)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object o = $param$0;
+                        .ceylon.language.print_.print(o);
+                        return null;
+                    }
+                };
+                fff.fff(arg$0$0);
+            }
+            returning null;
+        );
+        ggg.ggg(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Float.$TypeDescriptor$), "Float(Float)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
+                final double x = ((.ceylon.language.Float)$param$0).doubleValue();
+                return .ceylon.language.Float.instance(x * x);
+            }
+        });
+        (
+            let
+            {
+                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Float.$TypeDescriptor$), "Float(Float)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
+                        final double x = ((.ceylon.language.Float)$param$0).doubleValue();
+                        return .ceylon.language.Float.instance(x * x);
+                    }
+                };
+                ggg.ggg(arg$1$0);
+            }
+            returning null;
+        );
+    }
+}

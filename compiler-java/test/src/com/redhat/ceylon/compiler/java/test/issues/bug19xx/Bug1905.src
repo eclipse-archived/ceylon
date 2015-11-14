@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+interface Bug1905 {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905.class);
+}
+final class bug1905_ {
+    
+    private bug1905_() {
+    }
+    
+    static void bug1905(final .ceylon.language.Sequence bar, final .ceylon.language.Sequence bar2) {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905 f = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905)(.java.lang.Object)(
+            let
+            {
+                .ceylon.language.Sequence safe$0 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)bar;
+            }
+            returning safe$0 != null ? safe$0.getFirst() : null;
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905 f2 = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1905)(.java.lang.Object)bar2.getFirst();
+        final .ceylon.language.Integer g = (.ceylon.language.Integer)(.java.lang.Object)(
+            let
+            {
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> safe$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
+                    let
+                    {
+                        .ceylon.language.Sequence safe$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)bar;
+                    }
+                    returning safe$2 != null ? safe$2.getRest() : null;
+                );
+            }
+            returning safe$1 != null ? safe$1.getFirst() : null;
+        );
+    }
+}

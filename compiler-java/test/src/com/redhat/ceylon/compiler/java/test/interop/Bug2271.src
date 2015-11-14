@@ -1,0 +1,101 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug2271_ {
+    
+    private bug2271_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug2271(@.com.redhat.ceylon.compiler.java.metadata.Name("ji")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Integer?")
+    final .java.lang.Integer ji, @.com.redhat.ceylon.compiler.java.metadata.Name("jf")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Float?")
+    final .java.lang.Float jf, @.com.redhat.ceylon.compiler.java.metadata.Name("jc")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Character?")
+    final .java.lang.Character jc, @.com.redhat.ceylon.compiler.java.metadata.Name("js")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Short?")
+    final .java.lang.Short js) {
+        boolean $ceylontmp$if$0 = false;
+        .ceylon.language.Integer i$1;
+        final int i$3;
+        if ((i$1 = (
+            let
+            {
+                .java.lang.Integer safe$2 = ji;
+            }
+            returning safe$2 != null ? .ceylon.language.Integer.instance(safe$2.intValue()) : null;
+        )) != null) {
+            i$3 = .com.redhat.ceylon.compiler.java.Util.toInt(i$1.longValue());
+            if (true) {
+                $ceylontmp$if$0 = true;
+            }
+        } else {
+            i$3 = 0;
+        }
+        if ($ceylontmp$if$0) {
+        } else {
+        }
+        boolean $ceylontmp$if$4 = false;
+        .ceylon.language.Float f$5;
+        final float f$7;
+        if ((f$5 = (
+            let
+            {
+                .java.lang.Float safe$6 = jf;
+            }
+            returning safe$6 != null ? .ceylon.language.Float.instance(safe$6.floatValue()) : null;
+        )) != null) {
+            f$7 = (float)f$5.doubleValue();
+            if (true) {
+                $ceylontmp$if$4 = true;
+            }
+        } else {
+            f$7 = 0.0F;
+        }
+        if ($ceylontmp$if$4) {
+        } else {
+        }
+        boolean $ceylontmp$if$8 = false;
+        .ceylon.language.Character c$9;
+        final char c$11;
+        if ((c$9 = (
+            let
+            {
+                .java.lang.Character safe$10 = jc;
+            }
+            returning safe$10 != null ? .ceylon.language.Character.instance(safe$10.charValue()) : null;
+        )) != null) {
+            c$11 = (char)c$9.intValue();
+            if (true) {
+                $ceylontmp$if$8 = true;
+            }
+        } else {
+            c$11 = 0;
+        }
+        if ($ceylontmp$if$8) {
+        } else {
+        }
+        boolean $ceylontmp$if$12 = false;
+        .ceylon.language.Integer s$13;
+        final short s$15;
+        if ((s$13 = (
+            let
+            {
+                .java.lang.Short safe$14 = js;
+            }
+            returning safe$14 != null ? .ceylon.language.Integer.instance(safe$14.shortValue()) : null;
+        )) != null) {
+            s$15 = .com.redhat.ceylon.compiler.java.Util.toShort(s$13.longValue());
+            if (true) {
+                $ceylontmp$if$12 = true;
+            }
+        } else {
+            s$15 = (short)0;
+        }
+        if ($ceylontmp$if$12) {
+        } else {
+        }
+    }
+}

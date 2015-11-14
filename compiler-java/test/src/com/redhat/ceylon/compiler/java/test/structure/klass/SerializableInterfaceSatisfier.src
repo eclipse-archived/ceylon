@@ -1,0 +1,163 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface SerializableInterface<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<T> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$impl();
+    
+    public abstract T formalMethod();
+    
+    public T defaultMethod();
+}
+final class SerializableInterface$impl<T> implements .java.io.Serializable {
+    
+    SerializableInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public T defaultMethod() {
+        return $this.formalMethod();
+    }
+}
+interface SerializableSubInterface<S> extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<S> {
+}
+class SerializableInterfaceSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<.ceylon.language.Integer>, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    public SerializableInterfaceSatisfier(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
+    }
+    
+    SerializableInterfaceSatisfier() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<.ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer defaultMethod() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$.defaultMethod();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer formalMethod() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfier.class);
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}
+class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface<U>, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    protected SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this((.com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$)null, $reified$U);
+    }
+    
+    public SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this.$reified$U = $reified$U;
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U>($reified$U, this);
+        this.u = null;
+    }
+    
+    SerializableInterfaceSatisfierGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final U u) {
+        this.$reified$U = $reified$U;
+        this.u = u;
+        this.$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U>($reified$U, this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private final U u;
+    
+    private final U getU$priv$() {
+        return u;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public U defaultMethod() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$.defaultMethod();
+    }
+    
+    @.java.lang.Override
+    public final U formalMethod() {
+        return getU$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class, $reified$U);
+    }
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterfaceSatisfierGeneric.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "u")));
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableInterfaceSatisfierGeneric.u": 
+            return this.u;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        final .java.lang.invoke.MethodHandles.Lookup lookup = .java.lang.invoke.MethodHandles.lookup();
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableInterfaceSatisfierGeneric.u": 
+            .com.redhat.ceylon.compiler.java.Util.setter(lookup, "u").invokeExact(this, (U)(U)instance);
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

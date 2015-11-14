@@ -1,0 +1,54 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.FIELD,
+        .java.lang.annotation.ElementType.TYPE})
+public @interface AnnotationClass$annotation$ {
+    
+    public abstract .java.lang.String $strictfp();
+}
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass, .ceylon.language.Annotated, .java.lang.Object>, .java.io.Serializable {
+    
+    protected AnnotationClass() {
+        super();
+    }
+    
+    public AnnotationClass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass$annotation$ anno) {
+        this(anno.$strictfp());
+    }
+    
+    public AnnotationClass(final .java.lang.String $strictfp) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.class)
+public final class enum_ {
+    
+    private enum_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    public static .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass $enum(final .java.lang.String $instanceof) {
+        return new .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass($instanceof);
+    }
+}

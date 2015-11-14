@@ -1,0 +1,127 @@
+package com.redhat.ceylon.compiler.java.test.expression.erasure;
+
+class CE_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CE_Foo() {
+    }
+    
+    private final .java.lang.Object getErasedGetter$priv$() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getNonErasedGetter$priv$() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    private final void f$priv$() {
+        ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)getErasedGetter$priv$()).$call$();
+        getNonErasedGetter$priv$().$call$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_Foo.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.CE_Foo.class);
+}
+public class CE_MethodClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public CE_MethodClass() {
+        this.erasedMethod = .ceylon.language.nothing_.get_();
+        this.nonErasedMethod = (.ceylon.language.Callable<? extends .ceylon.language.Integer>).ceylon.language.nothing_.get_();
+    }
+    private final .java.lang.Object erasedMethod;
+    
+    public final .java.lang.Object getErasedMethod() {
+        return erasedMethod;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> nonErasedMethod;
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.Integer> getNonErasedMethod() {
+        return nonErasedMethod;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass.class);
+}
+public interface CE_MethodInterface {
+    
+    public abstract .java.lang.Object m1();
+    
+    public abstract .java.lang.Object m2();
+    
+    public abstract .java.lang.Object m3();
+    
+    public abstract .java.lang.Object m4();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface.class);
+}
+public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterface, .java.io.Serializable {
+    
+    protected CE_MethodInterfaceImpl() {
+        super();
+        this.c = null;
+        this.erased = null;
+        this.nonErased = null;
+        this.m1$specifier$ = null;
+        this.m2$specifier$ = null;
+    }
+    
+    public CE_MethodInterfaceImpl(final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass c, final .java.lang.Object erased, final .ceylon.language.Callable<? extends .ceylon.language.Integer> nonErased) {
+        this.c = c;
+        this.erased = erased;
+        this.nonErased = nonErased;
+        this.m1$specifier$ = getC$priv$().getErasedMethod();
+        this.m2$specifier$ = getC$priv$().getNonErasedMethod();
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass c;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass getC$priv$() {
+        return c;
+    }
+    private final .java.lang.Object erased;
+    
+    private final .java.lang.Object getErased$priv$() {
+        return erased;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> nonErased;
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getNonErased$priv$() {
+        return nonErased;
+    }
+    private final .java.lang.Object m1$specifier$;
+    
+    @.java.lang.Override
+    public final .java.lang.Object m1() {
+        return ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)m1$specifier$).$call$();
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2$specifier$;
+    
+    @.java.lang.Override
+    public final .java.lang.Object m2() {
+        return m2$specifier$.$call$();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m3() {
+        return getNonErased$priv$().$call$();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m4() {
+        return ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)getErased$priv$()).$call$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterfaceImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodInterfaceImpl.class);
+}

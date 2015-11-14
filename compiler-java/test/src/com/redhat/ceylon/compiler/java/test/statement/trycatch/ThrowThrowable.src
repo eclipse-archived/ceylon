@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class ThrowThrowable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ThrowThrowable() {
+    }
+    
+    private final void m$priv$() {
+        try {
+        } catch (final .java.lang.Exception e) {
+            .java.lang.Throwable cause$1;
+            if ((cause$1 = e.getCause()) != null) {
+                final .java.lang.Throwable cause$2 = cause$1;
+                throw cause$2;
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowThrowable.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowThrowable.class);
+}

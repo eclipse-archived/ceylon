@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+public final class bug1778_ {
+    
+    private bug1778_() {
+    }
+    
+    public static void bug1778() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1778<? extends .java.lang.Object> foo = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1778<.java.lang.Object>();
+        foo.bar(.com.redhat.ceylon.compiler.java.Util.toInt(3L));
+        final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1778<.java.lang.Object> foo2 = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1778<.java.lang.Object>();
+        foo2.bar(.com.redhat.ceylon.compiler.java.Util.toInt(3L));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1778_.bug1778();
+    }
+}

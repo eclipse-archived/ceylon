@@ -1,0 +1,127 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
+
+interface Bug2120X {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$impl();
+    
+    @.java.lang.Override
+    public boolean equals(final .java.lang.Object that);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X.class);
+}
+final class Bug2120X$impl implements .java.io.Serializable {
+    
+    Bug2120X$impl(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X $this;
+    
+    public boolean equals(final .java.lang.Object that) {
+        return $this.equals(that);
+    }
+}
+class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X, .java.io.Serializable {
+    
+    Bug2120Z() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object other) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$.equals(other);
+    }
+    
+    private final void f$priv$() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> eq1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$other = $param$0;
+                return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z.this.equals($ceylontmp$other));
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> eq2 = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z.this;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$other = $param$0;
+                    return .ceylon.language.Boolean.instance($instance$.equals($ceylontmp$other));
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> eq3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$that = $param$0;
+                return .ceylon.language.Boolean.instance($com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$this$.equals($ceylontmp$that));
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z.class);
+}
+class Bug2120Z2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2120Z2() {
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object other) {
+        return super.equals(other);
+    }
+    
+    private final void f$priv$() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> eq3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$that = $param$0;
+                return .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z2.super.equals($ceylontmp$that));
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z2.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z2.class);
+}
+interface Bug2120Z3 extends .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z3$impl $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120Z3$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z3.class);
+}
+final class Bug2120Z3$impl implements .java.io.Serializable {
+    
+    Bug2120Z3$impl(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z3 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120Z3 $this;
+    
+    private void f$priv$() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> eq3 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$that = $param$0;
+                return .ceylon.language.Boolean.instance($this.$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Bug2120X$impl().equals($ceylontmp$that));
+            }
+        };
+    }
+}

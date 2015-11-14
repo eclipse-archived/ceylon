@@ -1,0 +1,520 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface SerializableMemberClassOfInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableMemberClassOfInterface$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Shared Shared$new$();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Default Default$new$();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Formal Formal$new$();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface.class);
+}
+final class SerializableMemberClassOfInterface$impl implements .java.io.Serializable {
+    
+    SerializableMemberClassOfInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface $this;
+    
+    class NonShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public NonShared(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        NonShared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.NonShared.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.this.$this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Shared Shared$new$() {
+        return new Shared();
+    }
+    
+    public class Shared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Shared(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        protected Shared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Shared.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.this.$this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Default Default$new$() {
+        return new Default();
+    }
+    
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Default(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        protected Default() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Default.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.this.$this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Formal(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        protected Formal() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Formal.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.this.$this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+}
+abstract class SerializableMemberClassOfClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    public SerializableMemberClassOfClass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+    }
+    
+    SerializableMemberClassOfClass() {
+    }
+    
+    class NonShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public NonShared(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        NonShared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.NonShared.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Shared Shared$new$() {
+        return new Shared();
+    }
+    
+    public class Shared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Shared(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        protected Shared() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Shared.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Default Default$new$() {
+        return new Default();
+    }
+    
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Default(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        protected Default() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Default.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Formal Formal$new$();
+    
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Formal(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        }
+        
+        protected Formal() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Formal.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            if (reference instanceof .ceylon.language.serialization.Outer) return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.this; else switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                throw new .java.lang.RuntimeException("unknown attribute");
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.class);
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}
+class SerializableMemberClass extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    public SerializableMemberClass(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        super(ignored);
+    }
+    
+    SerializableMemberClass() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.Default Default$new$() {
+        return new Default();
+    }
+    
+    public class Default extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Default implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Default(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+            super(ignored);
+        }
+        
+        protected Default() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.Default.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = super.$references$();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                return super.$get$(reference);
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                super.$set$(reference, instance);
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.Formal Formal$new$() {
+        return new Formal();
+    }
+    
+    public class Formal extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfClass.Formal implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {
+        
+        public Formal(final .com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+            super(ignored);
+        }
+        
+        protected Formal() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.Formal.class));
+        }
+        
+        @.java.lang.Override
+        public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+            .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = super.$references$();
+            reference.add(.ceylon.language.impl.outerImpl_.get_());
+            return reference;
+        }
+        
+        @.java.lang.Override
+        public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+            switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                return super.$get$(reference);
+            
+            }
+        }
+        
+        @.java.lang.Override
+        public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+            if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+            default: 
+                super.$set$(reference, instance);
+            
+            } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClass.class);
+    
+    @.java.lang.Override
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = super.$references$();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            return super.$get$(reference);
+        
+        }
+    }
+    
+    @.java.lang.Override
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            super.$set$(reference, instance);
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

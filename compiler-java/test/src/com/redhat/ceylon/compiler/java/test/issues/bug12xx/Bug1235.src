@@ -1,0 +1,83 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+public interface Bug1235I {
+    
+    public abstract .ceylon.language.String getS();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I.class);
+}
+public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I, .java.io.Serializable {
+    
+    public Bug1235A() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A.$default$s();
+                this($ceylontmp$s$0);
+            }
+            returning null;
+        );
+    }
+    
+    public Bug1235A(final .ceylon.language.String s) {
+        this.s = s;
+    }
+    private final .ceylon.language.String s;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getS() {
+        return s;
+    }
+    
+    public static .ceylon.language.String $default$s() {
+        return .ceylon.language.String.instance("");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A.class);
+}
+public class Bug1235B implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235I, .java.io.Serializable {
+    
+    public Bug1235B() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B.$default$s();
+                this($ceylontmp$s$1);
+            }
+            returning null;
+        );
+    }
+    
+    public Bug1235B(final .ceylon.language.String s) {
+        this.s = s;
+    }
+    
+    public static .ceylon.language.String $default$s() {
+        return .ceylon.language.String.instance("");
+    }
+    private final .ceylon.language.String s;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getS() {
+        return s;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B.class);
+}
