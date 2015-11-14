@@ -1,0 +1,332 @@
+<!--
+  ~ Copyright 2011 Red Hat inc. and third party contributors as noted
+  ~ by the author tags.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project name="Ceylon runtime module" default="dist" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
+    <property file="../ceylon-common/common-build.properties"/>
+    <property file="build.properties"/>
+
+    <!-- Local repository -->
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin"/>
+    <property name="ceylon.common.dir"
+              value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
+    <property name="ceylon.common.jar"
+              value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+    <property name="ceylon.model.dir"
+              value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
+    <property name="ceylon.model.jar"
+              value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
+    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
+    <property name="ceylon.typechecker.dir"
+              value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+    <property name="ceylon.typechecker.jar"
+              value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+    <property name="ceylon.compiler.java.dir"
+              value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
+    <property name="ceylon.compiler.java.jar"
+              value="${ceylon.compiler.java.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
+    <property name="ceylon.compiler.java.lib" location="${ceylon.repo.dir}/${ceylon.compiler.java.jar}"/>
+    <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}"/>
+    <property name="ceylon.language.car"
+              value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
+    <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}"/>
+    <property name="ceylon.module-resolver.dir"
+              value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.jar"
+              value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+    <property name="ceylon.maven-support.dir"
+              value="com/redhat/ceylon/maven-support/${module.com.redhat.ceylon.maven-support.version}"/>
+    <property name="ceylon.maven-support.jar"
+              value="${ceylon.maven-support.dir}/com.redhat.ceylon.maven-support-${module.com.redhat.ceylon.maven-support.version}.jar"/>
+    <property name="ceylon.maven-support.lib" location="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
+
+    <!-- Set build directories for all formats. -->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.bin" location="${build.dir}/bin"/>
+    <property name="build.classes" location="${build.dir}/classes"/>
+    <property name="build.dist" location="${build.dir}/dist"/>
+    <property name="build.dist.lib" location="${build.dist}/lib"/>
+    <property name="build.dist.repo" location="${build.dist}/repo"/>
+    <property name="build.lib" location="${build.dir}/lib"/>
+    <property name="build.test" location="${build.dir}/test"/>
+    <property name="test.reports" location="${build.dir}/test-reports"/>
+
+    <property name="dist.dir" value="${basedir}/dist"/>
+
+    <!-- The Java source files for the runtime -->
+    <property name="runtime-api.src" location="${basedir}/api/src/main/java"/>
+    <property name="runtime-impl.src" location="${basedir}/impl/src/main/java"/>
+    <property name="runtime-spi.src" location="${basedir}/spi/src/main/java"/>
+    <property name="runtime-bootstrap.src" location="${basedir}/bootstrap/src/main/java"/>
+
+    <property name="runtime-test.src" location="${basedir}/testsuite/src/test/java"/>
+
+    <tstamp/>
+
+    <!-- ceylon.runtime -->
+    <property name="module.runtime.dir" value="ceylon/runtime"/>
+    <property name="module.runtime.name" value="ceylon.runtime"/>
+
+    <!-- module archives -->
+    <property name="ceylon.runtime.dir" value="${module.runtime.dir}/${module.ceylon.runtime.version}"/>
+    <property name="ceylon.runtime.jar"
+              value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.jar"/>
+    <property name="ceylon.runtime.repo" value="${ceylon.repo.dir}/${ceylon.runtime.dir}"/>
+    <property name="ceylon.runtime.dist" value="${build.dist.repo}/${ceylon.runtime.dir}"/>
+
+    <path id="compiler.classpath">
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.language.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${jboss-modules.lib}"/>
+    </path>
+
+    <path id="test.build.classpath">
+        <path refid="compiler.classpath"/>
+        <pathelement path="${build.classes}"/>
+        <pathelement path="${shrinkwrap-api.lib}"/>
+        <pathelement path="${junit.lib}"/>
+    </path>
+
+    <path id="test.run.classpath">
+        <path refid="test.build.classpath"/>
+        <pathelement path="${build.test}"/>
+        <pathelement path="${build.dist}"/>
+        <pathelement path="${shrinkwrap-impl-base.lib}"/>
+        <pathelement path="${shrinkwrap-spi.lib}"/>
+    </path>
+
+    <!-- ################################################################## -->
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *"/>
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}"/>
+    </target>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean" description="Clean up everything">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="dist"
+            depends="build"
+            description="Create Ceylon runtime distribution">
+        <!-- Setup the basic structure of the dist folder by copying the template folder -->
+        <copy todir="${build.dist}" overwrite="true">
+            <fileset dir="${dist.dir}"/>
+            <filtermapper>
+                <replacestring from="_version_" to="${ceylon.base.version}"/>
+            </filtermapper>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+            </filterset>
+        </copy>
+        <!-- Copy the Ceylon runtime dependencies -->
+        <copy file="${jboss-modules.lib}"
+              tofile="${build.dist.repo}/${jboss-modules.repo}"/>
+        <copy file="${jboss-jandex.lib}" tofile="${build.dist.repo}/${jboss-jandex.repo}"/>
+        <copy file="${jboss-logmanager.lib}" tofile="${build.dist.repo}/${jboss-logmanager.repo}"/>
+        <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.repo}"/>
+        <copy file="${antlr.stringtemplate.lib}" tofile="${build.dist.repo}/${antlr.stringtemplate.repo}"/>
+        <copy file="${antlr.antlr.lib}" tofile="${build.dist.repo}/${antlr.antlr.repo}"/>
+    </target>
+
+    <target name="dist-for-tests" description="Copy jars in the repo used by tests">
+        <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
+        <copy file="${ceylon.model.lib}" tofile="${build.dist.repo}/${ceylon.model.jar}"/>
+        <copy file="${ceylon.typechecker.lib}" tofile="${build.dist.repo}/${ceylon.typechecker.jar}"/>
+        <copy file="${ceylon.compiler.java.lib}" tofile="${build.dist.repo}/${ceylon.compiler.java.jar}"/>
+        <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
+        <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
+        <copy file="${ceylon.maven-support.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
+        <copy todir="${build.dist}">
+            <fileset dir="./testsuite/src/test/resources/"/>
+        </copy>
+    </target>
+    
+    <target name="publish" depends="dist,init.repo,publish-internal">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
+        </copy>
+        <copy todir="${ceylon.bin.dir}" overwrite="true">
+            <fileset dir="${build.bin}"/>
+        </copy>
+    </target>
+
+    <target name="publish-libs">
+        <copy file="${jboss-modules.lib}"
+            tofile="${ceylon.repo.dir}/${jboss-modules.repo}"/>
+        <copy file="${jboss-jandex.lib}" tofile="${ceylon.repo.dir}/${jboss-jandex.repo}"/>
+        <copy file="${jboss-logmanager.lib}"
+            tofile="${ceylon.repo.dir}/${jboss-logmanager.repo}"/>
+        <copy file="${antlr.lib}" tofile="${ceylon.repo.dir}/${antlr.repo}"/>
+        <copy file="${antlr.stringtemplate.lib}" tofile="${ceylon.repo.dir}/${antlr.stringtemplate.repo}"/>
+        <copy file="${antlr.antlr.lib}" tofile="${ceylon.repo.dir}/${antlr.antlr.repo}"/>
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo"
+            description="Init local ceylon repository">
+        <mkdir dir="${ceylon.runtime.repo}"/>
+    </target>
+
+    <target name="clean.repo"
+            description="Clean local ceylon repository">
+        <delete dir="${ceylon.runtime.repo}"/>
+    </target>
+
+    <target name="ide-quick-internal">
+        <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.runtime.jar}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+    </target>
+
+    <!-- Tasks related to building the runtime -->
+    <!-- Rule to build runtime classes from their Java sources -->
+    <target name="runtime.classes">
+        <mkdir dir="${build.classes}"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${runtime-spi.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${runtime-api.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${runtime-impl.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${runtime-bootstrap.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <!-- Include META-INF -->
+        <copy todir="${build.classes}">
+            <fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <!-- Rule to build runtime jar -->
+    <target name="runtime.jar" depends="runtime.classes">
+        <mkdir dir="${build.dist.repo}/${ceylon.runtime.dir}"/>
+        <mkdir dir="${build.bin}"/>
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>        
+        <jar destfile="${build.dist.repo}/${ceylon.runtime.jar}">
+            <fileset dir="${build.classes}">
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="ceylon.runtime"/>
+                <attribute name="Bundle-Version" value="${module.ceylon.runtime.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.runtime.jar}" />
+        </antcall>
+    </target>
+
+    <!-- Rule to compile and test -->
+    <target name="build" depends="runtime.jar">
+        <mkdir dir="${build.bin}" />
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="compile.tests" depends="dist">
+        <mkdir dir="${build.test}"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${runtime-test.src}"
+               destdir="${build.test}"
+               classpathref="test.build.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+    </target>
+
+    <target name="test" depends="compile.tests,dist-for-tests" description="Runs the JUnit tests">
+        <mkdir dir="${test.reports}"/>
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="test.run.classpath"/>
+            <formatter type="xml"/>
+            <batchtest fork="yes" todir="${test.reports}">
+                <fileset dir="${runtime-test.src}">
+                    <include name="**/*TestCase.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <junitreport todir="${test.reports}">
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${test.reports}"/>
+        </junitreport>
+    </target>
+</project>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright 2012 Red Hat inc. and third party contributors as noted
+  ~ by the author tags.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.maven-support" slot="2.0">
+    <resources>
+        <resource-root path="com.redhat.ceylon.maven-support-2.0.jar"/>
+    </resources>
+
+    <dependencies>
+        <system export="true">
+            <paths>
+                <path name="javax/xml"/>
+                <path name="javax/xml/namespace"/>
+                <path name="javax/xml/parsers"/>
+                <path name="javax/xml/stream"/>
+                <path name="javax/xml/xpath"/>
+                <path name="org/w3c/dom"/>
+            </paths>
+        </system>
+    </dependencies>
+
+    <exports>
+        <!-- Uses Guice -->
+        <exclude path="org/eclipse/aether/impl/AetherModule*"/>
+        <exclude path="org/apache/maven/repository/internal/MavenAetherModule*"/>
+        <!-- Uses Plexus logging -->
+        <exclude path="org/eclipse/aether/internal/impl/PlexusLoggerFactory*"/>
+        <exclude path="org/sonatype/plexus/components/cipher/DefaultPlexusCipher*"/>
+        <exclude path="org/sonatype/plexus/components/sec/dispatcher/DefaultSecDispatcher*"/>
+        <!-- Uses Plexus Container -->
+        <exclude path="org/eclipse/aether/internal/connector/wagon/PlexusWagonConfigurator*"/>
+        <exclude path="org/eclipse/aether/internal/connector/wagon/PlexusWagonProvider*"/>
+    </exports>
+</module>

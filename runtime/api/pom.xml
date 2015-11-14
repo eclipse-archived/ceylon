@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>ceylon</groupId>
+        <artifactId>modules</artifactId>
+        <version>1.1.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>modules-api</artifactId>
+    <packaging>jar</packaging>
+    <name>Ceylon Modules API</name>
+    <url>http://ceylon-lang.org</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-spi</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ceylon.language</groupId>
+            <artifactId>ceylon-language</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat.ceylon.cmr</groupId>
+            <artifactId>cmr-impl</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
+

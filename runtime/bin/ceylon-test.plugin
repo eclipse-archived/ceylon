@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon test" tool
+summary=Executes tests
+module=ceylon.runtime/@ceylon-version@
+class=ceylon.modules.bootstrap.CeylonTestTool
+
