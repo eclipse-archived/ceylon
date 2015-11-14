@@ -1,0 +1,373 @@
+<project name="Ceylon module-resolver module" default="publish" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
+    <property file="../ceylon-common/common-build.properties"/>
+    <property file="build.properties"/>
+
+    <!-- Set build directories for all formats. -->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.classes" location="${build.dir}/classes"/>
+    <property name="build.dist" location="${build.dir}/dist"/>
+    <property name="build.dist.repo" location="${build.dist}/repo"/>
+    <property name="build.lib" location="${build.dir}/lib"/>
+    <property name="build.test" location="${build.dir}/test"/>
+    <property name="test.reports" location="${build.dir}/test-reports"/>
+
+    <!-- The Java source files for the module-resolver -->
+    <property name="cmr-api.src" location="${basedir}/api/src/main/java"/>
+    <property name="cmr-api.resources" location="${basedir}/api/src/main/resources"/>
+    <property name="cmr-impl.src" location="${basedir}/impl/src/main/java"/>
+    <property name="cmr-spi.src" location="${basedir}/spi/src/main/java"/>
+    <property name="cmr-webdav.src" location="${basedir}/webdav/src/main/java"/>
+    <property name="cmr-ceylon.src" location="${basedir}/ceylon/src/main/java"/>
+    <property name="cmr-maven.src" location="${basedir}/maven/src/main/java"/>
+    <property name="cmr-maven.resources" location="${basedir}/maven/src/main/resources"/>
+
+    <!-- jar generated -->
+    <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
+    <property name="module-resolver-api.jar" location="${build.lib}/module-resolver-api.jar"/>
+    
+    <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
+    <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
+
+    <property name="maven-test.src" location="${basedir}/maven/src/test/java"/>
+    <property name="maven-test.resources" location="${basedir}/maven/src/test/resources"/>
+
+    <tstamp/>
+
+    <!-- Local repositoryManager -->
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+
+    <!-- ceylon.module-resolver -->
+    <property name="module.module-resolver.dir" value="com/redhat/ceylon/module-resolver"/>
+    <property name="module.module-resolver.name" value="com.redhat.ceylon.module-resolver"/>
+
+    <!-- ceylon.common -->
+    <property name="module.common.dir" value="com/redhat/ceylon/common"/>
+    <property name="module.common.name" value="com.redhat.ceylon.common"/>
+
+    <!-- ceylon.model -->
+    <property name="module.model.dir" value="com/redhat/ceylon/model"/>
+    <property name="module.model.name" value="com.redhat.ceylon.model"/>
+
+    <!-- module archives -->
+    <property name="ceylon.module-resolver.dir"
+              value="${module.module-resolver.dir}/${module.com.redhat.ceylon.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.src"
+              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.src"/>
+    <property name="ceylon.module-resolver.jar"
+              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
+    <property name="ceylon.module-resolver.dist" value="${build.dist.repo}/${ceylon.module-resolver.dir}"/>
+
+    <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.repo}"/>
+    <property name="ceylon.maven-support.repo" value="${ceylon.repo.dir}/${ceylon.maven-support.dir}"/>
+    <property name="ceylon.maven-support.dist" value="${build.dist.repo}/${ceylon.maven-support.dir}"/>
+
+    <property name="ceylon.common.dir"
+              value="${module.common.dir}/${module.com.redhat.ceylon.common.version}"/>
+    <property name="ceylon.common.jar"
+              value="${ceylon.common.dir}/${module.common.name}-${module.com.redhat.ceylon.common.version}.jar"/>
+    <property name="ceylon.common.lib" value="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+
+    <property name="ceylon.model.dir"
+              value="${module.model.dir}/${module.com.redhat.ceylon.model.version}"/>
+    <property name="ceylon.model.jar"
+              value="${ceylon.model.dir}/${module.model.name}-${module.com.redhat.ceylon.model.version}.jar"/>
+    <property name="ceylon.model.lib" value="${ceylon.repo.dir}/${ceylon.model.jar}"/>
+
+    <path id="compiler.classpath">
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${jandex.lib}"/>
+        <pathelement path="${modules.lib}"/>
+        <pathelement path="${sardine.lib}"/>
+        <pathelement path="${httpclient.lib}"/>
+        <pathelement path="${httpcore.lib}"/>
+        <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
+        <pathelement path="${json.lib}" />
+    </path>
+
+    <path id="test.build.classpath">
+        <path refid="compiler.classpath"/>
+        <pathelement path="${build.classes}"/>
+        <pathelement path="${junit.lib}"/>
+    </path>
+
+    <path id="test.run.classpath">
+        <path refid="test.build.classpath"/>
+        <pathelement path="${cmr-testsuite-test.resources}"/>
+        <pathelement path="${build.test}"/>
+        <pathelement path="${httpclient.lib}"/>
+        <pathelement path="${httpcore.lib}"/>
+        <pathelement path="${commons-logging.lib}"/>
+        <pathelement path="${slf4j-api.lib}"/>
+        <pathelement path="${slf4j-simple.lib}"/>
+    </path>
+
+    <!-- ################################################################## -->
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *"/>
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}"/>
+    </target>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean" description="Clean up everything">
+        <delete dir="${build.dir}"/>
+        <delete dir="${cmr-testsuite-test.src}/repo/com"/>
+    </target>
+
+    <target name="ide-quick-internal">
+        <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+        
+        <property name="archivePath2" value="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
+        <basename file="${archivePath2}" property="archiveFileName2"/>
+        <property name="proxy-project2" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName2}"/>
+        <mkdir dir="${proxy-project2}"/>
+        <delete failonerror="false" dir="${proxy-project2}/META-INF"/>
+        <copy toDir="${proxy-project2}" overwrite="true">
+            <zipfileset src="${archivePath2}" includes="META-INF/**"/>
+            <fileset file="${archivePath2}"/>
+        </copy>
+        <manifest file="${proxy-project2}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName2}"/>
+        </manifest>
+    </target>
+
+    <target name="dist"
+            depends="build"
+            description="Create Ceylon module-resolver distribution">
+        <mkdir dir="${ceylon.module-resolver.dist}"/>
+        <zip destfile="${build.dist.repo}/${ceylon.module-resolver.src}">
+            <fileset dir="${cmr-api.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${cmr-impl.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${cmr-spi.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${cmr-webdav.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${cmr-ceylon.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${cmr-maven.src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.src}"/>
+        </antcall>
+        <copy file="${module-resolver.jar}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
+        </antcall>
+        <copy file="${shrinkwrap-maven-uberjar.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.maven-support.jar}"/>
+        </antcall>
+        <copy file="${sardine.lib}" tofile="${build.dist.repo}/${sardine.repo}"/>
+        <copy file="${httpclient.lib}" tofile="${build.dist.repo}/${httpclient.repo}"/>
+        <copy file="${httpcore.lib}" tofile="${build.dist.repo}/${httpcore.repo}"/>
+        <copy file="${commons-logging.lib}" tofile="${build.dist.repo}/${commons-logging.repo}"/>
+        <copy file="${commons-codec.lib}" tofile="${build.dist.repo}/${commons-codec.repo}"/>
+        <copy file="${slf4j-api.lib}" tofile="${build.dist.repo}/${slf4j-api.repo}"/>
+        <copy file="${slf4j-simple.lib}" tofile="${build.dist.repo}/${slf4j-simple.repo}"/>
+        <copy file="${json.lib}" tofile="${build.dist.repo}/${json.repo}"/>
+    </target>
+
+    <!-- Repository targets -->
+    <target name="publish"
+            depends="dist,clean.repo,init.repo,publish-internal"
+            description="Publish Ceylon module-resolver module to default repo">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
+        </copy>
+    </target>
+
+    <target name="init.repo"
+            description="Create default local Ceylon module repositoryManager">
+        <mkdir dir="${ceylon.module-resolver.repo}"/>
+    </target>
+
+    <target name="clean.repo"
+            description="Clean default local Ceylon module repositoryManager">
+        <delete dir="${ceylon.module-resolver.repo}"/>
+    </target>
+
+    <!-- Tasks related to building the module-resolver -->
+    <!-- Rule to build module-resolver classes from their Java sources -->
+    <target name="module-resolver.classes.api">
+        <mkdir dir="${build.classes}"/>    
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${cmr-spi.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${cmr-api.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+    </target>
+    
+    <!-- Rule to build module-resolver classes from their Java sources -->
+    <target name="module-resolver.classes" depends="module-resolver.classes.api">
+        <mkdir dir="${build.classes}"/>
+
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${cmr-impl.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${cmr-webdav.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${cmr-ceylon.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${cmr-maven.src}"
+               destdir="${build.classes}"
+               classpathref="compiler.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <copy todir="${build.classes}">
+            <fileset dir="${cmr-maven.resources}">
+                <include name="**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Rule to build module-resolver jar -->
+    <target name="module-resolver.jar" depends="module-resolver.classes">
+        <mkdir dir="${build.lib}"/>
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>        
+        <jar destfile="${module-resolver.jar}">
+            <fileset dir="${build.classes}">
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Rule to build module-resolver-api jar -->
+    <target name="module-resolver-api.jar" depends="module-resolver.classes.api">
+        <mkdir dir="${build.lib}"/>
+        <jar destfile="${module-resolver-api.jar}">
+            <fileset dir="${build.classes}">
+                <include name="**/spi/*"/>
+                <include name="**/api/*"/>
+            </fileset>
+        </jar>
+    </target>
+            
+    <!-- Rule to compile and test -->
+    <target name="build" depends="module-resolver.jar"/>
+
+    <target name="compile.tests" depends="build">
+        <mkdir dir="${build.test}"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${cmr-testsuite-test.src}"
+               destdir="${build.test}"
+               classpathref="test.build.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <javac debug="true"
+               encoding="UTF-8"
+               srcdir="${maven-test.src}"
+               destdir="${build.test}"
+               classpathref="test.build.classpath"
+               target="${compile.java.target}"
+               source="${compile.java.source}"
+               bootclasspath="${compile.java.bootclasspath}"
+               includeantruntime="false"/>
+        <copy todir="${build.test}">
+            <fileset dir="${maven-test.resources}">
+                <include name="**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="test" depends="compile.tests" description="Runs the JUnit tests">
+        <mkdir dir="${test.reports}"/>
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="test.run.classpath"/>
+            <formatter type="xml"/>
+            <batchtest fork="yes" todir="${test.reports}">
+                <fileset dir="${cmr-testsuite-test.src}">
+                    <include name="**/*TestCase.java"/>
+                </fileset>
+                <fileset dir="${maven-test.src}">
+                    <include name="**/*TestCase.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <junitreport todir="${test.reports}">
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${test.reports}"/>
+        </junitreport>
+    </target>
+</project>

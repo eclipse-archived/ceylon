@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>camel-parent</artifactId>
+    <groupId>org.apache.camel</groupId>
+    <version>2.9.2</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>camel-core</artifactId>
+  <packaging>bundle</packaging>
+  <name>Camel :: Core</name>
+  <description>The Core Camel Java DSL based router</description>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru</include>
+                </includes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <excludes>
+            <exclude>log4j.properties</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>once</forkMode>
+          <excludes>
+            <exclude>**/XXXTest.*</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>package</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <links>
+                <link>http://download.oracle.com/javase/6/docs/api/</link>
+                <link>http://download.oracle.com/javaee/6/api/</link>
+              </links>
+              <stylesheetfile>${basedir}/../etc/css/stylesheet.css</stylesheetfile>
+              <linksource>true</linksource>
+              <maxmemory>256m</maxmemory>
+              <source>1.6</source>
+              <groups>
+                <group>
+                  <title>Camel API</title>
+                  <packages>org.apache.camel</packages>
+                </group>
+                <group>
+                  <title>Fluent API (DSL) for building EIP rules</title>
+                  <packages>org.apache.camel.builder:org.apache.camel.builder.*</packages>
+                </group>
+                <group>
+                  <title>The bean and JAXB2 model for EIP rule definitions</title>
+                  <packages>org.apache.camel.model:org.apache.camel.model.*</packages>
+                </group>
+                <group>
+                  <title>Strategy APIs for implementors extending Camel</title>
+                  <packages>org.apache.camel.spi</packages>
+                </group>
+                <group>
+                  <title>Language APIs and plugins for Expressions and Predicates</title>
+                  <packages>org.apache.camel.language:org.apache.camel.language.*</packages>
+                </group>
+                <group>
+                  <title>Processors to implement the Enterprise Integration Patterns</title>
+                  <packages>org.apache.camel.processor:org.apache.camel.processor.*</packages>
+                </group>
+                <group>
+                  <title>Camel Components</title>
+                  <packages>org.apache.camel.component.*</packages>
+                </group>
+                <group>
+                  <title>Camel Support having base classes to extend</title>
+                  <packages>org.apache.camel.support</packages>
+                </group>
+                <group>
+                  <title>Support APIs for implementors</title>
+                  <packages>org.apache.camel.support.*</packages>
+                </group>
+                <group>
+                  <title>Main class for running Camel standalone</title>
+                  <packages>org.apache.camel.main.*</packages>
+                </group>
+                <group>
+                  <title>Camel Runtime</title>
+                  <packages>org.apache.camel.impl:org.apache.camel.impl.*</packages>
+                </group>
+                <group>
+                  <title>Camel Starters</title>
+                  <packages>org.apache.camel.main</packages>
+                </group>
+                <group>
+                  <title>Type conversion helper classes</title>
+                  <packages>org.apache.camel.converter:org.apache.camel.converter.*</packages>
+                </group>
+                <group>
+                  <title>Utility classes</title>
+                  <packages>org.apache.camel.util:org.apache.camel.util.*:org.apache.camel.view</packages>
+                </group>
+              </groups>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <version>4.2.0</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j</artifactId>
+          <groupId>log4j</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>3.0</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>cglib-nodep</artifactId>
+          <groupId>cglib</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>objenesis</artifactId>
+          <groupId>org.objenesis</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>xml-resolver</groupId>
+      <artifactId>xml-resolver</artifactId>
+      <version>1.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <links>
+            <link>http://download.oracle.com/javase/6/docs/api/</link>
+            <link>http://download.oracle.com/javaee/6/api/</link>
+          </links>
+          <stylesheetfile>${basedir}/../etc/css/stylesheet.css</stylesheetfile>
+          <linksource>true</linksource>
+          <maxmemory>256m</maxmemory>
+          <source>1.6</source>
+          <groups>
+            <group>
+              <title>Camel API</title>
+              <packages>org.apache.camel</packages>
+            </group>
+            <group>
+              <title>Fluent API (DSL) for building EIP rules</title>
+              <packages>org.apache.camel.builder:org.apache.camel.builder.*</packages>
+            </group>
+            <group>
+              <title>The bean and JAXB2 model for EIP rule definitions</title>
+              <packages>org.apache.camel.model:org.apache.camel.model.*</packages>
+            </group>
+            <group>
+              <title>Strategy APIs for implementors extending Camel</title>
+              <packages>org.apache.camel.spi</packages>
+            </group>
+            <group>
+              <title>Language APIs and plugins for Expressions and Predicates</title>
+              <packages>org.apache.camel.language:org.apache.camel.language.*</packages>
+            </group>
+            <group>
+              <title>Processors to implement the Enterprise Integration Patterns</title>
+              <packages>org.apache.camel.processor:org.apache.camel.processor.*</packages>
+            </group>
+            <group>
+              <title>Camel Components</title>
+              <packages>org.apache.camel.component.*</packages>
+            </group>
+            <group>
+              <title>Support APIs for implementors</title>
+              <packages>org.apache.camel.support.*</packages>
+            </group>
+            <group>
+              <title>Main class for running Camel standalone</title>
+              <packages>org.apache.camel.main.*</packages>
+            </group>
+            <group>
+              <title>Camel Runtime</title>
+              <packages>org.apache.camel.impl:org.apache.camel.impl.*</packages>
+            </group>
+            <group>
+              <title>Type conversion helper classes</title>
+              <packages>org.apache.camel.converter:org.apache.camel.converter.*</packages>
+            </group>
+            <group>
+              <title>Utility classes</title>
+              <packages>org.apache.camel.util:org.apache.camel.util.*:org.apache.camel.view</packages>
+            </group>
+          </groups>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+  <properties>
+    <camel.osgi.activator>org.apache.camel.impl.osgi.Activator</camel.osgi.activator>
+    <camel.osgi.export.pkg>org.apache.camel.*</camel.osgi.export.pkg>
+    <camel.osgi.import>!org.apache.camel.*,
+        !com.googlecode.concurrentlinkedhashmap,
+        org.apache.xalan.xsltc.trax;resolution:=optional,
+        javax.activation;resolution:=optional,
+        javax.xml.bind;resolution:=optional,
+        javax.xml.bind.annotation;resolution:=optional,
+        javax.xml.bind.annotation.adapters;resolution:=optional,
+        javax.xml.stream;resolution:=optional,
+        javax.xml.transform.stax;resolution:=optional,
+        *</camel.osgi.import>
+    <camel.osgi.dynamic>org.apache.camel.spring.util;${camel.osgi.import.strict.version},org.apache.camel.processor.interceptor.jpa;${camel.osgi.import.strict.version}</camel.osgi.dynamic>
+  </properties>
+</project>
+
