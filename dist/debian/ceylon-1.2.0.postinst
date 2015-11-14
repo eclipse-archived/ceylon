@@ -1,0 +1,51 @@
+#!/bin/sh
+
+VERSION=1.2.0
+INSTALL_LINE="/usr/bin/ceylon ceylon /usr/share/ceylon/$VERSION/bin/ceylon 12000"
+OLD_VERSIONS="1.0.0 1.1.0"
+
+set -e
+
+case "$1" in
+configure)
+	# Remove old symlinks
+	for command in ceylon-js ceylonc ceylonc-js ceylond ceylon-import-jar
+	do
+	    rm -f /usr/bin/$command;
+	done
+	for man in /usr/share/doc/ceylon-$VERSION/man/*
+	do
+	    page=`basename $man`
+	    rm -rf /usr/share/man/man1/$page
+        INSTALL_LINE="$INSTALL_LINE --slave /usr/share/man/man1/$page $page $man"
+	done
+	# Now fix the old versions we have to fix
+    for oldversion in $OLD_VERSIONS
+    do
+        echo "Looking for old man pages to autofix for old version of Ceylon $oldversion"
+        if test -d /usr/share/doc/ceylon-$oldversion/man/
+        then
+            oldprio=`echo "${oldversion}00" | sed 's/\.//g'`
+            oldinstall="/usr/bin/ceylon ceylon /usr/share/ceylon/$oldversion/bin/ceylon $oldprio"
+            echo -n " -> Found"
+            for oldman in /usr/share/doc/ceylon-$oldversion/man/*
+            do
+                oldpage=`basename $oldman`
+                echo -n " $oldpage"
+                update-alternatives --remove $oldpage $oldman
+                oldinstall="$oldinstall --slave /usr/share/man/man1/$oldpage $oldpage $oldman"
+            done
+            echo ": reinstalling alternatives"
+            update-alternatives --remove ceylon /usr/share/ceylon/$oldversion/bin/ceylon
+            update-alternatives --install $oldinstall
+        fi
+    done
+    for inf in /usr/share/doc/ceylon-$VERSION/doc/en/spec/info/*.info*
+    do
+        page=`basename $inf`
+        rm -rf /usr/share/info/$page
+        INSTALL_LINE="$INSTALL_LINE --slave /usr/share/info/$page $page $inf"
+    done
+    update-alternatives --install $INSTALL_LINE
+    update-alternatives --auto ceylon
+esac

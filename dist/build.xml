@@ -1,0 +1,1137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ceylon-dist" default="help" basedir="."
+    xmlns:if="ant:if"
+>
+
+    <tstamp>
+        <format property="NOW" pattern="yyyyMMddHHmm" />
+    </tstamp>
+
+    <property file="build.properties"/>
+    <property name="projects.dir" value="${basedir}/projects"/>
+    <property name="ceylon.dist.dir" value="${basedir}/dist"/>
+    <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
+    <property name="ceylon.bin.dir" value="${ceylon.dist.dir}/bin"/>
+
+    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
+
+    <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
+
+    <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
+
+    <condition property="batExt" value=".bat">
+        <os family="windows" />
+    </condition>
+    <property name="batExt" value=""/>
+	
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="${basedir}/lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="help">
+        <echo>Options for building a Ceylon distribution for local use:
+    ant setup              - Sets up a new clean environment for development
+    ant publish            - Performs "ant clean publish" on all sibling projects
+
+    ant status             - Shows the Git status of the sibling projects
+    ant update             - Updates the Git repository of the sibling projects
+    ant clean              - Cleans the distribution project
+
+Some super-charged ant tasks:
+
+    ant status-all         - Shows the Git status of all projects related to the
+                             distribution, SDK and IDE
+    ant update-all         - Updates the Git repositories of the above projects
+    ant clean-all          - Cleans all of the above mentioned projects
+
+    ant dist               - Same as "ant publish ide-quick"
+    ant sdk                - Same as "ant publish ide-quick" in the SDK project
+    ant eclipse            - Builds all IDE related projects + the Eclipse plugin
+    ant intellij           - Builds all IDE related projects + the IntelliJ plugin
+
+    ant help-release       - Shows help on the commands for building a release
+
+    ant eclipse-switch-to-last-release-updates
+                           - switches the Eclipse plugin and the 'ceylon-ide-common' projects
+                             against to the last release maintenance branch
+    ant eclipse-rebuild-last-release-updates
+                           - Builds (after cleaning) the last release maintenance branch of the
+                             Eclipse plugin and the 'ceylon-ide-common' projects, against
+                             all the other dependencies found in the main release
+                             update site : http://ceylon-lang.org/eclipse/updatesite/
+    ant eclipse-switch-back-to-master
+                           - switches the Eclipse plugin and the 'ceylon-ide-common' projects
+                             back to the master branch</echo>
+
+    </target>
+
+    <target name="help-release">
+        <echo>Options for building a Ceylon distribution package:
+    ant release            - Does a clean, get-code, local, package
+                             using the sources tagged with the name as
+                             defined by ceylon.version.tag in build.properties
+                             Use this when doing a release!
+
+    ant nightly            - Does a clean, get-code, local, package
+                             using the sources from master.
+                             Use this when NOT doing a release!
+Some more basic ant tasks:
+    ant get-code           - Downloads latest code for all projects
+    ant get-code -Dtag=0.5 - Downloads latest code and checks out the tag
+    ant checkout -Dtag=0.5 - Makes sure we're using the specified tag
+    ant checkout-master    - To make sure we're using master
+
+    ant local install-all  - Quick builds the distribution projects, cloning/pulling 
+                             dependent Ceylon git repositories into the 
+                             ${projects.dir} directory.
+                             Doesn't touch any sibling project folders.
+                             Doesn't touch your local repo (~/.ceylon/repo).
+    ant local package      - Same as install-all but will clean projects first and
+                             will generate documentation and the final distribution
+                             package
+
+    ant siblings install-all - Quick builds the distribution projects using
+                             existing sibling project folders.
+                             Doesn't clone or pull. Doesn't touch your local 
+                             repo (~/.ceylon/repo).
+    ant siblings package   - Same as install-all but will clean projects first and
+                             will generate documentation and the final distribution
+                             package
+
+    ant clean-release      - Cleans the distribution package
+                             and deletes all local projects</echo>
+    </target>
+
+    <target name="setup" depends="siblings,git-clone"
+            description="Sets up a new clean environment for development">
+    </target>
+
+    <target name="setup-admins"
+            description="Sets up a new clean environment for developers with write access to the core repositories">
+        <property name="github-url" value="git@github.com:"/>
+        <antcall target="setup" />
+    </target>
+
+    <target name="dist" depends="publish,ide-quick" />
+
+    <target name="publish" depends="siblings,clean-projects,install-all,publish-quick"
+            description="Publishes all sibling projects" />
+    <target name="publish-quick" depends="siblings">
+        <foreach list="${modules}"
+                 target="publish-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="publish-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Publishing ${project.item.name}</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="publish-internal"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false">
+        </ant>
+    </target>
+
+    <target name="copy-herd">
+        <fail message="Please specify a target Herd upload repo url with -Dherd.repo=..." unless="herd.repo"/>
+        <fail message="Please specify a target Herd user name with -Dherd.user=..." unless="herd.user"/>
+        <fail message="Please specify a target Herd password with -Dherd.pass=..." unless="herd.pass"/>
+        <path id="ant-tasks">
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.compiler.version}.jar"/>
+            <pathelement location="${basedir}/dist/lib/ceylon-ant.jar"/>
+        </path>
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+        <ceylon-copy nodefaultrepositories="true" out="${herd.repo}" user="${herd.user}" pass="${herd.pass}" withdependencies="true">
+            <reposet>
+                <repo url="${basedir}/dist/repo"/>
+            </reposet>
+            <moduleset>
+                <module name="com.redhat.ceylon.common" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.model" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.compiler.js" version="${ceylon.version}"/>
+                <module name="ceylon.bootstrap" version="${ceylon.version}"/>
+                <module name="ceylon.runtime" version="${ceylon.version}"/>
+                <module name="ceylon.language" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.maven-support" version="2.0"/>
+            </moduleset>
+        </ceylon-copy>
+    </target>
+
+    <target name="ide" depends="siblings, install-all">
+        <property name="buildtarget" value="ide-internal" />
+        <antcall target="ide-quick"/>
+    </target>
+    <target name="ide-quick" depends="siblings">
+        <foreach list="${modules}"
+                 target="ide-item"
+                 param="project.item.name"
+                 inheritall="true" />
+        <antcall target="osgi-p2-quick"/>
+    </target>
+    <target name="ide-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Publishing ${project.item.name} to IDE</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="ide-quick-internal"
+             dir="${projects.base.dir}/${project.item.name}"
+            inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="update" depends="git-update-dist,siblings,git-update"
+            description="Updates sibling projects with latest code from git">
+    </target>
+
+    <target name="status" depends="git-status-dist,siblings,git-status"
+            description="Shows git status of all sibling projects">
+    </target>
+
+    <target name="release"
+            description="Does a clean, get-code, local, package using the 
+sources tagged with the name as defined by ceylon.version in 
+build.properties
+Use this when doing a release!">
+        <property name="tag" value="${ceylon.version.tag}"/>
+        <antcall target="bootstrap" />
+    </target>
+
+    <target name="nightly"
+            description="Does a clean, get-code, local, package using the sources from master. 
+Use this when NOT doing a release!">
+        <property name="dist.name" value="ceylon-${ceylon.version}-master-${NOW}"/>
+        <antcall target="bootstrap" />
+    </target>
+
+    <target name="bootstrap" depends="clean,local,get-code-internal,package">
+    </target>
+
+    <target name="local"
+            description="Builds using dependent projects in the ${projects.dir} directory.
+Used with another target such as 'package'.">
+        <property name="projects.base.dir" value="${projects.dir}"/>
+        <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
+        <property name="ceylon-model.dir" value="${projects.base.dir}/ceylon-model"/>
+        <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
+        <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
+        <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
+        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
+        <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
+        <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="dist.name" value="ceylon-${ceylon.version}"/>
+        <property name="github-url" value="https://github.com/"/>
+    </target>
+
+    <target name="siblings"
+            description="Builds using dependent projects in existing sibling project folders.
+Used with another target such as 'package'">
+        <property name="projects.base.dir" value="${basedir}/.." />
+        <property name="ceylon-common.dir" value="${projects.base.dir}/ceylon-common"/>
+        <property name="ceylon-model.dir" value="${projects.base.dir}/ceylon-model"/>
+        <property name="ceylon-compiler.dir" value="${projects.base.dir}/ceylon-compiler"/>
+        <property name="ceylon-spec.dir" value="${projects.base.dir}/ceylon-spec"/>
+        <property name="ceylon.language.dir" value="${projects.base.dir}/ceylon.language"/>
+        <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/ceylon-module-resolver"/>
+        <property name="ceylon-runtime.dir" value="${projects.base.dir}/ceylon-runtime"/>
+        <property name="ceylon-js.dir" value="${projects.base.dir}/ceylon-js"/>
+        <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
+        <property name="github-url" value="https://github.com/"/>
+    </target>
+
+    <target name="package" 
+            depends="clean-projects, install-all, generate-spec, generate-apidoc, generate-tooldoc, zip"
+            description="Generates a distributable zip file">
+    </target>
+
+    <target name="install-all" 
+            depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
+                     copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
+                     copy-licenses, install-runtime-libs, install-language, install-runtime,
+                     add-module-descriptors, copy-dist-bin"
+            description="Generates all binaries and copies them to the distribution folder">
+    </target>
+
+    <target name="osgi"             
+            description="Generates the OSGI bundle of the overall dist, with OSGI-specific metamodel initialization logic">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <antcall target="osgi-internal"/>
+    </target>
+    <target name="osgi-internal"
+        depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+        <antcall target="osgi-quick"/>
+    </target>
+    <target name="osgi-quick">
+        <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="osgi-p2"> 
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <antcall target="osgi-p2-internal"/>
+    </target>
+    <target name="osgi-p2-internal"
+        depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+        <antcall target="osgi-p2-quick"/>
+    </target>
+    <target name="osgi-p2-quick">
+        <ant antfile="${ceylon-dist-osgi.dir}/build.xml" target="osgi-p2" dir="${ceylon-dist-osgi.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="zip">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <zip destfile="${basedir}/${dist.name}.zip">
+            <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
+                <include name="**" />
+                <exclude name="bin/ceylon*" />
+            </zipfileset>
+            <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
+                <include name="bin/*.plugin" />
+            </zipfileset>
+            <zipfileset dir="${ceylon.dist.dir}" filemode="755"  prefix="${dist.name}">
+                <include name="bin/ceylon*" />
+                <exclude name="bin/*.plugin" />
+            </zipfileset>
+        </zip>        
+    </target>
+    
+    <target name="setup-repo">
+        <mkdir dir="${ceylon.dist.dir}/repo"/>
+    </target>
+
+    <target name="copy-dist-bin">
+        <mkdir dir="${ceylon.dist.dir}/bin"/>
+        <copy todir="${ceylon.dist.dir}/bin">
+            <fileset dir="${basedir}/bin" />
+        </copy>
+    </target>
+
+    <target name="copy-compiler-binaries">
+        <mkdir dir="${ceylon.dist.dir}/bin"/>
+        <copy todir="${ceylon.dist.dir}/bin">
+            <fileset dir="${ceylon-common.dir}/build/bin">
+                <include name="java.bat"/>
+                <include name="ceylon"/>
+                <include name="ceylon.bat"/>
+                <include name="ceylon-completion.bash"/>
+                <include name="ceylon-sh-setup"/>
+                <include name="ceylon-sh-setup.bat"/>
+            </fileset>
+        </copy>
+        <chmod perm="0755">
+            <fileset dir="${ceylon.dist.dir}/bin">
+                <include name="ceylon"/>
+            </fileset>
+        </chmod>
+    </target>
+
+    <target name="copy-jvm-compiler-libraries">
+        <mkdir dir="${ceylon.dist.dir}/lib"/>
+        <copy todir="${ceylon.dist.dir}/lib">
+            <fileset dir="${ceylon-compiler.dir}/build/lib">
+                <include name="ceylon-bootstrap.jar"/>
+                <include name="ceylon-ant.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copy-samples">
+        <mkdir dir="${ceylon.dist.dir}/samples"/>
+        <copy todir="${ceylon.dist.dir}/samples">
+            <fileset dir="samples">
+                <include name="helloworld/**"/>
+                <include name="no-module/**"/>
+                <include name="with-module/**"/>
+                <include name="interop-java/**"/>
+                <include name="plugin/**"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="copy-templates">
+        <mkdir dir="${ceylon.dist.dir}/templates"/>
+        <copy todir="${ceylon.dist.dir}/templates">
+            <fileset dir="templates">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copy-contrib">
+        <mkdir dir="${ceylon.dist.dir}/contrib"/>
+        <copy todir="${ceylon.dist.dir}/contrib">
+            <fileset dir="contrib">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="copy-licenses">
+        <copy todir="${ceylon.dist.dir}">
+            <fileset dir="${basedir}">
+                <include name="LICENSE-ASL" />
+                <include name="LICENSE-LGPL" />
+                <include name="LICENSE-GPL-CP" />
+                <include name="NOTICE" />
+                <include name="README.md" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="install-compiler" depends="install-typechecker,install-compiler-nodeps" />
+    <target name="install-compiler-nodeps">
+        <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-js" depends="install-typechecker,install-js-nodeps" />
+    <target name="install-js-nodeps">
+        <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+            <!-- Special property that will make the build skip the language module -->
+            <property name="skip.language.module" value="true"/>
+        </ant>
+    </target>
+
+    <target name="install-typechecker" depends="install-model,install-cmr,install-typechecker-nodeps" />
+    <target name="install-typechecker-nodeps">
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,install-language-nodeps" />
+    <target name="install-language-nodeps">
+        <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-common" depends="install-common-nodeps" />
+    <target name="install-common-nodeps">
+        <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-model" depends="install-common,install-model-nodeps" />
+    <target name="install-model-nodeps">
+        <ant antfile="${ceylon-model.dir}/build.xml" target="publish" dir="${ceylon-model.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-cmr" depends="install-model,install-cmr-nodeps" />
+    <target name="install-cmr-nodeps">
+        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-runtime-libs">
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish-libs" dir="${ceylon-runtime.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-runtime" depends="install-cmr,install-runtime-nodeps" />
+    <target name="install-runtime-nodeps">
+        <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="add-module-descriptors">
+        <foreach target="add-module-descriptor" param="module.descriptor.file">
+            <fileset dir="${ceylon-runtime.dir}/build/dist" casesensitive="yes">
+                <include name="**/module.xml"/>
+            </fileset>
+        </foreach>
+    </target>
+
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
+    </target>
+
+    <taskdef resource="aQute/bnd/ant/taskdef.properties"
+          classpath="${basedir}/lib/biz.aQute.bnd-2.3.0.jar"/>
+
+    <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
+        <classpath>
+            <pathelement location="${basedir}/lib/xmltask-1.16.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="addRequiredOSGIHeaders">
+        <loadproperties>
+            <zipentry zipfile="${module.jar}" name="META-INF/MANIFEST.MF"/>
+            <filterchain>
+                <linecontainsregexp>
+                    <regexp pattern="^(Bundle-Version)"/>
+                </linecontainsregexp>
+                <replaceregex pattern="\s+$" replace=""/>
+            </filterchain>
+        </loadproperties>
+        
+        <var name="Require-Bundle" value=""/>
+        <xmltask source="${module.descriptor.file}" standalone="true">
+            <call path="/*[local-name()='module']/*[local-name()='dependencies']/*[local-name()='module']">
+                <param name="moduleName" path="@name" default="unknown"/>
+                <param name="moduleSlot" path="@slot" default="0.0.0"/>
+                <param name="moduleExport" path="@export" default="false"/>
+                <param name="moduleOptional" path="@optional" default="false"/>
+                <actions>
+                    <if>
+                        <not>
+                            <equals arg1="@{moduleName}" arg2="java.base"/>
+                        </not>
+                        <then>
+                            <if>
+                                <not>
+                                    <equals arg1="${Require-Bundle}" arg2=""/>
+                                </not>
+                                <then>
+                                    <var name="Require-Bundle" value="${Require-Bundle}," />
+                                </then>
+                            </if>
+                            <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
+                            <if>
+                                <equals arg1="@{moduleExport}" arg2="true"/>
+                                <then>
+                                    <var name="Require-Bundle" value="${Require-Bundle};visibility:=reexport" />
+                                </then>
+                            </if>
+                            <if>
+                                <equals arg1="@{moduleOptional}" arg2="true"/>
+                                <then>
+                                    <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
+                                </then>
+                            </if>
+                        </then>
+                    </if>
+                </actions>
+            </call>
+        </xmltask>
+        <xmlproperty file="${module.descriptor.file}" />
+        <property name="Bundle-SymbolicName" value="${module(name)}"/>
+        <if>
+            <not><isset property="Bundle-Version"/></not>
+            <then><property name="Bundle-Version" value="${module(slot)}"/></then>
+        </if>
+        <if>
+            <equals arg1="${Bundle-SymbolicName}"  arg2="ceylon.language"/>
+            <then>
+                <var name="Require-Bundle" value="${Require-Bundle},com.redhat.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
+            </then>
+        </if>
+        <tempfile property="bundleDefinitionFile"/>
+        <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${Bundle-Version}${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *${line.separator}</echo>
+        <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
+        <if>
+            <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.compiler.java"/>
+            <then>
+                <echo file="${bundleDefinitionFile}" append="true">Import-Package: javax.lang.model.*${line.separator}</echo>
+            </then>
+            <else>
+                <echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
+            </else>
+        </if>
+        <echo file="${bundleDefinitionFile}" append="true">-nouses: true${line.separator}</echo>
+        <if>
+            <not>
+                <equals arg1="${Require-Bundle}" arg2=""/>
+            </not>
+            <then>
+                <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
+            </then>
+        </if>
+        <bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}.bnd.jar" definitions="${bundleDefinitionFile}">
+        </bndwrap>
+        <delete file="${bundleDefinitionFile}"/>
+    </target>
+    
+    <target name="add-module-descriptor">
+        <dirname property="module.dir" file="${module.descriptor.file}"/>
+        <pathconvert property="module.dir.relative" pathsep="${line.separator}">
+            <propertyresource name="module.dir" />
+            <mapper type="regexp"
+                from="^(.*)[/\\]build[/\\]dist[/\\]repo[/\\](.*)"
+                to="\2"/>
+        </pathconvert>
+        <pathconvert property="module.jar" setonempty="false">
+            <first>
+                <fileset dir="${ceylon.dist.dir}/repo/${module.dir.relative}" includes="*.?ar" />
+            </first>
+        </pathconvert>
+        <basename property="module.jar.name" file="${module.jar}" if:set="module.jar"/>
+        <antcall target="addRequiredOSGIHeaders" inheritall="true" if:set="module.jar"/>
+        <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
+        <copy file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" />
+        <jar destfile="${module.jar}.result" if:set="module.jar" filesetmanifest="merge">
+            <zipfileset dir="${module.dir}" 
+                            includes="module.xml"
+                            fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
+            <zipfileset src="${module.jar}.original" includes="**" excludes="META-INF/MANIFEST.MF"/>
+            <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF"/>
+        </jar>
+        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
+
+        <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
+            <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
+        </pathconvert>
+        <antcall target="sha1sum" if:set="module.sha1">
+            <param name="file" value="${module.jar}" />
+        </antcall>
+
+        <delete file="${module.jar}.original" failonerror="false" deleteonexit="true"/>
+        <delete file="${module.jar}.bnd.jar" failonerror="false" deleteonexit="true"/>
+        <delete file="${module.jar}.result" failonerror="false" deleteonexit="true"/>
+    </target>
+
+    <target name="generate-spec">
+        <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false"/>
+        <copy todir="${ceylon.dist.dir}/doc/en/spec">
+            <fileset dir="${ceylon-spec.dir}/build/en"/>            
+        </copy>
+    </target>
+
+    <target name="generate-apidoc">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
+            <arg value="--stacktraces"/>
+            <arg value="doc"/>
+            <arg value="--out=${ceylon.dist.dir}/repo"/>
+            <arg value="--src=${ceylon.language.dir}/src/"/>
+            <arg value="--source-code"/>
+            <arg value="--bootstrap-ceylon"/>
+            <arg value="ceylon.language"/>
+        </exec>
+    </target>
+
+    <target name="generate-tooldoc">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
+            <arg value="--stacktraces"/>
+            <arg value="doc-tool"/>
+            <arg value="--output=${ceylon.dist.dir}/doc/en/toolset"/>
+            <arg value="--index"/>
+            <arg value="--all-plumbing"/>
+            <arg value="--all-porcelain"/>
+        </exec>
+        <if>
+            <or>
+                <available file="/usr/bin/docbook2x-man" type="file" />
+                <available file="/usr/bin/db2x_docbook2man" type="file" />
+            </or>
+            <then>
+                <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
+                    <arg value="--stacktraces"/>
+                    <arg value="doc-tool"/>
+                    <arg value="--output=${ceylon.dist.dir}/doc/en/toolset"/>
+                    <arg value="--format"/>
+                    <arg value="docbook"/>
+                    <arg value="--all-plumbing"/>
+                    <arg value="--all-porcelain"/>
+                </exec>
+                <foreach target="generate-tooldoc-man" param="toolfile" inheritall="true">
+                    <path>
+                        <fileset dir="${ceylon.dist.dir}/doc/en/toolset">
+                            <include name="**/*.xml"/>
+                        </fileset>
+                    </path>
+                </foreach>
+                <mkdir dir="${ceylon.dist.dir}/doc/man/man1"/>
+                <move todir="${ceylon.dist.dir}/doc/man/man1">
+                      <fileset dir="${ceylon.dist.dir}/doc/en/toolset/">
+                        <include name="*.1"/>
+                      </fileset>
+                </move>
+            </then>
+            <else>
+                <echo message="Not generating man pages since you do not have /usr/bin/docbook2x-man installed"/>
+            </else>
+        </if>
+    </target>
+    
+    <target name="generate-tooldoc-man">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <echo message="doc for ${toolfile}"/>
+        <dirname property="toolfile.dir" file="${toolfile}"/>
+        <basename property="toolfile.file" file="${toolfile}"/>
+        <echo message="chdir in ${toolfile.dir} and docbookx2-man ${toolfile.file}"/>
+        <if>
+            <or>
+                <available file="/usr/bin/docbook2x-man" type="file" />
+            </or>
+            <then>
+                <property name="exec" value="docbook2x-man" />
+            </then>
+            <else>
+                <property name="exec" value="db2x_docbook2man" />
+            </else>
+        </if>
+        <exec executable="${exec}" dir="${toolfile.dir}">
+            <arg value="${toolfile.file}"/>
+        </exec>
+        <propertyregex property="toolfile.name"
+                       input="${toolfile.file}"
+                       regexp="ceylon-(.*).xml"
+                       select="\1"
+                       casesensitive="false" />
+        <if>
+            <resourceexists>
+                <file file="${toolfile.dir}/ceylon_${toolfile.name}.1"/>
+            </resourceexists>
+         <then>
+            <move file="${toolfile.dir}/ceylon_${toolfile.name}.1" tofile="${toolfile.dir}/ceylon-${toolfile.name}.1"></move>
+         </then>
+        </if>
+        <delete file="${toolfile}"/>
+    </target>
+
+    <target name="get-code" depends="local,get-code-internal"
+            description="Downloads latest code for all projects">
+        <echo>
+If you are building a distribution package for a specific tagged release
+then execute the following command:
+
+    ant checkout -Dtag=0.5 - Makes sure we're using the specified tag
+
+or you can go straight to the package building:
+
+    ant local package      - Builds the distribution package
+</echo>
+    </target>
+    <target name="get-code-internal" depends="git-clone-or-pull,checkout-tagged">
+    </target>
+
+    <target name="git-clone-or-pull">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-clone-or-pull-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-clone-or-pull-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+            <echo>Updating ${project.item.name}:</echo>
+                <antcall target="checkout-internal-item">
+                    <param name="tag-internal" value="master" />
+                </antcall>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="pull"/>
+                    <arg value="--ff-only"/>
+                </exec>
+            </then>
+            <else>
+        <echo>Cloning ${project.item.name}:</echo>
+                <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
+                    <arg value="clone"/>
+                    <arg value="${github-url}ceylon/${project.item.name}.git"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+
+    <target name="git-clone">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-clone-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-clone-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <else>
+            <echo>Cloning ${project.item.name}:</echo>
+                <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
+                    <arg value="clone"/>
+                    <arg value="${github-url}ceylon/${project.item.name}.git"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+
+    <target name="git-update">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-update-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-update-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Updating ${project.item.name}:</echo>
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}/.git/ceylon-update" type="file" />
+            <then>
+                <exec executable="${projects.base.dir}/${project.item.name}/.git/ceylon-update"
+                      dir="${projects.base.dir}/${project.item.name}" failonerror="no">
+                </exec>
+            </then>
+            <else>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="no">
+                    <arg value="pull"/>
+                    <arg value="--rebase"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+
+    <target name="git-status">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-status-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-status-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+                <echo>Status of ${project.item.name}:</echo>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="status"/>
+                    <arg value="--short"/>
+                    <arg value="--branch"/>
+                </exec>
+            </then>
+        </if>
+    </target>
+
+    <target name="checkout" depends="local">
+        <fail unless="tag" />
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="${tag}" />
+        </antcall>
+        <echo>
+You can now build the package by executing:
+
+    ant local package      - Builds the distribution package
+</echo>
+    </target>
+
+    <target name="checkout-internal">
+        <fail unless="tag-internal" />
+        <foreach list="${modules}"
+                 target="checkout-internal-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="checkout-internal-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <fail unless="tag-internal" />
+        <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+            <arg value="fetch"/>
+            <arg value="--tags"/>
+        </exec>
+        <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+    </target>
+
+    <target name="checkout-master" depends="local">
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="master" />
+        </antcall>
+    </target>
+
+    <target name="checkout-tagged" if="tag" depends="local">
+        <echo message="Checking out tag '${tag}'" />
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="${tag}" />
+        </antcall>
+    </target>
+
+    <target name="git-status-dist">
+        <echo>Status of ceylon-dist:</echo>
+        <exec executable="git" failonerror="no">
+            <arg value="status"/>
+            <arg value="--short"/>
+            <arg value="--branch"/>
+        </exec>
+    </target>
+
+    <target name="git-update-dist">
+        <echo>Updating ceylon-dist:</echo>
+        <exec executable="git" failonerror="no">
+            <arg value="pull"/>
+            <arg value="--rebase"/>
+        </exec>
+    </target>
+
+    <target name="git-gc">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${modules}"
+                 target="git-gc-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-gc-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+                <echo>Compacting ${project.item.name}...</echo>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="gc"/>
+                </exec>
+            </then>
+        </if>
+    </target>
+
+    <target name="clean"
+            description="Cleans the distribution package">
+        <delete dir="${ceylon.dist.dir}"/>
+        <delete dir="${ceylon-dist-osgi.dir}/build"/>
+        <delete dir="${ceylon-dist-osgi.dir}/embeddedRepository/bin"/>
+        <delete dir="${ceylon-dist-osgi.dir}/embeddedRepository/repo"/>
+        <delete file="${ceylon-dist-osgi.dir}/lib/ceylon-bootstrap.jar"/>
+    </target>
+
+    <target name="clean-release" depends="clean"
+            description="Cleans the distribution package and deletes all local projects">
+        <delete dir="${projects.dir}"/>
+    </target>
+    
+    <target name="clean-projects" 
+            description="Cleans all sub projects">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <foreach list="${modules}"
+                 target="clean-projects-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="clean-projects-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Cleaning ${project.item.name}</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="clean"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false"/>
+    </target>
+
+    <!-- The following tasks all redirect to "sdk-build.xml" -->
+    
+    <target name="setup-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="setup"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="setup-admins-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="setup-admins"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="status-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="status"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="update-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="update"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean-sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+
+    <target name="sdk">
+        <ant antfile="${basedir}/sdk-build.xml"
+             target="sdk"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <!-- The following tasks all redirect to "ide-build.xml" -->
+    
+    <target name="setup-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="setup"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="setup-admins-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="setup-admins"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="status-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="status"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="update-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="update"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean-projects-ide">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="clean-projects"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-switch-to-last-release-updates" depends="siblings">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse-switch-to-last-release-updates"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-switch-back-to-master" depends="siblings">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse-switch-back-to-master"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-rebuild-last-release-updates">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="check-branch-for-last-release-updates"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+        <ant antfile="${basedir}/ide-build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+            <property name="gitprojects" value="ceylon-ide-common,ceylon-ide-eclipse"/>
+        </ant>
+        <ant antfile="${basedir}/ide-build.xml"
+             target="eclipse"
+             inheritall="false"
+             useNativeBasedir="true">
+            <property name="ceylonmodules" value="ceylon-ide-common"/>
+            <property name="build-against" value="last-release"/>
+        </ant>
+    </target>
+
+    <target name="intellij">
+        <ant antfile="${basedir}/ide-build.xml"
+             target="intellij"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <!-- The following tasks do work on the Distribution, the SDK and the IDE -->
+    
+    <target name="status-all" depends="status,status-sdk,status-ide" />
+    <target name="update-all" depends="update,update-sdk,update-ide" />
+    <target name="clean-all" depends="siblings,clean,clean-projects,clean-sdk,clean-ide" />
+    <target name="do-all" depends="dist,sdk,eclipse" />
+
+</project>

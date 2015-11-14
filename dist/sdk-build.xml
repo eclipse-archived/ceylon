@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sdk" default="help" basedir="." xmlns:if="ant:if">
+
+    <tstamp>
+        <format property="NOW" pattern="yyyyMMddHHmm" />
+    </tstamp>
+
+    <property file="build.properties"/>
+    <property name="projects.dir" value="${basedir}/projects"/>
+    <property name="ceylon.dist.dir" value="${basedir}/dist"/>
+    <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
+
+    <property name="gitprojects" value="ceylon-sdk" />
+    <property name="ceylonmodules" value="ceylon-sdk" />
+
+    <property name="msg.needlocalorsiblings" value="Needs 'local' or 'siblings' target to be mentioned first" />
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="../ceylon-dist/lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="help">
+        <echo>Options for building the Ceylon IE plugins:
+    ant setup              - Sets up a new clean environment for development
+    ant status             - Shows the Git status of the sibling projects
+    ant update             - Updates the Git repository of the sibling projects
+    ant publish            - Cleans and builds all sibling projects
+    ant ide                - Builds the IDE components for all sibling projects
+    ant clean              - Cleans the build environment
+
+    To build the Eclipse plugin:
+        mvn clean install -DskipTests
+
+    To build the IntelliJ plugin:
+        See the README of the ceylon-ide-intellij project for instructions
+        </echo>
+    </target>
+
+    <target name="setup" depends="siblings,git-clone"
+            description="Sets up a new clean environment for development">
+    </target>
+
+    <target name="setup-admins"
+            description="Sets up a new clean environment for developers with write access to the core repositories">
+        <property name="github-url" value="git@github.com:"/>
+        <antcall target="setup" />
+    </target>
+
+    <target name="sdk" depends="siblings,publish,ide-quick">
+    </target>
+
+    <target name="publish" depends="siblings,publish-quick"
+            description="Publishes all sibling projects" />
+    <target name="publish-quick" depends="siblings">
+        <foreach list="${ceylonmodules}"
+                 target="publish-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="publish-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="publish"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false"
+             useNativeBasedir="true">
+            <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
+        </ant>
+    </target>
+
+
+    <target name="ide" depends="siblings">
+        <property name="buildtarget" value="ide-internal" />
+        <antcall target="ide-quick"/>
+    </target>
+    <target name="ide-quick" depends="siblings">
+        <foreach list="${ceylonmodules}"
+                 target="ide-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="ide-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="ide-quick"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false"
+             useNativeBasedir="true">
+            <!--property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/-->
+        </ant>
+    </target>
+
+    <target name="update" depends="siblings,git-update"
+            description="Updates sibling projects with latest code from git">
+    </target>
+
+    <target name="status" depends="siblings,git-status"
+            description="Shows git status of all sibling projects">
+    </target>
+
+    <target name="local"
+            description="Builds using dependent projects in the ${projects.dir} directory.
+Used with another target such as 'package'.">
+        <property name="projects.base.dir" value="${projects.dir}"/>
+        <property name="ceylon-formatter.dir" value="${projects.base.dir}/ceylon.formatter"/>
+        <property name="ceylon-converter.dir" value="${projects.base.dir}/ceylon.tool.converter.java2ceylon"/>
+        <property name="ceylon-ide-common.dir" value="${projects.base.dir}/ceylon-ide-common"/>
+        <property name="ceylon-ide-eclipse.dir" value="${projects.base.dir}/ceylon-ide-eclipse"/>
+        <property name="ceylon-ide-intellij.dir" value="${projects.base.dir}/ceylon-ide-intellij"/>
+        <property name="dist.name" value="ceylon-${ceylon.version}"/>
+        <property name="github-url" value="https://github.com/"/>
+    </target>
+
+    <target name="siblings"
+            description="Builds using dependent projects in existing sibling project folders.
+Used with another target such as 'package'">
+        <property name="projects.base.dir" value="${basedir}/.." />
+        <property name="ceylon-formatter.dir" value="${projects.base.dir}/ceylon.formatter"/>
+        <property name="ceylon-converter.dir" value="${projects.base.dir}/ceylon.tool.converter.java2ceylon"/>
+        <property name="ceylon-ide-common.dir" value="${projects.base.dir}/ceylon-ide-common"/>
+        <property name="ceylon-ide-eclipse.dir" value="${projects.base.dir}/ceylon-ide-eclipse"/>
+        <property name="ceylon-ide-intellij.dir" value="${projects.base.dir}/ceylon-ide-intellij"/>
+        <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
+        <property name="github-url" value="https://github.com/"/>
+    </target>
+
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
+    </target>
+
+    <target name="git-clone-or-pull">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${gitprojects}"
+                 target="git-clone-or-pull-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-clone-or-pull-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+            <echo>Updating ${project.item.name}:</echo>
+                <antcall target="checkout-internal-item">
+                    <param name="tag-internal" value="master" />
+                </antcall>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="pull"/>
+                    <arg value="--ff-only"/>
+                </exec>
+            </then>
+            <else>
+        <echo>Cloning ${project.item.name}:</echo>
+                <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
+                    <arg value="clone"/>
+                    <arg value="${github-url}ceylon/${project.item.name}.git"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+
+    <target name="git-clone">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${gitprojects}"
+                 target="git-clone-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-clone-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <else>
+            <echo>Cloning ${project.item.name}:</echo>
+                <exec executable="git" dir="${projects.base.dir}" failonerror="yes">
+                    <arg value="clone"/>
+                    <arg value="${github-url}ceylon/${project.item.name}.git"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+
+    <target name="git-update">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${gitprojects}"
+                 target="git-update-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-update-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Updating ${project.item.name}:</echo>
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}/.git/ceylon-update" type="file" />
+            <then>
+                <exec executable="${projects.base.dir}/${project.item.name}/.git/ceylon-update"
+                      dir="${projects.base.dir}/${project.item.name}" failonerror="no">
+                </exec>
+            </then>
+            <else>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="no">
+                    <arg value="pull"/>
+                    <arg value="--rebase"/>
+                </exec>
+            </else>
+        </if>
+    </target>
+
+    <target name="git-status">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${gitprojects}"
+                 target="git-status-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-status-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+                <echo>Status of ${project.item.name}:</echo>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="status"/>
+                    <arg value="--short"/>
+                    <arg value="--branch"/>
+                </exec>
+            </then>
+        </if>
+    </target>
+
+    <target name="checkout" depends="local">
+        <fail unless="tag" />
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="${tag}" />
+        </antcall>
+    </target>
+
+    <target name="checkout-internal">
+        <fail unless="tag-internal" />
+        <foreach list="${gitprojects}"
+                 target="checkout-internal-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="checkout-internal-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <fail unless="tag-internal" />
+        <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+            <arg value="fetch"/>
+            <arg value="--tags"/>
+        </exec>
+        <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+            <arg value="checkout"/>
+            <arg value="-q"/>
+            <arg value="${tag-internal}"/>
+        </exec>
+    </target>
+
+    <target name="checkout-master" depends="local">
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="master" />
+        </antcall>
+    </target>
+
+    <target name="checkout-tagged" if="tag" depends="local">
+        <echo message="Checking out tag '${tag}'" />
+        <antcall target="checkout-internal">
+            <param name="tag-internal" value="${tag}" />
+        </antcall>
+    </target>
+
+    <target name="git-gc">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <mkdir dir="${projects.base.dir}"/>
+        <foreach list="${gitprojects}"
+                 target="git-gc-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="git-gc-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <if>
+            <available file="${projects.base.dir}/${project.item.name}" type="dir" />
+            <then>
+                <echo>Compacting ${project.item.name}...</echo>
+                <exec executable="git" dir="${projects.base.dir}/${project.item.name}" failonerror="yes">
+                    <arg value="gc"/>
+                </exec>
+            </then>
+        </if>
+    </target>
+
+    <target name="clean" depends="siblings"
+            description="Cleans all sub projects">
+        <fail unless="projects.base.dir" message="${msg.needlocalorsiblings}" />
+        <foreach list="${gitprojects}"
+                 target="clean-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="clean-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Cleaning ${project.item.name}</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="clean"
+             dir="${projects.base.dir}/${project.item.name}"
+             inheritall="false"
+             useNativeBasedir="true"/>
+    </target>
+    
+</project>
