@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding="iso-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3CR3//EN"
+                      "../support/docbook-dtd/docbookx.dtd"
+
+[
+<!ENTITY introduction              SYSTEM "modules/introduction.xml">
+<!ENTITY lexical                   SYSTEM "modules/lexical.xml">
+<!ENTITY typesystem                SYSTEM "modules/typesystem.xml">
+<!ENTITY declarations              SYSTEM "modules/declarations.xml">
+<!ENTITY statementblocks           SYSTEM "modules/statementblocks.xml">
+<!ENTITY expressions               SYSTEM "modules/expressions.xml">
+<!ENTITY annotations               SYSTEM "modules/annotations.xml">
+<!ENTITY execution                 SYSTEM "modules/execution.xml">
+<!ENTITY modules                   SYSTEM "modules/modules.xml">
+<!ENTITY equals                    "==">
+<!ENTITY assign                    ":=">
+<!ENTITY identical                 "===">
+]>
+
+<book lang="en">
+
+    <bookinfo>
+        <title>The Ceylon Language</title>
+        <subtitle>Say more, more clearly</subtitle>
+        <releaseinfo>1.2</releaseinfo>
+        <author><firstname>Gavin</firstname><surname>King</surname></author>
+    </bookinfo>
+
+    <toc/>
+    
+    <preface>
+    <title>Welcome to Ceylon</title>
+    
+    <para>This project is the work of a team of people who are fans of Java
+    and of the Java ecosystem, of its practical orientation, of its culture of 
+    openness, of its developer community, of its roots in the world of business 
+    computing, and of its ongoing commitment to portability. 
+    However, we recognize that the language and class libraries, designed more 
+    than 15 years ago, are no longer the best foundation for a range of today's 
+    business computing problems. We further recognize that Java failed in one
+    environment it was originally promoted for: the web browser.</para>
+    
+    <para>The goal of this project is to make a clean break with the legacy 
+    Java SE platform, by improving upon the Java language and class libraries, 
+    and by providing a modular architecture for a new platform based upon the 
+    Java Virtual Machine. A further goal is to bridge the gap between the web
+    client and server by supporting execution on JavaScript virtual machines.</para>
+    
+    <para>Of course, we recognize that the ability to interoperate with existing 
+    Java code, thereby leveraging existing investment in the Java ecosystem, is a 
+    critical requirement of any successor to the Java platform.</para>
+    
+    <para>Java is a simple language to learn and Java code is easy to read and
+    understand. Java provides a level of typesafety that is appropriate for
+    business computing and enables sophisticated tooling with features like
+    refactoring support, code completion, and code navigation. Ceylon aims to 
+    retain the overall model of Java, while getting rid of some of Java's warts,
+    and improving upon Java's facilities for creating abstractions and writing 
+    generic libraries and frameworks.
+    <!-- including: primitive types, arrays, constructors, getters/setters, checked 
+    exceptions, raw types, wildcard types, <literal>static</literal> members,
+    <literal>synchronized</literal> methods and blocks, finalizers, overloading, 
+    generic type argument erasure, serialization, unsafe typecasts and reflection, 
+    and the dreaded <literal>NullPointerException</literal>.--></para> 
+    
+    <para>Ceylon has the following goals:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>to be appropriate for large scale development, but to also
+            be <emphasis>fun</emphasis>,</para>
+        </listitem>
+        <listitem>
+            <para>to execute on the JVM, and on JavaScript virtual machines, 
+            and to interoperate with native Java and JavaScript code,</para>
+        </listitem>
+        <listitem>
+            <para>to provide language-level modularity,</para>
+        </listitem>
+        <listitem>
+            <para>to be easy to learn for Java and C# developers,</para>
+        </listitem>
+        <listitem>
+            <para>to eliminate some of Java's verbosity, while retaining its 
+            readability&mdash;Ceylon does <emphasis>not</emphasis> aim to be 
+            the most concise/cryptic language around,</para>
+        </listitem>
+        <listitem>
+            <para>to provide an elegant and more flexible syntax to support 
+            frameworks, declarative programming, and meta-programming, and, 
+            in particular</para>
+        </listitem>
+        <listitem>
+            <para>to provide a declarative syntax for expressing hierarchical 
+            information like user interface definition, externalized data, and 
+            system configuration, thereby eliminating Java's dependence upon 
+            XML,</para>
+        </listitem>
+        <listitem>
+            <para>to support and encourage a more functional style of programming 
+            with immutable objects and first class functions, alongside the
+            familiar imperative mode,</para>
+        </listitem>
+        <listitem>
+            <para>to expand compile-time typesafety with compile-time safe handling 
+            of null values, compile-time safe typecasts, and a more typesafe approach 
+            to reflection, and</para>
+        </listitem>
+        <listitem>
+            <para>to make it easy to <emphasis>get things done</emphasis>.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Unlike other alternative JVM languages, Ceylon aims to completely replace 
+    the legacy Java SE class libraries.</para>
+    
+    <para>Therefore, the Ceylon SDK provides:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>a compiler that compiles Ceylon and Java source to Java 
+            bytecode, and cross-compiles Ceylon to JavaScript,</para>
+        </listitem>
+        <listitem>
+            <para>command-line tooling for compiling modules and 
+            documentation, and managing modules in module repositories,</para>
+        </listitem>
+        <listitem>
+            <para>Eclipse-based tooling for developing, compiling, testing, and 
+            debugging programs written in Ceylon,</para>
+        </listitem>
+        <listitem>
+            <para>a module runtime for modular programs that execute on the Java
+            Virtual Machine, and</para>
+        </listitem>
+        <listitem>
+            <para>a set of class libraries that provides much of the functionality
+            of the Java SE platform, together with the core functionality of the
+            Java EE platform.</para>
+        </listitem>
+    </itemizedlist>
+    
+    </preface>
+
+    &introduction;
+    &lexical;
+    &typesystem;
+    &declarations;
+    &statementblocks;
+    &expressions;
+    &annotations;
+    &execution;
+    &modules;
+
+</book>
+

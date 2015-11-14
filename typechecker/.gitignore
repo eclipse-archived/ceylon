@@ -1,0 +1,27 @@
+#Ignored files
+
+#OS
+.DS_Store
+
+# build system
+build
+bin
+gensrc
+output
+out
+treegen/*.java
+treegen/*.tokens
+
+#IDEs
+.settings
+.idea
+*.iml
+
+# Documentation
+Ceylon Language Specification*.pdf
+
+# Misc
+test/temp
+/Ceylon.tokens
+/CeylonLexer.java
+/CeylonParser.java

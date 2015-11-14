@@ -1,0 +1,556 @@
+<!--
+   To build the reference docs for a particular language only, use "ant -Dlang=en", for
+   example, and call either lang.all, lang.docpdf, lang.dochtml, or lang.dochtmlsingle
+   for the target of your choice.
+
+   You can also call lang.section-check to track down missing identifiers in a particular
+   language, or you can call lang.revdiff to get a difference report for a particular
+   language, compared with the English reference.
+-->
+<project name="Ceylon Language Specification" default="doc" basedir=".">
+
+    <property file="../ceylon-common/user-build.properties"/>
+    <property file="../ceylon-common/common-build.properties"/>
+    <property file="build.properties"/>
+
+    <!-- Allow this to be overriden by others importing this project. -->
+    <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
+
+    <!-- Set build directories for all formats. -->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.dist" value="${build.dir}/dist"/>
+    <property name="build.dist.repo" value="${build.dist}/repo"/>
+    <property name="build.classes" location="${build.dir}/classes"/>
+
+    <property name="src" location="src"/>
+    <property name="gensrc" location="gensrc"/>
+
+    <!-- Support files for build process. -->
+    <property name="support.dir" value="${imported.basedir}/support"/>
+
+    <!-- Base name for documentation artifacts. -->
+    <tstamp/>
+    <property name="docname" value="Ceylon Language Specification ${DSTAMP}"/>
+
+    <!-- Set DocBook stylesheets. -->
+    <property name="db.style.fopdf" value="fopdf.xsl"/>
+    <property name="db.style.html" value="html_chunk.xsl"/>
+    <property name="db.style.htmlsingle" value="html.xsl"/>
+    <property name="db.style.info" value="texinfo.xsl"/>
+
+    <!-- Local repository -->
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
+    <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
+    <property name="ceylon.typechecker.dist" value="${build.dist.repo}/${ceylon.typechecker.dir}"/>
+
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+
+    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
+    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
+    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
+
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+
+    
+    <condition property="hasInfo">
+      <os family="unix"/>
+    </condition>
+
+    <!-- Classpath for the build tools. -->
+    <path id="lib.classpath">
+        <fileset dir="${support.dir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="classpath">
+        <fileset dir="${basedir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+    </path>
+
+    <!-- ANTLR -->
+    <property name="antlr.src" location="Ceylon.g"/>
+    <property name="antlr.dst" location="gensrc"/>
+
+    <!-- ################################################################## -->
+
+    <target name="doc"
+            depends="clean.doc"
+            description="Compile documentation for all languages and all formats.">
+
+        <!-- TRANSLATOR: Duplicate this line for your language -->
+        <antcall target="lang.all">
+            <param name="lang" value="en"/>
+        </antcall>
+
+    </target>
+
+    <target name="pdf"
+            depends="clean.doc"
+            description="Compile PDF documentation for all languages.">
+
+        <!-- TRANSLATOR: Duplicate this line for your language -->
+        <antcall target="lang.docpdf">
+            <param name="lang" value="en"/>
+        </antcall>
+
+        <copy file="${build.dir}/en/pdf/${docname}.pdf" todir="${basedir}"/>
+
+    </target>
+
+    <target name="info"
+            depends="clean.doc"
+            description="Compile Texinfo documentation for all languages.">
+
+        <!-- TRANSLATOR: Duplicate this line for your language -->
+        <antcall target="lang.docinfo">
+            <param name="lang" value="en"/>
+        </antcall>
+
+    </target>
+
+    <target name="revdiff"
+            description="Generates a diff report for all translated versions.">
+
+        <!-- TRANSLATOR: Duplicate this line for your language -->
+        <antcall target="lang.revdiff">
+            <param name="lang" value="de"/>
+        </antcall>
+
+    </target>
+
+    <!-- ################################################################## -->
+
+    <target name="clean"
+            description="Clean up everything.">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="clean.doc">
+        <delete dir="${build.dir}/en"/>
+    </target>
+
+    <target name="clean.antlr">
+        <delete dir="${antlr.dst}"/>
+    </target>
+
+    <target name="lang.all">
+        <!-- Compile the documentation for a single language in all formats. -->
+        <antcall target="lang.docpdf"/>
+        <antcall target="lang.dochtml"/>
+        <antcall target="lang.dochtmlsingle"/>
+        <antcall target="lang.htmlmisc"/>
+        <antcall target="lang.docinfo"/>
+    </target>
+
+
+    <target name="lang.docpdf.prepare">
+
+        <!-- Copy all the images to the output location, will be removed later. -->
+        <copy todir="${build.dir}/${lang}/pdf/images">
+            <fileset dir="${basedir}/${lang}/images">
+                <include name="**/*.png"/>
+                <include name="**/*.svg"/>
+                <include name="**/*.gif"/>
+            </fileset>
+        </copy>
+
+        <!-- Create the XSL/FO temporary file. -->
+        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <arg value="-o"/>
+            <arg value="${build.dir}/${lang}/pdf/docbook_fop.tmp"/>
+            <arg value="${basedir}/${lang}/master.xml"/>
+            <arg value="${basedir}/${lang}/styles/${db.style.fopdf}"/>
+        </java>
+
+        <available property="custom.fop.userconfig.present" file="userconfig.xml" filepath="${basedir}/${lang}/fop"/>
+    </target>
+
+    <target name="lang.docpdf.customized" depends="lang.docpdf.prepare" if="custom.fop.userconfig.present">
+        <fail unless="lang" />
+        <copy todir="${build.dir}/${lang}/pdf">
+            <fileset dir="${basedir}/${lang}/fop">
+                <include name="*"/>
+            </fileset>
+        </copy>
+
+        <!-- Create a PDF from the XSL/FO, using customized fop userconfig.xml -->
+        <java classname="org.apache.fop.apps.Fop" fork="true" dir="${basedir}" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <arg value="-c"/>
+            <arg value="${basedir}/${lang}/fop/userconfig.xml"/>
+            <arg value="${build.dir}/${lang}/pdf/docbook_fop.tmp"/>
+            <arg value="${build.dir}/${lang}/pdf/${docname}.pdf"/>
+        </java>
+    </target>
+
+    <target name="lang.docpdf.normal" depends="lang.docpdf.prepare" unless="custom.fop.userconfig.present">
+        <fail unless="lang" />
+        <!-- Create a PDF from the XSL/FO. -->
+        <java classname="org.apache.fop.apps.Fop" fork="true" dir="${basedir}" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <arg value="${build.dir}/${lang}/pdf/docbook_fop.tmp"/>
+            <arg value="${build.dir}/${lang}/pdf/${docname}.pdf"/>
+        </java>
+    </target>
+
+    <target name="lang.docpdf" depends="lang.docpdf.normal,lang.docpdf.customized"
+            description="Generates the PDF documentation only for a language (set lang)">
+        <!-- House keeping,delete temporary files. -->
+        <fail unless="lang" />
+        <delete>
+            <fileset dir="${build.dir}/${lang}/pdf" excludes="**/*.pdf"/>
+        </delete>
+        <delete dir="${build.dir}/${lang}/pdf/images"/>
+    </target>
+
+    <target name="lang.dochtml"
+            description="Generates the HTML documentation only for a language (set lang)">
+
+        <fail unless="lang" />
+        <mkdir dir="${build.dir}/${lang}/html/"/>
+
+        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${build.dir}/${lang}/html" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <arg value="${basedir}/${lang}/master.xml"/>
+            <arg value="${basedir}/${lang}/styles/${db.style.html}"/>
+        </java>
+        
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">]]></replacetoken>
+          <replacevalue><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">
+<link type='text/css' href='../shared/css/ceylon.css' rel='stylesheet'/>
+<link type='text/css' href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet'/>
+<script src='../shared/css/rainbow.min.js' type='text/javascript'></script>
+<script src='../shared/css/ceylon.js' type='text/javascript'></script>
+<script src='../shared/css/bnf.js' type='text/javascript'></script>]]></replacevalue>
+        </replace>
+        
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
+          <replacevalue><![CDATA[<pre data-language="ceylon">]]></replacevalue>
+        </replace>
+        
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<pre class="synopsis">]]></replacetoken>
+          <replacevalue><![CDATA[<pre data-language="bnf">]]></replacevalue>
+        </replace>
+        
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<th colspan="3" align="center">Chapter&nbsp;]]></replacetoken>
+          <replacevalue><![CDATA[<th colspan="3" align="center">The Ceylon Language &mdash; ]]></replacevalue>
+        </replace>
+        
+    </target>
+
+    <target name="lang.dochtmlsingle"
+            description="Generates the single-page HTML documentation only for a language (set lang)">
+
+        <fail unless="lang" />
+        <mkdir dir="${build.dir}/${lang}/html_single/"/>
+
+        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <arg value="-o"/>
+            <arg value="${build.dir}/${lang}/html_single/index.html"/>
+            <arg value="${basedir}/${lang}/master.xml"/>
+            <arg value="${basedir}/${lang}/styles/${db.style.htmlsingle}"/>
+        </java>
+        
+        <replace dir="${build.dir}/${lang}/html_single/">
+            <include name="**/*.html"/>
+            <replacetoken><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">]]></replacetoken>
+            <replacevalue><![CDATA[<link rel="stylesheet" href="../shared/css/html.css" type="text/css">
+  <link type='text/css' href='../shared/css/ceylon.css' rel='stylesheet'/>
+  <link type='text/css' href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet'/>
+  <script src='../shared/css/rainbow.min.js' type='text/javascript'></script>
+  <script src='../shared/css/ceylon.js' type='text/javascript'></script>
+  <script src='../shared/css/bnf.js' type='text/javascript'></script>]]></replacevalue>
+          </replace>
+          
+          <replace dir="${build.dir}/${lang}/html_single/">
+              <include name="**/*.html"/>
+            <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
+            <replacevalue><![CDATA[<pre data-language="ceylon">]]></replacevalue>
+          </replace>
+          
+          <replace dir="${build.dir}/${lang}/html_single/">
+              <include name="**/*.html"/>
+            <replacetoken><![CDATA[<pre class="synopsis">]]></replacetoken>
+            <replacevalue><![CDATA[<pre data-language="bnf">]]></replacevalue>
+          </replace>
+          
+    </target>
+
+    <target name="lang.htmlmisc">
+        <fail unless="lang" />
+
+        <!-- Copy images and CSS for HTML documentation, language specific. -->
+        <copy todir="${build.dir}/${lang}/shared/images">
+            <fileset dir="${basedir}/${lang}/images">
+                <include name="**/*.png"/>
+                <include name="**/*.gif"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.dir}/${lang}/shared/css">
+            <fileset dir="${basedir}/${lang}/styles">
+                <include name="**/*.css"/>
+                <include name="**/*.js"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="lang.docinfo.texi">
+
+        <fail unless="lang" />
+        <mkdir dir="${build.dir}/${lang}/info/"/>
+
+        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${basedir}" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <arg value="-o"/>
+            <arg value="${build.dir}/${lang}/info/ceylon-spec.texi"/>
+            <arg value="${basedir}/${lang}/master.xml"/>
+            <arg value="${basedir}/${lang}/styles/${db.style.info}"/>
+        </java>
+
+    </target>
+
+    <target name="lang.docinfo.make" if="hasInfo">
+
+        <fail unless="lang" />
+        <exec executable="makeinfo" dir="${build.dir}/${lang}/info/">
+            <arg value="ceylon-spec.texi"/>
+        </exec>
+      
+    </target>
+
+    <target name="lang.docinfo"
+            depends="lang.docinfo.texi,lang.docinfo.make"
+            description="Generates the Texinfo documentation only for a language (set lang)"/>
+
+    <target name="lang.revdiff"
+            description="Reports difference between English and translation (set lang)">
+
+        <fail unless="lang" />
+        <taskdef name="revdiff"
+                 classname="org.hibernate.docproc.revdiff.RevDiffReportTask"
+                 classpathref="lib.classpath">
+
+        </taskdef>
+
+        <revdiff original="${basedir}/en/master.xml"
+                 copy="${basedir}/${lang}/master.xml"
+                 report="${build.dir}/status_${lang}.html"/>
+
+    </target>
+
+    <target name="lang.section-check" depends="lang.dochtml"
+            description="Reports missing unique chapter/section identifiers (set lang)">
+        <fail unless="lang" />
+        <java classname="com.icl.saxon.StyleSheet" fork="true" dir="${build.dir}/${lang}/html" maxmemory="192m">
+            <classpath refid="lib.classpath"/>
+            <arg value="${basedir}/${lang}/master.xml"/>
+            <arg value="${support.dir}/section-check.xsl"/>
+        </java>
+    </target>
+
+    <!-- Antlr and code generation -->
+
+    <target name="antlr" depends="antlr.parser,antlr.tree"/>
+
+    <target name="antlr.parser"
+            description="Generate code from ANTLR grammar">
+        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
+        <java classname="org.antlr.Tool">
+            <arg value="-o"/>
+            <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
+            <arg value="${antlr.src}"/>
+            <classpath>
+                <pathelement location="${antlr.lib}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="antlr.tree"
+            description="Generate code from ANTLR grammar">
+        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
+        <java classname="org.antlr.Tool" dir="${basedir}" fork="yes">
+            <arg value="-fo"/>
+            <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
+            <arg value="treegen/Treegen.g"/>
+            <!--arg value="treegen/Buildergen.g"-->
+            <arg value="treegen/Walkergen.g"/>
+            <arg value="treegen/Visitorgen.g"/>
+            <arg value="treegen/VisitorAdaptorgen.g"/>
+            <arg value="treegen/Validatorgen.g"/>
+            <classpath>
+                <pathelement location="${antlr.lib}"/>
+            </classpath>
+        </java>
+        <delete>
+            <fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
+                     includes="*.tokens"/>
+        </delete>
+    </target>
+
+    <target name="treegen" depends="antlr.tree, antlr.parser">
+        <mkdir dir="${build.classes}"/>
+        <javac
+                srcdir="${src}:${gensrc}"
+                destdir="${build.classes}"
+                debug="true"
+                encoding="UTF-8"
+                classpath="${antlr.lib}"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
+            <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
+        </javac>
+    </target>
+
+    <target name="tree" depends="treegen"
+            description="Generate the tree builder code">
+        <mkdir dir="${gensrc}/com/redhat/ceylon/compiler/typechecker/tree"/>
+        <java classname="com.redhat.ceylon.compiler.typechecker.treegen.Generate" dir="${basedir}" fork="yes">
+            <arg value="Ceylon.nodes"/>
+            <classpath>
+                <pathelement location="${antlr.lib}"/>
+                <pathelement location="${build.classes}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- project compilation -->
+    <target name="compile" depends="tree" description="compile the type checker">
+        <javac
+                srcdir="${src}:${gensrc}"
+                destdir="${build.classes}"
+                debug="true"
+                encoding="UTF-8"
+                classpathref="classpath"
+                target="${compile.java.target}"
+                source="${compile.java.source}"
+                bootclasspath="${compile.java.bootclasspath}">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file"/>
+        <fail if="filename"/>
+        <fail if="value"/>
+        <basename file="${file}" property="filename"/>
+        <checksum file="${file}" property="value" algorithm="sha1"/>
+        <echo file="${file}.sha1" message="${value}"/>
+    </target>
+    <!-- Repository targets -->
+    <target name="init.repo"
+            description="Init local ceylon repository and add ceylon.language">
+        <mkdir dir="${ceylon.typechecker.repo}"/>
+    </target>
+
+    <target name="clean.repo"
+            description="Clean local ceylon repository">
+        <delete dir="${ceylon.typechecker.repo}"/>
+    </target>
+
+    <target name="ide-quick-internal">
+        <property name="archivePath" value="${ceylon.typechecker.lib}"/>
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+    </target>
+
+    <target name="typechecker.jar" depends="compile">
+        <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
+        <tstamp>
+            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        </tstamp>        
+        <jar destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
+            <fileset dir="${build.classes}">
+                <include name="**/*.class"/>
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.typechecker"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.typechecker.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.typechecker.jar}" />
+        </antcall>
+    </target>
+
+    <target name="build" depends="typechecker.jar">
+    </target>
+
+    <target name="dist" depends="build">
+    </target>
+
+    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"
+            description="Publish type checker module to default repo">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}"/>
+        </copy>
+    </target>
+
+    <target name="test"
+            depends="publish,test.quick"
+            description="Run rudimentary tests">
+    </target>
+
+    <target name="test.quick">
+        <java classname="main.MainForTest">
+            <classpath>
+                <pathelement location="${build.classes}"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="test.language"
+            depends="publish,test.language.quick"
+            description="Run rudimentary tests">
+    </target>
+
+    <target name="test.language.quick">
+        <java classname="main.MainForLanguage">
+            <classpath>
+                <pathelement location="${build.classes}"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+</project>

@@ -1,0 +1,1232 @@
+<chapter id="modulesystem">
+    <title>Module system</title>
+    
+    <para>The Ceylon module architecture enables a toolset which relieves 
+    developers of many mundane tasks. The module system specifies:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the format of packaged deployable module archives (for
+            the Java platform), module scripts (for the JavaScript platform), 
+            and source archives,</para>
+        </listitem>
+        <listitem>
+            <para>the layout of a module repository</para>
+        </listitem>
+        <listitem>
+            <para>the format of the package descriptor files which contain
+            information about the packages contained in a module, including
+            whether a package is visible to other modules, and</para>
+        </listitem>
+        <listitem>
+            <para>the format of the module descriptor file which contains
+            information about a module, along with a list of its
+            versioned dependencies.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <para>Thus, developers are never exposed to individual <literal>.class</literal>
+    files, and are not required to manually manage module archives using the 
+    operating system file manager. Instead, the toolset helps automate the 
+    management of modules within module repositories.</para>
+    
+    <para>Circular dependencies between modules are not supported. The
+    Ceylon compiler detects such dependencies and produces an error.</para>
+
+    <section id="moduleruntime">
+        <title>The module runtime and module isolation</title>
+        
+        <para>At any time, there may be multiple versions of a certain module 
+        available in the virtual machine. Modules execute under the control of 
+        the <emphasis>module runtime</emphasis>. The module runtime:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>obtains modules from module repositories,</para>
+            </listitem>
+            <listitem>
+                <para>reads module metadata and recursively loads 
+                dependencies, and</para>
+            </listitem>
+            <listitem>
+                <para>isolates modules that belong to different
+                assemblies.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Execution of a module begins with a specified toplevel method or 
+        class, or with an entry point specified in the module descriptor, and 
+        imported modules are loaded lazily as classes they contain are needed. 
+        The name and version id of the imported module containing the needed 
+        class are determined from the imported package name specified by the 
+        compilation unit and the imported module version specified by the 
+        module descriptor.</para>
+                
+        <para>The mechanism behind this is platform-dependent.</para>
+        
+        <section id="classloaders">
+            <title>Module isolation for the Java platform</title>
+        
+            <para>In the JVM environment, each version of each module is loaded 
+            using a different class loader. Classes inside a module have access 
+            to other classes in the same module and to classes belonging to 
+            modules that are explicitly imported in the module descriptor. 
+            Classes in other modules are not accessible.</para>
+            
+            <para>Ceylon supports a simplified class loader architecture:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>The <emphasis>bootstrap</emphasis> class loader owns
+                    classes required to bootstrap the module runtime. It is the
+                    direct parent of all module class loaders, and its classes
+                    are visible to all module class loaders.</para>
+                </listitem>
+                <listitem>
+                    <para>A <emphasis>module</emphasis> class loader owns classes
+                    belonging to a given version of a certain module. Its classes
+                    are visible only to classes belonging to the module class 
+                    loader of a module which declares an explicit dependency on 
+                    the given version of the first module.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <comment><para>The Ceylon module runtime for the JVM is implemented
+            using JBoss Modules. It is included in the Ceylon SDK.</para></comment>
+        
+        </section>
+        
+        <section id="requirejs">
+            <title>Module isolation for the JavaScript platform</title>
+            
+            <para>In the JavaScript environment, modules are loaded using
+            the <literal>require()</literal> function defined by CommonJS 
+            Modules.</para>
+            
+            <comment><para>There are various implementations of the CommonJS-style 
+            <literal>require()</literal> function, and Ceylon module scripts should
+            work with any of them.</para></comment>
+        
+        </section>
+        
+        <section id="assemblies">
+            <title>Assemblies</title>
+            
+            <comment><para>A future release of the language will add support for
+            assemblies, that is, the ability to:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>package together several interdependent versioned modules 
+                    into a single archive for deployment as a single well-defined 
+                    application or service,</para>
+                </listitem>
+                <listitem>
+                    <para>specify the name and version of the application or 
+                    service, and</para>
+                </listitem>
+                <listitem>
+                    <para>override the versions of imported modules declared in 
+                    <literal>modules.ceylon</literal>, as defined in 
+                    <xref linkend="moduledescriptors"/>, with assembly-specific
+                    module versions.</para>
+                </listitem>
+            </itemizedlist>
+            <para>An assembly archive will probably just be an archived module
+            repository with an assembly descriptor.</para>
+            </comment>
+            
+        </section>
+        
+    </section>
+
+    <section id="sourcelayout">
+        <title>Source layout</title>
+        
+        <para>A <emphasis>source directory</emphasis> contains Ceylon source 
+        code in files with the extension <literal>.ceylon</literal> and Java 
+        source code in files with the extension <literal>.java</literal>. 
+        The module and package to which a compilation unit belongs is 
+        determined by the subdirectory in which the source file is found.</para>
+        
+        <para>The name of the package to which a compilation unit belongs is 
+        formed by replacing every path directory separator character with a 
+        period in the relative path from the root source directory to the 
+        subdirectory containing the source file. In the case of a Java source 
+        file, the subdirectory must agree with the package specified by the 
+        Java <literal>package</literal> declaration.</para>
+        
+        <para>The name of the module to which a compilation unit belongs is 
+        determined by searching all containing directories for a module 
+        descriptor. The name of the module is formed by replacing every path
+        directory separator character with a period in the relative path 
+        from the source directory to the subdirectory containing the module 
+        descriptor. If no module descriptor is found, the code belongs to
+        the <emphasis>default module</emphasis>.</para>
+        
+        <comment><para>Note: the default module is intended only as a 
+        convenience for experimental code.</para></comment>
+        
+        <para>A package or compilation unit may belong to only one module.
+        No more than one module descriptor may occur in the containing
+        directories of a compilation unit.</para> 
+        
+        <para>Thus, the structure of the source directory containing the 
+        module <literal>org.hello</literal> might be the following:</para>
+        
+        <screen><![CDATA[source/
+    org/
+        hello/
+            module.ceylon      //the module descriptor
+            main/
+                hello.ceylon
+            default/
+                DefaultHello.ceylon
+            personalized/
+                PersonalizedHello.ceylon]]></screen>
+                
+        <para>The source code for multiple modules may be contained in a
+        single source directory.</para>
+                
+    </section>
+    
+    <section id="modules">
+        <title>Module architecture</title>
+    
+        <para>Compiled code is automatically packaged into <emphasis>module
+        archives</emphasis> and <emphasis>module scripts</emphasis> by the 
+        Ceylon compiler. A <emphasis>module repository</emphasis> is a 
+        repository containing module archives, module scripts, and other
+        miscellaneous artifacts. A module archive or module script is 
+        automatically obtained from a module repository when code belonging 
+        to the module is needed by the compiler or module runtime.</para>
+        
+        <para>Modules that form part of the Ceylon SDK are found in the
+        module repository in the <literal>modules</literal> directory of 
+        the Ceylon distribution.</para>
+        
+        <para>Red Hat maintains a central module repository at 
+        <literal>http://modules.ceylon-lang.org</literal>. Read access to 
+        this site is free of registration and free of charge. Ceylon projects 
+        may apply for a user account which provides write access to the central 
+        module repository.</para>
+        
+        <para>A module belonging to the central module repository must
+        satisfy the following regulations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>the first element of the module name must be a top-level
+                internet domain name, and the second element of the module name 
+                must be a second-level domain of the given top-level domain 
+                owned by the organization distributing the module, and.</para>
+            </listitem>
+            <listitem>
+                <para>the module must be made available under a royalty-free 
+                license.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>For example, a module developed by Red Hat might be named
+        <literal>org.jboss.server</literal>.</para>
+        
+        <comment><para>TODO: should we require that module archives be signed 
+        using the Java <literal>jarsigner</literal> tool?</para></comment>
+        
+        <section id="modulenamesandversionidentifiers">
+            <title>Module names and version identifiers</title>
+            
+            <para>A module <emphasis>name</emphasis> is a period-separated
+            list of initial lowercase identifiers, for example:</para>
+            
+            <screen>ceylon.language</screen>
+            <screen>org.hibernate</screen>
+            
+            <para>It is recommended that module names follow the Java package
+            naming convention embedding the organization's domain name (in
+            this case, <literal>hibernate.org</literal>). The namespace
+            <literal>ceylon</literal> is reserved for Ceylon SDK modules. The 
+            namespace <literal>java</literal> is reserved for modules 
+            belonging to the Java SDK. The namespace <literal>default</literal>
+            is reserved for the default module.</para>
+            
+            <para>It is highly recommended, but not required, that every 
+            user-written module have at least three identifiers in its name. 
+            Therefore, <literal>org.hibernate.orm</literal> is strongly
+            preferred to <literal>org.hibernate</literal>.</para>
+            
+            <para>Modules may not be "nested". That is, the list of identifiers 
+            forming the name of a module may not be a prefix of the list of 
+            identifiers forming the name of another module.</para>
+            
+            <para>A package belongs to a module if the list of identifiers 
+            forming the name of the module is a prefix of the list of 
+            identifiers forming the name of the package. For example, the 
+            packages:</para>
+            
+            <screen>ceylon.language</screen>
+            <screen>ceylon.language.assertion</screen>
+            <screen>ceylon.language.meta</screen>
+            <screen>ceylon.language.meta.declaration</screen>
+            
+            <para>belong to the module <literal>ceylon.language</literal>. The 
+            packages:</para>
+            
+            <screen>org.hibernate</screen>
+            <screen>org.hibernate.impl</screen>
+            <screen>org.hibernate.cache</screen>
+            
+            <para>belong to the module <literal>org.hibernate</literal>.</para>
+            
+            <comment><para>TODO: This might not work out all that well in practice, 
+            unless we introduce some additional convention for "extras" modules,
+            for example, modules containing examples. It could be 
+            <literal>org.hibernate</literal> vs <literal>org.hibernate_example</literal>
+            or <literal>org.hibernate.core</literal> vs 
+            <literal>org.hibernate.example</literal>.</para></comment>
+    
+            <para>The name of the default module is <literal>default</literal>. The 
+            default module has no version and cannot be published to a remote repository 
+            nor to the local repository cache under <filename>~/.ceylon/repo</filename>.</para>
+            
+            <para>A module <emphasis>version identifier</emphasis> is a character 
+            string containing <!--digits, periods, and lowercase letters --> no whitespace,
+            for example:</para>
+            
+            <screen>1.0.1</screen>
+            <screen>3.0.0.beta</screen>
+            
+            <comment><para>TODO: at some stage we will probably need to add a format
+            for specifying version ranges.</para></comment>
+        
+        </section>
+        
+        <section id="modulearchivenamesjava">
+            <title>Module archive names for the Java platform</title>
+        
+            <para>A <emphasis>module archive name</emphasis> is constructed from 
+            the module name and version identifier. A module archive name is of 
+            the following standard form:</para>
+            
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.car</screen>
+            
+            <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
+            is the full name of the module, and 
+            <literal><emphasis>&lt;version&gt;</emphasis></literal> is the module 
+            version identifier. For example:</para>
+            
+            <screen>ceylon.language-1.0.1.car</screen>
+            <screen>org.hibernate-3.0.0.beta.car</screen>
+    
+            <para>The default module has no version, its module archive name is <literal>default.car</literal></para>
+            
+        </section>
+        
+        <section id="modulescriptnamesjs">
+            <title>Module script names for the JavaScript platform</title>
+        
+            <para>A <emphasis>module script name</emphasis> is likewise constructed 
+            from the module name and version identifier. A module script name is of 
+            the following standard form:</para>
+            
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.js</screen>
+            
+            <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
+            is the full name of the module, and 
+            <literal><emphasis>&lt;version&gt;</emphasis></literal> is the module 
+            version identifier. For example:</para>
+            
+            <screen>ceylon.language-1.0.1.js</screen>
+            <screen>org.hibernate-3.0.0.beta.js</screen>
+    
+            <para>The default module has no version, its module archive name is <literal>default.js</literal></para>
+    
+        </section>
+        
+        <section id="sourcearchivenames">
+            <title>Source archive names</title>
+            
+            <para>A <emphasis>source archive name</emphasis> is of the following 
+            standard form:</para>
+            
+            <screen><emphasis>&lt;module&gt;</emphasis>-<emphasis>&lt;version&gt;</emphasis>.src</screen>
+            
+            <para>For example:</para>
+            
+            <screen>ceylon.language-1.0.1.src</screen>
+            <screen>org.hibernate-3.0.0.beta.src</screen>
+    
+            <para>The default module has no version, its source archive name is <literal>default.src</literal></para>
+            
+        </section>
+        
+        <section id="modulearchives">
+            <title>Module archives</title>
+            
+            <para>A Ceylon module archive is a Java <literal>jar</literal>
+            archive which:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>contains a Ceylon module descriptor in the
+                    <emphasis>module directory</emphasis>,</para>
+                </listitem>
+                <listitem>
+                    <para>contains the compiled <literal>.class</literal>
+                    files for all compilation units belonging to the module, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>has a filename which adheres to the standard for
+                    module archive names.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>The <emphasis>module directory</emphasis> of the module archive 
+            is formed by replacing each period in the fully qualified package name 
+            with the directory separator character. For example, the module directory 
+            for the module <literal>ceylon.language</literal> is:</para>
+            
+            <screen>/ceylon/language</screen>
+            
+            <para>The module directory for the module <literal>org.hibernate</literal> 
+            is:</para>
+            
+            <screen>/org/hibernate</screen>
+            
+            <para>The <emphasis>package directory</emphasis> for a package 
+            belonging to the module archive is formed by replacing each period 
+            in the fully qualified package name with the directory separator 
+            character. For example, the package directory for the package 
+            <literal>org.hibernate.impl</literal> is:</para>
+            
+            <screen>/org/hibernate/impl</screen>
+            
+            <para>Inside a module archive, a <literal>.class</literal> file is
+            found in the package directory of the package to which it belongs.</para>
+            
+            <para>Thus, the structure of the module archive for the module
+            <literal>org.hello</literal> might be the following:</para>
+            
+            <screen><![CDATA[org.hello-1.0.0.car
+    META-INF/
+        MANIFEST.MF
+    org/
+        hello/
+            module.class       //the module descriptor
+            main/
+                package.class  //a package descriptor
+                hello.class
+            default/
+                DefaultHello.class
+            personalized/
+                PersonalizedHello.class]]></screen>
+                
+            <para>A module archive may not contain multiple modules.</para>
+            
+        </section>
+        
+        <section id="modulescripts">
+            <title>Module scripts</title>
+            
+            <para>A Ceylon module script is a JavaScript source file which:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>complies with the CommonJS Modules specification, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>has a filename which adheres to the standard for
+                    module script names.</para>
+                </listitem>
+            </itemizedlist>
+            
+        </section>
+        
+        <section id="sourcearchives">
+            <title>Source archives</title>
+            
+            <para>A <emphasis>source archive</emphasis> is a <literal>zip</literal> 
+            archive which:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>contains the source code (<literal>.ceylon</literal>
+                    and <literal>.java</literal> files) for all compilation units 
+                    belonging to the module, and</para>
+                </listitem>
+                <listitem>
+                    <para>has a filename which adheres to the standard for
+                    source archive names.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Inside a source archive, a Ceylon or Java source file is located in 
+            the <emphasis>package directory</emphasis> of the package to which the 
+            compilation unit belongs. The package directory for a package belonging 
+            to the source archive is formed by replacing each period in the fully 
+            qualified package name with the directory separator character.</para>
+            
+            <para>Thus, the structure of the source archive for the module
+            <literal>org.hello</literal> might be the following:</para>
+            
+            <screen><![CDATA[org.hello-1.0.0.src
+    org/
+        hello/
+            module.ceylon       //the module descriptor
+            main/
+                package.ceylon  //a package descriptor
+                hello.ceylon
+            default/
+                DefaultHello.ceylon
+            personalized/
+                PersonalizedHello.ceylon]]></screen>
+            
+            <para>A source archive may not contain the source of multiple modules.</para>
+            
+        </section>
+        
+        <section id="modulerepositories">
+            <title>Module repositories</title>
+            
+            <para>A module repository is a directory structure on the local
+            filesystem or a remote HTTP server.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A <emphasis>local</emphasis> module repository is 
+                    identified by a filesystem path.</para>
+                </listitem>
+                <listitem> 
+                    <para>A <emphasis>remote</emphasis> module repository is 
+                    identified by a URL with protocol <literal>http:</literal> 
+                    or <literal>https:</literal>.</para> 
+                </listitem>
+            </itemizedlist>
+            
+            <para>A <emphasis>publishable</emphasis> module repository is a local
+            module repository, or a WebDAV-enabled remote module repository.</para>
+            
+            <para>For example:</para>
+            
+            <screen>modules</screen>
+            <screen>/usr/bin/ceylon/modules</screen>
+            <screen>http://jboss.org/ceylon/modules</screen>
+            <screen>https://gavin:secret@modules.ceylon-lang.org</screen>
+            
+            <para>A module repository contains module archives, module scripts, 
+            source archives, and documentation. The address of an artifact 
+            belonging to the repository adheres to the following standard form:</para>
+            
+            <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;artifact&gt;</emphasis></screen>
+            
+            <para>where <literal><emphasis>&lt;repository&gt;</emphasis></literal> 
+            is the filesystem path or URL of the repository,
+            <literal><emphasis>&lt;artifact&gt;</emphasis></literal> is the name
+            of the artifact, <literal><emphasis>&lt;version&gt;</emphasis></literal>
+            is the module version, and <literal><emphasis>&lt;module-path&gt;</emphasis></literal> 
+            is formed by replacing every period with a slash in the module name.</para>
+    
+            <para>The default module having no version, its access path does not 
+            contain the version.</para>
+    
+            <screen><emphasis>&lt;repository&gt;</emphasis>/default/<emphasis>&lt;archive&gt;</emphasis></screen>
+            
+            <para>For example, the module archive <literal>ceylon.language-1.0.1.car</literal>,
+            module script, <literal>ceylon.language-1.0.1.js</literal>, and source 
+            archive <literal>ceylon.language-1.0.1.src</literal>, belonging to the 
+            repository included in the Ceylon SDK are obtained from the following 
+            addresses:</para>
+     
+            <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.car</screen>        
+            <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.js</screen>
+            <screen>modules/ceylon/language/1.0.1/ceylon.language-1.0.1.src</screen>
+            
+            <para>The module archive <literal>org.hibernate-3.0.0.beta.car</literal>
+            and source archive <literal>org.hibernate-3.0.0.beta.src</literal> 
+            belonging to the repository <literal>http://jboss.org/ceylon/modules</literal> 
+            are obtained from the following addresses:</para>
+            
+            <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.car</screen>
+            <screen>http://jboss.org/ceylon/modules/org/hibernate/3.0.0.beta/org.hibernate-3.0.0.beta.src</screen>
+            
+            <para>The legacy Java <literal>jar</literal> archive <literal>org.h2-1.2.141.jar</literal> 
+            belonging to the repository <literal>/usr/bin/ceylon/modules</literal> is 
+            obtained from the following address:</para>
+            
+            <screen>/usr/bin/ceylon/modules/org/h2/1.2.141/org.h2-1.2.141.jar</screen>
+            
+            <para>For each archive, the module repository may contain a SHA-1 checksum 
+            file. The checksum file is a plain text file containing just the SHA-1 checksum
+            of the archive. The address of a checksum file adheres to the following standard 
+            form:</para>
+            
+            <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/<emphasis>&lt;archive&gt;</emphasis>.sha1</screen>
+            
+            <para>The compiler or module runtime verifies the checksum after downloading
+            the archive from the module repository.</para>
+            
+            <para>A module repository may contain documentation generated by the Ceylon
+            documentation compiler in exploded form. A module's documentation resides in the
+            <emphasis>module documentation directory</emphasis>, a directory with address 
+            adhering to the following standard form:</para>
+            
+            <screen><emphasis>&lt;repository&gt;</emphasis>/<emphasis>&lt;module-path&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis>/module-doc/</screen>
+            
+            <para>For example, the home page for the documentation of the module
+            <literal>org.hibernate</literal> is:</para>
+            
+            <screen>http://jboss.org/ceylon/modules/org/hibernate/module-doc/index.html</screen>
+                    
+        </section>
+        
+        <section id="packagedescriptors">
+            <title>Package descriptors</title>
+            
+            <para>A <emphasis>package descriptor</emphasis> is defined in a source file
+            named <literal>package.ceylon</literal> in the package it describes.</para>
+            
+            <synopsis>PackageDescriptor: Annotations "package" FullPackageName ";"</synopsis>
+            
+            <para>A <literal>package</literal> may be annotated <literal>shared</literal>. 
+            A <literal>shared</literal> package is visible outside the containing module,
+            that is, in any module which imports the containing module.</para>
+            
+            <para>The package descriptor is optional for unshared packages.</para>
+            
+            <programlisting>"The typesafe query API."
+license ("http://www.gnu.org/licenses/lgpl.html")
+shared package org.hibernate.query;</programlisting>
+    
+        </section>
+            
+        <section id="moduledescriptors">
+            <title>Module descriptors</title>
+            
+            <para>A <emphasis>module descriptor</emphasis> is defined in a source file
+            named <literal>module.ceylon</literal> in the root package of the module it
+            describes (the package with the same name as the module).</para>
+            
+            <!--para>A module may be <emphasis>runnable</emphasis>. The module descriptor
+            for a runnable module specifies an <emphasis>entry point</emphasis>, a 
+            toplevel method or class with no parameters.</para-->
+            
+            <synopsis>ModuleDescriptor: Annotations "module" FullPackageName StringLiteral ModuleBody</synopsis>
+            
+            <para>The literal string after the module name specifies the version of the
+            module.</para>
+            
+            <para>A module may import other modules.</para>
+            
+            <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
+            <synopsis>ModuleImport: Annotations "import" (FullPackageName|StringLiteral) StringLiteral ";"</synopsis>
+            
+            <para>The name of the imported module may be specified using the usual syntax
+            for a module name, or as a literal string, to allow interoperation with
+            legacy module repositories existing outside the Ceylon ecosystem.</para>
+            
+            <comment><para>Note: this enables interoperation with Maven.</para></comment>
+            
+            <comment><para>Note: in Ceylon 1.0 it is illegal to explicitly import the
+            module <literal>ceylon.language</literal>. The language module is always
+            implicitly imported.</para></comment>
+            
+            <para>The string literal after the imported module name specifies the version 
+            of the imported module.</para>
+            
+            <para>An imported module may be annotated <literal>optional</literal> and/or
+            <literal>shared</literal>.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If module <literal>x</literal> has a <literal>shared</literal> 
+                    import of module <literal>y</literal>, then any module that imports
+                    <literal>x</literal> implicitly imports <literal>y</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If module <literal>x</literal> has an <literal>optional</literal>
+                    import of module <literal>y</literal>, then <literal>x</literal> may
+                    be executed even if <literal>y</literal> is not available at runtime.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a declaration belonging to module <literal>x</literal> is visible 
+            outside the module and involves types imported from a different module
+            <literal>y</literal>, then the module import of <literal>y</literal> in the
+            module descriptor for <literal>x</literal> must be <literal>shared</literal>.</para>
+            
+            <programlisting>"The best-ever ORM solution!"
+license ("http://www.gnu.org/licenses/lgpl.html")
+module org.hibernate "3.0.0.beta" {
+    shared import ceylon.language "1.0.1";
+    import javax.sql "4.0";
+}</programlisting>
+            
+            <programlisting>"The test suite for Hibernate"
+license ("http://www.gnu.org/licenses/lgpl.html")
+module org.hibernate.test "3.0.0.beta" {
+    import org.hibernate "3.0.0.beta";
+    TestSuite().run();
+}</programlisting>
+            
+            <comment><para>TODO: do we allow procedural code in the body of a 
+            <literal>module</literal>?</para></comment>
+            
+        </section>
+    
+    </section>
+
+<!--section id="tools">
+    <title>Toolset</title>
+
+    <para>The Ceylon SDK contains the following tools:</para>
+    
+    <itemizedlist>
+        <listitem>
+            <para>the Java VM, <literal>java</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the front end for the Java VM, <literal>ceylon</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the compiler, <literal>ceylonc</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the module info tool, <literal>ceylonp</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the documentation compiler, <literal>ceylond</literal>,</para>
+        </listitem>
+        <listitem>
+            <para>the repository replicator, <literal>ceylonr</literal>, and</para>
+        </listitem>
+        <listitem>
+            <para>the source archive extractor, <literal>ceylonf</literal>.</para>
+        </listitem>
+    </itemizedlist>
+    
+    <section id="sourcedirectories">
+        <title>Source directories</title>
+        
+        <para>A <emphasis>source directory</emphasis> contains Ceylon source 
+        code in files with the extension <literal>.ceylon</literal> and Java 
+        source code in files with the extension <literal>.java</literal>. 
+        The module and package to which a compilation unit belongs is 
+        determined by the subdirectory in which the source file is found.</para>
+        
+        <para>The name of the package to which a compilation unit belongs is 
+        formed by replacing every path directory separator character with a 
+        period in the relative path from the source directory to the 
+        subdirectory containing the source file. In the case of a Java source 
+        file, the subdirectory must agree with the package specified by the 
+        Java <literal>package</literal> declaration.</para>
+        
+        <para>The name of the module to which a compilation unit belongs is 
+        determined by searching all containing directories for a module 
+        descriptor. The name of the module is formed by replacing every path
+        directory separator character with a period in the relative path 
+        from the source directory to the subdirectory containing the module 
+        descriptor.</para>
+        
+        <para>Thus, the structure of the source directory containing the module
+        <literal>org.hello</literal> might be the following:</para>
+        
+        <programlisting><![CDATA[source/
+    org/
+        hello/
+            module.ceylon      //the module descriptor
+            main/
+                hello.ceylon
+            default/
+                DefaultHello.ceylon
+            personalized/
+                PersonalizedHello.ceylon]]></programlisting>
+                
+        <para>The source code for multiple modules may be contained in a
+        single source directory.</para>
+        
+    </section>
+    
+    <section id="identifyingversionedmodules">
+        <title>Identifying versioned modules</title>
+        
+        <para>The command line tools expect the following format for a versioned
+        module name:</para>
+        
+        <screen><emphasis>&lt;module&gt;</emphasis>/<emphasis>&lt;version&gt;</emphasis></screen>
+        
+        <para>where <literal><emphasis>&lt;module&gt;</emphasis></literal> 
+        is the full name of the module, and 
+        <literal><emphasis>&lt;version&gt;</emphasis></literal> is the module 
+        version identifier. For example:</para>
+        
+        <programlisting>ceylon.language/1.0.1</programlisting>
+        <programlisting>org.h2/1.2.141</programlisting>
+                
+    </section>
+    
+    <section id="vmfrontend">
+        <title>The VM front end</title>
+        
+        <para>The <literal>ceylon</literal> command accepts the name of a 
+        module with an optional version, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-run</literal> specifies the fully 
+                qualified name of a toplevel method or class with 
+                no parameters.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories and source directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-help</literal> displays a usage
+                help page.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-version</literal> specifies the
+                Ceylon version.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The <literal>ceylon</literal> options must come first,
+        before the module name and version. Any argument passed after
+        the module name and version will be passed to the Ceylon
+        module that we are running.</para>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
+        and the default source directory is <literal>source</literal>.</para>
+        
+        <programlisting>ceylon -rep http://jboss.org/ceylon/modules \
+        -src ~/projects/hibernate/src \
+        org.hibernate.test/3.0.0.beta -hibernate-arg</programlisting>
+               
+        <para>Execution begins with the named toplevel method or class, or
+        with the entry point specified in the module descriptor, and imported 
+        modules are loaded lazily as classes they contain are needed. The 
+        name and version id of the imported module containing the needed 
+        class are determined from the imported package name specified by
+        the compilation unit and the imported module version specified by 
+        the module descriptor.</para>
+                
+        <para>Each version of each module is loaded using a different class 
+        loader. Classes inside a module have access to other classes in the 
+        same module and to classes belonging to modules that are explicitly 
+        imported in the module descriptor. Classes in other modules are not 
+        accessible.</para>
+        
+        <para>The module runtime searches for modules in the following 
+        locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>module archives in the specified repositories,</para>
+            </listitem>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If no version identifier is specified for a module, the module 
+        is assumed to exist in a source directory.</para>
+        
+        <para>Source code in source archives and source directories is 
+        automatically compiled by the module runtime.</para>
+                
+    </section>
+
+    <section id="compiler">
+        <title>The compiler</title>
+        
+        <para>The Ceylon compiler is able to compile Ceylon and Java source 
+        code and directly produce module and source archives in a module 
+        repository.</para>
+        
+        <para>The <literal>ceylonc</literal> command accepts a list of
+        module names (without versions) or file paths, along with the 
+        following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-out</literal> specifies the output module 
+                repository (which must be publishable).</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing dependencies.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories and source directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-user</literal> sets the user name
+                for the HTTP output repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-pass</literal> sets the password
+                for the HTTP output repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-help</literal> displays a usage
+                help page.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-version</literal> specifies the
+                Ceylon version.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
+        and the default source directory is <literal>source</literal>.
+        The default output module repository is <literal>modules</literal>.</para>
+        
+        <programlisting>ceylonc org.hibernate.test org.hibernate \
+        -rep http://jboss.org/ceylon/modules \
+        -src ~/projects/hibernate/src \
+        -out ~/projects/hibernate/build</programlisting>
+        
+        <comment><para>TODO: how do you create signed jars? Some additional
+        commandline options?</para></comment>
+        
+        <para>The compiler searches for compilation units belonging to the 
+        specified modules in the specified source directories. For each 
+        specified module, the compiler generates a module archive, source 
+        archive, and their checksum files in the specified output module 
+        repository.</para>
+        
+        <para>All program elements imported by a compilation unit must
+        belong to the same module as the compilation unit, or must belong
+        to a module that is explicitly imported in the module descriptor.</para>
+        
+        <para>The compiler searches for dependencies in the following 
+        locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>module archives in the specified repositories,</para>
+            </listitem>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+                
+    </section>
+    
+    <section id="moduleinfotool">
+        <title>The module info tool</title>
+        
+        <para>The module info tool prints information about the contents of
+        a module archive, its description, its licence, and its dependencies
+        to the console.</para>
+        
+        <para>The <literal>ceylonp</literal> command accepts a list of module 
+        names with optional versions, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories and source directory.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
+        and the default source directory is <literal>source</literal>.</para>
+        
+        <programlisting>ceylonp org.hibernate/3.0.0.beta
+        -rep http://jboss.org/ceylon/modules</programlisting>
+        
+        <para>The tool searches for modules in the following locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>module archives in the specified repositories,</para>
+            </listitem>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If no version identifier is specified for a module, the tool 
+        prints information about all available versions of the module.</para>
+
+    </section>
+        
+    <section id="documentationcompiler">
+        <title>The documentation compiler</title>
+        
+        <para>The documentation compiler generates XHTML-format documentation 
+        from Ceylon source files. The content of the <literal>doc</literal>
+        annotations is treated as Markdown format text.</para>
+        
+        <para>The <literal>ceylond</literal> command accepts a list of
+        module names with optional versions, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-out</literal> specifies the output module 
+                repository (which must be publishable).</para>
+            </listitem>
+            <listitem>
+                <para><literal>-src</literal> specifies a source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-non-shared</literal> includes documentation
+                for package-private declarations.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-source-code</literal> includes source 
+                code in the generated documentation.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default module 
+                repositories and source directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-user</literal> sets the user name
+                for the HTTP output repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-pass</literal> sets the password
+                for the HTTP output repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-help</literal> displays a usage
+                help page.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-version</literal> specifies the
+                Ceylon version.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon-lang.org/repo</literal>,
+        and the default source directory is <literal>source</literal>.
+        The default output module repository is <literal>modules</literal>.</para>
+        
+        <programlisting>ceylond org.hibernate/3.0.0.beta \
+        -src ~/projects/hibernate/src \
+        -out ~/projects/hibernate/build</programlisting>
+        
+        <para>The documentation compiler searches for compilation units 
+        belonging to the specified modules in the specified source directories
+        and in source archives in the specified module repositories. For each 
+        specified module, the compiler generates a set of XHTML pages in the 
+        module documentation directory (the <literal>module-doc</literal> 
+        directory) of the specified output module repository.</para>
+        
+        <para>The compiler searches for source in the following locations:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>source archives in the specified repositories, 
+                and</para>
+            </listitem>
+            <listitem>
+                <para>module directories in the specified source 
+                directories.</para>
+            </listitem>
+        </itemizedlist>
+                
+        <para>If no version identifier is specified for a module, the module 
+        is assumed to exist in a source directory.</para>
+                
+    </section>
+    
+    <section id="repositoryreplicator">
+        <title>The repository replicator</title>
+        
+        <para>The repository replicator copies modules from one repository
+        to another. For example, it may be used to create local copies of
+        modules in remote repositories, or to publish modules to a remote 
+        repository.</para>
+        
+        <para>To publish a module to <literal>http://modules.ceylon-lang.org</literal>,
+        a module developer may use the repository replicator to submit the
+        module via WebDAV.</para>
+        
+        <para>The <literal>ceylonr</literal> command accepts a list of 
+        versioned module names, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-out</literal> specifies the output module 
+                repository (which must be publishable).</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-nosrc</literal> disables replication of
+                source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-nodoc</literal> disables replication of
+                module documentation directories.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon-lang.org/repo</literal>. The default output
+        module repository is <literal>modules</literal>.</para>
+        
+        <programlisting>ceylonr org.hibernate/3.0.0.beta org.hibernate.test/3.0.0.beta org.hibernate.example/3.0.0.beta \
+        -rep http://jboss.org/ceylon/modules</programlisting>
+        
+        <programlisting>ceylonr org.hibernate/3.0.0.beta \
+        -rep modules \
+        -out https://gavin:secret@modules.ceylon-lang.org</programlisting>
+        
+        <para>The repository replicator searches for directories containing
+        the specified modules in the specified module repositories and, if 
+        found, replicates their contents into the specified output module 
+        repository.</para>
+        
+    </section>
+    
+    <section id="sourcearchiveextractor">
+        <title>The source archive extractor</title>
+        
+        <para>The source archive extractor fetches source archives and 
+        extracts their contents into a source directory. This is
+        especially useful for working with example projects.</para>
+        
+        <para>The <literal>ceylonf</literal> command accepts a list of
+        versioned module names, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-src</literal> specifies the output source
+                directory.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-rep</literal> specifies a module
+                repository containing source archives.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default module repositories are <literal>modules</literal>
+        and <literal>http://modules.ceylon-lang.org/repo</literal>. The default output 
+        source directory is <literal>source</literal>.</para>
+        
+        <programlisting>ceylonf org.hibernate.example/3.0.0.beta \
+        -rep http://jboss.org/ceylon/modules \
+        -src ~/projects/hibernate/src</programlisting>
+        
+        <para>The source archive extractor searches for source archives for
+        the specified modules in the specified module repositories and, if
+        found, extracts their contents into the specified source directory.</para>
+        
+    </section>
+
+    <section id="jarimporter">
+        <title>The JAR importer</title>
+        
+        <para>The JAR import allows you to publish a Java JAR into
+        a Ceylon repository so they can then be imported by Ceylon
+        modules. This is very useful for interoperating with
+        Java libraries.</para>
+        
+        <para>The <literal>ceylon-import-jar</literal> command accepts a module
+        name and version and a JAR file path, along with the following options:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para><literal>-out</literal> specifies the output module 
+                repository (which must be publishable).</para>
+            </listitem>
+            <listitem>
+                <para><literal>-d</literal> disables the default
+                module repositories.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-user</literal> sets the user name
+                for the HTTP output repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-pass</literal> sets the password
+                for the HTTP output repository.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-help</literal> displays a usage
+                help page.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-version</literal> specifies the
+                Ceylon version.</para>
+            </listitem>
+            <listitem>
+                <para><literal>-debug</literal> prints debugging
+                information.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>The default output module repository is <literal>modules</literal>.</para>
+        
+        <programlisting>ceylon-import-jar org.hibernate.example/3.0.0.beta \
+        path/to/hibernate.jar \
+        -out ~/.ceylon/repo</programlisting>
+        
+        <para>The JAR importer imports a Java JAR as a Ceylon module into a Ceylon
+        repository, so that it can by imported by Ceylon modules.</para>
+        
+    </section>
+
+</section-->
+
+</chapter>

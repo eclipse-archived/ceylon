@@ -1,0 +1,940 @@
+"A file containing Ceylon source."
+^(COMPILATION_UNIT
+    COMPILER_ANNOTATION*
+    IMPORT_LIST?
+    MODULE_DESCRIPTOR*
+    PACKAGE_DESCRIPTOR*
+    DECLARATION*
+    boolean literalsProcessed;)
+
+"A module descriptor."
+^(MODULE_DESCRIPTOR:STATEMENT_OR_ARGUMENT
+    ANNOTATION_LIST?
+    IMPORT_PATH
+    QUOTED_LITERAL version
+    IMPORT_MODULE_LIST)
+
+"A package descriptor."
+^(PACKAGE_DESCRIPTOR:STATEMENT_OR_ARGUMENT
+    ANNOTATION_LIST?
+    IMPORT_PATH)
+
+"A list of modules imported by a module."
+^(IMPORT_MODULE_LIST
+    IMPORT_MODULE*)
+
+"A module import."
+^(IMPORT_MODULE:STATEMENT_OR_ARGUMENT
+    ANNOTATION_LIST?
+    IMPORT_PATH?
+    QUOTED_LITERAL?
+    QUOTED_LITERAL version)
+
+"A list of packages imported by a compilation unit."
+^(IMPORT_LIST 
+    IMPORT*)
+
+"A package import."
+^(IMPORT:STATEMENT_OR_ARGUMENT
+    IMPORT_PATH 
+    IMPORT_MEMBER_OR_TYPE_LIST)
+
+"A reference to a package or module."
+^(IMPORT_PATH 
+    IDENTIFIER*
+    Referenceable model;)
+
+"A list of declarations imported from a package."
+^(IMPORT_MEMBER_OR_TYPE_LIST
+    IMPORT_MEMBER_OR_TYPE*
+    IMPORT_WILDCARD?
+    ImportList importList;)
+
+"A declaration imported from a package."
+^(IMPORT_MEMBER_OR_TYPE:STATEMENT_OR_ARGUMENT
+    ALIAS?
+    IDENTIFIER
+    IMPORT_MEMBER_OR_TYPE_LIST?
+    Declaration declarationModel;
+    Import importModel;)
+"An imported function or value."
+^(IMPORT_MEMBER:IMPORT_MEMBER_OR_TYPE)
+"An imported type."
+^(IMPORT_TYPE:IMPORT_MEMBER_OR_TYPE)
+
+"An alias for an imported declaration."
+^(ALIAS 
+    IDENTIFIER)
+"A wildcard in a package import statement."
+^(IMPORT_WILDCARD)
+
+"A declaration."
+^(abstract DECLARATION:STATEMENT
+    ANNOTATION_LIST?
+    IDENTIFIER?
+    abstract Declaration declarationModel;)
+
+^(MISSING_DECLARATION:DECLARATION
+    Declaration declarationModel;)
+
+"A class, interface, or type parameter declaration."
+^(abstract TYPE_DECLARATION:DECLARATION
+    TYPE_PARAMETER_LIST?
+    abstract TypeDeclaration declarationModel;)
+
+"A class or interface declaration."
+^(abstract CLASS_OR_INTERFACE:TYPE_DECLARATION
+    abstract ClassOrInterface declarationModel;)
+
+"The constraints for a certain type parameter."
+^(TYPE_ALIAS_DECLARATION: TYPE_DECLARATION
+    TYPE_CONSTRAINT_LIST?
+    TYPE_SPECIFIER?
+    TypeAlias declarationModel;)
+
+^(SATISFIED_TYPES 
+    STATIC_TYPE* type)
+^(ABSTRACTED_TYPE 
+    STATIC_TYPE type)
+^(CASE_TYPES 
+    STATIC_TYPE* type
+    BASE_MEMBER_EXPRESSION*)
+^(EXTENDED_TYPE 
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION?)
+
+"A list of constraints organized by parameter."
+^(TYPE_CONSTRAINT_LIST 
+    TYPE_CONSTRAINT*)
+
+"A set of type constraints on a certain type parameter."
+^(TYPE_CONSTRAINT:TYPE_DECLARATION
+    CASE_TYPES?
+    SATISFIED_TYPES?
+    ABSTRACTED_TYPE?
+    TypeParameter declarationModel;)
+
+"An aliased type specified in a type or interface alias."
+^(TYPE_SPECIFIER 
+    STATIC_TYPE? type)
+
+"A default type argument for a type parameter"
+^(DEFAULT_TYPE_ARGUMENT: TYPE_SPECIFIER)
+    
+"An aliased class specified in a class alias."
+^(CLASS_SPECIFIER 
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION?)
+
+"A class declaration or alias."
+^(ANY_CLASS:CLASS_OR_INTERFACE
+    PARAMETER_LIST?
+    CASE_TYPES?
+    EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    TYPE_CONSTRAINT_LIST?
+    Class declarationModel;)
+
+"A class declaration."
+^(CLASS_DEFINITION:ANY_CLASS
+    CLASS_BODY)
+
+"A value constructor."
+^(ENUMERATED:DECLARATION
+    DELEGATED_CONSTRUCTOR?
+    BLOCK
+    Value declarationModel;
+    Constructor enumerated;)
+
+"A callable constructor."
+^(CONSTRUCTOR:DECLARATION
+    PARAMETER_LIST?
+    DELEGATED_CONSTRUCTOR?
+    BLOCK
+    Function declarationModel;
+    Constructor constructor;)
+
+^(DELEGATED_CONSTRUCTOR
+    SIMPLE_TYPE? type
+    INVOCATION_EXPRESSION)
+
+"A class alias."
+^(CLASS_DECLARATION:ANY_CLASS
+    CLASS_SPECIFIER?)
+
+"An interface declaration or alias."
+^(ANY_INTERFACE:CLASS_OR_INTERFACE
+    CASE_TYPES?
+    SATISFIED_TYPES?
+    TYPE_CONSTRAINT_LIST?
+    Interface declarationModel;)
+
+"An interface declaration."
+^(INTERFACE_DEFINITION:ANY_INTERFACE
+    INTERFACE_BODY
+    boolean dynamic;)
+
+"An interface alias."
+^(INTERFACE_DECLARATION:ANY_INTERFACE
+    TYPE_SPECIFIER?)
+
+"A function or value declaration."
+^(abstract TYPED_DECLARATION:DECLARATION
+    TYPE?
+    abstract TypedDeclaration declarationModel;)
+
+"Any kind of value declaration."
+^(abstract ANY_ATTRIBUTE:TYPED_DECLARATION)
+
+"A simple, forward, or formal value declaration."
+^(ATTRIBUTE_DECLARATION:ANY_ATTRIBUTE 
+    SPECIFIER_OR_INITIALIZER_EXPRESSION?
+    Value declarationModel;)
+
+"A value getter declaration."
+^(ATTRIBUTE_GETTER_DEFINITION:ANY_ATTRIBUTE
+    BLOCK
+    Value declarationModel;)
+
+"An value setter declaration."
+^(ATTRIBUTE_SETTER_DEFINITION:TYPED_DECLARATION
+    BLOCK?
+    SPECIFIER_EXPRESSION?
+    Setter declarationModel;)
+
+"Any kind of function declaration."
+^(ANY_METHOD:TYPED_DECLARATION
+    TYPE_PARAMETER_LIST?
+    PARAMETER_LIST*
+    TYPE_CONSTRAINT_LIST?
+    Function declarationModel;)
+
+"A function declaration followed by a block."
+^(METHOD_DEFINITION:ANY_METHOD
+    BLOCK)
+
+"A function forward declaration or function declaration followed by a specification."
+^(METHOD_DECLARATION:ANY_METHOD
+    SPECIFIER_EXPRESSION?)
+
+"Specifies that a function has no specific return value."
+^(VOID_MODIFIER:TYPE)
+
+"An object declaration."
+^(OBJECT_DEFINITION:TYPED_DECLARATION
+    EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    CLASS_BODY
+    Value declarationModel;
+    Class anonymousClass;)
+
+"A parameter list for a function or class."
+^(PARAMETER_LIST 
+    PARAMETER*
+    ParameterList model;)
+"A parameter declaration."
+^(abstract PARAMETER
+    Parameter parameterModel;)
+^(abstract PARAMETER_DECLARATION:PARAMETER
+    TYPED_DECLARATION)
+"An ordinary (value) parameter."
+^(VALUE_PARAMETER_DECLARATION:PARAMETER_DECLARATION)
+"An (functional) parameter with its own parameter list."
+^(FUNCTIONAL_PARAMETER_DECLARATION:PARAMETER_DECLARATION)
+"A reference to a parameter declared like an ordinary forward value inside the body of the function or class."
+^(INITIALIZER_PARAMETER:PARAMETER
+    IDENTIFIER
+    SPECIFIER_EXPRESSION?)
+
+"A list of type parameters in a generic declaration."
+^(TYPE_PARAMETER_LIST 
+    TYPE_PARAMETER_DECLARATION*)
+"A single type parameter of a generic declaration."
+^(TYPE_PARAMETER_DECLARATION:DECLARATION
+    TYPE_VARIANCE?
+    TYPE_SPECIFIER?
+    TypeParameter declarationModel;)
+"The variance of a type parameter."
+^(TYPE_VARIANCE)
+
+"A list of statements."
+^(abstract BODY
+    STATEMENT*)
+
+"A method or attribute body containing statements and declarations."
+^(BLOCK:BODY
+    boolean definitelyReturns;)
+
+"A class body."
+^(CLASS_BODY:BODY)
+
+"An interface body."
+^(INTERFACE_BODY:BODY)
+
+^(abstract TYPE
+    Type typeModel;)
+
+^(abstract STATIC_TYPE:TYPE
+    TYPE_VARIANCE?
+    boolean metamodel;)
+
+^(GROUPED_TYPE:STATIC_TYPE
+    STATIC_TYPE type)
+
+"A produced type."
+^(abstract SIMPLE_TYPE:STATIC_TYPE
+    IDENTIFIER 
+    TYPE_ARGUMENT_LIST?
+    TypeDeclaration declarationModel;
+    boolean inherited;)
+
+^(BASE_TYPE: SIMPLE_TYPE
+    boolean packageQualified;)
+
+^(QUALIFIED_TYPE: SIMPLE_TYPE
+    STATIC_TYPE outerType)
+
+^(UNION_TYPE: STATIC_TYPE
+    STATIC_TYPE*)
+
+^(INTERSECTION_TYPE: STATIC_TYPE
+    STATIC_TYPE*)
+
+^(SEQUENCE_TYPE: STATIC_TYPE
+    STATIC_TYPE elementType
+    NATURAL_LITERAL? length)
+
+^(ITERABLE_TYPE: STATIC_TYPE
+    TYPE? elementType)
+
+^(OPTIONAL_TYPE: STATIC_TYPE
+    STATIC_TYPE definiteType)
+
+^(TUPLE_TYPE: STATIC_TYPE
+    TYPE* elementType)
+
+^(FUNCTION_TYPE: STATIC_TYPE
+    STATIC_TYPE returnType
+    TYPE* argumentType)
+
+^(ENTRY_TYPE: STATIC_TYPE
+    STATIC_TYPE keyType
+    STATIC_TYPE valueType)
+
+^(TYPE_CONSTRUCTOR: STATIC_TYPE
+    TYPE_PARAMETER_LIST
+    TYPE
+    TYPE_CONSTRAINT_LIST?
+    TypeAlias declarationModel;)
+
+^(SUPER_TYPE: STATIC_TYPE)
+
+^(abstract META_LITERAL:PRIMARY
+    boolean wantsDeclaration;
+    boolean broken;
+    Declaration declaration;)
+
+^(TYPE_LITERAL:META_LITERAL
+    STATIC_TYPE? type)
+
+^(MEMBER_LITERAL:META_LITERAL
+    STATIC_TYPE? type
+    IDENTIFIER
+    TYPE_ARGUMENT_LIST?
+    boolean packageQualified;
+    Reference target;)
+
+^(CLASS_LITERAL:TYPE_LITERAL)
+^(NEW_LITERAL:TYPE_LITERAL)
+^(INTERFACE_LITERAL:TYPE_LITERAL)
+^(ALIAS_LITERAL:TYPE_LITERAL)
+^(TYPE_PARAMETER_LITERAL:TYPE_LITERAL)
+
+^(VALUE_LITERAL:MEMBER_LITERAL)
+^(FUNCTION_LITERAL:MEMBER_LITERAL)
+
+^(MODULE_LITERAL:META_LITERAL
+    IMPORT_PATH?)
+
+^(PACKAGE_LITERAL:META_LITERAL
+    IMPORT_PATH?)
+
+^(DYNAMIC_MODIFIER: TYPE)
+
+"Specifies that the type of a block local declaration should be inferred."
+^(abstract LOCAL_MODIFIER: TYPE)
+
+"Specifies that the type of a local declaration should be inferred."
+^(VALUE_MODIFIER: LOCAL_MODIFIER)
+
+"Specifies that the type of a method declaration should be inferred."
+^(FUNCTION_MODIFIER: LOCAL_MODIFIER)
+
+"A variable introduced into the tree by the parser."
+^(SYNTHETIC_VARIABLE: VALUE_MODIFIER)
+
+"A list of type arguments in a generic invocation."
+^(TYPE_ARGUMENTS
+    List<Type> typeModels;)
+
+"A list of type arguments in a produced type."
+^(TYPE_ARGUMENT_LIST:TYPE_ARGUMENTS
+    TYPE*)
+
+"Indicates that the type arguments to a generic invocation are inferred by the typechecker."
+^(INFERRED_TYPE_ARGUMENTS:TYPE_ARGUMENTS)
+
+^(SEQUENCED_TYPE:TYPE
+    TYPE
+    boolean atLeastOne;)
+
+^(DEFAULTED_TYPE:TYPE
+    TYPE)
+
+^(SPREAD_TYPE:TYPE
+    TYPE)
+
+"A control directive."
+^(abstract DIRECTIVE:EXECUTABLE_STATEMENT)
+^(RETURN:DIRECTIVE EXPRESSION?
+    Declaration declaration;)
+^(THROW:DIRECTIVE EXPRESSION?)
+^(CONTINUE:DIRECTIVE)
+^(BREAK:DIRECTIVE)
+
+"A statement or named argument."
+^(abstract STATEMENT_OR_ARGUMENT
+    COMPILER_ANNOTATION*)
+
+"A statement or declaration."
+^(abstract STATEMENT:STATEMENT_OR_ARGUMENT)
+
+^(COMPILER_ANNOTATION
+    IDENTIFIER
+    STRING_LITERAL?)
+
+"An expression statement, specification statement, or control structure."
+^(abstract EXECUTABLE_STATEMENT:STATEMENT)
+
+"An assertion."
+^(ASSERTION:EXECUTABLE_STATEMENT
+    ANNOTATION_LIST?
+    CONDITION_LIST)
+
+"A specification statement"
+^(SPECIFIER_STATEMENT:EXECUTABLE_STATEMENT 
+    TERM baseMemberExpression
+    SPECIFIER_EXPRESSION
+    TypedDeclaration declaration;
+    boolean refinement;
+    TypedDeclaration refined;)
+
+"An expression statement."
+^(EXPRESSION_STATEMENT:EXECUTABLE_STATEMENT 
+    EXPRESSION)
+
+^(abstract PATTERN)
+^(VARIABLE_PATTERN:PATTERN
+    VARIABLE)
+^(TUPLE_PATTERN:PATTERN
+    PATTERN*)
+^(KEY_VALUE_PATTERN:PATTERN
+    PATTERN key
+    PATTERN value)
+
+^(DESTRUCTURE:EXECUTABLE_STATEMENT
+    VALUE_MODIFIER? type
+    PATTERN
+    SPECIFIER_EXPRESSION)
+
+"A control structure."
+^(CONTROL_STATEMENT:EXECUTABLE_STATEMENT)
+^(CONTROL_CLAUSE
+    ControlBlock controlBlock;)
+
+^(DYNAMIC_STATEMENT:CONTROL_STATEMENT
+    DYNAMIC_CLAUSE)
+^(DYNAMIC_CLAUSE:CONTROL_CLAUSE 
+    BLOCK?)
+
+^(LET_EXPRESSION:TERM
+    LET_CLAUSE)
+^(LET_CLAUSE:CONTROL_CLAUSE
+    STATEMENT* variable
+    EXPRESSION)
+
+^(IF_STATEMENT:CONTROL_STATEMENT
+    IF_CLAUSE
+    ELSE_CLAUSE?)
+^(IF_CLAUSE:CONTROL_CLAUSE
+    CONDITION_LIST
+    BLOCK?
+    EXPRESSION?)
+^(ELSE_CLAUSE:CONTROL_CLAUSE
+    VARIABLE?
+    BLOCK?
+    EXPRESSION?)
+
+^(SWITCH_STATEMENT:CONTROL_STATEMENT
+    SWITCH_CLAUSE
+    SWITCH_CASE_LIST
+    ControlBlock controlBlock;)
+^(SWITCH_CLAUSE
+    SWITCHED)
+^(SWITCHED
+    VARIABLE? EXPRESSION?)
+^(SWITCH_CASE_LIST 
+    CASE_CLAUSE* 
+    ELSE_CLAUSE?)
+^(CASE_CLAUSE:CONTROL_CLAUSE
+    CASE_ITEM
+    BLOCK?
+    EXPRESSION?)
+    
+^(CASE_ITEM)
+^(MATCH_CASE:CASE_ITEM
+    EXPRESSION_LIST)
+^(IS_CASE:CASE_ITEM
+    TYPE
+    VARIABLE?)
+^(SATISFIES_CASE:CASE_ITEM
+    TYPE type)
+
+^(TRY_CATCH_STATEMENT:CONTROL_STATEMENT
+    TRY_CLAUSE
+    CATCH_CLAUSE* 
+    FINALLY_CLAUSE?)
+^(TRY_CLAUSE:CONTROL_CLAUSE
+    RESOURCE_LIST?
+    BLOCK?)
+^(CATCH_CLAUSE:CONTROL_CLAUSE
+    CATCH_VARIABLE 
+    BLOCK?)
+^(FINALLY_CLAUSE:CONTROL_CLAUSE
+    BLOCK?)
+^(RESOURCE_LIST
+    RESOURCE*)
+^(RESOURCE
+    VARIABLE? EXPRESSION?)
+^(CATCH_VARIABLE
+    VARIABLE)
+
+^(FOR_STATEMENT:CONTROL_STATEMENT
+    FOR_CLAUSE
+    ELSE_CLAUSE?
+    boolean exits;)
+^(FOR_CLAUSE:CONTROL_CLAUSE
+    FOR_ITERATOR
+    BLOCK?)
+^(FOR_ITERATOR:STATEMENT_OR_ARGUMENT
+    SPECIFIER_EXPRESSION)
+^(VALUE_ITERATOR:FOR_ITERATOR
+    VARIABLE)
+^(PATTERN_ITERATOR:FOR_ITERATOR
+    PATTERN pattern)
+
+^(WHILE_STATEMENT:CONTROL_STATEMENT
+    WHILE_CLAUSE)
+^(WHILE_CLAUSE:CONTROL_CLAUSE
+    CONDITION_LIST
+    BLOCK?)
+
+^(CONDITION_LIST
+    CONDITION*)
+
+^(abstract CONDITION)
+^(BOOLEAN_CONDITION:CONDITION
+    EXPRESSION)
+^(abstract EXISTS_OR_NONEMPTY_CONDITION:CONDITION
+    STATEMENT? variable
+    EXPRESSION? brokenExpression
+    boolean not;)
+^(EXISTS_CONDITION:EXISTS_OR_NONEMPTY_CONDITION)
+^(NONEMPTY_CONDITION:EXISTS_OR_NONEMPTY_CONDITION)
+^(IS_CONDITION:CONDITION
+    TYPE
+    VARIABLE
+    boolean not;)
+^(SATISFIES_CONDITION:CONDITION
+    TYPE
+    IDENTIFIER)
+
+^(VARIABLE:TYPED_DECLARATION
+    PARAMETER_LIST*
+    SPECIFIER_EXPRESSION?
+    Value declarationModel;)
+
+^(abstract TERM
+    Type typeModel;
+    boolean unboxed;
+    boolean typeErased;
+    boolean untrustedType;)
+^(abstract OPERATOR_EXPRESSION:TERM)
+
+^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION
+    TERM leftTerm
+    TERM rightTerm)
+
+^(abstract ARITHMETIC_OP: BINARY_OPERATOR_EXPRESSION)
+^(SUM_OP: ARITHMETIC_OP)
+^(DIFFERENCE_OP: ARITHMETIC_OP)
+^(PRODUCT_OP: ARITHMETIC_OP)
+^(QUOTIENT_OP: ARITHMETIC_OP)
+^(POWER_OP: ARITHMETIC_OP)
+^(REMAINDER_OP: ARITHMETIC_OP)
+
+^(abstract ASSIGNMENT_OP: BINARY_OPERATOR_EXPRESSION)
+^(ASSIGN_OP: ASSIGNMENT_OP)
+
+^(abstract ARITHMETIC_ASSIGNMENT_OP: ASSIGNMENT_OP)
+^(ADD_ASSIGN_OP: ARITHMETIC_ASSIGNMENT_OP)
+^(SUBTRACT_ASSIGN_OP: ARITHMETIC_ASSIGNMENT_OP)
+^(MULTIPLY_ASSIGN_OP: ARITHMETIC_ASSIGNMENT_OP)
+^(DIVIDE_ASSIGN_OP: ARITHMETIC_ASSIGNMENT_OP)
+^(REMAINDER_ASSIGN_OP: ARITHMETIC_ASSIGNMENT_OP)
+
+^(abstract BITWISE_ASSIGNMENT_OP: ASSIGNMENT_OP)
+^(INTERSECT_ASSIGN_OP: BITWISE_ASSIGNMENT_OP)
+^(UNION_ASSIGN_OP: BITWISE_ASSIGNMENT_OP)
+^(COMPLEMENT_ASSIGN_OP: BITWISE_ASSIGNMENT_OP)
+
+^(abstract LOGICAL_ASSIGNMENT_OP: ASSIGNMENT_OP)
+^(AND_ASSIGN_OP: LOGICAL_ASSIGNMENT_OP)
+^(OR_ASSIGN_OP: LOGICAL_ASSIGNMENT_OP)
+
+^(abstract LOGICAL_OP: BINARY_OPERATOR_EXPRESSION)
+^(AND_OP: LOGICAL_OP)
+^(OR_OP: LOGICAL_OP)
+
+^(abstract BITWISE_OP: BINARY_OPERATOR_EXPRESSION)
+^(INTERSECTION_OP: BITWISE_OP)
+^(UNION_OP: BITWISE_OP)
+^(COMPLEMENT_OP: BITWISE_OP)
+
+^(abstract EQUALITY_OP: BINARY_OPERATOR_EXPRESSION)
+^(EQUAL_OP: EQUALITY_OP)
+^(NOT_EQUAL_OP: EQUALITY_OP)
+
+^(abstract COMPARISON_OP: BINARY_OPERATOR_EXPRESSION)
+^(LARGER_OP: COMPARISON_OP)
+^(SMALLER_OP: COMPARISON_OP)
+^(LARGE_AS_OP: COMPARISON_OP)
+^(SMALL_AS_OP: COMPARISON_OP)
+
+^(SCALE_OP: BINARY_OPERATOR_EXPRESSION)
+
+^(abstract BOUND:TERM
+    TERM)
+^(OPEN_BOUND:BOUND)
+^(CLOSED_BOUND:BOUND)
+
+^(WITHIN_OP: OPERATOR_EXPRESSION
+    BOUND upperBound
+    BOUND lowerBound
+    TERM)
+
+^(DEFAULT_OP: BINARY_OPERATOR_EXPRESSION)
+^(THEN_OP: BINARY_OPERATOR_EXPRESSION)
+^(IDENTICAL_OP: BINARY_OPERATOR_EXPRESSION)
+^(ENTRY_OP: BINARY_OPERATOR_EXPRESSION)
+^(RANGE_OP: BINARY_OPERATOR_EXPRESSION)
+^(SEGMENT_OP: BINARY_OPERATOR_EXPRESSION)
+^(COMPARE_OP: BINARY_OPERATOR_EXPRESSION)
+^(IN_OP: BINARY_OPERATOR_EXPRESSION)
+
+^(abstract UNARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION
+    TERM)
+
+^(NOT_OP: UNARY_OPERATOR_EXPRESSION)
+^(EXISTS: UNARY_OPERATOR_EXPRESSION)
+^(NONEMPTY: UNARY_OPERATOR_EXPRESSION)
+^(NEGATIVE_OP: UNARY_OPERATOR_EXPRESSION)
+^(POSITIVE_OP: UNARY_OPERATOR_EXPRESSION)
+
+^(abstract TYPE_OPERATOR_EXPRESSION: UNARY_OPERATOR_EXPRESSION
+    TYPE)
+^(IS_OP: TYPE_OPERATOR_EXPRESSION)
+^(SATISFIES: TYPE_OPERATOR_EXPRESSION)
+^(EXTENDS: TYPE_OPERATOR_EXPRESSION)
+^(OF_OP: TYPE_OPERATOR_EXPRESSION)
+
+^(abstract PREFIX_OPERATOR_EXPRESSION: UNARY_OPERATOR_EXPRESSION)
+^(INCREMENT_OP: PREFIX_OPERATOR_EXPRESSION)
+^(DECREMENT_OP: PREFIX_OPERATOR_EXPRESSION)
+
+"A postfix increment or decrement expression."
+^(abstract POSTFIX_OPERATOR_EXPRESSION: UNARY_OPERATOR_EXPRESSION)
+^(POSTFIX_INCREMENT_OP: POSTFIX_OPERATOR_EXPRESSION)
+^(POSTFIX_DECREMENT_OP: POSTFIX_OPERATOR_EXPRESSION)
+
+"A parenthesized list of expressions."
+^(EXPRESSION_LIST 
+    EXPRESSION*)
+
+"An expression."
+^(EXPRESSION:ATOM 
+    TERM)
+
+"The receiver of a member reference or invocation expression."
+^(abstract PRIMARY:TERM)
+^(abstract POSTFIX_EXPRESSION:PRIMARY
+    PRIMARY)
+
+"An invocation expression."
+^(INVOCATION_EXPRESSION:POSTFIX_EXPRESSION
+    POSITIONAL_ARGUMENT_LIST? 
+    NAMED_ARGUMENT_LIST?)
+
+^(PARAMETERIZED_EXPRESSION:PRIMARY
+    PRIMARY
+    TYPE_PARAMETER_LIST?
+    PARAMETER_LIST*
+    boolean leftTerm;)
+
+^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
+    Reference target;
+    Declaration declaration;
+    List<Type> signature;
+    boolean ellipsis;
+    boolean directlyInvoked;
+    boolean indirectlyInvoked;
+    boolean assigned;
+    boolean staticMethodReference;
+    boolean staticMethodReferencePrimary;)
+
+^(EXTENDED_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION)
+
+^(abstract STATIC_MEMBER_OR_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION
+    IDENTIFIER
+    TYPE_ARGUMENTS?
+    TypedReference targetParameter;
+    Type parameterType;)
+
+^(abstract BASE_MEMBER_OR_TYPE_EXPRESSION:STATIC_MEMBER_OR_TYPE_EXPRESSION)
+
+"A reference to a member in an expression."
+^(BASE_MEMBER_EXPRESSION:BASE_MEMBER_OR_TYPE_EXPRESSION)
+
+"A reference to a type in an expression."
+^(BASE_TYPE_EXPRESSION:BASE_MEMBER_OR_TYPE_EXPRESSION)
+
+^(abstract QUALIFIED_MEMBER_OR_TYPE_EXPRESSION:STATIC_MEMBER_OR_TYPE_EXPRESSION
+    PRIMARY
+    MEMBER_OPERATOR)
+
+"A qualified member reference expression."
+^(QUALIFIED_MEMBER_EXPRESSION:QUALIFIED_MEMBER_OR_TYPE_EXPRESSION)
+
+"A qualified member type reference expression."
+^(QUALIFIED_TYPE_EXPRESSION:QUALIFIED_MEMBER_OR_TYPE_EXPRESSION)
+
+^(abstract MEMBER_OPERATOR)
+^(MEMBER_OP: MEMBER_OPERATOR)
+^(SAFE_MEMBER_OP: MEMBER_OPERATOR)
+^(SPREAD_OP: MEMBER_OPERATOR)
+
+"An index (element access by key) expression."
+^(INDEX_EXPRESSION:POSTFIX_EXPRESSION
+    ELEMENT_OR_RANGE)
+
+"An element index or element range."
+^(abstract ELEMENT_OR_RANGE)
+"An element index."
+^(ELEMENT:ELEMENT_OR_RANGE
+    EXPRESSION)
+"An element range."
+^(ELEMENT_RANGE:ELEMENT_OR_RANGE
+    EXPRESSION? lowerBound
+    EXPRESSION? upperBound
+    EXPRESSION? length)
+
+"A reference to the outer containing instance."
+^(OUTER:ATOM
+   TypeDeclaration declarationModel;)
+
+"A reference to the containing package."
+^(PACKAGE:ATOM
+    boolean qualifier;)
+
+"A list of arguments in an invocation expression."
+^(abstract ARGUMENT_LIST)
+
+"A list of named arguments."
+^(NAMED_ARGUMENT_LIST:ARGUMENT_LIST 
+    NAMED_ARGUMENT*
+    SEQUENCED_ARGUMENT?
+    NamedArgumentList namedArgumentList;)
+
+"A comma-separated lost of arguments, possibly including a comprehension or spread argument."
+^(SEQUENCED_ARGUMENT:STATEMENT_OR_ARGUMENT
+    POSITIONAL_ARGUMENT*
+    Parameter parameter;)
+
+"A list of positional arguments."
+^(POSITIONAL_ARGUMENT_LIST:ARGUMENT_LIST 
+    POSITIONAL_ARGUMENT*)
+
+"A single listed argument, spread argument or comprehension."
+^(abstract POSITIONAL_ARGUMENT 
+    Type typeModel; 
+    Parameter parameter;)
+"A single listed argument."
+^(LISTED_ARGUMENT:POSITIONAL_ARGUMENT
+    EXPRESSION)
+"A spread argument."
+^(SPREAD_ARGUMENT:POSITIONAL_ARGUMENT
+    EXPRESSION)
+
+"An anonymous function."
+^(FUNCTION_ARGUMENT:TERM
+    TYPE type
+    TYPE_PARAMETER_LIST?
+    PARAMETER_LIST*
+    TYPE_CONSTRAINT_LIST?
+    EXPRESSION?
+    BLOCK?
+    Function declarationModel;)
+
+"An anonymous function."
+^(OBJECT_EXPRESSION:PRIMARY
+    EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    CLASS_BODY
+    Class anonymousClass;)
+
+"An if/then/else conditional expression."
+^(IF_EXPRESSION:TERM
+    IF_CLAUSE
+    ELSE_CLAUSE)
+
+"A switch/case/else conditional expression."
+^(SWITCH_EXPRESSION:TERM
+    SWITCH_CLAUSE
+    SWITCH_CASE_LIST)
+
+"A named argument."
+^(abstract NAMED_ARGUMENT:STATEMENT_OR_ARGUMENT
+    IDENTIFIER?
+    Parameter parameter;)
+    
+"A specifier statement-style named argument."
+^(SPECIFIED_ARGUMENT:NAMED_ARGUMENT
+    SPECIFIER_EXPRESSION)
+
+"A declaration-style named argument."
+^(abstract TYPED_ARGUMENT:NAMED_ARGUMENT
+    TYPE
+    abstract TypedDeclaration declarationModel;)
+"A function declaration that occurs as a named argument."
+^(METHOD_ARGUMENT:TYPED_ARGUMENT
+    TYPE_PARAMETER_LIST?
+    PARAMETER_LIST*
+    BLOCK? 
+    SPECIFIER_EXPRESSION?
+    Function declarationModel;)
+"A value declaration that occurs as a named argument."
+^(ATTRIBUTE_ARGUMENT:TYPED_ARGUMENT
+    BLOCK? 
+    SPECIFIER_EXPRESSION?
+    Value declarationModel;)
+"An object declaration that occurs as a named argument."
+^(OBJECT_ARGUMENT:TYPED_ARGUMENT
+    EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    CLASS_BODY
+    Value declarationModel;
+    Class anonymousClass;)
+
+"Deprecated!"
+^(abstract SPECIFIER_OR_INITIALIZER_EXPRESSION EXPRESSION)
+
+"A specifier expression."
+^(SPECIFIER_EXPRESSION:SPECIFIER_OR_INITIALIZER_EXPRESSION)
+
+"A shortcut getter or method body."
+^(LAZY_SPECIFIER_EXPRESSION:SPECIFIER_EXPRESSION)
+
+"An initializer expression."
+^(INITIALIZER_EXPRESSION:SPECIFIER_OR_INITIALIZER_EXPRESSION)
+
+"A member reference, type reference, literal, string template, or parenthesized expression."
+^(abstract ATOM:PRIMARY)
+
+"A literal."
+^(abstract LITERAL:ATOM)
+^(NATURAL_LITERAL:LITERAL)
+^(FLOAT_LITERAL:LITERAL)
+^(CHAR_LITERAL:LITERAL)
+^(STRING_LITERAL:LITERAL
+    DOC_LINK*)
+^(QUOTED_LITERAL:LITERAL)
+
+"A wiki-style link in a documentation string"
+^(DOC_LINK
+   Module module;
+   Package pkg;
+   Declaration base;
+   List<Declaration> qualified;)
+
+"A reference to the current instance."
+^(abstract SELF_EXPRESSION:ATOM
+   TypeDeclaration declarationModel;)
+^(THIS:SELF_EXPRESSION)
+^(SUPER:SELF_EXPRESSION)
+
+"Enumerated elements of an iterable."
+^(SEQUENCE_ENUMERATION:ATOM 
+    SEQUENCED_ARGUMENT?)
+
+"Enumerated elements of a tuple."
+^(TUPLE:ATOM
+    SEQUENCED_ARGUMENT?)
+
+^(DYNAMIC:ATOM
+    NAMED_ARGUMENT_LIST)
+
+"A string template."
+^(STRING_TEMPLATE:ATOM 
+    STRING_LITERAL* 
+    EXPRESSION*)
+
+"A program element annotation."
+^(ANNOTATION:INVOCATION_EXPRESSION)
+"An abbreviated doc annotation."
+^(ANONYMOUS_ANNOTATION
+    STRING_LITERAL)
+
+"A list of annotations of a program element."
+^(ANNOTATION_LIST 
+    ANONYMOUS_ANNOTATION?
+    ANNOTATION*)
+
+"An identifier (the name of a program element)."
+^(IDENTIFIER)
+
+"A comprehension."
+^(COMPREHENSION:POSITIONAL_ARGUMENT
+    INITIAL_COMPREHENSION_CLAUSE)
+
+"A single clause of comprehension"
+^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
+    Type typeModel;
+    Type firstTypeModel;
+    boolean possiblyEmpty;)
+
+"A clause that can appear at the beginning of a comprehension."
+^(abstract INITIAL_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE)
+
+"The expression at the end of a comprehension."
+^(EXPRESSION_COMPREHENSION_CLAUSE:COMPREHENSION_CLAUSE
+    EXPRESSION)
+
+"A quantifier clause in a comprehension."
+^(FOR_COMPREHENSION_CLAUSE:INITIAL_COMPREHENSION_CLAUSE
+    FOR_ITERATOR
+    COMPREHENSION_CLAUSE)
+
+"A filter clause in a comprehension."
+^(IF_COMPREHENSION_CLAUSE:INITIAL_COMPREHENSION_CLAUSE
+    CONDITION_LIST
+    COMPREHENSION_CLAUSE)
