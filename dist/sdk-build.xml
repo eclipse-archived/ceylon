@@ -17,7 +17,7 @@
 
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
-            <pathelement location="../ceylon-dist/lib/ant-contrib-1.0b3.jar"/>
+            <pathelement location="../dist/lib/ant-contrib-1.0b3.jar"/>
         </classpath>
     </taskdef>
 
@@ -120,7 +120,7 @@ Used with another target such as 'package'.">
     <target name="siblings"
             description="Builds using dependent projects in existing sibling project folders.
 Used with another target such as 'package'">
-        <property name="projects.base.dir" value="${basedir}/.." />
+<property name="projects.base.dir" value="${basedir}/../.." />
         <property name="ceylon-formatter.dir" value="${projects.base.dir}/ceylon.formatter"/>
         <property name="ceylon-converter.dir" value="${projects.base.dir}/ceylon.tool.converter.java2ceylon"/>
         <property name="ceylon-ide-common.dir" value="${projects.base.dir}/ceylon-ide-common"/>
