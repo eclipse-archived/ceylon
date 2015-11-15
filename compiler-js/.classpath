@@ -4,13 +4,13 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-spec"/>
-	<classpathentry kind="lib" path="/ceylon-spec/lib/antlr-3.4-complete.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="lib" path="lib/json-smart-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/ceylon-compiler/lib/ant-1.8.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-typechecker"/>
+	<classpathentry kind="lib" path="/ceylon-typechecker/lib/antlr-3.4-complete.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
