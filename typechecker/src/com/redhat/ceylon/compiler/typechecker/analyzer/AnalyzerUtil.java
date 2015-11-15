@@ -19,6 +19,7 @@ import static java.lang.Character.isUpperCase;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -179,56 +180,44 @@ public class AnalyzerUtil {
         return null;
     }
     
-    static String correct(Scope scope, Unit unit, final String name) {
+    private static String best(final String name, 
+            Collection<String> names) {
+        if (names.isEmpty()) {
+            return null;
+        }
         final boolean ucase = isUpperCase(name.charAt(0));
-        Set<String> names = 
+        return Collections.max(
+                names, 
+                new Comparator<String>() {
+            @Override
+            public int compare(String x, String y) {
+                boolean xucase = isUpperCase(x.charAt(0));
+                boolean yucase = isUpperCase(y.charAt(0));
+                if (ucase==xucase && ucase!=yucase) {
+                    return 1;
+                }
+                if (ucase==yucase && ucase!=xucase) {
+                    return -1;
+                }
+                return Double.compare(
+                        distance.similarity(name, x),
+                        distance.similarity(name, y));
+            }
+        });
+    }
+    
+    static String correct(Scope scope, Unit unit, String name) {
+        return best(name, 
                 scope.getMatchingDeclarations(unit, "", 0)
-                    .keySet();
-        return Collections.max(
-                names, 
-                new Comparator<String>() {
-            @Override
-            public int compare(String x, String y) {
-                boolean xucase = isUpperCase(x.charAt(0));
-                boolean yucase = isUpperCase(y.charAt(0));
-                if (ucase==xucase && ucase!=yucase) {
-                    return 1;
-                }
-                if (ucase==yucase && ucase!=xucase) {
-                    return -1;
-                }
-                return Double.compare(
-                        distance.similarity(name, x),
-                        distance.similarity(name, y));
-            }
-        });
+                    .keySet());
     }
-
-    static String correct(TypeDeclaration type, Scope scope, Unit unit, final String name) {
-        final boolean ucase = isUpperCase(name.charAt(0));
-        Set<String> names = 
+    
+    static String correct(TypeDeclaration type, Scope scope, Unit unit, String name) {
+        return best(name, 
                 type.getMatchingMemberDeclarations(unit, scope, "", 0)
-                    .keySet();
-        return Collections.max(
-                names, 
-                new Comparator<String>() {
-            @Override
-            public int compare(String x, String y) {
-                boolean xucase = isUpperCase(x.charAt(0));
-                boolean yucase = isUpperCase(y.charAt(0));
-                if (ucase==xucase && ucase!=yucase) {
-                    return 1;
-                }
-                if (ucase==yucase && ucase!=xucase) {
-                    return -1;
-                }
-                return Double.compare(
-                        distance.similarity(name, x),
-                        distance.similarity(name, y));
-            }
-        });
+                    .keySet());
     }
-
+    
     /**
      * Get the type arguments specified explicitly in the
      * code, or an empty list if no type arguments were
