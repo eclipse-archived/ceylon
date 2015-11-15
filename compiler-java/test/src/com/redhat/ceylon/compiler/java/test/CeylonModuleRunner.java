@@ -443,7 +443,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             public void run() {
                 // set up the runtime module system
                 Metamodel.resetModuleManager();
-                Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
+                Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car")), cl);
                 Metamodel.loadModule("com.redhat.ceylon.typechecker", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../dist/dist/repo/com/redhat/ceylon/typechecker/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.typechecker-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
                 Metamodel.loadModule("com.redhat.ceylon.model", TypeChecker.LANGUAGE_MODULE_VERSION, CompilerTests.makeArtifactResult(new File("../dist/dist/repo/com/redhat/ceylon/model/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.model-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar")), cl);
                 Metamodel.loadModule(AbstractModelLoader.JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version, CompilerTests.makeArtifactResult(null), cl);

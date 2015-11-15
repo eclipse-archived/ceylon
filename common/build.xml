@@ -117,7 +117,7 @@
     <target name="ide-quick-internal">
         <property name="archivePath" value="${ceylon.common.lib}"/>
         <basename file="${archivePath}" property="archiveFileName"/>
-        <property name="proxy-project" value="../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
+        <property name="proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
         <delete failonerror="false" dir="${proxy-project}/META-INF"/>
         <copy toDir="${proxy-project}" overwrite="true">

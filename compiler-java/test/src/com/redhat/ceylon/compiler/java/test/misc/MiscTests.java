@@ -82,8 +82,8 @@ public class MiscTests extends CompilerTests {
         
         java.util.List<File> sourceFiles = new ArrayList<File>();
         
-        String ceylonSourcePath = "../ceylon.language/src";
-        String javaSourcePath = "../ceylon.language/runtime";
+        String ceylonSourcePath = "../language/src";
+        String javaSourcePath = "../language/runtime";
         
         String[] ceylonPackages = {"ceylon.language", "ceylon.language.meta", 
                 "ceylon.language.impl", "ceylon.language.meta.declaration", 

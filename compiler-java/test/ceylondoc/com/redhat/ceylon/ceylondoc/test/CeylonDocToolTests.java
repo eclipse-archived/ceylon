@@ -461,7 +461,7 @@ public class CeylonDocToolTests {
 
     @Test
     public void ceylonLanguage() throws Exception {
-        String pathname = "../ceylon.language/src";
+        String pathname = "../language/src";
         String moduleName = AbstractModelLoader.CEYLON_LANGUAGE;
         CeylonDocTool tool = tool(pathname, moduleName, true, true);
         tool.setIncludeNonShared(false);

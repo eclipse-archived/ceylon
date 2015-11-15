@@ -145,7 +145,7 @@ public class ModuleComplianceVisitor extends Visitor {
             throw new IllegalStateException("Cannot find JS language module");
         }
         System.out.println("Finding Ceylon Language Module");
-        File mod = findModule("../ceylon.language/build/dist", "src");
+        File mod = findModule("../language/build/dist", "src");
         if (mod == null && System.getenv("ceylon.repo") != null) {
             mod = findModule(System.getenv("ceylon.repo"), "src");
         }

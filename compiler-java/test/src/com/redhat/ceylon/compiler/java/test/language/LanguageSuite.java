@@ -33,8 +33,8 @@ import com.redhat.ceylon.compiler.java.test.ModuleSpecifier;
  */
 @RunWith(CeylonModuleRunner.class)
 @TestModule(
-    srcDirectory="../ceylon.language/test",
-    resDirectory="../ceylon.language/test-resource",
+    srcDirectory="../language/test",
+    resDirectory="../language/test-resource",
     modules={"default", "jvm", "metamodel", "annotations", "resmod", "serialization"},
     modulesUsingCheckFunction="default",
     modulesUsingCheckModule={"jvm", "annotations", "resmod", "serialization"},

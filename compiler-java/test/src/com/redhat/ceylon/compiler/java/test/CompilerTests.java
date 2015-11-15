@@ -87,7 +87,7 @@ public abstract class CompilerTests {
     protected final static String dir = "test/src";
     protected final static String destDirGeneral = "build/test-cars";
     protected final static String cacheDirGeneral = "build/test-cache";
-    public static final String LANGUAGE_MODULE_CAR = "../ceylon.language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car";
+    public static final String LANGUAGE_MODULE_CAR = "../language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car";
     protected final String destDir;
     protected final String cacheDir;
     protected final String moduleName;
