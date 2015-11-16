@@ -13,13 +13,13 @@ class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getPredecessor();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getPredecessor();
     }
     
     @.java.lang.Override

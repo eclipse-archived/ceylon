@@ -93,8 +93,18 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
+    public .ceylon.language.List<? extends T> getRest() {
+        return $ceylon$language$List$this$.getRest();
+    }
+    
+    @.java.lang.Override
     public T getLast() {
         return (T)$ceylon$language$List$this$.getLast();
+    }
+    
+    @.java.lang.Override
+    public long getSize() {
+        return $ceylon$language$List$this$.getSize();
     }
     
     @.java.lang.Override
@@ -103,23 +113,13 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.List<? extends T> getReversed() {
-        return $ceylon$language$List$this$.getReversed();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends T> getRest() {
-        return $ceylon$language$List$this$.getRest();
-    }
-    
-    @.java.lang.Override
     public T getFirst() {
         return (T)$ceylon$language$List$this$.getFirst();
     }
     
     @.java.lang.Override
-    public long getSize() {
-        return $ceylon$language$List$this$.getSize();
+    public .ceylon.language.List<? extends T> getReversed() {
+        return $ceylon$language$List$this$.getReversed();
     }
     
     @.java.lang.Override
@@ -317,13 +317,8 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this$.getCycled();
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -332,18 +327,23 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this$.getCoalesced();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
     }
     
     @.java.lang.Override

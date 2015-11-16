@@ -8,7 +8,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug04xx.bug493;
         version = "1",
         dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(
                 name = "ceylon.language",
-                version = "1.2.0")})
+                version = "1.2.1")})
 @.ceylon.language.DocAnnotation$annotation$(description = "A JSON parser / serialiser")
 @.ceylon.language.AuthorsAnnotation$annotation$(authors = "St\u00e9phane \u00c9pardaud")
 final class $module_ {
