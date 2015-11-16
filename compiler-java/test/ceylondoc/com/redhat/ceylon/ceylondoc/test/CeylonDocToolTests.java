@@ -537,7 +537,7 @@ public class CeylonDocToolTests {
 
         CeylonDocTool tool = tool(Arrays.asList(new File("../../ceylon-sdk/source")),
                 new String[0],
-                "../ceylon-sdk/overrides.xml",
+                "../../ceylon-sdk/overrides.xml",
                 Collections.<File>emptyList(),
                 Arrays.asList(fullModuleNames), true, false, false);
         tool.setIncludeNonShared(false);
