@@ -35,18 +35,24 @@ public class Versions {
     public static final int CEYLON_VERSION_MAJOR = 1;
     public static final int CEYLON_VERSION_MINOR = 2;
     public static final int CEYLON_VERSION_RELEASE = 1;
+
+    // SHA1 of current HEAD at moment of compilation
+    public static final String CURRENT_COMMIT_ID = "@commit@";
+    
     /**
      * The MAJOR.MINOR.RELEASE version.
      */
     public static final String CEYLON_VERSION_NUMBER = CEYLON_VERSION_MAJOR + "." + CEYLON_VERSION_MINOR + "." + CEYLON_VERSION_RELEASE;
+    
     /**
      * The release code name.
      */
     public static final String CEYLON_VERSION_NAME = "A Series Of Unlikely Explanations";
+    
     /**
      * The version number + code name description string.
      */
-    public static final String CEYLON_VERSION = CEYLON_VERSION_NUMBER + " (" + CEYLON_VERSION_NAME + ")";
+    public static final String CEYLON_VERSION = CEYLON_VERSION_NUMBER + " " + CURRENT_COMMIT_ID + " (" + CEYLON_VERSION_NAME + ")";
 
     /**
      * M1 and M2 are 0.0 since they were not tagged at the time
