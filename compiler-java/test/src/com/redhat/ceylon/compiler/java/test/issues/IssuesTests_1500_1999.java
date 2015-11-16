@@ -492,8 +492,8 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1664() {
         assertErrors("bug16xx/Bug1664",
-                new CompilerError(30, "refined member type parameter 'NewUnitType' of 'convertTo' in 'Bug1664UnitOfTime' with upper bound which refining member type parameter 'NewUnitType' does not satisfy not yet supported: 'UnitType' ('NewUnitType' should be upper bounded by 'Bug1664Milliseconds')"),
-                new CompilerError(37, "refined member type parameter 'NewUnitType' of 'convertTo' in 'Bug1664UnitOfTime' with upper bound which refining member type parameter 'NewUnitType' does not satisfy not yet supported: 'UnitType' ('NewUnitType' should be upper bounded by 'Bug1664Seconds')"),
+                new CompilerError(30, "refined member type parameter 'NewUnitType' of 'convertTo' in 'Bug1664UnitOfTime' has upper bound which refining member type parameter 'NewUnitType' does not satisfy: 'UnitType' ('NewUnitType' should be upper bounded by 'Bug1664Milliseconds')"),
+                new CompilerError(37, "refined member type parameter 'NewUnitType' of 'convertTo' in 'Bug1664UnitOfTime' has upper bound which refining member type parameter 'NewUnitType' does not satisfy: 'UnitType' ('NewUnitType' should be upper bounded by 'Bug1664Seconds')"),
                 new CompilerError(28, "com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Milliseconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
                 new CompilerError(35, "com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Seconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
                 new CompilerError(44, "method convertTo in class com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime<UnitType> cannot be applied to given types;\n"
@@ -738,7 +738,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 null,
                 new CompilerError(22, "could not determine type of function or value reference: 'd'"),
                 new CompilerError(24, "does not definitely return: 'd' has branches which do not end in a 'return' statement"),
-                new CompilerError(24, "type declaration does not exist: 'Id'"));
+                new CompilerError(24, "type declaration does not exist: 'Id' (did you mean 'Bug1768'?)"));
 
     }
     
@@ -853,7 +853,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1857() {
         assertErrors("bug18xx/Bug1857",
-                new CompilerError(Kind.ERROR, "", 22, "function or value does not exist: 'ß'"));
+                new CompilerError(Kind.ERROR, "", 22, "function or value does not exist: 'ß' (did you mean 'bug1857'?)"));
     }
 
     @Test
