@@ -14,11 +14,6 @@
     <property name="ceylonmodules" value="ceylon-sdk" />
 
     <property name="projects.base.dir" value="${basedir}/../.." />
-    <property name="ceylon-formatter.dir" value="${projects.base.dir}/ceylon.formatter"/>
-    <property name="ceylon-converter.dir" value="${projects.base.dir}/ceylon.tool.converter.java2ceylon"/>
-    <property name="ceylon-ide-common.dir" value="${projects.base.dir}/ceylon-ide-common"/>
-    <property name="ceylon-ide-eclipse.dir" value="${projects.base.dir}/ceylon-ide-eclipse"/>
-    <property name="ceylon-ide-intellij.dir" value="${projects.base.dir}/ceylon-ide-intellij"/>
     <property name="dist.name" value="ceylon-${ceylon.version}-custom-${NOW}"/>
     <property name="github-url" value="https://github.com/"/>
     
