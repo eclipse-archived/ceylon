@@ -6,6 +6,11 @@ pushd "%~dp0.."
 set "CEYLON_HOME=%CD%"
 popd
 
+if "%~1" == "--show-home" (
+    echo %CEYLON_HOME%
+    exit /b 1
+)
+
 rem Find Java
 call %CEYLON_HOME%\bin\java.bat
 

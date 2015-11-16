@@ -5,6 +5,9 @@
 <project name="project" default="default">
 
     <!-- Try to determine where Ceylon is installed -->
+    <exec executable="ceylon" outputproperty="ceylon.home" failifexecutionfails="false">
+        <arg value="--show-home" />
+    </exec>
     <property environment="env"/>
     <property name="ceylon.home" value="../.." />
     <property name="env.CEYLON_HOME" value="${ceylon.home}"/>
