@@ -78,7 +78,25 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  *
  */
 public class RefinementVisitor extends Visitor {
-        
+    
+    private boolean objectExpression;
+
+    public RefinementVisitor() {
+        objectExpression = false;
+    }
+    public RefinementVisitor(boolean objectExpression) {
+        this.objectExpression = objectExpression;
+    }
+    
+    public void visit(Tree.ObjectExpression that) {
+        if (objectExpression || 
+                that.getExtendedType()!=null ||
+                that.getSatisfiedTypes()!=null) {
+            objectExpression = false;
+            super.visit(that);
+        }
+    }
+    
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
@@ -1168,14 +1186,14 @@ public class RefinementVisitor extends Visitor {
             checkAssignableToOneOf(refiningMember.getType(), 
                     refinedMember.getType(), 
                     optionalRefinedType, that, 
-            		"type of member must be assignable to type of refined member: " + 
+            		"type of member must be assignable to type of refined member " + 
     				message(refined), 
     				9000);
         }
         else {
             checkAssignable(refiningMember.getType(), 
                     refinedMember.getType(), that,
-            		"type of member must be assignable to type of refined member: " + 
+            		"type of member must be assignable to type of refined member " + 
     		        message(refined), 
     		        9000);
         }

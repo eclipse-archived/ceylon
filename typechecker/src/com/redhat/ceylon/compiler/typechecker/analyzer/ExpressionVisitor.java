@@ -2745,6 +2745,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getPositionalArgumentList();
         if (pal!=null) {
             inferParameterTypes(p, pal);
+            inferSupertypes(p, pal);
             pal.visit(this);
         }
         
@@ -2768,6 +2769,83 @@ public class ExpressionVisitor extends Visitor {
         
     }
     
+    private void inferSupertypes(Tree.Primary p, 
+            Tree.PositionalArgumentList pal) {
+        Tree.Term term = unwrapExpressionUntilTerm(p);
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) term;
+            Declaration dec = mte.getDeclaration();
+            if (dec instanceof Functional) {
+                inferSupertypesDirectly(dec, pal, mte);
+            }
+            /*else if (dec instanceof Value) {
+                Value value = (Value) dec;
+                inferSupertypesIndirectly(pal, 
+                        value.getType());
+            }*/
+        }
+        /*else {
+            inferSupertypesIndirectly(pal, 
+                    p.getTypeModel());
+        }*/
+    }
+
+    private void inferSupertypesDirectly(Declaration dec, 
+            Tree.PositionalArgumentList pal, 
+            Tree.MemberOrTypeExpression mte) {
+        Reference pr = getInvokedProducedReference(dec, mte);
+        Functional fun = (Functional) dec;
+        List<ParameterList> pls = fun.getParameterLists();
+        if (!pls.isEmpty()) {
+            ParameterList pl = pls.get(0);
+            List<Parameter> params = pl.getParameters();
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            int j=0;
+            int argCount = args.size();
+            int paramsSize = params.size();
+            for (int i=0; i<argCount && j<paramsSize; i++) {
+                Parameter param = params.get(j);
+                Tree.PositionalArgument arg = args.get(i);
+                arg.setParameter(param);
+                if (arg instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument) arg;
+                    inferSupertypes(pr, param, 
+                            la.getExpression(), 
+                            param.isSequenced());
+                }
+                if (!param.isSequenced()) {
+                    j++;
+                }
+            }
+        }
+    }
+
+    private void inferSupertypes(Reference pr, 
+            Parameter param, Tree.Expression e, 
+            boolean sequenced) {
+        FunctionOrValue model = param.getModel();
+        if (e!=null && model instanceof Value) {
+            Tree.Term term = 
+                    unwrapExpressionUntilTerm(e.getTerm());
+            Type t = pr.getTypedParameter(param).getType();
+            if (term instanceof Tree.ObjectExpression &&
+                    !isTypeUnknown(t) && t.isInterface()) {
+                Tree.ObjectExpression obj = 
+                        (Tree.ObjectExpression) term;
+                if (obj.getExtendedType()==null &&
+                        obj.getSatisfiedTypes()==null) {
+                    obj.getAnonymousClass()
+                        .getSatisfiedTypes()
+                        .add(t);
+                    new RefinementVisitor(true).visit(e);
+                }
+            }
+        }
+    }
+
     /**
      * Infer parameter types for anonymous functions in a
      * positional argument list, and set up references from
@@ -2867,8 +2945,7 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.PositionalArgumentList pal,
             Tree.MemberOrTypeExpression mte) {
-        Reference pr = 
-                getInvokedProducedReference(dec, mte);
+        Reference pr = getInvokedProducedReference(dec, mte);
         Functional fun = (Functional) dec;
         List<ParameterList> pls = fun.getParameterLists();
         if (!pls.isEmpty()) {
@@ -2907,8 +2984,7 @@ public class ExpressionVisitor extends Visitor {
     private void inferParameterTypesDirectly(Declaration dec,
             Tree.NamedArgumentList nal,
             Tree.MemberOrTypeExpression mte) {
-        Reference pr = 
-                getInvokedProducedReference(dec, mte);
+        Reference pr = getInvokedProducedReference(dec, mte);
         Functional fun = (Functional) dec;
         List<ParameterList> pls = fun.getParameterLists();
         if (!pls.isEmpty()) {
@@ -3025,8 +3101,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null && model!=null) {
             Tree.Term term = 
                     unwrapExpressionUntilTerm(e.getTerm());
-            TypedReference tpr = 
-                    pr.getTypedParameter(param);
+            TypedReference tpr = pr.getTypedParameter(param);
             if (term instanceof Tree.FunctionArgument) {
                 Tree.FunctionArgument anon = 
                         (Tree.FunctionArgument) term;
@@ -3037,8 +3112,7 @@ public class ExpressionVisitor extends Visitor {
                             pr, param, anon);
                 }
                 else { 
-                    Type paramType = 
-                            tpr.getFullType();
+                    Type paramType = tpr.getFullType();
                     if (variadic) {
                         paramType = 
                                 unit.getIteratedType(paramType);
@@ -3085,8 +3159,9 @@ public class ExpressionVisitor extends Visitor {
                     unit.getCallableArgumentTypes(paramType);
             List<Tree.Parameter> aps = 
                     apls.get(0).getParameters();
-            Declaration declaration = param==null ? 
-                    null : param.getDeclaration();
+            Declaration declaration = 
+                    param==null ? null : 
+                        param.getDeclaration();
             for (int j=0; 
                     j<types.size() && 
                     j<aps.size(); 
