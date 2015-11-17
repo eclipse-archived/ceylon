@@ -908,7 +908,7 @@ public abstract class CompilerTests {
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../dist/dist");
 
         int exit = -1;
-        try (ExitManager em = new ExitManager()) {
+        //try (ExitManager em = new ExitManager()) {
             // make sure the class loader is cleaned up
             String[] args = new String[4 + runnerArgs.size()];
             args[0] = runner;
@@ -918,7 +918,7 @@ public abstract class CompilerTests {
                 args[3+i] = runnerArgs.get(i);
             args[args.length-1] = module;
             exit = Launcher.run(true, args);
-        }
+        //}
         Assert.assertEquals(0, exit);
 
         // Now the TCCL is fucked up, so restore it too
