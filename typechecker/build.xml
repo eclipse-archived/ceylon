@@ -42,6 +42,7 @@
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
     <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
     <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
+    <property name="ceylon.typechecker.src" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.src"/>
     <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
     <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
     <property name="ceylon.typechecker.dist" value="${build.dist.repo}/${ceylon.typechecker.dir}"/>
@@ -514,6 +515,17 @@
     </target>
 
     <target name="dist" depends="build">
+        <zip destfile="${build.dist.repo}/${ceylon.typechecker.src}">
+            <fileset dir="${src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${gensrc}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.typechecker.src}"/>
+        </antcall>
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"

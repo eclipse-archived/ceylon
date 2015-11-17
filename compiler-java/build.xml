@@ -51,6 +51,7 @@
     <!-- Jarfiles everything ends up in -->
     <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
     <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
+    <property name="ceylon.compiler.src" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.src" />
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
     <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}" />
     <property name="ceylon.compiler.dist" value="${build.dist.repo}/${ceylon.compiler.dir}" />
@@ -136,6 +137,17 @@
 
     <target name="dist" depends="build" description="Create Ceylon compiler distribution">
         <copy file="${txtmark.lib}" tofile="${build.dist.repo}/${txtmark.repo}"/>
+        <zip destfile="${build.dist.repo}/${ceylon.compiler.src}">
+            <fileset dir="${ceylonc.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${javac.src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.compiler.src}"/>
+        </antcall>
     </target>
 
     <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon compiler module to default repo">

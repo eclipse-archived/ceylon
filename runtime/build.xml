@@ -89,6 +89,8 @@
     <property name="ceylon.runtime.dir" value="${module.runtime.dir}/${module.ceylon.runtime.version}"/>
     <property name="ceylon.runtime.jar"
               value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.jar"/>
+    <property name="ceylon.runtime.src"
+              value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.src"/>
     <property name="ceylon.runtime.repo" value="${ceylon.repo.dir}/${ceylon.runtime.dir}"/>
     <property name="ceylon.runtime.dist" value="${build.dist.repo}/${ceylon.runtime.dir}"/>
 
@@ -155,6 +157,24 @@
         <copy file="${antlr.lib}" tofile="${build.dist.repo}/${antlr.repo}"/>
         <copy file="${antlr.stringtemplate.lib}" tofile="${build.dist.repo}/${antlr.stringtemplate.repo}"/>
         <copy file="${antlr.antlr.lib}" tofile="${build.dist.repo}/${antlr.antlr.repo}"/>
+        
+        <zip destfile="${build.dist.repo}/${ceylon.runtime.src}">
+            <fileset dir="${runtime-api.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${runtime-impl.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${runtime-spi.src}">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="${runtime-bootstrap.src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.runtime.src}"/>
+        </antcall>
     </target>
 
     <target name="dist-for-tests" description="Copy jars in the repo used by tests">

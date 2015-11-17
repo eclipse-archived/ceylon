@@ -20,6 +20,7 @@
     <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.src" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.src" />
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
     <property name="ceylon.common.repo" value="${ceylon.repo.dir}/${ceylon.common.dir}" />
     <property name="ceylon.common.dist" value="${build.dist}/${ceylon.common.dir}" />
@@ -162,6 +163,14 @@
 
     <target name="dist" depends="build">
         <copy file="${markdownpapers.lib}" tofile="${build.dist.repo}/${markdownpapers.repo}"/>
+        <zip destfile="${build.dist.repo}/${ceylon.common.src}">
+            <fileset dir="${src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.common.src}"/>
+        </antcall>
     </target>
 
     <target name="publish"

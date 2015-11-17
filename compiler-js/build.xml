@@ -33,6 +33,7 @@
     <property name="ceylon.js.repo" value="${ceylon.repo.dir}/${ceylon.js.dir}" />
     <property name="ceylon.js.dist" value="${build.dist.repo}/${ceylon.js.dir}"/>
     <property name="ceylon.js.jar" value="com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar" />
+    <property name="ceylon.js.src" value="com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.src" />
     <property name="ceylon.js.lib" location="${ceylon.js.dist}/${ceylon.js.jar}" />
 
     <!-- module archives -->
@@ -208,6 +209,15 @@
         <copy overwrite="true"
               file="${json.lib}"
               tofile="${build.dist.repo}/${json.repo}"/>
+              
+        <zip destfile="${build.dist.repo}/${ceylon.js.src}">
+            <fileset dir="${src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.js.src}"/>
+        </antcall>
     </target>
 
     <target name="publish"

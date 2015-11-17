@@ -21,6 +21,7 @@
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
     <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}" />
     <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar" />
+    <property name="ceylon.model.src" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.src" />
     <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}" />
     <property name="ceylon.model.repo" value="${ceylon.repo.dir}/${ceylon.model.dir}" />
     <property name="ceylon.model.dist" value="${build.dist}/${ceylon.model.dir}" />
@@ -122,6 +123,14 @@
     </target>
 
     <target name="dist" depends="build">
+        <zip destfile="${build.dist.repo}/${ceylon.model.src}">
+            <fileset dir="${src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.model.src}"/>
+        </antcall>
     </target>
 
     <target name="publish"
