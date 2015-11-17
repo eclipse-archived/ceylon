@@ -657,11 +657,10 @@ public class StatementTransformer extends AbstractTransformer {
             expectedType = typeFact().denotableType(expectedType);
         }
         BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(outerExpression);
-        
         return List.<JCStatement>of(make().Exec(make().Assign(
                 makeUnquotedIdent(tmpVar), 
                 expressionGen().transformExpression(expr, boxingStrategy, 
-                        expectedType))));
+                        expectedType, ExpressionTransformer.EXPR_DOWN_CAST))));
     }
     
     private JCBlock makeThenBlock(Cond cond, Node thenPart, Substitution subs, String tmpVar, Tree.Term outerExpression, Type expectedType) {
