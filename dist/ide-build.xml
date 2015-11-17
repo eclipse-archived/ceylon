@@ -245,8 +245,26 @@
         </if>
     </target>
 
-    <property name="branch-for-last-release-updates" value="1.2.0-fixes"/>
+    <property name="last-release-number" value="1.2.0"/>
+
+    <property name="branch-for-last-release-updates" value="${last-release-number}-fixes"/>
     
+    <target name="check-ceylon-version-for-last-release-updates">
+        <property environment="env"/>
+        <fail unless="env.CEYLON_HOME" message="your CEYLON_HOME environment variable should be set"/>
+        <exec executable="${env.CEYLON_HOME}/bin/ceylon" outputproperty="ceylonVersionString">
+            <arg value="--version"/>
+        </exec>
+        <echo>${ceylonVersionString}</echo>
+        <fail message="you should build the ${branch-for-last-release-updates} branches with the ${last-release-number} Ceylon distribution">
+            <condition>
+                <not>
+                    <contains string="${ceylonVersionString}" substring=" ${last-release-number} "/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+
     <target name="eclipse-switch-to-last-release-updates">
         <foreach list="ceylon-ide-common,ceylon-ide-eclipse"
                  target="checkout-internal-item"

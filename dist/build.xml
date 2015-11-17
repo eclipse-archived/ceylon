@@ -846,6 +846,12 @@ Use this when NOT doing a release!">
     </target>
     
     <target name="eclipse-rebuild-last-release-updates">
+        <property environment="env"/>
+        <ant antfile="${basedir}/ide-build.xml"
+             target="check-ceylon-version-for-last-release-updates"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
         <ant antfile="${basedir}/ide-build.xml"
              target="check-branch-for-last-release-updates"
              inheritall="false"
@@ -863,6 +869,9 @@ Use this when NOT doing a release!">
              useNativeBasedir="true">
             <property name="ceylonmodules" value="ceylon-ide-common"/>
             <property name="build-against" value="last-release"/>
+            <property name="ceylon.executable"
+                value="${env.CEYLON_HOME}/bin/ceylon" />
+            <property name="ceylon.ant.lib" value="${env.CEYLON_HOME}/lib/ceylon-ant.jar" />
         </ant>
     </target>
 
