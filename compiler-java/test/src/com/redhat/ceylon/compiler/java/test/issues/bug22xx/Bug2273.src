@@ -51,7 +51,7 @@ final class bug2273_ {
                 if (true) {
                     $ceylontmp$ifResult$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273.create_);
                 } else {
-                    $ceylontmp$ifResult$0 = null;
+                    $ceylontmp$ifResult$0 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273)null;
                 }
             }
             returning $ceylontmp$ifResult$0;

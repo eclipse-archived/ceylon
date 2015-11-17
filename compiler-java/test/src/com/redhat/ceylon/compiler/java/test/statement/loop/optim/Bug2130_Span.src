@@ -1144,7 +1144,7 @@ final class bug2130Span_ {
                             if (step == 1L || step == 2L) {
                                 $ceylontmp$ifResult$247 = .ceylon.language.Integer.instance(3L);
                             } else {
-                                $ceylontmp$ifResult$247 = null;
+                                $ceylontmp$ifResult$247 = (.ceylon.language.Integer)null;
                             }
                         }
                         returning $ceylontmp$ifResult$247;
@@ -1168,7 +1168,7 @@ final class bug2130Span_ {
                             if (step == 1L || step == 2L) {
                                 $ceylontmp$ifResult$250 = .ceylon.language.Integer.instance(3L);
                             } else {
-                                $ceylontmp$ifResult$250 = null;
+                                $ceylontmp$ifResult$250 = (.ceylon.language.Integer)null;
                             }
                         }
                         returning $ceylontmp$ifResult$250;
