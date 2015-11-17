@@ -118,16 +118,20 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     }
 
     protected String runtimeVersion(String moduleName, String version) {
-        Object contextModuleLoader;
-        try {
-            contextModuleLoader= org.jboss.modules.Module.getContextModuleLoader();
-        } catch (NullPointerException e) {
-            contextModuleLoader = null;
+        if (Thread.currentThread().getContextClassLoader() instanceof org.jboss.modules.ConcurrentClassLoader) {
+            Object contextModuleLoader;
+            try {
+                contextModuleLoader= org.jboss.modules.Module.getContextModuleLoader();
+            } catch (NullPointerException e) {
+                contextModuleLoader = null;
+            }
+            if (contextModuleLoader instanceof RuntimeResolver) {
+                version = ((RuntimeResolver)contextModuleLoader).resolveVersion(moduleName, version);
+            }
+            return version;
+        } else {
+            return version;
         }
-        if (contextModuleLoader instanceof RuntimeResolver) {
-            version = ((RuntimeResolver)contextModuleLoader).resolveVersion(moduleName, version);
-        }
-        return version;
     }
     
     public Module findLoadedModule(String moduleName, String searchedVersion) {
