@@ -899,34 +899,24 @@ public abstract class CompilerTests {
     }
     
     protected void runInJBossModules(String runner, String module, List<String> runnerArgs) throws Throwable {
-        // JBoss modules fucks up just about everything. We force loading the Module class, which fucks up the JAXP
-        // system properties
-        org.jboss.modules.Module.getStartTime();
-        // So we restore them immediatly
-        __redirected.__JAXPRedirected.restorePlatformFactory();
-
-        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../dist/dist");
-
-        int exit = -1;
-        try (ExitManager em = new ExitManager()) {
-            // make sure the class loader is cleaned up
-            String[] args = new String[4 + runnerArgs.size()];
-            args[0] = runner;
-            args[1] = "--rep";
-            args[2] = getOutPath();
-            for(int i=0;i<runnerArgs.size();i++)
-                args[3+i] = runnerArgs.get(i);
-            args[args.length-1] = module;
-            exit = Launcher.run(true, args);
-        }
-        Assert.assertEquals(0, exit);
-
-        // Now the TCCL is fucked up, so restore it too
-        Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
-
-        // And restore JAXP again because Launcher reloaded the Module class (and static init) in its own class
-        // loader, which re-fucked up the JAXP System properties
-        __redirected.__JAXPRedirected.restorePlatformFactory();
+        /* Run this in its own process because jbmoss modules assumes it
+         * owns the VM, and in particular because it likes to call 
+         * System.exit() (which will break subsequent tests) while it 
+         * also doesn't like to run with a SecurityManager 
+         * (which we could otherwise use to prevent System.exit)  
+         */
+        ArrayList<String> a = new ArrayList<String>();
+        a.add("ceylon");
+        a.add(runner);
+        a.add("--rep");
+        a.add(getOutPath());
+        a.addAll(runnerArgs);
+        a.add(module);
+        System.err.println(a);
+        ProcessBuilder pb = new ProcessBuilder(a);
+        pb.inheritIO();
+        Process p = pb.start();
+        Assert.assertEquals(0, p.waitFor());
     }
     
     class ExitManager extends SecurityManager implements AutoCloseable {
