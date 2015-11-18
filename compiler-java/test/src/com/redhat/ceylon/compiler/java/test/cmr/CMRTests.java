@@ -1568,7 +1568,7 @@ public class CMRTests extends CompilerTests {
         Boolean result = compilerTask.call();
         Assert.assertEquals(Boolean.FALSE, result);
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(2, "The module import should not be overriden, since it is explicitely imported by a project source module"));
+                new CompilerError(2, "the module import should not be overridden, since it is explicitly imported by a project source module"));
         
         assert(modulesRetriever.modules != null);
         Module a = modulesRetriever.modules.get("a");
