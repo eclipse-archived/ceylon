@@ -1594,9 +1594,8 @@ public class CallableBuilder {
             typedApply.parameter(pdb);
         }
         ListBuffer<JCTypeParameter> typeParameters = ListBuffer.<JCTypeParameter>lb();
-        for (Map.Entry<TypeParameter, Type> ta : typeModel.getTypeArguments().entrySet()) {
-            Type typeArgument = ta.getValue();
-            TypeParameter typeParameter = ta.getKey();
+        for (TypeParameter typeParameter : typeModel.getDeclaration().getTypeParameters()) {
+            Type typeArgument = typeModel.getTypeArguments().get(typeParameter);
             typeParameters.add(gen.makeTypeParameter(typeParameter, null));
             typedApply.body(gen.makeVar(Flags.FINAL, 
                     gen.naming.getTypeArgumentDescriptorName(typeParameter), 
