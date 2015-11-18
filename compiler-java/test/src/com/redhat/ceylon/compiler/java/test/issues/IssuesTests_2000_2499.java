@@ -28,6 +28,7 @@ import java.util.List;
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -717,5 +718,20 @@ public class IssuesTests_2000_2499 extends CompilerTests {
     @Test
     public void testBug2395() throws Exception {
         compareWithJavaSource("bug23xx/Bug2395"); 
+    }
+    
+    @Test
+    public void testBug2414() throws Exception {
+        try {
+            compile("bug24xx/bug2414/Bug2414.java");
+        } catch (AssertionError e) {
+            // So long as it's not "System error"
+            Assert.assertTrue(e.getMessage().startsWith("Compilation failed"));
+        }
+    }
+    
+    @Test
+    public void testBug2423() throws Exception {
+        compareWithJavaSource("bug24xx/Bug2423"); 
     }
 }

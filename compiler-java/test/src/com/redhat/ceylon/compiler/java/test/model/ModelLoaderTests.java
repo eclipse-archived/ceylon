@@ -1415,8 +1415,9 @@ public class ModelLoaderTests extends CompilerTests {
     
     @Test
     public void ceylonDeprecated(){
+        System.out.println(System.getProperty("java.version"));
         compile("CeylonDeprecated.ceylon");
-        assertErrors("ceylondeprecatedtest", true,
+        ArrayList<CompilerError> expected = new ArrayList<CompilerError>(Arrays.asList(
                 CompilerError.warning(3, "type is deprecated: 'CeylonDeprecated'"),
                 CompilerError.warning(4, "declaration is deprecated: 'CeylonDeprecated'"),
                 CompilerError.warning(6, "type is deprecated: 'CeylonDeprecated2'"),
@@ -1435,8 +1436,11 @@ public class ModelLoaderTests extends CompilerTests {
                 CompilerError.warning(25, "declaration is deprecated: 'ceylonDeprecated9'"),
                 CompilerError.warning(26, "declaration is deprecated: 'ceylonDeprecated10'"),
                 CompilerError.warning(28, "declaration is deprecated: 'ceylonDeprecated11'")
-                
-        );
+        ));
+        if (System.getProperty("java.version").startsWith("1.8.")) {
+            expected.add(CompilerError.warning(3, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."));
+        }
+        assertErrors("ceylondeprecatedtest", true, expected.toArray(new CompilerError[expected.size()]));
     }
     
     @Test

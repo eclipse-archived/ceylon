@@ -168,7 +168,7 @@ public class ModuleManager implements BackendSupport {
      * @Deprecated This looks fishy: why would we have an extra Modules parameter?
      */
     @Deprecated
-    public Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
+    private final Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
         if(moduleName.equals(Module.DEFAULT_MODULE_NAME))
             return modules.getDefaultModule();
         for(Module module : modules.getListOfModules()){

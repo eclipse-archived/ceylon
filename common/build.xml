@@ -20,10 +20,13 @@
     <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.src" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.src" />
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
     <property name="ceylon.common.repo" value="${ceylon.repo.dir}/${ceylon.common.dir}" />
     <property name="ceylon.common.dist" value="${build.dist}/${ceylon.common.dir}" />
 
+    <property name="versions.java" value="com/redhat/ceylon/common/Versions.java" />
+    
     <!-- Classpath for the build tools. -->
     <path id="classpath">
         <pathelement path="${markdownpapers.lib}" />
@@ -41,7 +44,7 @@
     </target>
 
     <!-- project compilation -->
-    <target name="compile" description="compile Ceylon common">
+    <target name="compile" depends="compile-versions" description="compile Ceylon common">
         <mkdir dir="${build.classes}" />
         <javac
             srcdir="${src}"
@@ -53,6 +56,7 @@
             source="${compile.java.source}"
             bootclasspath="${compile.java.bootclasspath}">
             <include name="**/*.java" />
+            <exclude name="${versions.java}" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${src}">
@@ -60,6 +64,34 @@
                 <exclude name="**/*.java" />
             </fileset>
         </copy>
+    </target>
+
+    <!-- Compile Versions.java with the HEAD commit ID embedded -->
+    <target name="compile-versions" description="compile filtered Versions.java">
+        <mkdir dir="${build.classes}" />
+        <exec executable="git" failonerror="yes" outputproperty="currentcommit">
+            <arg value="rev-parse"/>
+            <arg value="--short"/>
+            <arg value="HEAD"/>
+        </exec>
+        <mkdir dir="${build.dir}/gen-src" />
+        <filter token="commit" value="${currentcommit}" />
+        <copy toDir="${build.dir}/gen-src" filtering="true">
+            <fileset dir="${src}">
+                <include name="${versions.java}" />
+            </fileset>
+        </copy>
+        <javac
+            srcdir="${build.dir}/gen-src"
+            destdir="${build.classes}"
+            debug="true"
+            encoding="UTF8"
+            classpathref="classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}">
+            <include name="${versions.java}" />
+        </javac>
     </target>
 
     <target name="ceylon-common.jar" depends="compile">
@@ -131,6 +163,14 @@
 
     <target name="dist" depends="build">
         <copy file="${markdownpapers.lib}" tofile="${build.dist.repo}/${markdownpapers.repo}"/>
+        <zip destfile="${build.dist.repo}/${ceylon.common.src}">
+            <fileset dir="${src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.common.src}"/>
+        </antcall>
     </target>
 
     <target name="publish"

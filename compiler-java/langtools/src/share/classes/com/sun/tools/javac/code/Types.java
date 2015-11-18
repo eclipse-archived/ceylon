@@ -590,6 +590,7 @@ public class Types {
     public boolean isSuperType(Type t, Type s) {
         switch (t.tag) {
         case ERROR:
+        case UNKNOWN:
             return true;
         case UNDETVAR: {
             UndetVar undet = (UndetVar)t;

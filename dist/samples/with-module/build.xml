@@ -5,6 +5,9 @@
 <project name="project" default="default">
 
     <!-- Try to determine where Ceylon is installed -->
+    <exec executable="ceylon" outputproperty="ceylon.home" failifexecutionfails="false">
+        <arg value="--show-home" />
+    </exec>
     <property environment="env"/>
     <property name="ceylon.home" value="../.." />
     <property name="env.CEYLON_HOME" value="${ceylon.home}"/>
@@ -43,11 +46,11 @@
     </target>
 
     <target name="run" depends="compile">
-        <ceylon-run module="com.example.withmodule/1.2.0" />
+        <ceylon-run module="com.example.withmodule/1.2.1" />
     </target>
 
     <target name="run-js" depends="compile-js">
-        <ceylon-run-js module="com.example.withmodule/1.2.0" />
+        <ceylon-run-js module="com.example.withmodule/1.2.1" />
     </target>
 
     <target name="clean">

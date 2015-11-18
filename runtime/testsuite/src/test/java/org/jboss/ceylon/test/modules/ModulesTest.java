@@ -161,7 +161,7 @@ public abstract class ModulesTest {
 
     protected String getDistRepo() {
         final String projectHome = System.getProperty("ceylon.runtime.home", System.getProperty("user.dir"));
-        String distRepo = projectHome + File.separator + ".." + File.separator + "ceylon-dist" + File.separator + "dist" + File.separator + "repo";
+        String distRepo = projectHome + File.separator + ".." + File.separator + "ceylon" + File.separator + "dist" + File.separator + "dist" + File.separator + "repo";
         return distRepo;
     }
 

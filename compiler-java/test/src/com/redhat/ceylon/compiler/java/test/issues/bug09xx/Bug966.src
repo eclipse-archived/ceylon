@@ -38,8 +38,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Integer getLastIndex() {
-        return $ceylon$language$Sequence$this$.getLastIndex();
+    public .java.lang.String toString() {
+        return $ceylon$language$Sequence$this$.toString();
     }
     
     @.java.lang.Override
@@ -48,18 +48,18 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .java.lang.String toString() {
-        return $ceylon$language$Sequence$this$.toString();
-    }
-    
-    @.java.lang.Override
-    public final boolean getEmpty() {
-        return $ceylon$language$Sequence$this$.getEmpty();
+    public .ceylon.language.Integer getLastIndex() {
+        return $ceylon$language$Sequence$this$.getLastIndex();
     }
     
     @.java.lang.Override
     public .ceylon.language.Sequence<? extends Element> getReversed() {
         return $ceylon$language$Sequence$this$.getReversed();
+    }
+    
+    @.java.lang.Override
+    public final boolean getEmpty() {
+        return $ceylon$language$Sequence$this$.getEmpty();
     }
     
     @.java.lang.Override
@@ -324,13 +324,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCycled() {
-        return $ceylon$language$Iterable$this$.getCycled();
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -339,18 +334,23 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCoalesced() {
-        return $ceylon$language$Iterable$this$.getCoalesced();
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCycled() {
+        return $ceylon$language$Iterable$this$.getCycled();
     }
     
     @.java.lang.Override
     public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getDistinct() {
         return $ceylon$language$Iterable$this$.getDistinct();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getCoalesced() {
+        return $ceylon$language$Iterable$this$.getCoalesced();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable getPaired() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Iterable$this$.getPaired();
     }
     
     @.java.lang.Override

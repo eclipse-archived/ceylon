@@ -534,7 +534,7 @@ public class Metamodel {
                                 throw Metamodel.newModelError("Interrupted");
                             }
                             if(tries-- < 0)
-                                throw Metamodel.newModelError("JBoss modules failed to make module available: "+declaration.getNameAsString());
+                                throw Metamodel.newModelError("JBoss modules failed to make module available: "+declaration.getNameAsString() + "/" + declaration.getVersion());
                         }
                     }
                 }

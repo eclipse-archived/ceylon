@@ -20,6 +20,7 @@ package ceylon.modules.jboss.runtime;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jboss.modules.AliasModuleSpec;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
 import org.jboss.modules.Module;
@@ -51,6 +53,7 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeResolver;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
@@ -62,7 +65,8 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class CeylonModuleLoader extends ModuleLoader {
+public class CeylonModuleLoader extends ModuleLoader 
+    implements RuntimeResolver {
     private static final ModuleIdentifier LANGUAGE;
     private static final ModuleIdentifier COMMON;
     private static final ModuleIdentifier MODEL;
@@ -117,6 +121,7 @@ public class CeylonModuleLoader extends ModuleLoader {
         BOOTSTRAP.add(JANDEX);
         BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
+        
 
         Set<String> jdkPaths = new HashSet<>();
         JDK_MODULE_NAMES = new HashSet<>();
@@ -223,9 +228,10 @@ public class CeylonModuleLoader extends ModuleLoader {
 
     @Override
     protected org.jboss.modules.Module preloadModule(ModuleIdentifier mi) throws ModuleLoadException {
-        if (BOOTSTRAP.contains(mi))
+        mi = findOverride(mi);
+        if (BOOTSTRAP.contains(mi)) {
             return org.jboss.modules.Module.getBootModuleLoader().loadModule(mi);
-
+        }
         return super.preloadModule(mi);
     }
 
@@ -242,6 +248,17 @@ public class CeylonModuleLoader extends ModuleLoader {
     protected ArtifactResult findArtifact(ModuleIdentifier mi) {
         final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         return repository.getArtifactResult(context);
+    }
+    
+    protected ModuleIdentifier findOverride(ModuleIdentifier mi) {
+        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
+        ArtifactContext override = repository.getArtifactOverride(context);
+        return ModuleIdentifier.create(override.getName(), override.getVersion());
+    }
+    
+    @Override
+    public String resolveVersion(String moduleName, String moduleVersion) {
+        return findOverride(ModuleIdentifier.create(moduleName, moduleVersion)).getSlot();
     }
 
     protected boolean isLogging(List<DependencySpec> deps, Builder builder, ArtifactResult result) {
@@ -265,6 +282,12 @@ public class CeylonModuleLoader extends ModuleLoader {
             if (artifact == null)
                 return null;
 
+            if (!artifact.version().equals(moduleIdentifier.getSlot())) {
+                AliasModuleSpec alias = (AliasModuleSpec)ModuleSpec.buildAlias(moduleIdentifier, 
+                        ModuleIdentifier.create(artifact.name(), artifact.version())).create();
+                return alias;
+            }
+            
             final File moduleFile = artifact.artifact();
             final boolean isDefault = RepositoryManager.DEFAULT_MODULE.equals(moduleIdentifier.getName());
             boolean isMaven = artifact.type() == ArtifactResultType.MAVEN;

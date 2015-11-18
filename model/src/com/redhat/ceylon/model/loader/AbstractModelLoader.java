@@ -2013,9 +2013,29 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Module languageModule = modules.getLanguageModule();
         module.setLanguageModule(languageModule);
         if(!ModelUtil.equalModules(module, languageModule)){
-            ModuleImport moduleImport = moduleManager.findImport(module, languageModule);
-            if (moduleImport == null) {
-                moduleImport = new ModuleImport(languageModule, false, false);
+            boolean found = false;
+            for (ModuleImport mi : module.getImports()) {
+                if ("ceylon.language".equals(mi.getModule().getNameAsString())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                // It's not really a LazyModule because we're not loading 
+                // it lazily. It's only here for module version analysis.
+                // But other stuff expects non-source modules to be lazy.
+                LazyModule oldLangMod = new LazyModule() {
+                    @Override
+                    protected AbstractModelLoader getModelLoader() {
+                        return AbstractModelLoader.this;
+                    }};
+                oldLangMod.setLanguageModule(oldLangMod);
+                oldLangMod.setName(Arrays.asList("ceylon", "language"));
+                oldLangMod.setVersion("1.1.1");
+                oldLangMod.setNativeBackends(Backends.JAVA);
+                oldLangMod.setMajor(Versions.V1_1_BINARY_MAJOR_VERSION);
+                oldLangMod.setMinor(Versions.V1_1_BINARY_MINOR_VERSION);
+                ModuleImport moduleImport = new ModuleImport(oldLangMod, false, false);
                 module.addImport(moduleImport);
             }
         }

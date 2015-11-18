@@ -13,6 +13,7 @@ import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
@@ -107,6 +108,34 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
             }
             return true;
         }
+    }
+    
+    @Override
+    public Module getOrCreateModule(List<String> moduleName, String version) {
+        // Override to support getting the runtime version of the Module
+        version = runtimeVersion(ModelUtil.formatPath(moduleName), version);
+        return super.getOrCreateModule(moduleName, version);
+    }
+
+    protected String runtimeVersion(String moduleName, String version) {
+        if (Thread.currentThread().getContextClassLoader() instanceof org.jboss.modules.ConcurrentClassLoader) {
+            Object contextModuleLoader;
+            try {
+                contextModuleLoader= org.jboss.modules.Module.getContextModuleLoader();
+            } catch (NullPointerException e) {
+                contextModuleLoader = null;
+            }
+            if (contextModuleLoader instanceof RuntimeResolver) {
+                version = ((RuntimeResolver)contextModuleLoader).resolveVersion(moduleName, version);
+            }
+            return version;
+        } else {
+            return version;
+        }
+    }
+    
+    public Module findLoadedModule(String moduleName, String searchedVersion) {
+        return super.findLoadedModule(moduleName, runtimeVersion(moduleName, searchedVersion));
     }
     
     @Override

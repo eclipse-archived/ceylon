@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug24xx;
+
+class Li2423<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Li2423(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$items$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($reified$Element, $ceylontmp$items$0);
+            }
+            returning null;
+        );
+    }
+    
+    Li2423(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> items) {
+        this.$reified$Element = $reified$Element;
+        this.items = items;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .ceylon.language.Sequential<? extends Element> items;
+    
+    public final .ceylon.language.Sequential<? extends Element> getItems() {
+        return items;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423.class, $reified$Element);
+    }
+}
+public final class bug2423_ {
+    
+    private bug2423_() {
+    }
+    
+    public static void bug2423() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String>> f = new .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423.class, .ceylon.language.String.$TypeDescriptor$), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423.class, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("#1")}, .ceylon.language.empty_.get_()))}, .ceylon.language.empty_.get_()));
+        final .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String> ns = f.getItems().getFromFirst(0L);
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> o = (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$ifResult$1;
+                .java.lang.Object ns$3;
+                if ((ns$3 = ns) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String> ns$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423)ns$3;
+                    $ceylontmp$ifResult$1 = ns$4.getItems();
+                } else {
+                    $ceylontmp$ifResult$1 = (.ceylon.language.Sequential)ns;
+                }
+            }
+            returning $ceylontmp$ifResult$1;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug24xx.bug2423_.bug2423();
+    }
+}

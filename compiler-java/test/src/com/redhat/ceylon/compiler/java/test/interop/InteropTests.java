@@ -443,16 +443,16 @@ public class InteropTests extends CompilerTests {
         compile("JavaAnnotation.java");
         compareWithJavaSource("AnnotationInterop");
         assertErrors("AnnotationInteropErrors",
-                new CompilerError(2, "function or value does not exist: 'javaAnnotationNoTarget__TYPE'"),
-                new CompilerError(3, "function or value does not exist: 'javaAnnotationNoTarget__CONSTRUCTOR'"),
-                new CompilerError(6, "function or value does not exist: 'javaAnnotationNoTarget__FIELD'"),
-                new CompilerError(7, "function or value does not exist: 'javaAnnotationNoTarget__GETTER'"),
-                new CompilerError(8, "function or value does not exist: 'javaAnnotationNoTarget__SETTER'"),
+                new CompilerError(2, "function or value does not exist: 'javaAnnotationNoTarget__TYPE' (did you mean 'javaAnnotationTypeTarget__TYPE'?)"),
+                new CompilerError(3, "function or value does not exist: 'javaAnnotationNoTarget__CONSTRUCTOR' (did you mean 'javaAnnotationCtorTarget__CONSTRUCTOR'?)"),
+                new CompilerError(6, "function or value does not exist: 'javaAnnotationNoTarget__FIELD' (did you mean 'javaAnnotationFieldTarget__FIELD'?)"),
+                new CompilerError(7, "function or value does not exist: 'javaAnnotationNoTarget__GETTER' (did you mean 'javaAnnotationMethodTarget__GETTER'?)"),
+                new CompilerError(8, "function or value does not exist: 'javaAnnotationNoTarget__SETTER' (did you mean 'javaAnnotationMethodTarget__SETTER'?)"),
                 new CompilerError(11, "annotated program element does not satisfy annotation constraint: 'FunctionDeclaration' is not assignable to 'Nothing'"),
                 new CompilerError(11, "no target for javaAnnotationNoTarget annotation: @Target of @interface JavaAnnotationNoTarget lists [] but annotated element tranforms to [METHOD]"),
-                new CompilerError(12, "function or value does not exist: 'javaAnnotationNoTarget__PARAMETER'"),
-                new CompilerError(14, "function or value does not exist: 'javaAnnotationNoTarget__LOCAL_VARIABLE'"),
-                new CompilerError(19, "function or value does not exist: 'javaAnnotationNoTarget__ANNOTATION_TYPE'"),
+                new CompilerError(12, "function or value does not exist: 'javaAnnotationNoTarget__PARAMETER' (did you mean 'javaAnnotationDefaultTarget__PARAMETER'?)"),
+                new CompilerError(14, "function or value does not exist: 'javaAnnotationNoTarget__LOCAL_VARIABLE' (did you mean 'javaAnnotationDefaultTarget__LOCAL_VARIABLE'?)"),
+                new CompilerError(19, "function or value does not exist: 'javaAnnotationNoTarget__ANNOTATION_TYPE' (did you mean 'javaAnnotationDefaultTarget__ANNOTATION_TYPE'?)"),
                 new CompilerError(21, "illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference")
                 );
     }

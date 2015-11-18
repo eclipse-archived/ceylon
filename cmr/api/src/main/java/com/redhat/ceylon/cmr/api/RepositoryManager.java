@@ -94,6 +94,23 @@ public interface RepositoryManager {
      * @throws RepositoryException if anything went wrong
      */
     ArtifactResult getArtifactResult(ArtifactContext context) throws RepositoryException;
+    
+    /**
+     * <p>Returns the overridden context for the given context. 
+     * This is the context which {@link #getArtifactResult(ArtifactContext)} 
+     * actually uses in its search. Mechanisms by which artifacts are 
+     * overridden include:</p>
+     * <ul>
+     * <li>By user required (the {@code --overrides} CLI flag)
+     * <li>Distribution compatibility
+     * <ul>
+     * If the given context is not overridden the same instance may be 
+     * returned or a different but equal instance may be returned.
+     * @param context
+     * @return
+     * @throws RepositoryException
+     */
+    ArtifactContext getArtifactOverride(ArtifactContext context) throws RepositoryException;
 
     /**
      * Returns ArtifactResult objects, looked up by context. This allows

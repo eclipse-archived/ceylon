@@ -33,13 +33,13 @@ abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getPredecessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getPredecessor();
     }
     
     @.java.lang.Override

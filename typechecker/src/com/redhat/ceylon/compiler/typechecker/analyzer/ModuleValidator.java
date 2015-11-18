@@ -257,10 +257,6 @@ public class ModuleValidator {
                     Module moduleOverride = moduleManager.overridesModule(artifact, module, moduleImport);
                     if (moduleOverride != null) {
                         module = moduleOverride;
-                        if (importDepth.equals(ImportDepth.First)) {
-                            moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
-                                    "The module import should not be overriden, since it is explicitely imported by a project source module");
-                        }
                     }
                     moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
                 }

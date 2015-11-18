@@ -121,4 +121,8 @@ public class ImportImpl
     public TypeDescriptor $getType$() {
         return $TypeDescriptor$;
     }
+    
+    public String toString() {
+        return "import of " + getName() +"/" + getVersion() + " by " + getContainer();
+    }
 }

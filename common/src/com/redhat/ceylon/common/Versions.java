@@ -32,21 +32,42 @@ public class Versions {
     * - ceylon-sdk/test-source
     ****************************************************************************************************/
 
+    /** 
+     * The MAJOR part of the Ceylon version number (major.minor.release).
+     * <em>Beware</em> javac will inline this at compile time at use-sites,
+     * use {@link #getCeylonVersionMajor()} to avoid that.
+     */
     public static final int CEYLON_VERSION_MAJOR = 1;
+    /** 
+     * The MINOR part of the Ceylon version number (major.minor.release).
+     * <em>Beware</em> javac will inline this at compile time at use-sites,
+     * use {@link #getCeylonVersionMinor()} to avoid that.
+     */
     public static final int CEYLON_VERSION_MINOR = 2;
+    /** 
+     * The RELEASE part of the Ceylon version number (major.minor.release).
+     * <em>Beware</em> javac will inline this at compile time at use-sites,
+     * use {@link #getCeylonVersionRelease()} to avoid that.
+     */
     public static final int CEYLON_VERSION_RELEASE = 1;
+    
+    // SHA1 of current HEAD at moment of compilation
+    public static final String CURRENT_COMMIT_ID = "@commit@";
+    
     /**
      * The MAJOR.MINOR.RELEASE version.
      */
     public static final String CEYLON_VERSION_NUMBER = CEYLON_VERSION_MAJOR + "." + CEYLON_VERSION_MINOR + "." + CEYLON_VERSION_RELEASE;
+    
     /**
      * The release code name.
      */
     public static final String CEYLON_VERSION_NAME = "A Series Of Unlikely Explanations";
+    
     /**
      * The version number + code name description string.
      */
-    public static final String CEYLON_VERSION = CEYLON_VERSION_NUMBER + " (" + CEYLON_VERSION_NAME + ")";
+    public static final String CEYLON_VERSION = CEYLON_VERSION_NUMBER + " " + CURRENT_COMMIT_ID + " (" + CEYLON_VERSION_NAME + ")";
 
     /**
      * M1 and M2 are 0.0 since they were not tagged at the time
@@ -132,4 +153,45 @@ public class Versions {
     public static boolean isBinaryVersionCompatible(int consumerMajor, int consumerMinor, int major, int minor){
         return consumerMajor == major && consumerMinor == minor;
     }
+    
+    /**
+     * Returns {@link #CEYLON_VERSION_MAJOR} 
+     * (for those who don't want {@code javac} to inline it at compile time)
+     */
+    public static int getCeylonVersionMajor() {
+        return CEYLON_VERSION_MAJOR;
+    }
+    
+    /**
+     * Returns {@link #CEYLON_VERSION_MINOR} 
+     * (for those who don't want {@code javac} to inline it at compile time)
+     */
+    public static int getCeylonVersionMinor() {
+        return CEYLON_VERSION_MINOR;
+    }
+    
+    /**
+     * Returns {@link #CEYLON_VERSION_RELEASE} 
+     * (for those who don't want {@code javac} to inline it at compile time)
+     */
+    public static int getCeylonVersionRelease() {
+        return CEYLON_VERSION_RELEASE;
+    }
+    
+    /**
+     * Returns {@link #CEYLON_VERSION_NAME} 
+     * (for those who don't want {@code javac} to inline it at compile time)
+     */
+    public static String getCeylonVersionName() {
+        return CEYLON_VERSION_NAME;
+    }
+    
+    public static String getCeylonVersionNumber() {
+        return CEYLON_VERSION_NUMBER;
+    }
+    
+    public static String getCeylonVersion() {
+        return CEYLON_VERSION;
+    }
+    
 }

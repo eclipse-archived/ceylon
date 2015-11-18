@@ -43,13 +43,13 @@ abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getPredecessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getPredecessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getPredecessor();
     }
     
     @.java.lang.Override

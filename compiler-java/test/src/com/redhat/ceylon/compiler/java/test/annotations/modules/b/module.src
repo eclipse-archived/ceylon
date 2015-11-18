@@ -7,7 +7,7 @@ package com.redhat.ceylon.compiler.java.test.annotations.modules.b;
         version = "0.1",
         dependencies = {@.com.redhat.ceylon.compiler.java.metadata.Import(
                 name = "ceylon.language",
-                version = "1.2.0")})
+                version = "1.2.1")})
 @.ceylon.language.DocAnnotation$annotation$(description = "Module B doc")
 final class $module_ {
     

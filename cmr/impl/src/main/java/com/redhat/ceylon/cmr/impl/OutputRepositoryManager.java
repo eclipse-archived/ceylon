@@ -128,4 +128,9 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
         output.refresh(recurse);
         manager.refresh(recurse);
     }
+
+    @Override
+    public ArtifactContext getArtifactOverride(ArtifactContext context) throws RepositoryException {
+        return context;
+    }
 }

@@ -336,6 +336,7 @@ public class MiscTests extends CompilerTests {
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
                 Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk",
                         "-suppress-warnings", "ceylonNamespace",
+                        "-overrides", "../../ceylon-sdk/overrides.xml",
                         "-cp", getClassPathAsPath()), 
                         moduleNames, null);
         Boolean result = task.call();
