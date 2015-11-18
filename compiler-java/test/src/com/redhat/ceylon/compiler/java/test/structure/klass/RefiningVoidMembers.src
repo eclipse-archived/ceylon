@@ -231,18 +231,13 @@ abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.cey
     }
     
     @.java.lang.Override
-    public final void notRefinable() {
-        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.notRefinable();
-    }
-    
-    @.java.lang.Override
     public .java.lang.Object getDefaultGetterAnything() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.getDefaultGetterAnything();
     }
     
     @.java.lang.Override
-    public .java.lang.Object defaultReturnsvoidImplicit() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidImplicit();
+    public .java.lang.Object defaultReturnsAnythingExplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsAnythingExplicit();
     }
     
     @.java.lang.Override
@@ -251,8 +246,13 @@ abstract class RefiningAnythingMembersInterface_Boxed implements .com.redhat.cey
     }
     
     @.java.lang.Override
-    public .java.lang.Object defaultReturnsAnythingExplicit() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsAnythingExplicit();
+    public .java.lang.Object defaultReturnsvoidImplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidImplicit();
+    }
+    
+    @.java.lang.Override
+    public final void notRefinable() {
+        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.notRefinable();
     }
     
     @.java.lang.Override
@@ -304,11 +304,6 @@ abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.c
     }
     
     @.java.lang.Override
-    public final void notRefinable() {
-        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.notRefinable();
-    }
-    
-    @.java.lang.Override
     public .java.lang.Object getDefaultGetterAnything() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.getDefaultGetterAnything();
     }
@@ -319,13 +314,18 @@ abstract class RefiningAnythingMembersInterface_Unboxed implements .com.redhat.c
     }
     
     @.java.lang.Override
+    public .java.lang.Object defaultReturnsvoidExplicit() {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidExplicit();
+    }
+    
+    @.java.lang.Override
     public .java.lang.Object defaultReturnsvoidImplicit() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidImplicit();
     }
     
     @.java.lang.Override
-    public .java.lang.Object defaultReturnsvoidExplicit() {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.defaultReturnsvoidExplicit();
+    public final void notRefinable() {
+        $com$redhat$ceylon$compiler$java$test$structure$klass$RefiningAnythingMembersInterface$this$.notRefinable();
     }
     
     @.java.lang.Override

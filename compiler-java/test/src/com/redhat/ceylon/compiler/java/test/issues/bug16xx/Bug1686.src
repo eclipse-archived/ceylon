@@ -13,8 +13,8 @@ class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getSuccessor();
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override
@@ -23,8 +23,8 @@ class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     private final void f$priv$(final .ceylon.language.Range<.ceylon.language.Integer> x, final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> x2) {

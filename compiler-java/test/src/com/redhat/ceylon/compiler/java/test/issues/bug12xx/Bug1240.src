@@ -92,13 +92,13 @@ class Bottom implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A getS() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.getS();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A m() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.m();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A m() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.m();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A getS() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.getS();
     }
     
     @.java.lang.Override

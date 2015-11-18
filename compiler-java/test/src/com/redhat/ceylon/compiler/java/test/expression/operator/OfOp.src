@@ -18,8 +18,8 @@ abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
     
     @.java.lang.Override
@@ -28,8 +28,8 @@ abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
     }
     
     private final void m$priv$() {

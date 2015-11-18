@@ -148,13 +148,33 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public Element getAttr() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.getAttr();
+    public final .java.lang.Object $default$Class$p() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p();
     }
     
     @.java.lang.Override
-    public Element m() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.m();
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>.Class Class$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.Class$new$();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object $default$Class$p2(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p2(p);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>.Class Class$new$(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.Class$new$(p);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>.Class Class$new$(final .java.lang.Object p, final .java.lang.Object p2) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.Class$new$(p, p2);
+    }
+    
+    @.java.lang.Override
+    public Element getAttr() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.getAttr();
     }
     
     @.java.lang.Override
@@ -200,28 +220,8 @@ class InterfaceErasureImpl<Element> implements .com.redhat.ceylon.compiler.java.
     }
     
     @.java.lang.Override
-    public final .java.lang.Object $default$Class$p() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>.Class Class$new$() {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.Class$new$();
-    }
-    
-    @.java.lang.Override
-    public final .java.lang.Object $default$Class$p2(final .java.lang.Object p) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.$default$Class$p2(p);
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>.Class Class$new$(final .java.lang.Object p) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.Class$new$(p);
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, .java.lang.Object>.Class Class$new$(final .java.lang.Object p, final .java.lang.Object p2) {
-        return $com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.Class$new$(p, p2);
+    public Element m() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$structure$concrete$InterfaceErasure$this$.m();
     }
     
     @.java.lang.Override

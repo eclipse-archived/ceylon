@@ -19,13 +19,13 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public final boolean set$bit(final long index) {
-        return $ceylon$language$Binary$this$.set$bit(index);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger clear(final long index) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Binary$this$.clear(index);
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger clear(final long index) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Binary$this$.clear(index);
+    public final boolean set$bit(final long index) {
+        return $ceylon$language$Binary$this$.set$bit(index);
     }
     protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Integral$this$;
     
@@ -35,13 +35,13 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulus) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Integral$this$.modulo(modulus);
+    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Integral$this$.divides(other);
     }
     
     @.java.lang.Override
-    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
-        return $ceylon$language$Integral$this$.divides(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger modulus) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Integral$this$.modulo(modulus);
     }
     protected final .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Number$this$;
     
@@ -51,13 +51,13 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public long getSign() {
-        return $ceylon$language$Number$this$.getSign();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getMagnitude() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Number$this$.getMagnitude();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getMagnitude() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Number$this$.getMagnitude();
+    public long getSign() {
+        return $ceylon$language$Number$this$.getSign();
     }
     protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Invertible$this$;
     
@@ -83,8 +83,8 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
     
     @.java.lang.Override
@@ -93,8 +93,8 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
     }
     protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger> $ceylon$language$Enumerable$this$;
     
@@ -104,8 +104,8 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override
@@ -114,8 +114,8 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override

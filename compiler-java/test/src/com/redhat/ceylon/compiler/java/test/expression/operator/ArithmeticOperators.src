@@ -18,13 +18,13 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger modulus) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Integral$this$.modulo(modulus);
+    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return $ceylon$language$Integral$this$.divides(other);
     }
     
     @.java.lang.Override
-    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Integral$this$.divides(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger modulus) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Integral$this$.modulo(modulus);
     }
     protected final .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Number$this$;
     
@@ -34,13 +34,13 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
-    public long getSign() {
-        return $ceylon$language$Number$this$.getSign();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getMagnitude() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Number$this$.getMagnitude();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getMagnitude() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Number$this$.getMagnitude();
+    public long getSign() {
+        return $ceylon$language$Number$this$.getSign();
     }
     protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertible$this$;
     
@@ -66,8 +66,8 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
-    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
     
     @.java.lang.Override
@@ -76,8 +76,8 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
-    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
     }
     protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$this$;
     
@@ -87,8 +87,8 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override
@@ -97,8 +97,8 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override

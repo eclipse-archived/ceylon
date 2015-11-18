@@ -246,6 +246,31 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner2$s() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner2$s();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner2$s2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner2$s2(s);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s, s2);
+    }
+    
+    @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup toT$s() {
         return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT$s();
     }
@@ -295,31 +320,6 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     private .java.lang.Object toT2$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
         return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.toT2(s, s2);
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner2$s() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner2$s();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $default$Inner2$s2(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.$default$Inner2$s2(s);
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s);
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2 Inner2$new$(final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s, final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup s2) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl.Inner2)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$I$this$.Inner2$new$(s, s2);
     }
     
     public final .java.lang.Object toT() {

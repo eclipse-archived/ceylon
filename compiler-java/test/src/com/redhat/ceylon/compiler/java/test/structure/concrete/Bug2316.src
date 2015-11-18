@@ -199,6 +199,42 @@ public final class bug2316_ {
                             
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA1() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA1();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA1S() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA1S();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA2() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA2();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identA2S() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA2S();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identB() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identB();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public final .java.lang.String identBS() {
+                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identBS();
+                            }
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             public final .java.lang.String identS() {
                                 return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identS();
                             }
@@ -211,44 +247,8 @@ public final class bug2316_ {
                             
                             @.java.lang.Override
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            public final .java.lang.String identA1() {
-                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA1();
-                            }
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            public final .java.lang.String identA2() {
-                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA2();
-                            }
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            public final .java.lang.String identB() {
-                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identB();
-                            }
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             public final .java.lang.String outerIdentS() {
                                 return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.outerIdentS();
-                            }
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            public final .java.lang.String identA1S() {
-                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA1S();
-                            }
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            public final .java.lang.String identA2S() {
-                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identA2S();
-                            }
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            public final .java.lang.String identBS() {
-                                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$B$this$.identBS();
                             }
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             protected final A$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$;
@@ -298,14 +298,14 @@ public final class bug2316_ {
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .java.lang.String identS() {
-                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$.identS();
+            public final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ getB() {
+                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$.getB();
             }
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ getB() {
-                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$.getB();
+            public .java.lang.String identS() {
+                return $com$redhat$ceylon$compiler$java$test$structure$concrete$bug2316$A$this$.identS();
             }
             
             @.java.lang.Override
