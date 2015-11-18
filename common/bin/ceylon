@@ -16,7 +16,7 @@ DIR=$(dirname "$PRG")
 
 CEYLON_HOME="$DIR/.."
 
-if [ "$1" == "--show-home" ]; then
+if [ "$1" = "--show-home" ]; then
     echo "$CEYLON_HOME"
     exit
 fi
