@@ -112,13 +112,13 @@ final class OK$impl implements .java.io.Serializable {
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B getS() {
-            return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$.getS();
+        public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B m() {
+            return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$.m();
         }
         
         @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B m() {
-            return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$.m();
+        public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B getS() {
+            return (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.OK$B)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$Middle$this$.getS();
         }
         
         @.java.lang.Override

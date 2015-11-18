@@ -287,13 +287,13 @@ public abstract class AbstractBug2068 extends .com.redhat.ceylon.compiler.java.t
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IShared IShared$new$() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$.IShared$new$();
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault IDefault$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$.IDefault$new$();
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IDefault IDefault$new$() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$.IDefault$new$();
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2068$impl.IShared IShared$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2068$this$.IShared$new$();
     }
     
     @.java.lang.Override

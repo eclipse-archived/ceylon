@@ -16,13 +16,13 @@ abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.
     }
     
     @.java.lang.Override
-    public final boolean set$bit(final long index) {
-        return $ceylon$language$Binary$this$.set$bit(index);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte clear(final long index) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Binary$this$.clear(index);
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte clear(final long index) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Binary$this$.clear(index);
+    public final boolean set$bit(final long index) {
+        return $ceylon$language$Binary$this$.set$bit(index);
     }
     protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Invertible$this$;
     
@@ -43,8 +43,8 @@ abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getSuccessor();
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override
@@ -53,8 +53,8 @@ abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.
     }
     
     @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override

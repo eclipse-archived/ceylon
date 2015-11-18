@@ -153,23 +153,13 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> implements .java.io.
                     }
                     
                     @.java.lang.Override
-                    public final OuterT1 outerT1() {
-                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.outerT1();
+                    public final CT innerT1() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.innerT1();
                     }
                     
                     @.java.lang.Override
-                    public final OuterT2 outerT2() {
-                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.outerT2();
-                    }
-                    
-                    @.java.lang.Override
-                    public final MethodFooT1 methodFooT1() {
-                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.methodFooT1();
-                    }
-                    
-                    @.java.lang.Override
-                    public final MethodFooT2 methodFooT2() {
-                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.methodFooT2();
+                    public final CT innerT2() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.innerT2();
                     }
                     
                     @.java.lang.Override
@@ -183,13 +173,23 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> implements .java.io.
                     }
                     
                     @.java.lang.Override
-                    public final CT innerT1() {
-                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.innerT1();
+                    public final MethodFooT1 methodFooT1() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.methodFooT1();
                     }
                     
                     @.java.lang.Override
-                    public final CT innerT2() {
-                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.innerT2();
+                    public final MethodFooT2 methodFooT2() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.methodFooT2();
+                    }
+                    
+                    @.java.lang.Override
+                    public final OuterT1 outerT1() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.outerT1();
+                    }
+                    
+                    @.java.lang.Override
+                    public final OuterT2 outerT2() {
+                        return $com$redhat$ceylon$compiler$java$test$structure$concrete$CapturedTypeParam$foo$bar$I$this$.outerT2();
                     }
                     
                     @.java.lang.Override

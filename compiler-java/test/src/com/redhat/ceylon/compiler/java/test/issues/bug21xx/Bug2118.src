@@ -88,8 +88,8 @@ public final class Observable2118$impl<T> implements .java.io.Serializable {
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public <U>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
-                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.lift($reified$U);
+                    public final <V>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>.Bar<V> Bar$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.Bar$new$($reified$V);
                     }
                     
                     @.java.lang.Override
@@ -100,8 +100,8 @@ public final class Observable2118$impl<T> implements .java.io.Serializable {
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public final <V>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl<U>.Bar<V> Bar$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
-                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.Bar$new$($reified$V);
+                    public <U>.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118<U> lift(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observable2118$this$.lift($reified$U);
                     }
                     
                     @.java.lang.Override

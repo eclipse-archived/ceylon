@@ -447,13 +447,23 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public Element getAttr() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.getAttr();
+    public final .java.lang.Object $default$Class$p() {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.$default$Class$p();
     }
     
     @.java.lang.Override
-    public Element m() {
-        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.m();
+    public final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new$() {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.Class$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new$(final .java.lang.Object p) {
+        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.Class$new$(p);
+    }
+    
+    @.java.lang.Override
+    public Element getAttr() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.getAttr();
     }
     
     @.java.lang.Override
@@ -482,18 +492,8 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public final .java.lang.Object $default$Class$p() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.$default$Class$p();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new$() {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.Class$new$();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new$(final .java.lang.Object p) {
-        return $com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.Class$new$(p);
+    public Element m() {
+        return (Element)$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.m();
     }
     
     @.java.lang.Override

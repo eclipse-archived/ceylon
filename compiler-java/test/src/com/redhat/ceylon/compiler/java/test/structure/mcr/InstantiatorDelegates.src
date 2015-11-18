@@ -201,16 +201,6 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new$() {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Nullary$new$();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new$(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Unary$new$(b);
-    }
-    
-    @.java.lang.Override
     public final long $default$Binary$i(final boolean b) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.$default$Binary$i(b);
     }
@@ -251,6 +241,11 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Nullary$new$();
+    }
+    
+    @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Sequenced$new$(b);
     }
@@ -263,6 +258,11 @@ class InstantiatorDelegatesImpl<X> implements .com.redhat.ceylon.compiler.java.r
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new$(final X x) {
         return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.TypeArg$new$(x);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new$(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$this$.Unary$new$(b);
     }
     
     @.java.lang.Override

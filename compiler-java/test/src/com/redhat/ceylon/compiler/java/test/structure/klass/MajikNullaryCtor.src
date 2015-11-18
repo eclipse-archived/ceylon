@@ -385,14 +385,14 @@ class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this$.containsEvery(elements);
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this$.containsAny(elements);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this$.containsAny(elements);
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this$.containsEvery(elements);
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

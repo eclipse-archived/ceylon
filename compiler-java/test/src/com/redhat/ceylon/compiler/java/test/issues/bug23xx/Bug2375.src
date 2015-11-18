@@ -112,6 +112,21 @@ class Bug2375Impl implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Callable<? extends .java.lang.Object> $default$CWithPl$onCompletion() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.$default$CWithPl$onCompletion();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.CWithPl$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.CWithPl$new$(onCompletion);
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Callable<? extends .java.lang.Object> writeStringAsynchronous$onCompletion() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.writeStringAsynchronous$onCompletion();
     }
@@ -134,21 +149,6 @@ class Bug2375Impl implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     private .java.lang.Object writeStringAsynchronous$canonical$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
         return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.writeStringAsynchronous(onCompletion);
-    }
-    
-    @.java.lang.Override
-    public final .ceylon.language.Callable<? extends .java.lang.Object> $default$CWithPl$onCompletion() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.$default$CWithPl$onCompletion();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.CWithPl$new$();
-    }
-    
-    @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$this$.CWithPl$new$(onCompletion);
     }
     
     @.java.lang.Override

@@ -24,13 +24,13 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger modulus) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Integral$this$.modulo(modulus);
+    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
+        return $ceylon$language$Integral$this$.divides(other);
     }
     
     @.java.lang.Override
-    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
-        return $ceylon$language$Integral$this$.divides(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger modulus) {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Integral$this$.modulo(modulus);
     }
     protected final .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Number$this$;
     
@@ -40,13 +40,13 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public long getSign() {
-        return $ceylon$language$Number$this$.getSign();
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getMagnitude() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Number$this$.getMagnitude();
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getMagnitude() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Number$this$.getMagnitude();
+    public long getSign() {
+        return $ceylon$language$Number$this$.getSign();
     }
     protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Invertible$this$;
     
@@ -72,8 +72,8 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
     
     @.java.lang.Override
@@ -82,8 +82,8 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
     }
     protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger> $ceylon$language$Enumerable$this$;
     
@@ -93,8 +93,8 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
+        return $ceylon$language$Enumerable$this$.offsetSign(other);
     }
     
     @.java.lang.Override
@@ -103,8 +103,8 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
+    public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getSuccessor() {
+        return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Enumerable$this$.getSuccessor();
     }
     
     @.java.lang.Override

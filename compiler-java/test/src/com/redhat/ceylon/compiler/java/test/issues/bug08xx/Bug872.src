@@ -134,16 +134,6 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
-        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
-    }
-    
-    @.java.lang.Override
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
         (
             let
@@ -162,6 +152,16 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     private void visitAroundTags$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head;
     
@@ -219,16 +219,6 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
-        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
-    }
-    
-    @.java.lang.Override
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
         (
             let
@@ -247,6 +237,16 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     private void visitAroundTags$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
     }
     private final .ceylon.language.String title;
     
@@ -310,16 +310,6 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
     }
     
     @.java.lang.Override
-    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
-        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
-    }
-    
-    @.java.lang.Override
-    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
-    }
-    
-    @.java.lang.Override
     public void visitAroundTags(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name) {
         (
             let
@@ -338,6 +328,16 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
     
     private void visitAroundTags$canonical$(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .ceylon.language.Sequential tags) {
         $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundTags(visitor, name, tags);
+    }
+    
+    @.java.lang.Override
+    public final void visitAroundText(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText(visitor, name, text);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object visitAroundText2(final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Visitor visitor, final .java.lang.String name, final .java.lang.String text) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Visitable$this$.visitAroundText2(visitor, name, text);
     }
     private final .ceylon.language.Sequential tags;
     

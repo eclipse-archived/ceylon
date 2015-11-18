@@ -113,13 +113,13 @@ class Bug1550L<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence m2() {
-        return (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>)(.ceylon.language.Sequence)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.m2();
+    public .ceylon.language.Sequence getA2() {
+        return (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>)(.ceylon.language.Sequence)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.getA2();
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence getA2() {
-        return (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>)(.ceylon.language.Sequence)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.getA2();
+    public .ceylon.language.Sequence m2() {
+        return (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1550List2<? extends T>>)(.ceylon.language.Sequence)$com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1550List2$this$.m2();
     }
     
     @.java.lang.Override

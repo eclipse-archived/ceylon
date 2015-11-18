@@ -41,6 +41,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.antlr.runtime.Token;
 
@@ -129,11 +130,64 @@ import com.sun.tools.javac.util.ListBuffer;
  * This transformer deals with class/interface declarations
  */
 public class ClassTransformer extends AbstractTransformer {
-
+    
     private static final Comparator<Declaration> DeclarationComparator = new Comparator<Declaration>(){
         @Override
         public int compare(Declaration a, Declaration b) {
-            return a.getQualifiedNameString().compareTo(b.getQualifiedNameString());
+            int cmp = a.getQualifiedNameString().compareTo(b.getQualifiedNameString());
+            if (cmp != 0) {
+                return cmp;
+            }
+            // getters and setters are distinct, but have the same name
+            if (a.getDeclarationKind() != null && b.getDeclarationKind() != null) {
+                cmp = a.getDeclarationKind().compareTo(b.getDeclarationKind());
+                if (cmp != 0) {
+                    return cmp;
+                }
+            }
+            if (a instanceof Function
+                    && b instanceof Function) {
+                // They could be java overloaded methods, so we have to compare parameter lists
+                Function afn = (Function)a;
+                Function bfn = (Function)b;
+                if (afn.getParameterLists() != null && !afn.getParameterLists().isEmpty()
+                        && bfn.getParameterLists() != null && !bfn.getParameterLists().isEmpty()) {
+                    java.util.List<Parameter> apl = afn.getFirstParameterList().getParameters();
+                    java.util.List<Parameter> bpl = bfn.getFirstParameterList().getParameters();
+                    if (apl.size() < bpl.size()) {
+                        return -1;
+                    } else if (apl.size() > bpl.size()) {
+                        return 1;
+                    } else {
+                        Iterator<Parameter> aiter = apl.iterator();
+                        Iterator<Parameter> biter = bpl.iterator();
+                        while (aiter.hasNext()) {
+                            if (biter.hasNext()) {
+                                // make sure to compare parameter *types*, not the parameters themselves
+                                cmp = this.compare(aiter.next().getModel().getTypeDeclaration(),
+                                        biter.next().getModel().getTypeDeclaration());
+                                if (cmp != 0) {
+                                    return cmp;
+                                }
+                            } else {
+                                return 1;
+                            }
+                        }
+                        if (biter.hasNext()) {
+                            return -1;
+                        }
+                    }
+                } else if (afn.getParameterLists() != null && !afn.getParameterLists().isEmpty()
+                        && (bfn.getParameterLists() == null || bfn.getParameterLists().isEmpty())) {
+                    return -1;
+                } else if ((afn.getParameterLists() == null || afn.getParameterLists().isEmpty())
+                        && bfn.getParameterLists() != null && !bfn.getParameterLists().isEmpty()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            return cmp;
         }
     };
 
@@ -2441,7 +2495,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         // For each super interface
-        for (Declaration member : iface.getMembers()) {
+        for (Declaration member : sortedMembers(iface.getMembers())) {
             
             if (member instanceof Class) {
                 Class klass = (Class)member;
@@ -2635,6 +2689,12 @@ public class ClassTransformer extends AbstractTransformer {
             concreteMembersFromSuperinterfaces(model, classBuilder, sat, satisfiedInterfaces);
         }
         
+    }
+    
+    private Iterable<Declaration> sortedMembers(java.util.List<Declaration> members) {
+        TreeSet<Declaration> set = new TreeSet<Declaration>(DeclarationComparator);
+        set.addAll(members);
+        return set;
     }
 
     private java.util.List<java.util.List<Type>> producedTypeParameterBounds(

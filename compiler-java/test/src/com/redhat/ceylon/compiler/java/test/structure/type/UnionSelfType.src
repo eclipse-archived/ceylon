@@ -18,8 +18,8 @@ public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public boolean smallerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public boolean notLargerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
     
     @.java.lang.Override
@@ -28,8 +28,8 @@ public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public boolean notLargerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    public boolean smallerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
     }
     
     @.java.lang.Override
@@ -66,8 +66,8 @@ public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public boolean smallerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public boolean notLargerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.notLargerThan(other);
     }
     
     @.java.lang.Override
@@ -76,8 +76,8 @@ public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runti
     }
     
     @.java.lang.Override
-    public boolean notLargerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
+    public boolean smallerThan(final .ceylon.language.Comparable other) {
+        return $ceylon$language$Comparable$this$.smallerThan(other);
     }
     
     @.java.lang.Override

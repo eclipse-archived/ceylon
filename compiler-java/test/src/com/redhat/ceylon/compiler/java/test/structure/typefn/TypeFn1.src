@@ -130,7 +130,7 @@ final class genericClassReference_ {
             let
             {
                 
-                class Anonymous#Entry<Item, Key> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+                class Anonymous#Entry<Key, Item> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
                     
                     Anonymous#Entry() {
                         super("<out Key, out Item> given Key satisfies Object => <Key->Item>(Key, Item)");
@@ -142,8 +142,8 @@ final class genericClassReference_ {
                     }
                     
                     private .ceylon.language.Callable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
-                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item = applied[1];
                         final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key = applied[0];
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item = applied[1];
                         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Entry<? extends Key, ? extends Item>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Key, $reified$Item), "<Key->Item>(Key, Item)", (short)-1){
                             
                             @.java.lang.Override

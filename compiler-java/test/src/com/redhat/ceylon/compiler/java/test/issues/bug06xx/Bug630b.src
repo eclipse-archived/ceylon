@@ -14,13 +14,13 @@ class Bug630Impl extends .java.lang.Object implements .com.redhat.ceylon.compile
     }
     
     @.java.lang.Override
-    public int hashCode() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.hashCode();
+    public boolean equals(final .java.lang.Object that) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.equals(that);
     }
     
     @.java.lang.Override
-    public boolean equals(final .java.lang.Object that) {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.equals(that);
+    public int hashCode() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.hashCode();
     }
     
     @.java.lang.Override

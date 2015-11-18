@@ -49,16 +49,6 @@ class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.ja
     }
     
     @.java.lang.Override
-    public long foo(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo(b);
-    }
-    
-    @.java.lang.Override
-    public long foo2(final boolean b) {
-        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo2(b);
-    }
-    
-    @.java.lang.Override
     public long getBar() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.getBar();
     }
@@ -66,6 +56,16 @@ class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.ja
     @.java.lang.Override
     public long getBar2() {
         return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.getBar2();
+    }
+    
+    @.java.lang.Override
+    public long foo(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo(b);
+    }
+    
+    @.java.lang.Override
+    public long foo2(final boolean b) {
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo2(b);
     }
     
     @.java.lang.Override
