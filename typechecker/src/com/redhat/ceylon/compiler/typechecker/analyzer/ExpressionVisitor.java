@@ -243,8 +243,7 @@ public class ExpressionVisitor extends Visitor {
                             new Tree.VoidModifier(null) : 
                             type;
             Tree.Type rt = beginReturnScope(ret);
-            Declaration od = 
-                    beginReturnDeclaration(fun);
+            Declaration od = beginReturnDeclaration(fun);
             super.visit(that);
             endReturnDeclaration(od);
             endReturnScope(rt, fun);
@@ -1200,8 +1199,7 @@ public class ExpressionVisitor extends Visitor {
                     refName + "'");
         }
         else if (ct.getTypeArgumentList().size()>=2) {
-            Type tupleType = 
-                    ct.getTypeArgumentList().get(1);
+            Type tupleType = ct.getTypeArgumentList().get(1);
             List<Type> argTypes = 
                     unit.getTupleElementTypes(tupleType);
             boolean variadic = 
@@ -1376,13 +1374,15 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            
-            if (hasParams && d instanceof Function && 
-                    ((Function) d).isDeclaredVoid() && 
-                    !isSatementExpression(rhs.getExpression())) {
-                rhs.addError("function is declared void so specified expression must be a statement: '" + 
-                        d.getName(unit) + 
-                        "' is declared 'void'");
+
+            if (hasParams && d instanceof Function) {
+                Function fun = (Function) d;
+                if (fun.isDeclaredVoid() && 
+                        !isSatementExpression(rhs.getExpression())) {
+                    rhs.addError("function is declared void so specified expression must be a statement: '" + 
+                            d.getName(unit) + 
+                            "' is declared 'void'");
+                }
             }
             if (d instanceof Value && 
                     rhs instanceof Tree.LazySpecifierExpression) {
@@ -1783,7 +1783,8 @@ public class ExpressionVisitor extends Visitor {
                     if (set!=null) {
                         if (!isTypeUnknown(vt) && 
                                 !isTypeUnknown(set)) {
-                            Type net = not ?
+                            Type net = 
+                                    not ?
                                     unit.getNullType() :
                                     unit.getDefiniteType(set);
                             checkAssignable(net, vt, se, 
@@ -1802,10 +1803,12 @@ public class ExpressionVisitor extends Visitor {
                 !(type instanceof Tree.LocalModifier)) {
             Type vt = type.getTypeModel();
             if (!isTypeUnknown(vt)) {
-                Type nt = not ?
+                Type nt = 
+                        not ?
                         unit.getEmptyType() :
                         unit.getSequenceType(unit.getAnythingType());
-                String message = not ?
+                String message = 
+                        not ?
                         "specified type must be the empty sequence type" :
                         "specified type must be a nonempty sequence type";
                 checkAssignable(vt, nt, type, message);
@@ -1816,7 +1819,8 @@ public class ExpressionVisitor extends Visitor {
                     Type set = e.getTypeModel();
                     if (!isTypeUnknown(vt) && 
                             !isTypeUnknown(set)) {
-                        Type net = not ?
+                        Type net = 
+                                not ?
                                 unit.getEmptyType() :
                                 unit.getNonemptyDefiniteType(set);
                         checkAssignable(net, vt, se, 
@@ -1837,8 +1841,7 @@ public class ExpressionVisitor extends Visitor {
                 Type set = e.getTypeModel();
                 if (!isTypeUnknown(vt) && 
                         !isTypeUnknown(set)) {
-                    Type it = 
-                            unit.getIteratedType(set);
+                    Type it = unit.getIteratedType(set);
                     checkAssignable(it, vt, var, 
                             "iterable element type must be assignable to iterator variable type");
                 }
@@ -1974,8 +1977,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type type = that.getType();
         Tree.Type rt = beginReturnScope(type);
         Function m = that.getDeclarationModel();
-        Declaration od = 
-                beginReturnDeclaration(m);
+        Declaration od = beginReturnDeclaration(m);
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, m);
@@ -2038,8 +2040,7 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.ClassDefinition that) {
         Tree.Type rt = beginReturnScope(fakeVoid(that));
         Class c = that.getDeclarationModel();
-        Declaration od = 
-                beginReturnDeclaration(c);
+        Declaration od = beginReturnDeclaration(c);
         super.visit(that);
         endReturnDeclaration(od);
         endReturnScope(rt, null);
@@ -2191,8 +2192,7 @@ public class ExpressionVisitor extends Visitor {
             for (int i=0; 
                     i<size && i<cps && i<aps; 
                     i++) {
-                Tree.PositionalArgument pa = 
-                        pas.get(i);
+                Tree.PositionalArgument pa = pas.get(i);
                 Parameter aparam = 
                         apl.getParameters().get(i);
                 Parameter cparam = 
@@ -2203,8 +2203,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) pa;
-                    Tree.Expression e = 
-                            la.getExpression();
+                    Tree.Expression e = la.getExpression();
                     checkAliasArg(aparam, e);
                 }
                 else if (pa instanceof Tree.SpreadArgument) {
@@ -2213,8 +2212,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     Tree.SpreadArgument sa = 
                             (Tree.SpreadArgument) pa;
-                    Tree.Expression e = 
-                            sa.getExpression();
+                    Tree.Expression e = sa.getExpression();
                     checkAliasArg(aparam, e);
                 }
                 else if (pa!=null) {
