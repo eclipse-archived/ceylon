@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -55,6 +56,7 @@ import org.junit.Before;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -919,32 +921,58 @@ public abstract class CompilerTests {
         Assert.assertEquals(0, p.waitFor());
     }
     
-    class ExitManager extends SecurityManager implements AutoCloseable {
-        SecurityManager original;
-
-        ExitManager() {
-            original = System.getSecurityManager();
-            System.setSecurityManager(this);
-        }
-
-        /** Deny permission to exit the VM. */
-        public void checkExit(int status) {
-            throw (new SecurityException("Exit was called by program"));
-        }
-
-        /**
-         * Allow this security manager to be replaced, if fact, allow pretty
-         * much everything.
+    protected void runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs) throws Throwable {
+        /* Run this in its own process because jbmoss modules assumes it
+         * owns the VM, and in particular because it likes to call 
+         * System.exit() (which will break subsequent tests) while it 
+         * also doesn't like to run with a SecurityManager 
+         * (which we could otherwise use to prevent System.exit)  
          */
-        public void checkPermission(Permission perm) {
-            if (original != null) {
-                original.checkPermission(perm);
+        ArrayList<String> a = new ArrayList<String>();
+        a.add("java");
+        a.add("-cp");
+        a.add(mainApiClasspath(rep, module));
+        a.add("com.redhat.ceylon.compiler.java.runtime.Main");
+        a.add(module.toString());
+        a.add(mainJavaClassName);
+        a.addAll(moduleArgs);
+        System.err.println(a);
+        ProcessBuilder pb = new ProcessBuilder(a);
+        pb.inheritIO();
+        Process p = pb.start();
+        Assert.assertEquals(0, p.waitFor());
+    }
+
+    private String mainApiClasspath(String rep, ModuleSpec module) throws IOException, InterruptedException {
+        File dir = new File("build/mainapi");
+        dir.mkdirs();
+        File out = File.createTempFile("classpath-"+module, ".out", dir);
+        File err = File.createTempFile("classpath-"+module, ".err", dir);
+        ArrayList<String> a = new ArrayList<String>();
+        a.add("ceylon");
+        a.add("classpath");
+        a.add("--rep");
+        a.add(rep);
+        a.add(module.toString());
+        System.err.println(a);
+        ProcessBuilder pb = new ProcessBuilder(a);
+        pb.redirectOutput(out);
+        pb.redirectError(err);
+        Process p = pb.start();
+        Assert.assertEquals(0, p.waitFor());
+        
+        if (err.length()!=0) {
+            try (BufferedReader r = new BufferedReader(new FileReader(err))) {
+                String error = r.readLine();
+                Assert.fail("ceylon classpath " + module + " produced standard error output: " + error);
+                return error;
             }
         }
-
-        @Override
-        public void close() throws Exception {
-            System.setSecurityManager(original);
+        try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+            String cp = r.readLine();
+            System.err.println(cp);
+            Assert.assertTrue("ceylon classpath " + module + " produced more than a single line of output", r.readLine() == null);
+            return cp;
         }
     }
 }
