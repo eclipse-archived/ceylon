@@ -2777,16 +2777,16 @@ public class ExpressionVisitor extends Visitor {
             if (dec instanceof Functional) {
                 inferSupertypesDirectly(dec, pal, mte);
             }
-            /*else if (dec instanceof Value) {
+            else if (dec instanceof Value) {
                 Value value = (Value) dec;
                 inferSupertypesIndirectly(pal, 
                         value.getType());
-            }*/
+            }
         }
-        /*else {
+        else {
             inferSupertypesIndirectly(pal, 
                     p.getTypeModel());
-        }*/
+        }
     }
 
     private void inferSupertypesDirectly(Declaration dec, 
@@ -2810,9 +2810,14 @@ public class ExpressionVisitor extends Visitor {
                 if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) arg;
-                    inferSupertypes(pr, param, 
-                            la.getExpression(), 
-                            param.isSequenced());
+                    FunctionOrValue model = param.getModel();
+                    if (!param.isSequenced() &&
+                            model instanceof Value) {
+                        inferSupertypes(
+                                pr.getTypedParameter(param)
+                                    .getType(), 
+                                la.getExpression());
+                    }
                 }
                 if (!param.isSequenced()) {
                     j++;
@@ -2820,24 +2825,62 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
-    private void inferSupertypes(Reference pr, 
-            Parameter param, Tree.Expression e, 
-            boolean sequenced) {
-        FunctionOrValue model = param.getModel();
-        if (e!=null && model instanceof Value) {
+    
+    private void inferSupertypesIndirectly(
+            Tree.PositionalArgumentList pal,
+            Type pt) {
+        if (unit.isCallableType(pt)) {
+            List<Type> paramTypes = 
+                    unit.getCallableArgumentTypes(pt);
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            int argCount = args.size();
+            int paramsSize = paramTypes.size();
+            for (int i=0; i<paramsSize && i<argCount; i++) {
+                Tree.PositionalArgument arg = args.get(i);
+                if (arg instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument) arg;
+                    Tree.Expression e = la.getExpression();
+                    if (e!=null) {
+                        inferSupertypes(paramTypes.get(i), e);
+                    }
+                }
+            }
+        }
+    }
+    
+    private void inferSupertypes(Type t, Tree.Expression e) {
+        if (e!=null && 
+                !isTypeUnknown(t) && 
+                !t.isExactlyNothing()) {
             Tree.Term term = 
                     unwrapExpressionUntilTerm(e.getTerm());
-            Type t = pr.getTypedParameter(param).getType();
-            if (term instanceof Tree.ObjectExpression &&
-                    !isTypeUnknown(t) && t.isInterface()) {
+            if (term instanceof Tree.ObjectExpression) {
                 Tree.ObjectExpression obj = 
                         (Tree.ObjectExpression) term;
                 if (obj.getExtendedType()==null &&
-                        obj.getSatisfiedTypes()==null) {
-                    obj.getAnonymousClass()
-                        .getSatisfiedTypes()
-                        .add(t);
+                    obj.getSatisfiedTypes()==null) {
+                    t = t.resolveAliases();
+                    Class c = obj.getAnonymousClass();
+                    if (t.isInterface()) {
+                        c.getSatisfiedTypes().add(t);
+                    }
+                    else if (t.isIntersection()) {
+                        for (Type it: t.getSatisfiedTypes()) {
+                            if (!it.isInterface()) {
+                                //NOTE:
+                                return;
+                            }
+                        }
+                        for (Type it: t.getSatisfiedTypes()) {
+                            c.getSatisfiedTypes().add(it);
+                        }
+                    }
+                    else {
+                        //NOTE:
+                        return;
+                    }
                     new RefinementVisitor(true).visit(e);
                 }
             }
