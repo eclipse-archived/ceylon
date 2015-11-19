@@ -20,7 +20,6 @@ package ceylon.modules.jboss.runtime;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +43,6 @@ import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilter;
 import org.jboss.modules.filter.PathFilters;
 
-import ceylon.modules.api.runtime.LogChecker;
-import ceylon.modules.api.util.ModuleVersion;
-import ceylon.modules.jboss.repository.ResourceLoaderProvider;
-
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -58,6 +53,10 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+
+import ceylon.modules.api.runtime.LogChecker;
+import ceylon.modules.api.util.ModuleVersion;
+import ceylon.modules.jboss.repository.ResourceLoaderProvider;
 
 /**
  * Ceylon JBoss Module loader.
@@ -252,7 +251,7 @@ public class CeylonModuleLoader extends ModuleLoader
     
     protected ModuleIdentifier findOverride(ModuleIdentifier mi) {
         final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
-        ArtifactContext override = repository.getArtifactOverride(context);
+        ArtifactContext override = repository.getOverrides().applyOverrides(context);
         return ModuleIdentifier.create(override.getName(), override.getVersion());
     }
     

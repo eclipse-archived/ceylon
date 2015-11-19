@@ -63,15 +63,9 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
 
     protected CmrRepository cache; // cache root
     protected boolean addCacheAsRoot; // do we treat cache as repo
-    protected Overrides distOverrides;
-
+    
     public AbstractNodeRepositoryManager(Logger log, Overrides overrides) {
-        super(log, overrides);
-        try {
-            distOverrides = Overrides.parseDistOverrides();
-        } catch (Exception e) {
-            throw new RuntimeException("Could not read distribution overrides", e);
-        }
+        super(log, overrides == null ? Overrides.getDistOverrides() : overrides);
     }
 
     public synchronized void setAddCacheAsRoot(boolean addCacheAsRoot) {
@@ -194,32 +188,13 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     private ArtifactContext applyOverrides(ArtifactContext context) {
-        context = applyOverrides(distOverrides, context);
-        context = applyOverrides(overrides, context);
+        context = overrides.applyOverrides(context);
         return context;
     }
     
     @Override
     public ArtifactContext getArtifactOverride(ArtifactContext context) throws RepositoryException {
         return applyOverrides(context);
-    }
-    
-    private ArtifactContext applyOverrides(Overrides overrides, final ArtifactContext sought) {
-        if(overrides == null)
-            return sought;
-        ArtifactContext replacedContext = overrides.replace(sought);
-        if(replacedContext == null) {
-            replacedContext = sought;
-        } else {
-            log.debug(overrides + ": " + sought + " -> " + replacedContext);
-        }
-        String versionOverride = overrides.getVersionOverride(replacedContext);
-        if (versionOverride != null // only possible to default module, and we can't override that 
-                && !versionOverride.equals(replacedContext.getVersion())) {
-            log.debug(overrides + ": " + replacedContext + " -> version " + versionOverride);
-            replacedContext.setVersion(versionOverride);
-        }
-        return replacedContext;
     }
 
     private ArtifactResult handleNotFound(ArtifactContext context, String foundSuffix) {

@@ -23,6 +23,13 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
+ * <p>Represents the overriding of an artifact. Supports:</p>
+ * <ul>
+ * <li>Addition and removal of dependencies</li>
+ * <li>sharing and unsharing of dependencies</li>
+ * <li>making dependencies optional or non-optional</li>
+ * <li>Replacing the module entirely</li>
+ * </ul>
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class ArtifactOverrides {
