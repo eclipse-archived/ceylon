@@ -44,6 +44,7 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleSpec.Option;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
@@ -830,15 +831,18 @@ public class Main {
      * @param version the version to load. Ignored if the module is the default module.
      */
     public void setup(String module, String version){
-        if (classPath == null) {
-            Overrides parsedOverrides;
+        Overrides parsedOverrides = Overrides.getDistOverrides();
+        if (overrides != null) {
             try {
-                parsedOverrides = overrides != null ? Overrides.parse(overrides) : null;
+                parsedOverrides = parsedOverrides.append(overrides);
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+        new OverridesRuntimeResolver(parsedOverrides).installInThreadLocal();
+        if (classPath == null) {
             classPath = new ClassPath(parsedOverrides);
             visited = new HashSet<ClassPath.Module>();
             registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false);

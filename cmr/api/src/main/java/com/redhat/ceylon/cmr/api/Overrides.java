@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -55,6 +56,9 @@ import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
  * @author Stef Epardaud
  */
 public class Overrides {
+    
+    private static final Logger log = Logger.getLogger(Overrides.class.getName());
+    
     public static class InvalidOverrideException extends IllegalArgumentException {
         private static final long serialVersionUID = 1L;
         public int line = -1;
@@ -79,6 +83,22 @@ public class Overrides {
     private Map<String, String> setVersions = new HashMap<>();
 
     private String source = null;
+    
+    private Overrides() {}
+    
+    public static Overrides getDistOverrides() {
+        try {
+            return parseDistOverrides();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public Overrides append(String overridesFileName) throws FileNotFoundException, Exception {
+        return parse(overridesFileName, this);
+    }
     
     public String toString() {
         return this.source == null ? super.toString() : "Overrides("+source+")";
@@ -214,13 +234,13 @@ public class Overrides {
         return new ModuleInfo(filter, result);
     }
 
-    public static Overrides parse(String overridesFileName) throws FileNotFoundException, Exception{
+    private static Overrides parse(String overridesFileName, Overrides overrides) throws FileNotFoundException, Exception{
         File overridesFile = new File(overridesFileName);
         if (overridesFile.exists() == false) {
             throw new IllegalArgumentException("No such overrides file: " + overridesFile);
         }
         try(InputStream is = new FileInputStream(overridesFile)){
-            Overrides overrides = Overrides.parse(is);
+            overrides = Overrides.parse(is, overrides);
             overrides.source = overridesFile.getAbsolutePath();
             return overrides;
         }
@@ -229,15 +249,15 @@ public class Overrides {
     public static Overrides parseDistOverrides() throws FileNotFoundException, Exception{
         URL resource = Overrides.class.getResource("/com/redhat/ceylon/cmr/api/dist-overrides.xml");
         try(InputStream is = resource.openStream()){
-            Overrides overrides = Overrides.parse(is);
+            Overrides overrides = Overrides.parse(is, new Overrides());
             overrides.source = resource.toString();
             return overrides;
         }
     }
     
-    static Overrides parse(InputStream is) throws Exception {
+    
+    static Overrides parse(InputStream is, Overrides result) throws Exception {
         try {
-            Overrides result = new Overrides();
             Document document = parseXml(is);
             Map<String,String> interpolation = new HashMap<>();
             List<Element> defines = getChildren(document.getDocumentElement(), "define");
@@ -515,5 +535,21 @@ public class Overrides {
     public static ArtifactContext createMavenArtifactContext(String groupId, String artifactId, String version, 
                                                              String packaging, String classifier) {
         return new MavenArtifactContext(groupId, artifactId, version, packaging, classifier);
+    }
+    
+    public ArtifactContext applyOverrides(final ArtifactContext sought) {
+        ArtifactContext replacedContext = this.replace(sought);
+        if(replacedContext == null) {
+            replacedContext = sought;
+        } else {
+            log.fine(this + ": " + sought + " -> " + replacedContext);
+        }
+        String versionOverride = this.getVersionOverride(replacedContext);
+        if (versionOverride != null // only possible to default module, and we can't override that 
+                && !versionOverride.equals(replacedContext.getVersion())) {
+            log.fine(this + ": " + replacedContext + " -> version " + versionOverride);
+            replacedContext.setVersion(versionOverride);
+        }
+        return replacedContext;
     }
 }
