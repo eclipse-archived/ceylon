@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.compat;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class CompatTests extends CompilerTests {
@@ -25,6 +27,15 @@ public class CompatTests extends CompilerTests {
     @Test
     public void run120CarIn121() throws Throwable {
         runInJBossModules("run", "compat120", Arrays.asList("--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"));
+    }
+    @Test
+    public void run120CarIn121FlatClasspath() throws Throwable {
+        runInJBossModules("run", "compat120", Arrays.asList("--flat-classpath", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"));
+    }
+    @Test
+    public void run120CarIn121MainApi() throws Throwable {
+        runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
+                new ModuleSpec("compat120", "1.0.0"), "compat120.run_", Collections.<String>emptyList());
     }
     
 }
