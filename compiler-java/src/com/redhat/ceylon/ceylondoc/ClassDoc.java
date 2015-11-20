@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -37,7 +38,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -47,6 +50,8 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -57,7 +62,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private TypeDeclaration klass;
     private SortedMap<String,Declaration> constructors;
-    private SortedMap<String,Function> methods;
+    private SortedMap<String, SortedSet<Function>> methods;
     private SortedMap<String,TypedDeclaration> attributes;
     private SortedMap<String,Interface> innerInterfaces;
     private SortedMap<String,Class> innerClasses;
@@ -85,6 +90,40 @@ public class ClassDoc extends ClassOrPackageDoc {
             return decl instanceof Function;
         }
     };
+    
+    private Comparator<Function> overloadedFunctionComperator = new Comparator<Function>() {
+
+        @Override
+        public int compare(Function f1, Function f2) {
+            int result;
+            
+            List<ParameterList> parameterLists1 = f1.getParameterLists();
+            List<ParameterList> parameterLists2 = f2.getParameterLists();
+            
+            result = Integer.compare(parameterLists1.size(), parameterLists2.size());
+            if( result != 0 ) {
+                return result;
+            }
+            
+            for( int i = 0; i < parameterLists1.size(); i++) {
+                List<Parameter> parameterList1 = parameterLists1.get(i).getParameters();
+                List<Parameter> parameterList2 = parameterLists2.get(i).getParameters();
+
+                result = Integer.compare(parameterList1.size(), parameterList2.size());
+                if( result != 0 ) {
+                    return result;
+                }
+            }
+            
+            String signature1 = f1.toString();
+            String signature2 = f2.toString();
+            
+            result = signature1.compareTo(signature2);
+            
+            return result;
+        }
+
+    };
 
     public ClassDoc(CeylonDocTool tool, Writer writer, TypeDeclaration klass) throws IOException {
         super(tool.getModule(klass), tool, writer);
@@ -94,7 +133,7 @@ public class ClassDoc extends ClassOrPackageDoc {
 
     private void loadMembers() {
         constructors = new TreeMap<String,Declaration>();
-        methods = new TreeMap<String,Function>();
+        methods = new TreeMap<String, SortedSet<Function>>();
         attributes = new TreeMap<String,TypedDeclaration>();
         innerInterfaces = new TreeMap<String,Interface>();
         innerClasses = new TreeMap<String,Class>();
@@ -110,6 +149,10 @@ public class ClassDoc extends ClassOrPackageDoc {
                 } else if (m instanceof Value) {
                     addTo(attributes, (Value)m);
                 } else if (m instanceof Function) {
+                    if( m.isAbstraction() && m.getOverloads().size() > 0 ) {
+                        // we want document each overloads, see https://github.com/ceylon/ceylon/issues/5748
+                        continue;
+                    }
                     addTo(methods, (Function)m);
                 } else if (m instanceof Interface) {
                     addTo(innerInterfaces, (Interface)m);
@@ -138,6 +181,25 @@ public class ClassDoc extends ClassOrPackageDoc {
         map.put(Util.getDeclarationName(decl), decl);
         for(String alias : decl.getAliases()){
             map.put(alias, decl);
+        }
+    }
+    
+    private void addTo(SortedMap<String, SortedSet<Function>> map, Function decl) {
+        String declName = Util.getDeclarationName(decl);
+        SortedSet<Function> overloadedDeclSet = map.get(declName);
+        if( overloadedDeclSet == null ) {
+            overloadedDeclSet = new TreeSet<Function>(overloadedFunctionComperator);
+            map.put(declName, overloadedDeclSet);
+        }
+        overloadedDeclSet.add(decl);
+        
+        for(String alias : decl.getAliases()){
+            overloadedDeclSet = map.get(alias);
+            if( overloadedDeclSet == null ) {
+                overloadedDeclSet = new TreeSet<Function>(overloadedFunctionComperator);
+                map.put(alias, overloadedDeclSet);
+            }
+            overloadedDeclSet.add(decl);
         }
     }
 
@@ -291,7 +353,7 @@ public class ClassDoc extends ClassOrPackageDoc {
             writeSubNavBarLink("#section-nested-exceptions", "Nested Exceptions", 'E', "Jump to nested exceptions");
         }
         if( isObject() ) {
-            writeSubNavBarLink(linkRenderer().to(klass.getContainer()).useAnchor(klass).getUrl(), "Singleton object declaration", '\0', "Jump to singleton object declaration");
+            writeSubNavBarLink(linkRenderer().to(klass.getContainer()).useAnchor(klass.getName()).getUrl(), "Singleton object declaration", '\0', "Jump to singleton object declaration");
         }
         
         close("div"); // sub-navbar-menu
@@ -690,8 +752,16 @@ public class ClassDoc extends ClassOrPackageDoc {
             return;
         }
         openTable(null, "Methods", 2, true);
-        for (Entry<String, Function> entry : methods.entrySet()) {
-            doc(entry.getKey(), entry.getValue());
+        for (Entry<String, SortedSet<Function>> entry : methods.entrySet()) {
+            int index = 1;
+            for(Function f : entry.getValue()) {
+                String id = null;
+                if( index > 1 ) {
+                    id = entry.getKey()+"_"+index;
+                }
+                doc(id, entry.getKey(), f);
+                index++;
+            }
         }
         closeTable();
     }

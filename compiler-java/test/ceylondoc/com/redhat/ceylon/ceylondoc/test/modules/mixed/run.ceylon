@@ -20,4 +20,5 @@
 
 void run() {
     Java j = Java();
+    JavaWithCeylonAnnotations j2 = JavaWithCeylonAnnotations();
 }
