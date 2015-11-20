@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ceylon" default="help" basedir="."
+    xmlns:if="ant:if"
+>
+
+    <tstamp>
+        <format property="NOW" pattern="yyyyMMddHHmm" />
+    </tstamp>
+
+    <property name="ceylon.dist.dir" value="${basedir}/dist"/>
+
+    <target name="help">
+        <echo>Options for building a Ceylon distribution for local use:
+    ant status             - Shows the Git status of the project
+    ant update             - Updates the Git repository of the project
+    ant clean              - Cleans the project
+    ant dist               - Builds the Ceylon distrubtion for local use
+
+Some super-charged ant tasks:
+    ant status-all         - Shows the Git status of all projects related to the
+                             distribution, SDK and IDE
+    ant update-all         - Updates the Git repositories of the above projects
+    ant clean-all          - Cleans all of the above mentioned projects
+
+    ant sdk                - Builds the SDK project
+    ant eclipse            - Builds all IDE related projects + the Eclipse plugin
+    ant intellij           - Builds all IDE related projects + the IntelliJ plugin</echo>
+
+    </target>
+
+    <!-- The following tasks all redirect to "dist/build.xml" -->
+    
+    <target name="status">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="status"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="update">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="update"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="dist">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="dist"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <!-- The following tasks all redirect to "dist/sdk-build.xml" -->
+    
+    <target name="setup-sdk">
+        <ant antfile="${ceylon.dist.dir}/sdk-build.xml"
+             target="setup"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="setup-admins-sdk">
+        <ant antfile="${ceylon.dist.dir}/sdk-build.xml"
+             target="setup-admins"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="status-sdk">
+        <ant antfile="${ceylon.dist.dir}/sdk-build.xml"
+             target="status"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="update-sdk">
+        <ant antfile="${ceylon.dist.dir}/sdk-build.xml"
+             target="update"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean-sdk">
+        <ant antfile="${ceylon.dist.dir}/sdk-build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+
+    <target name="sdk">
+        <ant antfile="${ceylon.dist.dir}/sdk-build.xml"
+             target="sdk"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <!-- The following tasks all redirect to "dsit/ide-build.xml" -->
+    
+    <target name="setup-ide">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="setup"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="setup-admins-ide">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="setup-admins"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="status-ide">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="status"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="update-ide">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="update"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean-ide">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="clean"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="clean-projects-ide">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="clean-projects"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="eclipse"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-switch-to-last-release-updates">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="eclipse-switch-to-last-release-updates"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-switch-back-to-master">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="eclipse-switch-back-to-master"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="eclipse-rebuild-last-release-updates">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="eclipse-rebuild-last-release-updates"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+
+    <target name="intellij">
+        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+             target="intellij"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <!-- The following tasks do work on the Distribution, the SDK and the IDE -->
+    
+    <target name="status-all" depends="status,status-sdk,status-ide" />
+    <target name="update-all" depends="update,update-sdk,update-ide" />
+    <target name="clean-all" depends="clean,clean-sdk,clean-ide" />
+    <target name="do-all" depends="dist,sdk,eclipse" />
+
+</project>
