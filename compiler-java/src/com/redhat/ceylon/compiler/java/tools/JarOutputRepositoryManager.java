@@ -104,12 +104,16 @@ public class JarOutputRepositoryManager {
     static class ProgressiveJar {
         private static final String META_INF = "META-INF";
         private static final String MAPPING_FILE = META_INF+"/mapping.txt";
+        /** Jar we're "updating" (i.e. will copy any entries not added to the output */
         private File originalJarFile;
+        /** Jar we're actually generating */
         private File outputJarFile;
+        /** Output stream for the {@link #outputJarFile} */
         private JarOutputStream jarOutputStream;
         final private Set<String> modifiedSourceFiles = new HashSet<String>();
         final private Set<String> modifiedResourceFilesRel = new HashSet<String>();
         final private Set<String> modifiedResourceFilesFull = new HashSet<String>();
+        /** Mapping of class file name to originating source file name*/
         final private Properties writtenClassesMapping = new Properties(); 
         private Logger cmrLog;
         private Options options;
@@ -120,9 +124,12 @@ public class JarOutputRepositoryManager {
         private Module module;
         private Set<String> folders = new HashSet<String>();
         private boolean manifestWritten = false;
+        /** Whether to generate an OSGi-compatible MANIFEST.MF */
         private boolean writeOsgiManifest;
+        /** The bundles to treat as "provided", thus omitted from {@code Required-Bundle:} */
         private String osgiProvidedBundles;
         private final String resourceRootPath;
+        /** Whether to add a pom.xml and pom.properties in module subdir of {@code META-INF}*/
         private boolean writeMavenManifest;
         private TaskListener taskListener;
 
@@ -258,7 +265,7 @@ public class JarOutputRepositoryManager {
             };
         }
 
-
+        /** Add a {@code META-INF/MANIFEST.MF} entry using the given {@code manifest} */
         private void writeManifestJarEntry(Manifest manifest) {
             try {
                 folders.add(META_INF+"/");
@@ -276,11 +283,21 @@ public class JarOutputRepositoryManager {
                 }
             }
         }
-
+        
+        /** 
+         * Add 
+         * {@code META-INF/maven/<groupId>/<artifactId>/pom.xml}
+         * and {@code META-INF/maven/<groupId>/<artifactId>/pom.properties}
+         * entries for the given {@code module}.
+         */
         private void writeMavenManifest(Module module) {
             MavenPomUtil.writeMavenManifest(jarOutputStream, module, folders);
         }
 
+        /** 
+         * Add a {@code META-INF/mapping.txt} entry
+         * which records which source files generated which .class files
+         */
         private void writeMappingJarEntry(Properties previousMapping, JarUtils.JarEntryFilter filter) {
             Properties newMapping = new Properties();
             newMapping.putAll(writtenClassesMapping);
