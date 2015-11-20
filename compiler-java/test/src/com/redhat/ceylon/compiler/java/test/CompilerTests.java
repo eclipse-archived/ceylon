@@ -906,7 +906,7 @@ public abstract class CompilerTests {
          * (which we could otherwise use to prevent System.exit)  
          */
         ArrayList<String> a = new ArrayList<String>();
-        a.add("ceylon");
+        a.add("../dist/dist/bin/ceylon");
         a.add(runner);
         a.add("--rep");
         a.add(getOutPath());

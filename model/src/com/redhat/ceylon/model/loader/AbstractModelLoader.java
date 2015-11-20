@@ -2031,10 +2031,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }};
                 oldLangMod.setLanguageModule(oldLangMod);
                 oldLangMod.setName(Arrays.asList("ceylon", "language"));
-                oldLangMod.setVersion("1.1.1");
+                oldLangMod.setVersion(Versions.getJvmLanguageModuleVersion(major, minor));
                 oldLangMod.setNativeBackends(Backends.JAVA);
-                oldLangMod.setMajor(Versions.V1_1_BINARY_MAJOR_VERSION);
-                oldLangMod.setMinor(Versions.V1_1_BINARY_MINOR_VERSION);
+                oldLangMod.setMajor(major);
+                oldLangMod.setMinor(minor);
                 ModuleImport moduleImport = new ModuleImport(oldLangMod, false, false);
                 module.addImport(moduleImport);
             }
