@@ -238,11 +238,7 @@ public class CeylonDocToolTests {
         		       "</p>");
         tool.run();
         
-        Module module = new Module();
-        module.setName(Arrays.asList(moduleName));
-        module.setVersion("3.1.4");
-        
-        File destDir = getOutputDir(tool, module);
+        File destDir = getOutputDir(tool, moduleName, "3.1.4");
         
         assertFileExists(destDir, includeNonShared);
         assertBasicContent(destDir, includeNonShared);
@@ -357,11 +353,7 @@ public class CeylonDocToolTests {
         tool.setLinks(Arrays.asList(linkArgs));
         tool.run();
 
-        Module module = new Module();
-        module.setName(Arrays.asList("com.redhat.ceylon.ceylondoc.test.modules.externallinks"));
-        module.setVersion("1.0");        
-
-        File destDir = getOutputDir(tool, module);
+        File destDir = getOutputDir(tool, "com.redhat.ceylon.ceylondoc.test.modules.externallinks", "1.0");
         assertExternalLinks(destDir, repoUrl);
         return destDir;
     }
@@ -403,12 +395,39 @@ public class CeylonDocToolTests {
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.mixed";
         
         // compile the java code first
-        compileJavaModule(pathname, "com/redhat/ceylon/ceylondoc/test/modules/mixed/Java.java");
+        compileJavaModule(pathname, 
+                "com/redhat/ceylon/ceylondoc/test/modules/mixed/Java.java",
+                "com/redhat/ceylon/ceylondoc/test/modules/mixed/JavaWithCeylonAnnotations.java");
         
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.run();
+        
+        File destDir = getOutputDir(tool, moduleName, "1.0.0");
+        
+        assertOverloadedMethods(destDir);
     }
 
+    private void assertOverloadedMethods(File destDir) throws Exception {
+        // see https://github.com/ceylon/ceylon/issues/5748
+        assertMatchInFile(destDir, "JavaWithCeylonAnnotations.type.html", 
+                Pattern.compile(Pattern.quote("<td id='foo' nowrap><i class='icon-shared-member'></i><code class='decl-label'>foo</code></td>"
+                        + "<td><a class='link-one-self' title='Link to this declaration' href='JavaWithCeylonAnnotations.type.html#foo'><i class='icon-link'></i></a>"
+                        + "<code class='signature'><span class='modifiers'>shared default</span> <span title='ceylon.language::Boolean'><span class='type-identifier'>Boolean</span></span> <span class='identifier'>foo</span>()</code>")));
+        
+        assertMatchInFile(destDir, "JavaWithCeylonAnnotations.type.html", 
+                Pattern.compile(Pattern.quote("<td id='foo_2' nowrap><i class='icon-shared-member'></i><code class='decl-label'>foo</code></td>"
+                        + "<td><a class='link-one-self' title='Link to this declaration' href='JavaWithCeylonAnnotations.type.html#foo_2'><i class='icon-link'></i></a>"
+                        + "<code class='signature'><span class='modifiers'>shared default</span> <span title='ceylon.language::Boolean'><span class='type-identifier'>Boolean</span></span> <span class='identifier'>foo</span>"
+                        + "(<span title='ceylon.language::Integer'><span class='type-identifier'>Integer</span></span> <span class='parameter'>p1</span>)</code>")));
+        
+        assertMatchInFile(destDir, "JavaWithCeylonAnnotations.type.html", 
+                Pattern.compile(Pattern.quote("<td id='foo_3' nowrap><i class='icon-shared-member'></i><code class='decl-label'>foo</code></td>"
+                        + "<td><a class='link-one-self' title='Link to this declaration' href='JavaWithCeylonAnnotations.type.html#foo_3'><i class='icon-link'></i></a>"
+                        + "<code class='signature'><span class='modifiers'>shared default</span> <span title='ceylon.language::Boolean'><span class='type-identifier'>Boolean</span></span> <span class='identifier'>foo</span>"
+                        + "(<span title='ceylon.language::Integer'><span class='type-identifier'>Integer</span></span> <span class='parameter'>p1</span>, "
+                        + "<span title='ceylon.language::String'><span class='type-identifier'>String</span></span> <span class='parameter'>p2</span>)</code>")));
+    }
+    
     @Test
     public void documentSingleModule() throws Exception {
         String pathname = "test/ceylondoc";
@@ -417,12 +436,9 @@ public class CeylonDocToolTests {
         CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
         tool.run();
 
-        Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
-        File destDirA = getOutputDir(tool, a);
-        Module b = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.b", "1");
-        File destDirB = getOutputDir(tool, b);
-        Module def = makeDefaultModule();
-        File destDirDef = getOutputDir(tool, def);
+        File destDirA = getOutputDir(tool, "com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
+        File destDirB = getOutputDir(tool, "com.redhat.ceylon.ceylondoc.test.modules.multi.b", "1");
+        File destDirDef = getOutputDir(tool, makeDefaultModule());
         
         assertFileExists(destDirA, "index.html");
         assertFileNotExists(destDirB, "index.html");
@@ -453,12 +469,9 @@ public class CeylonDocToolTests {
         tool.setIncludeNonShared(true);
         tool.run();
 
-        Module a = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
-        File destDirA = getOutputDir(tool, a);
-        Module b = makeModule("com.redhat.ceylon.ceylondoc.test.modules.multi.b", "1");
-        File destDirB = getOutputDir(tool, b);
-        Module def = makeDefaultModule();
-        File destDirDef = getOutputDir(tool, def);
+        File destDirA = getOutputDir(tool, "com.redhat.ceylon.ceylondoc.test.modules.multi.a", "1");
+        File destDirB = getOutputDir(tool, "com.redhat.ceylon.ceylondoc.test.modules.multi.b", "1");
+        File destDirDef = getOutputDir(tool, makeDefaultModule());
         
         assertFileNotExists(destDirA, "index.html");
         assertFileNotExists(destDirB, "index.html");
@@ -476,8 +489,7 @@ public class CeylonDocToolTests {
         tool.setIncludeSourceCode(true);
         tool.run();
         
-        Module module = makeModule(AbstractModelLoader.CEYLON_LANGUAGE, LANGUAGE_MODULE_VERSION);
-        File destDir = getOutputDir(tool, module);
+        File destDir = getOutputDir(tool, moduleName, LANGUAGE_MODULE_VERSION);
         
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "Nothing.type.html");
@@ -549,8 +561,7 @@ public class CeylonDocToolTests {
         }
         
         for(String moduleName : fullModuleNames){
-            Module module = makeModule(moduleName, nameToVersion.get(moduleName));
-            File destDir = getOutputDir(tool, module);
+            File destDir = getOutputDir(tool, moduleName, nameToVersion.get(moduleName));
 
             assertFileExists(destDir, "index.html");
         }
@@ -654,13 +665,6 @@ public class CeylonDocToolTests {
         return module;
     }
 
-    private Module makeModule(String name, String version) {
-        Module module = new Module();
-        module.setName(Arrays.asList(name.split("\\.")));
-        module.setVersion(version);
-        return module;
-    }
-
     @Test
     public void bug1622() throws Exception{
         File dir = new File("build", "CeylonDocToolTest/" + name.getMethodName());
@@ -715,10 +719,6 @@ public class CeylonDocToolTests {
         String pathname = "test/ceylondoc";
         String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.bug2101";
         
-        Module module = new Module();
-        module.setName(Arrays.asList(moduleName));
-        module.setVersion("1");
-        
         CeylonDocTool tool = 
                 tool(Arrays.asList(new File(pathname)),
                         Arrays.asList(new File("doc")),
@@ -726,7 +726,7 @@ public class CeylonDocToolTests {
                         true, false, false);
         tool.run();
         
-        File destDir = getOutputDir(tool, module);
+        File destDir = getOutputDir(tool, moduleName, "1");
         
         assertMatchInFile(destDir, "index.html", 
                 Pattern.compile("<span class='identifier'>bug2101</span>\\(\\)</code>"
@@ -1300,13 +1300,13 @@ public class CeylonDocToolTests {
                 Pattern.compile(Pattern.quote("<div class='aliased section'><span class='title'>Aliases: </span><span class='value'><code class='signature'><span class='type-identifier'>StubClassAlias</span></code></span></div>")));
         
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#aliasedAttribute'><i class='icon-link'></i></a>See <code class='signature'><span class='identifier'><a class='link' href='StubClass.type.html#aliasedAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.aliasedAttribute'><span class='identifier'>aliasedAttribute</span></a></span></code></td>")));
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#firstAlias'><i class='icon-link'></i></a>See <code class='signature'><span class='identifier'><a class='link' href='StubClass.type.html#aliasedAttribute' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.aliasedAttribute'><span class='identifier'>aliasedAttribute</span></a></span></code></td>")));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#aliasedMethod'><i class='icon-link'></i></a>See <code class='signature'><span class='identifier'><a class='link' href='StubClass.type.html#aliasedMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.aliasedMethod'><span class='identifier'>aliasedMethod()</span></a></span></code></td>")));
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#methodAlias'><i class='icon-link'></i></a>See <code class='signature'><span class='identifier'><a class='link' href='StubClass.type.html#aliasedMethod' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.aliasedMethod'><span class='identifier'>aliasedMethod()</span></a></span></code></td>")));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#StubInnerTypeAlias'><i class='icon-link'></i></a><div class='tags section'><a class='tag label' name='stubTag1' href='javascript:;' title='Enable/disable tag filter'>stubTag1</a></div>See <code class='signature'><span class='type-identifier'><a class='link' href='StubClass.type.html#StubInnerTypeAlias' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerTypeAlias'>StubInnerTypeAlias</a></span></code></td>")));
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#StubInnerAlias'><i class='icon-link'></i></a><div class='tags section'><a class='tag label' name='stubTag1' href='javascript:;' title='Enable/disable tag filter'>stubTag1</a></div>See <code class='signature'><span class='type-identifier'><a class='link' href='StubClass.type.html#StubInnerTypeAlias' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerTypeAlias'>StubInnerTypeAlias</a></span></code></td>")));
         assertMatchInFile(destDir, "StubClass.type.html",
-                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#StubInnerClass'><i class='icon-link'></i></a>See <code class='signature'><span class='type-identifier'><a class='link' href='StubClass.StubInnerClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerClass'><span class='type-identifier'>StubInnerClass</span></a></span></code></td>")));
+                Pattern.compile(Pattern.quote("<td><a class='link-one-self' title='Link to this declaration' href='StubClass.type.html#StubInnerClassAlias'><i class='icon-link'></i></a>See <code class='signature'><span class='type-identifier'><a class='link' href='StubClass.StubInnerClass.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.StubInnerClass'><span class='type-identifier'>StubInnerClass</span></a></span></code></td>")));
         
         assertMatchInFile(destDir, "StubClass.type.html",
                 Pattern.compile(Pattern.quote("<div class='aliased section'><span class='title'>Aliases: </span><span class='value'><code class='signature'><span class='type-identifier'>StubInnerAlias</span></code></span></div>")));
@@ -1482,6 +1482,13 @@ public class CeylonDocToolTests {
     private void assertBug2307AliasedName(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
                 Pattern.compile("<span class='identifier'>bug2307AliasedName</span>\\(<a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>AliasA2</span></a>"));
+    }
+    
+    private File getOutputDir(CeylonDocTool tool, String moduleName, String moduleVersion) {
+        Module module = new Module();
+        module.setName(Arrays.asList(moduleName));
+        module.setVersion(moduleVersion);
+        return getOutputDir(tool, module);
     }
     
     private File getOutputDir(CeylonDocTool tool, Module module) {

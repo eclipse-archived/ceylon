@@ -102,7 +102,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("td");
         
         open("td");
-        writeLinkOneSelf(alias);
+        writeLinkOneSelf(name);
         if(isAlias){
             writeTagged(alias);
             writeAlias(alias);
@@ -145,7 +145,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("td");
         
         open("td");
-        writeLinkOneSelf(d);
+        writeLinkOneSelf(name);
         if(alias){
             writeTagged(d);
             writeAlias(d);
@@ -174,15 +174,20 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("span");
         close("code");
     }
-
+    
     protected final void doc(String name, Declaration d) throws IOException {
+        doc(null, name, d);
+    }
+
+    protected final void doc(String id, String name, Declaration d) throws IOException {
         String declarationName = Util.getDeclarationName(d);
+        id = (id != null ? id : name);
         boolean alias = Util.nullSafeCompare(name, declarationName) != 0;
         
         // put the id on the td because IE8 doesn't support id attributes on tr (yeah right)
         open("tr");
         
-        open("td id='" + name + "' nowrap");
+        open("td id='" + id + "' nowrap");
         writeIcon(d);
         if( !(d instanceof Constructor) ) {
             around("code class='decl-label'", name);
@@ -190,7 +195,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             open("td");
         }
         
-        writeLinkOneSelf(d);
+        writeLinkOneSelf(id);
         if(alias){
             writeTagged(d);
             writeAlias(d);
@@ -316,8 +321,8 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         close("div"); // description
     }
     
-    private void writeLinkOneSelf(Declaration d) throws IOException {
-        String url = linkRenderer().to(getFromObject()).useAnchor(d).getUrl();
+    private void writeLinkOneSelf(String id) throws IOException {
+        String url = linkRenderer().to(getFromObject()).useAnchor(id).getUrl();
         if (url != null) {
             open("a class='link-one-self' title='Link to this declaration' href='" + url + "'");
             write("<i class='icon-link'></i>");

@@ -80,7 +80,7 @@ public class LinkRenderer {
     private String customText;
     private boolean withinText;
     private Referenceable scope;
-    private Declaration anchor;
+    private String anchor;
     private boolean printAbbreviated = true;
     private boolean printTypeParameters = true;
     private boolean printTypeParameterDetail = false;
@@ -181,7 +181,7 @@ public class LinkRenderer {
         return this;
     }
     
-    public LinkRenderer useAnchor(Declaration anchor) {
+    public LinkRenderer useAnchor(String anchor) {
         this.anchor = anchor;
         return this;
     }
@@ -306,7 +306,7 @@ public class LinkRenderer {
         Scope declContainer = decl.getContainer();
         
         if( isLinkable(decl) ) {
-            String url = getUrl(declContainer, decl);
+            String url = getUrl(declContainer, declName);
             if( url != null ) {
                 return buildLinkElement(url, getLinkText(decl), "Go to " + decl.getQualifiedNameString());
             }
@@ -327,7 +327,7 @@ public class LinkRenderer {
         Scope aliasContainer = alias.getContainer();
         
         if (isLinkable(alias)) {
-            String url = getUrl(aliasContainer, alias);
+            String url = getUrl(aliasContainer, aliasName);
             if (url != null) {
                 return buildLinkElement(url, aliasName, "Go to " + alias.getQualifiedNameString());
             }
@@ -613,7 +613,7 @@ public class LinkRenderer {
         return (Package) scope;
     }   
 
-    private String getUrl(Object to, Declaration anchor) {
+    private String getUrl(Object to, String anchor) {
         String url;
         
         List<Function> methods = new ArrayList<Function>();
@@ -642,7 +642,7 @@ public class LinkRenderer {
                     fragment.append("-");
                 }
             }
-            fragment.append(anchor.getName());
+            fragment.append(anchor);
             url = url + "#" + fragment;
         }            
             
