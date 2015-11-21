@@ -28,4 +28,4 @@ tagged("Functions")
 shared Return apply<Return,Args>
             (Callable<Return,Args> f, Args args)
         given Args satisfies Anything[]
-        => unflatten(f)(args);
+        => f(*args);
