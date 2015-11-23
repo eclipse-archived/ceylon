@@ -1,0 +1,3 @@
+Foo-Bar: Baz
+Bundle-ActivationPolicy: something not default
+LastLineWithoutNewline: whatever
