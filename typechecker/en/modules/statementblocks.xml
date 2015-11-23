@@ -2173,14 +2173,23 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>For a value case, each value reference must be to an anonymous class that
-            is a subtype of <literal>Identifiable|Null</literal> or to a value constructor 
-            for a class that is a subtype of <literal>Identifiable</literal>.</para>
+            <para>For a value case, each value reference must be to:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a toplevel anonymous class that is a subtype of 
+                    <literal>Identifiable|Null</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>a value constructor of a toplevel class that is a subtype of 
+                    <literal>Identifiable</literal>.</para>
+                </listitem>
+            </itemizedlist>
             
             <synopsis>CaseCondition: "(" (ValueCase | TypeCase) ")"</synopsis>
             <synopsis>ValueCase: CaseValue ("|" CaseValue)*</synopsis>
             <synopsis>TypeCase: "is" Type</synopsis>
-            <synopsis>CaseValue: LiteralCase | BaseExpression</synopsis>
+            <synopsis>CaseValue: LiteralCase | BaseExpression | ConstructorExpression</synopsis>
             <synopsis>LiteralCase: "-"? IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
             
             <para>Every case condition has a type:</para>
