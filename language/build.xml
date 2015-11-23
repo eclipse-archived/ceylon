@@ -30,8 +30,9 @@
     <tstamp/>
 
     <!-- Local repository -->
-    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
     <property name="ceylon.dist.dir" location="${basedir}/../dist/dist"/>
+    <property name="ceylon.repo.dir" location="${ceylon.dist.dir}/repo"/>
+    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     
     <!-- ceylon.language -->
     <property name="module.language.src" value="${basedir}/src"/>
@@ -411,7 +412,7 @@
         <!-- toplevel types -->
         <ceylon-compile
             executable="${ceylon.compiler.loc}"
-            fork="true"
+            fork="true" inheritAll="true"
             verbose="false"
             encoding="UTF-8"
             noMtimeCheck="true"
@@ -489,6 +490,7 @@
     <target name="ceylon.language.js">
         <mkdir dir="${ceylon.language.dist}"/>
         <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true" failonerror="yes">
+            <sysproperty key="ceylon.cache.repo" value="${ceylon.cache.repo}" />
             <arg value="${runtime-js.src}/MASTER.txt" />
             <arg value="${build.dist.repo}/${ceylon.language.js}" />
         </java>

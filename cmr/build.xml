@@ -37,6 +37,7 @@
 
     <!-- Local repositoryManager -->
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
 
     <!-- ceylon.module-resolver -->
     <property name="module.module-resolver.dir" value="com/redhat/ceylon/module-resolver"/>
