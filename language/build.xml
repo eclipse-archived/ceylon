@@ -411,7 +411,6 @@
         <delete file="${build.dist.repo}/${ceylon.language.car}" failonerror="false" />
         <!-- toplevel types -->
         <ceylon-compile
-            executable="${ceylon.compiler.loc}"
             fork="true" inheritAll="true"
             verbose="false"
             encoding="UTF-8"
@@ -502,7 +501,6 @@
     <!-- Rule to generate the documentation from the Ceylon sources -->
     <target name="ceylon.language.doc">
         <ceylon-doc
-            executable="${ceylon.compiler.loc}"
             includesourcecode="true"
             src="${module.language.src}"
             encoding="UTF-8"
@@ -551,7 +549,6 @@
 
     <target name="compile.tests.java.quick">
         <ceylon-compile
-            executable="${ceylon.compiler.loc}"
             fork="true"
             src="${test.src}:${test.java.src}"
             resource="${test.res}"
@@ -602,7 +599,6 @@
     <target name="test.java.quick"
         description="compile and run the JVM tests">
         <ceylon-run
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             run="runAndAssert"
             module="default"
@@ -610,7 +606,6 @@
             <rep url="${build.test}"/>
         </ceylon-run>
         <ceylon-run
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="javaa/1"
             resultproperty="test.ceylon.result.2">
@@ -618,35 +613,30 @@
             <rep url="aether"/>
         </ceylon-run>
         <ceylon-run
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="metamodel/0.1"
             resultproperty="test.ceylon.result.3">
             <rep url="${build.test}"/>
         </ceylon-run>
         <ceylon-run
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="annotations/0.1"
             resultproperty="test.ceylon.result.4">
             <rep url="${build.test}"/>
         </ceylon-run>
             <ceylon-run
-                executable="${ceylon.compiler.loc}"
                 sysrep="${build.test.repo}"
                 module="jvm/0.1"
                 resultproperty="test.ceylon.result.5">
                 <rep url="${build.test}"/>
             </ceylon-run>
         <ceylon-run
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="resmod/0.1"
             resultproperty="test.ceylon.result.6">
             <rep url="${build.test}"/>
         </ceylon-run>
         <ceylon-run
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="serialization/0.1"
             resultproperty="test.ceylon.result.7">
@@ -696,7 +686,6 @@
 
     <target name="compile.tests.js.quick">
         <ceylon-compile-js
-            executable="${ceylon.compiler.loc}"
             fork="true"
             encoding="UTF-8"
             src="${test.src}"
@@ -722,31 +711,26 @@
     <target name="test.js.quick"
         description="compile and run the Node.js tests (requires node)">
         <ceylon-run-js
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="default">
             <rep url="build/test" />
         </ceylon-run-js>
         <ceylon-run-js
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="metamodel/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>
         <ceylon-run-js
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="annotations/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>
         <ceylon-run-js
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="resmod/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>
         <ceylon-run-js
-            executable="${ceylon.compiler.loc}"
             sysrep="${build.test.repo}"
             module="serialization/0.1">
             <rep url="${build.test}"/>
