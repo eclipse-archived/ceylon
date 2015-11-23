@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
@@ -67,6 +68,7 @@ public abstract class CeylonAntTask extends Task {
     private File executable;
     private ExitHandler exitHandler = new ExitHandler();
     private Boolean fork;
+    private Boolean inheritAll;
     private boolean stacktraces;
 
     private String cwd;
@@ -141,6 +143,18 @@ public abstract class CeylonAntTask extends Task {
         this.fork = fork;
     }
     
+    public boolean getInheritAll() {
+        return (inheritAll != null) ? inheritAll : getFork();
+    }
+
+    /**
+     * Sets whether a task should inherit environment and properties.
+     * Only applies when forked == true
+     */
+    public void setInheritAll(boolean inheritAll) {
+        this.inheritAll = inheritAll;
+    }
+    
     public boolean getStacktraces() {
         return stacktraces;
     }
@@ -205,7 +219,7 @@ public abstract class CeylonAntTask extends Task {
                         tmpFile = File.createTempFile("ceylon-ant-", "cmd");
                         out = new BufferedWriter(new FileWriter(tmpFile));
                         for (int i = 1; i < args.length; i++) {
-                            out.write(args[i]);
+                            out.write(Commandline.quoteArgument(args[i]));
                             out.newLine();
                         }
                         out.flush();
@@ -222,6 +236,7 @@ public abstract class CeylonAntTask extends Task {
                 exe.setAntRun(getProject());
                 exe.setWorkingDirectory(getProject().getBaseDir());
                 exe.setCommandline(args);
+                exe.setNewenvironment(!getInheritAll());
                 exe.execute();
                 exitValue = exe.getExitValue();
             }else{
@@ -287,26 +302,39 @@ public abstract class CeylonAntTask extends Task {
         } else {
             appendOption(cmd, "--cwd=" + getProject().getBaseDir().getPath());
         }
-        
         if (getConfig() != null) {
             appendOption(cmd, "--config=" + getConfig());
+        }
+        if (getFork() && getInheritAll()) {
+            @SuppressWarnings("rawtypes")
+            Hashtable props = getProject().getUserProperties();
+            for (Object k : props.keySet()) {
+                Object val = props.get(k);
+                String arg = k + "=" + val;
+                if (isSafeProperty(arg)) {
+                    appendOption(cmd, "--define=" + arg);
+                }
+            }
+        }
+        for (Define d : defines) {
+            String arg = (d.key != null) ? d.key + "=" + d.value : d.value;
+            appendOption(cmd, "--define=" + arg);
         }
         cmd.createArgument().setValue(toolName);
         completeCommandline(cmd);
         return cmd;
     }
 
+    private boolean isSafeProperty(String str) {
+        return !str.contains("\"") || !str.contains("'");
+    }
+    
     /**
      * Completes the building of a partially configured Commandline
      * @param cmd
      */
     protected void completeCommandline(Commandline cmd) {
         appendVerboseOption(cmd, verbose);
-        
-        for (Define d : defines) {
-            String arg = (d.key != null) ? d.key + "=" + d.value : d.value;
-            appendOptionArgument(cmd, "--define", arg);
-        }
     }
 
     /**
