@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -37,11 +38,68 @@ public final class JarUtils {
         finishUpdatingJar(originalFile, outputFile, context, jarOutputStream, filter, repoManager, verbose, log, folders, false);
     }
     
+    /**
+     * Adds to the given jarOutputStream those entries in originalFile which are not in 
+     */
     public static void finishUpdatingJar(File originalFile, File outputFile, ArtifactContext context, 
             JarOutputStream jarOutputStream, JarEntryFilter filter,
             RepositoryManager repoManager, boolean verbose, Logger log,
-            Set<String> folders, boolean pack200) throws IOException {
-        // now copy all previous jar entries
+            Set<String> foldersToAdd, boolean pack200) throws IOException {
+        finishUpdatingJar(originalFile, outputFile, context, jarOutputStream, filter, repoManager, verbose, log, foldersToAdd, new HashSet<String>(), pack200);
+    }
+    
+    public static void finishUpdatingJar(File originalFile, File outputFile, ArtifactContext context, 
+            JarOutputStream jarOutputStream, JarEntryFilter filter,
+            RepositoryManager repoManager, boolean verbose, Logger log,
+            Set<String> foldersToAdd, Set<String> foldersAlreadyAdded, boolean pack200) throws IOException {
+        for(String folder : foldersToAdd){
+            if (!foldersAlreadyAdded.contains(folder)) {
+                ZipEntry dir = new ZipEntry(folder);
+                jarOutputStream.putNextEntry(dir);
+                jarOutputStream.closeEntry();
+                foldersAlreadyAdded.add(folder);
+            }
+        }
+        jarOutputStream.flush();
+        jarOutputStream.close();
+        if (pack200) {
+            repack(outputFile, log);
+        }
+        
+        File sha1File = ShaSigner.sign(outputFile, log, verbose);
+        publish(outputFile, sha1File, context, repoManager, log);
+    }
+
+    public static void publish(File outputFile, File sha1File, ArtifactContext context, RepositoryManager repoManager, Logger log) {
+        try {
+            context.setForceOperation(true);
+            // In putting we're effectively renaming
+            repoManager.putArtifact(context, outputFile);
+            ArtifactContext sha1Context = context.getSha1Context();
+            sha1Context.setForceOperation(true);
+            repoManager.putArtifact(sha1Context, sha1File);
+        } catch(RuntimeException x) {
+            log.error("Failed to write module to repository: "+x.getMessage());
+            // fatal errors go all the way up but don't print anything if we logged an error
+            throw x;
+        } finally {
+            // now cleanup
+            outputFile.delete();
+            sha1File.delete();
+        }
+    }
+
+    public static void makeFolder(Set<String> foldersAlreadyAdded, JarOutputStream jarOutputStream, String folder) throws IOException {
+        if (!foldersAlreadyAdded.contains(folder)) {
+            ZipEntry dir = new ZipEntry(folder);
+            jarOutputStream.putNextEntry(dir);
+            jarOutputStream.closeEntry();
+            foldersAlreadyAdded.add(folder);
+        } 
+    }
+
+    protected static void copyMissingFromOriginal(File originalFile, JarOutputStream jarOutputStream,
+            JarEntryFilter filter, Set<String> folders) throws IOException {
         if (originalFile != null) {
             JarFile jarFile = new JarFile(originalFile);
             Enumeration<JarEntry> entries = jarFile.entries();
@@ -67,46 +125,13 @@ public final class JarUtils {
             }
             jarFile.close();
         }
-        // now write all the required directories
-        for(String folder : folders){
-            ZipEntry dir = new ZipEntry(folder);
-            jarOutputStream.putNextEntry(dir);
-            jarOutputStream.closeEntry();
-        }
-        jarOutputStream.flush();
-        jarOutputStream.close();
-        if(verbose){
-            log.info("[done writing to jar: "+outputFile.getPath()+"]");
-            //Log.printLines(log.noticeWriter, "[done writing to jar: "+outputFile.getPath()+"]");
-        }
-        
-        if (pack200) {
-            repack(outputFile, log);
-        }
-        
-        File sha1File = ShaSigner.sign(outputFile, log, verbose);
-        try {
-            context.setForceOperation(true);
-            repoManager.putArtifact(context, outputFile);
-            ArtifactContext sha1Context = context.getSha1Context();
-            sha1Context.setForceOperation(true);
-            repoManager.putArtifact(sha1Context, sha1File);
-        } catch(RuntimeException x) {
-            log.error("Failed to write module to repository: "+x.getMessage());
-            // fatal errors go all the way up but don't print anything if we logged an error
-            throw x;
-        } finally {
-            // now cleanup
-            outputFile.delete();
-            sha1File.delete();
-        }
     }
 
     /**
      * Takes the jar generated file and repacks it using pack200 in an attempt 
      * to reduce the file size. This is only worth doing on jars containing class files.
      */
-    private static void repack(File outputFile, Logger log) throws IOException,
+    public static void repack(File outputFile, Logger log) throws IOException,
             FileNotFoundException {
         Packer packer = Pack200.newPacker();
         packer.properties().put(Packer.EFFORT, "9");

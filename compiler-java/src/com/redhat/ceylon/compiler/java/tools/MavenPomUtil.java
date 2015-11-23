@@ -32,6 +32,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -57,19 +58,22 @@ public class MavenPomUtil {
         return new String[]{groupId, artifactId};
     }
     
-    public static void writeMavenManifest(JarOutputStream jarOutputStream, Module module, Set<String> folders) {
+    public static void writeMavenManifest2(JarOutputStream jarOutputStream, Module module, Set<String> foldersAlreadyAdded) {
         String moduleName = module.getNameAsString();
         String[] mavenCoordinates = getMavenCoordinates(moduleName);
         String groupId = mavenCoordinates[0];
         String artifactId = mavenCoordinates[1];
-
-        folders.add("META-INF/");
-        folders.add("META-INF/maven/");
-        folders.add("META-INF/maven/"+groupId+"/");
-        String path = "META-INF/maven/"+groupId+"/"+artifactId+"/";
-        folders.add(path);
-        writePomXml(jarOutputStream, path, groupId, artifactId, module);
-        writePomProperties(jarOutputStream, path, groupId, artifactId, module.getVersion());
+        try {
+            JarUtils.makeFolder(foldersAlreadyAdded, jarOutputStream, "META-INF/");
+            JarUtils.makeFolder(foldersAlreadyAdded, jarOutputStream, "META-INF/maven/");
+            JarUtils.makeFolder(foldersAlreadyAdded, jarOutputStream, "META-INF/maven/"+groupId+"/");
+            String path = "META-INF/maven/"+groupId+"/"+artifactId+"/";
+            JarUtils.makeFolder(foldersAlreadyAdded, jarOutputStream, path);
+            writePomXml(jarOutputStream, path, groupId, artifactId, module);
+            writePomProperties(jarOutputStream, path, groupId, artifactId, module.getVersion());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void writePomXml(JarOutputStream jarOutputStream, String path, String groupId, String artifactId, Module module) {
