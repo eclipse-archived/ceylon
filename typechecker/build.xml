@@ -60,9 +60,13 @@
     <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
 
+    <property environment="env" /> 
     
     <condition property="hasInfo">
-      <os family="unix"/>
+        <and>
+            <os family="unix"/>
+            <available file="makeinfo" filepath="${env.PATH}" property="makeinfo.present"/>
+        </and>
     </condition>
 
     <!-- Classpath for the build tools. -->
@@ -335,9 +339,11 @@
 
     </target>
 
-    <target name="lang.docinfo.make" if="hasInfo">
+    <target name="lang.docinfo.make" if="hasInfo" depends="lang.docinfo.texi">
 
         <fail unless="lang" />
+        <mkdir dir="${build.dir}/${lang}/info/"/>
+
         <exec executable="makeinfo" dir="${build.dir}/${lang}/info/">
             <arg value="ceylon-spec.texi"/>
         </exec>
