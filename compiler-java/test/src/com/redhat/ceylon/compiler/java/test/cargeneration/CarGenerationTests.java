@@ -27,14 +27,21 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
+
+import javax.tools.Diagnostic;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 
 public class CarGenerationTests extends CompilerTests {
@@ -252,6 +259,107 @@ public class CarGenerationTests extends CompilerTests {
         carEntry = car.getEntry("test/altrootdir/$module_.class");
         assertNotNull(carEntry);
         car.close();
+    }
+    
+    /*
+     * Although not in the JAR specification, there are tools and APIs
+     * which rely on the MANIFEST.MF being the first file entry in a Jar file.
+     * 
+     * Test for the case of a compiler-generated MANIFEST.MF
+     */
+    @Test
+    public void testCarGeneratedManifestComesFirst() throws IOException{
+        ErrorCollector ec = new ErrorCollector();
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath() + "meta/generatedmanifest/source");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                ec,
+                Arrays.asList("test.generatedmanifest"));
+        assertTrue(task.call());
+        assertTrue(ec.get(Diagnostic.Kind.ERROR, Diagnostic.Kind.WARNING).isEmpty());
+        File carFile = getModuleArchive("test.generatedmanifest", "1.0");
+        assertTrue(carFile.exists());
+        try (JarFile car = new JarFile(carFile)) {
+            Manifest manifest = car.getManifest();
+            assertTrue(manifest != null);
+            assertEquals("test.generatedmanifest", manifest.getMainAttributes().getValue("Bundle-SymbolicName"));
+            Enumeration<JarEntry> entries = car.entries();
+            assertTrue(entries.hasMoreElements());
+            JarEntry entry = entries.nextElement();
+            assertEquals("META-INF/", entry.getName());
+            assertTrue(entry.isDirectory());
+            entry = entries.nextElement();
+            assertEquals("META-INF/MANIFEST.MF", entry.getName());
+            assertTrue(!entry.isDirectory());
+        }
+        
+        // Now test incremental compilation
+        task = getCompilerTask(options,
+                ec,
+                "meta/generatedmanifest/source/test/generatedmanifest/run.ceylon");
+        assertTrue(task.call());
+        assertTrue(carFile.exists());
+        assertTrue(ec.get(Diagnostic.Kind.ERROR, Diagnostic.Kind.WARNING).isEmpty());
+        try (JarFile car = new JarFile(carFile)) {
+            Manifest manifest = car.getManifest();
+            assertTrue(manifest != null);
+            assertEquals("test.generatedmanifest", manifest.getMainAttributes().getValue("Bundle-SymbolicName"));
+            Enumeration<JarEntry> entries = car.entries();
+            assertTrue(entries.hasMoreElements());
+            JarEntry entry = entries.nextElement();
+            assertEquals("META-INF/", entry.getName());
+            assertTrue(entry.isDirectory());
+            entry = entries.nextElement();
+            assertEquals("META-INF/MANIFEST.MF", entry.getName());
+            assertTrue(!entry.isDirectory());
+        }
+    }
+    
+    /*
+     * Although not in the JAR specification, there are tools and APIs
+     * which rely on the MANIFEST.MF being the first file entry in a Jar file.
+     * 
+     * Test for the case of an existing MANIFEST.MF in resources
+     */
+    @Test
+    public void testCarMergedManifestComesFirst() throws IOException{
+        ErrorCollector ec = new ErrorCollector();
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath() + "meta/mergedmanifest/source");
+        options.add("-res");
+        options.add(getPackagePath() + "meta/mergedmanifest/resource");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                ec,
+                Arrays.asList("test.mergedmanifest"));
+        assertTrue(task.call());
+        
+        File carFile = getModuleArchive("test.mergedmanifest", "1.0");
+        assertTrue(carFile.exists());
+        assertTrue(ec.get(Diagnostic.Kind.ERROR).isEmpty());
+        // When the compiler value overrides a user value, we expect a warning
+        assertTrue(ec.get(Diagnostic.Kind.WARNING).size() == 1);
+        assertTrue(ec.get(Diagnostic.Kind.WARNING).iterator().next().equals(new CompilerError(Diagnostic.Kind.WARNING, null, -1, 
+                "manifest attribute provided by compiler: ignoring value from 'Bundle-ActivationPolicy' for module 'test.mergedmanifest'")));
+        try (JarFile car = new JarFile(carFile)) {
+            Manifest manifest = car.getManifest();
+            manifest.write(System.err);
+            assertTrue(manifest != null);
+            assertEquals("test.mergedmanifest", manifest.getMainAttributes().getValue("Bundle-SymbolicName"));
+            assertEquals("Baz", manifest.getMainAttributes().getValue("Foo-Bar"));
+            assertEquals("whatever", manifest.getMainAttributes().getValue("LastLineWithoutNewline"));
+            Enumeration<JarEntry> entries = car.entries();
+            assertTrue(entries.hasMoreElements());
+            JarEntry entry = entries.nextElement();
+            assertEquals("META-INF/", entry.getName());
+            assertTrue(entry.isDirectory());
+            entry = entries.nextElement();
+            assertEquals("META-INF/MANIFEST.MF", entry.getName());
+            assertTrue(!entry.isDirectory());
+        }
     }
     
 }
