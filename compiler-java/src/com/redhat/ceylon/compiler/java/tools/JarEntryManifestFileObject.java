@@ -43,6 +43,8 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.NestingKind;
 import javax.tools.JavaFileObject;
 
+import com.sun.tools.javac.util.Log;
+
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -52,38 +54,33 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 
 public class JarEntryManifestFileObject implements JavaFileObject {
 
-    private JarOutputStream jarFile;
-    private String fileName;
     private String jarFileName;
+    private String fileName;
     private Module module;
     private String osgiProvidedBundles;
-
-    public JarEntryManifestFileObject(String jarFileName, JarOutputStream jarFile, String fileName, Module module, String osgiProvidedBundles) {
+    private ByteArrayOutputStream baos;
+    public JarEntryManifestFileObject(String jarFileName, String fileName, Module module, String osgiProvidedBundles) {
         super();
         this.jarFileName = jarFileName;
-        this.jarFile = jarFile;
         this.fileName = fileName;
         this.module = module;
         this.osgiProvidedBundles = osgiProvidedBundles;
     }
 
-    /*
-     * This is the only method used in the class, the rest is just there to satisfy
-     * the type system.
-     */
     @Override
     public OutputStream openOutputStream() throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        return new FilterOutputStream(baos){
-            @Override
-            public void close() throws IOException {
-                writeManifestJarEntry(readManifest(baos));
-            }
-        };
+        this.baos = new ByteArrayOutputStream();
+        return this.baos;
+    }
+    
+    public void writeManifest(JarOutputStream jarFile, Log log) throws IOException {
+        if (baos != null) {
+            writeManifestJarEntry(jarFile, readManifest(baos), log);
+        }
     }
 
-    private void writeManifestJarEntry(Manifest originalManifest) throws IOException {
-        Manifest manifest = new OsgiManifest(module, originalManifest, osgiProvidedBundles).build();
+    private void writeManifestJarEntry(JarOutputStream jarFile, Manifest originalManifest, Log log) throws IOException {
+        Manifest manifest = new OsgiManifest(module, originalManifest, osgiProvidedBundles, log).build();
         jarFile.putNextEntry(new ZipEntry(fileName));
         manifest.write(jarFile);
     }
@@ -203,14 +200,17 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         private final Manifest originalManifest;
         private final Module module;
 
+        private Log log;
+
         public OsgiManifest(Module module, String osgiProvidedBundles) {
-            this(module, null, osgiProvidedBundles);
+            this(module, null, osgiProvidedBundles, null);
         }
 
-        public OsgiManifest(Module module, Manifest originalManifest, String osgiProvidedBundles) {
+        public OsgiManifest(Module module, Manifest originalManifest, String osgiProvidedBundles, Log log) {
             this.module = module;
             this.originalManifest = originalManifest;
             this.osgiProvidedBundles = osgiProvidedBundles;
+            this.log = log;
         }
 
         private String toOSGIBundleVersion(String ceylonVersion) {
@@ -325,9 +325,10 @@ public class JarEntryManifestFileObject implements JavaFileObject {
                 for (Object key : attributes.keySet()) {
                     if (!main.containsKey(key)) {
                         main.put(key, attributes.get(key));
+                    } else if (log != null) {
+                        log.warning("ceylon", "manifest attribute provided by compiler: ignoring value from '"+key+"' for module '" + module.getNameAsString() +"'");
                     }
                 }
-
                 manifest.getEntries().putAll(originalManifest.getEntries());
             }
         }

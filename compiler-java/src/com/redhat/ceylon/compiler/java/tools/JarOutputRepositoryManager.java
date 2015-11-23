@@ -39,10 +39,12 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.cmr.util.JarUtils;
+import com.redhat.ceylon.cmr.util.JarUtils.JarEntryFilter;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
@@ -101,12 +103,31 @@ public class JarOutputRepositoryManager {
         }
     }
     
+    /***
+     * Manages "updating" an existing jar file with the output from 
+     * a compilation.*/
     static class ProgressiveJar {
+       /* In fact the Java zip/jar APIs don't support updating, so 
+        * we have to use temporary files. 
+        * 
+        * There's also an unspecified requirement that MANIFEST.MF 
+        * come first in the archive (#5750). 
+        * Since this can be added at any point via a call to
+        * getJavaFileObject() we have to:
+        * 
+        * * Write manifest.jar to hold just the manifest as and when it gets added
+        * * Write the rest of the generated files to rest.jar
+        * * Then on close() we generate a final.jar by copying the entries from
+        *   - manifest.jar and then
+        *   - rest.jar
+        *   - and then stuff from original.car
+        * * And finally rename final.jar to original.car
+        */
         private static final String META_INF = "META-INF";
         private static final String MAPPING_FILE = META_INF+"/mapping.txt";
         /** Jar we're "updating" (i.e. will copy any entries not added to the output */
         private File originalJarFile;
-        /** Jar we're actually generating */
+        /** Jar we're actually generating, but doesn't include the MANIFEST.MF */
         private File outputJarFile;
         /** Output stream for the {@link #outputJarFile} */
         private JarOutputStream jarOutputStream;
@@ -121,9 +142,8 @@ public class JarOutputRepositoryManager {
         private ArtifactContext carContext;
         private ArtifactCreator srcCreator;
         private ArtifactCreator resourceCreator;
+        final private Set<String> foldersToAdd = new HashSet<String>();
         private Module module;
-        private Set<String> folders = new HashSet<String>();
-        private boolean manifestWritten = false;
         /** Whether to generate an OSGi-compatible MANIFEST.MF */
         private boolean writeOsgiManifest;
         /** The bundles to treat as "provided", thus omitted from {@code Required-Bundle:} */
@@ -132,11 +152,14 @@ public class JarOutputRepositoryManager {
         /** Whether to add a pom.xml and pom.properties in module subdir of {@code META-INF}*/
         private boolean writeMavenManifest;
         private TaskListener taskListener;
+        private JarEntryManifestFileObject manifest;
+        private Log log;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, Options options, CeyloncFileManager ceyloncFileManager, TaskListener taskListener) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
             this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+            this.log = log;
             this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
             this.srcCreator = CeylonUtils.makeSourceArtifactCreator(
                     repoManager,
@@ -211,24 +234,56 @@ public class JarOutputRepositoryManager {
 
         public void close() throws IOException {
             try {
+                // Create the .src archive
                 Set<String> copiedSourceFiles = srcCreator.copy(modifiedSourceFiles);
                 resourceCreator.copy(modifiedResourceFilesFull);
-    
-                if (writeOsgiManifest && !manifestWritten && !module.isDefault()) {
-                    Manifest manifest = new OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles).build();
-                    writeManifestJarEntry(manifest);
-                }
-                if (writeMavenManifest) {
-                    writeMavenManifest(module);
-                }
-    
-                Properties previousMapping = getPreviousMapping();
-                writeMappingJarEntry(previousMapping, getJarFilter(previousMapping, copiedSourceFiles));
                 
-                JarUtils.finishUpdatingJar(
-                        originalJarFile, outputJarFile, carContext, jarOutputStream,
-                        getJarFilter(previousMapping, copiedSourceFiles),
-                        repoManager, options.get(OptionName.VERBOSE) != null, cmrLog, folders, options.isSet(OptionName.CEYLONPACK200));
+                jarOutputStream.flush();
+                jarOutputStream.close();
+                
+                // Create a jar with the MANIFEST.MF first
+                File metaFirstFile = File.createTempFile("compile", "car");
+                JarOutputStream manifestFirst = new JarOutputStream(new FileOutputStream(metaFirstFile));
+                
+                // Add META-INF/
+                Set<String> foldersAdded = new HashSet<String>();
+                JarUtils.makeFolder(foldersAdded, manifestFirst, META_INF+"/");
+                
+                // Add META-INF/MANIFEST.MF
+                if (writeOsgiManifest && manifest == null && !module.isDefault()) {
+                    // Copy the previous manifest
+                    Manifest manifest = new OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles, null).build();
+                    writeManifestJarEntry(manifestFirst, manifest);
+                } else if (manifest != null && !module.isDefault()) {
+                    // Use the added manifest
+                    manifest.writeManifest(manifestFirst, log);
+                }
+                
+                // Add META-INF/.../pom.xml and pom.properties
+                if (writeMavenManifest) {
+                    writeMavenManifest(foldersAdded, manifestFirst, module);
+                }
+                
+                // Add META-INF/mapping.txt
+                Properties previousMapping = getPreviousMapping();
+                JarEntryFilter jarFilter = getJarFilter(previousMapping, copiedSourceFiles);
+                writeMappingJarEntry(manifestFirst, foldersAdded, previousMapping, jarFilter);
+                
+                manifestFirst.close();
+                
+                File finalCarFile = File.createTempFile("ceylon-compiler-", ".car");
+                JarCat jc = new JarCat(finalCarFile);
+                jc.cat(metaFirstFile);
+                jc.cat(outputJarFile);
+                jc.cat(originalJarFile, jarFilter);
+                jc.close();
+                FileUtil.deleteQuietly(metaFirstFile);
+            
+                if (options.isSet(OptionName.CEYLONPACK200)) {
+                    JarUtils.repack(finalCarFile, cmrLog);
+                }
+                File sha1File = ShaSigner.sign(finalCarFile, cmrLog, options.get(OptionName.VERBOSE) != null);
+                JarUtils.publish(finalCarFile, sha1File, carContext, repoManager, cmrLog);
                 
                 String info;
                 if(module.isDefault())
@@ -239,6 +294,10 @@ public class JarOutputRepositoryManager {
                 if(taskListener instanceof CeylonTaskListener){
                     ((CeylonTaskListener) taskListener).moduleCompiled(module.getNameAsString(), module.getVersion());
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (RuntimeException e) {
+                throw e;
             } finally {
                 FileUtil.deleteQuietly(outputJarFile);
             }
@@ -266,18 +325,17 @@ public class JarOutputRepositoryManager {
         }
 
         /** Add a {@code META-INF/MANIFEST.MF} entry using the given {@code manifest} */
-        private void writeManifestJarEntry(Manifest manifest) {
+        private static void writeManifestJarEntry(JarOutputStream out, Manifest manifest) {
             try {
-                folders.add(META_INF+"/");
-                jarOutputStream.putNextEntry(new ZipEntry(OsgiManifest.MANIFEST_FILE_NAME));
-                manifest.write(jarOutputStream);
+                out.putNextEntry(new ZipEntry(OsgiManifest.MANIFEST_FILE_NAME));
+                manifest.write(out);
             }
             catch (IOException e) {
                 // TODO : log to the right place
             }
             finally {
                 try {
-                    jarOutputStream.closeEntry();
+                    out.closeEntry();
                 }
                 catch (IOException ignore) {
                 }
@@ -289,16 +347,18 @@ public class JarOutputRepositoryManager {
          * {@code META-INF/maven/<groupId>/<artifactId>/pom.xml}
          * and {@code META-INF/maven/<groupId>/<artifactId>/pom.properties}
          * entries for the given {@code module}.
+         * @param manifestFirst 
          */
-        private void writeMavenManifest(Module module) {
-            MavenPomUtil.writeMavenManifest(jarOutputStream, module, folders);
+        private void writeMavenManifest(Set<String> foldersAlreadyAdded, JarOutputStream manifestFirst, Module module) {
+            MavenPomUtil.writeMavenManifest2(manifestFirst, module, foldersAlreadyAdded);
         }
 
         /** 
          * Add a {@code META-INF/mapping.txt} entry
          * which records which source files generated which .class files
+         * @param outputStream 
          */
-        private void writeMappingJarEntry(Properties previousMapping, JarUtils.JarEntryFilter filter) {
+        private void writeMappingJarEntry(JarOutputStream outputStream, Set<String> foldersAlreadyAdded, Properties previousMapping, JarUtils.JarEntryFilter filter) {
             Properties newMapping = new Properties();
             newMapping.putAll(writtenClassesMapping);
             if (previousMapping != null) {
@@ -311,16 +371,16 @@ public class JarOutputRepositoryManager {
             }
             // Write the mapping file to the Jar
             try {
-                folders.add(META_INF+"/");
-                jarOutputStream.putNextEntry(new ZipEntry(MAPPING_FILE));
-                newMapping.store(jarOutputStream, "");
+                JarUtils.makeFolder(foldersAlreadyAdded, outputStream, META_INF+"/");
+                outputStream.putNextEntry(new ZipEntry(MAPPING_FILE));
+                newMapping.store(outputStream, "");
             }
             catch(IOException e) {
                 // TODO : log to the right place
             }
             finally {
                 try {
-                    jarOutputStream.closeEntry();
+                    outputStream.closeEntry();
                 } catch (IOException e) {
                 }
             }
@@ -337,7 +397,7 @@ public class JarOutputRepositoryManager {
             
             String folder = JarUtils.getFolder(entryName);
             if (folder != null) {
-                folders.add(folder);
+                foldersToAdd.add(folder);
             }
 
             if (sourceFile != null) {
@@ -348,8 +408,8 @@ public class JarOutputRepositoryManager {
                 modifiedResourceFilesRel.add(entryName);
                 modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
                 if (writeOsgiManifest && OsgiManifest.isManifestFileName(entryName) && !module.isDefault()) {
-                    this.manifestWritten = true;
-                    return new JarEntryManifestFileObject(outputJarFile.getPath(), jarOutputStream, entryName, module, osgiProvidedBundles);
+                    manifest = new JarEntryManifestFileObject(outputJarFile.getPath(), entryName, module, osgiProvidedBundles);
+                    return manifest;
                 }
             }
             return new JarEntryFileObject(outputJarFile.getPath(), jarOutputStream, entryName);
