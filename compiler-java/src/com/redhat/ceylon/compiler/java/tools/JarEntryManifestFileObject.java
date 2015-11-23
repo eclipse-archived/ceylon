@@ -70,7 +70,16 @@ public class JarEntryManifestFileObject implements JavaFileObject {
     @Override
     public OutputStream openOutputStream() throws IOException {
         this.baos = new ByteArrayOutputStream();
-        return this.baos;
+        return new FilterOutputStream(this.baos) {
+            @Override
+            public void close() throws IOException {
+                // If the last line of a MANIFEST.MF lacks a newline 
+                // then it gets ignored, so let's add one here
+                // to avoid that trap
+                super.write('\n');
+                super.close();
+            }
+        };
     }
     
     public void writeManifest(JarOutputStream jarFile, Log log) throws IOException {
