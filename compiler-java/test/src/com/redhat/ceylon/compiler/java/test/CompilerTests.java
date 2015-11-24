@@ -998,12 +998,14 @@ public abstract class CompilerTests {
         Process p = pb.start();
         return p.waitFor();
     }
-
-    private String mainApiClasspath(String rep, ModuleSpec module) throws IOException, InterruptedException {
+    protected String mainApiClasspath(String rep, ModuleSpec module) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, 0, null);
+    }
+    protected String mainApiClasspath(String rep, ModuleSpec module, int expectedSc, File err1) throws IOException, InterruptedException {
         File dir = new File("build/mainapi");
         dir.mkdirs();
         File out = File.createTempFile("classpath-"+module, ".out", dir);
-        File err = File.createTempFile("classpath-"+module, ".err", dir);
+        File err = err1 != null ? err1 : File.createTempFile("classpath-"+module, ".err", dir);
         ArrayList<String> a = new ArrayList<String>();
         a.add("ceylon");
         a.add("classpath");
@@ -1018,17 +1020,19 @@ public abstract class CompilerTests {
         int sc = p.waitFor();
         
         if (err.length()!=0) {
-            try (BufferedReader r = new BufferedReader(new FileReader(err))) {
-                String error = r.readLine();
-                Assert.fail("ceylon classpath " + module + " produced standard error output: " + error);
-                return error;
+            if (err1 == null) {
+                try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+                    String error = r.readLine();
+                    Assert.fail("ceylon classpath " + module + " produced standard error output: " + error);
+                    return error;
+                }
             }
         }
         try (BufferedReader r = new BufferedReader(new FileReader(out))) {
             String cp = r.readLine();
             System.err.println(cp);
             Assert.assertTrue("ceylon classpath " + module + " produced more than a single line of output", r.readLine() == null);
-            Assert.assertEquals(0, sc);
+            Assert.assertEquals(expectedSc, sc);
             return cp;
         }
     }
