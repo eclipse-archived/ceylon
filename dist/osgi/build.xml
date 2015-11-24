@@ -141,13 +141,15 @@
             module="org.osgi.core/4.3.1" 
             jar="${basedir}/lib/org.osgi.core-4.3.1.jar"
             out="${repoDir}/repo"
-            force="true">
+            force="true"
+            fork="true">
         </ceylon-import-jar>
         <ceylon-import-jar 
             module="com.redhat.ceylon.dist/${module.com.redhat.ceylon.dist.osgi.version}" 
             jar="${build}/${ceylon.dist.osgi.jar}" 
             descriptor="${basedir}/module.properties"
-            out="${repoDir}/repo">
+            out="${repoDir}/repo"
+            fork="true">
         </ceylon-import-jar>
         <jar destfile="${build}/${ceylon.dist.osgi.repo.jar}" 
             manifest="${build.repo}/META-INF/MANIFEST.MF">
@@ -249,7 +251,8 @@
             out="${build.dist}"
         	repositoryName="Ceylon Distribution Bundles"
             categoryPrefix="com.redhat.ceylon.dist"
-            categories="${p2}/category.xml">
+            categories="${p2}/category.xml"
+            fork="true">
             <module name="com.redhat.ceylon.dist" version="${module.com.redhat.ceylon.dist.osgi.version}"/> 
             <module name="com.redhat.ceylon.dist.repo" version="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/> 
             <module name="ceylon.bootstrap" version="${module.ceylon.bootstrap.version}"/> 
