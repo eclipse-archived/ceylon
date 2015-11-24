@@ -65,11 +65,15 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
         "given descriptor file with the available information (for now this only works " +
         "for the `.properties` files). If the file didn't exist yet it will be created." +
         "\n\n" +
+        "If the option `--source-jar-file` is given the tool will try to include the " +
+        "source jar into the module as well, including a SHA1 of that source jar." +
+        "\n\n" +
         OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     private ModuleSpec module;
     private File jarFile;
+    private File sourceJarFile;
     private File descriptor;
     private boolean updateDescriptor;
     private boolean force;
@@ -97,6 +101,12 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     
     public void setModuleSpec(ModuleSpec module) {
         this.module = module;
+    }
+
+    @OptionArgument(argumentName="source-jar-file")
+    @Description("Specify a source jar to be used for this module")
+    public void setSourceJarFile(File sourceJarFile) {
+        this.sourceJarFile = sourceJarFile;
     }
 
     @Argument(argumentName="jar-file", multiplicity="1", order=1)
@@ -141,10 +151,12 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) {
-        File f = applyCwd(jarFile);
-        checkReadableFile(f, "error.jarFile", true);
-        if(!f.getName().toLowerCase().endsWith(".jar"))
-            throw new ImportJarException("error.jarFile.notJar", new Object[]{f.toString()}, null);
+        File f = assertJar(jarFile, "error.jarFile", "error.jarFile.notJar");
+        File sourceJarWithCwd = null;
+        
+        if (sourceJarFile != null) {
+             sourceJarWithCwd = assertJar(sourceJarFile, "error.sourceJarFile", "error.sourceJarFile.notJar");
+        }
         
         if (descriptor == null) {
             String baseName = f.getName().substring(0, f.getName().length() - 4);
@@ -165,6 +177,19 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                 throw new ImportJarException("error.descriptorFile.badSuffix", new Object[]{descriptor}, null);
         }
     }
+    
+    private File assertJar(File aJarFile, String errorResource1, String errorResource2) {
+        File aJarFileWithCwd = applyCwd(aJarFile);
+        checkReadableFile(aJarFileWithCwd, errorResource1, true);
+
+        if (! aJarFileWithCwd.getName().toLowerCase().endsWith(".jar")) {
+            throw new ImportJarException(errorResource2, 
+                                         new Object[] { aJarFile.toString() }, 
+                                         null);
+        }
+        
+        return aJarFileWithCwd;
+    }
 
     private void checkReadableFile(File f, String keyPrefix, boolean required) {
         if (f.exists()) {
@@ -178,7 +203,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     }
     
     private LegacyImporter createImporter() {
-        LegacyImporter importer = new LegacyImporter(module.getName(), module.getVersion(), applyCwd(jarFile), getOutputRepositoryManager(), getRepositoryManager(), log, new ImporterFeedback() {
+        LegacyImporter importer = new LegacyImporter(module.getName(), module.getVersion(), applyCwd(jarFile), applyCwd(sourceJarFile), getOutputRepositoryManager(), getRepositoryManager(), log, new ImporterFeedback() {
             @Override
             public void beforeDependencies() throws IOException {
                 msg("info.checkingDependencies").newline();

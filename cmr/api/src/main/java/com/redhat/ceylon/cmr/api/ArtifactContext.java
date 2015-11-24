@@ -44,7 +44,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String DART_MODEL = "-dartmodel.json";
     public static final String RESOURCES = "module-resources";
     public static final String SRC = ".src";
-    public static final String MAVEN_SRC = "-sources.jar";
+    public static final String LEGACY_SRC = "-sources.jar";
     public static final String DOCS = "module-doc";
     public static final String MODULE_PROPERTIES = "module.properties";
     public static final String MODULE_XML = "module.xml";
@@ -58,7 +58,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // NB: SHA1 and ZIP are not part of this list because they are supposed
     // to be "composed" with other suffixes
     private static final String fileSuffixes[] = {
-        CAR, JAR, JS_MODEL, JS, DART, DART_MODEL, RESOURCES, SRC, MAVEN_SRC,
+        CAR, JAR, JS_MODEL, JS, DART, DART_MODEL, RESOURCES, SRC, LEGACY_SRC,
         DOCS, SCRIPTS_ZIPPED
     };
     
