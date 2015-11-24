@@ -62,6 +62,30 @@ Some super-charged ant tasks:
         </ant>
     </target>
     
+    <target name="package">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="package"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="release">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="release"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
+    <target name="nightly">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="nightly"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
     <!-- The following tasks all redirect to "dist/sdk-build.xml" -->
     
     <target name="setup-sdk">
