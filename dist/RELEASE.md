@@ -60,6 +60,14 @@ On a Debian system:
     ceylon-dist $ fakeroot ./debian/rules clean binary
 4. Copy the zip to downloads.ceylon-lang.org:
     $ scp ceylon-0.6.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+5. Rebuild the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
+    $ cd ../ceylon-debian-repo
+    $ vim build.sh # Add the new release
+    $ ./build.sh
+    $ rsync -rv --dry-run dists ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
+    $ ssh ceylon-lang.org
+    $ cd /var/www/downloads.ceylonlang/apt/
+    $ ~stephane/src/ceylon-debian/repo/makepool.sh ../cli/*.deb
 
 # Build the RedHat file
 
