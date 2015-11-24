@@ -396,7 +396,7 @@ public class LegacyImporter {
         ShaSigner.signArtifact(outRepoman, context, jarFile, log);
         
         if (sourceJarFile != null) {
-            ArtifactContext sourceJarContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.MAVEN_SRC);
+            ArtifactContext sourceJarContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.LEGACY_SRC);
             context.setForceOperation(true);
             outRepoman.putArtifact(sourceJarContext, sourceJarFile);
             

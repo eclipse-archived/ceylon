@@ -169,7 +169,7 @@ public class AetherUtils {
         String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
         CmrRepository repository = NodeUtils.getRepository(node);
 
-        if (CeylonUtils.arrayContains(ac.getSuffixes(), ArtifactContext.MAVEN_SRC)) {
+        if (CeylonUtils.arrayContains(ac.getSuffixes(), ArtifactContext.LEGACY_SRC)) {
             return fetchWithClassifier(repository, groupId, artifactId, version, "sources", repositoryDisplayString);
         }
 
