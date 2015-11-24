@@ -184,11 +184,15 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
 
         String classpath = sb.toString();
         
+        List<String> args = new ArrayList<String>(Arrays.asList(path, "-cp", 
+                classpath));
+        //args.add("-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y");
+        args.add(Main.class.getName());
+        args.add(moduleSpec);
+        args.add(runClass);
+        
         ProcessBuilder processBuilder = 
-                new ProcessBuilder(path, "-cp", 
-                classpath, 
-                Main.class.getName(),
-                moduleSpec, runClass);
+                new ProcessBuilder(args);
         processBuilder.inheritIO();
         Process process = processBuilder.start();
         int exit = process.waitFor();
