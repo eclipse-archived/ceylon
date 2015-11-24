@@ -28,6 +28,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.ProcessBuilder.Redirect;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -901,6 +902,20 @@ public abstract class CompilerTests {
     }
     
     protected void runInJBossModules(String runner, String module, List<String> runnerArgs) throws Throwable {
+        Assert.assertEquals("Unexpected exit code", 0, runInJBossModules(runner, module, runnerArgs, null, null));
+    }
+    
+    /**
+     * Executes {@code ceylon run} in a subprocess and returns its status code
+     * @param runner The ceylon subcommand to run. This is usually "run".
+     * @param module The module to run
+     * @param runnerArgs The arguments to pass to the module
+     * @param errFile A file to write the subprocess' standard error to, for later inspection
+     * @param outFile A file to write the subprocess' standard output to, for later inspection
+     * @throws Throwable
+     */
+    protected int runInJBossModules(String runner, String module, List<String> runnerArgs,
+            File errFile, File outFile) throws Throwable {
         /* Run this in its own process because jbmoss modules assumes it
          * owns the VM, and in particular because it likes to call 
          * System.exit() (which will break subsequent tests) while it 
@@ -916,9 +931,18 @@ public abstract class CompilerTests {
         a.add(module);
         System.err.println(a);
         ProcessBuilder pb = new ProcessBuilder(a);
-        pb.inheritIO();
+        if (errFile != null) {
+            pb.redirectError(errFile);
+        } else {
+            pb.redirectError(Redirect.INHERIT);
+        }
+        if (outFile != null) {
+            pb.redirectOutput(outFile);
+        } else {
+            pb.redirectOutput(Redirect.INHERIT);
+        }
         Process p = pb.start();
-        Assert.assertEquals(0, p.waitFor());
+        return p.waitFor();
     }
     
     protected void runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs) throws Throwable {
@@ -942,6 +966,38 @@ public abstract class CompilerTests {
         Process p = pb.start();
         Assert.assertEquals(0, p.waitFor());
     }
+    
+    protected int runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs,
+            File errFile, File outFile) throws Throwable {
+        /* Run this in its own process because jbmoss modules assumes it
+         * owns the VM, and in particular because it likes to call 
+         * System.exit() (which will break subsequent tests) while it 
+         * also doesn't like to run with a SecurityManager 
+         * (which we could otherwise use to prevent System.exit)  
+         */
+        ArrayList<String> a = new ArrayList<String>();
+        a.add("java");
+        a.add("-cp");
+        a.add(mainApiClasspath(rep, module));
+        a.add("com.redhat.ceylon.compiler.java.runtime.Main");
+        a.add(module.toString());
+        a.add(mainJavaClassName);
+        a.addAll(moduleArgs);
+        System.err.println(a);
+        ProcessBuilder pb = new ProcessBuilder(a);
+        if (errFile != null) {
+            pb.redirectError(errFile);
+        } else {
+            pb.redirectError(Redirect.INHERIT);
+        }
+        if (outFile != null) {
+            pb.redirectOutput(outFile);
+        } else {
+            pb.redirectOutput(Redirect.INHERIT);
+        }
+        Process p = pb.start();
+        return p.waitFor();
+    }
 
     private String mainApiClasspath(String rep, ModuleSpec module) throws IOException, InterruptedException {
         File dir = new File("build/mainapi");
@@ -959,7 +1015,7 @@ public abstract class CompilerTests {
         pb.redirectOutput(out);
         pb.redirectError(err);
         Process p = pb.start();
-        Assert.assertEquals(0, p.waitFor());
+        int sc = p.waitFor();
         
         if (err.length()!=0) {
             try (BufferedReader r = new BufferedReader(new FileReader(err))) {
@@ -972,6 +1028,7 @@ public abstract class CompilerTests {
             String cp = r.readLine();
             System.err.println(cp);
             Assert.assertTrue("ceylon classpath " + module + " produced more than a single line of output", r.readLine() == null);
+            Assert.assertEquals(0, sc);
             return cp;
         }
     }
