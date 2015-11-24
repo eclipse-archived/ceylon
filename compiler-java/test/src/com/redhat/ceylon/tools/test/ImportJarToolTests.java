@@ -137,10 +137,9 @@ public class ImportJarToolTests extends AbstractToolTests {
             CeylonImportJarTool tool = 
                     pluginFactory.bindArguments(model, 
                                                 getMainTool(), 
-                                                options("--source-jar-file", 
-                                                        "test/src/com/redhat/ceylon/tools/test/nonexistent-sources.jar",
-                                                        "test/1.0",
-                                                        "test/src/com/redhat/ceylon/tools/test/test.jar"));
+                                                options("test/1.0",
+                                                        "test/src/com/redhat/ceylon/tools/test/test.jar",
+                                                        "test/src/com/redhat/ceylon/tools/test/nonexistent-sources.jar"));
             Assert.fail();
         } catch (ImportJarException e) {
             String srcJarName = "test/src/com/redhat/ceylon/tools/test/nonexistent-sources.jar";
@@ -195,10 +194,9 @@ public class ImportJarToolTests extends AbstractToolTests {
                     pluginFactory.bindArguments(model, 
                                                 getMainTool(), 
                                                 options( "--force",
-                                                        "--source-jar-file", 
-                                                        "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
                                                         "source.import.test/1.0",
-                                                        "test/src/com/redhat/ceylon/tools/test/test.jar"));
+                                                        "test/src/com/redhat/ceylon/tools/test/test.jar",
+                                                        "test/src/com/redhat/ceylon/tools/test/test-source.jar"));
         
         tool.run();
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
@@ -221,10 +219,9 @@ public class ImportJarToolTests extends AbstractToolTests {
                                                 getMainTool(), 
                                                 options( "--force",
                                                          "--verbose",
-                                                         "--source-jar-file", 
-                                                         "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
                                                          "source.import.test/1.0",
-                                                         "test/src/com/redhat/ceylon/tools/test/test.jar"));
+                                                         "test/src/com/redhat/ceylon/tools/test/test.jar",
+                                                         "test/src/com/redhat/ceylon/tools/test/test-source.jar"));
         
         tool.run();
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
@@ -334,10 +331,9 @@ public class ImportJarToolTests extends AbstractToolTests {
                                             getMainTool(),
                                             options("--descriptor",
                                                     "test/src/com/redhat/ceylon/tools/test/test-descriptor.xml",
-                                                    "--source-jar-file", 
-                                                    "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
                                                     "source.import.test/1.0",
-                                                    "test/src/com/redhat/ceylon/tools/test/test.jar"));
+                                                    "test/src/com/redhat/ceylon/tools/test/test.jar",
+                                                    "test/src/com/redhat/ceylon/tools/test/test-source.jar"));
         tool.run();
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
         File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
@@ -360,10 +356,9 @@ public class ImportJarToolTests extends AbstractToolTests {
                                             getMainTool(),
                                             options("--descriptor",
                                                     "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties",
-                                                    "--source-jar-file", 
-                                                    "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
                                                     "source.import.test/1.0",
-                                                    "test/src/com/redhat/ceylon/tools/test/test.jar"));
+                                                    "test/src/com/redhat/ceylon/tools/test/test.jar",
+                                                    "test/src/com/redhat/ceylon/tools/test/test-source.jar"));
         tool.run();
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
         File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
