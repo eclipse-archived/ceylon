@@ -77,6 +77,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -1219,11 +1220,13 @@ public class CMRTests extends CompilerTests {
         File carFile = getModuleArchive("default", null);
         assertTrue(carFile.exists());
 
-        JarFile car = new JarFile(carFile);
-
-        ZipEntry manifest = car.getEntry(OsgiManifest.MANIFEST_FILE_NAME);
-        assertNull(manifest);
-        car.close();
+        try (JarFile car = new JarFile(carFile)) {
+            ZipEntry manifest = car.getEntry(OsgiManifest.MANIFEST_FILE_NAME);
+            try (InputStream input = car.getInputStream(manifest)) {
+                Manifest m = new Manifest(input);
+                Assert.assertTrue(JarEntryManifestFileObject.DefaultModuleManifest.isDefaultModule(m));
+            }
+        }
     }
 
     @Test
