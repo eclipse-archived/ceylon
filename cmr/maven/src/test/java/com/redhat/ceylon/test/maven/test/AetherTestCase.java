@@ -84,7 +84,7 @@ public class AetherTestCase extends AbstractAetherTest {
     public void testWithSources() throws Throwable {
         CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult(new ArtifactContext("org.slf4j.slf4j-api", "1.6.4", ArtifactContext.MAVEN_SRC));
+        ArtifactResult result = manager.getArtifactResult(new ArtifactContext("org.slf4j.slf4j-api", "1.6.4", ArtifactContext.LEGACY_SRC));
         Assert.assertNotNull(result);
         File artifact = result.artifact();
         boolean exists = false;

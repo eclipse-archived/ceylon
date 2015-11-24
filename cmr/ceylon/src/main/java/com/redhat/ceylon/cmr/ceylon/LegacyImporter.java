@@ -49,6 +49,7 @@ public class LegacyImporter {
     private final String moduleName;
     private final String moduleVersion;
     private final File jarFile;
+    private final File sourceJarFile;
     private final RepositoryManager outRepoman;
     private final RepositoryManager lookupRepoman;
     private final ImporterFeedback feedback;
@@ -212,7 +213,7 @@ public class LegacyImporter {
      * @param feedback Instance of ModuleCopycat.CopycatFeedback for receiving feedback
      */
     public LegacyImporter(String moduleName, String moduleVersion, File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository, ImporterFeedback feedback) {
-        this(moduleName, moduleVersion, jarFile, outputRepository, lookupRepository, new CMRJULLogger(), feedback);
+        this(moduleName, moduleVersion, jarFile, null, outputRepository, lookupRepository, new CMRJULLogger(), feedback);
     }
     
     /**
@@ -225,7 +226,7 @@ public class LegacyImporter {
      * @param log The logger to use
      * @param feedback Instance of ModuleCopycat.CopycatFeedback for receiving feedback
      */
-    public LegacyImporter(String moduleName, String moduleVersion, File jarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository, Logger log, ImporterFeedback feedback) {
+    public LegacyImporter(String moduleName, String moduleVersion, File jarFile, File sourceJarFile, RepositoryManager outputRepository, RepositoryManager lookupRepository, Logger log, ImporterFeedback feedback) {
         assert(jarFile != null);
         assert(outputRepository != null);
         assert(lookupRepository != null);
@@ -233,6 +234,7 @@ public class LegacyImporter {
         this.moduleName = moduleName;
         this.moduleVersion = moduleVersion;
         this.jarFile = jarFile;
+        this.sourceJarFile = sourceJarFile;
         this.outRepoman = outputRepository;
         this.lookupRepoman = lookupRepository;
         this.log = log;
@@ -392,6 +394,14 @@ public class LegacyImporter {
         outRepoman.putArtifact(context, jarFile);
         
         ShaSigner.signArtifact(outRepoman, context, jarFile, log);
+        
+        if (sourceJarFile != null) {
+            ArtifactContext sourceJarContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.LEGACY_SRC);
+            context.setForceOperation(true);
+            outRepoman.putArtifact(sourceJarContext, sourceJarFile);
+            
+            ShaSigner.signArtifact(outRepoman, sourceJarContext, sourceJarFile, log);
+        }
         
         if (descriptorFile != null) {
             ArtifactContext descriptorContext = null;
