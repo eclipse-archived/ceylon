@@ -27,6 +27,11 @@ public class OverridesRuntimeResolver implements RuntimeResolver {
     
     @Override
     public String resolveVersion(String moduleName, String moduleVersion) {
+        if ("default".equals(moduleName)
+                && moduleVersion == null) {
+            // JBoss Modules turns default/null into default:main
+            return null;
+        }
         return findOverride(ModuleIdentifier.create(moduleName, moduleVersion)).getSlot();
     }
     
