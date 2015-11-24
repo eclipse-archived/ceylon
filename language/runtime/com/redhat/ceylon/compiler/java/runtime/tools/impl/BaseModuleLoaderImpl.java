@@ -83,7 +83,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                     // now we're sure the version was the same
                     // it was resolved to null so it was optional, but perhaps it's required now?
                     if(!optional){
-                        throw new RuntimeException("Missing module: "+ModuleUtil.makeModuleName(name, version));
+                        throw new ModuleNotFoundException("Could not find module: "+ModuleUtil.makeModuleName(name, version));
                     }
                     addDependency(dependent, loadedModule);
                     // already resolved and same version, we're good
@@ -99,7 +99,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
             if(!optional
                     && (result == null || result.artifact() == null || !result.artifact().exists())){
-                throw new RuntimeException("Missing module: "+ModuleUtil.makeModuleName(name, version));
+                throw new ModuleNotFoundException("Could not find module: "+ModuleUtil.makeModuleName(name, version));
             }
             // save even missing optional modules as nulls to not re-resolve them
             ModuleGraph.Module mod;
