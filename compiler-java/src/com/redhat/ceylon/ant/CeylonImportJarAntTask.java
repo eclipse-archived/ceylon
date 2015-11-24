@@ -39,6 +39,7 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
     
     private String module;
     private String jar;
+    private String sourceJar;
     private String descriptor;
     private boolean force;
 
@@ -56,6 +57,14 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
 
     public void setJar(String jar) {
         this.jar = jar;
+    }
+
+    public String getSourceJar() {
+        return sourceJar;
+    }
+
+    public void setSourceJar(String sourceJar) {
+        this.sourceJar = sourceJar;
     }
 
     public String getDescriptor() {
@@ -92,6 +101,10 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         
         if (jar != null) {
             cmd.createArgument().setValue(getJar());
+        }
+
+        if (sourceJar != null) {
+            cmd.createArgument().setValue(getSourceJar());
         }
     }
 

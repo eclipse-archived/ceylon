@@ -38,6 +38,7 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
 public class ArtifactContext implements Serializable, ContentOptions {
     public static final String CAR = ".car";
     public static final String JAR = ".jar";
+    public static final String SOURCE_JAR = "-source.jar";
     public static final String JS_MODEL = "-model.js";
     public static final String JS = ".js";
     public static final String DART = ".dart";

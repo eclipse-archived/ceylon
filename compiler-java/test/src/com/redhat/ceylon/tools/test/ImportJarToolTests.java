@@ -128,6 +128,26 @@ public class ImportJarToolTests extends AbstractToolTests {
             Assert.assertEquals("Jar file " +jarName + " does not exist", e.getMessage());
         }
     }
+
+    @Test
+    public void testNonexistentSourceJar() {
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        try {
+            CeylonImportJarTool tool = 
+                    pluginFactory.bindArguments(model, 
+                                                getMainTool(), 
+                                                options("--source-jar-file", 
+                                                        "test/src/com/redhat/ceylon/tools/test/nonexistent-source.jar",
+                                                        "test/1.0",
+                                                        "test/src/com/redhat/ceylon/tools/test/test.jar"));
+            Assert.fail();
+        } catch (ImportJarException e) {
+            String srcJarName = "test/src/com/redhat/ceylon/tools/test/nonexistent-source.jar";
+            srcJarName = srcJarName.replace('/', File.separatorChar);
+            Assert.assertEquals("Source jar file " +srcJarName+ " does not exist", e.getMessage());
+        }
+    }
     
     @Test
     public void testDescriptorSuffix() {
@@ -165,6 +185,58 @@ public class ImportJarToolTests extends AbstractToolTests {
         File f1 = destFile("importtest/imptest/1.0/importtest.imptest-1.0.jar");
         File f2 = destFile("importtest/imptest/1.0/importtest.imptest-1.0.jar.sha1");
         Assert.assertTrue(f1.exists() && f2.exists());
+    }
+
+    @Test
+    public void testJarAndSourceJarNoDescriptor() throws Exception {
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        CeylonImportJarTool tool = 
+                    pluginFactory.bindArguments(model, 
+                                                getMainTool(), 
+                                                options( "--force",
+                                                        "--source-jar-file", 
+                                                        "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
+                                                        "source.import.test/1.0",
+                                                        "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        
+        tool.run();
+        File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
+        File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        
+        Assert.assertTrue(jarFile.exists() && 
+                          sha1JarFile.exists() && 
+                          sourceJarFile.exists() &&
+                          sha1SourceJarFile.exists());
+    }
+
+    @Test
+    public void testJarAndSourceJarNoDescriptorVerbose() throws Exception {
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        CeylonImportJarTool tool = 
+                    pluginFactory.bindArguments(model, 
+                                                getMainTool(), 
+                                                options( "--force",
+                                                         "--verbose",
+                                                         "--source-jar-file", 
+                                                         "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
+                                                         "source.import.test/1.0",
+                                                         "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        
+        tool.run();
+        File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
+        File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
+        
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        
+        Assert.assertTrue(jarFile.exists() && 
+                          sha1JarFile.exists() && 
+                          sourceJarFile.exists() &&
+                          sha1SourceJarFile.exists());
     }
     
     @Test
@@ -250,6 +322,59 @@ public class ImportJarToolTests extends AbstractToolTests {
         File f3 = destFile("importtest/1.0/module.properties");
         Assert.assertTrue(f1.exists() && f2.exists());
         Assert.assertTrue(f3.exists());
+    }
+
+    @Test
+    public void testSourceJarWithXmlDescriptor() throws Exception {
+        FileUtil.delete(destFile("importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        CeylonImportJarTool tool = 
+                pluginFactory.bindArguments(model,
+                                            getMainTool(),
+                                            options("--descriptor",
+                                                    "test/src/com/redhat/ceylon/tools/test/test-descriptor.xml",
+                                                    "--source-jar-file", 
+                                                    "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
+                                                    "source.import.test/1.0",
+                                                    "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        tool.run();
+        File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
+        File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        File moduleXml = destFile("source/import/test/1.0/module.xml");
+
+        Assert.assertTrue(jarFile.exists() && sha1JarFile.exists());
+        Assert.assertTrue(sourceJarFile.exists() && sha1SourceJarFile.exists());
+        Assert.assertTrue(moduleXml.exists());
+    }
+    
+    @Test
+    public void testSourceJarWithPropertiesDescriptor() throws Exception {
+        FileUtil.delete(destFile("importtest"));
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+        CeylonImportJarTool tool = 
+                pluginFactory.bindArguments(model,
+                                            getMainTool(),
+                                            options("--descriptor",
+                                                    "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties",
+                                                    "--source-jar-file", 
+                                                    "test/src/com/redhat/ceylon/tools/test/test-source.jar", 
+                                                    "source.import.test/1.0",
+                                                    "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        tool.run();
+        File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
+        File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        File propertiesFile = destFile("source/import/test/1.0/module.properties");
+        
+        Assert.assertTrue(jarFile.exists() && sha1JarFile.exists());
+        Assert.assertTrue(sourceJarFile.exists() && 
+                          sha1SourceJarFile.exists());
+        Assert.assertTrue(propertiesFile.exists());
     }
     
     @Test
