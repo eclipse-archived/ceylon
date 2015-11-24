@@ -4,6 +4,7 @@ import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaCompilerImpl;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptCompilerImpl;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptRunnerImpl;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleNotFoundException;
 
 
 public class CeylonToolProvider {
@@ -19,6 +20,16 @@ public class CeylonToolProvider {
         }
     }
 
+    /**
+     * Gets a runner for running the given module
+     * @param backend The backend to run the module on
+     * @param options The runner options
+     * @param module The module
+     * @param version The module version
+     * @return The runner
+     * @throws ModuleNotFoundException If the module, or one of its 
+     * non-optional dependencies could not be found
+     */
     public static Runner getRunner(Backend backend, RunnerOptions options, String module, String version) {
         switch(backend){
         case JavaScript:

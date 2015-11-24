@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.java.runtime.tools.Backend;
 import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
+import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleNotFoundException;
 
 @Summary("Executes a Ceylon program")
 @Description(
@@ -277,8 +278,12 @@ public class CeylonRunTool extends RepoUsingTool {
         options.setVerboseCategory(verbose);
         options.setRun(run);
         options.setOverrides(overrides);
-        Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
-        runner.run(args.toArray(new String[args.size()]));
+        try {
+            Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
+            runner.run(args.toArray(new String[args.size()]));
+        } catch (ModuleNotFoundException e) {
+            throw new CeylonRuntimeException(e.getMessage());
+        }
     }
 
     private String[] setupArguments(List<String> argList, String sysRep, String ceylonVersion) {
