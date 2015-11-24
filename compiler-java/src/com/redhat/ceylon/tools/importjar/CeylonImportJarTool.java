@@ -50,7 +50,10 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
         "`<module>` is a module name and version separated with a slash, for example " +
         "`com.example.foobar/1.2.0`.\n" +
         "\n" +
-        "`<jar-file>` is the name of the Jar file to import.")
+        "`<jar-file>` is the name of the Jar file to import.\n" +
+        "\n" +
+        "`<source-jar-file>` is an optional name of a Jar file containing the sources " +
+        "for the Jar file to import.\n")
 @RemainingSections("## Descriptors" +
         "\n\n" +
         "When the import-jar tool analyses the <jar-file> and complains about missing " +
@@ -103,15 +106,14 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         this.module = module;
     }
 
-    @OptionArgument(argumentName="source-jar-file")
-    @Description("Specify a source jar to be used for this module")
-    public void setSourceJarFile(File sourceJarFile) {
-        this.sourceJarFile = sourceJarFile;
-    }
-
     @Argument(argumentName="jar-file", multiplicity="1", order=1)
     public void setFile(File jarFile) {
         this.jarFile = jarFile;
+    }
+
+    @Argument(argumentName="source-jar-file", multiplicity="?", order=2)
+    public void setSourceJarFile(File sourceJarFile) {
+        this.sourceJarFile = sourceJarFile;
     }
     
     @Option(longName="update-descriptor")
@@ -152,10 +154,9 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) {
         File f = assertJar(jarFile, "error.jarFile", "error.jarFile.notJar");
-        File sourceJarWithCwd = null;
         
         if (sourceJarFile != null) {
-             sourceJarWithCwd = assertJar(sourceJarFile, "error.sourceJarFile", "error.sourceJarFile.notJar");
+             assertJar(sourceJarFile, "error.sourceJarFile", "error.sourceJarFile.notJar");
         }
         
         if (descriptor == null) {
