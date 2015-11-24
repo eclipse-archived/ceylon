@@ -99,13 +99,9 @@ public class CompatTests extends CompilerTests {
     public void run1299CarIn121MainApi() throws Throwable {
         File err = File.createTempFile("compattest", "out");
         try {
-            int sc = runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules1299", 
-                    new ModuleSpec("compat120", "1.0.0"), "compat120.run_", Collections.<String>emptyList(),
-                    null, null);
-         // Check it returned an error status code
-            Assert.assertEquals(1, sc);
-            String expectedLine = "ceylon run: Could not find module: ceylon.language/1.2.99";
-            assertFileContainsLine(err, expectedLine);
+            mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules1299", 
+                    new ModuleSpec("compat120", "1.0.0"), 1, err);
+            assertFileContainsLine(err, "Module ceylon.language version 1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
         }
