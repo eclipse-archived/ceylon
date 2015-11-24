@@ -49,6 +49,8 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultModuleManifest;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.CeylonManifest;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.main.OptionName;
@@ -176,7 +178,7 @@ public class JarOutputRepositoryManager {
             this.module = module;
             this.writeOsgiManifest = !options.isSet(OptionName.CEYLONNOOSGI);
             this.osgiProvidedBundles = options.get(OptionName.CEYLONOSGIPROVIDEDBUNDLES);
-            this.writeMavenManifest = !options.isSet(OptionName.CEYLONNOPOM);
+            this.writeMavenManifest = !options.isSet(OptionName.CEYLONNOPOM) && !module.isDefault();
             
             // Determine the special path that signals that the files it contains
             // should be moved to the root of the output JAR/CAR
@@ -250,9 +252,9 @@ public class JarOutputRepositoryManager {
                 JarUtils.makeFolder(foldersAdded, manifestFirst, META_INF+"/");
                 
                 // Add META-INF/MANIFEST.MF
-                if (writeOsgiManifest && manifest == null && !module.isDefault()) {
+                if (writeOsgiManifest && manifest == null) {
                     // Copy the previous manifest
-                    Manifest manifest = new OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles, null).build();
+                    Manifest manifest = (module.isDefault() ? new DefaultModuleManifest() : new OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles, null)).build();
                     writeManifestJarEntry(manifestFirst, manifest);
                 } else if (manifest != null && !module.isDefault()) {
                     // Use the added manifest
@@ -407,7 +409,8 @@ public class JarOutputRepositoryManager {
             } else {
                 modifiedResourceFilesRel.add(entryName);
                 modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
-                if (writeOsgiManifest && OsgiManifest.isManifestFileName(entryName) && !module.isDefault()) {
+                if (CeylonManifest.isManifestFileName(entryName) && 
+                        (module.isDefault() || writeOsgiManifest)) {
                     manifest = new JarEntryManifestFileObject(outputJarFile.getPath(), entryName, module, osgiProvidedBundles);
                     return manifest;
                 }

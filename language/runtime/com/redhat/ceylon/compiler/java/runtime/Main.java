@@ -46,6 +46,7 @@ import com.redhat.ceylon.common.tools.ModuleSpec.Option;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultModuleManifest;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
@@ -541,12 +542,6 @@ public class Main {
                 if(moduleDescriptor != null)
                     return loadCeylonModuleCar(file, zipFile, moduleDescriptor, name, version);
                 
-                // Special case for Ceylon default module
-                if(name.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME)
-                        && version == null
-                        && file.getName().equalsIgnoreCase("default.car"))
-                    return new Module(name, null, Type.CEYLON, file);
-                
                 // JBoss modules next
                 ZipEntry moduleXml = zipFile.getEntry("META-INF/jbossmodules/"+ceylonPath+"/"+version+"/module.xml");
                 if(moduleXml != null)
@@ -709,12 +704,19 @@ public class Main {
         private Module loadMavenJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
             return loadFromResolver(file, zipFile, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
         }
+        
+        private Module loadDefaultJar(File file) throws IOException {
+            return new Module("default", null, Type.CEYLON, file);
+        }
 
         private Module loadOsgiJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
             // first verify that it is indeed for the module we're looking for
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
                 Manifest manifest = new Manifest(inputStream);
+                if (DefaultModuleManifest.isDefaultModule(manifest)) {
+                    return loadDefaultJar(file);
+                }
                 Attributes attributes = manifest.getMainAttributes();
                 String bundleName = attributes.getValue(OsgiManifest.Bundle_SymbolicName);
                 String bundleVersion = attributes.getValue(OsgiManifest.Bundle_Version);
