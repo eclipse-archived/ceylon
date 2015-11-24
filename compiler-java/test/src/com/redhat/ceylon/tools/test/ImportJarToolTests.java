@@ -138,12 +138,12 @@ public class ImportJarToolTests extends AbstractToolTests {
                     pluginFactory.bindArguments(model, 
                                                 getMainTool(), 
                                                 options("--source-jar-file", 
-                                                        "test/src/com/redhat/ceylon/tools/test/nonexistent-source.jar",
+                                                        "test/src/com/redhat/ceylon/tools/test/nonexistent-sources.jar",
                                                         "test/1.0",
                                                         "test/src/com/redhat/ceylon/tools/test/test.jar"));
             Assert.fail();
         } catch (ImportJarException e) {
-            String srcJarName = "test/src/com/redhat/ceylon/tools/test/nonexistent-source.jar";
+            String srcJarName = "test/src/com/redhat/ceylon/tools/test/nonexistent-sources.jar";
             srcJarName = srcJarName.replace('/', File.separatorChar);
             Assert.assertEquals("Source jar file " +srcJarName+ " does not exist", e.getMessage());
         }
@@ -203,8 +203,8 @@ public class ImportJarToolTests extends AbstractToolTests {
         tool.run();
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
         File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
-        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
-        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar.sha1");
         
         Assert.assertTrue(jarFile.exists() && 
                           sha1JarFile.exists() && 
@@ -230,8 +230,8 @@ public class ImportJarToolTests extends AbstractToolTests {
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
         File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
         
-        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
-        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar.sha1");
         
         Assert.assertTrue(jarFile.exists() && 
                           sha1JarFile.exists() && 
@@ -341,8 +341,8 @@ public class ImportJarToolTests extends AbstractToolTests {
         tool.run();
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
         File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
-        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
-        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar.sha1");
         File moduleXml = destFile("source/import/test/1.0/module.xml");
 
         Assert.assertTrue(jarFile.exists() && sha1JarFile.exists());
@@ -367,8 +367,8 @@ public class ImportJarToolTests extends AbstractToolTests {
         tool.run();
         File jarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar");
         File sha1JarFile = destFile("source/import/test/1.0/source.import.test-1.0.jar.sha1");
-        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar");
-        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-source.jar.sha1");
+        File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar");
+        File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar.sha1");
         File propertiesFile = destFile("source/import/test/1.0/module.properties");
         
         Assert.assertTrue(jarFile.exists() && sha1JarFile.exists());
