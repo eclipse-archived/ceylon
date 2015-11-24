@@ -396,7 +396,6 @@ public class LegacyImporter {
         ShaSigner.signArtifact(outRepoman, context, jarFile, log);
         
         if (sourceJarFile != null) {
-            // LUKETOOD:  How to distinguish between 
             ArtifactContext sourceJarContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.SOURCE_JAR);
             context.setForceOperation(true);
             outRepoman.putArtifact(sourceJarContext, sourceJarFile);
