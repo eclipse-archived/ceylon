@@ -1,5 +1,5 @@
 Source: ceylon-1.2.0
-Section: unknown
+Section: main
 Priority: extra
 Maintainer: Stephane Epardaud <stephane@lunatech.com>
 Build-Depends: debhelper (>= 7), ant
