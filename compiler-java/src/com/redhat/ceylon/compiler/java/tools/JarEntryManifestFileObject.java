@@ -89,7 +89,12 @@ public class JarEntryManifestFileObject implements JavaFileObject {
     }
 
     private void writeManifestJarEntry(JarOutputStream jarFile, Manifest originalManifest, Log log) throws IOException {
-        Manifest manifest = new OsgiManifest(module, originalManifest, osgiProvidedBundles, log).build();
+        Manifest manifest;
+        if (module.isDefault()) {
+            manifest = new DefaultModuleManifest().build();
+        } else {
+            manifest = new OsgiManifest(module, originalManifest, osgiProvidedBundles, log).build();
+        }
         jarFile.putNextEntry(new ZipEntry(fileName));
         manifest.write(jarFile);
     }
@@ -183,8 +188,40 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         return null;
     }
 
-    public static class OsgiManifest {
+    public abstract static class CeylonManifest {
         public static final String MANIFEST_FILE_NAME = "META-INF/MANIFEST.MF";
+        public static boolean isManifestFileName(String fileName) {
+            return MANIFEST_FILE_NAME.equalsIgnoreCase(fileName);
+        }
+        public Manifest build() {
+            Manifest manifest = new Manifest();
+            Attributes main = manifest.getMainAttributes();
+
+            main.put(Attributes.Name.MANIFEST_VERSION, "1.0");
+            return manifest;
+        }
+    }
+    
+    /**
+     * The non-OSGi-compliant MANIFEST.MF we generate for the default module.
+     */
+    public static class DefaultModuleManifest extends CeylonManifest {
+        public static final Attributes.Name Ceylon_Default_Module = new Attributes.Name("Ceylon-Default-Module");
+        public static boolean isDefaultModule(Manifest manifest) {
+            return "true".equals(manifest.getMainAttributes().get(Ceylon_Default_Module));
+        }
+        public Manifest build() {
+            Manifest manifest = super.build();
+            Attributes main = manifest.getMainAttributes();
+            main.put(Ceylon_Default_Module, "true");
+            return manifest;
+        }
+    }
+    
+    /**
+     * The OSGi-compliant MANIFEST.MF we generate for non-default modules.
+     */
+    public static class OsgiManifest extends CeylonManifest {
         
         public static final Attributes.Name Bundle_SymbolicName = new Attributes.Name("Bundle-SymbolicName"); 
         public static final Attributes.Name Bundle_Version = new Attributes.Name("Bundle-Version"); 
@@ -201,10 +238,6 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         }
         
         private String osgiProvidedBundles;
-
-        public static boolean isManifestFileName(String fileName) {
-            return MANIFEST_FILE_NAME.equalsIgnoreCase(fileName);
-        }
 
         private final Manifest originalManifest;
         private final Module module;
@@ -252,10 +285,8 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         }
 
         public Manifest build() {
-            Manifest manifest = new Manifest();
+            Manifest manifest = super.build();
             Attributes main = manifest.getMainAttributes();
-
-            main.put(Attributes.Name.MANIFEST_VERSION, "1.0");
             main.put(Bundle_ManifestVersion, "2");
 
             main.put(Bundle_SymbolicName, module.getNameAsString());
