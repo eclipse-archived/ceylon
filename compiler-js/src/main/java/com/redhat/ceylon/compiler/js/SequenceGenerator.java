@@ -63,7 +63,7 @@ public class SequenceGenerator {
                 lazyEnumeration(positionalArguments, that, that.getTypeModel(), spread, gen);
                 return;
             } else {
-                gen.out("[");
+                gen.out(gen.getClAlias(), "$arr$([");
             }
             int count=0;
             for (Tree.PositionalArgument expr : positionalArguments) {
@@ -155,7 +155,7 @@ public class SequenceGenerator {
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
             final GenerateJsVisitor gen, boolean wantsIterable) {
         if(wantsIterable)
-            gen.out("].rt$(");
+            gen.out(",");
         else
             gen.out("].$sa$(");
         boolean nonempty=false;
