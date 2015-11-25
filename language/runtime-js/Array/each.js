@@ -1,5 +1,5 @@
 function(f){
-  for (var i=0;i<this.length;i++){
-    f(this[i]);
+  for (var i=0;i<this.arr$.length;i++){
+    f(this.arr$[i]);
   }
 }

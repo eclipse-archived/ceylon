@@ -1,3 +1,3 @@
 function(from) {
-    return this.span(from, 0x7fffffff);
+    return this.arr$.span(from, 0x7fffffff);
 }
