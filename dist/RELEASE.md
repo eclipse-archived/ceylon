@@ -67,13 +67,18 @@ On a Debian system:
     $ rsync -rv --dry-run dists ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
     $ ssh ceylon-lang.org
     $ cd /var/www/downloads.ceylonlang/apt/
-    $ ~stephane/src/ceylon-debian/repo/makepool.sh ../cli/*.deb
+    $ ~stephane/src/ceylon-debian-repo/makepool.sh ../cli/*.deb
 
 # Build the RedHat file
 
 1. Follow the steps in the README in the `redhat` folder
 2. Copy the rpm to downloads.ceylon-lang.org:
     $ scp ceylon-0.6-noarch.rpm ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+3. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
+    $ ssh ceylon-lang.org
+    $ cd /var/www/downloads.ceylonlang/rpm/
+    $ vim ~stephane/src/ceylon-rpm-repo/build.sh # Add the new release
+    $ ~stephane/src/ceylon-rpm-repo/build.sh
 
 # Update the web site
 
