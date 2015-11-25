@@ -33,9 +33,6 @@ import com.redhat.ceylon.common.tool.Summary;
         "    ceylon test-js com.example.foobar/1.0.0")
 public class CeylonTestJsTool extends AbstractTestTool {
 
-    private static final String TEST_MODULE_NAME = "com.redhat.ceylon.testjs";
-    private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.testjs.run";
-    
     private static final String COLOR_RESET = "com.redhat.ceylon.common.tool.terminal.color.reset";
     private static final String COLOR_GREEN = "com.redhat.ceylon.common.tool.terminal.color.green";
     private static final String COLOR_RED = "com.redhat.ceylon.common.tool.terminal.color.red";

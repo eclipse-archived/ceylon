@@ -25,6 +25,9 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 
 public abstract class AbstractTestTool extends RepoUsingTool {
     
+    protected static final String TEST_MODULE_NAME = "ceylon.test";
+    protected static final String TEST_RUN_FUNCTION = "ceylon.test.cli::run";
+    
     protected List<String> moduleNameOptVersionList;
     protected List<String> testList;
     protected List<String> argumentList;

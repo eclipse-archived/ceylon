@@ -28,9 +28,6 @@ import com.redhat.ceylon.common.tool.Summary;
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends AbstractTestTool {
 
-    private static final String TEST_MODULE_NAME = "com.redhat.ceylon.testjvm";
-    private static final String TEST_RUN_FUNCTION = "com.redhat.ceylon.testjvm.run";
-
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE, ModuleQuery.Type.JVM, Versions.JVM_BINARY_MAJOR_VERSION, Versions.JVM_BINARY_MINOR_VERSION);
     }
@@ -66,7 +63,7 @@ public class CeylonTestTool extends AbstractTestTool {
             ceylonRunTool.run();
         }catch(Throwable x){
             // Get around class loader issues where we can't compare the class statically
-            if(x.getClass().getCanonicalName().equals("com.redhat.ceylon.testjvm.TestFailureException")) {
+            if(x.getClass().getCanonicalName().equals("ceylon.test.cli.TestFailureException")) {
                 throw new CeylonTestFailureError();
             }
             throw x;
