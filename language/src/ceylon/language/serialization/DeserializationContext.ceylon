@@ -63,7 +63,8 @@ import ceylon.language.meta.declaration {
    The calls to [[attribute]], [[instanceValue]] and [[instance]] could be 
    in any order.
 """
-shared sealed interface DeserializationContext<Id> {
+shared sealed interface DeserializationContext<Id> 
+        given Id satisfies Object {
     
     """The given [[instanceId]] refers to an instance of the given class."""
     throws(`class DeserializationException`, 
