@@ -16,7 +16,7 @@ function $JsCallable(f$,parms,targs) {
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
   var f=function c1(){
-    return f$.apply(undefined,spread$(arguments,f$,targs,1));
+    return f$.apply(undefined,spread$($arr$(arguments,{t:Anything}),f$,targs,1));
   }
   f.$crtmm$=f$.$crtmm$;
   f.getT$all=f$.getT$all;
@@ -68,7 +68,7 @@ function JsCallable(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
   var f2=function c2() {
-    var arg=spread$(arguments,f,targs,1);
+    var arg=spread$($arr$(arguments,{t:Anything}),f,targs,1);
     if (targs)arg.push(targs);
     return f.apply(o, arg);
   };

@@ -7,7 +7,7 @@ function (e,from) {
     for (var i=from; i < this.size-e.size + 1; i++) {
       if (cmpSubString(this, e, i))indexes.push(i);
     }
-    return indexes.rt$({t:Integer});
+    return $arr$(indexes,{t:Integer});
   }
   else {
     return SearchableList.$$.prototype.inclusions.call(this,e,from);

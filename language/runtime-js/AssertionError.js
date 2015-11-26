@@ -10,7 +10,7 @@ function AssertionError(msg,that){
     that.string='ceylon.language::AssertionError "'+msg+'"';
     that.printStackTrace=function(){printStackTrace(that);}
     that.addSuppressed=Throwable.$$.prototype.addSuppressed;
-    that.suppressed=[].rt$({t:Throwable});
+    that.suppressed=$arr$([],{t:Throwable});
   }
   that.$sm_=msg;
   Throwable(msg,undefined,that);

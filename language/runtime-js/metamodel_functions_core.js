@@ -38,11 +38,11 @@ function pushTypes(list, types,targ$2) {
 
 function applyUnionType(ut,targ$2) { //return AppliedUnionType
   var cases = pushTypes([], flattentype$(ut.l,'u'),targ$2);
-  return AppliedUnionType$jsint(ut, cases.rt$(ut), {Union$AppliedUnionType:ut});
+  return AppliedUnionType$jsint(ut, $arr$(cases,ut), {Union$AppliedUnionType:ut});
 }
 function applyIntersectionType(it,targ$2) { //return AppliedIntersectionType
   var sats = pushTypes([], flattentype$(it.l,'i'),targ$2);
-  return AppliedIntersectionType$jsint(it, sats.rt$(it), {Union$AppliedIntersectionType:it});
+  return AppliedIntersectionType$jsint(it, $arr$(sats,it), {Union$AppliedIntersectionType:it});
 }
 
 //Shortcut for modules$meta().find(m/v).findPackage(p)

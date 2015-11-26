@@ -239,7 +239,7 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
         var anns=allann$(mm);
         if (!mm.tp && anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
-          var types=[].rt$({t:Type$meta$model,a:{Type:{t:Anything}}});
+          var types=$arr$([],{t:Type$meta$model,a:{Type:{t:Anything}}});
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }
@@ -265,7 +265,7 @@ function coisattype$(coi){
         rv.push(AppliedInterface$jsint(ifc.t, {Type$AppliedInterface:ifc}));
       }
     }
-    return rv.rt$({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
+    return $arr$(rv,{t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
   }
   return empty();
 }
@@ -639,7 +639,7 @@ function coiut$(coi,t,ot){
     return t.union(coi,{Other$union:ot});
   }
   var _ut={t:'u',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
-  return AppliedUnionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedUnionType:_ut});
+  return AppliedUnionType$jsint(_ut,$arr$([coi,t],_ut,1),{Union$AppliedUnionType:_ut});
 }
 //Intersection type of the receiving type with a new one
 function coiit$(coi,t,ot){
@@ -647,7 +647,7 @@ function coiit$(coi,t,ot){
     return t.intersection(coi,{Other$intersection:ot});
   }
   var _ut={t:'i',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
-  return AppliedIntersectionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedIntersectionType:_ut});
+  return AppliedIntersectionType$jsint(_ut,$arr$([coi,t],_ut,1),{Union$AppliedIntersectionType:_ut});
 }
 //Get annotations from ClassOrInterface, based on the specified annotation types
 function coi$get$anns(anntypes) {

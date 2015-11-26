@@ -6,5 +6,5 @@ function(e,from,len){
   for (var i=from;i<len;i++) {
     if (this.$_get(i).equals(e))r.push(i);
   }
-  return r.length>0?r.rt$({t:Integer}):empty();
+  return r.length>0?$arr$(r,{t:Integer}):empty();
 }

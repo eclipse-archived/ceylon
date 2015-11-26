@@ -373,5 +373,5 @@ function annd$annotations(that,$$$mptypes) {
       ans.push(_ans[i]);
     }
   }
-  return ans.length == 0 ? empty() : ArraySequence(ans,{Element$ArraySequence:$$$mptypes.Annotation$annotations});
+  return ans.length == 0 ? empty() : ans.$sa$({Element$ArraySequence:$$$mptypes.Annotation$annotations});
 }

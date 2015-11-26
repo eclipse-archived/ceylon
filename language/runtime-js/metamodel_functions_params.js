@@ -144,7 +144,7 @@ function convert$params(mm,a,$$targs$$) {
         fa.push(a[i]);
         val_t={t:Iterable,a:{Element$Iterable:val_t}};
       } else {
-        sarg=[].rt$(val_t);
+        sarg=$arr$([],val_t);
         for (var j=i; j<a.size;j++){
           if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
           sarg.push(a[j]);

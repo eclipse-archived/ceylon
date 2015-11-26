@@ -1,44 +1,37 @@
-var arrprot$=Array.prototype;
-arrprot$.ser$$=function(d){
-  var targ=this._elemTarg();
-  d.putValue(OpenValue$jsint(lmp$(ex$,'$'),this.$prop$getSize),this.length,{Instance$putValue:{t:Integer}});
-  var elemtarg={Instance$putElement:targ};
-  for (var i=0; i < this.length; i++) {
-    d.putElement(i,this[i],elemtarg);
+var arrprot$=$_Array.$$.prototype;
+function $arr$(a,t,seq) {
+  if (t===null || t===undefined)t={t:Anything};
+  return $_Array$$c(a,{Element$Array:t});
+}
+ex$.$arr$=$arr$;
+
+Array.prototype.$sa$=function $sa$(t,ne) {
+    if (this.length===0)return empty();
+    if (t===null || t===undefined)t={t:Anything};
+    return ArraySequence($arr$(this,t),{Element$ArraySequence:t});
+}
+Array.prototype.equals=function arrayEquals(o) {
+  if (o===undefined||o===null||typeof(o.length)!='number')return false;
+  if (o.length===this.length) {
+    for (var i=0;i<this.length;i++) {
+      if (this[i]===undefined) {
+        if (o[i]!==undefined)return false;
+      } else if (this[i]===null) {
+        if (o[i]!==null)return false;
+      } else if (!this[i].equals(o[i]))return false;
+    }
   }
+  return false;
 }
-arrprot$.rt$=function(t,ne) {
-    if (t===null || t===undefined)t={t:Anything};
-    if (this.$$targs$$===undefined)this.$$targs$$=={};
-    add_type_arg(this,'Element$Iterable',t);
-    add_type_arg(this,'Element$Array',t);
-    add_type_arg(this,'Element$List',t);
-    add_type_arg(this,'Element$Sequential',t);
-    add_type_arg(this,'Absent$Iterable',ne?{t:Nothing}:{t:Null});
-    return this;
-}
-arrprot$.$sa$=function(t,ne) {
-    if (t===null || t===undefined)t={t:Anything};
-    return ArraySequence(this,{Element$ArraySequence:t});
-}
-arrprot$._elemTarg=function(){
-  var t = this.$$targs$$ && this.$$targs$$.Element$Array;
-  if (t===undefined)t = this.$$targs$$ && this.$$targs$$.Element$Iterable;
-  if (t===undefined)t = this.$$targs$$ && this.$$targs$$.Element$List;
-  if (t===undefined)t = {t:Anything};
-  if (this.$$targs$$===undefined)this.$$targs$$={
-    Element$Array:t, Element$List:t, Element$Iterable:t,
-    Element$Collection:t, Item$Correspondence:t,Element$Ranged:t,
-    Absent$Iterable:Null, Key$Correspondence:{t:Integer},
-    Index$Ranged:{t:Integer}, Subrange$Ranged:{t:$_Array,a:{Element$Array:'Element$Array'}}
-  };
-  return t;
-}
-arrprot$.getT$name = function() {
-    return $_Array.$$.T$name;
-}
-arrprot$.getT$all = function() {
-    return $_Array.$$.T$all;
+Array.prototype.contains=function arrayContains(o){
+  for (var i=0;i<this.length;i++) {
+    if (o===null) {
+      if (this[i]===null)return true;
+    } else if (o===undefined) {
+      if (this[i]===undefined)return true;
+    } else if (this[i].equals(o)) return true;
+  }
+  return false;
 }
 
 atr$(arrprot$,'string', function() {

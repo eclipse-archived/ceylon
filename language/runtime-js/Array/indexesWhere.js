@@ -4,5 +4,5 @@ function(f){
     var e=this.arr$[i];
     if (nn$(e)&&f(e))r.push(i);
   }
-  return r.length?r.rt$({t:Integer}):empty();
+  return r.length?$arr$(r,{t:Integer}):empty();
 }

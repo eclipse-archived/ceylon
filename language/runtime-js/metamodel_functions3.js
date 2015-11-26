@@ -13,7 +13,7 @@ function _openTypeFromTarg(targ,o) {
         tl.push(_ct.t?_openTypeFromTarg(_ct,o):_ct);
       }
     }
-    return (targ.t==='u'?FreeUnion$jsint:FreeIntersection$jsint)(tl.rt$({t:OpenType$meta$declaration}));
+    return (targ.t==='u'?FreeUnion$jsint:FreeIntersection$jsint)($arr$(tl,{t:OpenType$meta$declaration}));
   } else if (targ.t==='T') {
     mm=getrtmm$$(Tuple);
     // FIXME: there must be an easier way to get to that package

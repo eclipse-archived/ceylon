@@ -11,10 +11,10 @@ function tpl$(elems,spread){
       spread=undefined;
     }
   }
-  if (elems.size===0&&(spread===undefined||spread.size===0))return empty();
+  if (elems.length===0&&(spread===undefined||spread.size===0))return empty();
   var types=[];
-  for (var i=0; i < elems.size; i++){
-    var e=elems.$_get(i,1);
+  for (var i=0; i < elems.length; i++){
+    var e=elems[i];
     if (e===null) {
       types.push({t:Null});
     } else if (e===undefined) {
@@ -50,7 +50,7 @@ function tpl$(elems,spread){
   } else if (types.l.length===1) {
     that.$$targs$$.Rest$Tuple={t:Empty};
   } else {
-    that.$$targs$$.Rest$Tuple={t:'T',l:_t.l.spanFrom(1)};
+    that.$$targs$$.Rest$Tuple={t:'T',l:_t.l.slice(1)};
   }
   that.first_=elems[0];
   that.elem$=elems;
@@ -66,8 +66,8 @@ function $init$tpl$(){
     initTypeProto(tpl$,'ceylon.language::Tuple',$init$Tuple());
     (function(tuple) {
       tuple.getFromFirst=function(i){
-        if (this.sp$ && i>=this.elem$.size) {
-          return this.sp$.getFromFirst(i-this.elem$.size);
+        if (this.sp$ && i>=this.elem$.length) {
+          return this.sp$.getFromFirst(i-this.elem$.length);
         }
         return this.elem$[i];
       };
@@ -78,8 +78,8 @@ function $init$tpl$(){
         }
         var i=0,e=this.elem$;
         return for$iter(function(){
-          if (i===e.size)return finished();
-          var r=e.$_get(i++);
+          if (i===e.length)return finished();
+          var r=e[i++];
           return r===undefined?null:r;
         },{Element$Iterator:this.t$});
       }
@@ -89,7 +89,7 @@ function $init$tpl$(){
       tuple.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
       tuple.count=function(f){
         var c=0;
-        for (var i=0;i<this.elem$.size;i++) {
+        for (var i=0;i<this.elem$.length;i++) {
           if (f(this.elem$[i])) {
             c++;
           }
@@ -100,7 +100,7 @@ function $init$tpl$(){
       tuple.count.$crtmm$=Tuple.$$.prototype.count.$crtmm$;
       tuple.select=function(f){
         var a=[];
-        for (var i=0;i<this.elem$.size;i++) {
+        for (var i=0;i<this.elem$.length;i++) {
           if (f(this.elem$[i])) {
             a.push(this.elem$[i]);
           }
@@ -117,14 +117,14 @@ function $init$tpl$(){
         return for$(function(){
           var i=0;
           return function(){
-            while (i<elems.size) {
+            while (i<elems.length) {
               var e=elems[i];
               i++;
               if (f(e))return e;
             }
             if (spr) {
-              while(i<elems.size+spr.size) {
-                var e=spr.getFromFirst(i-elems.size-1);
+              while(i<elems.length+spr.size) {
+                var e=spr.getFromFirst(i-elems.length-1);
                 i++;
                 if (f(e))return e;
               }
@@ -135,9 +135,9 @@ function $init$tpl$(){
       };
       tuple.$_filter.$crtmm$=Tuple.$$.prototype.$_filter.$crtmm$;
       tuple.collect=function(f,$m){
-        var a=new Array(this.elem$.size+(this.sp$?this.sp$.size:0));
+        var a=new Array(this.elem$.length+(this.sp$?this.sp$.size:0));
         var j=0;
-        for (var i=0;i<this.elem$.size;i++) {
+        for (var i=0;i<this.elem$.length;i++) {
           a[j++]=f(this.elem$[i]);
         }
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
@@ -152,18 +152,18 @@ function $init$tpl$(){
         return for$(function(){
           var i=0;
           return function(){
-            if (i<elems.size) {
+            if (i<elems.length) {
               i++;
               return f(elems[i-1]);
             }
-            if (spr && elems.size+spr.size>i) {
+            if (spr && elems.length+spr.size>i) {
               i++;
-              return f(spr.getFromFirst(i-elems.size-1));
+              return f(spr.getFromFirst(i-elems.length-1));
             }
             return finished();
           };
         },{Element$Iterable:$m.Result$map,Absent$Iterable:{t:Null}});
-        for (var i=0;i<this.elem$.size;i++) {
+        for (var i=0;i<this.elem$.length;i++) {
           a[j++]=f(this.elem$[i]);
         }
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
@@ -179,16 +179,16 @@ function $init$tpl$(){
       tuple.withLeading.$crtmm$=Tuple.$$.prototype.withLeading.$crtmm$;
       tuple.span=function(a,b){//from,to
         if (this.sp$) {
-          if (a>=this.elem$.size&&b>=this.elem$.size){
-            return this.sp$.span(a-this.elem$.size,b-this.elem$.size);
+          if (a>=this.elem$.length&&b>=this.elem$.length){
+            return this.sp$.span(a-this.elem$.length,b-this.elem$.length);
           }
-          if (b>=this.elem$.size) {
-            var s1=this.elem$.spanFrom(a);
-            var s2=this.sp$.spanTo(b-this.elem$.size);
+          if (b>=this.elem$.length) {
+            var s1=this.elem$.slice(a);
+            var s2=this.sp$.spanTo(b-this.elem$.length);
             return s1.chain(s2,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
-          if (a>=this.elem$.size) {
-            var s1=this.sp$.span(a-this.elem$.size,0);
+          if (a>=this.elem$.length) {
+            var s1=this.sp$.span(a-this.elem$.length,0);
             var s2=this.elem$.span(this.elem$.size-1,b)
             return s1.chain(s2,{Other$chain:this.tps$,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
@@ -209,30 +209,30 @@ function $init$tpl$(){
       tuple.spanFrom=function(x){
         if (x===0)return this;
         if (this.sp$) {
-          if (x>=this.elem$.size) {
-            return this.sp$.spanFrom(x-this.elem$.size);
+          if (x>=this.elem$.length) {
+            return this.sp$.spanFrom(x-this.elem$.length);
           } else if (x<0) {
             return this;
           }
-          return this.elem$.spanFrom(x).chain(this.sp$,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+          return this.elem$.slice(x).chain(this.sp$,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
         }
-        var r=this.elem$.spanFrom(x);
+        var r=this.elem$.slice(x);
         return r.size===0?empty():tpl$(r);
       }
       tuple.spanFrom.$crtmm$=Tuple.$$.prototype.spanFrom.$crtmm$;
       tuple.measure=function(a,b){//from,length
         if(b===0)return empty();
         if (this.sp$) {
-          if (a>=this.elem$.size) {
-              var m1=this.sp$.measure(a-this.elem$.size,b);
+          if (a>=this.elem$.length) {
+              var m1=this.sp$.measure(a-this.elem$.length,b);
             if (b>0) {
               return m1;
             } else {
               console.log("missing tpl.measure with negative length");
             }
           }
-          if (b>0 && a+b-1>=this.elem$.size) {
-            var m1=this.elem$.measure(a,this.elem$.size-a);
+          if (b>0 && a+b-1>=this.elem$.length) {
+            var m1=this.elem$.measure(a,this.elem$.length-a);
             var m2=this.sp$.measure(0,b-m1.size);
             return m1.chain(m2,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
@@ -276,7 +276,7 @@ function $init$tpl$(){
         return this.elem$.hash+(this.sp$?this.sp$.hash:0);
       },undefined,List.$$.prototype.$prop$getHash.$crtmm$);
       atr$(tuple,'rest',function(){
-        return this.elem$.size===1?this.sp$||empty():tpl$(this.elem$.slice(1),this.sp$);
+        return this.elem$.length===1?this.sp$||empty():tpl$(this.elem$.slice(1),this.sp$);
       },undefined,Tuple.$$.prototype.$prop$getRest.$crtmm$);
       atr$(tuple,'size',function(){
         return this.elem$.size+(this.sp$?this.sp$.size:0);
@@ -285,15 +285,15 @@ function $init$tpl$(){
         return this.elem$.size-1+(this.sp$?this.sp$.size:0);
       },undefined,Tuple.$$.prototype.$prop$getLastIndex.$crtmm$);
       atr$(tuple,'last',function(){
-        return this.sp$?this.sp$.last:this.elem$[this.elem$.size-1];
+        return this.sp$?this.sp$.last:this.elem$[this.elem$.length-1];
       },undefined,Tuple.$$.prototype.$prop$getLast.$crtmm$);
       atr$(tuple,'string',function(){
         return '['+commaList(this.elem$)+(this.sp$?', '+commaList(this.sp$):'')+']';
       },undefined,Tuple.$$.prototype.$prop$getString.$crtmm$);
       tuple.nativeArray=function(){
         if (this.sp$) {
-          var e=new Array(this.elem$.size+this.sp$.size);
-          for (var i=0;i<this.elem$.size;i++) {
+          var e=new Array(this.elem$.length+this.sp$.size);
+          for (var i=0;i<this.elem$.length;i++) {
             e[i]=this.elem$[i];
           }
           var elem;for(var iter=this.sp$.iterator();(elem=iter.next())!==finished();) {
