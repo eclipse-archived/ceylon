@@ -8,24 +8,26 @@
     </tstamp>
 
     <property file="build.properties"/>
-    <property name="ceylon.dist.dir" value="${basedir}/dist"/>
-    <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
-    <property name="ceylon.bin.dir" value="${ceylon.dist.dir}/bin"/>
+    <property name="ceylon.dist.dir" location="${basedir}/dist"/>
+    <property name="ceylon.repo.dir" location="${ceylon.dist.dir}/repo"/>
+    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
+    <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
     <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
     <property name="moddirs" value="common,model,cmr,typechecker,compiler-java,compiler-js,language,runtime" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
-    <property name="projects.base.dir" value="${basedir}/.." />
-    <property name="ceylon-common.dir" value="${projects.base.dir}/common"/>
-    <property name="ceylon-model.dir" value="${projects.base.dir}/model"/>
-    <property name="ceylon-compiler.dir" value="${projects.base.dir}/compiler-java"/>
-    <property name="ceylon-spec.dir" value="${projects.base.dir}/typechecker"/>
-    <property name="ceylon.language.dir" value="${projects.base.dir}/language"/>
-    <property name="ceylon-module-resolver.dir" value="${projects.base.dir}/cmr"/>
-    <property name="ceylon-runtime.dir" value="${projects.base.dir}/runtime"/>
-    <property name="ceylon-js.dir" value="${projects.base.dir}/compiler-js"/>
+    <property name="projects.base.dir" location="${basedir}/.." />
+    <property name="ceylon-common.dir" location="${projects.base.dir}/common"/>
+    <property name="ceylon-model.dir" location="${projects.base.dir}/model"/>
+    <property name="ceylon-compiler.dir" location="${projects.base.dir}/compiler-java"/>
+    <property name="ceylon-spec.dir" location="${projects.base.dir}/typechecker"/>
+    <property name="ceylon.language.dir" location="${projects.base.dir}/language"/>
+    <property name="ceylon-module-resolver.dir" location="${projects.base.dir}/cmr"/>
+    <property name="ceylon-runtime.dir" location="${projects.base.dir}/runtime"/>
+    <property name="ceylon-js.dir" location="${projects.base.dir}/compiler-js"/>
+    
     <property name="github-url" value="https://github.com/"/>
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
     
@@ -40,6 +42,17 @@
         </classpath>
     </taskdef>
 
+    <property name="ceylon.ant.lib" location="${ceylon.dist.dir}/lib/ceylon-ant.jar"/>
+
+    <path id="ant-tasks">
+        <pathelement location="${ceylon.ant.lib}"/>
+    </path>
+    
+    <target name="ceylondefs" unless="ceylondefined">
+        <property name="ceylondefined" value="true" />
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+    </target>
+    
     <target name="help">
         <echo>Options for building a Ceylon distribution for local use:
     ant publish            - Performs "ant clean publish" on all sibling projects
@@ -582,16 +595,16 @@ Use this when NOT doing a release!">
         </copy>
     </target>
 
-    <target name="generate-apidoc">
-        <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
-            <arg value="--stacktraces"/>
-            <arg value="doc"/>
-            <arg value="--out=${ceylon.dist.dir}/repo"/>
-            <arg value="--src=${ceylon.language.dir}/src/"/>
-            <arg value="--source-code"/>
-            <arg value="--bootstrap-ceylon"/>
-            <arg value="ceylon.language"/>
-        </exec>
+    <target name="generate-apidoc" depends="ceylondefs">
+        <ceylon-doc
+            src="${ceylon.language.dir}/src"
+            out="${ceylon.dist.dir}/repo"
+            includesourcecode="true"
+            bootstrapceylon="true"
+            stacktraces="true"
+            fork="true">
+            <module name="ceylon.language"/>
+        </ceylon-doc>
     </target>
 
     <target name="generate-tooldoc">
