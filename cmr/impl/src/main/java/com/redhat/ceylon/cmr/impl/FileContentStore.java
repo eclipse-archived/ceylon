@@ -117,6 +117,12 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         if (options == null)
             throw new IllegalArgumentException("Null options!");
 
+        if (!root.exists() && !root.mkdirs()) {
+            throw new IOException("Cannot create Ceylon repository directory: " + root);
+        }
+        if (!root.isDirectory()) {
+            throw new IOException("Ceylon repository is not a directory: " + root);
+        }
         final File parent = getFile(NodeUtils.firstParent(node));
         if (parent.exists() == false && parent.mkdirs() == false)
             throw new IOException("Cannot create dirs: " + parent);

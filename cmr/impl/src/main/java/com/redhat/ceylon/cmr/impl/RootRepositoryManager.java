@@ -59,12 +59,6 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     public RootRepositoryManager(File rootDir, Logger log, Overrides overrides) {
         super(log, overrides);
         if(rootDir != null){
-            if (!rootDir.exists() && !rootDir.mkdirs()) {
-                throw new RepositoryException("Cannot create Ceylon cache repository directory: " + rootDir);
-            }
-            if (!rootDir.isDirectory()) {
-                throw new RepositoryException("Ceylon cache repository is not a directory: " + rootDir);
-            }
             this.fileContentStore = new FileContentStore(rootDir);
             final CmrRepository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
             setCache(aaca);
