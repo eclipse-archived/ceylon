@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import com.redhat.ceylon.compiler.typechecker.parser { CeylonLexer }
-import org.antlr.runtime { ANTLRInputStream }
+import io.netty.bootstrap { ServerBootstrap }
 
 shared void legacyimport() {
-    value ceylonLexer = CeylonLexer(ANTLRInputStream());
+    value b = ServerBootstrap();
 }
