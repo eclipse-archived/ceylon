@@ -942,6 +942,8 @@ public abstract class CompilerTests {
         } else {
             pb.redirectOutput(Redirect.INHERIT);
         }
+        // use the same JVM as the current one
+        pb.environment().put("JAVA_HOME", System.getProperty("java.home"));
         Process p = pb.start();
         return p.waitFor();
     }
