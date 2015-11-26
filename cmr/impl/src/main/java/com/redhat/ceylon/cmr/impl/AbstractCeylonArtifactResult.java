@@ -85,13 +85,36 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
             return Collections.emptyList();
 
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
-        for (ModuleDependencyInfo mi : infos.getDependencies()) {
+        for (ModuleDependencyInfo mi : getOrderedDependencies(infos)) {
             results.add(new LazyArtifactResult(manager,
                     mi.getName(),
                     mi.getVersion(),
                     mi.isOptional() ? ImportType.OPTIONAL : (mi.isExport() ? ImportType.EXPORT : ImportType.UNDEFINED)));
         }
         return results;
+    }
+
+    /**
+     * {@code ModuleInfo} has dependencies as a {@code Set} (actually a 
+     * {@code HashSet}), but {@link #dependencies()} needs to return a list.
+     * The order matter much except when several dependencies can't be found.
+     * That happens, in particular, when trying to run a module compiled with a 
+     * more recent (but still BC) version of Ceylon. So for consistency 
+     * on that case we will already return ceylon.language first. 
+     */
+    private List<ModuleDependencyInfo> getOrderedDependencies(ModuleInfo infos) {
+        List<ModuleDependencyInfo> dependencies = new ArrayList<ModuleDependencyInfo>(infos.getDependencies());
+        for (int index = 0; index < dependencies.size(); index++) {
+            ModuleDependencyInfo dep = dependencies.get(index);
+            if ("ceylon.language".equals(dep.getName())) {
+                if (index != 0) {
+                    dependencies.remove(index);
+                    dependencies.add(0, dep);
+                }
+                break;
+            }
+        }
+        return dependencies;
     }
 }
 
