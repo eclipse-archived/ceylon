@@ -194,10 +194,10 @@ Use this when doing a release!">
         <antcall target="package" />
     </target>
 
-    <target name="nightly"
+    <target name="nightly" depends="defcurrentcommit"
             description="Does a clean, get-code, local, package using the sources from master. 
 Use this when NOT doing a release!">
-        <property name="dist.name.suffix" value="-master-${NOW}"/>
+        <property name="dist.name.suffix" value="-${currentcommit}-${NOW}"/>
         <antcall target="package" />
     </target>
 
@@ -245,12 +245,15 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="zip">
+    <target name="defcurrentcommit">
         <exec executable="git" failonerror="yes" outputproperty="currentcommit">
             <arg value="rev-parse"/>
             <arg value="--short"/>
             <arg value="HEAD"/>
         </exec>
+    </target>
+
+    <target name="zip" depends="defcurrentcommit">
         <property name="dist.name.suffix" value="-${currentcommit}"/>
         <zip destfile="${basedir}/${dist.name}${dist.name.suffix}.zip">
             <zipfileset dir="${ceylon.dist.dir}" prefix="${dist.name}">
