@@ -1672,7 +1672,7 @@ public class CMRTests extends CompilerTests {
         if(userCacheRepo.exists()){
             // let's move it
             System.out.println("Moving user cache repo away");
-            tmpCacheRepo = File.createTempFile("moved-", "-out-for-CMRTests", userCacheRepo.getParentFile());
+            tmpCacheRepo = File.createTempFile("cache-", "-moved-out-for-CMRTests", userCacheRepo.getParentFile());
             tmpCacheRepo.delete();
             assert(userCacheRepo.renameTo(tmpCacheRepo));
             moved = true;
@@ -1684,7 +1684,7 @@ public class CMRTests extends CompilerTests {
             assert(!cacheFolder.exists());
             // clear or moved
             assert(!userCacheRepo.exists());
-            compile("modules/def/A.ceylon");
+            compile("modules/legacyimport/A.ceylon");
             // created
             assert(cacheFolder.exists());
             // still not there
