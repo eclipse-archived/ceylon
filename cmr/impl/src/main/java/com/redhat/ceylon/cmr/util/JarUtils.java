@@ -52,6 +52,9 @@ public final class JarUtils {
             JarOutputStream jarOutputStream, JarEntryFilter filter,
             RepositoryManager repoManager, boolean verbose, Logger log,
             Set<String> foldersToAdd, Set<String> foldersAlreadyAdded, boolean pack200) throws IOException {
+        
+        copyMissingFromOriginal(originalFile, jarOutputStream, filter, foldersToAdd);
+        
         for(String folder : foldersToAdd){
             if (!foldersAlreadyAdded.contains(folder)) {
                 ZipEntry dir = new ZipEntry(folder);
