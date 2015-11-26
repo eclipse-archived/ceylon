@@ -151,6 +151,17 @@ public class CeylonConfig {
         }
     }
     
+    public static boolean isValidKey(String key) {
+        if (key == null) {
+            return false;
+        }
+        String[] parts = key.split("\\.");
+        if (parts.length < 2) {
+            return false;
+        }
+        return true;
+    }
+    
     private void initLookupKey(String key) {
         Key k = new Key(key);
 
