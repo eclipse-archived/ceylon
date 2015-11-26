@@ -7,6 +7,6 @@ function(anntypes){
     r.cont$=this;
     cs[i]=r;
   }
-  return cs.length===0?empty():ArraySequence(cs,{Element$ArraySequence:{t:ValueConstructor$meta$model,
-    a:{Type$ValueConstructor:this.$$targs$$.Type$AppliedClass}}});
+  return cs.$sa$({t:ValueConstructor$meta$model,
+    a:{Type$ValueConstructor:this.$$targs$$.Type$AppliedClass}});
 }

@@ -108,7 +108,7 @@ function $init$tpl$(){
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
           if (f(this.sp$.getFromFirst(i)))a.push(this.sp$.getFromFirst(i));
         }
-        return a.length>0?ArraySequence(a,{Element$ArraySequence:this.t$}):empty();
+        return a.$sa$(this.t$);
       };
       tuple.select.$crtmm$=Tuple.$$.prototype.select.$crtmm$;
       tuple.$_filter=function(f){
@@ -143,7 +143,7 @@ function $init$tpl$(){
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
           a[j++]=f(this.sp$.getFromFirst(i));
         }
-        return ArraySequence(a,{Element$ArraySequence:$m.Result$collect});
+        return a.$sa$($m.Result$collect);
       };
       tuple.collect.$crtmm$=Tuple.$$.prototype.collect.$crtmm$;
       tuple.$_map=function(f,$m){
@@ -194,7 +194,7 @@ function $init$tpl$(){
           }
         }
         var r=this.elem$.span(a,b);
-        return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:this.t$});
+        return r.$sa$(this.t$);
       }
       tuple.span.$crtmm$=Tuple.$$.prototype.span.$crtmm$;
       tuple.spanTo=function(x){
@@ -203,7 +203,7 @@ function $init$tpl$(){
           return this.span(0,x);
         }
         var r=this.elem$.spanTo(x);
-        return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:this.t$});
+        return r.$sa$(this.t$);
       }
       tuple.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
       tuple.spanFrom=function(x){
@@ -238,7 +238,7 @@ function $init$tpl$(){
           }
         }
         var r=this.elem$.measure(a,b);
-        return r.size===0?empty():ArraySequence(r,{Element$ArraySequence:this.t$});
+        return r.$sa$(this.t$);
       }
       tuple.measure.$crtmm$=Tuple.$$.prototype.measure.$crtmm$;
       tuple.equals=function(o){

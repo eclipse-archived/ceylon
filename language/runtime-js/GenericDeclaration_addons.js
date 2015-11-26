@@ -8,7 +8,7 @@ atr$(GenericDeclaration$meta$declaration.$$.prototype,'typeParameterDeclarations
       for (var tp in tps) {
         rv.push(OpenTypeParam$jsint(this.tipo,tp));
       }
-      return rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:{t:TypeParameter$meta$declaration}});
+      return rv.$sa$({t:TypeParameter$meta$declaration});
     }
     return empty();
   }

@@ -41,7 +41,7 @@ function flatten(tf, $$$mptypes) {
         if (seqarg===undefined || seqarg.length===0) {
           seqarg=empty();
         } else if (seqarg !== null && !is$(seqarg,{t:Sequence})) {
-          seqarg=ArraySequence(seqarg,{Element$ArraySequence:seqarg._elemTarg()});
+          seqarg=seqarg.$sa$(seqarg._elemTarg());
         }
         if (argx===1&&t.length==0)return tf(seqarg);
         return tf(tpl$(t,seqarg));
