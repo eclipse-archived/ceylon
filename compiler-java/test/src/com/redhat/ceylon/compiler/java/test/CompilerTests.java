@@ -216,6 +216,7 @@ public abstract class CompilerTests {
 	@Before
 	public void cleanCars() {
 	    cleanCars(destDir);
+	    cleanCars(cacheDir);
 	}
 	
     public void cleanCars(String repo) {
