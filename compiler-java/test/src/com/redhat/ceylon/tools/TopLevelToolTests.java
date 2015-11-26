@@ -197,11 +197,12 @@ public class TopLevelToolTests {
         try (CapturingStdOut out = new CapturingStdOut()) {
             Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("--file=.", "example")));
             Assert.assertEquals(
-"ceylon example: Unrecognised long option '--file=.' to command 'ceylon'\n"+
-"\n"+
-"Usage:\n"+
-"ceylon [--no-pager] [--paginate] [--stacktraces] [--version] [--] [<tool-\n       arguments...>]\n"+
-"\n"+
+"ceylon example: Unrecognised long option '--file=.' to command 'ceylon'\n" + 
+"\n" + 
+"Usage:\n" + 
+"ceylon [--config=<file>] [--cwd=<dir>] [--define=<key>=<value>...] [--no-pager]\n" + 
+"       [--paginate] [--stacktraces] [--version] [--] [<tool-arguments...>]\n" + 
+"\n" + 
 "Run 'ceylon help example' for more help",
                     out.getErr().trim().replace("\r", ""));
             Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
