@@ -613,6 +613,7 @@ Use this when NOT doing a release!">
     <target name="generate-tooldoc">
         <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
             <arg value="--stacktraces"/>
+            <arg value="--define=ceylon.cache.repo=${ceylon.cache.repo}"/>
             <arg value="doc-tool"/>
             <arg value="--output=${ceylon.dist.dir}/doc/en/toolset"/>
             <arg value="--index"/>
