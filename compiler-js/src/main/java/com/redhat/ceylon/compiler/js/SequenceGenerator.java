@@ -155,7 +155,7 @@ public class SequenceGenerator {
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
             final GenerateJsVisitor gen, boolean wantsIterable) {
         if(wantsIterable)
-            gen.out(",");
+            gen.out("],");
         else
             gen.out("].$sa$(");
         boolean nonempty=false;
