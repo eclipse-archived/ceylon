@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassOrInterfaceImpl;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -292,13 +293,13 @@ class PartialImpl extends Partial {
                     context.getMemberTypeCache().put(cacheKey, memberType);
                 }
                 
-                Object referredInstance = getReferredInstance(context, state, 
+                Type instanceType = getReferredInstanceType(context, state, 
                         member);
-                Type instanceType = Metamodel.getModuleManager().getCachedType(
-                        Metamodel.getTypeDescriptor(referredInstance));
                 if (!instanceType.isSubtypeOf(memberType)) {
                     throw notAssignable(member, memberType, instanceType);
                 }
+                Object referredInstance = getReferredInstance(context, state, 
+                        member);
                 instance.$set$(member, referredInstance);
                 // the JVM will check the assignability, but we need to 
                 // check assignability at the ceylon level, so we need to know 
@@ -366,6 +367,27 @@ class PartialImpl extends Partial {
             referred = ((Partial)referred).getInstance_();
         }
         return referred;
+    }
+    
+    /** Get the type of the instance with the given id. */
+    protected <Id> Type getReferredInstanceType(
+            DeserializationContextImpl<Id> context,
+            NativeMap<ReachableReference, Id> state,
+            ReachableReference reachable) {
+        Id referredId = state.get(reachable);
+        return getReferredInstanceType(context, referredId);
+    }
+    
+    /** Get the type of the instance with the given id. */
+    protected <Id> Type getReferredInstanceType(
+            DeserializationContextImpl<Id> context, Id referredId) {
+        java.lang.Object referred = context.leakInstance(referredId);
+        if (referred instanceof Partial) {
+            return ((ClassOrInterfaceImpl<?>)((Partial)referred).getClazz()).producedType;
+        } else {
+            return Metamodel.getModuleManager().getCachedType(
+                    Metamodel.getTypeDescriptor(referred));
+        }
     }
     
     public java.lang.String toString() {
