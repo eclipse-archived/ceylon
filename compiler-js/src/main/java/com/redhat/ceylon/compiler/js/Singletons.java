@@ -59,7 +59,11 @@ public class Singletons {
         }
         final List<Tree.Statement> stmts;
         if (d != null && NativeUtil.isForBackend(d, Backend.JavaScript)) {
-            stmts = NativeUtil.mergeStatements(body, gen.getNativeHeader(d));
+            Tree.Declaration nh = gen.getNativeHeader(d);
+            if (nh == null && NativeUtil.hasNativeMembers(c) && that instanceof Tree.Declaration) {
+                nh = (Tree.Declaration)that;
+            }
+            stmts = NativeUtil.mergeStatements(body, nh, Backend.JavaScript);
         } else {
             stmts = body.getStatements();
         }

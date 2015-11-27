@@ -113,8 +113,11 @@ public class Constructors {
             final GenerateJsVisitor gen) {
         List<Tree.Statement> origs = cdef.getClassBody().getStatements();
         if (NativeUtil.isForBackend(cdef.getDeclarationModel(), Backend.JavaScript)) {
-            origs = NativeUtil.mergeStatements(cdef.getClassBody(),
-                    gen.getNativeHeader(cdef.getDeclarationModel()));
+            Tree.Declaration nh = gen.getNativeHeader(cdef.getDeclarationModel());
+            if (nh == null && NativeUtil.hasNativeMembers(cdef.getDeclarationModel())) {
+                nh = cdef;
+            }
+            origs = NativeUtil.mergeStatements(cdef.getClassBody(), nh, Backend.JavaScript);
         }
         ArrayList<Tree.Statement> stmts = new ArrayList<>(origs.size());
         //Find the constructor
