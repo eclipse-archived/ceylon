@@ -29,19 +29,24 @@ public class ClassGenerator {
         //If it's inside a dynamic interface, don't generate anything
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
         final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
-        if (NativeUtil.isNativeHeader(that) && natd != null) {
+        final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
+        if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {
             // It's a native header, remember it for later when we deal with its implementation
             gen.saveNativeHeader(that);
             return;
         }
-        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript))) {
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || headerWithoutBackend)) {
             return;
         }
         final Tree.ParameterList plist = that.getParameterList();
         final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         final List<Tree.Statement> stmts;
         if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
-            stmts = NativeUtil.mergeStatements(that.getClassBody(), gen.getNativeHeader(d));
+            Tree.Declaration nh = gen.getNativeHeader(d);
+            if (nh == null && NativeUtil.hasNativeMembers(d)) {
+                nh = that;
+            }
+            stmts = NativeUtil.mergeStatements(that.getClassBody(), nh, Backend.JavaScript);
         } else {
             stmts = that.getClassBody().getStatements();
         }

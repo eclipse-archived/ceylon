@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.PrototypeInitCallback;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
@@ -47,7 +48,11 @@ public class TypeGenerator {
             extendedType = classDef.getExtendedType();
             satisfiedTypes = classDef.getSatisfiedTypes();
             decl = classDef.getDeclarationModel();
-            stmts = NativeUtil.mergeStatements(classDef.getClassBody(), gen.getNativeHeader(decl));
+            Tree.Declaration nh = gen.getNativeHeader(decl);
+            if (nh == null && NativeUtil.hasNativeMembers(decl)) {
+                nh = classDef;
+            }
+            stmts = NativeUtil.mergeStatements(classDef.getClassBody(), nh, Backend.JavaScript);
         } else if (type instanceof Tree.InterfaceDefinition) {
             satisfiedTypes = ((Tree.InterfaceDefinition) type).getSatisfiedTypes();
             decl = ((Tree.InterfaceDefinition) type).getDeclarationModel();
@@ -58,7 +63,11 @@ public class TypeGenerator {
             satisfiedTypes = objectDef.getSatisfiedTypes();
             decl = (ClassOrInterface)objectDef.getDeclarationModel().getTypeDeclaration();
             objDecl = objectDef.getDeclarationModel();
-            stmts = NativeUtil.mergeStatements(objectDef.getClassBody(), gen.getNativeHeader(objDecl));
+            Tree.Declaration nh = gen.getNativeHeader(decl);
+            if (nh == null && NativeUtil.hasNativeMembers(decl)) {
+                nh = objectDef;
+            }
+            stmts = NativeUtil.mergeStatements(objectDef.getClassBody(), nh,Backend.JavaScript);
         } else if (type instanceof Tree.ObjectExpression) {
             Tree.ObjectExpression objectDef = (Tree.ObjectExpression) type;
             extendedType = objectDef.getExtendedType();
