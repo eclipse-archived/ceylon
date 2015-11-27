@@ -812,10 +812,9 @@ public class AnalyzerUtil {
     }
 
     private static boolean isIndirectInvocation(Tree.Primary primary) {
-        Tree.Term term = unwrapExpressionUntilTerm(primary);
-        if (term instanceof Tree.MemberOrTypeExpression) {
+        if (primary instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) term;
+                    (Tree.MemberOrTypeExpression) primary;
             return isIndirectInvocation(mte);
         }
         else {
