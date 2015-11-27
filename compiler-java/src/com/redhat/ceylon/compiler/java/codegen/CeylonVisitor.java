@@ -248,7 +248,7 @@ public class CeylonVisitor extends Visitor {
             // In case of a native implementation we look for its header
             Tree.Declaration hdr = getHeaderDeclaration(classBuilder.getForDefinition());
             if (hdr != null) {
-                stmts = NativeUtil.mergeStatements(that, hdr);
+                stmts = NativeUtil.mergeStatements(that, hdr, Backend.Java);
             }
         }
         return stmts;
