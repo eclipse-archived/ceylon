@@ -7,6 +7,7 @@ import java.util.List;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
@@ -16,7 +17,8 @@ import com.redhat.ceylon.model.typechecker.model.ModelUtil;
  */
 public class NativeUtil {
 
-    public static List<Tree.Statement> mergeStatements(Tree.Body body, Tree.Declaration header) {
+    public static List<Tree.Statement> mergeStatements(Tree.Body body,
+            Tree.Declaration header, Backend backend) {
         // And if the header exists we go through the declarations in
         // its body and add them to our list of statements as if they
         // were part of the native implementation when a) it has a
@@ -38,6 +40,9 @@ public class NativeUtil {
                 if (stmt instanceof Tree.Declaration) {
                     Tree.Declaration decl = (Tree.Declaration)stmt;
                     Declaration m = decl.getDeclarationModel();
+                    if (m.isNativeImplementation() && !NativeUtil.isForBackend(m, backend)) {
+                        continue;
+                    }
                     String key = m.getClass().getSimpleName() + "#" + m.getName();
                     stmtsmap.put(key, decl);
                 } else {
@@ -116,5 +121,13 @@ public class NativeUtil {
         return decl.isNativeHeader()
                 && (ModelUtil.getNativeDeclaration(decl, backend) == null);
     }
-    
+
+    public static boolean hasNativeMembers(ClassOrInterface coi) {
+        for (Declaration d : coi.getMembers()) {
+            if (d.isNative()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
