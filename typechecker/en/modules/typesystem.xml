@@ -2130,10 +2130,10 @@ interface NumberLiteral
             
             <para>Every type parameter has an implicit upper bound of type 
             <literal>Anything</literal>.</para>
-                    
-            <para>An enumerated bound allows the use of an exhaustive <literal>switch</literal>
-            with expressions of the parameter type.</para>
             
+            <comment><para>TODO: eventually, we would like to have Ceylon's system of
+            flow-sensitive typing support a special sort of<literal>switch</literal>
+            over the cases of a type parameter with an enumerated bound:</para>
             <programlisting><![CDATA[Characters uppercase<Characters>(Characters chars) 
        given Characters of String | Range<Character> { 
     switch (Characters)
@@ -2144,10 +2144,13 @@ interface NumberLiteral
         return chars.first.uppercased..chars.last.uppercased;
     }
 }]]></programlisting>
+            </comment>
     
-            <comment><para>TODO: Do we need lower bound type constraints? The syntax would be:</para>
-            <programlisting>given T abstracts One|Two</programlisting><para>With union types
-            they don't appear to be anywhere near as useful. However, perhaps they are useful
+            <comment><para>Note: we have often searched for a need for lower bound type constraints.
+            The syntax would be:</para><programlisting>given T abstracts One|Two</programlisting>
+            <para>With union types they don't appear to be very useful, since it seems that 
+            almost every operation with a lower bound can be rewritten in a more general form
+            using a union type. However, perhaps lower bounds will someday turn out to be useful
             when combined with contravariant types. (A lower bound on a parameter which occurs 
             as the argument of a contravariant type is more like an upper bound).</para></comment>
             
