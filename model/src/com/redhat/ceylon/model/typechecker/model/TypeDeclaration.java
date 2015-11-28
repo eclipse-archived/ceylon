@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 
 public abstract class TypeDeclaration extends Declaration 
         implements ImportableScope, Cloneable, Generic {
@@ -345,21 +345,21 @@ public abstract class TypeDeclaration extends Declaration
      * order and searching supertypes first.
      */
     public Declaration getRefinedMember(String name, 
-            List<Type> signature, boolean ellipsis) {
-        return getRefinedMember(name, signature, ellipsis,
+            List<Type> signature, boolean variadic) {
+        return getRefinedMember(name, signature, variadic,
                 false);
     }
     
     public Declaration getRefinedMember(String name, 
-            List<Type> signature, boolean ellipsis,
+            List<Type> signature, boolean variadic,
             boolean onlyExactMatches) {
-        return getRefinedMember(name, signature, ellipsis,
+        return getRefinedMember(name, signature, variadic,
                 onlyExactMatches,
                         new HashSet<TypeDeclaration>());
     }
 
     protected Declaration getRefinedMember(String name, 
-            List<Type> signature, boolean ellipsis, 
+            List<Type> signature, boolean variadic, 
             boolean onlyExactMatches,
             Set<TypeDeclaration> visited) {
         if (!visited.add(this)) {
@@ -372,11 +372,11 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration ed = 
                         et.getDeclaration()
                             .getRefinedMember(name, 
-                                    signature, ellipsis,
+                                    signature, variadic,
                                     onlyExactMatches,
                                     visited);
                 if (isBetterRefinement(signature, 
-                        ellipsis, result, ed)) {
+                        variadic, result, ed)) {
                     result = ed;
                 }
             }
@@ -384,20 +384,20 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration sd = 
                         st.getDeclaration()
                             .getRefinedMember(name, 
-                                    signature, ellipsis, 
+                                    signature, variadic, 
                                     onlyExactMatches,
                                     visited);
                 if (isBetterRefinement(signature, 
-                        ellipsis, result, sd)) {
+                        variadic, result, sd)) {
                     result = sd;
                 }
             }
             Declaration dd = 
                     getDirectMember(name, 
-                            signature, ellipsis,
+                            signature, variadic,
                             onlyExactMatches);
             if (isBetterRefinement(signature, 
-                    ellipsis, result, dd)) {
+                    variadic, result, dd)) {
                 result = dd;
             }
             return result;
@@ -405,7 +405,7 @@ public abstract class TypeDeclaration extends Declaration
     }
 
     public boolean isBetterRefinement(
-            List<Type> signature, boolean ellipsis, 
+            List<Type> signature, boolean variadic, 
             Declaration result, Declaration candidate) {
         if (candidate==null ||
                 candidate.isActual() /*&& 
@@ -435,8 +435,8 @@ public abstract class TypeDeclaration extends Declaration
                 result.isAbstraction()) {
             return true;
         }
-        if (hasMatchingSignature(candidate, signature, ellipsis)) {
-            return !hasMatchingSignature(result, signature, ellipsis) || 
+        if (hasMatchingSignature(candidate, signature, variadic)) {
+            return !hasMatchingSignature(result, signature, variadic) || 
                     strictlyBetterMatch(candidate, result);
         }
         return false; //asymmetric!!

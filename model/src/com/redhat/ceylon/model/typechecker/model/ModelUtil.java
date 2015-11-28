@@ -184,14 +184,14 @@ public class ModelUtil {
 
     static boolean hasMatchingSignature(
             Declaration dec, 
-            List<Type> signature, boolean ellipsis) {
+            List<Type> signature, boolean variadic) {
         return hasMatchingSignature(dec, 
-                signature, ellipsis, true);
+                signature, variadic, true);
     }
     
     static boolean hasMatchingSignature(
             Declaration dec, 
-            List<Type> signature, boolean spread, 
+            List<Type> signature, boolean variadic, 
             boolean excludeAbstractClasses) {
         if (excludeAbstractClasses && 
                 dec instanceof Class && 
@@ -258,7 +258,7 @@ public class ModelUtil {
                             pdt.getTypeArgumentList()
                                 .get(0);  
                     for (int i=size; i<sigSize; i++) {
-                        if (spread && i==sigSize-1) {
+                        if (variadic && i==sigSize-1) {
                             Type sdt = signature.get(i);
                             Type isdt = 
                                     unit.getIteratedType(sdt);
@@ -274,11 +274,11 @@ public class ModelUtil {
                         }
                     }
                 }
-                else if (spread) {
+                else if (variadic) {
                     // if the method doesn't take sequenced 
-                    // params and we have an ellipsis let's 
-                    // not use it since we expect a variadic 
-                    // method
+                    // params and we have a spread operator, 
+                    // let's not use it since we expect a 
+                    // variadic function
                     // TODO: this is basically wrong now that 
                     //       we can spread tuples
                     return false;
@@ -1984,15 +1984,15 @@ public class ModelUtil {
      * @param name the name of the member to find
      * @param signature the parameter types to match, or
      *        null if we're not matching on parameter types
-     * @param ellipsis true of we want to find a declaration
+     * @param variadic true of we want to find a declaration
      *        which supports varags, or false otherwise
      *        
      * @return the best matching declaration
      */
     public static Declaration lookupMember(
             List<Declaration> members, String name,
-            List<Type> signature, boolean ellipsis) {
-        return lookupMember(members, name, signature, ellipsis, false);
+            List<Type> signature, boolean variadic) {
+        return lookupMember(members, name, signature, variadic, false);
     }
 
     /**
@@ -2007,7 +2007,7 @@ public class ModelUtil {
      * @param name the name of the member to find
      * @param signature the parameter types to match, or
      *        null if we're not matching on parameter types
-     * @param ellipsis true of we want to find a declaration
+     * @param variadic true of we want to find a declaration
      *        which supports varags, or false otherwise
      * @param onlyExactMatches only consider exact matches
      *        if a signature is provided. This means that if
@@ -2020,7 +2020,7 @@ public class ModelUtil {
      */
     public static Declaration lookupMember(
             List<Declaration> members, String name,
-            List<Type> signature, boolean ellipsis,
+            List<Type> signature, boolean variadic,
             boolean onlyExactMatches) {
         List<Declaration> results = null;
         Declaration result = null;
@@ -2052,7 +2052,7 @@ public class ModelUtil {
                         }*/
                         inexactMatch = d;
                     }
-                    if (hasMatchingSignature(d, signature, ellipsis)) {
+                    if (hasMatchingSignature(d, signature, variadic)) {
                         //we have found an exactly matching 
                         //overloaded declaration
                         if (result == null) {
@@ -2115,7 +2115,7 @@ public class ModelUtil {
     
     public static Declaration findMatchingOverloadedClass(
             Class abstractionClass, 
-            List<Type> signature, boolean ellipsis) {
+            List<Type> signature, boolean variadic) {
         List<Declaration> results = 
                 new ArrayList<Declaration>(1);
         if (!abstractionClass.isAbstraction()) {
@@ -2124,7 +2124,7 @@ public class ModelUtil {
         for (Declaration overloaded: 
                 abstractionClass.getOverloads()) {
             if (hasMatchingSignature(overloaded, 
-                    signature, ellipsis, false)) {
+                    signature, variadic, false)) {
                 addIfBetterMatch(results, 
                         overloaded, signature);
             }
