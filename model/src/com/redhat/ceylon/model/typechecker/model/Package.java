@@ -139,15 +139,15 @@ public class Package
      */
     @Override
     public Declaration getMember(String name, 
-            List<Type> signature, boolean ellipsis) {
-        return getDirectMember(name, signature, ellipsis);
+            List<Type> signature, boolean variadic) {
+        return getDirectMember(name, signature, variadic);
     }
 
     @Override
     public Declaration getDirectMember(String name, 
-            List<Type> signature, boolean ellipsis) {
+            List<Type> signature, boolean variadic) {
         return lookupMember(getMembers(), 
-                name, signature, ellipsis);
+                name, signature, variadic);
     }
 
     @Override
@@ -176,18 +176,18 @@ public class Package
     @Override
     public Declaration getMemberOrParameter(Unit unit, 
             String name, List<Type> signature, 
-            boolean ellipsis) {
+            boolean variadic) {
         //this implements the rule that imports hide 
         //toplevel members of a package
         //TODO: would it be better to look in the given unit 
         //      first, before checking imports?
         Declaration d = 
                 unit.getImportedDeclaration(name, 
-                        signature, ellipsis);
+                        signature, variadic);
         if (d!=null) {
             return d;
         }
-        d = getDirectMember(name, signature, ellipsis);
+        d = getDirectMember(name, signature, variadic);
         if (d!=null) {
             return d;
         }

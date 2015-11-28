@@ -76,8 +76,8 @@ public abstract class Element {
      * Search only directly inside this scope.
      */
     public Declaration getDirectMember(String name, 
-            List<Type> signature, boolean ellipsis) {
-        return getDirectMember(name, signature, ellipsis, 
+            List<Type> signature, boolean variadic) {
+        return getDirectMember(name, signature, variadic, 
                 false);
     }
 
@@ -85,10 +85,10 @@ public abstract class Element {
      * Search only directly inside this scope.
      */
     public Declaration getDirectMember(String name, 
-            List<Type> signature, boolean ellipsis, 
+            List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
         return lookupMember(getMembers(), 
-                name, signature, ellipsis, 
+                name, signature, variadic, 
                 onlyExactMatches);
     }
 
@@ -110,9 +110,9 @@ public abstract class Element {
      * produce a nicer error.
      */
     public Declaration getMember(String name, 
-            List<Type> signature, boolean ellipsis, 
+            List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
-        return getDirectMember(name, signature, ellipsis, 
+        return getDirectMember(name, signature, variadic, 
                 onlyExactMatches);
     }
 
@@ -124,8 +124,8 @@ public abstract class Element {
      * produce a nicer error.
      */
     public Declaration getMember(String name, 
-            List<Type> signature, boolean ellipsis) {
-        return getMember(name, signature, ellipsis, false);
+            List<Type> signature, boolean variadic) {
+        return getMember(name, signature, variadic, false);
     }
     
     /**
@@ -135,9 +135,9 @@ public abstract class Element {
      * declarations of this scope and containing scopes.
      */
     public Declaration getMemberOrParameter(Unit unit, String name, 
-            List<Type> signature, boolean ellipsis) {
+            List<Type> signature, boolean variadic) {
         return getMemberOrParameter(unit, name, signature, 
-                ellipsis, false);
+                variadic, false);
     }
     
     /**
@@ -147,17 +147,17 @@ public abstract class Element {
      * declarations of this scope and containing scopes.
      */
     public Declaration getMemberOrParameter(Unit unit, String name, 
-            List<Type> signature, boolean ellipsis, 
+            List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
         Declaration d = 
-                getMemberOrParameter(name, signature, ellipsis);
+                getMemberOrParameter(name, signature, variadic);
         if (d!=null) {
             return d;
         }
         else if (getScope()!=null) {
             return getScope()
                     .getMemberOrParameter(unit, name, 
-                            signature, ellipsis);
+                            signature, variadic);
         }
         else {
             //union type or bottom type 
@@ -172,8 +172,8 @@ public abstract class Element {
      * direct members.
      */
     protected Declaration getMemberOrParameter(String name, 
-            List<Type> signature, boolean ellipsis) {
-        return getMemberOrParameter(name, signature, ellipsis, 
+            List<Type> signature, boolean variadic) {
+        return getMemberOrParameter(name, signature, variadic, 
                 false);
     }
 
@@ -184,9 +184,9 @@ public abstract class Element {
      * direct members.
      */
     protected Declaration getMemberOrParameter(String name, 
-            List<Type> signature, boolean ellipsis, 
+            List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
-        return getDirectMember(name, signature, ellipsis, 
+        return getDirectMember(name, signature, variadic, 
                 onlyExactMatches);
     }
 
