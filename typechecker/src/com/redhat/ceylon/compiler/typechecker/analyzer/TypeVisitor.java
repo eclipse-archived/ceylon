@@ -316,44 +316,59 @@ public class TypeVisitor extends Visitor {
                 firstDefaulted, unit);
     }
 
-    //TODO: big copy/paste from Unit.getTupleType(), to 
-    //      eliminate the canonicalization (since aliases  
-    //      are not yet resolvable in this phase)
+    //Note: quite similar to Unit.getTupleType(), but does 
+    //      not canonicalize (since aliases are not yet 
+    //      resolvable in this phase)
     private static Type getTupleType(
             List<Type> elemTypes, 
             boolean variadic, boolean atLeastOne, 
             int firstDefaulted,
             Unit unit) {
-        Class td = unit.getTupleDeclaration();
-        Type result = unit.getEmptyType();
+        Class tupleDeclaration = unit.getTupleDeclaration();
+        Type emptyType = unit.getEmptyType();
+        Type result = emptyType;
         Type union = unit.getNothingType();
         int last = elemTypes.size()-1;
         for (int i=last; i>=0; i--) {
             Type elemType = elemTypes.get(i);
-            List<Type> pair = 
-                    new ArrayList<Type>();
             //can't use addToUnion() here
-            pair.add(elemType);
-            pair.add(union);
-            union = union(pair, unit);
+            union = 
+                    addToUncanonicalizedUnion(unit, 
+                            union, elemType);
             if (variadic && i==last) {
                 result = atLeastOne ? 
                         unit.getSequenceType(elemType) : 
                         unit.getSequentialType(elemType);
             }
             else {
-                result = appliedType(td, union, elemType, 
-                        result);
+                result = 
+                        appliedType(tupleDeclaration, 
+                                union, elemType, result);
                 if (firstDefaulted>=0 && i>=firstDefaulted) {
-                    pair = new ArrayList<Type>();
                     //can't use addToUnion() here
-                    pair.add(unit.getEmptyType());
-                    pair.add(result);
-                    result = union(pair, unit);
+                    result = 
+                            addToUncanonicalizedUnion(unit, 
+                                    result, emptyType);
                 }
             }
         }
         return result;
+    }
+
+    private static Type addToUncanonicalizedUnion(Unit unit, 
+            Type union, Type type) {
+        if (union.isNothing() || type.isAnything()) {
+            return type;
+        }
+        else if (union.isAnything() || type.isNothing()) {
+            return union;
+        }
+        else {
+            List<Type> pair = new ArrayList<Type>();
+            pair.add(type);
+            pair.add(union);
+            return union(pair, unit);
+        }
     }
     
     @Override 
