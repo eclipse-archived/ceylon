@@ -3188,15 +3188,30 @@ public class ExpressionVisitor extends Visitor {
             //overloaded declaration
             List<Tree.PositionalArgument> args = 
                     pal.getPositionalArguments();
-            List<Type> sig = 
+            List<Type> signature = 
                     new ArrayList<Type>
                         (args.size());
-            for (Tree.PositionalArgument pa: args) {
-                Type pat = pa.getTypeModel();
-                sig.add(unit.denotableType(pat));
+            boolean spread = false;
+            for (int i=0, s=args.size(); i<s; i++) {
+                Tree.PositionalArgument pa = args.get(i);
+                Type t = pa.getTypeModel();
+                Type pat = unit.denotableType(t);
+                if (pa instanceof Tree.SpreadArgument) {
+                    if (unit.isTupleType(pat)) {
+                        signature.addAll(unit.getTupleElementTypes(pat));
+                        spread = unit.isTupleLengthUnbounded(pat);
+                    }
+                    else {
+                        signature.add(pat);
+                        spread = true;
+                    }
+                }
+                else {
+                    signature.add(pat);
+                }
             }
-            mte.setSignature(sig);
-            mte.setEllipsis(hasSpreadArgument(args));
+            mte.setSignature(signature);
+            mte.setEllipsis(spread);
         }
     }
     
@@ -4637,18 +4652,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private boolean hasSpreadArgument(
-            List<Tree.PositionalArgument> args) {
-        int size = args.size();
-        if (size>0) {
-            return args.get(size-1) 
-                    instanceof Tree.SpreadArgument;
-        }
-        else {
-            return false;
-        }
-    }
-
     private void checkPositionalArgument(Parameter p, 
             Reference pr, Tree.ListedArgument a) {
         FunctionOrValue model = p.getModel();
