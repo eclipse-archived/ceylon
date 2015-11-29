@@ -3206,6 +3206,10 @@ public class ExpressionVisitor extends Visitor {
                         spread = true;
                     }
                 }
+                else if (pa instanceof Tree.Comprehension) {
+                    signature.add(unit.getSequentialType(pat));
+                    spread = true;
+                }
                 else {
                     signature.add(pat);
                 }
