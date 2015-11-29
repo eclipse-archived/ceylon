@@ -43,6 +43,14 @@ public class TypeArgumentVisitor extends Visitor {
                     check(type, false, null);
                 }
             }
+            Tree.CaseTypes cts = 
+                    that.getCaseTypes();
+            if (cts!=null) {
+                for (Tree.Type type: cts.getTypes()) {
+                    //TODO: is "null" really correct here?!
+                    check(type, false, null);
+                }
+            }
             flip();
             parameterizedDeclaration = null;
         }
