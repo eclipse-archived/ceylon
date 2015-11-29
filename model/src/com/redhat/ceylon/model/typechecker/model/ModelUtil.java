@@ -279,8 +279,6 @@ public class ModelUtil {
                     // params and we have a spread operator, 
                     // let's not use it since we expect a 
                     // variadic function
-                    // TODO: this is basically wrong now that 
-                    //       we can spread tuples
                     return false;
                 }
                 return true;
