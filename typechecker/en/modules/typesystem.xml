@@ -1891,8 +1891,8 @@ interface NumberLiteral
                     <para>Any parameter type of the method is a contravariant position.</para>
                 </listitem>
                 <listitem>
-                    <para>Any upper bound of a type parameter of the method is a contravariant 
-                    position.</para>
+                    <para>Any upper bound or enumerated bound of a type parameter of the 
+                    method is a contravariant position.</para>
                 </listitem>
                 <!--listitem>
                     <para>Any lower bound of a type parameter of the method is a covariant 
@@ -1932,8 +1932,8 @@ interface NumberLiteral
                     any outer containing type.</para>
                 </listitem>
                 <listitem>
-                    <para>Any upper bound of a type parameter of the class is a contravariant 
-                    position.</para>
+                    <para>Any upper bound or enumerated bound of a type parameter of the 
+                    class is a contravariant position.</para>
                 </listitem>
                 <!--listitem>
                     <para>Any lower bound of a type parameter of the class is a covariant 
