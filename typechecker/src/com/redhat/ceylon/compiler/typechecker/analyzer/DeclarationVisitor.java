@@ -768,7 +768,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Generic g = (Generic) declaration;
         g.setTypeParameters(getTypeParameters(that));
     }    
-        
+    
     private void defaultExtendedToBasic(Class c) {
         //default supertype for classes
         c.setExtendedType(new LazyType(unit) {
@@ -783,7 +783,7 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         });
     }
-
+    
     private void defaultExtendedToObject(Interface c) {
         //default supertype for interfaces
         c.setExtendedType(new LazyType(unit) {
@@ -2566,6 +2566,10 @@ public abstract class DeclarationVisitor extends Visitor {
                     }
                 }
                 @Override
+                public boolean isUnknown() {
+                    return false;
+                }                
+                @Override
                 public TypeDeclaration initDeclaration() {
                     return iterableType().getDeclaration();
                 }
@@ -2674,7 +2678,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    final List<Type> types = 
+                    List<Type> types = 
                             new ArrayList<Type>
                                 (sts.size());
                     for (Tree.StaticType st: sts) {
@@ -2708,6 +2712,10 @@ public abstract class DeclarationVisitor extends Visitor {
             Type t;
             if (length==null) {
                 t = new LazyType(unit) {
+                    @Override
+                    public boolean isUnknown() {
+                        return false;
+                    }                    
                     @Override
                     public TypeDeclaration initDeclaration() {
                         return unit.getSequentialDeclaration();
@@ -2753,7 +2761,12 @@ public abstract class DeclarationVisitor extends Visitor {
             this.elementType = elementType;
             this.len = len;
         }
-
+        
+        @Override
+        public boolean isUnknown() {
+            return false;
+        }
+        
         @Override
         public TypeDeclaration initDeclaration() {
             return unit.getTupleDeclaration();
@@ -2787,6 +2800,10 @@ public abstract class DeclarationVisitor extends Visitor {
             Type t = 
                     new LazyType(unit) {
                 @Override
+                public boolean isUnknown() {
+                    return false;
+                }
+                @Override
                 public TypeDeclaration initDeclaration() {
                     return atLeastOne ? 
                             unit.getSequenceDeclaration() : 
@@ -2817,6 +2834,10 @@ public abstract class DeclarationVisitor extends Visitor {
                     that.getValueType();
             Type t = 
                     new LazyType(unit) {
+                @Override
+                public boolean isUnknown() {
+                    return false;
+                }
                 @Override
                 public TypeDeclaration initDeclaration() {
                     return unit.getEntryDeclaration();
@@ -2849,6 +2870,10 @@ public abstract class DeclarationVisitor extends Visitor {
                         that.getArgumentTypes();
                 Type t = 
                         new LazyType(unit) {
+                    @Override
+                    public boolean isUnknown() {
+                        return false;
+                    }
                     @Override
                     public TypeDeclaration initDeclaration() {
                         return unit.getCallableDeclaration();
