@@ -2770,7 +2770,7 @@ public abstract class DeclarationVisitor extends Visitor {
             Type et = elementType.getTypeModel();
             args.put(stps.get(0), et);
             args.put(stps.get(1), et);
-            args.put(stps.get(3), len==1 ? 
+            args.put(stps.get(2), len==1 ? 
                     unit.getEmptyType() : 
                     new StaticLengthSequenceType(elementType, len-1));
             return args;
