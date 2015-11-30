@@ -35,3 +35,14 @@ void inf() {
     @type:"Nothing" accept1(fun);
     @type:"Nothing" accept2(fun);
 }
+
+void g() {
+    value pl = plus;
+    [1,2,3].fold(0)(pl);
+    f("");
+    { "" }.each((a) => f(a));
+    { "" }.each(f);
+}
+
+void f<Absent>(Absent|String a)
+        given Absent satisfies Null => noop();
