@@ -40,6 +40,7 @@ import ceylon.language.Basic;
 import ceylon.language.Empty;
 import ceylon.language.Identifiable;
 import ceylon.language.Null;
+import ceylon.language.Range;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
@@ -371,7 +372,8 @@ public abstract class TypeDescriptor
         public TypeDescriptor getSequenceElement() {
             if(klass == ceylon.language.Tuple.class ||
                     klass == Sequence.class ||
-                    klass == Sequential.class)
+                    klass == Sequential.class || 
+                    klass == ceylon.language.Range.class)
                 return typeArguments[0];
             if(klass == Empty.class)
                 return NothingType;
@@ -1188,7 +1190,9 @@ public abstract class TypeDescriptor
             return combineTuples(elements, firstDefaulted, (Tuple)rest);
         }else if(rest instanceof Class){
             Class restClass = (Class)rest;
-            if(restClass.klass == Sequence.class || restClass.klass == Sequential.class){
+            if(restClass.klass == Sequence.class 
+                    || restClass.klass == Sequential.class
+                    || restClass.klass == Range.class){
                 // that's also rather easy
                 TypeDescriptor[] newElements = new TypeDescriptor[elements.length+1];
                 System.arraycopy(elements, 0, newElements, 0, elements.length);
