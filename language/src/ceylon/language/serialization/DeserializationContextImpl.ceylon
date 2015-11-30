@@ -16,7 +16,9 @@ import ceylon.language.impl {
 }
 
 "Implementation of [[DeserializationContext]] using a few native helper classes."
-class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id> 
+class DeserializationContextImpl<Id>(
+    Boolean whitelisted (ClassModel<> clazz)) 
+        satisfies DeserializationContext<Id> 
         given Id satisfies Object {
     """The `Item` in the instances map is either a `Partial` or the actual instance
        that's not ambiguous because `Partial` never leaks, so it's impossible
@@ -158,7 +160,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                     continue;
                 }
                 if (!instance.instantiated) {
-                    instance.instantiate();
+                    instance.instantiate(whitelisted);
                 }
                 instance.traversal = traversal;
                 // push the referred things on to the stack

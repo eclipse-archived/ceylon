@@ -22,6 +22,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 import ceylon.language.AssertionError;
+import ceylon.language.Callable;
 import ceylon.language.Collection;
 import ceylon.language.Entry;
 import ceylon.language.String;
@@ -67,10 +68,13 @@ class PartialImpl extends Partial {
     }
     
     @Override
-    public java.lang.Object instantiate() {
+    public java.lang.Object instantiate(Callable<? extends ceylon.language.Boolean> whitelisted) {
         final ClassModel<?, ?> classModel = getClazz();
         if (classModel == null) {
             throw new DeserializationException("no class specified for instance with id " + getId());
+        }
+        if (!whitelisted.$call$(classModel).booleanValue()) {
+            throw new DeserializationException("class not whitelisted: "+classModel+" for instance with id " + getId());
         }
         final java.lang.Class<?> clazz = getClassTypeDescriptor().getKlass();
         final Class<?> outerClass;

@@ -1,9 +1,11 @@
 import ceylon.language.serialization{...}
 import ceylon.language.meta.declaration {
     ValueDeclaration,
-    TypeParameter
+    TypeParameter,
+    ClassDeclaration
 }
 import ceylon.language.meta.model {
+    ClassModel,
     Type
 }
 
@@ -712,6 +714,32 @@ shared void docExample() {
     assert(wonkaInc2.owner === willy2);
     assert(willy2.employer === wonkaInc2);
     assert(umpaLumpa2.employer === wonkaInc2);
+}
+
+@test
+shared void deserializationWhitelist() {
+    void do(variable DeserializationContext<Integer> dc) {
+        dc.attribute(2, `value Container.element`, 1);
+        dc.instanceValue(1, "hello, world");
+        dc.instance(2, `Container<String>`);
+        variable Container<String> reconstructed = dc.reconstruct<Container<String>>(2);
+        assert(reconstructed.element == "hello, world");
+    }
+    
+    variable value dc = deserialization<Integer>(function (ClassModel<> clazz) 
+        => let (m = clazz.declaration.containingModule)
+                m == `module` || m == `module ceylon.language`);
+    do(dc);
+    
+    dc = deserialization<Integer>(function (ClassModel<> clazz) 
+        => let (m = clazz.declaration.containingModule) m == `module ceylon.language`);
+    try {
+        do(dc);
+        throw;
+    } catch (DeserializationException e) {
+        assert(e.message == "class not whitelisted: serialization::Container<ceylon.language::String> for instance with id 2");
+    }
+    
 }
 
 shared void run() {

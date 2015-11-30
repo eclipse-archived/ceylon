@@ -34,7 +34,7 @@ abstract class Partial(Object  id) extends Vertex(id) {
     throws(`class DeserializationException`,
         "* the class of the instance has already been specified
          * instance is a member instance and the container has not been specified")
-    shared formal void instantiate();
+    shared formal void instantiate(Boolean(ClassModel<>) whitelisted);
     
     "Initializes the [[instance_]] using backend-specific reflection.
      After normal completion of this method state will be null."
