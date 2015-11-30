@@ -2288,6 +2288,9 @@ shared void run() {
     sandbox(bugC2392);
     // those were filed for the JS compiler initially
     sandbox(bugJ505);
+    
+    // post-OBR
+    sandbox(bug5771);
     // those were filed for the ceylon-model
     sandbox(bugM12test);
     // ATTENTION!
