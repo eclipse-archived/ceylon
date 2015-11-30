@@ -872,9 +872,11 @@ public class TypeArgumentInference {
      * Infer the type arguments for a reference to a 
      * generic function that occurs as an argument in
      * an invocation.
+     * @param receiverType 
      */
     List<Type> getInferredTypeArgsForFunctionRef(
-            Tree.StaticMemberOrTypeExpression smte) {
+            Tree.StaticMemberOrTypeExpression smte, 
+            Type receiverType) {
         Tree.TypeArguments typeArguments = 
                 smte.getTypeArguments();
         if (typeArguments instanceof Tree.InferredTypeArguments) {
@@ -974,7 +976,9 @@ public class TypeArgumentInference {
                                             findUpperBounds);
                             inferredTypes.add(it);
                         }
-                        return inferredTypes;
+                        return constrainInferredTypes(
+                                typeParameters, inferredTypes, 
+                                receiverType, reference);
                     }
                 }
                 else {
@@ -1040,7 +1044,9 @@ public class TypeArgumentInference {
                                             findUpperBounds);
                             inferredTypes.add(it);
                         }
-                        return inferredTypes;
+                        return constrainInferredTypes(
+                                typeParameters, inferredTypes, 
+                                receiverType, reference);
                     }
                     else {
                         //not a callable parameter, nor a
@@ -1183,6 +1189,7 @@ public class TypeArgumentInference {
                                 pal, findUpperBounds);
                 typeArguments.add(it);
             }
+            //TODO: apply type constraints!!
             return typeArguments;
         }
     }
@@ -1668,18 +1675,44 @@ public class TypeArgumentInference {
                 found = true;
             }
         }
+        
         if (found) {
+            
             Reference ref;
-            if (qualifyingType == null) {
-                ref = declaration.appliedReference(null, 
-                        inferredTypeArgs);
+            if (declaration instanceof Value) {
+                Value value = (Value) declaration;
+                if (value.getType().isTypeConstructor()) {
+                    if (qualifyingType == null) {
+                        ref = declaration.appliedReference(null, 
+                                NO_TYPE_ARGS);
+                    }
+                    else {
+                        ref = qualifyingType.getTypedReference(
+                                declaration, NO_TYPE_ARGS);
+                    }
+                    TypeDeclaration dec = 
+                            ref.getType().getDeclaration();
+                    ref = dec.appliedReference(null, 
+                            inferredTypeArgs);
+                }
+                else {
+                    return inferredTypeArgs;
+                }
             }
             else {
-                ref = qualifyingType.getTypedReference(
-                        declaration, inferredTypeArgs);
+                if (qualifyingType == null) {
+                    ref = declaration.appliedReference(null, 
+                            inferredTypeArgs);
+                }
+                else {
+                    ref = qualifyingType.getTypedReference(
+                            declaration, inferredTypeArgs);
+                }
             }
-            Map<TypeParameter, Type> args =
+            
+            Map<TypeParameter,Type> args = 
                     ref.getTypeArguments();
+            
             ArrayList<Type> result = 
                     new ArrayList<Type>
                         (size);

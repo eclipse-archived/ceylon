@@ -6049,7 +6049,8 @@ public class ExpressionVisitor extends Visitor {
             if (typeConstructorArgumentsInferrable(member, that)) {
                 typeArgs = 
                         new TypeArgumentInference(unit)
-                            .getInferredTypeArgsForFunctionRef(that);
+                            .getInferredTypeArgsForFunctionRef(
+                                    that, null);
             }
             else if (explicitTypeArguments(member, tal)) {
                 typeArgs = 
@@ -6059,7 +6060,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 typeArgs = 
                         new TypeArgumentInference(unit)
-                            .getInferredTypeArgsForFunctionRef(that);
+                            .getInferredTypeArgsForFunctionRef(
+                                    that, null);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -6175,7 +6177,8 @@ public class ExpressionVisitor extends Visitor {
             if (typeConstructorArgumentsInferrable(member, that)) {
                 typeArgs = 
                         new TypeArgumentInference(unit)
-                            .getInferredTypeArgsForFunctionRef(that);
+                            .getInferredTypeArgsForFunctionRef(
+                                    that, receiverType);
             }
             else if (explicitTypeArguments(member, tal)) {
                 typeArgs = 
@@ -6185,7 +6188,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 typeArgs = 
                         new TypeArgumentInference(unit)
-                            .getInferredTypeArgsForFunctionRef(that);
+                            .getInferredTypeArgsForFunctionRef(
+                                    that, receiverType);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -6704,7 +6708,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 typeArgs = 
                         new TypeArgumentInference(unit)
-                            .getInferredTypeArgsForFunctionRef(that);
+                            .getInferredTypeArgsForFunctionRef(
+                                    that, null);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -7006,7 +7011,8 @@ public class ExpressionVisitor extends Visitor {
             else {
                 typeArgs = 
                         new TypeArgumentInference(unit)
-                            .getInferredTypeArgsForFunctionRef(that);
+                            .getInferredTypeArgsForFunctionRef(
+                                    that, receiverType);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
