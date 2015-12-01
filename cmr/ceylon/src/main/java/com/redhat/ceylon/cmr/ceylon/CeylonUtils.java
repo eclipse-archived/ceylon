@@ -517,7 +517,7 @@ public class CeylonUtils {
                     } else if (!repoFolder.canWrite()) {
                         log.error("Output repository is not writable: " + outRepo);
                     }
-                } else if (!repoFolder.mkdirs()) {
+                } else if (!FileUtil.mkdirs(repoFolder)) {
                     log.error("Failed to create output repository: " + outRepo);
                 }
                 StructureBuilder structureBuilder = new FileContentStore(repoFolder);

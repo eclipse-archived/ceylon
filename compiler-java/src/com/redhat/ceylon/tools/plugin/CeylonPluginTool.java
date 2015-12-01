@@ -297,7 +297,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
                 return false;
             }
         }
-        if(!moduleScriptDir.mkdirs()){
+        if(!FileUtil.mkdirs(moduleScriptDir)){
             errorMsg("error.unable.create.dest.dir", moduleScriptDir);
             return false;
         }

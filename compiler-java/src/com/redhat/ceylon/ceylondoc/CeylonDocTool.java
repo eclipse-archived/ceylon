@@ -524,7 +524,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         }
         File dir = new File(getApiOutputFolder(module), join("/", unprefixedName));
         if(shouldInclude(module))
-            dir.mkdirs();
+            FileUtil.mkdirs(dir);
         return dir;
     }
 
@@ -546,7 +546,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             folder = new File(folder, subDir);
         }
         if (shouldInclude(module)) {
-            folder.mkdirs();
+            FileUtil.mkdirs(folder);
         }
         return folder;
     }
@@ -830,7 +830,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
             File file = new File(getFolder(pu.getPackage()), pu.getUnitFile().getName()+".html");
             File dir = file.getParentFile();
-            if (!dir.exists() && !dir.mkdirs()) {
+            if (!dir.exists() && !FileUtil.mkdirs(dir)) {
                 throw new IOException(CeylondMessages.msg("error.couldNotCreateDirectory", file));
             }
             Writer writer = openWriter(file);
@@ -957,7 +957,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private File getResourcesDir(Module module) throws IOException {
         File dir = new File(getApiOutputFolder(module), ".resources");
         if (!dir.exists()
-                && !dir.mkdirs()) {
+                && !FileUtil.mkdirs(dir)) {
             throw new IOException();
         }
         return dir;
@@ -979,7 +979,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private void copyResource(String path, File file) throws IOException {
         File dir = file.getParentFile();
         if (!dir.exists()
-                && !dir.mkdirs()) {
+                && !FileUtil.mkdirs(dir)) {
             throw new IOException();
         }
         try (InputStream resource = getClass().getResourceAsStream(path)) {

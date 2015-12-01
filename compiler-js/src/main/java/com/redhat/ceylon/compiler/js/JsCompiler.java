@@ -454,7 +454,7 @@ public class JsCompiler {
                     result = 1;
                 }
             } else {
-                if (!root.mkdirs()) {
+                if (!FileUtil.mkdirs(root)) {
                     logger.error("Cannot create "+root+". Stop.");
                     result = 1;
                 }

@@ -182,7 +182,7 @@ public class CeylonSrcTool extends RepoUsingTool {
         if (!fromDir.isDirectory()) {
             throw new RuntimeException(CeylonSrcMessages.msg("not.dir.input.dir", name, destDir));
         }
-        if (!destDir.exists() && !destDir.mkdirs()) {
+        if (!destDir.exists() && !FileUtil.mkdirs(destDir)) {
             throw new RuntimeException(CeylonSrcMessages.msg("unable.create.output.dir", name, destDir));
         }
         if (!destDir.isDirectory()) {

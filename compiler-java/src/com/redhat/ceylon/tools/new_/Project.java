@@ -51,7 +51,7 @@ public abstract class Project implements Tool {
             if (actualDir.exists() && !actualDir.isDirectory()) {
                 throw new IOException(Messages.msg("path.exists.and.not.dir", directory));
             } else if (!actualDir.exists()) {
-                if (!actualDir.mkdirs()) {
+                if (!FileUtil.mkdirs(actualDir)) {
                     throw new IOException(Messages.msg("could.not.mkdir", directory));
                 }
             }
