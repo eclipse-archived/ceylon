@@ -34,6 +34,7 @@ import java.lang.ref.SoftReference;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -209,13 +210,15 @@ public abstract class BaseFileManager {
 
         while (true) {
             CoderResult result = decoder.decode(inbuf, dest, true);
-            dest.flip();
+            // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+            ((Buffer)dest).flip();
 
             if (result.isUnderflow()) { // done reading
                 // make sure there is at least one extra character
                 if (dest.limit() == dest.capacity()) {
                     dest = CharBuffer.allocate(dest.capacity()+1).put(dest);
-                    dest.flip();
+                    // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+                    ((Buffer)dest).flip();
                 }
                 return dest;
             } else if (result.isOverflow()) { // buffer too small; expand
@@ -238,11 +241,13 @@ public abstract class BaseFileManager {
                 }
 
                 // skip past the coding error
-                inbuf.position(inbuf.position() + result.length());
+                // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+                ((Buffer)inbuf).position(inbuf.position() + result.length());
 
                 // undo the flip() to prepare the output buffer
                 // for more translation
-                dest.position(dest.limit());
+                // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+                ((Buffer)dest).position(dest.limit());
                 dest.limit(dest.capacity());
                 dest.put((char)0xfffd); // backward compatible
             } else {
@@ -290,9 +295,11 @@ public abstract class BaseFileManager {
                 position,
                 limit - position);
             if (count < 0) break;
-            result.position(position += count);
+            // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+            ((Buffer)result).position(position += count);
         }
-        return (ByteBuffer)result.flip();
+        // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+        return (ByteBuffer)((Buffer)result).flip();
     }
 
     public void recycleByteBuffer(ByteBuffer bb) {
@@ -308,7 +315,8 @@ public abstract class BaseFileManager {
             if (capacity < 20480) capacity = 20480;
             ByteBuffer result =
                 (cached != null && cached.capacity() >= capacity)
-                ? (ByteBuffer)cached.clear()
+                // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+                ? (ByteBuffer)((Buffer)cached).clear()
                 : ByteBuffer.allocate(capacity + capacity>>1);
             cached = null;
             return result;

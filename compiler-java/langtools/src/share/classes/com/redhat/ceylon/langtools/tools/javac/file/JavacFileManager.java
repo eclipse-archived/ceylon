@@ -36,6 +36,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.CharBuffer;
+import java.nio.Buffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,7 +78,8 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
 
     public static char[] toArray(CharBuffer buffer) {
         if (buffer.hasArray())
-            return ((CharBuffer)buffer.compact().flip()).array();
+            // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
+            return ((CharBuffer)((Buffer)buffer.compact()).flip()).array();
         else
             return buffer.toString().toCharArray();
     }
