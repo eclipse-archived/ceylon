@@ -54,6 +54,14 @@ Some super-charged ant tasks:
         </ant>
     </target>
     
+    <target name="clean-packages">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="clean-packages"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
     <target name="dist">
         <ant antfile="${ceylon.dist.dir}/build.xml"
              target="dist"

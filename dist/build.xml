@@ -738,6 +738,13 @@ Use this when NOT doing a release!">
              inheritall="false"/>
     </target>
 
+    <target name="clean-packages" 
+            description="Cleans packaged builds">
+        <delete>
+            <fileset dir="${basedir}" includes="ceylon-*.zip" />
+        </delete>
+    </target>
+
     <!-- The following tasks all redirect to "sdk-build.xml" -->
     
     <target name="setup-sdk">
