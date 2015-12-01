@@ -183,7 +183,7 @@ shared interface Set<out Element=Object>
  This is an eager operation and the resulting set does
  not reflect changes to the given [[stream]]."
 see(`value Iterable.distinct`)
-shared Set<Element> set<Element>(
+shared Set<Element> set<out Element>(
         "The stream of elements."
         {Element*} stream,
         "A function that chooses between duplicate elements. 
@@ -191,32 +191,32 @@ shared Set<Element> set<Element>(
          the stream is chosen."
         Element choosing(Element earlier, Element later) 
                 => earlier)
-        given Element satisfies Object
-        => if (is Set<Element> stream) 
-        then stream
-        else object extends Object() 
-                    satisfies Set<Element&Object> {
-    
-    value elements =
-            stream.summarize(identity,
-                (Element? current, element)
-                        => if (exists current)
-                        then choosing(current, element)
-                        else element);
-    
-    contains(Object element) => elements.defines(element);
-    
-    iterator() => elements.keys.iterator();
-    
-    size => elements.size;
-    
-    empty => elements.empty;
-    
-    clone() => this;
-    
-};
+        given Element satisfies Object {
 
+	class ImmutableSet() extends Object()
+			satisfies Set<Element> {
 
+		value elements =
+				stream.summarize(identity,
+					(Element? current, element)
+							=> if (exists current)
+							then choosing(current, element)
+							else element);
+
+		contains(Object element) => elements.defines(element);
+
+		iterator() => elements.keys.iterator();
+
+		size => elements.size;
+
+		empty => elements.empty;
+
+		clone() => this;
+	}
+	return if (is ImmutableSet | \IemptySet stream)
+	then stream
+	else ImmutableSet();
+}
 
 "An immutable [[Set]] with no elements."
 tagged("Collections")
