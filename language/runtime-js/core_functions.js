@@ -309,3 +309,9 @@ ex$.eorl$=eorl$;
 ex$.asrt$=asrt$;
 var INIT$={a:1};
 ex$.INIT$=INIT$;
+
+//For foo[bar]=baz
+function setObjectProperty(object, key, value) {
+  object[key]=value;
+}
+ex$.setObjectProperty=setObjectProperty;
