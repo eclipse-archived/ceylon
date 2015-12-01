@@ -945,7 +945,9 @@ public abstract class CompilerTests {
         }
         // use the same JVM as the current one
         pb.environment().put("JAVA_HOME", System.getProperty("java.home"));
-        pb.environment().put("JAVA_OPTS", "-XaddExports:java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED,java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED");
+        pb.environment().put("JAVA_OPTS", "-XaddExports:java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED"
+        		+",java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED"
+        		+",java.xml/com.sun.xml.internal.stream=ALL-UNNAMED");
         Process p = pb.start();
         return p.waitFor();
     }
