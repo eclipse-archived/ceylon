@@ -20,23 +20,23 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.Type.ClassType;
-import com.sun.tools.javac.code.Type.MethodType;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCArrayTypeTree;
-import com.sun.tools.javac.tree.JCTree.JCClassDecl;
-import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
-import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
-import com.sun.tools.javac.tree.JCTree.JCImport;
-import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
-import com.sun.tools.javac.tree.JCTree.JCModifiers;
-import com.sun.tools.javac.tree.JCTree.JCTypeApply;
-import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.tree.JCTree.JCWildcard;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.ClassType;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.MethodType;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCArrayTypeTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCClassDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCImport;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCModifiers;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeApply;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeParameter;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCWildcard;
 
 /**
  * Recursively resets a Javac AST for bootstrapping

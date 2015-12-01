@@ -20,16 +20,27 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.sun.tools.javac.code.Flags.FINAL;
-import static com.sun.tools.javac.code.Flags.INTERFACE;
-import static com.sun.tools.javac.code.Flags.PRIVATE;
-import static com.sun.tools.javac.code.Flags.PUBLIC;
-import static com.sun.tools.javac.code.Flags.STATIC;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.INTERFACE;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PRIVATE;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PUBLIC;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 
 import java.util.ArrayList;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeParameter;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -38,17 +49,6 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.sun.tools.javac.code.BoundKind;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Name;
 
 /**
  * Builder for Java Classes. The specific properties of the "framework" of the

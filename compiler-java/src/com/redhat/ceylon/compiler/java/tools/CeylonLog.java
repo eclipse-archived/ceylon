@@ -19,18 +19,17 @@
  */
 package com.redhat.ceylon.compiler.java.tools;
 
-import javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.JCDiagnostic;
-import com.sun.tools.javac.util.DiagnosticSource;
-import com.sun.tools.javac.util.SourceLanguage;
-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Options;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.DiagnosticSource;
+import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
+import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticType;
 
 public class CeylonLog extends Log {
 

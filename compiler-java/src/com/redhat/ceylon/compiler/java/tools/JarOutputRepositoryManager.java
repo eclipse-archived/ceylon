@@ -35,9 +35,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
-import javax.tools.JavaFileObject;
-import javax.tools.StandardLocation;
-
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -49,13 +46,15 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardLocation;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultModuleManifest;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.CeylonManifest;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.sun.source.util.TaskListener;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Options;
 
 public class JarOutputRepositoryManager {
     

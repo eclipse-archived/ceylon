@@ -26,6 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.langtools.tools.javac.code.Flags;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.VarSymbol;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
@@ -35,14 +43,6 @@ import com.redhat.ceylon.model.loader.mirror.PackageMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Symbol.CompletionFailure;
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
-import com.sun.tools.javac.code.Symbol.VarSymbol;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.TypeTags;
 
 public class JavacClass implements ClassMirror {
 

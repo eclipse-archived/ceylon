@@ -2,9 +2,9 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.IdentityHashMap;
 
-import com.sun.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 
-public class TreeValidator<P> extends com.sun.tools.javac.tree.TreeScanner {
+public class TreeValidator<P> extends com.redhat.ceylon.langtools.tools.javac.tree.TreeScanner {
 
     IdentityHashMap<JCTree , Object> trees = new IdentityHashMap<JCTree , Object>();
 

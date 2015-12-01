@@ -28,10 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
-import javax.tools.Diagnostic;
-import javax.tools.Diagnostic.Kind;
-import javax.tools.JavaFileObject;
-
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.junit.Assert;
@@ -50,9 +46,12 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
+import com.redhat.ceylon.javax.tools.Diagnostic;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
+import com.redhat.ceylon.langtools.tools.javac.util.Position;
+import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.sun.tools.javac.util.Position;
-import com.sun.tools.javac.util.Position.LineMap;
 
 
 public class IssuesTests_1500_1999 extends CompilerTests {

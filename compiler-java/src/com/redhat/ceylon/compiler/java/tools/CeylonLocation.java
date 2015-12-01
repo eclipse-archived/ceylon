@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import javax.tools.JavaFileManager.Location;
+import com.redhat.ceylon.javax.tools.JavaFileManager.Location;
 
 public enum CeylonLocation implements Location {
 

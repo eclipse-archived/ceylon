@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 
 /**
  * An argument to an annotation class instantiation that is a 'literal'.
@@ -24,28 +24,28 @@ public abstract class LiteralAnnotationTerm extends AnnotationTerm {
     @Override
     public JCExpression makeAnnotationArgumentValue(
             ExpressionTransformer exprGen, AnnotationInvocation ai,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath) {
         return makeLiteral(exprGen);
     }
 
     @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+    public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
             ExpressionTransformer exprGen) {
         return makeAtValue(exprGen, null, makeLiteral(exprGen));
     }
     
     protected abstract JCExpression makeLiteral(ExpressionTransformer exprGen);
     
-    protected abstract com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(ExpressionTransformer exprGen, String name, JCExpression value);
+    protected abstract com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeAtValue(ExpressionTransformer exprGen, String name, JCExpression value);
     
     @Override
-    public final com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
+    public final com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
             ExpressionTransformer exprGen, AnnotationInvocation toplevel,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath) {
         return makeAtValue(exprGen, Naming.getAnnotationFieldName(fieldPath), makeLiteral(exprGen));
     }
     
     @Override
-    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value);
+    public abstract com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> value);
 }
 

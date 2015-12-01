@@ -22,17 +22,16 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.io.IOException;
 
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
+import com.redhat.ceylon.javax.tools.JavaFileManager;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
+import com.redhat.ceylon.langtools.tools.javac.jvm.ClassWriter;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.jvm.ClassWriter;
-import com.sun.tools.javac.util.Context;
 
 public class CeylonClassWriter extends ClassWriter {
     public static ClassWriter instance(Context context) {

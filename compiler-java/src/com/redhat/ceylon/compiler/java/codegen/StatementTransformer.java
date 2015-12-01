@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static com.sun.tools.javac.code.Flags.FINAL;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +52,34 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import com.redhat.ceylon.langtools.tools.javac.code.Flags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAssign;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCase;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCatch;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCConditional;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCForLoop;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIf;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTry;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.DiagnosticSource;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
@@ -67,35 +95,6 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
-import com.sun.tools.javac.code.Flags;
-//import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.TypeTags;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCAssign;
-import com.sun.tools.javac.tree.JCTree.JCBinary;
-import com.sun.tools.javac.tree.JCTree.JCBlock;
-import com.sun.tools.javac.tree.JCTree.JCCase;
-import com.sun.tools.javac.tree.JCTree.JCCatch;
-import com.sun.tools.javac.tree.JCTree.JCConditional;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
-import com.sun.tools.javac.tree.JCTree.JCForLoop;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
-import com.sun.tools.javac.tree.JCTree.JCIf;
-import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCThrow;
-import com.sun.tools.javac.tree.JCTree.JCTry;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.DiagnosticSource;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Options;
 
 /**
  * This transformer deals with statements only
@@ -2184,7 +2183,7 @@ public class StatementTransformer extends AbstractTransformer {
                     "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
         }
         
-        com.sun.tools.javac.code.Type type;
+        com.redhat.ceylon.langtools.tools.javac.code.Type type;
         Type integerType = typeFact().getIntegerType();
         Type characterType = typeFact().getCharacterType();
         if (isSpanOf(range, integerType)) {
@@ -2752,7 +2751,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected final Tree.Term first;
         protected final Tree.Term last;
         protected final Tree.Term step;// if null then increment is +/-1
-        protected final com.sun.tools.javac.code.Type type;
+        protected final com.redhat.ceylon.langtools.tools.javac.code.Type type;
         protected final Type pt;
         /** the name of the statement label for continue jumps */
         protected final SyntheticName continueName = naming.temp("continue");
@@ -2775,7 +2774,7 @@ public class StatementTransformer extends AbstractTransformer {
                 Tree.ForStatement stmt,
                 Tree.RangeOp range,
                 Tree.Term step,
-                com.sun.tools.javac.code.Type type) {
+                com.redhat.ceylon.langtools.tools.javac.code.Type type) {
             super(stmt);
             this.span = range;
             this.first = range.getLeftTerm();
@@ -3045,7 +3044,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         public SpanOpWithStepIterationOptimization(ForStatement stmt,
                 RangeOp range, Term increment,
-                com.sun.tools.javac.code.Type type) {
+                com.redhat.ceylon.langtools.tools.javac.code.Type type) {
             super(stmt, range, increment, type);
         }
         

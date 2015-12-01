@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 
 /**
  * Represents an argument in the invocation of an annotation class or
@@ -19,13 +19,13 @@ public abstract class AnnotationTerm {
     
     public abstract JCExpression makeAnnotationArgumentValue(
             ExpressionTransformer exprGen, AnnotationInvocation ai,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath);
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath);
     
-    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(ExpressionTransformer exprGen);
+    public abstract com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(ExpressionTransformer exprGen);
     
-    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value);
+    public abstract com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> value);
 
-    public abstract com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
+    public abstract com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprAnnotations(
             ExpressionTransformer exprGen, AnnotationInvocation toplevel,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath);
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath);
 }

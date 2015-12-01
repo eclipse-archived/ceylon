@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.util.List;
 
 /**
  * Every use of {@code com.redhat.ceylon.compiler.java.Util} 

@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
-import com.sun.tools.javac.code.Symbol.TypeSymbol;
-import com.sun.tools.javac.code.Type;
 
 public class JavacTypeParameter implements TypeParameterMirror {
 
@@ -49,7 +49,7 @@ public class JavacTypeParameter implements TypeParameterMirror {
     @Override
     public List<TypeMirror> getBounds() {
         if (bounds == null) {
-            com.sun.tools.javac.util.List<Type> bnds = typeSymbol.getBounds();
+            com.redhat.ceylon.langtools.tools.javac.util.List<Type> bnds = typeSymbol.getBounds();
             List<TypeMirror> ret = new ArrayList<TypeMirror>(bnds.size());
             for(Type type : bnds)
                 ret.add(new JavacType(type));

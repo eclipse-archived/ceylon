@@ -3,9 +3,9 @@ package com.redhat.ceylon.compiler.java.tools;
 import java.io.File;
 
 import com.redhat.ceylon.common.config.CeylonConfig;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
 
 public class CompilerConfig {
 

@@ -24,8 +24,8 @@ import com.redhat.ceylon.compiler.java.codegen.ClassTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
 
 
 public class Errors {

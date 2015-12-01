@@ -19,8 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test;
 
-import javax.tools.Diagnostic;
-import javax.tools.Diagnostic.Kind;
+import com.redhat.ceylon.javax.tools.Diagnostic;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 
 public class CompilerError implements Comparable<CompilerError>{
     public enum Classification {

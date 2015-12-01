@@ -2,11 +2,11 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Map;
 
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
 
 public class CtorDelegation {
     

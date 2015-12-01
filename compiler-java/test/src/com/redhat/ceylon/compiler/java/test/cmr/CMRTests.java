@@ -55,15 +55,6 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticListener;
-import javax.tools.FileObject;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -82,12 +73,20 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiMani
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.javax.tools.Diagnostic;
+import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.javax.tools.FileObject;
+import com.redhat.ceylon.javax.tools.JavaCompiler;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
+import com.redhat.ceylon.javax.tools.ToolProvider;
+import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
+import com.redhat.ceylon.langtools.source.util.TaskEvent;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
-import com.sun.source.util.TaskEvent;
-import com.sun.source.util.TaskListener;
 
 public class CMRTests extends CompilerTests {
     
@@ -1522,10 +1521,10 @@ public class CMRTests extends CompilerTests {
     }
     
     private static class ModulesRetriever implements TaskListener {
-        private com.sun.tools.javac.util.Context context = null;
+        private com.redhat.ceylon.langtools.tools.javac.util.Context context = null;
         HashMap<String, Module> modules = null;
 
-        public ModulesRetriever(com.sun.tools.javac.util.Context context) {
+        public ModulesRetriever(com.redhat.ceylon.langtools.tools.javac.util.Context context) {
             this.context = context;
         }
         

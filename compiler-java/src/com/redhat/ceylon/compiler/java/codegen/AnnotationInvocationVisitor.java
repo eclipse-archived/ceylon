@@ -31,6 +31,11 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAssign;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCNewArray;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -43,11 +48,6 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCAssign;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCNewArray;
-import com.sun.tools.javac.util.ListBuffer;
 
 class AnnotationInvocationVisitor extends Visitor {
 
@@ -202,7 +202,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public static JCAnnotation transformConstructor(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
         AnnotationInvocation ai = annoCtorModel(invocation);
-        return transformConstructor(exprGen, invocation, ai, com.sun.tools.javac.util.List.<AnnotationFieldName>nil());
+        return transformConstructor(exprGen, invocation, ai, com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>nil());
     }
 
     static String checkForBannedJavaAnnotation(Tree.InvocationExpression invocation) {
@@ -225,7 +225,7 @@ class AnnotationInvocationVisitor extends Visitor {
     private static JCAnnotation transformConstructor(
             ExpressionTransformer exprGen,
             Tree.InvocationExpression invocation, AnnotationInvocation ai, 
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath) {
         Map<Parameter, ListBuffer<JCExpression>> args = new LinkedHashMap<Parameter, ListBuffer<JCExpression>>();
         
         List<Parameter> classParameters = ai.getClassParameters();
@@ -253,7 +253,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 for (AnnotationArgument aa : i.getAnnotationArguments()) {
                     if (aa.getParameter().equals(classParameter)) {
                         appendArgument(args, classParameter, 
-                                aa.getTerm().makeAnnotationArgumentValue(exprGen, i,com.sun.tools.javac.util.List.<AnnotationFieldName>of(aa)));
+                                aa.getTerm().makeAnnotationArgumentValue(exprGen, i,com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>of(aa)));
                         unbound.remove(classParameter);
                         continue outer;
                     }
@@ -262,7 +262,7 @@ class AnnotationInvocationVisitor extends Visitor {
             
             if (Strategy.hasEmptyDefaultArgument(classParameter)) {
                 appendArgument(args, classParameter, 
-                        exprGen.make().NewArray(null,  null, com.sun.tools.javac.util.List.<JCExpression>nil()));
+                        exprGen.make().NewArray(null,  null, com.redhat.ceylon.langtools.tools.javac.util.List.<JCExpression>nil()));
                 unbound.remove(classParameter);
                 continue outer;
             }
@@ -308,7 +308,7 @@ class AnnotationInvocationVisitor extends Visitor {
             ExpressionTransformer exprGen,
             Tree.InvocationExpression invocation,
             Parameter classParameter, AnnotationArgument argument, 
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath) {
         AnnotationInvocation anno = annoCtorModel(invocation);
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(exprGen, invocation, anno);
         visitor.parameter = classParameter;
@@ -392,7 +392,7 @@ class AnnotationInvocationVisitor extends Visitor {
         } else if (Decl.isAnnotationClass(sp.getType().getDeclaration())) {
                 InvocationAnnotationTerm defaultedInvocation = (InvocationAnnotationTerm)defaultedCtorParam.getDefaultArgument();
                 append(transformConstructor(exprGen, invocation, defaultedInvocation.getInstantiation(), 
-                        com.sun.tools.javac.util.List.<AnnotationFieldName>of(defaultedCtorParam)));
+                        com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>of(defaultedCtorParam)));
         }
     }
     

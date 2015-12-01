@@ -3,10 +3,10 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCNewArray;
-import com.sun.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCNewArray;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 
 public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
     private final List<AnnotationTerm> elements;
@@ -26,7 +26,7 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
         elements.add(element);
     }
     @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
+    public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeDpmAnnotations(
             ExpressionTransformer exprGen) {
         if (factory == null) {// A tuple
             // TODO @TupleValue({elements...})
@@ -39,7 +39,7 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
             return factory.makeAtValue(exprGen, null, array);
             
         }
-        return com.sun.tools.javac.util.List.<JCAnnotation>nil();
+        return com.redhat.ceylon.langtools.tools.javac.util.List.<JCAnnotation>nil();
     }
     @Override
     public String toString() {
@@ -55,12 +55,12 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
         return array;
     }
     @Override
-    protected com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
+    protected com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeAtValue(
             ExpressionTransformer exprGen, String name, JCExpression value) {
         return factory.makeAtValue(exprGen, name, value);
     }
     @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
+    public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> value) {
         return factory.makeExprs(exprGen, value);
     }
 }

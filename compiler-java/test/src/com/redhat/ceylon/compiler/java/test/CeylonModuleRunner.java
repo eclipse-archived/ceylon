@@ -42,9 +42,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.tools.Diagnostic.Kind;
-import javax.tools.DiagnosticListener;
-
 import org.junit.Assert;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
@@ -69,12 +66,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
+import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
-import com.sun.tools.javac.util.Context;
 
 /**
  * JUnit Runner for a Ceylon module.

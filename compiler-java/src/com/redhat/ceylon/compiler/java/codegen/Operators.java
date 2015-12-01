@@ -26,8 +26,8 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AssignmentOp;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.sun.tools.javac.tree.JCTree;
 
 /**
  * Aggregation of mappings from ceylon operator to java operator and optimisation strategy.

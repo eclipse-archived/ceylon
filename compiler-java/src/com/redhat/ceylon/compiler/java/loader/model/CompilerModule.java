@@ -21,16 +21,16 @@
 package com.redhat.ceylon.compiler.java.loader.model;
 
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.model.LazyModule;
-import com.sun.tools.javac.util.Context;
 
 public class CompilerModule extends LazyModule {
 
     private Context context;
     private AbstractModelLoader modelLoader;
 
-    public CompilerModule(com.sun.tools.javac.util.Context context) {
+    public CompilerModule(com.redhat.ceylon.langtools.tools.javac.util.Context context) {
         this.context = context;
     }
 

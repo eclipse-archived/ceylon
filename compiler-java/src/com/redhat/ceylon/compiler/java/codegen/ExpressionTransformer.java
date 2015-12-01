@@ -54,6 +54,27 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.langtools.tools.javac.code.Flags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCLiteral;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCNewArray;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCNewClass;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCReturn;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeCast;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCUnary;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Convert;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
@@ -86,27 +107,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Value;
-import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.TypeTags;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCBlock;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCLiteral;
-import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
-import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
-import com.sun.tools.javac.tree.JCTree.JCNewArray;
-import com.sun.tools.javac.tree.JCTree.JCNewClass;
-import com.sun.tools.javac.tree.JCTree.JCReturn;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCTypeCast;
-import com.sun.tools.javac.tree.JCTree.JCUnary;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Convert;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Name;
 
 /**
  * This transformer deals with expressions only
@@ -1993,7 +1993,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return makeLetExpr(varName, null, typeExpr, left, contains);
     }
 
-    protected JCTree makeOptimizedInIntegerOrCharacterMeasure(Tree.InOp op, com.sun.tools.javac.code.Type ceylonType, com.sun.tools.javac.code.Type javaType) {
+    protected JCTree makeOptimizedInIntegerOrCharacterMeasure(Tree.InOp op, com.redhat.ceylon.langtools.tools.javac.code.Type ceylonType, com.redhat.ceylon.langtools.tools.javac.code.Type javaType) {
         Tree.SegmentOp rangeOp = (Tree.SegmentOp)op.getRightTerm();
         SyntheticName xName = naming.temp("x");
         SyntheticName yName = naming.temp("y");
@@ -2020,9 +2020,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 ));
     }
 
-    protected JCTree makeOptimizedInIntegerRange(Tree.InOp op, com.sun.tools.javac.code.Type type) {
+    protected JCTree makeOptimizedInIntegerRange(Tree.InOp op, com.redhat.ceylon.langtools.tools.javac.code.Type type) {
         // x in y..z with x, y, z all Integer
-        com.sun.tools.javac.code.Type ceylonType = syms().ceylonIntegerType;
+        com.redhat.ceylon.langtools.tools.javac.code.Type ceylonType = syms().ceylonIntegerType;
         Tree.RangeOp rangeOp = (Tree.RangeOp)op.getRightTerm();
         JCExpression x = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getObjectType());
         JCExpression first = transformExpression(rangeOp.getLeftTerm(), BoxingStrategy.UNBOXED, rangeOp.getLeftTerm().getTypeModel());
@@ -2066,8 +2066,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     protected JCTree makeOptimizedInCharacterRange(Tree.InOp op) {
-        com.sun.tools.javac.code.Type type = syms().intType;
-        com.sun.tools.javac.code.Type ceylonType = syms().ceylonCharacterType;
+        com.redhat.ceylon.langtools.tools.javac.code.Type type = syms().intType;
+        com.redhat.ceylon.langtools.tools.javac.code.Type ceylonType = syms().ceylonCharacterType;
         // x in y..z with x, y, z all Character
         Tree.RangeOp rangeOp = (Tree.RangeOp)op.getRightTerm();
         JCExpression x = transformExpression(op.getLeftTerm(), BoxingStrategy.UNBOXED, typeFact().getObjectType());

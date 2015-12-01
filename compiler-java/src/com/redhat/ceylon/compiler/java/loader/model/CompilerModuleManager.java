@@ -30,11 +30,11 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class CompilerModuleManager extends LazyModuleManager {
 
-    private com.sun.tools.javac.util.Context context;
+    private com.redhat.ceylon.langtools.tools.javac.util.Context context;
     private CeylonEnter ceylonEnter;
     private CeylonModelLoader modelLoader;
 
-    public CompilerModuleManager(Context ceylonContext, com.sun.tools.javac.util.Context context) {
+    public CompilerModuleManager(Context ceylonContext, com.redhat.ceylon.langtools.tools.javac.util.Context context) {
         this.context = context;
     }
 

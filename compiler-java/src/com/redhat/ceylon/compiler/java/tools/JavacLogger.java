@@ -20,9 +20,9 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import com.redhat.ceylon.common.log.Logger;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
 
 public class JavacLogger implements Logger {
 

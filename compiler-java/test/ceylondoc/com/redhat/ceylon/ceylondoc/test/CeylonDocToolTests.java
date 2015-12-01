@@ -53,12 +53,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 
-import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
-
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -75,13 +69,18 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
+import com.redhat.ceylon.javax.tools.JavaCompiler;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
+import com.redhat.ceylon.javax.tools.ToolProvider;
+import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
+import com.redhat.ceylon.langtools.source.util.JavacTask;
+import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import com.sun.source.util.JavacTask;
-import com.sun.tools.javac.file.JavacFileManager;
 
 public class CeylonDocToolTests {
 

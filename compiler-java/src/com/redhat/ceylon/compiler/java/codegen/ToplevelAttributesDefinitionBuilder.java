@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 
 public class ToplevelAttributesDefinitionBuilder {
     private CeylonTransformer gen;

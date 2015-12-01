@@ -20,18 +20,14 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
-import static javax.tools.StandardLocation.CLASS_PATH;
-import static javax.tools.StandardLocation.PLATFORM_CLASS_PATH;
+import static com.redhat.ceylon.javax.tools.StandardLocation.CLASS_PATH;
+import static com.redhat.ceylon.javax.tools.StandardLocation.PLATFORM_CLASS_PATH;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.lang.model.element.NestingKind;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
@@ -48,6 +44,31 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
+import com.redhat.ceylon.javax.lang.model.element.NestingKind;
+import com.redhat.ceylon.javax.tools.JavaFileManager;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
+import com.redhat.ceylon.langtools.tools.javac.code.Scope;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Types;
+import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
+import com.redhat.ceylon.langtools.tools.javac.code.Scope.Entry;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
+import com.redhat.ceylon.langtools.tools.javac.jvm.ClassReader;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Convert;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import com.redhat.ceylon.langtools.tools.javac.util.Names;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -62,28 +83,6 @@ import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
-import com.sun.tools.javac.code.Attribute.Compound;
-import com.sun.tools.javac.code.Kinds;
-import com.sun.tools.javac.code.Scope;
-import com.sun.tools.javac.code.Scope.Entry;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Symbol.CompletionFailure;
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
-import com.sun.tools.javac.code.Symbol.PackageSymbol;
-import com.sun.tools.javac.code.Symbol.TypeSymbol;
-import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.Types;
-import com.sun.tools.javac.jvm.ClassReader;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Convert;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Names;
-import com.sun.tools.javac.util.Options;
 
 public class CeylonModelLoader extends AbstractModelLoader {
     
@@ -317,7 +316,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     private ClassSymbol getEnclosing(ClassSymbol c) {
         Symbol owner = c.owner;
-        com.sun.tools.javac.util.List<Name> enclosing = Convert.enclosingCandidates(Convert.shortName(c.name));
+        com.redhat.ceylon.langtools.tools.javac.util.List<Name> enclosing = Convert.enclosingCandidates(Convert.shortName(c.name));
         if(enclosing.isEmpty())
             return c;
         Name name = enclosing.head;
@@ -684,7 +683,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
      * Copied from MethodSymbol.implemented and adapted for overloading
      */
     private boolean overloaded(MethodSymbol m, TypeSymbol c, Types types) {
-        for (com.sun.tools.javac.util.List<Type> is = types.interfaces(c.type);
+        for (com.redhat.ceylon.langtools.tools.javac.util.List<Type> is = types.interfaces(c.type);
              is.nonEmpty();
              is = is.tail) {
             TypeSymbol i = is.head.tsym;

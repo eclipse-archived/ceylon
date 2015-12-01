@@ -129,7 +129,7 @@ public class NamingTests {
     private final Naming naming;
     public NamingTests () {
         super();
-        com.sun.tools.javac.util.Context context = new com.sun.tools.javac.util.Context();
+        com.redhat.ceylon.langtools.tools.javac.util.Context context = new com.redhat.ceylon.langtools.tools.javac.util.Context();
         new CeyloncFileManager(context, true, Charset.forName("UTF-8"));
         naming = new Naming(context) {
             @Override

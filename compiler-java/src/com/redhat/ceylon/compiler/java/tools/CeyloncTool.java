@@ -35,16 +35,15 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
-import javax.lang.model.SourceVersion;
-import javax.tools.DiagnosticListener;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.compiler.java.launcher.Main;
-import com.sun.tools.javac.api.JavacTool;
-import com.sun.tools.javac.file.JavacFileManager;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Log;
+import com.redhat.ceylon.javax.lang.model.SourceVersion;
+import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.javax.tools.JavaFileManager;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.api.JavacTool;
+import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
 
 /**
  * @deprecated apparently JavacTool is deprecated, we need to find what to replace it with

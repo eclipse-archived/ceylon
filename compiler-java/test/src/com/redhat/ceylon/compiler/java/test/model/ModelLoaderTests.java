@@ -73,6 +73,11 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import com.redhat.ceylon.langtools.source.util.TaskEvent;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.source.util.TaskEvent.Kind;
+import com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.ModelLoader;
@@ -99,11 +104,6 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Value;
-import com.sun.source.util.TaskEvent;
-import com.sun.source.util.TaskEvent.Kind;
-import com.sun.source.util.TaskListener;
-import com.sun.tools.javac.api.JavacTaskImpl;
-import com.sun.tools.javac.util.Context;
 
 @RunWith(Parameterized.class)
 public class ModelLoaderTests extends CompilerTests {

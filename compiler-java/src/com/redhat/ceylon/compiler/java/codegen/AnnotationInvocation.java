@@ -5,15 +5,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.util.ListBuffer;
 
 /**
  * The invocation of an annotation constructor or annocation class
@@ -167,7 +167,7 @@ public class AnnotationInvocation {
     public JCExpression makeAnnotation(
             ExpressionTransformer exprGen, 
             AnnotationInvocation ai, 
-            com.sun.tools.javac.util.List<AnnotationFieldName> parameterPath) {
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> parameterPath) {
         ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
         for (AnnotationArgument aa : getAnnotationArguments()) {
             Parameter name = aa.getParameter();
@@ -195,7 +195,7 @@ public class AnnotationInvocation {
      */
     public JCExpression makeAnnotationArgument(ExpressionTransformer exprGen, AnnotationInvocation ai,
             Parameter bind,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath, AnnotationTerm term) {
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath, AnnotationTerm term) {
         
         return exprGen.make().Assign(
                 exprGen.naming.makeName(bind.getModel(), 
@@ -224,7 +224,7 @@ public class AnnotationInvocation {
         }
         JCAnnotation atInstantiation = gen.make().Annotation(
                 gen.make().Type(gen.syms().ceylonAtAnnotationInstantiationType),
-                com.sun.tools.javac.util.List.<JCExpression>of(
+                com.redhat.ceylon.langtools.tools.javac.util.List.<JCExpression>of(
                         gen.make().Assign(
                                 gen.naming.makeUnquotedIdent("arguments"),
                                 gen.make().NewArray(null, null, arguments.toList())),
@@ -237,7 +237,7 @@ public class AnnotationInvocation {
         } else {
             return gen.make().Annotation(
                     gen.make().Type(gen.syms().ceylonAtAnnotationInstantiationTreeType),
-                    com.sun.tools.javac.util.List.<JCExpression>of(
+                    com.redhat.ceylon.langtools.tools.javac.util.List.<JCExpression>of(
                             gen.make().NewArray(null, null, instantiations.prepend(atInstantiation).toList())));
         }
     }
@@ -268,9 +268,9 @@ public class AnnotationInvocation {
         return result;
     }
 
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprAnnotations(ExpressionTransformer exprGen,
+    public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprAnnotations(ExpressionTransformer exprGen,
             AnnotationInvocation toplevel,
-            com.sun.tools.javac.util.List<AnnotationFieldName> fieldPath) {
+            com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> fieldPath) {
         // Collect into groups according to their type
         Map<java.lang.Class<?>, List<AnnotationArgument>> groups = new LinkedHashMap<java.lang.Class<?>, List<AnnotationArgument>>(); 
         for (AnnotationArgument aa : getAnnotationArguments()) {
@@ -289,14 +289,14 @@ public class AnnotationInvocation {
             ListBuffer<JCAnnotation> valueAnnos = ListBuffer.<JCAnnotation>lb();
             for (AnnotationArgument aa : group) {
                 AnnotationTerm term = aa.getTerm();
-                com.sun.tools.javac.util.List<JCAnnotation> annos = term.makeExprAnnotations(exprGen, this, fieldPath.append(aa));
+                com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> annos = term.makeExprAnnotations(exprGen, this, fieldPath.append(aa));
                 if (annos != null) {
                     factory = group.get(0).getTerm();
                     valueAnnos.appendList(annos);
                 }
             }
             if (!valueAnnos.isEmpty()) {
-                com.sun.tools.javac.util.List<JCAnnotation> exprs = factory.makeExprs(exprGen, valueAnnos.toList());
+                com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> exprs = factory.makeExprs(exprGen, valueAnnos.toList());
                 if (exprs != null) {
                     exprsAnnos.appendList(exprs);
                 } else {

@@ -39,13 +39,11 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
-import javax.tools.JavaFileObject;
-
-import com.sun.tools.javac.util.Log;
-
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.javax.lang.model.element.Modifier;
+import com.redhat.ceylon.javax.lang.model.element.NestingKind;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;

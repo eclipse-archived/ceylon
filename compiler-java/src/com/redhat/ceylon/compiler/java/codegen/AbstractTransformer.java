@@ -21,11 +21,11 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PRIVATE;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PROTECTED;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
-import static com.sun.tools.javac.code.Flags.FINAL;
-import static com.sun.tools.javac.code.Flags.PRIVATE;
-import static com.sun.tools.javac.code.Flags.PROTECTED;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +61,40 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
+import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Factory;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCase;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpressionStatement;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCLiteral;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCNewArray;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCSwitch;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeParameter;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.LetExpr;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import com.redhat.ceylon.langtools.tools.javac.util.Names;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.util.Position;
+import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
@@ -89,40 +123,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
-import com.sun.tools.javac.code.BoundKind;
-import com.sun.tools.javac.code.Symbol.TypeSymbol;
-import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.code.TypeTags;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.Factory;
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCBinary;
-import com.sun.tools.javac.tree.JCTree.JCBlock;
-import com.sun.tools.javac.tree.JCTree.JCCase;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCExpressionStatement;
-import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
-import com.sun.tools.javac.tree.JCTree.JCLiteral;
-import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
-import com.sun.tools.javac.tree.JCTree.JCNewArray;
-import com.sun.tools.javac.tree.JCTree.JCStatement;
-import com.sun.tools.javac.tree.JCTree.JCSwitch;
-import com.sun.tools.javac.tree.JCTree.JCThrow;
-import com.sun.tools.javac.tree.JCTree.JCTypeParameter;
-import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
-import com.sun.tools.javac.tree.JCTree.LetExpr;
-import com.sun.tools.javac.tree.TreeMaker;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Names;
-import com.sun.tools.javac.util.Options;
-import com.sun.tools.javac.util.Position;
-import com.sun.tools.javac.util.Position.LineMap;
 
 /**
  * Base class for all delegating transformers
@@ -400,7 +400,7 @@ public abstract class AbstractTransformer implements Transformation {
         return naming.makeQuotedFQIdent(qualifiedName);
     }
 
-    JCExpression makeIdent(com.sun.tools.javac.code.Type type) {
+    JCExpression makeIdent(com.redhat.ceylon.langtools.tools.javac.code.Type type) {
         return naming.makeIdent(type);
     }
 
@@ -1354,11 +1354,11 @@ public abstract class AbstractTransformer implements Transformation {
         return pr.getType();
     }
 
-    private Type javacCeylonTypeToProducedType(com.sun.tools.javac.code.Type t) {
+    private Type javacCeylonTypeToProducedType(com.redhat.ceylon.langtools.tools.javac.code.Type t) {
         return loader().getType(getLanguageModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
 
-    private Type javacJavaTypeToProducedType(com.sun.tools.javac.code.Type t) {
+    private Type javacJavaTypeToProducedType(com.redhat.ceylon.langtools.tools.javac.code.Type t) {
         return loader().getType(getJDKBaseModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
 
@@ -2882,17 +2882,17 @@ public abstract class AbstractTransformer implements Transformation {
         gen().disableAnnotations = value;
     }
 
-    private List<JCAnnotation> makeModelAnnotation(com.sun.tools.javac.code.Type annotationType, List<JCExpression> annotationArgs) {
+    private List<JCAnnotation> makeModelAnnotation(com.redhat.ceylon.langtools.tools.javac.code.Type annotationType, List<JCExpression> annotationArgs) {
         if ((gen().disableAnnotations & CeylonTransformer.DISABLE_MODEL_ANNOS) != 0)
             return List.nil();
         return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
     }
     
-    private List<JCAnnotation> makeAnnoAnnotation(com.sun.tools.javac.code.Type annotationType, List<JCExpression> annotationArgs) {
+    private List<JCAnnotation> makeAnnoAnnotation(com.redhat.ceylon.langtools.tools.javac.code.Type annotationType, List<JCExpression> annotationArgs) {
         return List.of(make().Annotation(makeIdent(annotationType), annotationArgs));
     }
 
-    private List<JCAnnotation> makeModelAnnotation(com.sun.tools.javac.code.Type annotationType) {
+    private List<JCAnnotation> makeModelAnnotation(com.redhat.ceylon.langtools.tools.javac.code.Type annotationType) {
         return makeModelAnnotation(annotationType, List.<JCExpression>nil());
     }
 
@@ -3464,7 +3464,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeAtLocalDeclarations(locals, localInterfaces);
     }
 
-    private List<JCAnnotation> makeAtAnnotationValue(com.sun.tools.javac.code.Type annotationType, String name, JCExpression values) {
+    private List<JCAnnotation> makeAtAnnotationValue(com.redhat.ceylon.langtools.tools.javac.code.Type annotationType, String name, JCExpression values) {
         if (name == null) {
             return makeAnnoAnnotation(annotationType, List.<JCExpression>of(values));
         } else {
@@ -3474,7 +3474,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    private List<JCAnnotation> makeAtAnnotationExprs(com.sun.tools.javac.code.Type annotationType, List<JCExpression> value) {
+    private List<JCAnnotation> makeAtAnnotationExprs(com.redhat.ceylon.langtools.tools.javac.code.Type annotationType, List<JCExpression> value) {
         return makeAnnoAnnotation(annotationType, value);
     }
     
@@ -3733,7 +3733,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeBoxType(value, syms().ceylonBooleanType);
     }
     
-    private JCTree.JCMethodInvocation makeBoxType(JCExpression value, com.sun.tools.javac.code.Type type) {
+    private JCTree.JCMethodInvocation makeBoxType(JCExpression value, com.redhat.ceylon.langtools.tools.javac.code.Type type) {
         return make().Apply(null, makeSelect(makeIdent(type), "instance"), List.<JCExpression>of(value));
     }
     

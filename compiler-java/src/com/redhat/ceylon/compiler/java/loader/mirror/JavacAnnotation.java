@@ -24,12 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.langtools.tools.javac.code.Attribute;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
+import com.redhat.ceylon.langtools.tools.javac.util.Pair;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
-import com.sun.tools.javac.code.Attribute;
-import com.sun.tools.javac.code.Attribute.Compound;
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.util.Pair;
 
 public class JavacAnnotation implements AnnotationMirror {
 

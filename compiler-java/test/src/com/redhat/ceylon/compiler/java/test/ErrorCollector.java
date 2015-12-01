@@ -25,11 +25,10 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticListener;
-import javax.tools.FileObject;
-
 import com.redhat.ceylon.compiler.java.test.CompilerError.Classification;
+import com.redhat.ceylon.javax.tools.Diagnostic;
+import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.javax.tools.FileObject;
 
 /**
  * A {@link DiagnosticListener} which collects the {@link Diagnostic}s 

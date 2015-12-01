@@ -180,9 +180,9 @@
             <exclude name="com/redhat/ceylon/ant/**" />
             <exclude name="com/redhat/ceylon/launcher/**" />
             <include name="com/redhat/**" />
-            <include name="com/sun/tools/javac/**" />
-            <include name="com/sun/source/**" />
-            <include name="javax/**" />
+            <include name="com/redhat/ceylon/langtools/tools/javac/**" />
+            <include name="com/redhat/ceylon/langtools/source/**" />
+            <include name="com/redhat/ceylon/javax/**" />
         </javac>
         <!-- 
           We need a second compilation step to compile entry points compatible with Java 5
@@ -264,7 +264,7 @@
                 <exclude name="com/redhat/ceylon/launcher/**" />
             </fileset>
             <fileset dir="${javac.src}">
-                <include name="com/sun/tools/javac/resources/*.properties" />
+                <include name="com/redhat/ceylon/langtools/tools/javac/resources/*.properties" />
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.java"/>

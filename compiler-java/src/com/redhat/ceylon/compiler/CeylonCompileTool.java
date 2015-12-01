@@ -50,12 +50,12 @@ import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
-import com.sun.tools.javac.main.JavacOption;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.main.RecognizedOptions;
-import com.sun.tools.javac.main.RecognizedOptions.OptionHelper;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.main.JavacOption;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions;
+import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions.OptionHelper;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
@@ -518,7 +518,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
     
     private static JavacOption getJavacOpt(String optionName) {
-        for (com.sun.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(HELPER)) {
+        for (com.redhat.ceylon.langtools.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(HELPER)) {
             if (optionName.equals(o.getName().toString())) {
                 return o;
             }

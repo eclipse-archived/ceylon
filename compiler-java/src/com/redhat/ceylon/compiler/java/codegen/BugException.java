@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
 
 /**
  * <p>Thrown when the code generator is in a seemingly impossible situation 

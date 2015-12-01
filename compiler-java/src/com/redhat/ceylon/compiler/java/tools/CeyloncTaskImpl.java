@@ -30,12 +30,11 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
-import com.sun.tools.javac.api.JavacTaskImpl;
-import com.sun.tools.javac.util.Context;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 
 public class CeyloncTaskImpl extends JavacTaskImpl {
     Main compilerMain;

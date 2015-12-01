@@ -22,11 +22,10 @@ package com.redhat.ceylon.compiler.java.loader;
 
 import java.util.EnumSet;
 
-import javax.tools.JavaFileObject;
-import javax.tools.JavaFileObject.Kind;
-
-import com.sun.tools.javac.jvm.ClassReader;
-import com.sun.tools.javac.util.Context;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
+import com.redhat.ceylon.langtools.tools.javac.jvm.ClassReader;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 
 public class CeylonClassReader extends ClassReader {
 

@@ -33,7 +33,7 @@ package com.redhat.ceylon.compiler.java;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-public class Main extends com.sun.tools.javac.Main {
+public class Main extends com.redhat.ceylon.langtools.tools.javac.Main {
 
     /**
      * Programmatic interface to the Java Programming Language compiler, javac.

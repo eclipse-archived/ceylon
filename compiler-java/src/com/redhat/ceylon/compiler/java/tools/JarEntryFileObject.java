@@ -30,9 +30,9 @@ import java.net.URI;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
-import javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.lang.model.element.Modifier;
+import com.redhat.ceylon.javax.lang.model.element.NestingKind;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
 
 public class JarEntryFileObject implements JavaFileObject {
 

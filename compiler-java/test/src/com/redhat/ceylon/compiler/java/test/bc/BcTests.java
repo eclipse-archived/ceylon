@@ -32,12 +32,6 @@ import java.util.List;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
-import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -46,6 +40,11 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.javax.tools.JavaCompiler;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
+import com.redhat.ceylon.javax.tools.ToolProvider;
+import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 
 public class BcTests extends CompilerTests {
     

@@ -27,10 +27,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject.Kind;
-import javax.tools.StandardLocation;
-
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -75,6 +71,37 @@ import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
+import com.redhat.ceylon.javax.tools.JavaFileManager;
+import com.redhat.ceylon.javax.tools.StandardLocation;
+import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
+import com.redhat.ceylon.langtools.source.util.TaskEvent;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
+import com.redhat.ceylon.langtools.tools.javac.code.Types;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.ClassType;
+import com.redhat.ceylon.langtools.tools.javac.comp.Annotate;
+import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
+import com.redhat.ceylon.langtools.tools.javac.comp.Check;
+import com.redhat.ceylon.langtools.tools.javac.comp.Enter;
+import com.redhat.ceylon.langtools.tools.javac.comp.Env;
+import com.redhat.ceylon.langtools.tools.javac.comp.Todo;
+import com.redhat.ceylon.langtools.tools.javac.file.Paths;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.redhat.ceylon.langtools.tools.javac.util.Abort;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.util.Position;
+import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
+import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
+import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.Timer;
@@ -86,34 +113,6 @@ import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
-import com.sun.source.util.TaskEvent;
-import com.sun.source.util.TaskListener;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Symbol.PackageSymbol;
-import com.sun.tools.javac.code.Symtab;
-import com.sun.tools.javac.code.Type.ClassType;
-import com.sun.tools.javac.code.Types;
-import com.sun.tools.javac.comp.Annotate;
-import com.sun.tools.javac.comp.AttrContext;
-import com.sun.tools.javac.comp.Check;
-import com.sun.tools.javac.comp.Enter;
-import com.sun.tools.javac.comp.Env;
-import com.sun.tools.javac.comp.Todo;
-import com.sun.tools.javac.file.Paths;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
-import com.sun.tools.javac.util.Abort;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
-import com.sun.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Options;
-import com.sun.tools.javac.util.Position;
-import com.sun.tools.javac.util.SourceLanguage;
-import com.sun.tools.javac.util.SourceLanguage.Language;
 
 public class CeylonEnter extends Enter {
 
@@ -287,7 +286,7 @@ public class CeylonEnter extends Enter {
         }
         
         // reset its type, we need to keep it
-        com.sun.tools.javac.code.Type.ClassType classType = (ClassType) classSymbol.type;
+        com.redhat.ceylon.langtools.tools.javac.code.Type.ClassType classType = (ClassType) classSymbol.type;
         classType.all_interfaces_field = null;
         classType.interfaces_field = null;
         classType.supertype_field = null;
@@ -300,7 +299,7 @@ public class CeylonEnter extends Enter {
     }
 
     @Override
-    protected com.sun.tools.javac.code.Type classEnter(JCTree tree, Env<AttrContext> env) {
+    protected com.redhat.ceylon.langtools.tools.javac.code.Type classEnter(JCTree tree, Env<AttrContext> env) {
         if(tree instanceof CeylonCompilationUnit){
             sourceLanguage.push(Language.CEYLON);
             try{

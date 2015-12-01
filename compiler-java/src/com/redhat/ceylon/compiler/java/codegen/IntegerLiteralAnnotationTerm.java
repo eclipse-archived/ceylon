@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.sun.tools.javac.tree.JCTree.JCAnnotation;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 
 public class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
     
@@ -17,7 +17,7 @@ public class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
         this.value = value;
     }
     @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeAtValue(
+    public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeAtValue(
             ExpressionTransformer exprGen, String name, JCExpression value) {
         return exprGen.makeAtIntegerValue(name, value);
     }
@@ -26,8 +26,8 @@ public class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
         return exprGen.make().Literal(value);
     }
     @Override
-    public com.sun.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.sun.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtIntegerExprs(exprGen.make().NewArray(null,  null,  (com.sun.tools.javac.util.List)value));
+    public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> value) {
+        return exprGen.makeAtIntegerExprs(exprGen.make().NewArray(null,  null,  (com.redhat.ceylon.langtools.tools.javac.util.List)value));
     }
     @Override
     public String toString() {

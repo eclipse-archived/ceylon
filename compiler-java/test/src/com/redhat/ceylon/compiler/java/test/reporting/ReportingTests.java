@@ -2,12 +2,11 @@ package com.redhat.ceylon.compiler.java.test.reporting;
 
 import java.util.Arrays;
 
-import javax.tools.Diagnostic.Kind;
-
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 
 public class ReportingTests extends CompilerTests {
     

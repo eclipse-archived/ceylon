@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.tools.Diagnostic;
-import javax.tools.Diagnostic.Kind;
-import javax.tools.DiagnosticListener;
-import javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.Diagnostic;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
+import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
@@ -20,9 +20,9 @@ import com.redhat.ceylon.compiler.java.runtime.tools.JavaCompilerOptions;
 import com.redhat.ceylon.compiler.java.tools.CeylonTaskListener;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
-import com.sun.source.util.TaskEvent;
-import com.sun.tools.javac.api.ClientCodeWrapper.Trusted;
-import com.sun.tools.javac.file.JavacFileManager;
+import com.redhat.ceylon.langtools.source.util.TaskEvent;
+import com.redhat.ceylon.langtools.tools.javac.api.ClientCodeWrapper.Trusted;
+import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 
 public class JavaCompilerImpl implements Compiler {
 

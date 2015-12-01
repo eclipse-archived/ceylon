@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 
 public class ErroneousException extends Exception {
 

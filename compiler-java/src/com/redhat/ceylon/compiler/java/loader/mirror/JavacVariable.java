@@ -21,10 +21,10 @@ package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.Map;
 
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.VarSymbol;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.VariableMirror;
-import com.sun.tools.javac.code.Symbol.VarSymbol;
 
 public class JavacVariable implements VariableMirror {
 

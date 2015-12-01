@@ -22,8 +22,8 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
-import com.sun.source.tree.CompilationUnitTree;
-import com.sun.source.util.TaskEvent;
+import com.redhat.ceylon.langtools.source.tree.CompilationUnitTree;
+import com.redhat.ceylon.langtools.source.util.TaskEvent;
 
 /**
  *

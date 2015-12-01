@@ -25,9 +25,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.tools.Diagnostic;
-import javax.tools.Diagnostic.Kind;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -35,6 +32,8 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
+import com.redhat.ceylon.javax.tools.Diagnostic;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 

@@ -20,19 +20,18 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import static javax.tools.JavaFileObject.Kind.CLASS;
-import static javax.tools.JavaFileObject.Kind.HTML;
-import static javax.tools.JavaFileObject.Kind.OTHER;
-import static javax.tools.JavaFileObject.Kind.SOURCE;
+import static com.redhat.ceylon.javax.tools.JavaFileObject.Kind.CLASS;
+import static com.redhat.ceylon.javax.tools.JavaFileObject.Kind.HTML;
+import static com.redhat.ceylon.javax.tools.JavaFileObject.Kind.OTHER;
+import static com.redhat.ceylon.javax.tools.JavaFileObject.Kind.SOURCE;
 
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.NestingKind;
-import javax.tools.ForwardingFileObject;
-import javax.tools.JavaFileObject;
-
-import com.sun.tools.javac.util.JCDiagnostic;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.Position;
+import com.redhat.ceylon.javax.lang.model.element.Modifier;
+import com.redhat.ceylon.javax.lang.model.element.NestingKind;
+import com.redhat.ceylon.javax.tools.ForwardingFileObject;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.Position;
 
 public class CeylonFileObject extends ForwardingFileObject<JavaFileObject> implements JavaFileObject {
     private final JavaFileObject f;

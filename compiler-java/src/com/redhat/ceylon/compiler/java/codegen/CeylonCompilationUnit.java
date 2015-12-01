@@ -20,17 +20,16 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import com.sun.tools.javac.code.Scope.ImportScope;
-import com.sun.tools.javac.code.Scope.StarImportScope;
-import com.sun.tools.javac.code.Symbol.PackageSymbol;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
-import com.sun.tools.javac.util.List;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.code.Scope.ImportScope;
+import com.redhat.ceylon.langtools.tools.javac.code.Scope.StarImportScope;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
 
 /**
  * Stupid wrapper to store a ceylon CU in a javac CU.

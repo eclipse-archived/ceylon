@@ -39,13 +39,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.tools.FileObject;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.JavaFileObject.Kind;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.StandardLocation;
-
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -54,16 +47,22 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
+import com.redhat.ceylon.javax.tools.FileObject;
+import com.redhat.ceylon.javax.tools.JavaFileManager;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
+import com.redhat.ceylon.javax.tools.StandardLocation;
+import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
+import com.redhat.ceylon.langtools.tools.javac.file.RegularFileObject;
+import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeFile;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.sun.source.util.TaskListener;
-import com.sun.tools.javac.main.OptionName;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.file.JavacFileManager;
-import com.sun.tools.javac.file.RegularFileObject;
-import com.sun.tools.javac.file.RelativePath.RelativeFile;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Options;
 
 public class CeyloncFileManager extends JavacFileManager implements StandardJavaFileManager {
     private Module currentModule;

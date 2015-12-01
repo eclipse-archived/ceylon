@@ -24,19 +24,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.type.TypeKind;
-
+import com.redhat.ceylon.javax.lang.model.element.ElementKind;
+import com.redhat.ceylon.javax.lang.model.type.TypeKind;
+import com.redhat.ceylon.langtools.tools.javac.code.Flags;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.VarSymbol;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.model.loader.mirror.VariableMirror;
-import com.sun.tools.javac.code.Flags;
-import com.sun.tools.javac.code.Symbol.MethodSymbol;
-import com.sun.tools.javac.code.Symbol.VarSymbol;
-import com.sun.tools.javac.code.Type;
 
 public class JavacMethod implements MethodMirror {
 
@@ -109,7 +108,7 @@ public class JavacMethod implements MethodMirror {
     @Override
     public List<VariableMirror> getParameters() {
         if (parameters == null) {
-            com.sun.tools.javac.util.List<VarSymbol> params = methodSymbol.getParameters();
+            com.redhat.ceylon.langtools.tools.javac.util.List<VarSymbol> params = methodSymbol.getParameters();
             List<VariableMirror> ret = new ArrayList<VariableMirror>(params.size());
             for(VarSymbol parameter : params)
                 ret.add(new JavacVariable(parameter));

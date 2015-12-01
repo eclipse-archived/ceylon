@@ -25,20 +25,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
-import com.sun.tools.javac.code.Attribute.Compound;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Symbol.CompletionFailure;
-import com.sun.tools.javac.code.Symbol.TypeSymbol;
 
 public class JavacUtil {
 
     public static Map<String, AnnotationMirror> getAnnotations(Symbol symbol) {
         Map<String, AnnotationMirror> result;
         try{
-            com.sun.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
+            com.redhat.ceylon.langtools.tools.javac.util.List<Compound> annotations = symbol.getAnnotationMirrors();
             if(annotations.isEmpty()){
                 result = Collections.<String,AnnotationMirror>emptyMap();
             }else{
@@ -56,7 +56,7 @@ public class JavacUtil {
 
     public static List<TypeParameterMirror> getTypeParameters(Symbol symbol) {
         try{
-            com.sun.tools.javac.util.List<TypeSymbol> typeParameters = symbol.getTypeParameters();
+            com.redhat.ceylon.langtools.tools.javac.util.List<TypeSymbol> typeParameters = symbol.getTypeParameters();
             List<TypeParameterMirror> ret = new ArrayList<TypeParameterMirror>(typeParameters.size());
             for(TypeSymbol typeParameter : typeParameters)
                 ret.add(new JavacTypeParameter(typeParameter));

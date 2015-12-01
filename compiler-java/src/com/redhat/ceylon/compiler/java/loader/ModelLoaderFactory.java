@@ -19,8 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.loader;
 
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
-import com.sun.tools.javac.util.Context;
 
 public interface ModelLoaderFactory {
     AbstractModelLoader createModelLoader(Context context);

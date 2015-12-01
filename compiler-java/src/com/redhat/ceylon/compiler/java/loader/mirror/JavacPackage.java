@@ -19,8 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.model.loader.mirror.PackageMirror;
-import com.sun.tools.javac.code.Symbol.PackageSymbol;
 
 public class JavacPackage implements PackageMirror {
 

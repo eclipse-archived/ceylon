@@ -20,7 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import com.sun.source.util.TaskListener;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
 
 /**
  * Extends the Java TaskListener with Ceylon-specific notifications

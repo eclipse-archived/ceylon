@@ -26,10 +26,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import javax.tools.JavaFileObject.Kind;
-
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
+import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
@@ -38,7 +38,6 @@ import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
 
 /**
  * Utility functions that are used in various packages and/or components of the 

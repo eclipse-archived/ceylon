@@ -34,6 +34,15 @@ import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import com.redhat.ceylon.langtools.tools.javac.util.Names;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.model.FieldValue;
@@ -61,15 +70,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.TypeTags;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
-import com.sun.tools.javac.tree.JCTree.JCIdent;
-import com.sun.tools.javac.tree.TreeMaker;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.Name;
-import com.sun.tools.javac.util.Names;
 
 public class Naming extends NamingBase implements LocalId {
 
@@ -1335,7 +1335,7 @@ public class Naming extends NamingBase implements LocalId {
     JCExpression makeCompanionAccessorCall(JCExpression qualExpr, Interface def) {
         return make().Apply(null, 
                 makeCompanionAccessorName(qualExpr, def), 
-                com.sun.tools.javac.util.List.<JCExpression>nil());
+                com.redhat.ceylon.langtools.tools.javac.util.List.<JCExpression>nil());
     }
     
     /** Generates an ident for the getter method of a Value */
@@ -1867,9 +1867,9 @@ public class Naming extends NamingBase implements LocalId {
                 throw new IllegalStateException();
             }
             this.scoped = true;
-            com.sun.tools.javac.util.List<Substitution> list = scopedSubstitutions.get(scope);
+            com.redhat.ceylon.langtools.tools.javac.util.List<Substitution> list = scopedSubstitutions.get(scope);
             if (list == null) {
-                list = com.sun.tools.javac.util.List.<Substitution>nil();
+                list = com.redhat.ceylon.langtools.tools.javac.util.List.<Substitution>nil();
             }
             if (list.contains(this)) {
                 throw new IllegalStateException();
@@ -1879,17 +1879,17 @@ public class Naming extends NamingBase implements LocalId {
         }
     }
     
-    private Map<Scope, com.sun.tools.javac.util.List<Substitution>> scopedSubstitutions = new HashMap<>();
+    private Map<Scope, com.redhat.ceylon.langtools.tools.javac.util.List<Substitution>> scopedSubstitutions = new HashMap<>();
     
     public void closeScopedSubstitutions(Scope scope) {
-        com.sun.tools.javac.util.List<Substitution> substitutions = scopedSubstitutions.remove(scope);
+        com.redhat.ceylon.langtools.tools.javac.util.List<Substitution> substitutions = scopedSubstitutions.remove(scope);
         if (substitutions != null) {
             for (Substitution s : substitutions) {
                 s.internalClose();
             }
         }
         
-        for (Map.Entry<Scope, com.sun.tools.javac.util.List<Substitution>> entry : scopedSubstitutions.entrySet()) {
+        for (Map.Entry<Scope, com.redhat.ceylon.langtools.tools.javac.util.List<Substitution>> entry : scopedSubstitutions.entrySet()) {
             Scope s = entry.getKey();
             while (true) {
                 if (s.equals(scope)) {

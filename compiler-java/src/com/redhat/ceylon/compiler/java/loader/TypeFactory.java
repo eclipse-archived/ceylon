@@ -24,6 +24,7 @@ import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
@@ -33,12 +34,11 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.sun.tools.javac.util.List;
 
 public class TypeFactory extends Unit {
     private Context context;
 
-    public static TypeFactory instance(com.sun.tools.javac.util.Context context) {
+    public static TypeFactory instance(com.redhat.ceylon.langtools.tools.javac.util.Context context) {
         TypeFactory instance = context.get(TypeFactory.class);
         if (instance == null) {
             instance = new TypeFactory(LanguageCompiler.getCeylonContextInstance(context));

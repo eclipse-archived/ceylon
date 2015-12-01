@@ -37,11 +37,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.MissingResourceException;
 
-import javax.annotation.processing.Processor;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardLocation;
-
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.EnvironmentException;
@@ -50,24 +45,28 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Timer;
+import com.redhat.ceylon.javax.annotation.processing.Processor;
+import com.redhat.ceylon.javax.tools.JavaFileManager;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardLocation;
+import com.redhat.ceylon.langtools.tools.javac.code.Source;
+import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
+import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
+import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
+import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions;
+import com.redhat.ceylon.langtools.tools.javac.main.JavacOption.Option;
+import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions.OptionHelper;
+import com.redhat.ceylon.langtools.tools.javac.processing.AnnotationProcessingError;
+import com.redhat.ceylon.langtools.tools.javac.util.ClientCodeException;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.FatalError;
+import com.redhat.ceylon.langtools.tools.javac.util.JavacMessages;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.util.PropagatedException;
 import com.redhat.ceylon.model.cmr.RepositoryException;
-import com.sun.tools.javac.code.Source;
-import com.sun.tools.javac.file.JavacFileManager;
-import com.sun.tools.javac.jvm.Target;
-import com.sun.tools.javac.main.JavaCompiler;
-import com.sun.tools.javac.main.JavacOption.Option;
-import com.sun.tools.javac.main.RecognizedOptions;
-import com.sun.tools.javac.main.RecognizedOptions.OptionHelper;
-import com.sun.tools.javac.processing.AnnotationProcessingError;
-import com.sun.tools.javac.util.ClientCodeException;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.FatalError;
-import com.sun.tools.javac.util.JavacMessages;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Log;
-import com.sun.tools.javac.util.Options;
-import com.sun.tools.javac.util.PropagatedException;
 
 /**
  * This class provides a commandline interface to the GJC compiler.
@@ -77,7 +76,7 @@ import com.sun.tools.javac.util.PropagatedException;
  * this, you do so at your own risk. This code and its internal interfaces are
  * subject to change or deletion without notice.</b>
  */
-public class Main extends com.sun.tools.javac.main.Main {
+public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
 
     /**
      * The name of the compiler, for use in diagnostics.
@@ -804,7 +803,7 @@ public class Main extends com.sun.tools.javac.main.Main {
         }
     }
 
-    private static final String javacBundleName = "com.sun.tools.javac.resources.ceylonc";
+    private static final String javacBundleName = "com.redhat.ceylon.langtools.tools.javac.resources.ceylonc";
 
     private static JavacMessages messages;
     

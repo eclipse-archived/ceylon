@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 
 /**
  * A transformed expression and it's transformed type

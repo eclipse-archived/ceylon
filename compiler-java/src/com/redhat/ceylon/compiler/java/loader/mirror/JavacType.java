@@ -23,16 +23,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// WATCH OUT: should fix this in model to not use that type
 import javax.lang.model.type.TypeKind;
-
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.ArrayType;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.TypeVar;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.WildcardType;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
-import com.sun.tools.javac.code.Symbol.ClassSymbol;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.Type.ArrayType;
-import com.sun.tools.javac.code.Type.TypeVar;
-import com.sun.tools.javac.code.Type.WildcardType;
 
 public class JavacType implements TypeMirror {
 
@@ -77,7 +77,8 @@ public class JavacType implements TypeMirror {
 
     @Override
     public TypeKind getKind() {
-        return type.getKind();
+    	// WATCH OUT: should fix this in model to not use that type
+        return TypeKind.valueOf(type.getKind().name());
     }
 
     @Override
