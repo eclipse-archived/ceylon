@@ -43,8 +43,8 @@ You can open it up in an editor and check that the following three lines contain
 %define micro_version 0
 ```
 
-And finally we get to the point where we actually build the RPM package:
+And finally we get to the point where we actually build the RPM (and SRPM) package:
 
- - `rpmbuild -bb --clean ~/rpmbuild/SPECS/ceylon.spec`
+ - `rpmbuild -ba --clean ~/rpmbuild/SPECS/ceylon.spec`
 
 The result you'll be able to find in `~/rpmbuild/RPMS/noarch`!
