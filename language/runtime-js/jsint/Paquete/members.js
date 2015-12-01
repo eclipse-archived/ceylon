@@ -45,5 +45,5 @@ function members($$$mptypes){
       }
     }
   }
-  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:kind});
+  return r.$sa$(kind);
 }

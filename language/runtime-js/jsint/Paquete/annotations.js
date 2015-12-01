@@ -12,6 +12,6 @@ function annotations($$$mptypes){
     var an = anns[i];
     if (is$(an, $$$mptypes.Annotation$annotations)) r.push(an);
   }
-  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:$$$mptypes.Annotation$annotations});
+  return r.$sa$($$$mptypes.Annotation$annotations);
 }
 

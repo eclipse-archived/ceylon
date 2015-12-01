@@ -18,7 +18,7 @@ function(anntypes){
     r.$cont=this;
     cs[i]=r;
   }
-  return cs.length===0?empty():ArraySequence(cs,{Element$ArraySequence:{t:MemberClassValueConstructor$meta$model,
+  return cs.$sa$({t:MemberClassValueConstructor$meta$model,
     a:{Type$MemberClassValueConstructor:this.$$targs$$.Type$AppliedClass,
-       Container$MemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass}}});
+       Container$MemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass}});
 }

@@ -35,10 +35,10 @@ Array.prototype.contains=function arrayContains(o){
 }
 
 atr$(arrprot$,'string', function() {
-  if (this.length===0)return '{}';
+  if (this.size===0)return '{}';
   var s="{ ";
-  for (var i=0; i<this.length;i++) {
-    var e=this[i];
+  for (var i=0; i<this.size;i++) {
+    var e=this.arr$[i];
     if (i>0)s+=", ";
     if (e===null)s+="<null>";
     else if (e===undefined)s+="<undefined>";
@@ -48,11 +48,9 @@ atr$(arrprot$,'string', function() {
   return s;
 },undefined,$_Object.$$.prototype.$prop$getString.$crtmm$);
 atr$(arrprot$,'reversed', function() {
-  this._elemTarg();
   return this.Reversed$List();
 },undefined,List.$$.prototype.$prop$getReversed.$crtmm$);
 atr$(arrprot$,'rest', function() {
-  this._elemTarg();
   return this.Rest$List(1);
 },undefined,List.$$.prototype.$prop$getRest.$crtmm$);
 

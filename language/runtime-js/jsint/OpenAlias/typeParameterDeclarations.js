@@ -4,7 +4,6 @@ if (tps) {
   for (var tp in tps) {
     rv.push(OpenTypeParam$jsint(this, tp));
   }
-  var targ={t:TypeParameter$meta$declaration};
-  return rv.length===0?empty():ArraySequence($arr$(rv,targ),{Element$ArraySequence:targ});
+  return rv.$sa$({t:TypeParameter$meta$declaration});
 }
 return empty();

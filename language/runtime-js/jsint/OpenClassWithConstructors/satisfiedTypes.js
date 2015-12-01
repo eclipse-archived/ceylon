@@ -9,6 +9,6 @@ if (ints && ints.length) {
     if (ifc.a)fi.declaration._targs=ifc.a;
     rv.push(fi);
   }
-  return rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:{t:OpenInterfaceType$meta$declaration}});
+  return rv.$sa$({t:OpenInterfaceType$meta$declaration});
 }
 return empty();

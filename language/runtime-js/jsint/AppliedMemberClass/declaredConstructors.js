@@ -28,9 +28,10 @@ if (this.$constrs$===undefined) {
       ccc.push(r);
     }
   }
-  this.$constrs$=ccc.length===0?empty():ArraySequence(ccc,{Element$ArraySequence:{t:'u',l:[
+  var targ={t:'u',l:[
     {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$$targs$$.Type$AppliedMemberClass,Arguments:{t:Nothing}}},
-    {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedMemberClass}}]}});
+    {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedMemberClass}}]};
+  this.$constrs$=ccc.$sa$(targ);
 }
 return this.$constrs$;
 
