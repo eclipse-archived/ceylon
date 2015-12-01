@@ -232,7 +232,11 @@ public class JImageZipFile implements Archive {
 
 	@Override
 	public void close() throws IOException {
-		fileSystem.close();
+		// DO NOT call that: 
+		// java.lang.UnsupportedOperationException
+		// at jdk.internal.jrtfs.JrtFileSystemProvider$1.close(java.base@9.0/JrtFileSystemProvider.java:130)
+
+//		fileSystem.close();
 	}
 
 	@Override
