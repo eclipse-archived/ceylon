@@ -176,7 +176,7 @@ public class ToolProvider {
     {
         // try loading class directly, in case tool is on the bootclasspath
         try {
-            return Class.forName(toolClassName, false, null);
+            return Class.forName(toolClassName, false, getClass().getClassLoader());
         } catch (ClassNotFoundException e) {
             trace(FINE, e);
 
