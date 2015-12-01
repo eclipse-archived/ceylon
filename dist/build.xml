@@ -210,7 +210,7 @@ Use this when NOT doing a release!">
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
                      copy-licenses, install-runtime-libs, install-language, install-runtime,
-                     add-module-descriptors, copy-dist-bin"
+                     add-module-descriptors, copy-dist-bin, generate-buildid"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
@@ -251,6 +251,10 @@ Use this when NOT doing a release!">
             <arg value="--short"/>
             <arg value="HEAD"/>
         </exec>
+    </target>
+
+    <target name="generate-buildid" depends="defcurrentcommit">
+        <echo message="${currentcommit}${line.separator}" file="${ceylon.dist.dir}/BUILDID" />
     </target>
 
     <target name="zip" depends="defcurrentcommit">
