@@ -193,29 +193,29 @@ shared Set<Element> set<out Element>(
                 => earlier)
         given Element satisfies Object {
 
-	class ImmutableSet() extends Object()
-			satisfies Set<Element> {
+    class ImmutableSet() extends Object()
+            satisfies Set<Element> {
 
-		value elements =
-				stream.summarize(identity,
-					(Element? current, element)
-							=> if (exists current)
-							then choosing(current, element)
-							else element);
+        value elements =
+                stream.summarize(identity,
+                    (Element? current, element)
+                            => if (exists current)
+                            then choosing(current, element)
+                            else element);
 
-		contains(Object element) => elements.defines(element);
+        contains(Object element) => elements.defines(element);
 
-		iterator() => elements.keys.iterator();
+        iterator() => elements.keys.iterator();
 
-		size => elements.size;
+        size => elements.size;
 
-		empty => elements.empty;
+        empty => elements.empty;
 
-		clone() => this;
-	}
-	return if (is ImmutableSet | \IemptySet stream)
-	then stream
-	else ImmutableSet();
+        clone() => this;
+    }
+    return if (is ImmutableSet | \IemptySet stream)
+    then stream
+    else ImmutableSet();
 }
 
 "An immutable [[Set]] with no elements."
