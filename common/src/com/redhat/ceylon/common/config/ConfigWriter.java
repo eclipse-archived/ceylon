@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.redhat.ceylon.common.FileUtil;
+
 /**
  * Serializes {@link CeylonConfig} instances to streams and files.
  * 
@@ -35,7 +37,7 @@ public class ConfigWriter {
                 // First create any parent directories if necessary
                 File parentDir = destination.getAbsoluteFile().getParentFile();
                 if (!parentDir.exists()) {
-                    parentDir.mkdirs();
+                    FileUtil.mkdirs(parentDir);
                 }
                 // Now create the file itself
                 out = new FileOutputStream(destination);
@@ -72,7 +74,7 @@ public class ConfigWriter {
                         // First create any parent directories if necessary
                         File parentDir = destination.getAbsoluteFile().getParentFile();
                         if (!parentDir.exists()) {
-                            parentDir.mkdirs();
+                            FileUtil.mkdirs(parentDir);
                         }
                         // Now create the file itself
                         out = new FileOutputStream(destination);
@@ -135,7 +137,7 @@ public class ConfigWriter {
             // First create any parent directories if necessary
             File parentDir = destination.getAbsoluteFile().getParentFile();
             if (!parentDir.exists()) {
-                parentDir.mkdirs();
+                FileUtil.mkdirs(parentDir);
             }
             // Now create the file itself
             out = new FileOutputStream(destination);

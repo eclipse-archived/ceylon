@@ -464,7 +464,7 @@ public class FileUtil {
             for(File child : root.listFiles()){
                 File childDest = new File(dest, child.getName());
                 if(child.isDirectory()){
-                    if(!childDest.exists() && !childDest.mkdirs())
+                    if(!childDest.exists() && !mkdirs(childDest))
                         throw new IOException("Failed to create dir "+childDest.getPath());
                     copyAll(child, childDest);
                 }else{
@@ -473,7 +473,7 @@ public class FileUtil {
             }
         }else{
             File childDest = new File(dest, root.getName());
-            if(!dest.exists() && !dest.mkdirs())
+            if(!dest.exists() && !mkdirs(dest))
                 throw new IOException("Failed to create dir "+dest.getPath());
             Files.copy(root.toPath(), childDest.toPath(), StandardCopyOption.COPY_ATTRIBUTES);
         }
@@ -488,9 +488,22 @@ public class FileUtil {
         File relDestDir = relDestFile.getParentFile();
         if (relDestDir != null) {
             File finalDestDir = (destDir != null) ? new File(destDir, relDestDir.getPath()) : relDestDir;
-            finalDestDir.mkdirs();
+            mkdirs(finalDestDir);
         }
         File finalDestFile = new File(destDir, relDestFile.getPath());
         Files.copy(finalSrcFile.toPath(), finalDestFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
+    
+    /**
+     * Just a simple wrapper around `java.util.File.mkdirs()` that fails
+     * when trying to create a folder named "~"
+     */
+    public static boolean mkdirs(File dir) {
+        String path = dir.getPath().replace('\\', '/');
+        if (path.equals("~") || path.startsWith("~/") || path.contains("/~/")) {
+            return false;
+        }
+        return dir.mkdirs();
+    }
+
 }

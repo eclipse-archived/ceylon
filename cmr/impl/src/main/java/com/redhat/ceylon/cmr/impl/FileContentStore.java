@@ -35,6 +35,7 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.SizedInputStream;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.common.FileUtil;
 
 /**
  * File content store.
@@ -117,7 +118,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         if (options == null)
             throw new IllegalArgumentException("Null options!");
 
-        if (!root.exists() && !root.mkdirs()) {
+        if (!root.exists() && !FileUtil.mkdirs(root)) {
             throw new IOException("Cannot create Ceylon repository directory: " + root);
         }
         if (!root.isDirectory()) {

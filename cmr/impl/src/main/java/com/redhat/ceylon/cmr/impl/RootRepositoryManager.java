@@ -34,6 +34,7 @@ import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.SizedInputStream;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -136,7 +137,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                             unpreferred.copySettingsFrom(context);
                             return getArtifactResult(unpreferred);
                         } else {
-                            parentDir.mkdirs();
+                            FileUtil.mkdirs(parentDir);
                             try (FileWriter writer = new FileWriter(missingFile, false)) {
                                 // We write the list of remote repositories we tried
                                 // This is not currently used but might be useful in the future

@@ -22,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.redhat.ceylon.common.FileUtil;
+
 /**
  * Plain copy compiler adapter.
  *
@@ -35,7 +37,7 @@ class CopyCompilerAdapter extends AbstractCompilerAdapter {
     public File compile(File source, String name, File classesRoot) throws IOException {
         File copy = new File(classesRoot, name);
         File parent = copy.getParentFile();
-        parent.mkdirs();
+        FileUtil.mkdirs(parent);
 
         FileInputStream fis = new FileInputStream(source);
         FileOutputStream fos = new FileOutputStream(copy);

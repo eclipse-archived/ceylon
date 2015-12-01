@@ -24,6 +24,7 @@ import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
 
 import java.io.File;
@@ -164,7 +165,7 @@ public class RemoteModuleLoader extends BootstrapModuleLoader {
         try {
             File file = new File(repoRoot, name);
             File parent = file.getParentFile();
-            if (parent.exists() == false && parent.mkdirs() == false)
+            if (parent.exists() == false && FileUtil.mkdirs(parent) == false)
                 throw new IOException("Cannot create parent directories: " + parent);
 
             log("Saving resource: " + file);

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
@@ -329,7 +330,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
     private void prepareDirectory() {
         File actualDir = applyCwd(dir);
         if (!actualDir.exists()) {
-            actualDir.mkdirs();
+            FileUtil.mkdirs(actualDir);
         }
         if (!actualDir.isDirectory()) {
             throw new RuntimeException(dir + " is not a directory");

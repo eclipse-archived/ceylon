@@ -54,7 +54,7 @@ public class Stitcher {
             throws IOException {
         File clsrcTmpDir = Files.createTempDirectory(tmpDir, "clsrc").toFile();
         final File tmpout = new File(clsrcTmpDir, Constants.DEFAULT_MODULE_DIR);
-        tmpout.mkdir();
+        FileUtil.mkdirs(tmpout);
         final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
                 .outRepo(tmpout.getAbsolutePath()).modulify(false).minify(true)
                 .addSrcDir(clSrcDir).addSrcDir(LANGMOD_JS_SRC);
@@ -244,7 +244,7 @@ public class Stitcher {
             if (infile.exists() && infile.isFile() && infile.canRead()) {
                 File outfile = new File(args[1]);
                 if (!outfile.getParentFile().exists()) {
-                    outfile.getParentFile().mkdirs();
+                    FileUtil.mkdirs(outfile);
                 }
                 exitCode = encodeModel(outfile);
                 if (exitCode == 0) {

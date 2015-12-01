@@ -35,6 +35,8 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import com.redhat.ceylon.common.FileUtil;
+
 public class Copy {
 
     private static final class CopyingVisitor extends SimpleFileVisitor<Path> {
@@ -69,7 +71,7 @@ public class Copy {
         private void copy(Path path, Path dstPath) throws IOException {
             File dstParent = dstPath.toFile().getParentFile();
             if (!dstParent.exists()) {
-                if (!dstParent.mkdirs()) {
+                if (!FileUtil.mkdirs(dstParent)) {
                     throw new IOException("Unable to mkdir " + dstParent);
                 }
             }

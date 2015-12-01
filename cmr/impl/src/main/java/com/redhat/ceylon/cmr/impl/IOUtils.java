@@ -41,6 +41,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 
@@ -318,7 +319,7 @@ public class IOUtils {
     }
     
     private static File mkdirs(File dir) {
-        if (!dir.exists() && !dir.mkdirs()) {
+        if (!dir.exists() && !FileUtil.mkdirs(dir)) {
             throw new UnzipException(UnzipFailure.CannotCreateDestination, dir);
         }
         return dir;

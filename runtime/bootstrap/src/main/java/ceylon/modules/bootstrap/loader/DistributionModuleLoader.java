@@ -24,6 +24,8 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
 
+import com.redhat.ceylon.common.FileUtil;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,7 +81,7 @@ public class DistributionModuleLoader extends BootstrapModuleLoader {
                     final ZipEntry ze = entries.nextElement();
                     final File file = new File(exploded, ze.getName());
                     if (ze.isDirectory()) {
-                        if (file.mkdirs() == false)
+                        if (FileUtil.mkdirs(file) == false)
                             throw new IllegalArgumentException("Cannot create dir: " + file);
                     } else {
                         final FileOutputStream fos = new FileOutputStream(file);
