@@ -2,6 +2,7 @@
 
     <property file="../common/user-build.properties"/>
     <property file="../common/common-build.properties"/>
+    <property file="../lib/build.properties"/>
     <property file="build.properties"/>
 
     <!-- Set build directories for all formats. -->
@@ -81,7 +82,7 @@
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${jandex.lib}"/>
-        <pathelement path="${modules.lib}"/>
+        <pathelement path="${jboss-modules.lib}"/>
         <pathelement path="${sardine.lib}"/>
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>

@@ -5,7 +5,10 @@
         <format property="NOW" pattern="yyyyMMddHHmm" />
     </tstamp>
 
+    <property file="../common/user-build.properties"/>
+    <property file="../common/common-build.properties"/>
     <property file="build.properties"/>
+
     <property name="projects.dir" value="${basedir}/projects"/>
     <property name="ceylon.dist.dir" value="${basedir}/dist"/>
     <property name="ceylon.repo.dir" value="${ceylon.dist.dir}/repo"/>
@@ -24,7 +27,7 @@
     
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
-            <pathelement location="../dist/lib/ant-contrib-1.0b3.jar"/>
+            <pathelement location="${base.path}/ant-contrib-1.0b3.jar"/>
         </classpath>
     </taskdef>
 

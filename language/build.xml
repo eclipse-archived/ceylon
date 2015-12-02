@@ -2,6 +2,7 @@
 
     <property file="../common/user-build.properties"/>
     <property file="../common/common-build.properties"/>
+    <property file="../lib/build.properties"/>
     <property file="build.properties"/>
 
     <!-- Set build directories for all formats. -->
@@ -100,7 +101,7 @@
     </path>
     
     <path id="js.compiler.classpath">
-        <pathelement path="${antlr.lib}"/>
+        <pathelement path="${antlr.runtime.lib}"/>
         <pathelement path="${json.lib}" />
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
