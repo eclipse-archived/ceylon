@@ -11,6 +11,7 @@
 
     <property file="../common/user-build.properties"/>
     <property file="../common/common-build.properties"/>
+    <property file="../lib/build.properties"/>
     <property file="build.properties"/>
 
     <!-- Allow this to be overriden by others importing this project. -->
@@ -77,7 +78,7 @@
     </path>
 
     <path id="classpath">
-        <fileset dir="${basedir}/lib">
+        <fileset dir="${base.path}">
             <include name="**/*.jar"/>
         </fileset>
         <pathelement path="${ceylon.common.lib}"/>

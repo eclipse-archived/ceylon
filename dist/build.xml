@@ -7,7 +7,11 @@
         <format property="NOW" pattern="yyyyMMddHHmm" />
     </tstamp>
 
+    <property file="../common/user-build.properties" />
+    <property file="../common/common-build.properties" />
+    <property file="../lib/build.properties"/>
     <property file="build.properties"/>
+	
     <property name="ceylon.dist.dir" location="${basedir}/dist"/>
     <property name="ceylon.repo.dir" location="${ceylon.dist.dir}/repo"/>
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
@@ -38,7 +42,7 @@
 	
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
-            <pathelement location="${basedir}/lib/ant-contrib-1.0b3.jar"/>
+            <pathelement location="${base.path}/ant-contrib-1.0b3.jar"/>
         </classpath>
     </taskdef>
 
@@ -459,11 +463,11 @@ Use this when NOT doing a release!">
     </target>
 
     <taskdef resource="aQute/bnd/ant/taskdef.properties"
-          classpath="${basedir}/lib/biz.aQute.bnd-2.3.0.jar"/>
+          classpath="${base.path}/biz.aQute.bnd-2.3.0.jar"/>
 
     <taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
         <classpath>
-            <pathelement location="${basedir}/lib/xmltask-1.16.jar"/>
+            <pathelement location="${base.path}/xmltask-1.16.jar"/>
         </classpath>
     </taskdef>
 

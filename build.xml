@@ -30,6 +30,14 @@ Some super-charged ant tasks:
 
     <!-- The following tasks all redirect to "dist/build.xml" -->
     
+    <target name="foo">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="install-language-nodeps"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
+    
     <target name="status">
         <ant antfile="${ceylon.dist.dir}/build.xml"
              target="status"

@@ -1,7 +1,9 @@
 <project name="Ceylon distribution OSGI Bundle" default="osgi" basedir=".">
 
+    <property name="base.path" location="${basedir}/../../lib" />
     <property file="../../common/user-build.properties" />
     <property file="../../common/common-build.properties" />
+    <property file="../lib/build.properties"/>
 
     <property name="name" value="Ceylon distribution OSGI bundle" />
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
@@ -54,18 +56,18 @@
         <pathelement path="${ceylon.typechecker.lib}" />
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
-        <pathelement path="${basedir}/lib/org.osgi.core-4.3.1.jar" />
+        <pathelement path="${base.path}/org.osgi.core-4.3.1.jar" />
     </path>
 
     <taskdef resource="taskdef.properties">
         <classpath>
-            <pathelement path="${basedir}/lib/org.osgi.impl.bundle.repoindex.ant-2.1.2.jar" />
+            <pathelement path="${base.path}/org.osgi.impl.bundle.repoindex.ant-2.1.2.jar" />
         </classpath>
     </taskdef>
 
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
-            <pathelement location="${basedir}/../lib/ant-contrib-1.0b3.jar"/>
+            <pathelement location="${base.path}/ant-contrib-1.0b3.jar"/>
         </classpath>
     </taskdef>
     
@@ -83,7 +85,7 @@
     <target name="clean">
         <delete failonerror="false" dir="${build}"/>
         <delete failonerror="false" dir="${repoDir}/repo"/>
-        <delete failonerror="false" dir="${basedir}/lib/ceylon-bootstrap.jar"/>
+        <delete failonerror="false" dir="${base.path}/ceylon-bootstrap.jar"/>
     </target>
 
     <!-- Rule to build compiler classes from their Java sources -->
@@ -139,7 +141,7 @@
         </jar>
         <ceylon-import-jar 
             module="org.osgi.core/4.3.1" 
-            jar="${basedir}/lib/org.osgi.core-4.3.1.jar"
+            jar="${base.path}/org.osgi.core-4.3.1.jar"
             out="${repoDir}/repo"
             force="true"
             fork="true">
