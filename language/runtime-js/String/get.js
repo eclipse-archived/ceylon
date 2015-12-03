@@ -1,3 +1,3 @@
-function get(i){
+function $_get(i){
   return this.getFromFirst(i);
 }
