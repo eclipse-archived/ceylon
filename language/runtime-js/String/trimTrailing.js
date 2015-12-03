@@ -1,4 +1,4 @@
-function(/*Category*/chars) {
+function(/*Boolean(Character)*/chars) {
     var to = this.size;
     if (to > 0) {
         do {--to} while (to>=0 && chars(this.$_get(to)));
