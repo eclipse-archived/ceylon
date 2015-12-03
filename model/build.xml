@@ -106,7 +106,10 @@
     </target>
 
     <target name="clean.repo" description="Clean local ceylon repository">
-        <delete dir="${ceylon.model.repo}" />
+        <delete file="${ceylon.model.lib}" />
+        <delete file="${ceylon.model.lib}.sha1" />
+        <delete file="${ceylon.repo.dir}/${ceylon.model.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.model.src}.sha1" />
     </target>
 
     <target name="ide-quick-internal">
@@ -136,7 +139,7 @@
     </target>
 
     <target name="publish"
-        depends="dist,clean.repo,init.repo,publish-internal"
+        depends="clean.repo,init.repo,dist,publish-internal"
         description="Publish both type checker and ceylon.language template module">
     </target>
 

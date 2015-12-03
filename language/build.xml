@@ -32,6 +32,7 @@
 
     <!-- Local repository -->
     <property name="ceylon.dist.dir" location="${basedir}/../dist/dist"/>
+    <property name="ceylon.dist.repo" location="${ceylon.dist.dir}/repo"/>
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     
@@ -188,7 +189,12 @@
 
     <target name="clean.repo"
             description="Clean default local Ceylon module repository">
-        <delete dir="${ceylon.language.repo}"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.language.car}"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.language.car}.sha1"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.language.js}"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.language.js}.sha1"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.language.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.language.src}.sha1" />
     </target>
 
     <target name="generate.sources.java">
@@ -417,6 +423,7 @@
             encoding="UTF-8"
             noMtimeCheck="true"
             src="${module.language.src}:${runtime.src}"
+            sysrep="${ceylon.dist.repo}"
             out="${build.dist.repo}">
             <suppressWarning>ceylonNamespace</suppressWarning>
             <suppressWarning>unusedDeclaration</suppressWarning>

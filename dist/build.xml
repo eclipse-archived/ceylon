@@ -11,7 +11,7 @@
     <property file="../common/common-build.properties" />
     <property file="../lib/build.properties"/>
     <property file="build.properties"/>
-	
+    
     <property name="ceylon.dist.dir" location="${basedir}/dist"/>
     <property name="ceylon.repo.dir" location="${ceylon.dist.dir}/repo"/>
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
@@ -39,7 +39,7 @@
         <os family="windows" />
     </condition>
     <property name="batExt" value=""/>
-	
+    
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
             <pathelement location="${base.path}/ant-contrib-1.0b3.jar"/>
@@ -213,7 +213,7 @@ Use this when NOT doing a release!">
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-                     copy-licenses, install-runtime-libs, install-language, install-runtime,
+                     copy-licenses, install-language, install-runtime,
                      add-module-descriptors, copy-dist-bin, generate-buildid"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
@@ -223,7 +223,7 @@ Use this when NOT doing a release!">
         <antcall target="osgi-internal"/>
     </target>
     <target name="osgi-internal"
-        depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+        depends="setup-repo, install-compiler, install-js, install-language, install-runtime">
         <antcall target="osgi-quick"/>
     </target>
     <target name="osgi-quick">
@@ -238,7 +238,7 @@ Use this when NOT doing a release!">
         <antcall target="osgi-p2-internal"/>
     </target>
     <target name="osgi-p2-internal"
-        depends="setup-repo, install-compiler, install-js, install-runtime-libs, install-language, install-runtime">
+        depends="setup-repo, install-compiler, install-js, install-language, install-runtime">
         <antcall target="osgi-p2-quick"/>
     </target>
     <target name="osgi-p2-quick">
@@ -280,6 +280,24 @@ Use this when NOT doing a release!">
     
     <target name="setup-repo">
         <mkdir dir="${ceylon.dist.dir}/repo"/>
+        <!-- Setup the basic structure of the dist folder by copying the template folder -->
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${basedir}/../runtime/dist/repo">
+                <include name="**/*.xml"/>
+            </fileset>
+            <filtermapper>
+                <replacestring from="_version_" to="${ceylon.base.version}"/>
+            </filtermapper>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+            </filterset>
+        </copy>
+        <!-- Now copy the JARs -->
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${basedir}/../runtime/dist/repo">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="copy-dist-bin">
@@ -426,14 +444,6 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-runtime-libs">
-        <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish-libs" dir="${ceylon-runtime.dir}" inheritall="false">
-            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
-            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
-            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
-        </ant>
-    </target>
-
     <target name="install-runtime" depends="install-cmr,install-runtime-nodeps" />
     <target name="install-runtime-nodeps">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
@@ -445,7 +455,7 @@ Use this when NOT doing a release!">
 
     <target name="add-module-descriptors">
         <foreach target="add-module-descriptor" param="module.descriptor.file">
-            <fileset dir="${ceylon-runtime.dir}/build/dist" casesensitive="yes">
+            <fileset dir="${ceylon.repo.dir}" casesensitive="yes">
                 <include name="**/module.xml"/>
             </fileset>
         </foreach>
@@ -566,7 +576,7 @@ Use this when NOT doing a release!">
         <pathconvert property="module.dir.relative" pathsep="${line.separator}">
             <propertyresource name="module.dir" />
             <mapper type="regexp"
-                from="^(.*)[/\\]build[/\\]dist[/\\]repo[/\\](.*)"
+                from="^(.*)[/\\]dist[/\\]repo[/\\](.*)"
                 to="\2"/>
         </pathconvert>
         <pathconvert property="module.jar" setonempty="false">
@@ -724,12 +734,7 @@ Use this when NOT doing a release!">
         <delete file="${ceylon-dist-osgi.dir}/lib/ceylon-bootstrap.jar"/>
     </target>
 
-    <target name="clean-release" depends="clean"
-            description="Cleans the distribution package and deletes all local projects">
-        <delete dir="${projects.dir}"/>
-    </target>
-    
-    <target name="clean-projects" 
+    <target name="clean-projects" depends="clean"
             description="Cleans all sub projects">
         <foreach list="${moddirs}"
                  target="clean-projects-item"

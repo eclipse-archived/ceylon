@@ -16,15 +16,15 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
-	<classpathentry kind="lib" path="/ceylon/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/httpclient-4.3.2.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/httpcore-4.3.2.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/jandex-2.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/jboss-modules-1.4.4.Final.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/json-smart-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/sardine-5.1.jar"/>
 	<classpathentry kind="lib" path="/ceylon/lib/shrinkwrap-maven-uberjar-2.2.0-beta-1.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/slf4j-simple-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/commons/logging/1.1.1/org.apache.commons.logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/httpcomponents/httpclient/4.3.2/org.apache.httpcomponents.httpclient-4.3.2.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/httpcomponents/httpcore/4.3.2/org.apache.httpcomponents.httpcore-4.3.2.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/simple/1.6.1/org.slf4j.simple-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/jandex/2.0.0.Final/org.jboss.jandex-2.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/github/lookfirst/sardine/5.1/com.github.lookfirst.sardine-5.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/net/minidev/json-smart/1.1.1/net.minidev.json-smart-1.1.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

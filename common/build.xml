@@ -146,7 +146,10 @@
     </target>
 
     <target name="clean.repo" description="Clean local ceylon repository">
-        <delete dir="${ceylon.common.repo}" />
+        <delete file="${ceylon.common.lib}" />
+        <delete file="${ceylon.common.lib}.sha1" />
+        <delete file="${ceylon.repo.dir}/${ceylon.common.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.common.src}.sha1" />
     </target>
 
     <target name="ide-quick-internal">
@@ -165,7 +168,6 @@
     </target>
 
     <target name="dist" depends="build">
-        <copy file="${markdownpapers.lib}" tofile="${build.dist.repo}/${markdownpapers.repo}"/>
         <zip destfile="${build.dist.repo}/${ceylon.common.src}">
             <fileset dir="${src}">
                 <include name="**/*.java"/>
@@ -177,7 +179,7 @@
     </target>
 
     <target name="publish"
-        depends="dist,clean.repo,init.repo,publish-internal"
+        depends="clean.repo,init.repo,dist,publish-internal"
         description="Publish both type checker and ceylon.language template module">
     </target>
 

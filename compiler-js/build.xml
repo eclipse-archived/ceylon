@@ -203,15 +203,14 @@
     </target>
     <target name="clean.repo"
             description="Clean default local Ceylon module repository">
-        <delete dir="${ceylon.js.repo}"/>
+        <delete file="${ceylon.js.lib}"/>
+        <delete file="${ceylon.js.lib}.sha1"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.js.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.js.src}.sha1" />
     </target>
 
     <target name="dist" depends="build"
             description="Create Ceylon JS compiler distribution">
-        <copy overwrite="true"
-              file="${json.lib}"
-              tofile="${build.dist.repo}/${json.repo}"/>
-              
         <zip destfile="${build.dist.repo}/${ceylon.js.src}">
             <fileset dir="${src}">
                 <include name="**/*.java"/>
@@ -223,7 +222,7 @@
     </target>
 
     <target name="publish"
-            depends="dist,clean.repo,init.repo,publish-internal"
+            depends="clean.repo,init.repo,dist,publish-internal"
             description="Publish Ceylon JS compiler module to default repo">
         <mkdir dir="${build.bin}" />
         <copy todir="${build.bin}">
