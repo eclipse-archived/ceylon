@@ -63,7 +63,7 @@ public class SequenceGenerator {
                 lazyEnumeration(positionalArguments, that, that.getTypeModel(), spread, gen);
                 return;
             } else {
-                gen.out(gen.getClAlias(), "$arr$([");
+                gen.out("[");
             }
             int count=0;
             for (Tree.PositionalArgument expr : positionalArguments) {
@@ -80,7 +80,7 @@ public class SequenceGenerator {
                 }
                 count++;
             }
-            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, true);
+            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, false);
         }
     }
 
