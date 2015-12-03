@@ -291,8 +291,6 @@ public class MiscTests extends CompilerTests {
         };
         String[] extraModules = {
                 "ceylon.test",
-                "com.redhat.ceylon.test",
-                "com.redhat.ceylon.testjvm",
         };
         String[] extraTestModules = {
                 "test.ceylon.test.suite",
