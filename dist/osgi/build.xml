@@ -1,8 +1,8 @@
 <project name="Ceylon distribution OSGI Bundle" default="osgi" basedir=".">
 
     <property name="base.path" location="${basedir}/../../lib" />
-    <property file="../../common/user-build.properties" />
-    <property file="../../common/common-build.properties" />
+    <property file="../../user-build.properties" />
+    <property file="../../common-build.properties" />
     <property file="../lib/build.properties"/>
 
     <property name="name" value="Ceylon distribution OSGI bundle" />
