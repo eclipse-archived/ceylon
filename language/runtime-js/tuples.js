@@ -214,7 +214,7 @@ function $init$tpl$(){
           } else if (x<0) {
             return this;
           }
-          return this.elem$.slice(x).chain(this.sp$,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
+          return $arr$(this.elem$.slice(x),this.t$).chain(this.sp$,{Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
         }
         var r=this.elem$.slice(x);
         return r.size===0?empty():tpl$(r);
