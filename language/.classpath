@@ -12,7 +12,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-compiler"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-js"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
-	<classpathentry kind="lib" path="/ceylon/lib/jandex-2.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/jboss-modules-1.4.4.Final.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/jandex/2.0.0.Final/org.jboss.jandex-2.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

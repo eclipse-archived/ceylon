@@ -59,6 +59,7 @@
               value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.src"/>
     <property name="ceylon.module-resolver.jar"
               value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
     <property name="ceylon.module-resolver.dist" value="${build.dist.repo}/${ceylon.module-resolver.dir}"/>
 
@@ -190,19 +191,11 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.maven-support.jar}"/>
         </antcall>
-        <copy file="${sardine.lib}" tofile="${build.dist.repo}/${sardine.repo}"/>
-        <copy file="${httpclient.lib}" tofile="${build.dist.repo}/${httpclient.repo}"/>
-        <copy file="${httpcore.lib}" tofile="${build.dist.repo}/${httpcore.repo}"/>
-        <copy file="${commons-logging.lib}" tofile="${build.dist.repo}/${commons-logging.repo}"/>
-        <copy file="${commons-codec.lib}" tofile="${build.dist.repo}/${commons-codec.repo}"/>
-        <copy file="${slf4j-api.lib}" tofile="${build.dist.repo}/${slf4j-api.repo}"/>
-        <copy file="${slf4j-simple.lib}" tofile="${build.dist.repo}/${slf4j-simple.repo}"/>
-        <copy file="${json.lib}" tofile="${build.dist.repo}/${json.repo}"/>
     </target>
 
     <!-- Repository targets -->
     <target name="publish"
-            depends="dist,clean.repo,init.repo,publish-internal"
+            depends="clean.repo,init.repo,dist,publish-internal"
             description="Publish Ceylon module-resolver module to default repo">
     </target>
 
@@ -219,7 +212,10 @@
 
     <target name="clean.repo"
             description="Clean default local Ceylon module repositoryManager">
-        <delete dir="${ceylon.module-resolver.repo}"/>
+        <delete file="${ceylon.module-resolver.lib}"/>
+        <delete file="${ceylon.module-resolver.lib}.sha1"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.module-resolver.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.module-resolver.src}.sha1" />
     </target>
 
     <!-- Tasks related to building the module-resolver -->

@@ -134,11 +134,13 @@
         <mkdir dir="${ceylon.compiler.repo}" />
     </target>
     <target name="clean.repo" description="Clean default local Ceylon module repository">
-        <delete dir="${ceylon.compiler.repo}" />
+        <delete file="${ceylon.compiler.lib}" />
+        <delete file="${ceylon.compiler.lib}.sha1" />
+        <delete file="${ceylon.repo.dir}/${ceylon.compiler.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.compiler.src}.sha1" />
     </target>
 
     <target name="dist" depends="build" description="Create Ceylon compiler distribution">
-        <copy file="${txtmark.lib}" tofile="${build.dist.repo}/${txtmark.repo}"/>
         <zip destfile="${build.dist.repo}/${ceylon.compiler.src}">
             <fileset dir="${ceylonc.src}">
                 <include name="**/*.java"/>
@@ -152,7 +154,7 @@
         </antcall>
     </target>
 
-    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon compiler module to default repo">
+    <target name="publish" depends="clean.repo,init.repo,dist,publish-internal" description="Publish Ceylon compiler module to default repo">
     </target>
 
     <target name="publish-internal" depends="init.repo">

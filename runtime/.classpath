@@ -12,10 +12,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
-	<classpathentry kind="lib" path="/ceylon/lib/jboss-logmanager-2.0.3.Final.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/jboss-modules-1.4.4.Final.jar"/>
 	<classpathentry kind="lib" path="/ceylon/lib/shrinkwrap-api-1.0.0-cr-1.jar"/>
 	<classpathentry kind="lib" path="/ceylon/lib/shrinkwrap-impl-base-1.0.0-cr-1.jar"/>
 	<classpathentry kind="lib" path="/ceylon/lib/shrinkwrap-spi-1.0.0-cr-1.jar"/>
+	<classpathentry kind="lib" path="dist/repo/org/jboss/logmanager/2.0.3.Final/org.jboss.logmanager-2.0.3.Final.jar"/>
+	<classpathentry kind="lib" path="dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
 	<classpathentry kind="output" path="testsuite/target/test-classes"/>
 </classpath>

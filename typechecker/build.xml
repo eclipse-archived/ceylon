@@ -482,7 +482,10 @@
 
     <target name="clean.repo"
             description="Clean local ceylon repository">
-        <delete dir="${ceylon.typechecker.repo}"/>
+        <delete file="${ceylon.typechecker.lib}"/>
+        <delete file="${ceylon.typechecker.lib}.sha1"/>
+        <delete file="${ceylon.repo.dir}/${ceylon.typechecker.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.typechecker.src}.sha1" />
     </target>
 
     <target name="ide-quick-internal">
@@ -536,7 +539,7 @@
         </antcall>
     </target>
 
-    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal"
+    <target name="publish" depends="clean.repo,init.repo,dist,publish-internal"
             description="Publish type checker module to default repo">
     </target>
 

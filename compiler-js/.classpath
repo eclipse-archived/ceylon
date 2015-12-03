@@ -11,6 +11,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-typechecker"/>
 	<classpathentry kind="lib" path="/ceylon/lib/ant-1.8.2.jar"/>
 	<classpathentry kind="lib" path="/ceylon/lib/antlr-3.4-complete.jar"/>
-	<classpathentry kind="lib" path="/ceylon/lib/json-smart-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/net/minidev/json-smart/1.1.1/net.minidev.json-smart-1.1.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
