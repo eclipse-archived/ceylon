@@ -185,7 +185,7 @@ function $init$tpl$(){
           if (b>=this.elem$.length) {
             var s1=this.elem$.slice(a);
             var s2=this.sp$.spanTo(b-this.elem$.length);
-            return s1.chain($arr$(s2,this.sp$.$$targs$$.Element$Sequence),
+            return $arr$(s1,this.t$).chain(s2,
               {Other$chain:this.sp$.$$targs$$.Element$Sequence,OtherAbsent$chain:{t:Nothing}}).sequence();
           }
           if (a>=this.elem$.length) {
@@ -202,8 +202,7 @@ function $init$tpl$(){
           if (x<0)return empty();
           return this.span(0,x);
         }
-        var r=$arr$(this.elem$,this.t$).spanTo(x);
-        return r.$sa$(this.t$);
+        return $arr$(this.elem$,this.t$).spanTo(x);
       }
       tuple.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
       tuple.spanFrom=function(x){
@@ -255,7 +254,7 @@ function $init$tpl$(){
           }
           return true;
         }
-        return $arr$(this.elem$).equals(o);
+        return $arr$(this.elem$,this.t$).equals(o);
       }
       tuple.equals.$crtmm$=List.$$.prototype.equals.$crtmm$;
       tuple.withTrailing=function(a,b){
