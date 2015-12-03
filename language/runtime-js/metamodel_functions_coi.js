@@ -239,12 +239,12 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
         var anns=allann$(mm);
         if (!mm.tp && anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
-          var types=$arr$([],{t:Type$meta$model,a:{Type:{t:Anything}}});
+          var types=[];
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }
           mems.push(AppliedMethod$jsint(mem,undefined,{Container$AppliedMethod:{t:_tipo},
-                    Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:types}));
+                    Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:types.length?{t:'T',l:types}:{t:Empty}}));
         }
       }
     }
