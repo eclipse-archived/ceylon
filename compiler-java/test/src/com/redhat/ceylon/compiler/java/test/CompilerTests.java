@@ -96,6 +96,8 @@ public abstract class CompilerTests {
     protected final String moduleName;
     protected final List<String> defaultOptions;
 
+    private static final String jbmv = Versions.DEPENDENCY_JBOSS_MODULES_VERSION;
+    
     public static final String[] CLASS_PATH = new String[] {
         "../spec/bin",
         "./build/classes",
@@ -103,8 +105,8 @@ public abstract class CompilerTests {
         "./../cmr/build/classes",
         "./../common/build/classes",
         "./../runtime/build/classes",
-        "./../runtime/lib/jboss-modules"+Versions.DEPENDENCY_JBOSS_MODULES_VERSION+".jar",
-        "./../cmr/lib/slf4j-api-1.6.1.jar",
+        "./../runtime/dist/repo/org/jboss/modules/" + jbmv + "/org.jboss.modules-" + jbmv + ".jar",
+        "./../runtime/dist/repo/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar",
         LANGUAGE_MODULE_CAR,
     };
 
