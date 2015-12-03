@@ -87,7 +87,7 @@
         <pathelement path="${sardine.lib}"/>
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
-        <pathelement path="${shrinkwrap-maven-uberjar.lib}"/>
+        <pathelement path="${ceylon.maven-support.lib}"/>
         <pathelement path="${json.lib}" />
     </path>
 
@@ -130,6 +130,7 @@
 
     <target name="ide-quick-internal">
         <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+    	<echo>ONE ${archivePath}</echo>
         <basename file="${archivePath}" property="archiveFileName"/>
         <property name="proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
@@ -142,7 +143,8 @@
             <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
         </manifest>
         
-        <property name="archivePath2" value="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
+        <property name="archivePath2" value="${ceylon.repo.dir}/${ceylon.maven-support.repo}"/>
+    	<echo>TWO ${archivePath2}</echo>
         <basename file="${archivePath2}" property="archiveFileName2"/>
         <property name="proxy-project2" value="../../ceylon-ide-eclipse/required-bundle-proxies/${archiveFileName2}"/>
         <mkdir dir="${proxy-project2}"/>
@@ -186,10 +188,6 @@
         <copy file="${module-resolver.jar}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
-        </antcall>
-        <copy file="${shrinkwrap-maven-uberjar.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
-        <antcall target="sha1sum">
-            <param name="file" value="${build.dist.repo}/${ceylon.maven-support.jar}"/>
         </antcall>
     </target>
 
