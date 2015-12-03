@@ -5,8 +5,8 @@
         <format property="NOW" pattern="yyyyMMddHHmm" />
     </tstamp>
 
-    <property file="../common/user-build.properties"/>
-    <property file="../common/common-build.properties"/>
+    <property file="../user-build.properties"/>
+    <property file="../common-build.properties"/>
     <property file="build.properties"/>
 
     <property name="projects.dir" value="${basedir}/projects"/>

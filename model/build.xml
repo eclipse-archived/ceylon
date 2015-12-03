@@ -1,7 +1,7 @@
 <project name="Ceylon model module" default="publish" basedir=".">
 
-    <property file="../common/user-build.properties"/>
-    <property file="../common/common-build.properties"/>
+    <property file="../user-build.properties"/>
+    <property file="../common-build.properties"/>
     <property file="../lib/build.properties"/>
     <property file="build.properties" />
 
