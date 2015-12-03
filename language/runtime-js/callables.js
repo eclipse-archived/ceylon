@@ -16,7 +16,7 @@ function $JsCallable(f$,parms,targs) {
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
   var f=function c1(){
-    return f$.apply(undefined,spread$($arr$(arguments,{t:Anything}),f$,targs,1));
+    return f$.apply(undefined,spread$(arguments,f$,targs,1));
   }
   f.$crtmm$=f$.$crtmm$;
   f.getT$all=f$.getT$all;
@@ -68,7 +68,7 @@ function JsCallable(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
   var f2=function c2() {
-    var arg=spread$($arr$(arguments,{t:Anything}),f,targs,1);
+    var arg=spread$(arguments,f,targs,1);
     if (targs)arg.push(targs);
     return f.apply(o, arg);
   };
@@ -179,7 +179,9 @@ ex$.spread$=spread$;
 
 //This is used for spread method references
 //Pass it a list (or Iterable, really) and a function to execute on the item with the specified arguments
-function JsCallableList(list,fun,$mpt) {
+//$mpt contains the type arguments for the function
+//$et is the type of the elements
+function JsCallableList(list,fun,$mpt,$et) {
   return function sprop() {
     var len=list.size;
     if (len===0)return empty();
@@ -191,9 +193,9 @@ function JsCallableList(list,fun,$mpt) {
     var rval=Array(len);
     var iter=list.iterator(),item,i=0;
     while((item=iter.next())!==finished()){
-        rval[i++] = fun(item,a);
+      rval[i++] = fun(item,a);
     }
-    return sequence(rval,{Element$sequence:{t:Callable},Absent$sequence:{t:Nothing}});
+    return rval.$sa$($et||{t:Anything});
   };
 }
 JsCallableList.$crtmm$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};

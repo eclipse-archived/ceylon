@@ -117,13 +117,21 @@ public class SequenceGenerator {
             gen.out(gen.getClAlias(), "JsCallableList(");
             gen.supervisit(that);
             gen.out(",function(e,a){return ",
-                    gen.memberAccess(that, "e"), ".apply(e,a);}");
+                    gen.memberAccess(that, "e"), ".apply(e,a);},");
             if (that.getTypeArguments() != null && that.getTypeArguments().getTypeModels()!=null
                     && !that.getTypeArguments().getTypeModels().isEmpty()) {
-                gen.out(",");
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
                         ((Generic)that.getDeclaration()).getTypeParameters(),
                         that.getTypeArguments().getTypeModels()), gen, true, null);
+            } else {
+                gen.out("undefined");
+            }
+            gen.out(",");
+            if (that.getTypeModel() != null && that.getTypeModel().asQualifiedString().startsWith("ceylon.language::Callable<")) {
+                TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0).getTypeArgumentList().get(0), gen, false);
+            } else {
+                gen.out("FUCK");
+                TypeUtils.typeNameOrList(that, that.getTypeModel(), gen, false);
             }
             gen.out(")");
         } else {
