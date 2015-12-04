@@ -1178,9 +1178,11 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             </para>
             
             <synopsis>BaseExtension: PackageQualifier? TypeNameWithArguments</synopsis>
-            <synopsis>SuperExtension: "super" "." TypeNameWithArguments</synopsis>
+            <synopsis>SuperExtension: SuperQualifier TypeNameWithArguments</synopsis>
             <synopsis>BaseConstruction: (PackageQualifier? TypeNameWithArguments ".")? MemberNameWithArguments</synopsis>
-            <synopsis>SuperConstruction: "super" "." MemberNameWithArguments</synopsis>
+            <synopsis>SuperConstruction: SuperQualifier MemberNameWithArguments</synopsis>
+            
+            <synopsis>SuperQualifier: "super" "."</synopsis>
             
             <para>The specification of the superclass or superclass constructor is treated 
             as a value expression, not as a type expression.</para>
