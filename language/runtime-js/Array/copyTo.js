@@ -8,11 +8,11 @@ function(other,srcpos,dstpos,length){
     if (other===this && dstpos>srcpos) {
       dstpos+=length-1;
       for (var i=endpos; i>=srcpos; i--) {
-        other[dstpos--]=this.arr$[i];
+        other.arr$[dstpos--]=this.arr$[i];
       }
     } else {
       for (var i=srcpos;i<=endpos;i++) {
-        other[dstpos++]=this.arr$[i];
+        other.arr$[dstpos++]=this.arr$[i];
       }
     }
 }
