@@ -7394,6 +7394,9 @@ public class ExpressionVisitor extends Visitor {
         ClassOrInterface ci = 
                 getContainingClassOrInterface(that.getScope());
         if (inExtendsClause) {
+            //Note: super has a special meaning in any 
+            //      extends clause where it refers to the 
+            //      supertype of the outer class
             if (ci!=null) {
                 if (ci.isClassOrInterfaceMember()) {
                     ClassOrInterface cci = 

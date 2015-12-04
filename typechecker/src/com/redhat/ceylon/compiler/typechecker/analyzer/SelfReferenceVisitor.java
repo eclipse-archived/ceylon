@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLa
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
@@ -12,6 +13,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -54,10 +56,26 @@ public class SelfReferenceVisitor extends Visitor {
 
     private void visitExtendedType(
             Tree.ExtendedTypeExpression that) {
+        Scope scope = that.getScope();
+        //VERY UGLY!!
+        //Note: super has a special meaning in any 
+        //      extends clause where it refers to the 
+        //      supertype of the outer class
+        CustomTree.ExtendedTypeExpression ete =
+                (CustomTree.ExtendedTypeExpression) that;
+        Tree.SimpleType type = ete.getType();
+        if (type instanceof Tree.QualifiedType) {
+            Tree.QualifiedType qt = 
+                    (Tree.QualifiedType) type;
+            if (qt.getOuterType() instanceof Tree.SuperType) {
+                scope = scope.getContainer();
+            }
+        }
+        
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null && 
-                isInherited(that, member)) {
+                isInherited(scope, member)) {
             Declaration container = 
                     (Declaration) 
                         member.getContainer();
@@ -126,7 +144,7 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null &&
-                isInherited(that, member)) {
+                isInherited(that.getScope(), member)) {
             Declaration container = 
                     (Declaration) 
                     member.getContainer();
@@ -184,12 +202,11 @@ public class SelfReferenceVisitor extends Visitor {
      * type declaration from within the initializer section
      * of the type declaration?
      */
-    private boolean isInherited(Tree.Primary that, 
+    private boolean isInherited(Scope scope, 
             Declaration member) {
         return inInitializer() &&
-                that.getScope()
-                    .getInheritingDeclaration(member)
-                == typeDeclaration;
+                scope.getInheritingDeclaration(member)
+                    == typeDeclaration;
     }
 
     @Override
