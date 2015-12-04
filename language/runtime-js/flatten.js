@@ -75,6 +75,9 @@ function flatten(tf, $$$mptypes) {
   } else {
     //Single variadic argument
     rf=function ffs(s,$mpt){
+      if (s===empty()||is$(s,{t:Tuple}))return tf(s,$mpt);
+      if (is$(s,{t:ArraySequence}))return tf(tpl$(s.$ed.arr$),$mpt);
+      if (is$(s,{t:$_Array}))return tf(tpl$(s.arr$),$mpt);
       return tf(s?tpl$(s):empty(),$mpt);
     };
     rf.$crtmm$={$t:mm.$t,ps:[{$t:{t:t0.t},nm:'flat#0',seq:iadic}]};
