@@ -60,7 +60,7 @@ public class SelfReferenceVisitor extends Visitor {
                 isInherited(that, member)) {
             Declaration container = 
                     (Declaration) 
-                    member.getContainer();
+                        member.getContainer();
             that.addError("inherited member class may not be extended in initializer of '" +
                     typeDeclaration.getName() + 
                     "': '" + member.getName() + 
