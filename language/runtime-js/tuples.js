@@ -206,7 +206,7 @@ function $init$tpl$(){
       }
       tuple.spanTo.$crtmm$=Tuple.$$.prototype.spanTo.$crtmm$;
       tuple.spanFrom=function(x){
-        if (x===0)return this;
+        if (x<=0)return this;
         if (this.sp$) {
           if (x>=this.elem$.length) {
             return this.sp$.spanFrom(x-this.elem$.length);
