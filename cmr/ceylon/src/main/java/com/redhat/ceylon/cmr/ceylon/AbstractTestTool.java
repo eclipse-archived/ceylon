@@ -30,6 +30,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     
     protected List<String> moduleNameOptVersionList;
     protected List<String> testList;
+    protected List<String> tagList;
     protected List<String> argumentList;
     protected String version;
     protected String compileFlags;
@@ -60,6 +61,15 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     @Description("Specifies which tests will be run.")
     public void setTests(List<String> testList) {
         this.testList = testList;
+    }
+    
+    @OptionArgument(longName = "tag", argumentName = "tag")
+    @Description("Specifies which tests will be run according to their tags. It can be used as "
+            + "include filter, so only tests with specified tag will be executed. But it can "
+            + "be used also as exclude filter, if tag name is prefixed with !, "
+            + "so only tests without specified tag will be executed..")
+    public void setTags(List<String> tagList) {
+        this.tagList = tagList;
     }
 
     @Option
@@ -130,7 +140,16 @@ public abstract class AbstractTestTool extends RepoUsingTool {
             }
         }
     }
-
+    
+    protected void processTagList(List<String> args) {
+        if (tagList != null) {
+            for (String tag : tagList) {
+                args.add("--tag");
+                args.add(tag);
+            }
+        }
+    }
+    
     protected void processArgumentList(List<String> args) {
         if (argumentList != null) {
             args.addAll(argumentList);

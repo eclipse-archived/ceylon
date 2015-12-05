@@ -63,6 +63,7 @@ public class CeylonTestJsTool extends AbstractTestTool {
 
         processModuleNameOptVersionList(args, moduleAndVersionList);
         processTestList(args);
+        processTagList(args);
         processArgumentList(args);
         processCompileFlags();
         processTapOption(args);
