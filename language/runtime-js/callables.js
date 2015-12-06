@@ -101,23 +101,23 @@ jsc$3.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return$Call
   tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};}
 
 function spread$(a,f,targs,noInvoke) {
-  var argIsArray=noInvoke || Array.isArray(a);
-  var arg=argIsArray?[].slice.call(a,0):a;
+  if (a.length===undefined||a.getT$all)console.log("NO ES ARREGLO!",a);
+  var arg=noInvoke?[].slice.call(a,0):a;
   //if we get only 1 arg and it's a tuple...
-  var spridx=arg.size-1;
-  if (arg.size>0 && is$(arg.$_get(spridx),{t:Tuple})) {
-    var tuple0=arg.$_get(spridx);
+  var spridx=arg.length-1;
+  if (arg.length>0 && is$(arg[spridx],{t:Tuple})) {
+    var tuple0=arg[spridx];
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
     var params = mm && mm.ps || [];
-    if (params.length===arg.size && params[spridx].seq>0 && is$(tuple0,{t:Sequence,a:{Element$Sequence:params[spridx].$t}})){
+    if (params.length===arg.length && params[spridx].seq>0 && is$(tuple0,{t:Sequence,a:{Element$Sequence:params[spridx].$t}})){
       return arg;
     }
     if (params.size===tuple0.size+spridx) {
       //Simple mapping
       var all=[];
       for (var i=0; i<spridx;i++) {
-        all.push(arg.getFromFirst(i));
+        all.push(arg[i]);
       }
       var j=0;
       for (var i=spridx; i<params.length;i++){
@@ -138,7 +138,11 @@ function spread$(a,f,targs,noInvoke) {
     if (typeof(a1t)==='string')a1t=targs && targs[a1t];
     //If the tuple type matches the param type, it's NOT a spread
     //(it's just a regular 1-param func which happens to receive a tuple)
-    if (!a1t || is$(tuple0,a1t)) {
+    if (!a1t) {
+      var _ra=Array(tuple0.size);
+      for (var i=0;i<tuple0.size;i++)_ra[i]=tuple0.$_get(i);
+      return _ra;
+    } else if (is$(tuple0,a1t) && extendsType(a1t,{t:Sequential})) {
       return arg;
     }
     var typecheck;
@@ -166,14 +170,13 @@ function spread$(a,f,targs,noInvoke) {
         for (var i=0;i<tuple0.size;i++)a.push(tuple0.$_get(i));
       }
       arg=a;
-      argIsArray=true;
     }
   }
   if (noInvoke) {
     return arg;
   }
-  if (argIsArray&&targs)arg.push(targs);
-  return argIsArray?f.apply(undefined,arg):f.call(undefined,arg,targs);
+  if (targs)arg.push(targs);
+  return f.apply(undefined,arg);
 }
 ex$.spread$=spread$;
 
