@@ -2116,7 +2116,7 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             is, an expression specified using <literal>=&gt;</literal>. The type of the 
             specified expression must be assignable to the return type of the function.
             In the case of a function declared <literal>void</literal>, the expression
-            must be a legal statement.</para>
+            must be a legal statement, as defined by <xref linkend="expressionstatements"/>.</para>
             
             <programlisting>shared Integer add(Integer x, Integer y) => x + y;</programlisting>
             
