@@ -360,6 +360,48 @@ public abstract class TypeDescriptor
             if (klass==CharArray.class) {
                 return char[].class;
             }
+            if (klass==ceylon.language.String.class) {
+            	return String.class;
+            }
+            if (klass==ceylon.language.Character.class) {
+            	return int.class;
+            }
+            if (klass==ceylon.language.Boolean.class) {
+            	return boolean.class;
+            }
+            if (klass==ceylon.language.Integer.class) {
+            	return long.class;
+            }
+            if (klass==ceylon.language.Byte.class) {
+            	return byte.class;
+            }
+            if (klass==ceylon.language.Float.class) {
+            	return double.class;
+            }
+            if (klass==Long.class) {
+            	return long.class;
+            }
+            if (klass==Integer.class) {
+            	return int.class;
+            }
+            if (klass==Short.class) {
+            	return short.class;
+            }
+            if (klass==Byte.class) {
+            	return byte.class;
+            }
+            if (klass==Double.class) {
+            	return double.class;
+            }
+            if (klass==Float.class) {
+            	return float.class;
+            }
+            if (klass==Character.class) {
+            	return char.class;
+            }
+            if (klass==Boolean.class) {
+            	return boolean.class;
+            }
             return klass;
         }
 
