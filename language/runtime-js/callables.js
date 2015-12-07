@@ -110,8 +110,13 @@ function spread$(a,f,targs,noInvoke) {
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
     var params = mm && mm.ps || [];
-    if (params.length===arg.length && params[spridx].seq>0 && is$(tuple0,{t:Sequence,a:{Element$Sequence:params[spridx].$t}})){
-      return arg;
+    if (params.length===arg.length && params[spridx].seq>0) {
+      var tcheck=params[spridx].$t;
+      if ((tcheck.t===Sequential||tcheck.t===Sequence)&&is$(tuple0,tcheck)) {
+        return arg;
+      } else if (is$(tuple0,{t:Sequence,a:{Element$Sequence:tcheck}})){
+        return arg;
+      }
     }
     if (params.size===tuple0.size+spridx) {
       //Simple mapping
