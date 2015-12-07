@@ -31,7 +31,7 @@ public class TypeCheckerBuilder {
     private String encoding;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
     private List<VirtualFile> srcFiles = null;
-    private final VFS vfs = new VFS();
+    private final VFS vfs;
     private boolean verifyDependencies = true;
     private AssertionVisitor assertionVisitor = new AssertionVisitor() {
         @Override
@@ -44,9 +44,15 @@ public class TypeCheckerBuilder {
     private RepositoryManager repositoryManager;
     private List<String> moduleFilters = new ArrayList<String>();
 
-    public TypeCheckerBuilder() {}
+    public TypeCheckerBuilder(VFS vfs) {
+        this.vfs = vfs != null ? vfs : new VFS();
+    }
 
-	/**
+    public TypeCheckerBuilder() {
+        vfs = new VFS();
+    }
+
+    /**
 	 * Let's you add a directory or a file.
 	 * Directories are better as the type checker can extract the context like module name, package etc
 	 */
