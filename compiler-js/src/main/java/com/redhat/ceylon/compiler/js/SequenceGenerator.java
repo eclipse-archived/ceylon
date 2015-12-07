@@ -59,11 +59,15 @@ public class SequenceGenerator {
             final List<Tree.PositionalArgument> positionalArguments = sarg.getPositionalArguments();
             final boolean spread = isSpread(positionalArguments);
             final boolean canBeEager = allLiterals(positionalArguments);
+            boolean wantsIter = false;
             if (spread || !canBeEager) {
                 lazyEnumeration(positionalArguments, that, that.getTypeModel(), spread, gen);
                 return;
-            } else {
+            } else if (that.getTypeModel().isSequential()) {
                 gen.out("[");
+            } else {
+                gen.out(gen.getClAlias(), "$arr$([");
+                wantsIter = true;
             }
             int count=0;
             for (Tree.PositionalArgument expr : positionalArguments) {
@@ -80,7 +84,7 @@ public class SequenceGenerator {
                 }
                 count++;
             }
-            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, false);
+            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, wantsIter);
         }
     }
 
