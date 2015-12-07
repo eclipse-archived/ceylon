@@ -532,8 +532,12 @@ public class FunctionHelper {
             //Function ref with type parameters
             BmeGenerator.printGenericMethodReference(gen, that, primaryVar, member);
         } else {
-            gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", gen.getClAlias(),
-                    "nn$(", primaryVar, ")?", member, ":null)");
+            if (that.getUnit().isOptionalType(that.getPrimary().getTypeModel())) {
+                gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", gen.getClAlias(),
+                        "nn$(", primaryVar, ")?", member, ":null)");
+            } else {
+                gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", member, ")");
+            }
         }
         gen.out(")");
     }
