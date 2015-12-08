@@ -3122,6 +3122,20 @@ public class ModelUtil {
         }
     }
     
+    public static Class getConstructedClass(Declaration classOrCtor) {
+        if (classOrCtor instanceof FunctionOrValue &&
+                ((FunctionOrValue)classOrCtor).getTypeDeclaration() instanceof Constructor) {
+            classOrCtor = ((FunctionOrValue)classOrCtor).getTypeDeclaration();
+        }
+        if (classOrCtor instanceof Constructor) {
+            return (Class)classOrCtor.getContainer();
+        } else if (classOrCtor instanceof Class) {
+            return (Class)classOrCtor;
+        } else {
+            return null;
+        }
+    }
+
     public static boolean isCeylonDeclaration(Declaration declaration) {
         if (declaration instanceof LazyElement) {
             LazyElement lazy = (LazyElement) declaration;
@@ -3131,5 +3145,15 @@ public class ModelUtil {
             // if it's not one of those it must be from source (Ceylon)
             return true;
         }
+    }
+
+    /** Is the given constructor an enumerated ("singleton") constructor */
+    public static boolean isEnumeratedConstructor(Constructor ctor) {
+        return ctor != null && ctor.getParameterList() == null;
+    }
+    
+    /** Is the given value the result of an enumerated ("singleton") constructor */
+    public static boolean isEnumeratedConstructor(Value value) {
+        return value.getType().getDeclaration() instanceof Constructor;
     }
 }
