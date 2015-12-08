@@ -22,7 +22,8 @@ public class JDKUtils {
     
     public enum JDK {
         JDK7("package-list.jdk7", "package-list.oracle.jdk7", "7"),
-        JDK8("package-list.jdk8", "package-list.oracle.jdk8", "8");
+        JDK8("package-list.jdk8", "package-list.oracle.jdk8", "8"),
+        JDK9("package-list.jdk9", "package-list.oracle.jdk9", "9");
         
         public final String packageList;
         public final String packageListOracle;
@@ -64,8 +65,14 @@ public class JDKUtils {
     
     static {
         String version = System.getProperty("java.version");
-        if(version != null && version.startsWith("1.8")){
-            jdk = JDK.JDK8;
+        if(version != null){
+            if(version.startsWith("1.9")){
+                jdk = JDK.JDK9;
+            }else if(version.startsWith("1.8")){
+                jdk = JDK.JDK8;
+            }else{
+                jdk = JDK.JDK7;
+            }
         }else{
             jdk = JDK.JDK7;
         }
