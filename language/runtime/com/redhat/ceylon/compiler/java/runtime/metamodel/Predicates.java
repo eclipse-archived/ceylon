@@ -89,7 +89,10 @@ public class Predicates {
         
         @Override
         public boolean accept(Declaration candidate) {
-            return candidate.getName().equals(name);
+            String cname = candidate.getName();
+            
+            return (cname == null && name == null)
+                    || (cname != null && cname.equals(name));
         }
         
     }
