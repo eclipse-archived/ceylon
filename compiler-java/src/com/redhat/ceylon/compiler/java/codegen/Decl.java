@@ -869,17 +869,7 @@ public class Decl {
     }
     
     public static Class getConstructedClass(Declaration classOrCtor) {
-        if (classOrCtor instanceof FunctionOrValue &&
-                ((FunctionOrValue)classOrCtor).getTypeDeclaration() instanceof Constructor) {
-            classOrCtor = ((FunctionOrValue)classOrCtor).getTypeDeclaration();
-        }
-        if (classOrCtor instanceof Constructor) {
-            return (Class)classOrCtor.getContainer();
-        } else if (classOrCtor instanceof Class) {
-            return (Class)classOrCtor;
-        } else {
-            return null;
-        }
+        return ModelUtil.getConstructedClass(classOrCtor);
     }
     
     /**
@@ -927,12 +917,12 @@ public class Decl {
     
     /** Is the given constructor an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Constructor ctor) {
-        return ctor != null && ctor.getParameterList() == null;
+        return ModelUtil.isEnumeratedConstructor(ctor);
     }
     
     /** Is the given value the result of an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Value value) {
-        return value.getType().getDeclaration() instanceof Constructor;
+        return ModelUtil.isEnumeratedConstructor(value);
     }
 
     public static Declaration getDeclarationScope(Scope scope) {
@@ -963,14 +953,7 @@ public class Decl {
     }
     
     public static Constructor getConstructor(Declaration decl) {
-        if (decl instanceof Constructor) {
-            return (Constructor)decl;
-        } else if (decl instanceof FunctionOrValue
-                && ((FunctionOrValue)decl).getTypeDeclaration() instanceof Constructor) {
-            return (Constructor)((FunctionOrValue)decl).getTypeDeclaration();
-        } else {
-            return null;
-        }
+    	return ModelUtil.getConstructor(decl);
     }
 
     public static Scope getNonSkippedContainer(Declaration decl){
