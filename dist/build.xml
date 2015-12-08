@@ -596,6 +596,18 @@ Use this when NOT doing a release!">
             <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF"/>
         </jar>
         <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
+    	
+        <property file="../common/common-build.properties" />
+        <path id="compiler.classpath">
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+        	<pathelement location="${jboss-modules.lib}"/>
+        </path>
+    	<java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath">
+    		<arg value="${module.jar}"/>
+    	</java>
 
         <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
             <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
