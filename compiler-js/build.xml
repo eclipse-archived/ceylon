@@ -160,7 +160,7 @@
                 <pathelement location="${ceylon.module-resolver.lib}" />
                 <pathelement location="${ceylon.compiler.lib}" />
                 <pathelement location="${build.classes}" />
-                <fileset dir="lib">
+                <fileset dir="../lib">
                     <include name="**/*.jar" />
                 </fileset>
             </classpath>
