@@ -176,7 +176,10 @@ public final class JarUtils extends AbstractDependencyResolver implements Module
             Enumeration<? extends JarEntry> entries = zf.entries();
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
-                if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+                if (!entry.isDirectory() 
+                		&& entry.getName().endsWith(".class")
+                		// skip those because ClassLoader.findClass barfs on them
+                		&& !entry.getName().endsWith("module-info.class")) {
                     String name = entry.getName();
                     String className = name.substring(0, name.length() - 6).replace('/', '.');
                     names.add(className);
