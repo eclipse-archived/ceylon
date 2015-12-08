@@ -20,7 +20,6 @@ import org.jboss.modules.ModuleLoader;
 
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
 import com.redhat.ceylon.compiler.java.language.CharArray;
@@ -634,7 +633,7 @@ public class Metamodel {
             pt = pt.getExtendedType();
             declaration = pt.getDeclaration();
             TypeDescriptor reifiedArguments;
-            if(!Decl.isEnumeratedConstructor(ctorDeclaration) && !declaration.isAnonymous() 
+            if(!ModelUtil.isEnumeratedConstructor(ctorDeclaration) && !declaration.isAnonymous() 
                     && !isLocalType(declaration))
                 reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)ctorDeclaration, ctorType);
             else

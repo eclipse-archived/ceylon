@@ -2,17 +2,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel.meta;
 
 import java.util.List;
 
-import ceylon.language.Map;
-import ceylon.language.Sequence;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.meta.declaration.CallableConstructorDeclaration;
-import ceylon.language.meta.model.CallableConstructor;
-import ceylon.language.meta.model.ClassModel;
-import ceylon.language.meta.model.MemberClass;
-import ceylon.language.meta.model.MemberClassCallableConstructor;
-
-import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -25,8 +14,15 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Reference;
+
+import ceylon.language.Map;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.meta.declaration.CallableConstructorDeclaration;
+import ceylon.language.meta.model.CallableConstructor;
+import ceylon.language.meta.model.ClassModel;
+import ceylon.language.meta.model.MemberClass;
+import ceylon.language.meta.model.MemberClassCallableConstructor;
 
 
 @Ceylon(major=8)

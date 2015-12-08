@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel.meta;
 
 import java.util.List;
 
-import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -13,6 +12,7 @@ import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.FunctionDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 
@@ -64,7 +64,7 @@ public class MethodImpl<Container, Type, Arguments extends Sequential<? extends 
         com.redhat.ceylon.model.typechecker.model.Functional method = (com.redhat.ceylon.model.typechecker.model.Functional)appliedFunction.getDeclaration();
         List<Parameter> parameters = method.getFirstParameterList().getParameters();
         List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
-        this.parameterTypes = Decl.isConstructor(declaration.declaration)  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
+        this.parameterTypes = ModelUtil.isConstructor(declaration.declaration)  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
 
     @Override

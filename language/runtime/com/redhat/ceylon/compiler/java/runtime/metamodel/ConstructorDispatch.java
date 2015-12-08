@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
 import com.redhat.ceylon.compiler.java.metadata.Jpa;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
@@ -21,6 +20,7 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 
@@ -98,7 +98,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         Member found = null;
         
-        if (freeConstructor != null && Decl.isConstructor(freeConstructor.declaration)) {
+        if (freeConstructor != null && ModelUtil.isConstructor(freeConstructor.declaration)) {
             namedConstructorDispatch(constructorReference, freeConstructor,
                     javaClass); 
         } else {
@@ -350,7 +350,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             constructor = dispatch[defaultedMethods.length-1];
         } else {
             // TODO this doesn't really need to be a separate branch from the above.
-            java.lang.reflect.Constructor<?> ctor = Metamodel.getJavaConstructor(Decl.getConstructor(freeConstructor.declaration));
+            java.lang.reflect.Constructor<?> ctor = Metamodel.getJavaConstructor(ModelUtil.getConstructor(freeConstructor.declaration));
             constructor = reflectionToMethodHandle(constructorReference, 
                     ctor, 
                     javaClass, 
@@ -547,10 +547,10 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             typeParametersCount = javaClass.getTypeParameters().length;
             if (functionOrConstructorModel instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
                 constructorModel = (com.redhat.ceylon.model.typechecker.model.Constructor)functionOrConstructorModel;
-                reifiedTypeParameters = Decl.getConstructedClass(constructorModel).getTypeParameters();
+                reifiedTypeParameters = ModelUtil.getConstructedClass(constructorModel).getTypeParameters();
             } else if (functionOrConstructorModel instanceof Function) {
                 constructorModel = (com.redhat.ceylon.model.typechecker.model.Constructor)((Function)functionOrConstructorModel).getTypeDeclaration();
-                reifiedTypeParameters = Decl.getConstructedClass(constructorModel).getTypeParameters();
+                reifiedTypeParameters = ModelUtil.getConstructedClass(constructorModel).getTypeParameters();
             } else if (functionOrConstructorModel instanceof com.redhat.ceylon.model.typechecker.model.Class) {
                 constructorModel = null;
                 reifiedTypeParameters = ((com.redhat.ceylon.model.typechecker.model.Class)functionOrConstructorModel).getTypeParameters();
