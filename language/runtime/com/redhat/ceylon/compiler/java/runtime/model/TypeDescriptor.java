@@ -86,7 +86,7 @@ public abstract class TypeDescriptor
         }
         return hash;
     }
-	
+    
 
     //
     // Subtypes
@@ -738,14 +738,14 @@ public abstract class TypeDescriptor
             return ((QualifiableTypeDescriptor)member).toProducedType(qualifyingType, moduleManager);
         }
 
-		@Override
+        @Override
         public java.lang.Class<?> getArrayElementClass() {
-	        return member.getArrayElementClass();
+            return member.getArrayElementClass();
         }
 
-		@Override
+        @Override
         public boolean containsNull() {
-	        return false;
+            return false;
         }
     }
     
@@ -780,14 +780,14 @@ public abstract class TypeDescriptor
             sb.append("ceylon.language.Nothing");
         }
         
-		@Override
+        @Override
         public java.lang.Class<?> getArrayElementClass() {
-	        return java.lang.Object.class;
+            return java.lang.Object.class;
         }
 
-		@Override
+        @Override
         public boolean containsNull() {
-	        return false;
+            return false;
         }
     }
     
@@ -906,34 +906,34 @@ public abstract class TypeDescriptor
             return ModelUtil.union(caseTypes, moduleManager.getModelLoader().getUnit());
         }
 
-		@Override
+        @Override
         public java.lang.Class<?> getArrayElementClass() {
-			java.lang.Class<?> result = null;
-			for (TypeDescriptor td: members) {
-	        	if (td instanceof Nothing || 
-	        		td instanceof Class && td.containsNull()) {
-	        		continue;
-	        	}
-	        	java.lang.Class<?> c = td.getArrayElementClass();
-	        	if (result==null) {
-	        		result = c;
-	        	}
-	        	else if (result!=c) {
-	        		return java.lang.Object.class;
-	        	}
-	        }
-	        return result==null ? 
-	        		java.lang.Object.class : result;
+            java.lang.Class<?> result = null;
+            for (TypeDescriptor td: members) {
+                if (td instanceof Nothing || 
+                    td instanceof Class && td.containsNull()) {
+                    continue;
+                }
+                java.lang.Class<?> c = td.getArrayElementClass();
+                if (result==null) {
+                    result = c;
+                }
+                else if (result!=c) {
+                    return java.lang.Object.class;
+                }
+            }
+            return result==null ? 
+                    java.lang.Object.class : result;
         }
 
-		@Override
+        @Override
         public boolean containsNull() {
-			for (TypeDescriptor td: members) {
-				if (td.containsNull()) return true;
-			}
-	        return false;
+            for (TypeDescriptor td: members) {
+                if (td.containsNull()) return true;
+            }
+            return false;
         }
-		
+        
     }
 
     public static class Intersection extends Composite {
@@ -985,36 +985,36 @@ public abstract class TypeDescriptor
             return ModelUtil.canonicalIntersection(satisfiedTypes, unit);
         }
         
-		@Override
+        @Override
         public java.lang.Class<?> getArrayElementClass() {
-			java.lang.Class<?> result = null;
-			for (TypeDescriptor td: members) {
-				java.lang.Class<?> c = td.getArrayElementClass();
-	        	if (result==null) {
-	        		result = c;
-	        	}
-	        	else if (result.isAssignableFrom(c)) {
-	        		result = c;
-	        	}
-	        	else if (c.isAssignableFrom(result)) {
-	        		//do nothing
-	        	}
-	        	else if (result!=c) {
-	        		return java.lang.Object.class;
-	        	}
-	        }
-	        return result==null ? 
-	        		java.lang.Object.class : result;
+            java.lang.Class<?> result = null;
+            for (TypeDescriptor td: members) {
+                java.lang.Class<?> c = td.getArrayElementClass();
+                if (result==null) {
+                    result = c;
+                }
+                else if (result.isAssignableFrom(c)) {
+                    result = c;
+                }
+                else if (c.isAssignableFrom(result)) {
+                    //do nothing
+                }
+                else if (result!=c) {
+                    return java.lang.Object.class;
+                }
+            }
+            return result==null ? 
+                    java.lang.Object.class : result;
         }
 
-		@Override
+        @Override
         public boolean containsNull() {
-			for (TypeDescriptor td: members) {
-				if (!td.containsNull()) return false;
-			}
-	        return true;
+            for (TypeDescriptor td: members) {
+                if (!td.containsNull()) return false;
+            }
+            return true;
         }
-		
+        
     }
 
     //
