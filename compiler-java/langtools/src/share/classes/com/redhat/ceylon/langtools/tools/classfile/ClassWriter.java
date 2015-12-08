@@ -401,6 +401,14 @@ public class ClassWriter {
             return null;
         }
 
+        @Override
+        public Void visitConcealedPackages(ConcealedPackages_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.packages_count);
+            for (int i: attr.packages_index)
+                out.writeShort(i);
+            return null;
+        }
+
         public Void visitConstantValue(ConstantValue_attribute attr, ClassOutputStream out) {
             out.writeShort(attr.constantvalue_index);
             return null;
@@ -479,6 +487,31 @@ public class ClassWriter {
             out.writeShort(entry.index);
         }
 
+        @Override
+        public Void visitModule(Module_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.requires.length);
+            for (Module_attribute.RequiresEntry e: attr.requires) {
+                out.writeShort(e.requires_index);
+                out.writeShort(e.requires_flags);
+            }
+            out.writeShort(attr.exports.length);
+            for (Module_attribute.ExportsEntry e: attr.exports) {
+                out.writeShort(e.exports_index);
+                out.writeShort(e.exports_to_index.length);
+                for (int index: e.exports_to_index)
+                    out.writeShort(index);
+            }
+            out.writeShort(attr.uses_index.length);
+            for (int index: attr.uses_index)
+                out.writeShort(index);
+            out.writeShort(attr.provides.length);
+            for (Module_attribute.ProvidesEntry e: attr.provides) {
+                out.writeShort(e.provides_index);
+                out.writeShort(e.with_index);
+            }
+            return null;
+        }
+
         public Void visitRuntimeVisibleAnnotations(RuntimeVisibleAnnotations_attribute attr, ClassOutputStream out) {
             annotationWriter.write(attr.annotations, out);
             return null;
@@ -549,6 +582,12 @@ public class ClassWriter {
 
         protected void writeAccessFlags(AccessFlags flags, ClassOutputStream p) {
             sharedOut.writeShort(flags.flags);
+        }
+
+        @Override
+        public Void visitVersion(Version_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.version_index);
+            return null;
         }
 
         protected StackMapTableWriter stackMapWriter;

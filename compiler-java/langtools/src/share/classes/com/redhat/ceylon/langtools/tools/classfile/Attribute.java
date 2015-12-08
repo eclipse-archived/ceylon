@@ -42,6 +42,8 @@ public abstract class Attribute {
     public static final String BootstrapMethods         = "BootstrapMethods";
     public static final String CharacterRangeTable      = "CharacterRangeTable";
     public static final String Code                     = "Code";
+    // Ceylon: backport from JDK9/Jigsaw
+    public static final String ConcealedPackages        = "ConcealedPackages";
     public static final String ConstantValue            = "ConstantValue";
     public static final String CompilationID            = "CompilationID";
     public static final String Deprecated               = "Deprecated";
@@ -51,6 +53,8 @@ public abstract class Attribute {
     public static final String LineNumberTable          = "LineNumberTable";
     public static final String LocalVariableTable       = "LocalVariableTable";
     public static final String LocalVariableTypeTable   = "LocalVariableTypeTable";
+    // Ceylon: backport from JDK9/Jigsaw
+    public static final String Module                   = "Module";
     public static final String RuntimeVisibleAnnotations = "RuntimeVisibleAnnotations";
     public static final String RuntimeInvisibleAnnotations = "RuntimeInvisibleAnnotations";
     public static final String RuntimeVisibleParameterAnnotations = "RuntimeVisibleParameterAnnotations";
@@ -62,6 +66,8 @@ public abstract class Attribute {
     public static final String StackMap                 = "StackMap";
     public static final String StackMapTable            = "StackMapTable";
     public static final String Synthetic                = "Synthetic";
+    // Ceylon: backport from JDK9/Jigsaw
+    public static final String Version                  = "Version";
 
     public static class Factory {
         public Factory() {
@@ -111,6 +117,7 @@ public abstract class Attribute {
             standardAttributes.put(LineNumberTable,   LineNumberTable_attribute.class);
             standardAttributes.put(LocalVariableTable, LocalVariableTable_attribute.class);
             standardAttributes.put(LocalVariableTypeTable, LocalVariableTypeTable_attribute.class);
+            standardAttributes.put(Module,            Module_attribute.class);
 
             if (!compat) { // old javap does not recognize recent attributes
                 standardAttributes.put(CompilationID, CompilationID_attribute.class);
@@ -163,6 +170,7 @@ public abstract class Attribute {
         R visitCharacterRangeTable(CharacterRangeTable_attribute attr, P p);
         R visitCode(Code_attribute attr, P p);
         R visitCompilationID(CompilationID_attribute attr, P p);
+        R visitConcealedPackages(ConcealedPackages_attribute attr, P p);
         R visitConstantValue(ConstantValue_attribute attr, P p);
         R visitDeprecated(Deprecated_attribute attr, P p);
         R visitEnclosingMethod(EnclosingMethod_attribute attr, P p);
@@ -171,6 +179,7 @@ public abstract class Attribute {
         R visitLineNumberTable(LineNumberTable_attribute attr, P p);
         R visitLocalVariableTable(LocalVariableTable_attribute attr, P p);
         R visitLocalVariableTypeTable(LocalVariableTypeTable_attribute attr, P p);
+        R visitModule(Module_attribute attr, P p);
         R visitRuntimeVisibleAnnotations(RuntimeVisibleAnnotations_attribute attr, P p);
         R visitRuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute attr, P p);
         R visitRuntimeVisibleParameterAnnotations(RuntimeVisibleParameterAnnotations_attribute attr, P p);
@@ -182,5 +191,6 @@ public abstract class Attribute {
         R visitStackMap(StackMap_attribute attr, P p);
         R visitStackMapTable(StackMapTable_attribute attr, P p);
         R visitSynthetic(Synthetic_attribute attr, P p);
+        R visitVersion(Version_attribute attr, P p);
     }
 }

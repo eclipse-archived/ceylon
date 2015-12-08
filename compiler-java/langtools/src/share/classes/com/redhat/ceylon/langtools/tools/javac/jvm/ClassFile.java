@@ -105,7 +105,10 @@ public class ClassFile {
         V45_3(45, 3), // base level for all attributes
         V49(49, 0),   // JDK 1.5: enum, generics, annotations
         V50(50, 0),   // JDK 1.6: stackmaps
-        V51(51, 0);   // JDK 1.7
+        V51(51, 0),   // JDK 1.7
+    	// Ceylon: backport:
+        V52(52, 0),   // JDK 1.8
+        V53(53, 0);   // JDK 1.9
         Version(int major, int minor) {
             this.major = major;
             this.minor = minor;
