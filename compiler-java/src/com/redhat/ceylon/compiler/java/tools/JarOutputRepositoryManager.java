@@ -45,6 +45,8 @@ import com.redhat.ceylon.cmr.util.JarUtils.JarEntryFilter;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.CeylonManifest;
+import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultModuleManifest;
 import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardLocation;
@@ -52,8 +54,6 @@ import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultModuleManifest;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.CeylonManifest;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class JarOutputRepositoryManager {
@@ -152,6 +152,8 @@ public class JarOutputRepositoryManager {
         private final String resourceRootPath;
         /** Whether to add a pom.xml and pom.properties in module subdir of {@code META-INF}*/
         private boolean writeMavenManifest;
+        /** Whether to add a module-info.class file */
+        private boolean writeJava9Module = true;
         private TaskListener taskListener;
         private JarEntryManifestFileObject manifest;
         private Log log;
@@ -264,7 +266,12 @@ public class JarOutputRepositoryManager {
                 if (writeMavenManifest) {
                     writeMavenManifest(foldersAdded, manifestFirst, module);
                 }
-                
+
+                // Add module-info.class
+                if (writeJava9Module) {
+                    writeJava9Module(foldersAdded, manifestFirst, module);
+                }
+
                 // Add META-INF/mapping.txt
                 Properties previousMapping = getPreviousMapping();
                 JarEntryFilter jarFilter = getJarFilter(previousMapping, copiedSourceFiles);
@@ -352,6 +359,15 @@ public class JarOutputRepositoryManager {
          */
         private void writeMavenManifest(Set<String> foldersAlreadyAdded, JarOutputStream manifestFirst, Module module) {
             MavenPomUtil.writeMavenManifest2(manifestFirst, module, foldersAlreadyAdded);
+        }
+
+        private void writeJava9Module(Set<String> foldersAlreadyAdded, JarOutputStream manifestFirst, Module module) {
+        	System.err.println("Adding Java9 manifest to "+manifestFirst);
+        	try{
+        		Java9Util.writeModuleDescriptor(manifestFirst, new Java9Util.Java9ModuleDescriptor(module));
+        	}catch(Throwable t){
+        		t.printStackTrace();
+        	}
         }
 
         /** 
