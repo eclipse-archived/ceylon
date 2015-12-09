@@ -46,7 +46,8 @@ public abstract class Declaration
 	private boolean otherInstanceAccess;
     private DeclarationCompleter actualCompleter;
     private List<String> aliases;
-
+    private int hashCode = 0;
+    
     public Scope getVisibleScope() {
         return visibleScope;
     }
@@ -60,6 +61,7 @@ public abstract class Declaration
     }
 
     public void setName(String name) {
+        this.hashCode = 0;
         this.name = name;
     }
 
@@ -548,22 +550,31 @@ public abstract class Declaration
             return false;
         }
     }
-
+    
     @Override
     public int hashCode() {
-        int ret = 17;
-        Scope container = getContainer();
-        ret = (37 * ret) + 
-                (container == null ? 0 : container.hashCode());
-        String qualifier = getQualifier();
-        ret = (37 * ret) + 
-                (qualifier == null ? 0 : qualifier.hashCode());
-        String name = getName();
-        ret = (37 * ret) + (name == null ? 0 : name.hashCode());
-        // make sure we don't consider getter/setter or value/anonymous-type equal
-        ret = (37 * ret) + (isSetter() ? 0 : 1);
-        ret = (37 * ret) + (isAnonymous() ? 0 : 1);
-        return ret;
+        if (hashCode == 0) {
+            int ret = 17;
+            Scope container = getContainer();
+            ret = (37 * ret) + 
+                    (container == null ? 0 : container.hashCode());
+            String qualifier = getQualifier();
+            ret = (37 * ret) + 
+                    (qualifier == null ? 0 : qualifier.hashCode());
+            String name = getName();
+            ret = (37 * ret) + (name == null ? 0 : name.hashCode());
+            // make sure we don't consider getter/setter or value/anonymous-type equal
+            ret = (37 * ret) + (isSetter() ? 0 : 1);
+            ret = (37 * ret) + (isAnonymous() ? 0 : 1);
+            hashCode = ret;
+        }
+        return hashCode;
+    }
+    
+    @Override
+    public void setContainer(Scope scope) {
+        this.hashCode = 0;
+        super.setContainer(scope);
     }
     
     /**
@@ -666,6 +677,7 @@ public abstract class Declaration
     }
 
     public void setQualifier(String qualifier) {
+        this.hashCode = 0;
         this.qualifier = qualifier;
     }
     
