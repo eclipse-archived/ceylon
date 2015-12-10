@@ -67,7 +67,7 @@ public class Java9Util {
 			name = sanitiseName(module.getNameAsString());
 			version = module.getVersion();
 			for(Package pkg : module.getPackages()){
-				if(pkg.isShared())
+				if(isShared(pkg))
 					exportedPackages.add(pkg.getNameAsString());
 				else
 					concealedPackages.add(pkg.getNameAsString());
@@ -86,6 +86,19 @@ public class Java9Util {
 				imports.add(new Java9ModuleImport(imp.getName(), imp.isExport()));
 			}
 			addImplicitImports();
+		}
+
+		private boolean isShared(Package pkg) {
+			// Special case for the language module where we don't want Ceylon users to access this package, but
+			// we need our produced Java code to be allowed to
+			if(pkg.getModule().getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)){
+				String name = pkg.getNameAsString();
+				if(name.equals("com.redhat.ceylon.compiler.java.runtime.metamodel")
+						|| name.equals("com.redhat.ceylon.compiler.java.metadata")
+						|| name.equals("com.redhat.ceylon.compiler.java"))
+					return true;
+			}
+			return pkg.isShared();
 		}
 
 		private void addImplicitImports() {
