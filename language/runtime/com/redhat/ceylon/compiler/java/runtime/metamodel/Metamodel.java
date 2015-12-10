@@ -97,6 +97,7 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
 import ceylon.language.Annotated;
@@ -106,6 +107,7 @@ import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.Array;
 import ceylon.language.Callable;
+import ceylon.language.Finished;
 import ceylon.language.Callable;
 import ceylon.language.Iterator;
 import ceylon.language.Iterator;
@@ -2028,5 +2030,24 @@ public class Metamodel {
                                 TypeDescriptor.klass(ValueModel.class, cls.$reifiedType, TypeDescriptor.NothingType)),
                         (Object[]) array);
         return (ceylon.language.Sequential) iterable.sequence();
+    }
+    
+    public static Type getCallableParametersTupleType(ceylon.language.Callable<? extends Object> callable) {
+        Type ct = Metamodel.getProducedType(Metamodel.getTypeDescriptor(callable));
+        Unit unit = moduleManager.getModelLoader().getUnit();
+        
+        return ct.getSupertype(unit.getCallableDeclaration()).getTypeArgumentList().get(1);
+    }
+    
+    public static Type getArgumentsTupleType(ceylon.language.Sequential<? extends Object> arguments) {
+        Unit unit = moduleManager.getModelLoader().getUnit();
+        ArrayList<Type> elemTypes = new ArrayList<Type>((int)arguments.getSize());
+        Iterator<?> iterator = arguments.iterator();
+        Object arg;
+        while (!((arg = iterator.next()) instanceof Finished)) {
+            elemTypes.add(Metamodel.getProducedType(Metamodel.getTypeDescriptor(arg)));
+        }
+        
+        return unit.getTupleType(elemTypes, null, -1);
     }
 }

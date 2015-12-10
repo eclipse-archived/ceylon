@@ -67,6 +67,8 @@ shared void run() {
     testOperatingSystem();
     print("Callables & curry");
     callables();
+    staticRefs();
+    testInvokeCallable();
     testCurries();
     print("Resources");
     testResources();

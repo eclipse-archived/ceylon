@@ -483,6 +483,8 @@
                 <include name="ceylon/language/meta/modules_.java"/>
                 <exclude name="ceylon/language/meta/type.ceylon"/>
                 <include name="ceylon/language/meta/type_.java"/>
+                <exclude name="ceylon/language/meta/invokeCallable.ceylon"/>
+                <include name="ceylon/language/meta/invokeCallable_.java"/>
                 <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
                 <include name="ceylon/language/meta/typeLiteral_.java"/>
                 

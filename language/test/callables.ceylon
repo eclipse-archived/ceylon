@@ -1,3 +1,10 @@
+import ceylon.language.meta {
+    invokeCallable
+}
+import ceylon.language.meta.model {
+    IncompatibleTypeException
+}
+
 String testCallable(String f(Integer i)) {
   return f(1);
 }
@@ -94,4 +101,56 @@ shared void staticRefs() {
             = Iterable<String>.fold<String>;
     check(fold2({"x","y","z"})("")((x,y)=>x+y)=="xyz", 
         "static ref to fold()");
+}
+
+
+@test
+shared void testInvokeCallable() {
+    variable value ii = 0;
+    
+    void f0() { ii++; }
+    check(!invokeCallable(f0, []) exists, "invokeCallable 0 result");
+    check(ii == 1, "invokeCallable 0 effect");
+    
+    try {
+        invokeCallable(f0, [1]);
+        check(false, "invokeCallable 0 typecheck");
+    } catch (IncompatibleTypeException e) {
+    }
+    
+    
+    void f1(Integer i) { ii+=i; }
+    
+    check(!invokeCallable(f1, [2]) exists, "invokeCallable 1 result");
+    check(ii == 3, "invokeCallable 1 effect");
+    
+    try {
+        invokeCallable(f1, []);
+        check(false, "invokeCallable 1 typecheck 1");
+    } catch (IncompatibleTypeException e) {
+    }
+    try {
+        invokeCallable(f1, ["hello"]);
+        check(false, "invokeCallable 1 typecheck 2");
+    } catch (IncompatibleTypeException e) {
+    }
+    
+    
+    void fv(Integer* i) { 
+        for (j in i) {
+            ii+=j;
+        } 
+    }
+    
+    check(!invokeCallable(fv, []) exists, "invokeCallable 3 result");
+    check(ii == 3, "invokeCallable 3 effect 1");
+    
+    check(!invokeCallable(fv, [1, 2]) exists, "invokeCallable 3 result");
+    check(ii == 6, "invokeCallable 3 effect2");
+    
+    try {
+        invokeCallable(f1, ["hello"]);
+        check(false, "invokeCallable 3 typecheck");
+    } catch (IncompatibleTypeException e) {
+    }
 }
