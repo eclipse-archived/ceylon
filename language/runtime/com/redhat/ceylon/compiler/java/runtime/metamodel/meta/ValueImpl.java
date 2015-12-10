@@ -32,6 +32,7 @@ import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.LazyValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
@@ -171,7 +172,7 @@ public class ValueImpl<Get, Set>
                     throw Metamodel.newModelError("Failed to find field "+fieldName+" for: "+decl, e);
                 }
             }
-        } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+        } else if (ModelUtil.isEnumeratedConstructor(decl)) {
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
             String getterName = NamingBase.getGetterName(decl);
             try {
@@ -204,7 +205,7 @@ public class ValueImpl<Get, Set>
         if(!decl.isVariable()
                 && !decl.isLate())
             return;
-        if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+        if (ModelUtil.isEnumeratedConstructor(decl)) {
             return;
         }
         if(decl instanceof JavaBeanValue){

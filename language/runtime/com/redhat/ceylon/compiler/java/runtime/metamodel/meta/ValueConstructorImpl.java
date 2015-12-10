@@ -28,6 +28,7 @@ import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.LazyValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
@@ -119,9 +120,9 @@ public class ValueConstructorImpl<Get>
                 // toplevels don't have inheritance
                 Method m = javaClass.getDeclaredMethod(getterName);
                 return m;
-            } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+            } else if (ModelUtil.isEnumeratedConstructor(decl)) {
                 java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
-                if (com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
+                if (ModelUtil.getConstructedClass(decl).isMember()) {
                     // the getter for member classes is on the enclosing class.
                     javaClass = javaClass.getEnclosingClass();
                 }
@@ -159,9 +160,9 @@ public class ValueConstructorImpl<Get>
                 }
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
-            } else if (com.redhat.ceylon.compiler.java.codegen.Decl.isEnumeratedConstructor(decl)) {
+            } else if (ModelUtil.isEnumeratedConstructor(decl)) {
                 java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
-                if (com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
+                if (ModelUtil.getConstructedClass(decl).isMember()) {
                     // the getter for member classes is on the enclosing class.
                     javaClass = javaClass.getEnclosingClass();
                 }
@@ -175,7 +176,7 @@ public class ValueConstructorImpl<Get>
                         && (!Modifier.isStatic(m.getModifiers()))) {
                     getter = getter.bindTo(instance);
                 }
-                if(!com.redhat.ceylon.compiler.java.codegen.Decl.getConstructedClass(decl).isMember()) {
+                if(!ModelUtil.getConstructedClass(decl).isMember()) {
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
                 }
