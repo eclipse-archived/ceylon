@@ -76,6 +76,7 @@ public class Java9Util {
 				imports.add(new Java9ModuleImport(imp.getModule().getNameAsString(), imp.isExport()));
 			}
 			addImplicitImports();
+			main = getMain(module.getNameAsString());
 		}
 		
 		public Java9ModuleDescriptor(String name, String version, ModuleInfo info, Set<String> packages) {
@@ -86,6 +87,14 @@ public class Java9Util {
 				imports.add(new Java9ModuleImport(imp.getName(), imp.isExport()));
 			}
 			addImplicitImports();
+			main = getMain(name);
+		}
+
+		private String getMain(String module) {
+			if(module.equals(Module.LANGUAGE_MODULE_NAME))
+				return "com.redhat.ceylon.compiler.java.runtime.Main2";
+			else 
+				return null;
 		}
 
 		private boolean isShared(Package pkg) {
