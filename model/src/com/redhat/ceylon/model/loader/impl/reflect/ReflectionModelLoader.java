@@ -1,10 +1,14 @@
 package com.redhat.ceylon.model.loader.impl.reflect;
 
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.common.Java9ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.Timer;
 import com.redhat.ceylon.model.loader.TypeParser;
@@ -24,6 +28,28 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
  */
 public abstract class ReflectionModelLoader extends AbstractModelLoader {
 	protected Logger log;
+	
+	static {
+	    try{
+	        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+	            Object mod = Java9ModuleUtil.getModule(ReflectionModelLoader.class);
+	            
+	            // make sure we're running as a module, not from the classpath
+	            if(Java9ModuleUtil.isNamedModule(mod)){
+	                // add a read to the language module since that's where the metadata annotations are
+	                Object otherModule = Java9ModuleUtil.findModule(mod, Module.LANGUAGE_MODULE_NAME);
+	                if(otherModule != null){
+	                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.reflect.Module");
+	                    // also add a read to it
+	                    Method addReads = moduleClass.getMethod("addReads", moduleClass);
+	                    addReads.invoke(mod, otherModule);
+	                }
+	            }
+	        }
+	    }catch(Throwable t){
+	        throw new RuntimeException("Failed to add read from model to language module in Java 9", t);
+	    }
+	}
 	
     public ReflectionModelLoader(ModuleManager moduleManager, Modules modules, Logger log){
         this.moduleManager = moduleManager;
