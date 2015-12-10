@@ -18,9 +18,9 @@ public class ReflectionAnnotation implements AnnotationMirror {
     @Override
     public Object getValue(String fieldName) {
         try {
-            Method method = annotation.getClass().getMethod(fieldName);
+            Method method = annotation.annotationType().getMethod(fieldName);
             return convertValue(method.invoke(annotation));
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return null;
         }
