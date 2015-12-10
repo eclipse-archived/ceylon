@@ -142,7 +142,7 @@ public class Java9Util {
     	
     	int cp = 1;
     	// 1: this_class name
-    	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.name+"/module-info");
+    	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.name.replace('.', '/')+"/module-info");
     	// 2: this_class
     	pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 1);
     	// 3: module attr
@@ -176,14 +176,14 @@ public class Java9Util {
     	Module_attribute.ExportsEntry[] exports = new Module_attribute.ExportsEntry[module.exportedPackages.size()];
     	i = 0;
     	for(String pkg : module.exportedPackages){
-    		pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg);
+    		pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
     		exports[i++] = new Module_attribute.ExportsEntry(cp, new int[0]);
     		cp++;
     	}
     	int[] concealedPackages = new int[module.concealedPackages.size()];
     	i = 0;
     	for(String pkg : module.concealedPackages){
-    		pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg);
+    		pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
     		concealedPackages[i++] = cp;
     		cp++;
     	}
