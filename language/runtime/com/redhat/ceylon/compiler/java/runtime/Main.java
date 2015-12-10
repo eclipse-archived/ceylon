@@ -40,6 +40,7 @@ import com.redhat.ceylon.cmr.impl.Configuration;
 import com.redhat.ceylon.cmr.impl.OSGiDependencyResolver;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
+import com.redhat.ceylon.common.Java9ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleSpec.Option;
@@ -50,6 +51,7 @@ import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultM
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.NamingBase;
@@ -89,6 +91,7 @@ public class Main {
     
     private ClassPath classPath;
     private Set<ClassPath.Module> visited;
+	private ClassLoader moduleClassLoader;
     
     public static Main instance() {
         return new Main();
@@ -141,6 +144,7 @@ public class Main {
         private static final String MODULE_PROPERTIES = "module.properties";
         private static final String MODULE_XML = "module.xml";
         private static final String POM_XML = "pom.xml";
+        private static final String JAVA9_MODULE = "module-info.class";
 
         @SuppressWarnings("serial")
         public class ModuleNotFoundException extends Exception {
@@ -152,7 +156,7 @@ public class Main {
         }
 
         private enum Type {
-            CEYLON, JBOSS_MODULES, MAVEN, OSGi, UNKNOWN, JDK;
+            CEYLON, JBOSS_MODULES, MAVEN, OSGi, UNKNOWN, JDK, JAVA9;
         }
         
         static class Dependency extends AbstractArtifactResult {
@@ -330,11 +334,35 @@ public class Main {
                     potentialJars.add(entry);
                 }
             }
+            if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+                String modulePath = System.getProperty("jdk.module.path");
+                if(modulePath != null){
+                	String[] modulePathEntries = modulePath.split(File.pathSeparator);
+                	for(String moduleFolder : modulePathEntries){
+                		File folder = new File(moduleFolder);
+                		if(folder.isDirectory()){
+                			scanFolderForJars(folder);
+                		}
+                	}
+                }
+
+            }
             this.overrides = overrides;
             initJars();
         }
         
-        // for tests
+        private void scanFolderForJars(File folder) {
+        	for(File file : folder.listFiles()){
+        		if(file.isFile() 
+        				&& (file.getName().endsWith(".car")
+        						|| file.getName().endsWith(".jar")
+        						|| file.getName().endsWith(".zip"))){
+        			potentialJars.add(file);
+        		}
+        	}
+		}
+
+		// for tests
         ClassPath(List<File> potentialJars){
             this.potentialJars = potentialJars;
             initJars();
@@ -492,7 +520,13 @@ public class Main {
                         return loadJBossModulePropertiesJar(file, zipFile, moduleProperties.get(0), mod.getName(), mod.getVersion());
                     }
                 }
-                
+
+                // Java 9 module
+                List<ZipEntry> java9Module = findEntries(zipFile, "", JAVA9_MODULE);
+                if(java9Module.size() == 1) {
+                	return loadJava9ModuleJar(file, zipFile, java9Module.get(0), null, null);
+                }
+
                 // try Maven
                 List<ZipEntry> mavenDescriptors = findEntries(zipFile, METAINF_MAVEN, POM_XML);
                 // TODO: we should try to retrieve the module information (name/version) from the pom.xml entry
@@ -566,6 +600,12 @@ public class Main {
                     }
                 }
                 
+                // Java 9 module
+                List<ZipEntry> java9Module = findEntries(zipFile, "", JAVA9_MODULE);
+                if(java9Module.size() == 1) {
+                	return loadJava9ModuleJar(file, zipFile, java9Module.get(0), name, version);
+                }
+
                 // last OSGi
                 ZipEntry osgiProperties = zipFile.getEntry(JarFile.MANIFEST_NAME);
                 if(osgiProperties != null){
@@ -763,7 +803,7 @@ public class Main {
     public void run(String module, String version, String runClass, String... arguments){
         setup(module, version);
         try {
-            Class<?> klass = ClassLoader.getSystemClassLoader().loadClass(runClass);
+            Class<?> klass = moduleClassLoader.loadClass(runClass);
             invokeMain(klass, arguments);
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException 
                  | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -844,6 +884,8 @@ public class Main {
             }
         }
         new OverridesRuntimeResolver(parsedOverrides).installInThreadLocal();
+        if(moduleClassLoader == null)
+        	setupModuleClassLoader(module);
         if (classPath == null) {
             classPath = new ClassPath(parsedOverrides);
             visited = new HashSet<ClassPath.Module>();
@@ -859,7 +901,37 @@ public class Main {
         registerInMetamodel(module, version, false);
     }
 
-    /**
+    private void setupModuleClassLoader(String module) {
+    	if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+    		try{
+    		Object mod = Java9ModuleUtil.getModule(getClass());
+    		// make sure we're running as a module, not from the classpath
+    		if(Java9ModuleUtil.isNamedModule(mod)){
+    			// also add a read to it
+    			Object otherModule = Java9ModuleUtil.findModule(mod, module);
+    			if(otherModule == null){
+    				// try to load it dynamically
+    				otherModule = Java9ModuleUtil.loadModuleDynamically(module);
+    			}
+    			if(otherModule != null){
+                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.reflect.Module");
+                    // also add a read to it
+                    Method addReads = moduleClass.getMethod("addReads", moduleClass);
+                    addReads.invoke(mod, otherModule);
+    				moduleClassLoader = Java9ModuleUtil.getClassLoader(otherModule);
+    			}
+    		}
+    		}catch(InvocationTargetException | IllegalAccessException | IllegalArgumentException 
+    				| ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException x){
+    			throw new RuntimeException(x);
+    		}
+    		
+    	}
+    	if(moduleClassLoader == null)
+    		moduleClassLoader = ClassLoader.getSystemClassLoader();
+	}
+
+	/**
      * Resets the metamodel. This will impact any Ceylon code running on the same ClassLoader, across
      * threads, and will crash them if they are not done running.
      */
@@ -889,7 +961,7 @@ public class Main {
         // skip JDK modules which are already in the metamodel
         if(module.type == ClassPath.Type.JDK)
             return;
-        Metamodel.loadModule(name, version, module, ClassLoader.getSystemClassLoader());
+        Metamodel.loadModule(name, version, module, moduleClassLoader);
         // also register its dependencies
         for(ClassPath.Dependency dep : module.dependencies)
             registerInMetamodel(dep.name(), dep.version(), dep.optional);
@@ -907,6 +979,7 @@ public class Main {
      * </p>
      */
     public static void main(String[] args) {
+		// WARNING: keep in sync with Main2
         int idx = 0;
         boolean allowMissingModules = false;
         String overrides = null;
