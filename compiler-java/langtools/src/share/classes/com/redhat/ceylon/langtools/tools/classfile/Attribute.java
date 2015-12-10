@@ -54,6 +54,8 @@ public abstract class Attribute {
     public static final String LocalVariableTable       = "LocalVariableTable";
     public static final String LocalVariableTypeTable   = "LocalVariableTypeTable";
     // Ceylon: backport from JDK9/Jigsaw
+    public static final String MainClass                = "MainClass";
+    // Ceylon: backport from JDK9/Jigsaw
     public static final String Module                   = "Module";
     public static final String RuntimeVisibleAnnotations = "RuntimeVisibleAnnotations";
     public static final String RuntimeInvisibleAnnotations = "RuntimeInvisibleAnnotations";
@@ -117,6 +119,7 @@ public abstract class Attribute {
             standardAttributes.put(LineNumberTable,   LineNumberTable_attribute.class);
             standardAttributes.put(LocalVariableTable, LocalVariableTable_attribute.class);
             standardAttributes.put(LocalVariableTypeTable, LocalVariableTypeTable_attribute.class);
+            standardAttributes.put(MainClass,         MainClass_attribute.class);
             standardAttributes.put(Module,            Module_attribute.class);
 
             if (!compat) { // old javap does not recognize recent attributes
@@ -179,6 +182,7 @@ public abstract class Attribute {
         R visitLineNumberTable(LineNumberTable_attribute attr, P p);
         R visitLocalVariableTable(LocalVariableTable_attribute attr, P p);
         R visitLocalVariableTypeTable(LocalVariableTypeTable_attribute attr, P p);
+        R visitMainClass(MainClass_attribute attr, P p);
         R visitModule(Module_attribute attr, P p);
         R visitRuntimeVisibleAnnotations(RuntimeVisibleAnnotations_attribute attr, P p);
         R visitRuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute attr, P p);

@@ -488,6 +488,12 @@ public class ClassWriter {
         }
 
         @Override
+        public Void visitMainClass(MainClass_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.main_class_index);
+            return null;
+        }
+
+        @Override
         public Void visitModule(Module_attribute attr, ClassOutputStream out) {
             out.writeShort(attr.requires.length);
             for (Module_attribute.RequiresEntry e: attr.requires) {

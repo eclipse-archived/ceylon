@@ -45,6 +45,7 @@ import com.redhat.ceylon.langtools.tools.classfile.ClassWriter;
 import com.redhat.ceylon.langtools.tools.classfile.ConcealedPackages_attribute;
 import com.redhat.ceylon.langtools.tools.classfile.ConstantPool;
 import com.redhat.ceylon.langtools.tools.classfile.ConstantPool.CPInfo;
+import com.redhat.ceylon.langtools.tools.classfile.MainClass_attribute;
 import com.redhat.ceylon.langtools.tools.classfile.Module_attribute;
 import com.redhat.ceylon.langtools.tools.classfile.Version_attribute;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -58,7 +59,7 @@ public class Java9Util {
 	}
 
 	static class Java9ModuleDescriptor {
-		final String name, version;
+		final String name, version, main;
 		final Set<String> exportedPackages = new HashSet<String>(), concealedPackages = new HashSet<String>();
 		final List<Java9ModuleImport> imports = new LinkedList<Java9ModuleImport>();
 		
@@ -109,7 +110,10 @@ public class Java9Util {
 
 	public static void writeModuleDescriptor(ZipOutputStream jarOutputStream, Java9ModuleDescriptor module) {
     	ClassWriter classWriter = new ClassWriter();
-    	CPInfo[] pool = new ConstantPool.CPInfo[1+6+module.imports.size()+module.getPackagesSize()];
+    	CPInfo[] pool = new ConstantPool.CPInfo[1+6
+    	                                        + module.imports.size()
+    	                                        + module.getPackagesSize()
+    	                                        + (module.main != null ? 3 : 0)];
     	ConstantPool constantPool = new ConstantPool(pool);
     	
     	int cp = 1;
@@ -125,6 +129,14 @@ public class Java9Util {
     	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.Version);
     	// 6: version
     	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.version);
+    	if(module.main != null){
+    		// 7: main attr
+    		pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.MainClass);
+    		// 8: main class name
+    		pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.main.replace('.', '/'));
+        	// 9: main class
+        	pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 8);
+    	}
     	int i=0;
     	// now imports
     	Module_attribute.RequiresEntry[] requires = new Module_attribute.RequiresEntry[module.imports.size()];
@@ -151,15 +163,18 @@ public class Java9Util {
     		concealedPackages[i++] = cp;
     		cp++;
     	}
-    	Attributes attributes = new Attributes(constantPool, new Attribute[]{
-    			new Module_attribute(3, 
+    	Attribute[] attributesArray = new Attribute[3 + (module.main != null ? 1 : 0)];
+    	attributesArray[0] = new Module_attribute(3, 
     					requires,
     					exports, 
     					new int[0], 
-    					new Module_attribute.ProvidesEntry[0]),
-    			new ConcealedPackages_attribute(4, concealedPackages),
-    			new Version_attribute(5, 6)
-    	});
+    					new Module_attribute.ProvidesEntry[0]);
+    	attributesArray[1] = new ConcealedPackages_attribute(4, concealedPackages);
+    	attributesArray[2] = new Version_attribute(5, 6);
+    	if(module.main != null)
+    		attributesArray[3] = new MainClass_attribute(7, 9);
+    			
+		Attributes attributes = new Attributes(constantPool, attributesArray );
 		ClassFile classFile = new ClassFile(com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.JAVA_MAGIC,
     			com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.major,
     			com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.minor,
