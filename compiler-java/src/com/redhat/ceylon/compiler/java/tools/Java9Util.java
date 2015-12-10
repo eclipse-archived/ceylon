@@ -111,9 +111,11 @@ public class Java9Util {
 		}
 
 		private void addImplicitImports() {
-			if(imports.isEmpty()){
-				imports.add(new Java9ModuleImport("java.base", true));
+			for(Java9ModuleImport imp : imports){
+				if(imp.name.equals("java.base"))
+					return;
 			}
+			imports.add(new Java9ModuleImport("java.base", true));
 		}
 
 		int getPackagesSize(){
