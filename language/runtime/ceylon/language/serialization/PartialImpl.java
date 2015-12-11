@@ -222,6 +222,9 @@ class PartialImpl extends Partial {
             TypeDescriptor.Class arrayType = (TypeDescriptor.Class)Metamodel.getTypeDescriptor(instance);
             Type arrayElementType = Metamodel.getModuleManager().getCachedType(arrayType.getTypeArguments()[0]);
             Object element = getReferredInstance(context, id);
+            if (element instanceof Factory) {
+                throw new DeserializationException("cyclic factory invocation");
+            }
             Type elementType = Metamodel.getModuleManager().getCachedType(Metamodel.getTypeDescriptor(element));
             if (elementType.isSubtypeOf(arrayElementType)) {
                 instance.$set$(index, element);

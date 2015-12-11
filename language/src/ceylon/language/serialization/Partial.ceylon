@@ -5,11 +5,7 @@ import ceylon.language.meta.model {
 "A partially reconstructed instance: 
  Holds state for reconstructing an instance which is built up 
  progressively by calls to the [[DeserializationContext]]."
-abstract class Partial(id) {
-    
-    "The id"// It's an object rather than an id to save space: we require a lot of partials!
-    shared Object id;
-    
+abstract class Partial(Object  id) extends Vertex(id) {
     "The class, if we know it yet"
     shared variable ClassModel<>? clazz = null;
     
@@ -50,18 +46,18 @@ abstract class Partial(id) {
     "Whether the partial has been instantiated"
     shared Boolean instantiated => instance_ exists;
     "Whether the partial has been initialized"
-    shared Boolean initialized => !state exists;
+    shared actual Boolean initialized => !state exists;
     "Whether the partial is for an instance of a member class"
     shared Boolean member => container exists;
     
     "Gets the fully initialized instance, or throws"
-    shared Anything instance() {
+    shared actual Anything instance() {
         assert(instantiated && initialized);
         return instance_;
     }
     
     "The ids of the instances that this instance refers to"
-    shared {Object*} refersTo {
+    shared actual {Object*} refersTo {
         if (exists s=state) {
             return s.items;
         } else {

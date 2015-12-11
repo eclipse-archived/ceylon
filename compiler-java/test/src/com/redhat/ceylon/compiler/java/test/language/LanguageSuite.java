@@ -35,16 +35,16 @@ import com.redhat.ceylon.compiler.java.test.ModuleSpecifier;
 @TestModule(
     srcDirectory="../language/test",
     resDirectory="../language/test-resource",
-    modules={"default", "jvm", "metamodel", "annotations", "resmod", "serialization"},
-    modulesUsingCheckFunction="default",
-    modulesUsingCheckModule={"jvm", "annotations", "resmod", "serialization"},
-    dependencies={"check", "modules.imported", "modules.optional", "modules.required"},
-    options={"-suppress-warnings", "unusedDeclaration,unusedImport,compilerAnnotation,expressionTypeNothing"},
-    removeAtRuntime={"modules.optional"},
-    runModulesInNewJvm = { 
-            @ModuleSpecifier(module = "default", runClass = "run_"), 
+    modules={/*"default", "jvm", "metamodel", "annotations", "resmod",*/ "serialization"},
+    //modulesUsingCheckFunction="default",
+    modulesUsingCheckModule={/*"jvm", "annotations", "resmod",*/ "serialization"},
+    dependencies={"check", /*"modules.imported", "modules.optional", "modules.required"*/},
+    options={"-suppress-warnings", "unusedDeclaration,unusedImport,compilerAnnotation,expressionTypeNothing"}
+    //removeAtRuntime={"modules.optional"}
+    /*runModulesInNewJvm = { 
+            //@ModuleSpecifier(module = "default", runClass = "run_"), 
             @ModuleSpecifier(module = "metamodel", version = "0.1")
-    }
+    }*/
 )
 public class LanguageSuite {
 

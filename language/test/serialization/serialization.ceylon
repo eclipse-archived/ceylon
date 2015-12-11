@@ -512,6 +512,175 @@ serializable class Company(name) {
     shared late Person owner;
 }
 
+Integer nullary() => 42;
+
+@test
+shared void testFactoryNullary() {
+    value dc = deserialization<Integer>();
+    dc.factory(1, nullary);
+    dc.arguments(1, []);
+    value got = dc.reconstruct<Object>(1);
+    print(got);
+    assert(42 == got);
+}
+
+
+@test
+shared void testFactoryParse() {
+    value dc = deserialization<Integer>();
+    dc.instanceValue(0, "42");
+    dc.factory(1, parseInteger);
+    dc.arguments(1, [0]);
+    value got = dc.reconstruct<Object>(1);
+    print(got);
+    assert(42 == got);
+}
+
+Element[] seq<Element>(Array<Element> array) {
+    return array.sequence();
+}
+
+@test
+shared void testFactorySequence() {
+    value dc = deserialization<Integer>();
+    dc.instanceValue(0, 42);
+    dc.instanceValue(1, "hello");
+    dc.instance(3, `Array<String|Integer>`);
+    dc.attribute(3, `value Array.size`, 4);
+    dc.instanceValue(4, 2);
+    dc.element(3, 0, 0);
+    dc.element(3, 1, 1);
+    dc.factory(5, seq<String|Integer>);
+    dc.arguments(5, [3]);
+    value got = dc.reconstruct<Object>(5);
+    print(got);
+    assert([42, "hello"] == got);
+    assert(is ArraySequence<String|Integer> got);
+}
+
+@test
+shared void testFactorySequencesWithCycles() {
+    /*
+       cycle1.ref = cycle2;
+       cycle2.ref = cycle1;
+       
+       cycle3.ref = cycle4;
+       cycle4.ref = cycle3;
+       
+       array5 = [cycle1, cycle2];
+       seq7 = seq(array5);
+       array8 = [seq7, cycle3];
+       seq9 = seq(array8);
+     */
+    
+    //for (ids in [1, 2, 3, 4, 5, 6, 7, 8, 9].permutations) {
+    [Integer+] ids = [1, 2, 3, 4, 5, 6, 7, 8, 9];if (true) {
+        value dc = deserialization<Integer>();
+        value cycle1 = ids[0];
+        assert(exists cycle2 = ids[1]);
+        assert(exists cycle3 = ids[2]);
+        assert(exists cycle4 = ids[3]);
+        
+        assert(exists array5 = ids[4]);
+        assert(exists arraySize6 = ids[5]);
+        assert(exists seq7 = ids[6]);
+        assert(exists array8 = ids[7]);
+        assert(exists seq9 = ids[8]);
+        //print(ids);
+        dc.instance(cycle1, `Cycle`);
+        dc.instance(cycle2, `Cycle`);
+        dc.instance(cycle3, `Cycle`);
+        dc.instance(cycle4, `Cycle`);
+        dc.attribute(cycle1, `value Cycle.ref`, cycle2);
+        dc.attribute(cycle2, `value Cycle.ref`, cycle1);
+        dc.attribute(cycle3, `value Cycle.ref`, cycle4);
+        dc.attribute(cycle4, `value Cycle.ref`, cycle3);
+        
+        dc.instance(array5, `Array<Cycle>`);
+        dc.attribute(array5, `value Array.size`, arraySize6);
+        dc.instanceValue(arraySize6, 2);
+        dc.element(array5, 0, cycle1);
+        dc.element(array5, 1, cycle2);
+        
+        dc.factory(seq7, `seq<Cycle>`);
+        dc.arguments(seq7, [array5]);
+        
+        dc.instance(array8, `Array<Cycle|Sequential<Cycle>>`);
+        dc.attribute(array8, `value Array.size`, arraySize6);
+        dc.element(array8, 0, seq7);
+        dc.element(array8, 1, cycle3);
+        
+        dc.factory(seq9, `seq<Cycle|Sequential<Cycle>>`);
+        dc.arguments(seq9, [array8]);
+        
+        value gotSeq9 = dc.reconstruct<Object>(seq9);
+        print(gotSeq9);
+        assert(is Sequential<Cycle|Sequential<Cycle>> gotSeq9);
+        assert(is Sequential<Cycle> gotSeq7 = gotSeq9[0]);
+        assert(is Cycle gotCycle3 = gotSeq9[1]);
+        assert(gotSeq9.size == 2);
+        assert(is Cycle gotCycle1 =  gotSeq7[0]);
+        assert(is Cycle gotCycle2 =  gotSeq7[1]);
+        assert(gotSeq7.size == 2);
+        value gotCycle4 = gotCycle3.ref;
+        assert(!gotCycle1 === gotCycle2);
+        assert(!gotCycle1 === gotCycle3);
+        assert(!gotCycle1 === gotCycle4);
+        assert(!gotCycle2 === gotCycle3);
+        assert(!gotCycle2 === gotCycle4);
+        assert(!gotCycle3 === gotCycle4);
+    }
+    
+}
+
+@test
+shared void testDetectCyclicInvocation() {
+    /*
+       array5 = [seq9];
+       seq7 = seq(array5);
+       array8 = [seq7];
+       seq9 = seq(array8);
+     */
+    
+    for (ids in [5, 6, 7, 8, 9].permutations) {
+    //[Integer+] ids = [5, 6, 7, 8, 9];if (true) {
+        value dc = deserialization<Integer>();
+        
+        value array5 = ids[0];
+        assert(exists arraySize6 = ids[1]);
+        assert(exists seq7 = ids[2]);
+        assert(exists array8 = ids[3]);
+        assert(exists seq9 = ids[4]);
+        print(ids);
+        
+        dc.instance(array5, `Array<Sequential<Cycle>>`);
+        dc.attribute(array5, `value Array.size`, arraySize6);
+        dc.instanceValue(arraySize6, 1);
+        dc.element(array5, 0, seq9);
+        
+        dc.factory(seq7, `seq<Sequential<Object>>`);
+        dc.arguments(seq7, [array5]);
+        
+        dc.instance(array8, `Array<Sequential<Cycle>>`);
+        dc.attribute(array8, `value Array.size`, arraySize6);
+        dc.element(array8, 0, seq7);
+        
+        dc.factory(seq9, `seq<Sequential<Object>>`);
+        dc.arguments(seq9, [array8]);
+        
+        try {
+            dc.reconstruct<Object>(seq9);
+        } catch (DeserializationException e) {
+            assert("cyclic factory invocation" == e.message);
+        }
+        
+    }
+
+}
+
+// TODO test we can pick out different subgraphs, both with an without factories
+
+
 @test
 shared void docExample() {
     value wonkaInc = Company("Wonka Inc.");

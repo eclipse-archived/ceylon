@@ -25,6 +25,9 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     """
     NativeMap<Id,Anything> instances = NativeMap<Id,Anything>();
     
+    variable value traversal = 0;
+    variable value scc = 0;
+    
     """a cache of "attribute" (represented as a TypeDescriptor and an attribute name)
        to its type"""
     shared NativeMap<Object->String, Object> memberTypeCache = NativeMap<Object->String, Object>();
@@ -112,17 +115,37 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
         instances.put(instanceId, instanceValue);
     }
     
+    void pushDeps(NativeDeque stack, Vertex instance) {
+        for (dependentId in instance.refersTo) {
+            assert(is Id dependentId);
+            if (is Vertex dependent=instances.get(dependentId)) {
+                if (dependent.traversal != traversal) {
+                    stack.pushFront(dependent);
+                }
+            }
+        }
+    }
+    
     """Traverse the instance graph from the given instance and 
        instantiate each partial.
     """
-    void instantiateReachable(NativeDeque stack, Id instanceId) {
+    Boolean instantiateReachable(NativeDeque/*<Vertex|Anything>*/ stack, Id instanceId) {
         assert(stack.empty);
+        traversal++;
+        variable value hasFactories = false;
         stack.pushFront(instances.get(instanceId));
         while (!stack.empty){
             value instance=stack.popFront();
             switch(instance)
             case (is Null) {
                 assert(false);
+            }
+            case (is Factory) {
+                hasFactories = true;
+                // We can't invoke the factory yet, but we need to visit 
+                // its arguments
+                instance.traversal = traversal;
+                pushDeps(stack, instance);
             }
             case (is Partial) {
                 if (instance.member, is Partial container = instance.container,
@@ -137,27 +160,32 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                 if (!instance.instantiated) {
                     instance.instantiate();
                 }
+                instance.traversal = traversal;
                 // push the referred things on to the stack
                 // but only if they haven't yet been instantiated
-                for (referredId in instance.refersTo) {
-                    assert(is Id referredId);
-                    value referred = instances.get(referredId);
-                    if (is Partial referred,
-                        !referred.instantiated) {
-                        stack.pushFront(referred);
-                    }
-                }
+                pushDeps(stack, instance);
             } else {
                 // it's an instance already, nothing to do
             }
         }
+        
+        return hasFactories;
     }
     
     """Traverse the instance graph from the given instance and 
        initialize each partial.
+       
+       This method is only called when:
+       
+       * We know there are no factories reachable from the 
+         given instance and
+       * All the reachable partials have been instantiated
+       
+       So all we need to do is initialize each reachable partial.
     """
-    void initializeReachable(NativeDeque stack, Id instanceId) {
+    void initializeReachable(NativeDeque/*<Vertex|Anything>*/ stack, Id instanceId) {
         assert(stack.empty);
+        traversal++;
         stack.pushFront(instances.get(instanceId));
         while (!stack.empty){
             switch(instance=stack.popFront())
@@ -173,14 +201,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                 if (!instance.initialized) {
                     // push the referred things on to the stack
                     // but only if they haven't yet been initialized
-                    for (referredId in instance.refersTo) {
-                        assert(is Id referredId);
-                        value referred = instances.get(referredId);
-                        if (is Partial referred,
-                            !referred.initialized) {
-                            stack.pushFront(referred);
-                        }
-                    }
+                    pushDeps(stack, instance);
                     if (instance.member,
                         is Partial container = instance.container,
                         !container.initialized) {
@@ -188,11 +209,93 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                     }
                     instance.initialize<Id>(this);
                 }
+            }
+            case (is Factory) {
+                assert(false);
             } else {
                 // it's an instance already, nothing to do
             }
         }
         
+    }
+    
+    """* Traverse the instance graph from the given instance.
+       * Compute the Strongly Connected Components
+       * For each SCC
+    """
+    void initializeReachable2(NativeDeque/*<Vertex|Anything>*/ stack, Id instanceId) {
+        assert(stack.empty);
+        traversal++;
+        NativeDeque/*<Vertex|Anything>*/ tstack = NativeDeque();
+        variable value index = 0;
+        scc = 0; 
+        stack.pushFront(instances.get(instanceId));
+        while (!stack.empty){
+            value instance=stack.popFront();
+            if (is Vertex instance) {
+                if (instance.reset(traversal)) {
+                    if (instance.index == -1) {
+                        index = strongConnect(tstack, index, instance);
+                    }
+                    pushDeps(stack, instance);
+                }
+            }
+        }
+    }
+    
+    Integer strongConnect(NativeDeque/*<Vertex|Anything>*/ stack, variable Integer index, Vertex vertex) {
+        vertex.index = index;
+        vertex.lowlink = index;
+        index = index + 1;
+        stack.pushFront(vertex);
+        vertex.onStack = true;
+        
+        for (dependentId in vertex.refersTo) {
+            assert(is Id dependentId);
+            if (is Vertex w = instances.get(dependentId)) {
+                if (w.index == -1) {
+                    index = strongConnect(stack, index, w);
+                    vertex.lowlink = if (vertex.lowlink < w.lowlink) then vertex.lowlink else w.lowlink;
+                } else if (w.onStack) {
+                    vertex.lowlink = if (vertex.lowlink < w.index) then vertex.lowlink else w.index; 
+                }
+            }
+        }
+        
+        if (vertex.lowlink == vertex.index) {
+            // this is a new SCC
+            scc++;
+            while(true) {
+                value w = stack.popFront();
+                if (is Vertex w) {
+                    w.onStack = false;
+                    w.scc = scc;
+                    // w is part of this scc
+                    switch (w)
+                    case (is Partial) {
+                        // initialize it
+                        value instance = w;
+                        if (!instance.initialized) {
+                            instance.initialize<Id>(this);
+                        }
+                    }
+                    case (is Factory) {
+                        assert(is Id wid=w.id);
+                        instances.put(wid, w.call<Id>(scc, instances));
+                    }
+                    if (w === vertex) {
+                        break;
+                    }
+                } else {
+                    throw AssertionError("unexpected type ``type(w)`` ``w else "null"``");
+                }
+                
+                
+            }
+            // this completes the SCC
+        }
+        
+        return index;
     }
     
     shared actual Instance reconstruct<Instance>(Id instanceId) {
@@ -207,11 +310,15 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
             }
         }
         
-        instantiateReachable(stack, instanceId);
+        value hasFactories = instantiateReachable(stack, instanceId);
         
-        // we now have real instances for everything reachable from instanceId
-        // so now we can inject the state...
-        initializeReachable(stack, instanceId);
+        if (hasFactories) {
+            initializeReachable2(stack, instanceId);
+        } else {
+            // we now have real instances for everything reachable from instanceId
+            // so now we can inject the state...
+            initializeReachable(stack, instanceId);
+        }
         
         switch(r=instances.get(instanceId))
         case (is Partial) {
@@ -231,6 +338,36 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
             }
         }
         
+    }
+    
+    "Get or create a [[Partial]] for the given `instanceId`."
+    Factory getOrCreateFactory(Id instanceId) {
+        Factory factory;
+        switch(vertex=instances.get(instanceId))
+        case (is Null) {
+            value f = Factory(instanceId);
+            instances.put(instanceId, f);
+            factory = f;
+        }
+        case (is Partial) {
+            // TODO is this an error, or do we apply last-in wins, or what?
+            throw;
+        }
+        case (is Factory) {
+            factory = vertex;
+        }
+        else {// an instance
+            throw alreadyComplete(instanceId);
+        }
+        return factory;
+    }
+    
+    shared actual void factory(Id instanceId, Callable<Anything,Nothing> callable) {
+        getOrCreateFactory(instanceId).callable = callable;
+    }
+    
+    shared actual void arguments(Id instanceId, Id[] argumentIds) {
+        getOrCreateFactory(instanceId).arguments = argumentIds;
     }
     
 }

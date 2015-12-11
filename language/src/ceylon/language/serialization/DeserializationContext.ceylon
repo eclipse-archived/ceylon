@@ -103,10 +103,8 @@ shared sealed interface DeserializationContext<Id>
          could not be reconstructed")
     shared formal Instance reconstruct<Instance>(Id instanceId);
     
-    /*shared formal void factory(Id instanceId, Type type);
-    shared formal void factory2(Id instanceId, Callable f);
-    shared formal void argument(Id instanceId, Id argumentId);
-    shared formal void argumentValue(Id instanceId, Anything argumentValue);*/
+    shared formal void factory(Id instanceId, Callable<Anything,Nothing> callable);
+    shared formal void arguments(Id instanceId, Id[] argumentIds);
 }
 
 
