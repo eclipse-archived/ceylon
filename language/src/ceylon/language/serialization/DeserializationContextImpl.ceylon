@@ -112,8 +112,91 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
         instances.put(instanceId, instanceValue);
     }
     
+    """Traverse the instance graph from the given instance and 
+       instantiate each partial.
+    """
+    void instantiateReachable(NativeDeque stack, Id instanceId) {
+        assert(stack.empty);
+        stack.pushFront(instances.get(instanceId));
+        while (!stack.empty){
+            value instance=stack.popFront();
+            switch(instance)
+            case (is Null) {
+                assert(false);
+            }
+            case (is Partial) {
+                if (instance.member, is Partial container = instance.container,
+                    !container.instantiated) {
+                    // On the JVM we need to ensure that all outer instances are 
+                    // instantiated before all member instances
+                    // so do the container first and then come back for the member
+                    stack.pushFront(instance);
+                    stack.pushFront(container);
+                    continue;
+                }
+                if (!instance.instantiated) {
+                    instance.instantiate();
+                }
+                // push the referred things on to the stack
+                // but only if they haven't yet been instantiated
+                for (referredId in instance.refersTo) {
+                    assert(is Id referredId);
+                    value referred = instances.get(referredId);
+                    if (is Partial referred,
+                        !referred.instantiated) {
+                        stack.pushFront(referred);
+                    }
+                }
+            } else {
+                // it's an instance already, nothing to do
+            }
+        }
+    }
+    
+    """Traverse the instance graph from the given instance and 
+       initialize each partial.
+    """
+    void initializeReachable(NativeDeque stack, Id instanceId) {
+        assert(stack.empty);
+        stack.pushFront(instances.get(instanceId));
+        while (!stack.empty){
+            switch(instance=stack.popFront())
+            case (is Partial) {
+                if (instance.member) {
+                    if (is Partial container = instance.container,
+                        !container.initialized) {
+                        stack.pushFront(instance);
+                        stack.pushFront(container);
+                        continue;
+                    }
+                }
+                if (!instance.initialized) {
+                    // push the referred things on to the stack
+                    // but only if they haven't yet been initialized
+                    for (referredId in instance.refersTo) {
+                        assert(is Id referredId);
+                        value referred = instances.get(referredId);
+                        if (is Partial referred,
+                            !referred.initialized) {
+                            stack.pushFront(referred);
+                        }
+                    }
+                    if (instance.member,
+                        is Partial container = instance.container,
+                        !container.initialized) {
+                        stack.pushFront(container);
+                    }
+                    instance.initialize<Id>(this);
+                }
+            } else {
+                // it's an instance already, nothing to do
+            }
+        }
+        
+    }
+    
     shared actual Instance reconstruct<Instance>(Id instanceId) {
-        NativeDeque deque = NativeDeque();
+        NativeDeque stack = NativeDeque();
         value root = instances.get(instanceId);
         if (!root exists) {
             if (instances.contains(instanceId)) {
@@ -123,76 +206,12 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
                 throw DeserializationException("unknown id: ``instanceId``.");
             }
         }
-        deque.pushFront(instances.get(instanceId));
-        while (!deque.empty){
-            value r=deque.popFront();
-            switch(r)
-            case (is Null) {
-                assert(false);
-            }
-            case (is Partial) {
-                if (r.member, is Partial container = r.container,
-                    !container.instantiated) {
-                    // On the JVM we need to ensure that all outer instances are 
-                    // instantiated before all member instances
-                    // so do the container first and then come back for the member
-                    deque.pushFront(r);
-                    deque.pushFront(container);
-                    continue;
-                }
-                if (!r.instantiated) {
-                    r.instantiate();
-                }
-                // push the referred things on to the stack
-                // but only if they haven't yet been instantiated
-                for (referredId in r.refersTo) {
-                    assert(is Id referredId);
-                    value referred = instances.get(referredId);
-                    if (is Partial referred,
-                        !referred.instantiated) {
-                        deque.pushFront(referred);
-                    }
-                }
-            } else {
-                // it's an instance already, nothing to do
-            }
-        }
+        
+        instantiateReachable(stack, instanceId);
+        
         // we now have real instances for everything reachable from instanceId
         // so now we can inject the state...
-        deque.pushFront(instances.get(instanceId));
-        while (!deque.empty){
-            switch(r=deque.popFront())
-            case (is Partial) {
-                if (r.member) {
-                    if (is Partial container = r.container,
-                        !container.initialized) {
-                        deque.pushFront(r);
-                        deque.pushFront(container);
-                        continue;
-                    }
-                }
-                if (!r.initialized) {
-                    // push the referred things on to the stack
-                    // but only if they haven't yet been initialized
-                    for (referredId in r.refersTo) {
-                        assert(is Id referredId);
-                        value referred = instances.get(referredId);
-                        if (is Partial referred,
-                            !referred.initialized) {
-                            deque.pushFront(referred);
-                        }
-                    }
-                    if (r.member,
-                        is Partial container = r.container,
-                            !container.initialized) {
-                        deque.pushFront(container);
-                    }
-                    r.initialize<Id>(this);
-                }
-            } else {
-                // it's an instance already, nothing to do
-            }
-        }
+        initializeReachable(stack, instanceId);
         
         switch(r=instances.get(instanceId))
         case (is Partial) {
