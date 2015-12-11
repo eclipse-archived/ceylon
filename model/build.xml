@@ -21,6 +21,9 @@
     <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
     <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
+    <property name="ceylon.classfile.dir" value="com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}" />
+    <property name="ceylon.classfile.jar" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar" />
+    <property name="ceylon.classfile.lib" location="${ceylon.repo.dir}/${ceylon.classfile.jar}" />
     <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}" />
     <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar" />
     <property name="ceylon.model.src" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.src" />
@@ -31,6 +34,7 @@
     <!-- Classpath for the build tools. -->
     <path id="classpath">
         <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.classfile.lib}" />
     </path>
 
     <path id="test.run.classpath">
