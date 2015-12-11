@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/tautua/markdownpapers/core/1.2.7/org.tautua.markdownpapers.core-1.2.7.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/github/rjeschke/txtmark/0.13/com.github.rjeschke.txtmark-0.13.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

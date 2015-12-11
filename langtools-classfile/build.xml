@@ -1,0 +1,151 @@
+<project name="Ceylon langtools classfile" default="all" basedir=".">
+
+    <property file="../common/user-build.properties" />
+    <property file="../common/common-build.properties" />
+    <property file="build.properties" />
+
+    <property name="name" value="Ceylon langtools classfile" />
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
+    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
+
+    <!-- The Java source files for the langtools classfile -->
+    <property name="classfile.src" location="src" />
+
+    <!-- Directories everything gets built into -->
+    <property name="build" location="build" />
+    <property name="build.classes" location="${build}/classes" />
+    <property name="build.poms" location="${build}/poms" />
+    <property name="build.bin" location="${build}/bin" />
+    <property name="build.lib" location="${build}/lib" />
+    <property name="build.api" location="${build}/api" />
+    <property name="build.dist" location="${build}/dist" />
+    <property name="build.dist.repo" location="${build.dist}/repo" />
+
+    <!-- Jarfiles everything ends up in -->
+    <property name="ceylon.classfile.dir" value="com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}" />
+    <property name="ceylon.classfile.jar" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar" />
+    <property name="ceylon.classfile.src" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.src" />
+    <property name="ceylon.classfile.lib" location="${ceylon.repo.dir}/${ceylon.classfile.jar}" />
+    <property name="ceylon.classfile.repo" value="${ceylon.repo.dir}/${ceylon.classfile.dir}" />
+    <property name="ceylon.classfile.dist" value="${build.dist.repo}/${ceylon.classfile.dir}" />
+
+    <tstamp>
+        <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+    </tstamp>
+
+    <path id="classfile.classpath">
+    </path>
+
+    <!-- ################################################################## -->
+
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
+    </target>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean">
+        <delete dir="${build}" />
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo" description="Initialize the default local Ceylon module repository">
+        <mkdir dir="${ceylon.classfile.repo}" />
+    </target>
+    <target name="clean.repo" description="Clean default local Ceylon module repository">
+        <delete dir="${ceylon.classfile.repo}" />
+    </target>
+
+    <target name="dist" depends="build" description="Create Ceylon langtools classfile distribution">
+        <zip destfile="${build.dist.repo}/${ceylon.classfile.src}">
+            <fileset dir="${classfile.src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.classfile.src}"/>
+        </antcall>
+    </target>
+
+    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon langtools classfile module to default repo">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}" />
+        </copy>
+    </target>
+
+    <!-- Rule to compile and test -->
+    <target name="all" depends="publish" />
+
+    <!-- Rule to build langtools classfile from their Java sources -->
+    <target name="classfile.classes">
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${classfile.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="classfile.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+            <compilerarg value="-XDignore.symbol.file" />
+            <include name="com/redhat/**" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${classfile.src}">
+                <exclude name="com/redhat/**/*.utf8properties" />
+                <include name="com/redhat/**/resources/**" />
+                <include name="com/redhat/**/*.properties" />
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
+        <native2ascii dest="${build.classes}" src="${classfile.src}" encoding="UTF-8" ext=".properties">
+            <include name="com/redhat/**/*.utf8properties" />
+        </native2ascii>
+    </target>
+
+    <!-- Rule to build langtools classfile jar -->
+    <target name="classfile.jar" depends="classfile.classes">
+        <mkdir dir="${build.dist.repo}/${ceylon.classfile.dir}" />
+        <mkdir dir="${build.bin}" />
+        <jar destfile="${build.dist.repo}/${ceylon.classfile.jar}">
+            <fileset dir="${build.classes}">
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.langtools.classfile.java"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.langtools.classfile.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.classfile.jar}" />
+        </antcall>
+    </target>
+
+    <!-- Rule to build langtools classfile jar -->
+    <target name="build" depends="classfile.jar">
+        <mkdir dir="${build.dist}" />
+        <mkdir dir="${build.bin}" />
+    </target>
+
+
+	<target name="ide-quick-internal" depends="classfile.classes">
+        <property name="classfileArchivePath" value="${ceylon.classfile.lib}"/>
+        <basename file="${classfileArchivePath}" property="classfileArchiveFileName"/>
+        <property name="classfile-proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${classfileArchiveFileName}"/>
+        <mkdir dir="${classfile-proxy-project}"/>
+        <delete failonerror="false" dir="${classfile-proxy-project}/META-INF"/>
+        <copy toDir="${classfile-proxy-project}" overwrite="true">
+            <zipfileset src="${classfileArchivePath}" includes="META-INF/**"/>
+            <fileset file="${classfileArchivePath}"/>
+        </copy>
+        <manifest file="${classfile-proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${classfileArchiveFileName}"/>
+        </manifest>
+
+    </target>
+	
+</project>

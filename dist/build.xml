@@ -17,8 +17,8 @@
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
-    <property name="moddirs" value="common,model,cmr,typechecker,compiler-java,compiler-js,language,runtime" />
+    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
+    <property name="moddirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,language,runtime" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
@@ -26,6 +26,7 @@
     <property name="ceylon-common.dir" location="${projects.base.dir}/common"/>
     <property name="ceylon-model.dir" location="${projects.base.dir}/model"/>
     <property name="ceylon-compiler.dir" location="${projects.base.dir}/compiler-java"/>
+    <property name="ceylon-langtools-classfile.dir" value="${projects.base.dir}/langtools-classfile"/>
     <property name="ceylon-spec.dir" location="${projects.base.dir}/typechecker"/>
     <property name="ceylon.language.dir" location="${projects.base.dir}/language"/>
     <property name="ceylon-module-resolver.dir" location="${projects.base.dir}/cmr"/>
@@ -146,6 +147,7 @@ Some super-charged ant tasks:
                 <module name="com.redhat.ceylon.model" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.langtools.classfile" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.js" version="${ceylon.version}"/>
                 <module name="ceylon.bootstrap" version="${ceylon.version}"/>
@@ -379,7 +381,16 @@ Use this when NOT doing a release!">
         </copy>
     </target>
 
-    <target name="install-compiler" depends="install-typechecker,install-compiler-nodeps" />
+    <target name="install-langtools-classfile" depends="install-langtools-classfile-nodeps"/>
+    <target name="install-langtools-classfile-nodeps">
+        <ant antfile="${ceylon-langtools-classfile.dir}/build.xml" target="publish" dir="${ceylon-langtools-classfile.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-compiler" depends="install-typechecker,install-langtools-classfile,install-compiler-nodeps" />
     <target name="install-compiler-nodeps">
         <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -603,6 +614,7 @@ Use this when NOT doing a release!">
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar"/>
         	<pathelement location="${jboss-modules.lib}"/>
         </path>
     	<java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath">

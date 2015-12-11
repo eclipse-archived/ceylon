@@ -24,6 +24,9 @@
     <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
     <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
+    <property name="ceylon.classfile.dir" value="com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}" />
+    <property name="ceylon.classfile.jar" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar" />
+    <property name="ceylon.classfile.lib" location="${ceylon.repo.dir}/${ceylon.classfile.jar}" />
     <property name="ceylon.maven-support.dir" value="com/redhat/ceylon/maven-support/${module.com.redhat.ceylon.maven-support.version}" />
     <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.dir}/com.redhat.ceylon.maven-support-${module.com.redhat.ceylon.maven-support.version}.jar" />
     <property name="ceylon.maven-support.lib" location="${ceylon.repo.dir}/${ceylon.maven-support.jar}" />
@@ -70,6 +73,7 @@
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.classfile.lib}" />
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
         <pathelement path="${ceylon.typechecker.lib}" />

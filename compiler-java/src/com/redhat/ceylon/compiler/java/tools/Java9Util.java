@@ -38,16 +38,16 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
-import com.redhat.ceylon.langtools.tools.classfile.Attribute;
-import com.redhat.ceylon.langtools.tools.classfile.Attributes;
-import com.redhat.ceylon.langtools.tools.classfile.ClassFile;
-import com.redhat.ceylon.langtools.tools.classfile.ClassWriter;
-import com.redhat.ceylon.langtools.tools.classfile.ConcealedPackages_attribute;
-import com.redhat.ceylon.langtools.tools.classfile.ConstantPool;
-import com.redhat.ceylon.langtools.tools.classfile.ConstantPool.CPInfo;
-import com.redhat.ceylon.langtools.tools.classfile.MainClass_attribute;
-import com.redhat.ceylon.langtools.tools.classfile.Module_attribute;
-import com.redhat.ceylon.langtools.tools.classfile.Version_attribute;
+import com.redhat.ceylon.langtools.classfile.Attribute;
+import com.redhat.ceylon.langtools.classfile.Attributes;
+import com.redhat.ceylon.langtools.classfile.ClassFile;
+import com.redhat.ceylon.langtools.classfile.ClassWriter;
+import com.redhat.ceylon.langtools.classfile.ConcealedPackages_attribute;
+import com.redhat.ceylon.langtools.classfile.ConstantPool;
+import com.redhat.ceylon.langtools.classfile.ConstantPool.CPInfo;
+import com.redhat.ceylon.langtools.classfile.MainClass_attribute;
+import com.redhat.ceylon.langtools.classfile.Module_attribute;
+import com.redhat.ceylon.langtools.classfile.Version_attribute;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -203,12 +203,12 @@ public class Java9Util {
     			com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.major,
     			com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.minor,
     			constantPool,
-    			new com.redhat.ceylon.langtools.tools.classfile.AccessFlags(com.redhat.ceylon.langtools.tools.classfile.AccessFlags.ACC_MODULE),
+    			new com.redhat.ceylon.langtools.classfile.AccessFlags(com.redhat.ceylon.langtools.classfile.AccessFlags.ACC_MODULE),
     			2,
     			0,
     			new int[0],
-    			new com.redhat.ceylon.langtools.tools.classfile.Field[0],
-    			new com.redhat.ceylon.langtools.tools.classfile.Method[0],
+    			new com.redhat.ceylon.langtools.classfile.Field[0],
+    			new com.redhat.ceylon.langtools.classfile.Method[0],
     			attributes);
         try {
             jarOutputStream.putNextEntry(new ZipEntry("module-info.class"));
