@@ -127,6 +127,8 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 ((LazyModule)module).setJava(true);
                 module.setNativeBackends(Backend.Java.asSet());
                 
+                moduleManager.getModelLoader().loadJava9Module((LazyModule)module, artifact.artifact());
+                
                 List<ArtifactResult> deps = artifact.dependencies();
                 for (ArtifactResult dep : deps) {
                     Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());

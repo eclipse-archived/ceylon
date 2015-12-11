@@ -28,6 +28,11 @@ public abstract class LazyModule extends Module {
 
     private boolean isJava = false;
     protected Set<String> jarPackages = new HashSet<String>();
+    /**
+     * Set of exported Java9 Module packages, or null if not a Java9 module. Only
+     * set if this is not a Ceylon module.
+     */
+    private List<String> exportedJavaPackages;
 
     public LazyModule() {
     }
@@ -237,5 +242,13 @@ public abstract class LazyModule extends Module {
     public void addPackage(Package pkg){
         // make sure we don't call any overloaded getPackages() that might trigger lazy loading
         super.getPackages().add(pkg);
+    }
+
+    public boolean isExportedJavaPackage(String name) {
+        return exportedJavaPackages != null ? exportedJavaPackages.contains(name) : true;
+    }
+
+    public void setExportedJavaPackages(List<String> exportedPackages) {
+        this.exportedJavaPackages = exportedPackages;
     }
 }
