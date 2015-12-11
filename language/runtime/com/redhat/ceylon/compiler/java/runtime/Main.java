@@ -54,6 +54,8 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.loader.Java9ModuleReader;
+import com.redhat.ceylon.model.loader.Java9ModuleReader.Java9Module;
 import com.redhat.ceylon.model.loader.NamingBase;
 
 /**
@@ -749,6 +751,15 @@ public class Main {
             return new Module("default", null, Type.CEYLON, file);
         }
 
+        private Module loadJava9ModuleJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
+        	System.err.println("Load Java 9 module: "+file);
+        	Java9Module java9Module = Java9ModuleReader.getJava9Module(zipFile, moduleDescriptor);
+        	if(java9Module != null)
+        		return new Module(java9Module.name, java9Module.version, Type.JAVA9, file);
+        	// or throw?
+        	return null;
+        }
+        
         private Module loadOsgiJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
             // first verify that it is indeed for the module we're looking for
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
