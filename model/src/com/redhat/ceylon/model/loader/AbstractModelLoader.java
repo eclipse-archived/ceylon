@@ -1802,7 +1802,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // let's not load package descriptors for Java modules
         if(pkg.getModule() != null 
                 && ((LazyModule)pkg.getModule()).isJava()){
-            pkg.setShared(true);
+            pkg.setShared(((LazyModule)pkg.getModule()).isExportedJavaPackage(pkg.getNameAsString()));
             return;
         }
         String quotedQualifiedName = JVMModuleUtil.quoteJavaKeywords(pkg.getQualifiedNameString());
@@ -5556,6 +5556,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<String> value = (List<String>) annot.getValue("aliases");
             if(value != null && !value.isEmpty())
                 decl.setAliases(value);
+        }
+    }
+
+    public void loadJava9Module(LazyModule module, File jar) {
+        List<String> exportedPackages = Java9ModuleReader.getExportedPackages(jar);
+        if(exportedPackages != null){
+            module.setExportedJavaPackages(exportedPackages);
         }
     }
 }
