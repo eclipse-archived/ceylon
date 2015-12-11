@@ -137,6 +137,7 @@ public abstract class Attribute {
             standardAttributes.put(StackMap,          StackMap_attribute.class);
             standardAttributes.put(StackMapTable,     StackMapTable_attribute.class);
             standardAttributes.put(Synthetic,         Synthetic_attribute.class);
+            standardAttributes.put(Version,           Version_attribute.class);
         }
 
         private Map<String,Class<? extends Attribute>> standardAttributes;
