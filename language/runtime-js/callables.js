@@ -118,7 +118,7 @@ function spread$(a,f,targs,noInvoke) {
         return arg;
       }
     }
-    if (params.size===tuple0.size+spridx) {
+    if (params.length===tuple0.size+spridx) {
       //Simple mapping
       var all=[];
       for (var i=0; i<spridx;i++) {
@@ -143,11 +143,7 @@ function spread$(a,f,targs,noInvoke) {
     if (typeof(a1t)==='string')a1t=targs && targs[a1t];
     //If the tuple type matches the param type, it's NOT a spread
     //(it's just a regular 1-param func which happens to receive a tuple)
-    if (!a1t) {
-      var _ra=Array(tuple0.size);
-      for (var i=0;i<tuple0.size;i++)_ra[i]=tuple0.$_get(i);
-      return _ra;
-    } else if (is$(tuple0,a1t) && extendsType(a1t,{t:Sequential})) {
+    if (!a1t || (is$(tuple0,a1t) && extendsType(a1t,{t:Iterable}))) {
       return arg;
     }
     var typecheck;
