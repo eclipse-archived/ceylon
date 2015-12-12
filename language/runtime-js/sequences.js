@@ -1,7 +1,9 @@
 var arrprot$=$_Array.$$.prototype;
 function $arr$(a,t,seq) {
   if (t===null || t===undefined)t={t:Anything};
-  return $_Array$$c(a,{Element$Array:t});
+  var a=$_Array$$c(a,{Element$Array:t});
+  if (seq)a.$$targs$$.Absent$Iterable={t:Nothing};
+  return a;
 }
 ex$.$arr$=$arr$;
 
