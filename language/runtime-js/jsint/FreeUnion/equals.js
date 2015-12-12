@@ -4,7 +4,7 @@ function(u) {
     var his=u.caseTypes;
     if (mine.size==his.size) {
       for (var i=0;i<mine.size;i++) {
-        if (!his.contains(mine[i]))return false;
+        if (!his.contains(mine.$_get(i)))return false;
       }
       return true;
     }
