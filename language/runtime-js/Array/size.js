@@ -1,1 +1,1 @@
-return this.length;
+return this.arr$.length;

@@ -6,5 +6,5 @@ function(f){
     var c=this.$_get(i);
     if (f(c))r.push(Entry(i,c,_t.a));
   }
-  return r.length>0?r.rt$(_t):empty();
+  return r.length>0?$arr$(r,_t):empty();
 }

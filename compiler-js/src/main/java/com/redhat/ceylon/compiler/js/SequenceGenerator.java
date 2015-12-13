@@ -59,11 +59,15 @@ public class SequenceGenerator {
             final List<Tree.PositionalArgument> positionalArguments = sarg.getPositionalArguments();
             final boolean spread = isSpread(positionalArguments);
             final boolean canBeEager = allLiterals(positionalArguments);
+            boolean wantsIter = false;
             if (spread || !canBeEager) {
                 lazyEnumeration(positionalArguments, that, that.getTypeModel(), spread, gen);
                 return;
-            } else {
+            } else if (that.getTypeModel().isSequential()) {
                 gen.out("[");
+            } else {
+                gen.out(gen.getClAlias(), "$arr$([");
+                wantsIter = true;
             }
             int count=0;
             for (Tree.PositionalArgument expr : positionalArguments) {
@@ -80,7 +84,7 @@ public class SequenceGenerator {
                 }
                 count++;
             }
-            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, true);
+            closeSequenceWithReifiedType(that, that.getTypeModel().getTypeArguments(), gen, wantsIter);
         }
     }
 
@@ -117,13 +121,21 @@ public class SequenceGenerator {
             gen.out(gen.getClAlias(), "JsCallableList(");
             gen.supervisit(that);
             gen.out(",function(e,a){return ",
-                    gen.memberAccess(that, "e"), ".apply(e,a);}");
+                    gen.memberAccess(that, "e"), ".apply(e,a);},");
             if (that.getTypeArguments() != null && that.getTypeArguments().getTypeModels()!=null
                     && !that.getTypeArguments().getTypeModels().isEmpty()) {
-                gen.out(",");
                 TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
                         ((Generic)that.getDeclaration()).getTypeParameters(),
                         that.getTypeArguments().getTypeModels()), gen, true, null);
+            } else {
+                gen.out("undefined");
+            }
+            gen.out(",");
+            if (that.getTypeModel() != null && that.getTypeModel().asQualifiedString().startsWith("ceylon.language::Callable<")) {
+                TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0).getTypeArgumentList().get(0), gen, false);
+            } else {
+                gen.out("FUCK");
+                TypeUtils.typeNameOrList(that, that.getTypeModel(), gen, false);
             }
             gen.out(")");
         } else {
@@ -155,7 +167,7 @@ public class SequenceGenerator {
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
             final GenerateJsVisitor gen, boolean wantsIterable) {
         if(wantsIterable)
-            gen.out("].rt$(");
+            gen.out("],");
         else
             gen.out("].$sa$(");
         boolean nonempty=false;

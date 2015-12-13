@@ -20,7 +20,8 @@ function(anntypes,$m) {
     if (cs[i].fakeConstr)r.fakeConstr$=true;
     cs[i]=r;
   }
-  return cs.length===0?empty():ArraySequence(cs,{Element$ArraySequence:{t:MemberClassCallableConstructor$meta$model,
+  var targ={t:MemberClassCallableConstructor$meta$model,
     a:{Type$MemberClassCallableConstructor:this.$$targs$$.Type$AppliedClass,Arguments$MemberClassCallableConstructor:{t:Nothing},
-       Container$MemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass}}});
+       Container$MemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass}};
+  return cs.$sa$(targ);
 }

@@ -5,15 +5,15 @@ function AppliedMethod$jsint(tipo,typeArgs,$$targs$$,$$appliedMethod){
   $init$AppliedMethod$jsint();
   var mm = getrtmm$$(tipo);
   if (mm.tp) {
-    if (typeArgs===undefined || typeArgs.size<1) {
+    if (typeArgs===undefined || typeArgs.length<1) {
       throw TypeApplicationException$meta$model("Missing type arguments in call to FunctionDeclaration.apply");
     }
     var _ta={}; var i=0;
     for (var tp in mm.tp) {
-      if (typeArgs.$_get(i)===undefined)
+      if (typeArgs[i]===undefined)
         throw TypeApplicationException$meta$model("Missing type argument for "+tp);
       var _tp = mm.tp[tp];
-      var _t = typeArgs.$_get(i).tipo;
+      var _t = typeArgs[i].tipo;
       _ta[tp]={t:_t};
       if (_tp.sts) {
         //Must satisty all specified types

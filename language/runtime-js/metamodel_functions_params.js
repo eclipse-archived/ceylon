@@ -113,6 +113,8 @@ function convert$params(mm,a,$$targs$$) {
     a=[];
   } else if (a.nativeArray) {
     a=a.nativeArray();
+  } else if (a.arr$) {
+    a=a.arr$;
   } else {
     a=sequenceToArray(a);
   }
@@ -144,12 +146,12 @@ function convert$params(mm,a,$$targs$$) {
         fa.push(a[i]);
         val_t={t:Iterable,a:{Element$Iterable:val_t}};
       } else {
-        sarg=[].rt$(val_t);
-        for (var j=i; j<a.size;j++){
+        sarg=[];
+        for (var j=i; j<a.length;j++){
           if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
           sarg.push(a[j]);
         }
-        fa.push(sarg.size==0?empty():ArraySequence(sarg,{Element$ArraySequence:val_t}));
+        fa.push(sarg.$sa$(val_t));
         i=j;
       }
     } else {
@@ -157,7 +159,7 @@ function convert$params(mm,a,$$targs$$) {
     }
     if (a[i]!==undefined && !is$(a[i],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + i + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[i]));
   }
-  if (a.size>i)throw InvocationException$meta$model("Too many arguments");
+  if (a.length>i)throw InvocationException$meta$model("Too many arguments");
   a = fa;
   return a;
 }

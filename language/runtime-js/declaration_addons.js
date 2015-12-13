@@ -159,7 +159,7 @@ atr$(FunctionalDeclaration$meta$declaration.$$.prototype,'parameterDeclarations'
       rv.push(ValParamDecl$jsint(this,p));
     }
   }
-  this.params$$=rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:{t:FunctionOrValueDeclaration$meta$declaration},Absent$Iterable:{t:Null}});
+  this.params$$=rv.$sa$({t:FunctionOrValueDeclaration$meta$declaration});
   return this.params$$;
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:FunctionOrValueDeclaration$meta$declaration}}},$cont:FunctionalDeclaration$meta$declaration,an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','FunctionalDeclaration','$at','parameterDeclarations']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=function memberDeclarations($$$mptypes,inherited){
@@ -212,7 +212,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       if (_d){_d.parent$=this;defs.push(_d);};
       if (_d2){_d2.parent$=this;defs.push(_d2);};
     }
-    return defs.length?ArraySequence(defs,{Element$ArraySequence:kind}):empty();
+    return defs.$sa$(kind);
   }
   //Fallback to the model declarations
   var funorvals=extendsType({t:FunctionOrValueDeclaration$meta$declaration},kind);
@@ -259,7 +259,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations=fun
       r.push(_d);
     }
   }
-  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:kind});
+  return r.$sa$(kind);
 };
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.memberDeclarations.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:'Kind'}},ps:[],$cont:ClassOrInterfaceDeclaration,tp:{Kind:{sts:[{t:NestableDeclaration$meta$declaration}]}},an:function(){return[shared(),actual()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$m','memberDeclarations']};};
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.declaredMemberDeclarations=function(m) {
@@ -289,7 +289,7 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
       for (var i=0;i<ta.length;i++)ta[i]={t:ta[i]};
       ta={t:'u',l:ta};
     }
-    return ct.length===0?empty():ArraySequence(ct,{Element$ArraySequence:ta});
+    return ct.$sa$(ta);
   }
   return empty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
@@ -352,7 +352,7 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.annotatedMemberDeclara
         }
       }
     }
-    if (rv.length)return ArraySequence(rv,{Element$ArraySequence:$$$mptypes.Kind$annotatedMemberDeclarations});
+    if (rv.length)return rv.$sa$($$$mptypes.Kind$annotatedMemberDeclarations);
   }
   return empty();
 };
@@ -373,5 +373,5 @@ function annd$annotations(that,$$$mptypes) {
       ans.push(_ans[i]);
     }
   }
-  return ans.length == 0 ? empty() : ArraySequence(ans,{Element$ArraySequence:$$$mptypes.Annotation$annotations});
+  return ans.$sa$($$$mptypes.Annotation$annotations);
 }

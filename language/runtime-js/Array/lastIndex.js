@@ -1,1 +1,1 @@
-return this.length>0 ? (this.length-1) : null;
+return this.arr$.length>0 ? (this.arr$.length-1) : null;

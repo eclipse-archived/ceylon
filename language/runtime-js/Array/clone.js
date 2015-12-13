@@ -1,3 +1,3 @@
 function(){
-  return this.slice(0);
+  return $arr$(this.arr$.slice(0),this.$$targs$$.Element$Array);
 }

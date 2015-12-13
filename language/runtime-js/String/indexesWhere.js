@@ -4,5 +4,5 @@ function(f){
   for (var i=0;i<this.size;i++) {
     if (f(this.$_get(i)))r.push(i);
   }
-  return r.length>0?r.rt$({t:Integer}):empty();
+  return r.length>0?$arr$(r,{t:Integer}):empty();
 }

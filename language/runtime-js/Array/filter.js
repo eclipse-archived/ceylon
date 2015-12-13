@@ -1,5 +1,5 @@
 function(f){
-  var a=this;
+  var a=this.arr$;
   return for$(function(){
     var i=0,l=a.length;
     return function() {

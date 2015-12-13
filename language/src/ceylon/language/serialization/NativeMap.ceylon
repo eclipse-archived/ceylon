@@ -112,7 +112,7 @@ native("js") class NativeMap<Key,Element>() {
         if (i >= 0) {
             //replace
             dynamic {
-                vs.set(i, instanceOrPartial);
+                setObjectProperty(vs, i, instanceOrPartial);
             }
         } else if (i < 0) {
             //new entry

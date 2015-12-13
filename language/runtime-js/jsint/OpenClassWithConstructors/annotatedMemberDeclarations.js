@@ -18,7 +18,7 @@ function(m,i) {
         }
       }
     }
-    return r.append(ArraySequence(ccc,{Element$ArraySequence:m.Kind$annotatedMemberDeclarations}),{Other$append:m.Kind$annotatedMemberDeclarations});
+    return r.append(ccc.$sa$(m.Kind$annotatedMemberDeclarations),{Other$append:m.Kind$annotatedMemberDeclarations});
   }
   return r;
 }

@@ -9,6 +9,6 @@ function(anntypes,$m) {
     if (cs[i].fakeConstr)r.fakeConstr$=true;
     cs[i]=r;
   }
-  return cs.length===0?empty():ArraySequence(cs,{Element$ArraySequence:{t:CallableConstructor$meta$model,
-    a:{Type$CallableConstructor:this.$$targs$$.Type$AppliedClass,Arguments$CallableConstructor:{t:Nothing}}}});
+  return cs.$sa$({t:CallableConstructor$meta$model,
+    a:{Type$CallableConstructor:this.$$targs$$.Type$AppliedClass,Arguments$CallableConstructor:{t:Nothing}}});
 }

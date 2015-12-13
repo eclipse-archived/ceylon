@@ -12,7 +12,7 @@ function() {
           }
         }
       }
-      this.declcn$=ArraySequence(c,{Element$ArraySequence:{t:ConstructorDeclaration$meta$declaration}});
+      this.declcn$=c.$sa$({t:ConstructorDeclaration$meta$declaration});
     } else {
       this.declcn$=empty();
     }

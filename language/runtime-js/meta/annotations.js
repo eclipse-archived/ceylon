@@ -26,7 +26,7 @@ function annotations$meta(anntype, progelem, $$$mptypes) {
     var targ={t:ConstrainedAnnotation,a:{Value$ConstrainedAnnotation:$$$mptypes.Value$annotations,
       Values$ConstrainedAnnotation:$$$mptypes.Values$annotations,
       ProgramElement$ConstrainedAnnotation:$$$mptypes.ProgramElement$annotations}};
-    return r.length==0?empty():ArraySequence(r.rt$(targ),{Element$ArraySequence:targ});
+    return r.$sa$(targ);
   }
   return null;
 }

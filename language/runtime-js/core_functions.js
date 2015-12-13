@@ -246,6 +246,10 @@ function it$(a,b){
   }
   return {t:'i',l:[a,b]};
 }
+//Sets the type arguments for an object
+//obj: The object to set
+//targs: A JS object with the type arguments
+//t: the type function
 function set_type_args(obj,targs,t) {
   if (obj===undefined)return;
   if (obj.$$targs$$ === undefined) {
@@ -305,3 +309,9 @@ ex$.eorl$=eorl$;
 ex$.asrt$=asrt$;
 var INIT$={a:1};
 ex$.INIT$=INIT$;
+
+//For foo[bar]=baz
+function setObjectProperty(object, key, value) {
+  object[key]=value;
+}
+ex$.setObjectProperty=setObjectProperty;

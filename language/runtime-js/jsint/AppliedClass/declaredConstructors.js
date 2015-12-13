@@ -17,9 +17,9 @@ if (this.$constrs$===undefined) {
       ccc.push(r);
     }
   }
-  this.$constrs$=ccc.length===0?empty():ArraySequence(ccc,{Element$ArraySequence:{t:'u',l:[
+  this.$constrs$=ccc.$sa$({t:'u',l:[
     {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$$targs$$.Type$AppliedClass,Arguments:{t:Nothing}}},
-    {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedClass}}]}});
+    {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedClass}}]});
 }
 return this.$constrs$;
 

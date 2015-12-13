@@ -13,7 +13,7 @@ $_Array.inst$$=function(cm){
 }
 $_Array.ser$set$=function(ref,o,i){
   if (typeof(ref)==='number') {
-    o[ref]=i;
+    o.arr$[ref]=i;
   }
 }
 $_Array.ser$get$=function(ref,o){

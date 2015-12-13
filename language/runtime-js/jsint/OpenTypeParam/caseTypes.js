@@ -5,6 +5,6 @@ if (tp.of) {
     var _ct=tp.of[i];if (typeof(_ct)==='function')_ct=getrtmm$$(_ct).$t;
     a.push(_openTypeFromTarg(_ct,this.container.tipo));
   }
-  return a.length===0?empty():ArraySequence(a,{Element$ArraySequence:{t:OpenType$meta$declaration}});
+  return a.$sa$({t:OpenType$meta$declaration});
 }
 return empty();

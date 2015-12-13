@@ -1,5 +1,5 @@
 function(c) {
-  if (c<=0)return [].rt$(this._elemTarg());
-  var r=this.slice(0,c);
-  return r.rt$(this._elemTarg());
+  if (c<=0)return $arr$([],this.$$targs$$.Element$Array);
+  var r=this.arr$.slice(0,c);
+  return $arr$(r,this.$$targs$$.Element$Array);
 }

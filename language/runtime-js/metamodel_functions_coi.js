@@ -64,7 +64,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.length===0?empty():ArraySequence(mems,{Element$ArraySequence:{t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}}});
+  return mems.$sa$({t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}});
 }
 function coicla$(coi,name,types,cont,noInherit) {
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -98,7 +98,7 @@ function clsparamtypes(cls) {
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt},cls.$targs));
   }
-  return r.length===0?empty():ArraySequence(r,{Element$ArraySequence:{t:Type$meta$model,a:{t:Anything}}});
+  return r.$sa$({t:Type$meta$model,a:{t:Anything}});
 }
 function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
@@ -119,7 +119,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.length===0?empty():ArraySequence(mems,{Element$ArraySequence:{t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}}});
+  return mems.$sa$({t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}});
 }
 function coiifc$(coi,name,types,cont,noInherit){
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -189,7 +189,7 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.length==0?empty():ArraySequence(mems,{Element$ArraySequence:{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}}});
+  return mems.$sa$({t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}});
 }
 function coimtd$(coi,name,types,$$$mptypes,noInherit){
   if (noInherit && !extendsType($$$mptypes.Container$getMethod,{t:coi.tipo})) {
@@ -220,9 +220,10 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
     validate$params(mm.ps,_a,"Wrong number of Arguments for getMethod");
     _a=tupleize$params(mm.ps);
   }
-  if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit))
+  if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit)){
     return null;
-  return AppliedMethod$jsint(fun, types, {Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
+  }
+  return AppliedMethod$jsint(fun,$ci2na$(types),{Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
 }
 function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
@@ -239,17 +240,17 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
         if (!extendsType(mm.$t,$$$mptypes.Type$getMethods))continue;
         var anns=allann$(mm);
         if (!mm.tp && anns && coi$is$anns(anns,ats) && validate$params(mm.ps,$$$mptypes.Arguments$getMethods,'',1)) {
-          var types=[].rt$({t:Type$meta$model,a:{Type:{t:Anything}}});
+          var types=[];
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }
           mems.push(AppliedMethod$jsint(mem,undefined,{Container$AppliedMethod:{t:_tipo},
-                    Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:types}));
+                    Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:types.length?{t:'T',l:types}:{t:Empty}}));
         }
       }
     }
   }
-  return mems.length===0?empty():ArraySequence(mems,{Element$ArraySequence:{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}}});
+  return mems.$sa$({t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}});
 }
 //ClassOrInterface.satisfiedTypes
 function coisattype$(coi){
@@ -265,7 +266,7 @@ function coisattype$(coi){
         rv.push(AppliedInterface$jsint(ifc.t, {Type$AppliedInterface:ifc}));
       }
     }
-    return rv.rt$({t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
+    return $arr$(rv,{t:InterfaceModel$meta$model,a:{Type$InterfaceModel:{t:Anything}}});
   }
   return empty();
 }
@@ -294,7 +295,7 @@ function coicase$(coi){
         rv.push(cts[i]());
       }
     }
-    return rv.length===0?empty():ArraySequence(rv,{Element$ArraySequence:{t:coi.tipo}});
+    return rv.$sa$({t:coi.tipo});
   }
   return empty();
 }
@@ -580,7 +581,7 @@ function _coitargl_$(coi,makeItem,listarg){
         }
         ord.push(makeItem(coi,_targ||0,targ));
       }
-      return ArraySequence(ord,{Element$ArraySequence:listarg});
+      return ord.$sa$(listarg);
     }
     return empty();
   }
@@ -639,7 +640,7 @@ function coiut$(coi,t,ot){
     return t.union(coi,{Other$union:ot});
   }
   var _ut={t:'u',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
-  return AppliedUnionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedUnionType:_ut});
+  return AppliedUnionType$jsint(_ut,$arr$([coi,t],_ut,1),{Union$AppliedUnionType:_ut});
 }
 //Intersection type of the receiving type with a new one
 function coiit$(coi,t,ot){
@@ -647,7 +648,7 @@ function coiit$(coi,t,ot){
     return t.intersection(coi,{Other$intersection:ot});
   }
   var _ut={t:'i',l:[coi.$$targs$$.Type$ClassOrInterface,t.$$targs$$.Target$Type]};
-  return AppliedIntersectionType$jsint(_ut,[coi,t].rt$(_ut,1),{Union$AppliedIntersectionType:_ut});
+  return AppliedIntersectionType$jsint(_ut,$arr$([coi,t],_ut,1),{Union$AppliedIntersectionType:_ut});
 }
 //Get annotations from ClassOrInterface, based on the specified annotation types
 function coi$get$anns(anntypes) {

@@ -6,6 +6,6 @@ function memberApply(cont,types,$mptypes){
   validate$params(mm.ps,$mptypes.Arguments$memberApply,"Wrong number of Arguments for memberApply");
   var ta={t:this.tipo};
   validate$typeparams(ta,mm.tp,types);
-  return AppliedMethod$jsint(this.tipo,types,{Container$AppliedMethod:$mptypes.Container$memberApply,
+  return AppliedMethod$jsint(this.tipo,$ci2na$(types),{Container$AppliedMethod:$mptypes.Container$memberApply,
     Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:tupleize$params(mm.ps,ta.a)});
 }
