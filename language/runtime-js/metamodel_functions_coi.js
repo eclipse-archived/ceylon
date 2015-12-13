@@ -220,9 +220,10 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
     validate$params(mm.ps,_a,"Wrong number of Arguments for getMethod");
     _a=tupleize$params(mm.ps);
   }
-  if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit))
+  if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit)){
     return null;
-  return AppliedMethod$jsint(fun, types, {Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
+  }
+  return AppliedMethod$jsint(fun,$ci2na$(types),{Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
 }
 function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];

@@ -25,6 +25,15 @@ Array.prototype.equals=function arrayEquals(o) {
   }
   return false;
 }
+//Ceylon Iterable to Native Array
+function $ci2na$(ci){
+  if (ci===undefined||ci===empty())return [];
+  var a=Array(ci.size),i=0,iter=ci.iterator(),next;
+  while ((next=iter.next())!==finished()) {
+    a[i++]=next;
+  }
+  return a;
+}
 Array.prototype.contains=function arrayContains(o){
   for (var i=0;i<this.length;i++) {
     if (o===null) {
