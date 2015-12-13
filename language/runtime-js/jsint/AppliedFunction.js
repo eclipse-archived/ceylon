@@ -4,10 +4,10 @@ function AppliedFunction$jsint(m,$$targs$$,o,mptypes) {
   var mm=getrtmm$$(m);
   var ttargs;
   if (mm.tp) {
-    if (!mptypes || mptypes.size<1)throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
+    if (!mptypes || mptypes.length<1)throw TypeApplicationException$meta$model("Missing type arguments for AppliedFunction");
     var i=0;ttargs={};
     for (var tp in mm.tp) {
-      var _ta=mptypes.$_get?mptypes.$_get(i):mptypes[i];
+      var _ta=mptypes[i];
       if(_ta&&_ta.tipo)ttargs[tp]={t:_ta.tipo};
       else if (_ta) console.log("TODO assign type arg " + _ta + " to " + tp);
       else if (mptypes[tp])ttargs[tp]=mptypes[tp];
