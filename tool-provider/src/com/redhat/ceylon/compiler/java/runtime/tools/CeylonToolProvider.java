@@ -4,7 +4,6 @@ import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaCompilerImpl;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaRunnerImpl;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptCompilerImpl;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.JavaScriptRunnerImpl;
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleNotFoundException;
 
 
 public class CeylonToolProvider {

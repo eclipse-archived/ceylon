@@ -16,6 +16,7 @@ import com.redhat.ceylon.cmr.impl.FlatRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.tools.ModuleLoader;
+import com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleGraph.Module;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;

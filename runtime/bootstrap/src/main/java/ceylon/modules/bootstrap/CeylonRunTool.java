@@ -46,8 +46,8 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.compiler.java.runtime.tools.Backend;
 import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
+import com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleNotFoundException;
 
 @Summary("Executes a Ceylon program")
 @Description(

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.runtime.tools.impl;
+package com.redhat.ceylon.compiler.java.runtime.tools;
 
 public class ModuleNotFoundException extends RuntimeException {
 
