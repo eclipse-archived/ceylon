@@ -900,11 +900,9 @@ public class Main {
             classPath = new ClassPath(parsedOverrides);
             visited = new HashSet<ClassPath.Module>();
             registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false);
-            registerInMetamodel("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
-            registerInMetamodel("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false);
         }
         if(module.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;

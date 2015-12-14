@@ -27,7 +27,6 @@
         <resource-root path="com.redhat.ceylon.model-@ceylon-version@.jar"/>
     </resources>
     <dependencies>
-        <module name="ceylon.language" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
         <system export="true">

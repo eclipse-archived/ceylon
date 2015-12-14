@@ -49,11 +49,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 		if (moduleVersion != null) {
 			success = true;
 			success &= internalLoadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
             success &= internalLoadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false);
 			success &= internalLoadModule(moduleName, moduleVersion, false);
 		}
 		

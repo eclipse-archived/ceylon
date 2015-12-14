@@ -486,12 +486,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.compiler.js", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION), false, false, Backend.Java));
         
