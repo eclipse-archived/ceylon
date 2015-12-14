@@ -31,6 +31,7 @@
     <property name="ceylon.language.dir" location="${projects.base.dir}/language"/>
     <property name="ceylon-module-resolver.dir" location="${projects.base.dir}/cmr"/>
     <property name="ceylon-runtime.dir" location="${projects.base.dir}/runtime"/>
+    <property name="ceylon-tool-provider.dir" value="${projects.base.dir}/tool-provider"/>
     <property name="ceylon-js.dir" location="${projects.base.dir}/compiler-js"/>
     
     <property name="github-url" value="https://github.com/"/>
@@ -215,7 +216,7 @@ Use this when NOT doing a release!">
     <target name="install-all" 
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-                     copy-licenses, install-language, install-runtime,
+                     copy-licenses, install-runtime,
                      add-module-descriptors, copy-dist-bin, generate-buildid"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
@@ -225,7 +226,7 @@ Use this when NOT doing a release!">
         <antcall target="osgi-internal"/>
     </target>
     <target name="osgi-internal"
-        depends="setup-repo, install-compiler, install-js, install-language, install-runtime">
+        depends="setup-repo, install-compiler, install-js, install-runtime">
         <antcall target="osgi-quick"/>
     </target>
     <target name="osgi-quick">
@@ -240,7 +241,7 @@ Use this when NOT doing a release!">
         <antcall target="osgi-p2-internal"/>
     </target>
     <target name="osgi-p2-internal"
-        depends="setup-repo, install-compiler, install-js, install-language, install-runtime">
+        depends="setup-repo, install-compiler, install-js, install-runtime">
         <antcall target="osgi-p2-quick"/>
     </target>
     <target name="osgi-p2-quick">
@@ -455,7 +456,16 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-runtime" depends="install-cmr,install-runtime-nodeps" />
+    <target name="install-tool-provider" depends="install-language,install-tool-provider-nodeps" />
+    <target name="install-tool-provider-nodeps">
+        <ant antfile="${ceylon-tool-provider.dir}/build.xml" target="publish" dir="${ceylon-tool-provider.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-runtime" depends="install-tool-provider,install-runtime-nodeps" />
     <target name="install-runtime-nodeps">
         <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>

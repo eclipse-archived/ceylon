@@ -1,6 +1,11 @@
 package com.redhat.ceylon.compiler.java.runtime;
 
+
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -12,6 +17,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
+
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
+import javax.tools.JavaCompiler.CompilationTask;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -19,6 +32,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
+import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.runtime.launcher.ToolsTestRunner;
 import com.redhat.ceylon.compiler.java.runtime.tools.Backend;
@@ -40,6 +54,14 @@ public class ToolsTest {
     private static String FlatRepoLib = BuildToolsBuildDir + "/lib";
     private static String FlatRepoOverrides = BuildToolsBuildDir + "/overrides";
     
+    public static String getCurrentPackagePath() {
+        return "test/"+getCurrentPackagePathPart();
+    }
+
+    public static String getCurrentPackagePathPart() {
+        return ToolsTest.class.getPackage().getName().replace('.', '/');
+    }
+
     @Rule 
     public TestName name = new TestName();
 
@@ -81,22 +103,22 @@ public class ToolsTest {
 
         // add the override
         String override = "foo.user-1-module.xml";
-        FileUtil.copyAll(new File(MainTest.getCurrentPackagePath(), override), overridesRepo);
+        FileUtil.copyAll(new File(getCurrentPackagePath(), override), overridesRepo);
         
         // add the Dependency override
         String dependencyOverrides = "overrides.xml";
-        FileUtil.copyAll(new File(MainTest.getCurrentPackagePath(), dependencyOverrides), overridesRepo);
+        FileUtil.copyAll(new File(getCurrentPackagePath(), dependencyOverrides), overridesRepo);
 
         // now make the flat repo with Vertx lib (mockup)
         File flatRepo2 = new File(FlatRepoLib);
         FileUtil.delete(flatRepo2);
         flatRepo2.mkdirs();
 
-        File providerJar = MainTest.compileAndJar("foo.provider", "Provider");
+        File providerJar = compileAndJar("foo.provider", "Provider");
         try{
             File providerJarInRepo = new File(flatRepo2, "foo.provider-1.jar");
             Files.copy(providerJar.toPath(), providerJarInRepo.toPath());
-            File userJar = MainTest.compileAndJar("foo.user", "User", providerJarInRepo);
+            File userJar = compileAndJar("foo.user", "User", providerJarInRepo);
             try{
                 Files.copy(userJar.toPath(), new File(flatRepo2, "foo.user-1.jar").toPath());
             }finally{
@@ -110,11 +132,11 @@ public class ToolsTest {
         File toolsTestClasses = new File(BuildToolsClassesDir);
         FileUtil.delete(toolsTestClasses);
         toolsTestClasses.mkdirs();
-        File toolsTestClassesDest = new File(toolsTestClasses, MainTest.getCurrentPackagePathPart());
+        File toolsTestClassesDest = new File(toolsTestClasses, getCurrentPackagePathPart());
         toolsTestClassesDest.mkdirs();
         final Path toolsTestClassesDestPath = toolsTestClassesDest.toPath();
 
-        File dir = new File("build/test/"+MainTest.getCurrentPackagePathPart());
+        File dir = new File("build/test/"+getCurrentPackagePathPart());
         Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path>(){
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -258,7 +280,7 @@ public class ToolsTest {
     }
     
     private void testCompiler(Compiler compiler, String module, String expectedVersion, boolean useDependenciesOverrides) throws IOException {
-        File moduleStart = new File("test-jvm/"+module.replace('.', '/'));
+        File moduleStart = new File("test/"+module.replace('.', '/'));
         final List<File> ceylonFiles = new LinkedList<File>();
         Files.walkFileTree(moduleStart.toPath(), new SimpleFileVisitor<Path>(){
             @Override
@@ -293,7 +315,7 @@ public class ToolsTest {
             }
         };
         CompilerOptions options = new CompilerOptions();
-        options.addSourcePath(new File("test-jvm"));
+        options.addSourcePath(new File("test"));
         options.setSystemRepository(SystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         if (useDependenciesOverrides) {
@@ -308,11 +330,58 @@ public class ToolsTest {
         Assert.assertEquals(expectedVersion, compiledVersion[0]);
         if(module.endsWith(".errors")){
             Assert.assertEquals(2, errors.size());
-            Assert.assertTrue(errors.contains("test-jvm/modules/errors/run.ceylon at 1:8 -> type declaration does not exist: 'Error'"));
-            Assert.assertTrue(errors.contains("test-jvm/modules/errors/run.ceylon at 1:14 -> does not definitely return: 'run' has branches which do not end in a return statement"));
+            Assert.assertTrue(errors.contains("test/modules/errors/run.ceylon at 1:8 -> type declaration does not exist: 'Error'"));
+            Assert.assertTrue(errors.contains("test/modules/errors/run.ceylon at 1:14 -> does not definitely return: 'run' has branches which do not end in a return statement"));
             Assert.assertFalse(ret);
         }else{
             Assert.assertTrue(ret);
         }
+    }
+
+    public static File compileAndJar(String javaModule, String javaClassName) throws IOException{
+        return compileAndJar(javaModule, javaClassName, null);
+    }
+    
+    public static File compileAndJar(String javaModule, String javaClassName, File addToClassPath) throws IOException{
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+        
+        String javaModulePath = javaModule.replace('.', '/');
+        File moduleFile = new File("test/"+javaModulePath, javaClassName+".java");
+        Iterable<? extends JavaFileObject> units = fileManager.getJavaFileObjects(moduleFile);
+        File destDir = new File("build/javaModules");
+        FileUtil.delete(destDir);
+        destDir.mkdirs();
+        List<String> options = new LinkedList<String>();
+        options.add("-d");
+        options.add(destDir.getPath());
+        if(addToClassPath != null){
+            options.add("-cp");
+            options.add(addToClassPath.getPath());
+        }
+        CompilationTask task = compiler.getTask(null, null, null, options, null, units);
+        Boolean result = task.call();
+        assertTrue(result != null && result.booleanValue());
+
+        File compiledModuleFile = new File(destDir, javaModulePath+"/"+javaClassName+".class");
+        assertTrue(compiledModuleFile.isFile());
+        
+        return jar(compiledModuleFile, javaModulePath);
+    }
+
+    private static File jar(File sourceFile, String destDir) throws IOException {
+        File jarFile = File.createTempFile("ceylonlang-testmain-", ".jar");
+        try {
+            JarOutputStream jar = new JarOutputStream(new FileOutputStream(jarFile));
+            String dirName = destDir.isEmpty() ? sourceFile.getName() : destDir+"/"+sourceFile.getName();
+            ZipEntry entry = new ZipEntry(dirName);
+            jar.putNextEntry(entry);
+            // relative to this file
+            IOUtils.copyStream(new FileInputStream(sourceFile), jar, true, true);
+        } catch (Exception ex) {
+            FileUtil.deleteQuietly(jarFile);
+            throw ex;
+        }
+        return jarFile;
     }
 }

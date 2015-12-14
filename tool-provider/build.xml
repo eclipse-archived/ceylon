@@ -1,0 +1,270 @@
+<project name="Ceylon tool provider" default="all" basedir=".">
+
+    <property file="../common/user-build.properties" />
+    <property file="../common/common-build.properties" />
+    <property file="build.properties" />
+
+    <property name="name" value="Ceylon tool provider" />
+    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
+    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
+    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
+
+    <!-- The Java source files for the tool provider -->
+    <property name="tool.provider.src" location="src" />
+    <property name="test.src" location="test"/>
+    <property name="test-launcher.src" location="test-launcher"/>
+    <property name="test.reports" location="${build.dir}/test-reports"/>
+
+    <!-- Directories everything gets built into -->
+    <property name="build" location="build" />
+    <property name="build.classes" location="${build}/classes" />
+    <property name="build.poms" location="${build}/poms" />
+    <property name="build.bin" location="${build}/bin" />
+    <property name="build.lib" location="${build}/lib" />
+    <property name="build.api" location="${build}/api" />
+    <property name="build.dist" location="${build}/dist" />
+    <property name="build.dist.repo" location="${build.dist}/repo" />
+    <property name="build.test" location="${build}/test"/>
+    <property name="build.tools-test" location="${build}/toolsTest/launcher-classes"/>
+    <property name="build.test.repo" location="${build}/test-repo"/>
+
+    <!-- Jarfiles everything ends up in -->
+    <property name="ceylon.tool.provider.dir" value="com/redhat/ceylon/tool/provider/${module.com.redhat.ceylon.tool.provider.version}" />
+    <property name="ceylon.tool.provider.jar" value="${ceylon.tool.provider.dir}/com.redhat.ceylon.tool.provider-${module.com.redhat.ceylon.tool.provider.version}.jar" />
+    <property name="ceylon.tool.provider.src" value="${ceylon.tool.provider.dir}/com.redhat.ceylon.tool.provider-${module.com.redhat.ceylon.tool.provider.version}.src" />
+    <property name="ceylon.tool.provider.lib" location="${ceylon.repo.dir}/${ceylon.tool.provider.jar}" />
+    <property name="ceylon.tool.provider.repo" value="${ceylon.repo.dir}/${ceylon.tool.provider.dir}" />
+    <property name="ceylon.tool.provider.dist" value="${build.dist.repo}/${ceylon.tool.provider.dir}" />
+
+    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
+    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
+    <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
+    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
+    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
+    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
+    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
+    <property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
+    <property name="ceylon.compiler-js.jar" value="${ceylon.compiler-js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar"/>
+    <property name="ceylon.compiler-js.lib" location="${ceylon.repo.dir}/${ceylon.compiler-js.jar}"/>
+    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+    <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}"/>
+    <property name="ceylon.language.car"
+              value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
+    <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}"/>
+
+    <tstamp>
+        <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+    </tstamp>
+
+    <path id="tool.provider.classpath">
+        <pathelement path="${jboss-modules.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.compiler.lib}"/>
+        <pathelement path="${ceylon.compiler-js.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.language.lib}"/>
+    </path>
+
+    <path id="test.compile.classpath">
+        <pathelement path="${build.tools-test}"/>
+        <pathelement path="${ceylon.language.lib}"/>
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${junit.lib}"/>
+    </path>
+    
+    <path id="test.run.classpath">
+        <path refid="test.compile.classpath"/>
+        <pathelement path="${build.test}"/>
+        <pathelement path="${ceylon.typechecker.lib}"/>
+        <pathelement path="${ceylon.compiler.lib}"/>
+        <pathelement path="${jandex.lib}"/>
+    </path>
+
+    <!-- ################################################################## -->
+
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
+    </target>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean">
+        <delete dir="${build}" />
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo" description="Initialize the default local Ceylon module repository">
+        <mkdir dir="${ceylon.tool.provider.repo}" />
+    </target>
+    <target name="clean.repo" description="Clean default local Ceylon module repository">
+        <delete dir="${ceylon.tool.provider.repo}" />
+    </target>
+
+    <target name="dist" depends="build" description="Create Ceylon tool provider distribution">
+        <zip destfile="${build.dist.repo}/${ceylon.tool.provider.src}">
+            <fileset dir="${tool.provider.src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.tool.provider.src}"/>
+        </antcall>
+    </target>
+
+    <target name="publish" depends="dist,clean.repo,init.repo,publish-internal" description="Publish Ceylon tool provider module to default repo">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}" />
+        </copy>
+    </target>
+
+    <!-- Rule to compile and test -->
+    <target name="all" depends="publish" />
+
+    <!-- Rule to build tool provider from their Java sources -->
+    <target name="tool.provider.classes">
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${tool.provider.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="tool.provider.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+            <compilerarg value="-XDignore.symbol.file" />
+            <include name="com/redhat/**" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${tool.provider.src}">
+                <exclude name="com/redhat/**/*.utf8properties" />
+                <include name="com/redhat/**/resources/**" />
+                <include name="com/redhat/**/*.properties" />
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
+        <native2ascii dest="${build.classes}" src="${tool.provider.src}" encoding="UTF-8" ext=".properties">
+            <include name="com/redhat/**/*.utf8properties" />
+        </native2ascii>
+    </target>
+
+    <!-- Rule to build tool provider jar -->
+    <target name="tool.provider.jar" depends="tool.provider.classes">
+        <mkdir dir="${build.dist.repo}/${ceylon.tool.provider.dir}" />
+        <mkdir dir="${build.bin}" />
+        <jar destfile="${build.dist.repo}/${ceylon.tool.provider.jar}">
+            <fileset dir="${build.classes}">
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.tool.provider.java"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.tool.provider.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.tool.provider.jar}" />
+        </antcall>
+    </target>
+
+    <!-- Rule to build tool provider jar -->
+    <target name="build" depends="tool.provider.jar">
+        <mkdir dir="${build.dist}" />
+        <mkdir dir="${build.bin}" />
+    </target>
+
+
+	<target name="ide-quick-internal" depends="tool.provider.classes">
+        <property name="toolProviderArchivePath" value="${ceylon.tool.provider.lib}"/>
+        <basename file="${toolProviderArchivePath}" property="toolProviderArchiveFileName"/>
+        <property name="toolProvider-proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${toolProviderArchiveFileName}"/>
+        <mkdir dir="${toolProvider-proxy-project}"/>
+        <delete failonerror="false" dir="${toolProvider-proxy-project}/META-INF"/>
+        <copy toDir="${toolProvider-proxy-project}" overwrite="true">
+            <zipfileset src="${toolProviderArchivePath}" includes="META-INF/**"/>
+            <fileset file="${toolProviderArchivePath}"/>
+        </copy>
+        <manifest file="${toolProvider-proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${toolProviderArchiveFileName}"/>
+        </manifest>
+
+    </target>
+
+    <target name="compile.tests.setup">
+        <delete dir="${build.test}"/>
+        <mkdir dir="${build.test}"/>
+        <mkdir dir="${build.tools-test}"/>
+    </target>
+
+    <target name="compile.tests" depends="compile.tests.setup,compile.tests.quick">
+    </target>
+
+    <target name="compile.tests.quick">
+        <javac
+            srcdir="${test-launcher.src}"
+            destdir="${build.tools-test}"
+            debug="true"
+            encoding="UTF-8"
+            classpathref="test.compile.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}"
+            includeantruntime="false">
+            <include name="**/*.java"/>
+        </javac>
+        <javac
+            srcdir="${test.src}"
+            destdir="${build.test}"
+            debug="true"
+            encoding="UTF-8"
+            classpathref="test.compile.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}"
+            includeantruntime="false">
+            <include name="**/*.java"/>
+        </javac>
+        <!-- Remove the modules.optional module to check for its unavailability at runtime -->
+        <delete dir="${build.test}/modules/optional"/>
+    </target>
+    
+    <target name="test" depends="compile.tests,test.quick">
+    </target>
+
+    <target name="test.quick"
+        description="compile and run the JVM tests">
+        
+        <mkdir dir="${test.reports}"/>
+        <junit printsummary="yes" haltonfailure="no" 
+            errorproperty="test.fail.junit"
+            failureproperty="test.fail.junit">
+          <classpath refid="test.run.classpath"/>
+          <formatter type="xml"/>
+
+          <batchtest fork="yes" todir="${test.reports}">
+            <fileset dir="${build.test}">
+              <include name="**/*Test.class"/>
+            </fileset>
+          </batchtest>
+        </junit>
+     
+        <!--<junitreport todir="${test.reports}">
+          <fileset dir="${test.reports}">
+            <include name="TEST-*.xml"/>
+          </fileset>
+          <report format="frames" todir="${test.reports}"/>
+        </junitreport>-->
+        
+        <fail if="${test.fail.junit}"  message="There were Junit test failures"/>
+        
+    </target>
+
+</project>

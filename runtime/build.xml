@@ -35,6 +35,11 @@
     <property name="ceylon.model.jar"
               value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
     <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
+    <property name="ceylon.tool.provider.dir"
+              value="com/redhat/ceylon/tool/provider/${module.com.redhat.ceylon.tool.provider.version}"/>
+    <property name="ceylon.tool.provider.jar"
+              value="${ceylon.tool.provider.dir}/com.redhat.ceylon.tool.provider-${module.com.redhat.ceylon.tool.provider.version}.jar"/>
+    <property name="ceylon.tool.provider.lib" location="${ceylon.repo.dir}/${ceylon.tool.provider.jar}"/>
     <property name="ceylon.typechecker.dir"
               value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
     <property name="ceylon.typechecker.jar"
@@ -102,6 +107,7 @@
         <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${ceylon.tool.provider.lib}"/>
         <pathelement path="${jboss-modules.lib}"/>
     </path>
 

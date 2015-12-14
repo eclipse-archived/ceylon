@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="/ceylon/lib/shrinkwrap-spi-1.0.0-cr-1.jar"/>
 	<classpathentry kind="lib" path="dist/repo/org/jboss/logmanager/2.0.3.Final/org.jboss.logmanager-2.0.3.Final.jar"/>
 	<classpathentry kind="lib" path="dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-tool-provider"/>
 	<classpathentry kind="output" path="testsuite/target/test-classes"/>
 </classpath>

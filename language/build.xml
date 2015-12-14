@@ -12,7 +12,6 @@
     <property name="build.dist.repo" location="${build.dist}/repo"/>
     <property name="build.lib" location="${build.dir}/lib"/>
     <property name="build.test" location="${build.dir}/test"/>
-    <property name="build.tools-test" location="${build.dir}/toolsTest/launcher-classes"/>
     <property name="build.test.repo" location="${build.dir}/test-repo"/>
     <property name="ide.dist" location="${basedir}/ide-dist"/>
     
@@ -24,7 +23,6 @@
     <property name="test.res" location="test-resource"/>
     <property name="test.java.src" location="test-java"/>
     <property name="test-jvm.src" location="test-jvm"/>
-    <property name="test-jvm-tools.src" location="test-jvm-tools"/>
     <property name="test-js.src" location="test-js"/>
     <property name="test.reports" location="${build.dir}/test-reports"/>
 
@@ -81,7 +79,6 @@
     </path>
     
     <path id="test.compile.classpath">
-    	<pathelement path="${build.tools-test}"/>
         <pathelement path="${build.dist.repo}/${ceylon.language.car}"/>
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
@@ -573,18 +570,6 @@
             </files>
             <rep url="aether"/>
         </ceylon-compile>
-        <javac
-            srcdir="${test-jvm-tools.src}"
-            destdir="${build.tools-test}"
-            debug="true"
-            encoding="UTF-8"
-            classpathref="test.compile.classpath"
-            target="${compile.java.target}"
-            source="${compile.java.source}"
-            bootclasspath="${compile.java.bootclasspath}"
-            includeantruntime="false">
-            <include name="**/*.java"/>
-        </javac>
         <javac
             srcdir="${test-jvm.src}"
             destdir="${build.test}"
