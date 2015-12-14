@@ -46,8 +46,6 @@ import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleSpec.Option;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultModuleManifest;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
@@ -57,6 +55,7 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.Java9ModuleReader;
 import com.redhat.ceylon.model.loader.Java9ModuleReader.Java9Module;
 import com.redhat.ceylon.model.loader.NamingBase;
+import com.redhat.ceylon.model.loader.OsgiUtil;
 
 /**
  * <p>
@@ -765,12 +764,12 @@ public class Main {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
                 Manifest manifest = new Manifest(inputStream);
-                if (DefaultModuleManifest.isDefaultModule(manifest)) {
+                if (OsgiUtil.DefaultModuleManifest.isDefaultModule(manifest)) {
                     return loadDefaultJar(file);
                 }
                 Attributes attributes = manifest.getMainAttributes();
-                String bundleName = attributes.getValue(OsgiManifest.Bundle_SymbolicName);
-                String bundleVersion = attributes.getValue(OsgiManifest.Bundle_Version);
+                String bundleName = attributes.getValue(OsgiUtil.OsgiManifest.Bundle_SymbolicName);
+                String bundleVersion = attributes.getValue(OsgiUtil.OsgiManifest.Bundle_Version);
                 if (name != null && version != null) {
                     if(!Objects.equals(name, bundleName)|| !Objects.equals(version, bundleVersion))
                         return null;

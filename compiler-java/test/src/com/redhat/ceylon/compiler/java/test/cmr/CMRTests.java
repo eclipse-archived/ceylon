@@ -68,8 +68,6 @@ import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -77,13 +75,14 @@ import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.DiagnosticListener;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaCompiler;
+import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import com.redhat.ceylon.javax.tools.ToolProvider;
-import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.OsgiUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
@@ -1203,10 +1202,10 @@ public class CMRTests extends CompilerTests {
         final Manifest manifest = getManifest(moduleName, moduleVersion);
 
         Attributes attr = manifest.getMainAttributes();
-        assertEquals("2", attr.get(OsgiManifest.Bundle_ManifestVersion));
+        assertEquals("2", attr.get(OsgiUtil.OsgiManifest.Bundle_ManifestVersion));
 
-        assertEquals(moduleName, attr.get(OsgiManifest.Bundle_SymbolicName));
-        String bundleVersion = (String) attr.get(OsgiManifest.Bundle_Version);
+        assertEquals(moduleName, attr.get(OsgiUtil.OsgiManifest.Bundle_SymbolicName));
+        String bundleVersion = (String) attr.get(OsgiUtil.OsgiManifest.Bundle_Version);
         int qualifierIndex = bundleVersion.lastIndexOf('.');
         String bundleVersionWithoutQualifier = qualifierIndex > 0 ? bundleVersion.substring(0, qualifierIndex) : bundleVersion;
         assertEquals(moduleVersion, bundleVersionWithoutQualifier);
@@ -1220,10 +1219,10 @@ public class CMRTests extends CompilerTests {
         assertTrue(carFile.exists());
 
         try (JarFile car = new JarFile(carFile)) {
-            ZipEntry manifest = car.getEntry(OsgiManifest.MANIFEST_FILE_NAME);
+            ZipEntry manifest = car.getEntry(OsgiUtil.OsgiManifest.MANIFEST_FILE_NAME);
             try (InputStream input = car.getInputStream(manifest)) {
                 Manifest m = new Manifest(input);
-                Assert.assertTrue(JarEntryManifestFileObject.DefaultModuleManifest.isDefaultModule(m));
+                Assert.assertTrue(OsgiUtil.DefaultModuleManifest.isDefaultModule(m));
             }
         }
     }
@@ -1244,7 +1243,7 @@ public class CMRTests extends CompilerTests {
         File carFile = getModuleArchive(moduleName, moduleVersion);
         JarFile car = new JarFile(carFile);
 
-        ZipEntry manifest = car.getEntry(OsgiManifest.MANIFEST_FILE_NAME);
+        ZipEntry manifest = car.getEntry(OsgiUtil.OsgiManifest.MANIFEST_FILE_NAME);
         assertNull(manifest);
         
         car.close();
@@ -1261,7 +1260,7 @@ public class CMRTests extends CompilerTests {
 
         assertEquals("ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport" +
                 ",com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
-                manifest.getMainAttributes().get(OsgiManifest.Require_Bundle));
+                manifest.getMainAttributes().get(OsgiUtil.OsgiManifest.Require_Bundle));
     }
 
     @Test
@@ -1278,7 +1277,7 @@ public class CMRTests extends CompilerTests {
         assertNotNull(manifest);
 
         Attributes attr = manifest.getMainAttributes();
-        String attribute = (String) attr.get(OsgiManifest.Export_Package);
+        String attribute = (String) attr.get(OsgiUtil.OsgiManifest.Export_Package);
 
         String[] exportPackage = attribute.split(",");
         assertEquals(2, exportPackage.length);
@@ -1309,7 +1308,7 @@ public class CMRTests extends CompilerTests {
         final Manifest manifest = getManifest(moduleBName, moduleVersion);
 
         final String[] requireBundle = ((String) manifest.getMainAttributes()
-                .get(OsgiManifest.Require_Bundle)).split(",");
+                .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(3, requireBundle.length);
 
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
@@ -1341,7 +1340,7 @@ public class CMRTests extends CompilerTests {
         final Manifest manifest = getManifest(moduleBName, moduleVersion);
 
         final String[] requireBundle = ((String) manifest.getMainAttributes()
-                .get(OsgiManifest.Require_Bundle)).split(",");
+                .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(1, requireBundle.length);
 
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
@@ -1371,7 +1370,7 @@ public class CMRTests extends CompilerTests {
         final Manifest manifest = getManifest(moduleBName, moduleVersion);
 
         final String[] requireBundle = ((String) manifest.getMainAttributes()
-                .get(OsgiManifest.Require_Bundle)).split(",");
+                .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(2, requireBundle.length);
 
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
@@ -1394,7 +1393,7 @@ public class CMRTests extends CompilerTests {
 
         final Manifest manifest = getManifest(moduleCName, moduleVersion);
         final String[] requireBundle = ((String) manifest.getMainAttributes()
-                .get(OsgiManifest.Require_Bundle)).split(",");
+                .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
 
         assertEquals(3, requireBundle.length);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
@@ -1414,7 +1413,7 @@ public class CMRTests extends CompilerTests {
         
         final Manifest manifest = getManifest(moduleName, moduleVersion);
         assertEquals("osgi.ee;filter:=\"(&(osgi.ee=JavaSE)(version>=1.7))\"",
-                manifest.getMainAttributes().get(OsgiManifest.Require_Capability));
+                manifest.getMainAttributes().get(OsgiUtil.OsgiManifest.Require_Capability));
     }
     
     private Manifest getManifest(String moduleName, String moduleVersion) throws IOException {

@@ -45,15 +45,13 @@ import com.redhat.ceylon.cmr.util.JarUtils.JarEntryFilter;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.CeylonManifest;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.DefaultModuleManifest;
-import com.redhat.ceylon.compiler.java.tools.JarEntryManifestFileObject.OsgiManifest;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
+import com.redhat.ceylon.model.loader.OsgiUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class JarOutputRepositoryManager {
@@ -255,11 +253,13 @@ public class JarOutputRepositoryManager {
                 // Add META-INF/MANIFEST.MF
                 if (writeOsgiManifest && manifest == null) {
                     // Copy the previous manifest
-                    Manifest manifest = (module.isDefault() ? new DefaultModuleManifest() : new OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles, null)).build();
+                    Manifest manifest = (module.isDefault() 
+                    		? new OsgiUtil.DefaultModuleManifest() 
+                    	    : new OsgiUtil.OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles, new JavacLogger(options, log))).build();
                     writeManifestJarEntry(manifestFirst, manifest);
                 } else if (manifest != null && !module.isDefault()) {
                     // Use the added manifest
-                    manifest.writeManifest(manifestFirst, log);
+                    manifest.writeManifest(manifestFirst, new JavacLogger(options, log));
                 }
                 
                 // Add META-INF/.../pom.xml and pom.properties
@@ -325,7 +325,7 @@ public class JarOutputRepositoryManager {
                     } else {
                         return modifiedResourceFilesRel.contains(entryFullName)
                                 || entryFullName.equals(MAPPING_FILE)
-                                || (writeOsgiManifest && OsgiManifest.isManifestFileName(entryFullName))
+                                || (writeOsgiManifest && OsgiUtil.OsgiManifest.isManifestFileName(entryFullName))
                                 || (writeMavenManifest && MavenPomUtil.isMavenDescriptor(entryFullName, module));
                     }
                 }
@@ -335,7 +335,7 @@ public class JarOutputRepositoryManager {
         /** Add a {@code META-INF/MANIFEST.MF} entry using the given {@code manifest} */
         private static void writeManifestJarEntry(JarOutputStream out, Manifest manifest) {
             try {
-                out.putNextEntry(new ZipEntry(OsgiManifest.MANIFEST_FILE_NAME));
+                out.putNextEntry(new ZipEntry(OsgiUtil.OsgiManifest.MANIFEST_FILE_NAME));
                 manifest.write(out);
             }
             catch (IOException e) {
@@ -424,7 +424,7 @@ public class JarOutputRepositoryManager {
             } else {
                 modifiedResourceFilesRel.add(entryName);
                 modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
-                if (CeylonManifest.isManifestFileName(entryName) && 
+                if (OsgiUtil.CeylonManifest.isManifestFileName(entryName) && 
                         (module.isDefault() || writeOsgiManifest)) {
                     manifest = new JarEntryManifestFileObject(outputJarFile.getPath(), entryName, module, osgiProvidedBundles);
                     return manifest;
