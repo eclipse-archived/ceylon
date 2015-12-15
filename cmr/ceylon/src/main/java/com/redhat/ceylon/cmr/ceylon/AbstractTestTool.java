@@ -2,6 +2,7 @@ package com.redhat.ceylon.cmr.ceylon;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -219,18 +220,19 @@ public abstract class AbstractTestTool extends RepoUsingTool {
 
     private String findTestVersionInDependecies(ModuleDependencyInfo module, Queue<ModuleDependencyInfo> queue) {
         Collection<ModuleVersionDetails> moduleDetailsCollection = getModuleVersions(module.getName(), module.getVersion(), type, binaryMajor, binaryMinor);
-        ModuleVersionDetails moduleDetails = moduleDetailsCollection.iterator().next();
-        
-        for (ModuleDependencyInfo dependency : moduleDetails.getDependencies()) {
-            if( dependency.getName().equals("ceylon.test") ) {
-                return dependency.getVersion();
+        Iterator<ModuleVersionDetails> moduleDetailsIterator = moduleDetailsCollection.iterator();
+        if( moduleDetailsIterator.hasNext() ) {
+            ModuleVersionDetails moduleDetails = moduleDetailsIterator.next();
+            for (ModuleDependencyInfo dependency : moduleDetails.getDependencies()) {
+                if( dependency.getName().equals("ceylon.test") ) {
+                    return dependency.getVersion();
+                }
+                if( dependency.getName().equals("ceylon.language") ) {
+                    continue;
+                }
+                queue.add(dependency);
             }
-            if( dependency.getName().equals("ceylon.language") ) {
-                continue;
-            }
-            queue.add(dependency);
         }
-        
         return null;
     }
     
