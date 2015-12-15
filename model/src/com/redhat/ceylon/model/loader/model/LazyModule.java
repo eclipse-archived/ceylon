@@ -181,7 +181,9 @@ public abstract class LazyModule extends Module {
     }
 
     private void addPackageForPath(String path, PathFilter pathFilter) {
-        if(path.toLowerCase().endsWith(".class")){
+        if(path.toLowerCase().endsWith(".class")
+                // skip Java 9 module descriptors
+                && !path.equals("module-info.class")){
             int sep = path.lastIndexOf('/');
             if(sep != -1)
                 path = path.substring(0, sep);

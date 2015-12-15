@@ -5517,7 +5517,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected boolean isModuleOrPackageDescriptorName(String name) {
-        return name.equals(NamingBase.MODULE_DESCRIPTOR_CLASS_NAME) || name.equals(NamingBase.PACKAGE_DESCRIPTOR_CLASS_NAME);
+        return name.equals(NamingBase.MODULE_DESCRIPTOR_CLASS_NAME) 
+                || name.equals(NamingBase.PACKAGE_DESCRIPTOR_CLASS_NAME)
+                // Java 9 module descriptors, to not load as declarations
+                || name.equals("module-info");
     }
     
     protected void loadJavaBaseArrays(){
