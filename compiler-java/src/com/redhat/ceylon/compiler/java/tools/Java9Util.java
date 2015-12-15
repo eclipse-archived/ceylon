@@ -291,7 +291,6 @@ public class Java9Util {
 		zipFile.close();
 		
 		if(info != null && moduleName != null && version != null){
-			System.err.println(" Writing module descriptor for "+moduleName+"/"+version);
 			writeModuleDescriptor(zos, new Java9ModuleDescriptor(moduleName, version, info, packages));
 		}
 		zos.flush();
