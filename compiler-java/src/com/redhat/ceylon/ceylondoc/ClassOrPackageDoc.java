@@ -719,31 +719,6 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
         }
     }
     
-    protected final void writeSee(Declaration decl) throws IOException {
-        Annotation see = Util.getAnnotation(decl.getUnit(), decl.getAnnotations(), "see");
-        if(see == null)
-            return;
-
-        open("div class='see section'");
-        around("span class='title'", "See also ");
-        
-        open("span class='value'");
-        boolean first = true;
-        for (String target : see.getPositionalArguments()) {
-            if (!first) {
-                write(", ");
-            } else {
-                first = false;
-            }
-            //TODO: add 'identifier' or 'type-identitier' CSS class
-            linkRenderer().to(target).withinText(true).useScope(decl)
-                .printAbbreviated(false).printTypeParameters(false).write();
-        }
-        close("span");
-        
-        close("div");
-    }
-
     protected final void writeAliases(Declaration decl) throws IOException {
         Annotation see = Util.getAnnotation(decl.getUnit(), decl.getAnnotations(), "aliased");
         if(see == null)

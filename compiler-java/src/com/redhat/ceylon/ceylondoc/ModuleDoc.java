@@ -90,6 +90,7 @@ public class ModuleDoc extends CeylonDoc {
         writeAnnotations(module);
         writePlatform(module);
         writeBy(module);
+        writeSee(module);
         writeLicense(module);
 
         close("div");

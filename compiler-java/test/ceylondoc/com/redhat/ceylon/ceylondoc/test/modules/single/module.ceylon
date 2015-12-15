@@ -20,4 +20,5 @@
 "This is a **test** module"
 by("Tom Bentley")
 license("http://www.gnu.org/licenses/gpl.html")
+see(`value stubObject`)
 module com.redhat.ceylon.ceylondoc.test.modules.single "3.1.4" {}

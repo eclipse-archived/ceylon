@@ -185,6 +185,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         around("div class='doc'", doc);
         writeAnnotations(pkg);
         writeBy(pkg);
+        writeSee(pkg);
         close("div");
     }
     

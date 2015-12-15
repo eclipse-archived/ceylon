@@ -18,4 +18,5 @@
  * MA  02110-1301, USA.
  */
 "This is a **test** package"
+see(`class StubClass`)
 shared package com.redhat.ceylon.ceylondoc.test.modules.single;
