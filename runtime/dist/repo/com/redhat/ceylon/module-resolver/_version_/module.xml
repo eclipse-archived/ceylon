@@ -36,6 +36,9 @@
         <module name="com.github.lookfirst.sardine" slot="5.1"/>
         <module name="net.minidev.json-smart" slot="1.1.1"/>
         <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
+        <!-- Aka java.xml/9 -->
+        <module name="javax.xml" slot="7"/>
+        <module name="java.logging" slot="7"/>
         <system export="true">
             <paths>
                 <path name="javax/xml"/>
