@@ -170,8 +170,6 @@ public class JDKUtils {
                         throw new RuntimeException("Failed to read JDK module list file from " + file + ": module has empty name");
                     // close previous module
                     if (tuple != null) {
-                        if (tuple.isEmpty())
-                            throw new RuntimeException("Failed to read JDK module list file from " + file + ": module " + moduleName + " is empty");
                         // save previous module
                         jdkPackages.put(moduleName, tuple.finish());
                     }
@@ -190,8 +188,6 @@ public class JDKUtils {
             bis.close();
             // close previous module
             if (tuple != null) {
-                if (tuple.isEmpty())
-                    throw new RuntimeException("Failed to read JDK module list file from " + file + ": module " + moduleName + " is empty");
                 // save previous module
                 jdkPackages.put(moduleName, tuple.finish());
             }
