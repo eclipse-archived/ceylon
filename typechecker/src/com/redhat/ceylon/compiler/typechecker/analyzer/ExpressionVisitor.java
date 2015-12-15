@@ -545,7 +545,7 @@ public class ExpressionVisitor extends Visitor {
             else if (unit.isEmptyType(sequenceType)) {
                 se.addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
                         sequenceType.asString(unit) + 
-                        "' is a subtype of `Empty`");
+                        "' is a subtype of 'Empty'");
             }
             else if (unit.isTupleType(sequenceType)) {
                 destructureTuple(se, sequenceType, patterns, 
