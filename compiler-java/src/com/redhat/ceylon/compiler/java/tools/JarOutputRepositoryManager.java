@@ -362,12 +362,7 @@ public class JarOutputRepositoryManager {
         }
 
         private void writeJava9Module(Set<String> foldersAlreadyAdded, JarOutputStream manifestFirst, Module module) {
-        	System.err.println("Adding Java9 manifest to "+manifestFirst);
-        	try{
-        		Java9Util.writeModuleDescriptor(manifestFirst, new Java9Util.Java9ModuleDescriptor(module));
-        	}catch(Throwable t){
-        		t.printStackTrace();
-        	}
+        	Java9Util.writeModuleDescriptor(manifestFirst, new Java9Util.Java9ModuleDescriptor(module));
         }
 
         /** 

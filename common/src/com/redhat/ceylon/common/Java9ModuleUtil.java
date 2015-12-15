@@ -109,7 +109,6 @@ public class Java9ModuleUtil {
         InvocationHandler handler = new InvocationHandler() {
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				System.err.println("Proxy invoke of "+method);
 				return moduleClassLoader;
 			}
 		};
