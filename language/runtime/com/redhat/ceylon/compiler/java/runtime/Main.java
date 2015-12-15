@@ -755,7 +755,6 @@ public class Main {
         }
 
         private Module loadJava9ModuleJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
-        	System.err.println("Load Java 9 module: "+file);
         	Java9Module java9Module = Java9ModuleReader.getJava9Module(zipFile, moduleDescriptor);
         	if(java9Module != null)
         		return new Module(java9Module.name, java9Module.version, Type.JAVA9, file);
