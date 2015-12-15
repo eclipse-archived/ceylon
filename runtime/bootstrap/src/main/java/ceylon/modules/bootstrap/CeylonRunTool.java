@@ -27,8 +27,6 @@ import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
-import ceylon.modules.CeylonRuntimeException;
-
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
@@ -48,6 +46,9 @@ import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
 import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
+
+import ceylon.modules.CeylonRuntimeException;
+import ceylon.modules.bootstrap.loader.InitialModuleLoader;
 
 @Summary("Executes a Ceylon program")
 @Description(
@@ -242,6 +243,7 @@ public class CeylonRunTool extends RepoUsingTool {
                 synchronized (ModuleLoader.class) {
                     if (runtimeModule == null) {
                         org.jboss.modules.Module.setModuleLogger(new NoGreetingJDKModuleLogger());
+                        System.setProperty("boot.module.loader", InitialModuleLoader.class.getName());
                         org.jboss.modules.Main.main(setupArguments(argList, sysRep, ceylonVersion));
                         // set runtime module
                         ModuleLoader ml = Module.getBootModuleLoader();
