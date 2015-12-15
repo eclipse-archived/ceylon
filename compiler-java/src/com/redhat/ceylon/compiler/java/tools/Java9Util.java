@@ -48,6 +48,7 @@ import com.redhat.ceylon.langtools.classfile.ConstantPool.CPInfo;
 import com.redhat.ceylon.langtools.classfile.MainClass_attribute;
 import com.redhat.ceylon.langtools.classfile.Module_attribute;
 import com.redhat.ceylon.langtools.classfile.Version_attribute;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -74,6 +75,8 @@ public class Java9Util {
 			}
 			for(ModuleImport imp : module.getImports()){
 				String dependency = JDKUtils.getJava9ModuleName(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+				if(skipModuleImport(dependency))
+					continue;
 				imports.add(new Java9ModuleImport(dependency, imp.isExport()));
 			}
 			addImplicitImports();
@@ -86,6 +89,8 @@ public class Java9Util {
 			exportedPackages.addAll(packages);
 			for(ModuleDependencyInfo imp : info.getDependencies()){
 				String dependency = JDKUtils.getJava9ModuleName(imp.getName(), imp.getVersion());
+				if(skipModuleImport(dependency))
+					continue;
 				imports.add(new Java9ModuleImport(dependency, imp.isExport()));
 			}
 			addImplicitImports();
