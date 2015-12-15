@@ -73,7 +73,8 @@ public class Java9Util {
 					concealedPackages.add(pkg.getNameAsString());
 			}
 			for(ModuleImport imp : module.getImports()){
-				imports.add(new Java9ModuleImport(imp.getModule().getNameAsString(), imp.isExport()));
+				String dependency = JDKUtils.getJava9ModuleName(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+				imports.add(new Java9ModuleImport(dependency, imp.isExport()));
 			}
 			addImplicitImports();
 			main = getMain(module.getNameAsString());
@@ -84,10 +85,19 @@ public class Java9Util {
 			this.version = version;
 			exportedPackages.addAll(packages);
 			for(ModuleDependencyInfo imp : info.getDependencies()){
-				imports.add(new Java9ModuleImport(imp.getName(), imp.isExport()));
+				String dependency = JDKUtils.getJava9ModuleName(imp.getName(), imp.getVersion());
+				imports.add(new Java9ModuleImport(dependency, imp.isExport()));
 			}
 			addImplicitImports();
 			main = getMain(name);
+		}
+
+		private boolean skipModuleImport(String dependency) {
+			// model depends on language but only at runtime, Java 9 adds this dependency at runtime and
+			// will barf if it sees it at compile-time, so special-case it
+			if(name.equals("com.redhat.ceylon.model") && dependency.equals(Module.LANGUAGE_MODULE_NAME))
+				return true;
+			return false;
 		}
 
 		private String getMain(String module) {

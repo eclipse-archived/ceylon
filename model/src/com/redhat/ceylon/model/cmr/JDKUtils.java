@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -11,6 +16,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import com.redhat.ceylon.model.loader.Java9ModuleReader;
+import com.redhat.ceylon.model.loader.Java9ModuleReader.Java9Module;
+import com.redhat.ceylon.model.loader.Java9ModuleReader.Java9ModuleDependency;
 
 /**
  * Hide JDK impl details here.
@@ -81,6 +92,18 @@ public class JDKUtils {
     private static Map<String, Tuple> jdkModules;
     private static Map<String, Tuple> jdkOracleModules;
     private static HashMap<String, String> jdkPackageToModule;
+    private static Map<String,String> java8To9ModuleAliases = new HashMap<>();
+    
+    static{
+        java8To9ModuleAliases.put("javax.annotation", "java.annotation.common");
+        java8To9ModuleAliases.put("java.auth", "java.security.sasl");
+        java8To9ModuleAliases.put("java.auth.kerberos", "java.security.jgss");
+        java8To9ModuleAliases.put("java.jdbc", "java.sql");
+        java8To9ModuleAliases.put("java.jdbc.rowset", "java.sql.rowset");
+        java8To9ModuleAliases.put("javax.script", "java.scripting");
+        java8To9ModuleAliases.put("javax.xml", "java.xml");
+        java8To9ModuleAliases.put("javax.xmldsig", "java.xml.crypto");
+    }
 
     private static class Tuple {
         private Set<String> packages;
@@ -258,5 +281,73 @@ public class JDKUtils {
     public static String getJDKModuleNameForPackage(String pkgName) {
         loadPackageList();
         return jdkPackageToModule.get(pkgName);
+    }
+    
+    public static void main(String[] args) throws IOException {
+        
+//        FileSystem fileSystem = FileSystems.getFileSystem(URI.create("jrt:/"));
+//        Path modules = fileSystem.getPath("/modules");
+//        for(Path module : Files.newDirectoryStream(modules)){
+//            System.err.println("="+module.getFileName());
+//            Path moduleInfo = module.resolve("module-info.class");
+//            try(InputStream is = Files.newInputStream(moduleInfo)){
+//                Java9Module java9Module = Java9ModuleReader.getJava9Module(is);
+//                for(Java9ModuleDependency dep : java9Module.dependencies){
+//                    System.err.println("# imports "+(dep.shared?"public ":"")+dep.module);
+//                }
+//                SortedSet<String> exports = new TreeSet<>();
+//                exports.addAll(java9Module.exports);
+//                for(String pkg : exports){
+//                    System.err.println(pkg);
+//                }
+//                
+//            }
+//            System.err.println();
+//        }
+        loadPackageList();
+        Set<String> modules = new TreeSet<>();
+        Map<String,String> renames = new HashMap<>();
+        for(String module : jdkModules.keySet()){
+            if(module.startsWith("javax.")){
+                String newName = "java."+module.substring(6);
+                renames.put(newName, module);
+                modules.add(newName);
+            }else{
+                modules.add(module);
+            }
+        }
+        modules.addAll(jdkOracleModules.keySet());
+        for(String module : modules){
+            System.err.println("="+module);
+            String realModuleName = module;
+            if(renames.containsKey(module)){
+                realModuleName = renames.get(module);
+                System.err.println("# -> "+realModuleName);
+            }
+            Set<String> packages = new TreeSet<>();
+            if(isJDKModule(realModuleName))
+                packages.addAll(getJDKPackagesByModule(realModuleName));
+            else
+                packages.addAll(getOracleJDKPackagesByModule(realModuleName));
+            for(String pkg : packages){
+                System.err.println(pkg);
+            }
+            System.err.println();
+        }
+    }
+
+    public static String getJava9ModuleNameFromEarlier(String name) {
+        return java8To9ModuleAliases.get(name);
+    }
+
+    public static String getJava9ModuleName(String name, String version) {
+        // we can't check if it's a JDK module name because that'd only work for JDK<9, since
+        // it's not a Java 9 module name, so when running on Java 9 it would not match
+        if(JDK.JDK9.isLowerVersion(version)){
+            String alias = getJava9ModuleNameFromEarlier(name);
+            if(alias != null)
+                return alias;
+        }
+        return name;
     }
 }

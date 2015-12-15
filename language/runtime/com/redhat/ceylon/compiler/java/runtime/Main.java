@@ -422,6 +422,10 @@ public class Main {
             Module module = modules.get(key);
             if(module != null)
                 return module;
+            if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+            	// unalias jdk7-8 module names if we're running on jdk9+
+            	name = JDKUtils.getJava9ModuleName(name, version);
+            }
             if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)){
                 module = new Module(name, JDKUtils.jdk.version, Type.JDK, null);
                 modules.put(key, module);
