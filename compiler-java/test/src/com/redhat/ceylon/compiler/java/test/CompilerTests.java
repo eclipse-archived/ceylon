@@ -76,10 +76,12 @@ import com.redhat.ceylon.launcher.Launcher;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.cmr.VisibilityType;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -945,9 +947,11 @@ public abstract class CompilerTests {
         }
         // use the same JVM as the current one
         pb.environment().put("JAVA_HOME", System.getProperty("java.home"));
-        pb.environment().put("JAVA_OPTS", "-XaddExports:java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED"
-        		+",java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED"
-        		+",java.xml/com.sun.xml.internal.stream=ALL-UNNAMED");
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+        	pb.environment().put("JAVA_OPTS", "-XaddExports:java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED"
+        			+",java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED"
+        			+",java.xml/com.sun.xml.internal.stream=ALL-UNNAMED");
+        }
         Process p = pb.start();
         return p.waitFor();
     }

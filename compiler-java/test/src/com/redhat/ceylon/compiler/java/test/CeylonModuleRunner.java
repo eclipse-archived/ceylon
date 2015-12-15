@@ -71,6 +71,7 @@ import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
@@ -186,7 +187,9 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         List<String> args = new ArrayList<String>(Arrays.asList(path, "-cp", 
                 classpath));
         //args.add("-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y");
-        args.add("-XaddExports:java.base/sun.reflect.annotation=ALL-UNNAMED");
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+        	args.add("-XaddExports:java.base/sun.reflect.annotation=ALL-UNNAMED");
+        }
         args.add(Main.class.getName());
         args.add(moduleSpec);
         args.add(runClass);
