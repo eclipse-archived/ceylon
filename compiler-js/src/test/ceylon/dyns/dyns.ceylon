@@ -162,6 +162,7 @@ shared void test() {
     }
     issues();
     testDynamicInterfaces();
+    testArrayBoxing();
     results();
 }
 
