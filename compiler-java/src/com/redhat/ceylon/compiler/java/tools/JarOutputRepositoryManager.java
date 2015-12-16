@@ -268,7 +268,7 @@ public class JarOutputRepositoryManager {
                 }
 
                 // Add module-info.class
-                if (writeJava9Module) {
+                if (writeJava9Module && !module.isDefault()) {
                     writeJava9Module(foldersAdded, manifestFirst, module);
                 }
 
