@@ -61,3 +61,16 @@ function ndtc$(o,t,loc) {
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
 ex$.ndtc$=ndtc$;
+//Box native array, checking elements' type
+function natc$(a,t,loc) {
+  if (Array.isArray(a)) {
+    for (var i=0;i<a.length;i++) {
+      if (!is$(a[i],t)) {
+        throw new TypeError('Expected element type ' + qname$(t) + ' (' + loc + ')');
+      }
+    }
+    return $arr$(a,t);
+  }
+  throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
+}
+ex$.natc$=natc$;
