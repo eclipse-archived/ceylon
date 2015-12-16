@@ -486,6 +486,17 @@ public class TypeUtils {
                 term.visit(gen);
                 gen.out(",'", t.isFloat() ? "f" : "i", "','",
                         term.getUnit().getFilename(), " ", term.getLocation(), "')");
+            } else if (t.asQualifiedString().startsWith("ceylon.language::Array<")) {
+                gen.out(gen.getClAlias(), "natc$(");
+                term.visit(gen);
+                gen.out(",");
+                t = t.getTypeArgumentList().get(0);
+                if (t.isTypeParameter() && typeArguments != null
+                        && typeArguments.containsKey(t.getDeclaration())) {
+                    t = typeArguments.get(t.getDeclaration());
+                }
+                TypeUtils.typeNameOrList(term, t, gen, skipSelfDecl);
+                gen.out(",'", term.getUnit().getFilename(), " ", term.getLocation(), "')");
             } else {
                 gen.out(gen.getClAlias(), "ndtc$(");
                 term.visit(gen);
