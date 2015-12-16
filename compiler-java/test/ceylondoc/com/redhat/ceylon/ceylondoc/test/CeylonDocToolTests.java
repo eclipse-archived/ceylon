@@ -580,6 +580,8 @@ public class CeylonDocToolTests {
 
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
+        File jbossModulesModule = repoManager.getArtifact(new ArtifactContext("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
+        File runtimeModule = repoManager.getArtifact(new ArtifactContext("ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
         File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
         File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.1.1.Final", ".jar"));
         File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
@@ -590,6 +592,8 @@ public class CeylonDocToolTests {
         List<String> options = Arrays.asList("-sourcepath", "../../ceylon-sdk/source", "-d", dir.getAbsolutePath(), 
                 "-classpath", undertowCoreModule.getAbsolutePath()+File.pathSeparator
                 +narnyaModule.getAbsolutePath()+File.pathSeparator
+                +jbossModulesModule.getAbsolutePath()+File.pathSeparator
+                +runtimeModule.getAbsolutePath()+File.pathSeparator
                 +languageModule.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
@@ -607,6 +611,7 @@ public class CeylonDocToolTests {
                 "ceylon/interop/java/internal/Util.java",
                 "ceylon/transaction/internal/RecoveryHelper.java",
                 "ceylon/transaction/internal/RecoveryXAResource.java",
+                "ceylon/test/cli/Workaround.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
@@ -618,6 +623,7 @@ public class CeylonDocToolTests {
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
         
         // now we need to zip it up
+        makeCarFromClassFiles(dir, fileNames, "ceylon.test", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.net", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.transaction", Versions.CEYLON_VERSION_NUMBER);
