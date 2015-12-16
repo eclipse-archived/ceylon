@@ -72,6 +72,8 @@ public class CeylonModuleLoader extends ModuleLoader
     private static final ModuleIdentifier CMR;
     private static final ModuleIdentifier TYPECHECKER;
     private static final ModuleIdentifier COMPILER;
+    private static final ModuleIdentifier LANGTOOLS_CLASSFILE;
+    private static final ModuleIdentifier TOOL_PROVIDER;
     private static final ModuleIdentifier MAVEN;
     private static final ModuleIdentifier MODULES;
     private static final ModuleIdentifier JANDEX;
@@ -97,6 +99,8 @@ public class CeylonModuleLoader extends ModuleLoader
         CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
         TYPECHECKER = ModuleIdentifier.create("com.redhat.ceylon.typechecker", defaultVersion);
         COMPILER = ModuleIdentifier.create("com.redhat.ceylon.compiler.java", defaultVersion);
+        LANGTOOLS_CLASSFILE = ModuleIdentifier.create("com.redhat.ceylon.langtools.classfile", defaultVersion);
+        TOOL_PROVIDER = ModuleIdentifier.create("com.redhat.ceylon.tool.provider", defaultVersion);
         MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support", "2.0");
         MODULES = ModuleIdentifier.create("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION);
         JANDEX = ModuleIdentifier.create("org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION);
@@ -115,6 +119,8 @@ public class CeylonModuleLoader extends ModuleLoader
         BOOTSTRAP.add(CMR);
         BOOTSTRAP.add(TYPECHECKER);
         BOOTSTRAP.add(COMPILER);
+        BOOTSTRAP.add(LANGTOOLS_CLASSFILE);
+        BOOTSTRAP.add(TOOL_PROVIDER);
         BOOTSTRAP.add(MAVEN);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(JANDEX);
@@ -168,6 +174,7 @@ public class CeylonModuleLoader extends ModuleLoader
         // implementation contains types from these modules
         ModuleLoader bootModuleLoader = org.jboss.modules.Module.getBootModuleLoader();
         for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, MODEL, TYPECHECKER, COMPILER, CMR,
+        	LANGTOOLS_CLASSFILE, TOOL_PROVIDER,
             ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE, JANDEX, LOGMANAGER, RUNTIME, MAVEN)) {
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
