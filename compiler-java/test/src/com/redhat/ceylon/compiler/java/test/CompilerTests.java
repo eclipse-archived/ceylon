@@ -1057,7 +1057,7 @@ public abstract class CompilerTests {
         File out = File.createTempFile("classpath-"+module, ".out", dir);
         File err = err1 != null ? err1 : File.createTempFile("classpath-"+module, ".err", dir);
         ArrayList<String> a = new ArrayList<String>();
-        a.add("ceylon");
+        a.add("../dist/dist/bin/ceylon");
         a.add("classpath");
         a.add("--rep");
         a.add(rep);
