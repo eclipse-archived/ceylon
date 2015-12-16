@@ -100,6 +100,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private List<JavacOption> javacOptions = new ArrayList<JavacOption>(0);
     private Boolean noOsgi;
     private String osgiProvidedBundles;
+    private Boolean jigsaw;
     private Boolean noPom;
     private Boolean pack200;
     private List<SuppressWarning> suppressWarnings = new ArrayList<SuppressWarning>(0);
@@ -121,6 +122,17 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     
     public boolean getNoOsgi() {
         return noOsgi;
+    }
+
+    /**
+     * Set to true to enable Java 9 (Jigsaw) module-info.class generation in the car file.
+     */
+    public void setGenerateModuleInfo(Boolean jigsaw) {
+        this.jigsaw = jigsaw;
+    }
+    
+    public boolean getGenerateModuleInfo() {
+        return jigsaw;
     }
 
     /**
@@ -479,6 +491,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         
         if (noOsgi != null && noOsgi.booleanValue())
             appendOption(cmd, "--no-osgi");
+
+        if (jigsaw != null && jigsaw.booleanValue())
+            appendOption(cmd, "--generate-module-info");
 
         if (osgiProvidedBundles != null && !osgiProvidedBundles.isEmpty())
             appendOptionArgument(cmd, "--osgi-provided-bundles", osgiProvidedBundles);

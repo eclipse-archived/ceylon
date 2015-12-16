@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ceylon-dist" default="help" basedir="."
     xmlns:if="ant:if"
+    xmlns:unless="ant:unless"
 >
 
     <tstamp>
@@ -587,7 +588,7 @@ Use this when NOT doing a release!">
                 <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
             </then>
         </if>
-        <bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}.bnd.jar" definitions="${bundleDefinitionFile}">
+        <bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}.bnd.jar" definitions="${bundleDefinitionFile}" unless:set="jigsaw">
         </bndwrap>
         <delete file="${bundleDefinitionFile}"/>
     </target>
@@ -614,7 +615,7 @@ Use this when NOT doing a release!">
                             includes="module.xml"
                             fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
             <zipfileset src="${module.jar}.original" includes="**" excludes="META-INF/MANIFEST.MF"/>
-            <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF"/>
+            <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF" unless:set="jigsaw"/>
         </jar>
         <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
     	

@@ -413,12 +413,16 @@
         <!-- first removing any previous compiled artifact from
              the output repo because otherwise the build will fail -->
         <delete file="${build.dist.repo}/${ceylon.language.car}" failonerror="false" />
+    	<condition property="generateModuleInfo" value="${jigsaw}" else="no">
+    	        <isset property="jigsaw"/>
+    	</condition>
         <!-- toplevel types -->
         <ceylon-compile
             fork="true" inheritAll="true"
             verbose="false"
             encoding="UTF-8"
             noMtimeCheck="true"
+        	generateModuleInfo="${generateModuleInfo}"
             src="${module.language.src}:${runtime.src}"
             sysrep="${ceylon.dist.repo}"
             out="${build.dist.repo}">

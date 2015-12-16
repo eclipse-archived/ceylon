@@ -29,6 +29,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_NOOSGI = "compiler.noosgi";
     public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.osgiprovidedbundles";
     public final static String COMPILER_NOPOM = "compiler.nopom";
+    public final static String COMPILER_GENERATE_MODULE_INFO = "compiler.generatemoduleinfo";
     public final static String COMPILER_PACK200 = "compiler.pack200";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
@@ -211,9 +212,17 @@ public class DefaultToolOptions {
     public static boolean getCompilerNoPom() {
         return getCompilerNoPom(CeylonConfig.get());
     }
-    
+
     public static boolean getCompilerNoPom(CeylonConfig config) {
         return config.getBoolOption(COMPILER_NOPOM, false);
+    }
+
+    public static boolean getCompilerGenerateModuleInfo() {
+        return getCompilerGenerateModuleInfo(CeylonConfig.get());
+    }
+
+    public static boolean getCompilerGenerateModuleInfo(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_GENERATE_MODULE_INFO, false);
     }
 
     public static boolean getCompilerPack200() {

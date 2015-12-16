@@ -177,6 +177,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
     private boolean flatClasspath;
     private boolean autoExportMavenDependencies;
+    private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
+
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -207,6 +209,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             + "and will be omitted from the generated MANIFEST 'Required-Bundle' OSGI header.")
     public void setOsgiProvidedBundles(String osgiProvidedBundles) {
         this.osgiProvidedBundles = osgiProvidedBundles;
+    }
+
+    @Option(longName="generate-module-info")
+    @Description("Generate Java 9 (Jigsaw) module-info.class module descriptor in the generated Ceylon archive.")
+    public void setJigsaw(boolean jigsaw) {
+        this.jigsaw = jigsaw;
     }
 
     @Option(longName="no-pom")
@@ -408,6 +416,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             } else {
                 arguments.add(applyCwd(new File(overrides)).getPath());
             }
+        }
+
+        if (jigsaw) {
+            arguments.add("-module-info");
         }
 
         if (noOsgi) {
