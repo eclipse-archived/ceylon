@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -196,7 +197,10 @@ public class OsgiUtil {
                     if (!main.containsKey(key)) {
                         main.put(key, attributes.get(key));
                     } else if (log != null) {
-                        log.warning("manifest attribute provided by compiler: ignoring value from '"+key+"' for module '" + module.getNameAsString() +"'");
+                        Object oldValue = main.get(key);
+                        Object newValue = attributes.get(key);
+                        if(!Objects.equals(oldValue, newValue))
+                            log.warning("manifest attribute provided by compiler: ignoring value from '"+key+"' for module '" + module.getNameAsString() +"'");
                     }
                 }
                 manifest.getEntries().putAll(originalManifest.getEntries());
