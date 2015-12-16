@@ -94,7 +94,8 @@ function $init$sarg(){if(sarg$.$$===undefined){
         if (this.sp)return this.sp.next();
         var e=this.outer$.e(this.i);
         if (e===finished() && this.outer$.s) {
-          this.sp=this.outer$.s().iterator();
+          var a=this.outer$.s();
+          this.sp=(Array.isArray(a)?$arr$(a,{t:Anything}):a).iterator();
           e=this.sp.next();
         } else {
           this.i++;
