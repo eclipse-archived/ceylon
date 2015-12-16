@@ -73,7 +73,7 @@ public class UnionTypeImpl<Union>
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.meta.model::Type<Union>>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<Union>>")
     public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<? extends Union>> getCaseTypes() {
         return caseTypes;
     }
