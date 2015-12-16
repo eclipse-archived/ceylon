@@ -151,7 +151,7 @@ public class JarOutputRepositoryManager {
         /** Whether to add a pom.xml and pom.properties in module subdir of {@code META-INF}*/
         private boolean writeMavenManifest;
         /** Whether to add a module-info.class file */
-        private boolean writeJava9Module = true;
+        private boolean writeJava9Module;
         private TaskListener taskListener;
         private JarEntryManifestFileObject manifest;
         private Log log;
@@ -178,6 +178,7 @@ public class JarOutputRepositoryManager {
             this.writeOsgiManifest = !options.isSet(OptionName.CEYLONNOOSGI);
             this.osgiProvidedBundles = options.get(OptionName.CEYLONOSGIPROVIDEDBUNDLES);
             this.writeMavenManifest = !options.isSet(OptionName.CEYLONNOPOM) && !module.isDefault();
+            this.writeJava9Module= options.isSet(OptionName.CEYLONJIGSAW) && !module.isDefault();
             
             // Determine the special path that signals that the files it contains
             // should be moved to the root of the output JAR/CAR

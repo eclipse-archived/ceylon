@@ -84,6 +84,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private List<String> args = Collections.emptyList();
 
     private boolean autoExportMavenDependencies;
+    private boolean jigsaw;
 
     public CeylonRunTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -110,6 +111,12 @@ public class CeylonRunTool extends RepoUsingTool {
                  "Maven modules as shared.")
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
+    }
+
+    @Option(longName="generate-module-info")
+    @Description("Generate Java 9 (Jigsaw) module-info.class module descriptor in the generated Ceylon archive.")
+    public void setJigsaw(boolean jigsaw) {
+        this.jigsaw = jigsaw;
     }
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
@@ -226,6 +233,10 @@ public class CeylonRunTool extends RepoUsingTool {
 
         if (autoExportMavenDependencies) {
             argList.add("-auto-export-maven-dependencies");
+        }
+
+        if (jigsaw) {
+            argList.add("-module-info");
         }
 
         if (repo != null) {
