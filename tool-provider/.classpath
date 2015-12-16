@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" output="build/test" path="test"/>
+	<classpathentry kind="src" output="build/toolsTest/launcher-classes" path="test-launcher"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-compiler"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-js"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
+	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-1.2.1.car" sourcepath="/ceylon.language"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
