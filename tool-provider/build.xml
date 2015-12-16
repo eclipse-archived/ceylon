@@ -113,7 +113,10 @@
         <mkdir dir="${ceylon.tool.provider.repo}" />
     </target>
     <target name="clean.repo" description="Clean default local Ceylon module repository">
-        <delete dir="${ceylon.tool.provider.repo}" />
+        <delete file="${ceylon.tool.provider.lib}" />
+        <delete file="${ceylon.tool.provider.lib}.sha1" />
+        <delete file="${ceylon.repo.dir}/${ceylon.tool.provider.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.tool.provider.src}.sha1" />
     </target>
 
     <target name="dist" depends="build" description="Create Ceylon tool provider distribution">

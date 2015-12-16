@@ -63,7 +63,10 @@
         <mkdir dir="${ceylon.classfile.repo}" />
     </target>
     <target name="clean.repo" description="Clean default local Ceylon module repository">
-        <delete dir="${ceylon.classfile.repo}" />
+        <delete file="${ceylon.classfile.lib}" />
+        <delete file="${ceylon.classfile.lib}.sha1" />
+        <delete file="${ceylon.repo.dir}/${ceylon.classfile.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.classfile.src}.sha1" />
     </target>
 
     <target name="dist" depends="build" description="Create Ceylon langtools classfile distribution">
