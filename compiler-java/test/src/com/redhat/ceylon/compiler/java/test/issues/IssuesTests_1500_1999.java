@@ -737,7 +737,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 null,
                 new CompilerError(22, "could not determine type of function or value reference: 'd'"),
                 new CompilerError(24, "does not definitely return: 'd' has branches which do not end in a 'return' statement"),
-                new CompilerError(24, "type declaration does not exist: 'Id' (did you mean 'Bug1768'?)"));
+                new CompilerError(24, "type declaration does not exist: 'Id' (did you mean 'Bug1789'?)"));
 
     }
     
