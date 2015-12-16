@@ -64,7 +64,7 @@ public abstract class ClassDeclarationImpl
                 if(overloads.size() == 1){
                     classDeclaration = (com.redhat.ceylon.model.typechecker.model.Class) overloads.get(0);
                 }else{
-                    throw Metamodel.newModelError("Class has more than one overloaded constructor");
+                    throw Metamodel.newModelError("Class has more than one overloaded constructor: "+classDeclaration.getNameAsString());
                 }
             }
             ParameterList parameterList = classDeclaration.getParameterList();
