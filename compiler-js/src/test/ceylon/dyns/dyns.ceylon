@@ -45,7 +45,7 @@ shared void test() {
         for (uu in n3) {
             print("iterating, ``uu``");
         }
-        check(n3 is Iterable<Anything>, "array is Iterable<Anything>");
+        check(!n3 is Iterable<Anything>, "array is Iterable<Anything>");
         dynamic f(dynamic z) => z else n;
         check(f(1)==1, "f(1)");
         check(f(null)==n, "f(null)");
