@@ -827,6 +827,9 @@ public abstract class CompilerTests {
 
         List<String> options = new LinkedList<String>();
         options.addAll(initialOptions);
+        
+        if(!options.contains("-out"))
+            options.addAll(Arrays.asList("-out", destDir));
         if(!options.contains("-src"))
             options.addAll(Arrays.asList("-src", getSourcePath()));
         if(!options.contains("-cacherep"))
