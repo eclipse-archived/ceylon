@@ -142,8 +142,8 @@ public class CeylonWarTool extends ModuleLoadingTool {
     }
 
     @Override
-    protected boolean shouldExclude(String moduleName) {
-        return super.shouldExclude(moduleName) ||
+    protected boolean shouldExclude(String moduleName, String version) {
+        return super.shouldExclude(moduleName, version) ||
                 this.excludedModules.contains(moduleName);
     }
 

@@ -118,6 +118,7 @@ public class Java9Util {
 			if(pkg.getModule().getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)){
 				String name = pkg.getNameAsString();
 				if(name.equals("com.redhat.ceylon.compiler.java.runtime.metamodel")
+						|| name.equals("com.redhat.ceylon.compiler.java.runtime")
 						|| name.equals("com.redhat.ceylon.compiler.java.metadata")
 						|| name.equals("com.redhat.ceylon.compiler.java"))
 					return true;

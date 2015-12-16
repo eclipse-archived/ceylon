@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +52,8 @@ import org.junit.Before;
 
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.Java9ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
@@ -85,6 +88,7 @@ import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool;
 
 public abstract class CompilerTests {
 
@@ -958,6 +962,38 @@ public abstract class CompilerTests {
         Process p = pb.start();
         return p.waitFor();
     }
+    
+    protected int runInJava9(String[] repos, ModuleSpec module, List<String> moduleArgs) throws Throwable {
+        File mlib = Files.createTempDirectory(new File(destDir).toPath(), "mlib").toFile();
+        try{
+        	
+        	CeylonJigsawTool jigsawTool = new CeylonJigsawTool();
+        	jigsawTool.setOutputFolder(mlib);
+        	jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
+        	jigsawTool.setModule(module.getName());
+        	jigsawTool.run();
+
+        	ArrayList<String> a = new ArrayList<String>();
+        	String java = System.getProperty("java.home")+"/bin/java";
+        	a.add(java);
+        	a.add("-modulepath");
+        	a.add(mlib.getAbsolutePath());
+        	a.add("-m");
+        	a.add(Module.LANGUAGE_MODULE_NAME);
+        	a.add(module.toString());
+        	a.addAll(moduleArgs);
+        	System.err.println(a);
+        	ProcessBuilder pb = new ProcessBuilder(a);
+        	pb.redirectError(Redirect.INHERIT);
+        	pb.redirectOutput(Redirect.INHERIT);
+        	Process p = pb.start();
+        	return p.waitFor();
+        }finally{
+        	FileUtil.delete(mlib);
+        }
+
+    }
+
     
     protected void runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs) throws Throwable {
         /* Run this in its own process because jbmoss modules assumes it

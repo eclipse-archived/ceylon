@@ -18,6 +18,7 @@ import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
@@ -58,7 +59,10 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 		return success;
 	}
 
-	protected boolean shouldExclude(String moduleName) {
+	protected boolean shouldExclude(String moduleName, String version) {
+		if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+			moduleName = JDKUtils.getJava9ModuleName(moduleName, version);
+		}
 		return JDKUtils.isJDKModule(moduleName) || 
 				JDKUtils.isOracleJDKModule(moduleName);
 	}
@@ -67,7 +71,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         String key = name + "/" + version;
         if(loadedModules.containsKey(key))
             return true;
-        if(shouldExclude(name)) {
+        if(shouldExclude(name, version)) {
             // let's not check the version and assume it's provided
             // treat it as a missing optional for the purpose of classpath
             loadedModules.put(key, null);

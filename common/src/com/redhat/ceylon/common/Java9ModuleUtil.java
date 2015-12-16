@@ -58,13 +58,17 @@ public class Java9ModuleUtil {
         Boolean ret = (Boolean) isNamed.invoke(module);
         return ret.booleanValue();
 	}
-	
+
 	public static Object loadModuleDynamically(String module) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
         String modulePath = System.getProperty("jdk.module.path");
         String[] modulePathEntries = modulePath.split(File.pathSeparator);
-        Path[] paths = new Path[modulePathEntries.length];
+        return loadModulesDynamically(modulePathEntries, module);
+	}
+	
+	public static Object loadModulesDynamically(String[] modulePath, String... modules) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
+        Path[] paths = new Path[modulePath.length];
         int i=0;
-        for(String moduleFolder : modulePathEntries){
+        for(String moduleFolder : modulePath){
         	paths[i++] = Paths.get(moduleFolder);
         }
 
@@ -89,7 +93,7 @@ public class Java9ModuleUtil {
 //        Method configurationMethod = layerClass.getMethod("configuration");
 //        Object bootConfiguration = configurationMethod.invoke(bootLayer);
         
-        Object configuration = resolveMethod.invoke(null, emptyModuleFinder, bootLayer, moduleFinder, new String[]{module});
+        Object configuration = resolveMethod.invoke(null, emptyModuleFinder, bootLayer, moduleFinder, modules);
 
         // cf = cf.bind();
         Method bindMethod = configurationClass.getMethod("bind");
@@ -115,6 +119,6 @@ public class Java9ModuleUtil {
 		Object classLoaderFinder = Proxy.newProxyInstance(Java9ModuleUtil.class.getClassLoader(), new Class[]{classLoaderFinderClass}, handler );
         
         Object newLayer = createMethod.invoke(null, configuration, classLoaderFinder);
-        return findModuleFromLayer(newLayer, module);
+        return findModuleFromLayer(newLayer, modules[0]);
 	}
 }
