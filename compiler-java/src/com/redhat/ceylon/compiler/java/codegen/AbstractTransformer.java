@@ -1658,6 +1658,24 @@ public abstract class AbstractTransformer implements Transformation {
     boolean isCeylonSequentialMetamodelDeclaration(Type type) {
         return type.isSubtypeOf(typeFact().getSequentialType(typeFact().getMetamodelDeclarationDeclaration().getType()));
     }
+    
+    /** 
+     * Is the given type an instantiation of a (non-class or interface) 
+     * type constructor.
+     */
+    static boolean isTypeConstructorInstance(Type type) {
+        return type.getDeclaration() instanceof TypeParameter
+                && ((TypeParameter)type.getDeclaration()).isTypeConstructor();
+    }
+    
+    /**
+     * Is the given type a type parameter of a type constructor
+     */
+    static boolean isTypeConstructorParameter(Type type) {
+        Scope s = type.getDeclaration().getContainer();
+        return s instanceof TypeParameter
+                && ((TypeParameter)s).isTypeConstructor();
+    }
 
     /*
      * Java Type creation
@@ -1844,7 +1862,7 @@ public abstract class AbstractTransformer implements Transformation {
         return rawSupertype(ceylonType.getExtendedType(), flags);
     }
     
-    JCExpression makeJavaType(final Type ceylonType, final int flags) {
+    JCExpression makeJavaType(final Type ceylonType, int flags) {
         Type type = ceylonType;
         if(type == null || type.isUnknown())
             return make().Erroneous();
@@ -1883,6 +1901,9 @@ public abstract class AbstractTransformer implements Transformation {
         
         if (type.isTypeConstructor()) {
             return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
+        }
+        if (isTypeConstructorInstance(type)) {
+            flags |= JT_RAW;
         }
         
         // ERASURE
@@ -2377,6 +2398,9 @@ public abstract class AbstractTransformer implements Transformation {
                 ta = typeFact.getBooleanType();
             } 
             JCExpression jta;
+            if (isTypeConstructorParameter(ta)) {
+                return null;
+            }
             
             if(!tp.getSatisfiedTypes().isEmpty()){
                 boolean needsCastForBounds = false;

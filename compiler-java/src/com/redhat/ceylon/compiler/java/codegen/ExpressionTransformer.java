@@ -499,8 +499,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // We will need a raw cast if either the expected type or the
                     // expression type has type parameters while the other hasn't 
                     // (unless the other type is already raw)
-                    if ((!exprIsRaw && hasTypeParameters(expectedType))
-                            || (downCast && !expectedTypeIsRaw && hasTypeParameters(exprType))) {
+                    
+                    if (!isTypeConstructorInstance(exprType) && ((!exprIsRaw && hasTypeParameters(expectedType))
+                            || (downCast && !expectedTypeIsRaw && hasTypeParameters(exprType)))) {
                         Type rawType = hasTypeParameters(expectedType) ? expectedType : exprType;
                         JCExpression rawTypeExpr = makeJavaType(rawType, 
                                 AbstractTransformer.JT_TYPE_ARGUMENT | AbstractTransformer.JT_RAW | companionFlags);
@@ -526,11 +527,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                             || (!expectedTypeHasConstrainedTypeParameters
                                     && !expectedTypeHasDependentCovariantTypeParameters
                                     && !expectedTypeIsRaw);
-                    if(needsTypedCast
+                    if(!isTypeConstructorInstance(expectedType) 
+                            && (needsTypedCast
                             // make sure that downcasts get at least one cast
                             || downCast
                             // same for forced erasure
-                            || exprUntrustedType){
+                            || exprUntrustedType)){
                         // forced erasure may require a previous cast to Object if we were not able to insert a raw cast
                         // because for instance Sequential<String> cannot be cast forcibly to Empty because Java is so smart
                         // it figures out that there's no intersection between the two types, but we know better
