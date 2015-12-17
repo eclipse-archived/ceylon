@@ -57,13 +57,16 @@ public class ForGenerator {
         } else {
             itemVar = gen.getNames().createTempVariable();
         }
-        if (hasElse || !optimize(iterable, itemVar)) {
-            gen.out("var ", itemVar, ";for(var ", iterVar,"=");
-            iterable.visit(gen);
-            gen.out(".iterator();(", itemVar, "=", iterVar, ".next())!==",
-                    gen.getClAlias(), "finished();)");
+        boolean isNative=iterateNative(iterable.getExpression().getTerm(), itemVar);
+        if (!isNative) {
+            if (hasElse || !optimize(iterable, itemVar)) {
+                gen.out("var ", itemVar, ";for(var ", iterVar,"=");
+                iterable.visit(gen);
+                gen.out(".iterator();(", itemVar, "=", iterVar, ".next())!==",
+                        gen.getClAlias(), "finished();)");
+            }
+            gen.beginBlock();
         }
-        gen.beginBlock();
         if (that instanceof Tree.ValueIterator) {
             if (captured) {
                 gen.out("var ", gen.getNames().name(((Tree.ValueIterator)that).getVariable().getDeclarationModel()),
@@ -90,6 +93,18 @@ public class ForGenerator {
             return optimizeSegment((Tree.SegmentOp)term, itemVar);
         }
         return false;
+    }
+
+    boolean iterateNative(final Tree.Term term, final String itemVar) {
+        if (!(gen.isInDynamicBlock() && term.getTypeModel().isUnknown())) {
+            return false;
+        }
+        final String termVar = gen.getNames().createTempVariable();
+        gen.out("var ", termVar, "=");
+        term.visit(gen);
+        gen.out(";for(var ", iterVar,"=0;",iterVar,"<", termVar,
+                ".length;",iterVar,"++){var ",itemVar,"=", termVar, "[",iterVar,"];");
+        return true;
     }
 
     boolean optimizeRange(final Tree.RangeOp range, final String itemVar) {
