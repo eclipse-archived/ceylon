@@ -524,7 +524,12 @@ Use this when NOT doing a release!">
                 <actions>
                     <if>
                         <not>
-                            <equals arg1="@{moduleName}" arg2="java.base"/>
+                        	<or>
+                                <equals arg1="@{moduleName}" arg2="java.base"/>
+                                <equals arg1="@{moduleName}" arg2="java.compiler"/>
+                                <equals arg1="@{moduleName}" arg2="java.logging"/>
+                                <equals arg1="@{moduleName}" arg2="javax.xml"/>
+                        	</or>
                         </not>
                         <then>
                             <if>

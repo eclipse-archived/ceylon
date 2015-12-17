@@ -230,6 +230,11 @@
     <target name="osgi-p2" depends="osgi">
         <mkdir dir="${build.dist.features}"/>
         <ant target="generateFeatures" inheritall="true">
+            <property name="feature.id" value="com.redhat.ceylon.dist.runtime.feature"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="xslFileName" value="generateRuntimeDistributionFeature.xsl"/>
+        </ant>
+        <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
             <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
             <property name="xslFileName" value="generateDistributionFeature.xsl"/>
@@ -260,6 +265,10 @@
             <module name="ceylon.bootstrap" version="${module.ceylon.bootstrap.version}"/> 
             <module name="ceylon.runtime" version="${module.ceylon.runtime.version}"/> 
             <module name="org.slf4j.simple" version="1.6.1"/> 
+            <module name="com.redhat.ceylon.tool.provider" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <module name="com.redhat.ceylon.compiler.java" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <module name="com.redhat.ceylon.compiler.js" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <module name="com.redhat.ceylon.typechecker" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
         </ceylon-p2>
     	<!--
         <exec dir="${basedir}" executable="eclipse" failonerror="true">

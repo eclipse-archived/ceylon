@@ -5,12 +5,14 @@
 	<xsl:template match="/">
 <feature
       id="{$featureId}"
-      label="Ceylon Distribution Feature"
+      label="Ceylon Full Distribution Feature"
       version="{$featureVersion}"
       provider-name="Red Hat">
    <description>
-      The Ceylon Distribution Feature provides all the OSGI bundles required to run Ceylon code inside Eclipse,
-      as well as an embedded Ceylon repository of the Ceylon distribution.
+      The Ceylon Full Distribution Feature provides the full Ceylon distribution as OSGI bundles to be used inside Eclipse,
+      as well as an embedded Ceylon repository of the full Ceylon distribution.
+      
+      In order to simply run some Ceylon code inside Eclipse, the Ceylon Runtime feature is sufficient.
    </description>
 
    <copyright>

@@ -5,12 +5,11 @@
 	<xsl:template match="/">
 <feature
       id="{$featureId}"
-      label="Ceylon Full Distribution Binary Dependencies Feature"
+      label="Ceylon Runtime Feature"
       version="{$featureVersion}"
       provider-name="Red Hat">
    <description>
-      The Ceylon Full Distribution Binary Dependencies Feature provides only the fixed binary dependencies of the ceylon distribution.
-      This is only needed to compile the Ceylon IDE plugin by using the distribution bundle proxy projects.
+      The Ceylon Runtime feature provides the OSGI bundles required to run Ceylon code inside Eclipse.
    </description>
 
    <copyright>
@@ -26,7 +25,7 @@ by the @authors tag, 2011.
       
       <xsl:for-each select="/*[local-name()='repository']/*[local-name()='resource']">
          <xsl:variable name="bundleName" select="./*[(local-name()='capability') and (@namespace='osgi.identity')]/*[(local-name()='attribute') and (@name='osgi.identity')]/@value"/>      
-            <xsl:if test="not(contains($bundleName, 'ceylon')) and ($bundleName != 'org.slf4j.simple')">
+            <xsl:if test="$bundleName != 'org.slf4j.simple' and $bundleName != 'com.github.rjeschke.txtmark' and $bundleName != 'com.redhat.ceylon.typechecker' and not(contains($bundleName, 'com.redhat.ceylon.compiler.')) and not(contains($bundleName, 'org.antlr.'))">
    <plugin
          id="{$bundleName}"
          download-size="{./*[(local-name()='capability') and (@namespace='osgi.content')]/*[(local-name()='attribute') and (@name='size')]/@value}"
