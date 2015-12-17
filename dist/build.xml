@@ -18,8 +18,8 @@
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon.language,ceylon-runtime" />
-    <property name="moddirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,language,runtime" />
+    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon.language,ceylon-tool-provider,ceylon-runtime" />
+    <property name="moddirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,language,tool-provider,runtime" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
