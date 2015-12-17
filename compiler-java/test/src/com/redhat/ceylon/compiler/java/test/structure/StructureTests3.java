@@ -139,4 +139,9 @@ public class StructureTests3 extends CompilerTests {
     public void testTypefnTypeConstructorsInDeclarations(){
         compareWithJavaSource("typefn/TypeConstructorsInDeclarations");
     }
+    
+    @Test
+    public void testTypefnParameterizedTypeParameter(){
+        compareWithJavaSource("typefn/ParameterizedTypeParameter");
+    }
 }

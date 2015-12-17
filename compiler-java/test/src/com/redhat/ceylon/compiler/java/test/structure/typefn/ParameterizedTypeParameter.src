@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.structure.typefn;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "T",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"X()"},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "U",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Anything(Y)"},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "V",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::List<Z>"},
+                caseTypes = {})})
+class ParameterizedTypeParameter<T extends .ceylon.language.Callable, U extends .ceylon.language.Callable<? extends .java.lang.Object>, V extends .ceylon.language.List> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ParameterizedTypeParameter(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+        this.$reified$T = $reified$T;
+        this.$reified$U = $reified$U;
+        this.$reified$V = $reified$V;
+        final T attribute = (T).ceylon.language.nothing_.get_();
+        final .java.lang.String s = ((.ceylon.language.Callable<? extends .ceylon.language.String>)attribute).$call$().toString();
+        final U attribute2 = (U).ceylon.language.nothing_.get_();
+        final .java.lang.Object s2 = ((.ceylon.language.Callable<? extends .java.lang.Object>)attribute2).$call$((.java.lang.Object).ceylon.language.String.instance(""));
+        final V attribute3 = (V).ceylon.language.nothing_.get_();
+        final .ceylon.language.String s3 = ((.ceylon.language.List<? extends .ceylon.language.String>)attribute3).getFromFirst(0L);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameter.class, $reified$T, $reified$U, $reified$V);
+    }
+}
