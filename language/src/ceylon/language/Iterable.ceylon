@@ -456,7 +456,7 @@ shared interface Iterable<out Element=Anything,
      
      For example, the expression
      
-         (1..100).fold(0)(plus<Integer>)
+         (1..100).fold(0)(plus)
      
      results in the integer `5050`."
     see (`function reduce`, 
@@ -495,7 +495,7 @@ shared interface Iterable<out Element=Anything,
      
      For example, the expression
      
-         (1..100).reduce(plus<Integer>)
+         (1..100).reduce(plus)
      
      results in the integer `5050`." 
     see (`function fold`)
@@ -548,7 +548,7 @@ shared interface Iterable<out Element=Anything,
      
      For example, the expression
      
-         (1..4).scan(0)(plus<Integer>)
+         (1..4).scan(0)(plus)
      
      results in the stream `{ 0, 1, 3, 6, 10 }`."
     see (`function fold`)
