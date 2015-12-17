@@ -9,7 +9,8 @@
    A `Map` is a [[Collection]] of its `Entry`s, and a 
    [[Correspondence]] from keys to items.
    
-   A new `Map` may be obtained by calling the function [[map]].
+   A new `Map` may be obtained by calling the function 
+   [[ceylon.language::map]].
    
        value settings = map { "lang"->"en_AU", "loc"->"ES" };
    
