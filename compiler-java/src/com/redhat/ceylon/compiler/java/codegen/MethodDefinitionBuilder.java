@@ -485,6 +485,9 @@ public class MethodDefinitionBuilder
                 } else {
                     flags |= AbstractTransformer.JT_NARROWED;
                 }
+                if (gen.isTypeConstructorInstance(refinedParameterType)) {
+                    flags |= AbstractTransformer.JT_RAW;
+                }
             }
         }
         // keep in sync with gen.willEraseToBestBounds()

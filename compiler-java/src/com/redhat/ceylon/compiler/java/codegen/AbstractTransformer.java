@@ -1899,12 +1899,18 @@ public abstract class AbstractTransformer implements Transformation {
             type = type.getExtendedType();
         }
         
-        if (type.isTypeConstructor()) {
-            return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
-        }
         if (isTypeConstructorInstance(type)) {
             flags |= JT_RAW;
         }
+        
+        if (type.isTypeConstructor()) {
+            if ((flags&JT_TYPE_ARGUMENT) != 0) {
+                flags |= JT_RAW;
+            } else {
+                return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
+            }
+        }
+        
         
         // ERASURE
         if ((flags & JT_CLASS_LITERAL) == 0
