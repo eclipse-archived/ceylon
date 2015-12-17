@@ -291,7 +291,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected final Map<String,LazyPackage> packagesByName = new HashMap<String,LazyPackage>();
     protected boolean packageDescriptorsNeedLoading = false;
     protected boolean isBootstrap;
-    protected ModuleManager moduleManager;
+    private ModuleManager moduleManager;
     protected Modules modules;
     protected Map<String, ClassMirror> classMirrorCache = new HashMap<String, ClassMirror>();
     protected boolean binaryCompatibilityErrorRaised = false;
@@ -299,6 +299,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private Map<String,LazyPackage> modulelessPackages = new HashMap<String,LazyPackage>();
     private ParameterNameParser parameterNameParser = new ParameterNameParser(this);
     
+    protected final void initModuleManager(ModuleManager moduleManager) {
+        this.moduleManager = moduleManager;
+    }
+    
+    protected ModuleManager getModuleManager() {
+        return moduleManager;
+    }
+
     /**
      * Loads a given package, if required. This is mostly useful for the javac reflection impl.
      * 

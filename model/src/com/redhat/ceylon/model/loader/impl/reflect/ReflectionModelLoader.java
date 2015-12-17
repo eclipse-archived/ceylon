@@ -52,7 +52,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
 	}
 	
     public ReflectionModelLoader(ModuleManager moduleManager, Modules modules, Logger log){
-        this.moduleManager = moduleManager;
+        initModuleManager(moduleManager);
         this.modules = modules;
         this.typeFactory = new Unit();
         this.typeParser = new TypeParser(this);

@@ -126,7 +126,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         options = Options.instance(context);
         timer = Timer.instance(context);
         isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
-        moduleManager = phasedUnits.getModuleManager();
+        initModuleManager(phasedUnits.getModuleManager());
         modules = ceylonContext.getModules();
         fileManager = context.get(JavaFileManager.class);
         annotationLoader = new AnnotationLoader(this, typeFactory);
