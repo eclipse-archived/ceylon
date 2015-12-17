@@ -286,10 +286,12 @@ public class MiscTests extends CompilerTests {
                 "regex",
                 "time",
                 "transaction",
-                "unicode"
+                "unicode",
         };
         String[] extraModules = {
                 "ceylon.test",
+                "ceylon.numeric",
+                "com.redhat.ceylon.war",
         };
         String[] extraTestModules = {
                 "test.ceylon.test.suite",
