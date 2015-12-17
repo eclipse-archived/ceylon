@@ -181,7 +181,7 @@ shared void issues() {
         check(test418 == "Again", "#418.2");
         //431
         dynamic i431 = dynamic [for (i in 0:10) i^3];
-        check(i431.size == 10, "#431");
+        check(i431.length == 10, "#431");
         check(!i431 is [Anything*], "#431 is not [Anything*]");
     }
     //#439.1
