@@ -10,13 +10,16 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -184,13 +187,14 @@ public class BmeGenerator {
     }
 
     static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen) {
+        Tree.Primary prim = that.getPrimary();
         if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, gen);
-        } else if (that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false) {
+        } else if (that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false
+                && prim instanceof Tree.BaseTypeExpression == false) {
             if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
                 gen.out("new ");
             }
-            Tree.Primary prim = that.getPrimary();
             if (prim instanceof Tree.BaseMemberExpression) {
                 generateBme((Tree.BaseMemberExpression)prim, gen);
             } else if (prim instanceof Tree.QualifiedTypeExpression) {
@@ -206,7 +210,70 @@ public class BmeGenerator {
                 gen.out(".", gen.getNames().name(that.getDeclaration()));
             }
         } else {
+            final boolean parens = that.getDirectlyInvoked() &&
+                    prim instanceof Tree.BaseTypeExpression;
+            if (parens)gen.out("(");
             FunctionHelper.generateCallable(that, gen.getNames().name(that.getDeclaration()), gen);
+            if (parens)gen.out(")");
+        }
+    }
+
+    static void generateBte(final Tree.BaseTypeExpression that, final GenerateJsVisitor gen,
+            final boolean forceReference) {
+        Declaration d = that.getDeclaration();
+        if (d == null && gen.isInDynamicBlock()) {
+            //It's a native js type but will be wrapped in dyntype() call
+            String id = that.getIdentifier().getText();
+            gen.out("(typeof ", id, "==='undefined'?");
+            gen.generateThrow(null, "Undefined type " + id, that);
+            gen.out(":", id, ")");
+        } else {
+            boolean wrap = false;
+            String pname = null;
+            List<Parameter> params = null;
+            TypeDeclaration td = null;
+            if ((forceReference || !that.getDirectlyInvoked()) && d instanceof TypeDeclaration) {
+                td = (TypeDeclaration)d;
+                if (td.getTypeParameters() != null && td.getTypeParameters().size() > 0) {
+                    wrap = true;
+                    pname = gen.getNames().createTempVariable();
+                    gen.out("function(");
+                    if (td instanceof Class) {
+                        params = ((Class)td).getParameterList().getParameters();
+                    } else if (td instanceof Constructor) {
+                        params = ((Constructor)td).getFirstParameterList().getParameters();
+                    }
+                    for (int i=0;i<params.size(); i++) {
+                        if (i>0)gen.out(",");
+                        gen.out(pname, "$", Integer.toString(i));
+                    }
+                    gen.out("){return ");
+                }
+            }
+            if (d instanceof Constructor) {
+                //This is an ugly-ass hack for when the typechecker incorrectly reports
+                //the declaration as the constructor instead of the class;
+                //this happens with classes that have a default constructor with the same name as the type
+                if (gen.getNames().name(d).equals(gen.getNames().name((TypeDeclaration)d.getContainer()))) {
+                    gen.qualify(that, (TypeDeclaration)d.getContainer());
+                } else {
+                    gen.qualify(that, d);
+                }
+            } else {
+                gen.qualify(that, d);
+            }
+            gen.out(gen.getNames().name(d));
+            if (wrap) {
+                gen.out("(");
+                for (int i=0;i<params.size(); i++) {
+                    gen.out(pname, "$", Integer.toString(i), ",");
+                }
+                List<Type> targs = that.getTypeArguments() == null ? null :
+                    that.getTypeArguments().getTypeModels();
+                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
+                        td.getTypeParameters(), targs), gen, false, null);
+                gen.out(");}");
+            }
         }
     }
 

@@ -1913,61 +1913,7 @@ public class GenerateJsVisitor extends Visitor {
     
     @Override
     public void visit(final Tree.BaseTypeExpression that) {
-        Declaration d = that.getDeclaration();
-        if (d == null && isInDynamicBlock()) {
-            //It's a native js type but will be wrapped in dyntype() call
-            String id = that.getIdentifier().getText();
-            out("(typeof ", id, "==='undefined'?");
-            generateThrow(null, "Undefined type " + id, that);
-            out(":", id, ")");
-        } else {
-            boolean wrap = false;
-            String pname = null;
-            List<Parameter> params = null;
-            TypeDeclaration td = null;
-            if (!that.getDirectlyInvoked() && d instanceof TypeDeclaration) {
-                td = (TypeDeclaration)d;
-                if (td.getTypeParameters() != null && td.getTypeParameters().size() > 0) {
-                    wrap = true;
-                    pname = names.createTempVariable();
-                    out("function(");
-                    if (td instanceof Class) {
-                        params = ((Class)td).getParameterList().getParameters();
-                    } else if (td instanceof Constructor) {
-                        params = ((Constructor)td).getFirstParameterList().getParameters();
-                    }
-                    for (int i=0;i<params.size(); i++) {
-                        if (i>0)out(",");
-                        out(pname, "$", Integer.toString(i));
-                    }
-                    out("){return ");
-                }
-            }
-            if (d instanceof Constructor) {
-                //This is an ugly-ass hack for when the typechecker incorrectly reports
-                //the declaration as the constructor instead of the class;
-                //this happens with classes that have a default constructor with the same name as the type
-                if (names.name(d).equals(names.name((TypeDeclaration)d.getContainer()))) {
-                    qualify(that, (TypeDeclaration)d.getContainer());
-                } else {
-                    qualify(that, d);
-                }
-            } else {
-                qualify(that, d);
-            }
-            out(names.name(d));
-            if (wrap) {
-                out("(");
-                for (int i=0;i<params.size(); i++) {
-                    out(pname, "$", Integer.toString(i), ",");
-                }
-                List<Type> targs = that.getTypeArguments() == null ? null :
-                    that.getTypeArguments().getTypeModels();
-                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
-                        td.getTypeParameters(), targs), this, false, null);
-                out(");}");
-            }
-        }
+        BmeGenerator.generateBte(that, this, false);
     }
 
     @Override
