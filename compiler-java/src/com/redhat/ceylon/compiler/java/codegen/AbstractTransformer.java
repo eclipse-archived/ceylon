@@ -118,6 +118,7 @@ import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -1909,6 +1910,11 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
             }
+        }
+        
+        if (type.getDeclaration() instanceof TypeAlias
+                && type.getDeclaration().isAnonymous()) {
+            return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
         }
         
         
@@ -4505,6 +4511,10 @@ public abstract class AbstractTransformer implements Transformation {
             } else {
                 return typeTester.isReified(varExpr, testedType);
             }
+        } else if (declaration instanceof TypeAlias) {
+            // type constructor
+            JCExpression varExpr = firstTimeExpr != null ? firstTimeExpr : varName.makeIdent();
+            return typeTester.isReified(varExpr, testedType);
         } else {
             throw BugException.unhandledDeclarationCase(declaration);
         }
@@ -5202,24 +5212,7 @@ public abstract class AbstractTransformer implements Transformation {
                 ListBuffer<JCExpression> varianceElements = new ListBuffer<JCExpression>();
                 for(TypeParameter typeParameter : declaration.getTypeParameters()){
                     SiteVariance useSiteVariance = varianceOverrides.get(typeParameter);
-                    String selector;
-                    if(useSiteVariance != null){
-                        switch(useSiteVariance){
-                        case IN:
-                            selector = "IN";
-                            break;
-                        case OUT:
-                            selector = "OUT";
-                            break;
-                        default:
-                            selector = "NONE";
-                            break;
-                        }
-                    }else{
-                        selector = "NONE";
-                    }
-                    JCExpression varianceElement = make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(selector));
-                    varianceElements.append(varianceElement);
+                    varianceElements.append(makeVariance(useSiteVariance));
                 }
                 JCNewArray varianceArray = make().NewArray(makeIdent(syms().ceylonVarianceType), List.<JCExpression>nil(), varianceElements.toList());
                 typeTestArguments = typeTestArguments.prepend(varianceArray);
@@ -5271,9 +5264,52 @@ public abstract class AbstractTransformer implements Transformation {
                 throw BugException.unhandledCase(container);
             }
             return makeSelect(qualifier, name);
+        } else if(pt.isTypeConstructor()){
+            ListBuffer<JCStatement> typeParameterVars = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCExpression> arg = ListBuffer.<JCExpression>lb();
+            for (TypeParameter tp : declaration.getTypeParameters()) {
+                JCExpression init = make().Apply(null,
+                        makeSelect(makeTypeDescriptorType(), "typeParameter"),
+                        List.<JCExpression>of(
+                            make().Literal(tp.getName()),
+                            makeVariance(tp.isContravariant() ? SiteVariance.IN : tp.isCovariant() ? SiteVariance.OUT : null),
+                            tp.getSatisfiedTypes().isEmpty() ? makeNull() : make.NewArray(makeTypeDescriptorType(), List.<JCExpression>nil(), makeReifiedTypeArguments(tp.getSatisfiedTypes())),
+                            tp.getCaseTypes() == null || tp.getCaseTypes().isEmpty() ? makeNull() : make.NewArray(makeTypeDescriptorType(), List.<JCExpression>nil(), makeReifiedTypeArguments(tp.getCaseTypes()))));
+                typeParameterVars.add(makeVar(naming.getTypeArgumentDescriptorName(tp), 
+                        makeSelect(makeTypeDescriptorType(), "TypeParameter"), 
+                        init));
+                arg.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
+            }
+            JCExpression invoke = make().Apply(null, makeSelect(makeTypeDescriptorType(), "typeConstructor"),
+                    List.<JCExpression>of(make().Literal(declaration.getName()),
+                            make.NewArray(makeSelect(makeTypeDescriptorType(), "TypeParameter"), List.<JCExpression>nil(), arg.toList()),
+                            makeReifiedTypeArgument(declaration.getExtendedType())));
+            return make().LetExpr(typeParameterVars.toList(), invoke);
+            
         } else {
             throw BugException.unhandledDeclarationCase(declaration);
         }
+    }
+
+    protected JCExpression makeVariance(SiteVariance useSiteVariance) {
+        String selector;
+        if(useSiteVariance != null){
+            switch(useSiteVariance){
+            case IN:
+                selector = "IN";
+                break;
+            case OUT:
+                selector = "OUT";
+                break;
+            default:
+                selector = "NONE";
+                break;
+            }
+        }else{
+            selector = "NONE";
+        }
+        JCExpression varianceElement = make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(selector));
+        return varianceElement;
     }
     
     private JCExpression makeTupleTypeDescriptor(Type pt, boolean firstElementOptional) {

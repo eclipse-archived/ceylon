@@ -144,4 +144,11 @@ public class StructureTests3 extends CompilerTests {
     public void testTypefnParameterizedTypeParameter(){
         compareWithJavaSource("typefn/ParameterizedTypeParameter");
     }
+    
+    @Test
+    public void testTypefnTypeFnReifiedIs(){
+        //compareWithJavaSource("typefn/TypeFnReifiedIs");
+        compile("typefn/TypeFnReifiedIs.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.structure.typefn.typeFnReifiedIs");
+    }
 }

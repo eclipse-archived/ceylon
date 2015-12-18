@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
 import com.redhat.ceylon.compiler.java.language.CharArray;
@@ -29,6 +30,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -156,10 +158,10 @@ public abstract class TypeDescriptor
             // apply use site variance if required
             if(useSiteVariance.length != 0 && 
                     decl instanceof com.redhat.ceylon.model.typechecker.model.Generic){
-                List<TypeParameter> typeParameters = 
+                List<com.redhat.ceylon.model.typechecker.model.TypeParameter> typeParameters = 
                         ((com.redhat.ceylon.model.typechecker.model.Generic)decl).getTypeParameters();
                 int i = 0;
-                for(TypeParameter typeParameter : typeParameters){
+                for(com.redhat.ceylon.model.typechecker.model.TypeParameter typeParameter : typeParameters){
                     // bail if we have more type parameters than provided use site variance
                     if(i >= useSiteVariance.length)
                         break;
@@ -181,6 +183,227 @@ public abstract class TypeDescriptor
         }
     }
 
+    public static class TypeParameter extends TypeDescriptor {
+        
+        private static final long serialVersionUID = 2052159563636713443L;
+        
+        private final String name;
+        private final Variance variance;
+        private final TypeDescriptor[] satisfiedTypes;
+        private final TypeDescriptor[] caseTypes;
+
+        public TypeAlias container;
+        
+        public TypeParameter(String name,
+                Variance variance,
+                TypeDescriptor[] satisfiedTypes,
+                TypeDescriptor[] caseTypes) {
+            this.name = name;
+            this.variance = variance == null ? Variance.NONE : variance;
+            this.satisfiedTypes = satisfiedTypes == null ? new TypeDescriptor[0] : satisfiedTypes;
+            this.caseTypes = caseTypes == null ? new TypeDescriptor[0] : caseTypes;
+        }
+        
+        public String getName() {
+            return name;
+        }
+
+        public Variance getVariance() {
+            return variance;
+        }
+
+        public TypeDescriptor[] getSatisfiedTypes() {
+            return satisfiedTypes;
+        }
+
+        public TypeDescriptor[] getCaseTypes() {
+            return caseTypes;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            // order of satisfies and cases doesn't matter, so don't use Arrays.hashCode
+            result = prime * result + unorderedHashCode(caseTypes);
+            result = prime * result + unorderedHashCode(satisfiedTypes);
+            result = prime * result + ((variance == null) ? 0 : variance.hashCode());
+            return result;
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            TypeParameter other = (TypeParameter) obj;
+            // TODO order of cases and satisfiesTypes shouldn't matter!
+            if (!Arrays.equals(caseTypes, other.caseTypes))
+                return false;
+            if (!Arrays.equals(satisfiedTypes, other.satisfiedTypes))
+                return false;
+            if (variance != other.variance)
+                return false;
+            return true;
+        }
+        
+        com.redhat.ceylon.model.typechecker.model.TypeParameter toTypeParameter(RuntimeModuleManager moduleManager) {
+            com.redhat.ceylon.model.typechecker.model.TypeParameter tp = new com.redhat.ceylon.model.typechecker.model.TypeParameter();
+            tp.setName(getName());
+            tp.setDeclaration(container);
+            tp.setCovariant(getVariance() == Variance.OUT);
+            tp.setContravariant(getVariance() == Variance.IN);
+            ArrayList<Type> s = new ArrayList<Type>(satisfiedTypes.length);
+            for (TypeDescriptor td : satisfiedTypes) {
+                s.add(td.toType(moduleManager));
+            }
+            tp.setSatisfiedTypes(s);
+            ArrayList<Type> c = new ArrayList<Type>(caseTypes.length);
+            for (TypeDescriptor td : caseTypes) {
+                c.add(td.toType(moduleManager));
+            }
+            tp.setCaseTypes(c);
+            tp.setUnit(moduleManager.getModelLoader().getUnit());
+            return tp;
+        }
+
+        @Override
+        public Type toType(RuntimeModuleManager moduleManager) {
+            return toTypeParameter(moduleManager).getType();
+        }
+
+        @Override
+        public java.lang.Class<?> getArrayElementClass() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean containsNull() {
+            return false;
+        }
+
+        @Override
+        protected void stringTo(StringBuilder sb) {
+            sb.append(getName());
+        }
+    }
+    
+    public static class TypeConstructor extends TypeDescriptor {
+        
+        private static final long serialVersionUID = 1453788724745506847L;
+        
+        private final String name;
+        private final TypeParameter[] parameters;
+        private final TypeDescriptor type;
+        TypeAlias alias = new TypeAlias();
+        public TypeConstructor(String name, TypeParameter[] parameterNames, TypeDescriptor type) {
+            this.name = name;
+            this.parameters = parameterNames;
+            for (TypeParameter p : parameters) {
+                p.container = alias;
+            }
+            this.type = type;
+        }
+        
+        @Override
+        public Type toType(RuntimeModuleManager moduleManager) {
+            
+            ArrayList<com.redhat.ceylon.model.typechecker.model.TypeParameter> tps = new ArrayList<com.redhat.ceylon.model.typechecker.model.TypeParameter>(parameters.length);
+            for (TypeParameter p : parameters) {
+                com.redhat.ceylon.model.typechecker.model.TypeParameter typeParameter = p.toTypeParameter(moduleManager);
+                tps.add(typeParameter);
+            }
+            alias.setTypeParameters(tps);
+            Unit unit = moduleManager.getModelLoader().getUnit();
+            alias.setExtendedType(type.toType(moduleManager));
+            alias.setName(name);
+            alias.setAnonymous(true);
+            alias.setUnit(unit);
+            // XXX this is a hugh lie, but let's see if it works.
+            alias.setContainer(unit.getAnythingDeclaration().getContainer());
+            Type type = alias.getType();
+            type.setTypeConstructor(true);
+            return type;
+        }
+
+        @Override
+        public java.lang.Class<?> getArrayElementClass() {
+            return AbstractTypeConstructor.class;
+        }
+
+        @Override
+        public boolean containsNull() {
+            return false;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (other instanceof TypeConstructor) {
+                return Arrays.equals(this.parameters, ((TypeConstructor) other).parameters)
+                        && this.type.equals(((TypeConstructor) other).type);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = 31;
+            for (TypeParameter s : parameters) {
+                result += 37 * result + s.hashCode();
+            }
+            result += 37 * result + type.hashCode();
+            return result;
+        }
+
+        @Override
+        protected void stringTo(StringBuilder sb) {
+            sb.append("<");
+            boolean first = false;
+            for (TypeParameter p : parameters) {
+                if (first) {
+                    sb.append(',');
+                } else {
+                    first = true;
+                }
+                sb.append(p.getName());
+            }
+            sb.append(">");
+            
+            first = false;
+            for (TypeParameter p : parameters) {
+                if (first) {
+                    sb.append(' ');
+                } else {
+                    if (p.getSatisfiedTypes().length > 0) {
+                        sb.append(" given ");
+                        sb.append(p.getName());
+                        sb.append(" satisfies ");
+                        boolean sfirst = false;
+                        for (TypeDescriptor s : p.getSatisfiedTypes()) {
+                            if (sfirst) {
+                                sb.append('&');
+                            } else {
+                                sfirst = true;
+                            }
+                            s.stringTo(sb);
+                        }
+                        first = true;
+                    }
+                }
+            }
+            
+            // TODO cases!
+            
+            sb.append("=>");
+            type.stringTo(sb);
+        }
+    }
+    
     public static class Class extends Generic 
             implements QualifiableTypeDescriptor {
         
@@ -1035,6 +1258,14 @@ public abstract class TypeDescriptor
         if(tuple != null)
             return tuple;
         return new Class(klass, useSiteVariance, typeArguments);
+    }
+    
+    public static TypeDescriptor typeConstructor(String name, TypeParameter[] parameters, TypeDescriptor result) {
+        return new TypeConstructor(name, parameters, result);
+    }
+    
+    public static TypeDescriptor.TypeParameter typeParameter(String name, Variance variance, TypeDescriptor[] satisfiesTypes, TypeDescriptor[] caseTypes) {
+        return new TypeParameter(name, variance, satisfiesTypes, caseTypes);
     }
 
     private static TypeDescriptor.Tuple unwrapTupleType(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments, boolean allOptional) {

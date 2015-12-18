@@ -1545,7 +1545,7 @@ public class CallableBuilder {
         
         JCExpression result;
         if (typeModel.isTypeConstructor()) {
-            result = buildTypeConstructor(callableType, callableInstance);
+            result = buildTypeConstructor(callableType, callableInstance, typeModel);
         } else {
             result = callableInstance;
         }
@@ -1558,7 +1558,7 @@ public class CallableBuilder {
     }
 
     protected JCExpression buildTypeConstructor(Type callableType,
-            JCNewClass callableInstance) {
+            JCNewClass callableInstance, Type typeConstructorType) {
         JCExpression result;
         // Wrap in an anonymous TypeConstructor subcla
         
@@ -1610,16 +1610,17 @@ public class CallableBuilder {
         MethodDefinitionBuilder ctor = MethodDefinitionBuilder.constructor(gen);
         ctor.body(gen.make().Exec(gen.make().Apply(null, gen.naming.makeSuper(), List.<JCExpression>of(gen.make().Literal(typeModel.asString(true))))));
         
-        
         SyntheticName n = gen.naming.synthetic(typeModel.getDeclaration().getName());
+        
+        MethodDefinitionBuilder getType = ClassDefinitionBuilder.makeGetTypeMethod(gen, typeConstructorType);
         
         JCClassDecl classDef = gen.make().ClassDef(
                 gen.make().Modifiers(0, List.<JCAnnotation>nil()),
                 n.asName(),//name,
                 typeParameters.toList(),
                 gen.make().QualIdent(gen.syms().ceylonAbstractTypeConstructorType.tsym),//extending
-                List.<JCExpression>nil(),//implementing,
-                List.<JCTree>of(ctor.build(), rawApply.build(), typedApply.build()));
+                List.<JCExpression>of(gen.make().QualIdent(gen.syms().ceylonReifiedTypeType.tsym)),//implementing,
+                List.<JCTree>of(ctor.build(), rawApply.build(), typedApply.build(), getType.build()));
         result = gen.make().LetExpr(
                 List.<JCStatement>of(classDef),
                 gen.make().NewClass(null, 

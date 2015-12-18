@@ -131,7 +131,7 @@ public class Type extends Reference {
      * 
      * @return true if this type is a type constructor
      */
-    public boolean isTypeConstructor() {
+    public final boolean isTypeConstructor() {
         return typeConstructor;
     }
     

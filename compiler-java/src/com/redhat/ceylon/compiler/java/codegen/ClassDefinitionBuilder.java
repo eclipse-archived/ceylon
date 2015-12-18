@@ -626,18 +626,23 @@ public class ClassDefinitionBuilder {
         if (isInterface()) {
             // interfaces don't have that one
         }else{
-            MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getGetTypeMethodName());
-            method.modifiers(PUBLIC);
-            method.resultType(List.<JCAnnotation>nil(), gen.makeTypeDescriptorType());
-            method.isOverride(true);
-
-            List<JCStatement> body = List.<JCStatement>of(gen.make().Return(gen.makeReifiedTypeArgument(type)));
-
-            method.body(body);
+            MethodDefinitionBuilder method = makeGetTypeMethod(gen, type);
             defs(method.build());
         }
         
         return this;
+    }
+
+    protected static MethodDefinitionBuilder makeGetTypeMethod(AbstractTransformer gen, Type type) {
+        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getGetTypeMethodName());
+        method.modifiers(PUBLIC);
+        method.resultType(List.<JCAnnotation>nil(), gen.makeTypeDescriptorType());
+        method.isOverride(true);
+
+        List<JCStatement> body = List.<JCStatement>of(gen.make().Return(gen.makeReifiedTypeArgument(type)));
+
+        method.body(body);
+        return method;
     }
 
     public ClassDefinitionBuilder addAnnotationTypeMethod(Type type){
