@@ -6,14 +6,32 @@ function dre$$(object, type, loc) {
   //If it's already of another type, throw
   if (object.$$ !== undefined)throw new Error("Cannot modify the type of an object at runtime " + loc);
   //Check members
-  var actual = Object.getOwnPropertyNames(object);
+  var actual = typeof(object)==='object'?Object.getOwnPropertyNames(object):[];
   var sats = type.t.$$.prototype.getT$all();
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
-    if (typeof(expected)==='function') {
+    if (expected) {
       for (var i=0; i < expected.length; i++) {
         if (actual.indexOf(expected[i])<0) {
           throw new Error("Native object is missing property " + expected[i] + " " + loc);
+        } else {
+          var propname="$prop$get"+expected[i][0].uppercased+expected[i].substring(1);
+          var proptype=type.t.$$.prototype[propname];
+          if (proptype) {
+            proptype=getrtmm$$(proptype);
+          }
+          var val=object[expected[i]];
+          if (proptype && proptype.$t && !is$(val,proptype.$t)) {
+            if (proptype.$t.t===$_Array) {
+              object[expected[i]]=natc$(val,proptype.$t.a.Element$Array,loc);
+            } else if (proptype.$t.t===Integer) {
+              object[expected[i]]=ndnc$(val,'i',loc);
+            } else if (proptype.$t.t===Float) {
+              object[expected[i]]=ndnc$(val,'f',loc);
+            } else {
+              object[expected[i]]=ndtc$(val,proptype.$t,loc);
+            }
+          }
         }
       }
     }
@@ -21,13 +39,15 @@ function dre$$(object, type, loc) {
   object.$$=type.t.$$;
   object.getT$name=function(){return type.t.$$.T$name};
   object.getT$all=function(){return type.t.$$.T$all};
-  if (actual.indexOf('string')<0) {
-    atr$(object,'string',function(){return object.toString();},undefined,
-         $_Object.$$.prototype.$prop$getString.$crtmm$);
-  }
-  if (actual.indexOf('hash')<0) {
-    atr$(object,'hash',function(){return identityHash(object);},undefined,
-         $_Object.$$.prototype.$prop$getHash.$crtmm$);
+  if (typeof(object)==='object') {
+    if (actual.indexOf('string')<0) {
+      atr$(object,'string',function(){return object.toString();},undefined,
+           $_Object.$$.prototype.$prop$getString.$crtmm$);
+    }
+    if (actual.indexOf('hash')<0) {
+      atr$(object,'hash',function(){return identityHash(object);},undefined,
+           $_Object.$$.prototype.$prop$getHash.$crtmm$);
+    }
   }
   return object;
 }
@@ -63,10 +83,11 @@ function ndtc$(o,t,loc) {
 ex$.ndtc$=ndtc$;
 //Box native array, checking elements' type
 function natc$(a,t,loc) {
+  if (a===empty())return $arr$([],t);
   if (Array.isArray(a)) {
     for (var i=0;i<a.length;i++) {
       if (!is$(a[i],t)) {
-        throw new TypeError('Expected element type ' + qname$(t) + ' (' + loc + ')');
+        a[i]=dre$$(a[i],t,loc);
       }
     }
     return $arr$(a,t);
