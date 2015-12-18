@@ -86,7 +86,7 @@ function natc$(a,t,loc) {
   if (a===empty())return $arr$([],t);
   if (Array.isArray(a)) {
     for (var i=0;i<a.length;i++) {
-      if (!is$(a[i],t)) {
+      if (!is$(a[i],t) && (a[i] && a[i].$$)===undefined) {
         a[i]=dre$$(a[i],t,loc);
       }
     }
