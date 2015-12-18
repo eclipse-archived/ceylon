@@ -179,7 +179,8 @@ public class InvocationGenerator {
                 Interface cd = that.getUnit().getCallableDeclaration();
                 final Type ed = that.getUnit().getEmptyType();
                 Class td = that.getUnit().getTupleDeclaration();
-                Type callable = typeArgSource.getTypeModel().getSupertype(cd);
+                Type callable = typeArgSource.getTypeModel() == null ? null :
+                    typeArgSource.getTypeModel().getSupertype(cd);
                 if (callable != null) {
                     //This is a tuple with the arguments to the callable
                     //(can be union with empty if first param is defaulted)
