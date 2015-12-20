@@ -7496,6 +7496,9 @@ public class ExpressionVisitor extends Visitor {
 
     @Override public void visit(Tree.SequenceEnumeration that) {
         super.visit(that);
+        for (Tree.Statement st: that.getStatements()) {
+            st.addError("enumeration expression may not contain statements");
+        }
         Type st = null;
         Tree.SequencedArgument sa = 
                 that.getSequencedArgument();

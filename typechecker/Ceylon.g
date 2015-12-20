@@ -1884,9 +1884,25 @@ memberSelectionOperator returns [MemberOperator operator]
       { $operator=new SpreadOp($SPREAD_OP); }
     ;
 
+statementStart
+    : annotation* 
+    ( 
+        VALUE_MODIFIER | FUNCTION_MODIFIER 
+      | variadicType LIDENTIFIER
+      | OBJECT_DEFINITION LIDENTIFIER 
+      | CLASS_DEFINITION | INTERFACE_DEFINITION
+      | ASSERT
+    )
+    | RETURN | THROW | BREAK | CONTINUE
+    ; 
+
 enumeration returns [SequenceEnumeration sequenceEnumeration]
     : LBRACE 
       { $sequenceEnumeration = new SequenceEnumeration($LBRACE); } 
+      (
+        (statementStart) => declarationOrStatement
+        { $sequenceEnumeration.addStatement($declarationOrStatement.statement); }
+      )*
       (
         sequencedArgument
         { $sequenceEnumeration.setSequencedArgument($sequencedArgument.sequencedArgument); }

@@ -884,7 +884,8 @@
 
 "Enumerated elements of an iterable."
 ^(SEQUENCE_ENUMERATION:ATOM 
-    SEQUENCED_ARGUMENT?)
+    SEQUENCED_ARGUMENT?
+    STATEMENT*)
 
 "Enumerated elements of a tuple."
 ^(TUPLE:ATOM
