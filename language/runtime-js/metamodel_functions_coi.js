@@ -379,54 +379,6 @@ function coistr$(coi) {
     qn+='.'+nm+addtargs(cc[i].$$targs$$.Target$Type);
   }
   return qn;
-  if (coi.src$) {
-    var cc=[],ms=[];
-    var src=coi.src$;
-    var t=coi;
-    while (src!==undefined) {
-      cc.unshift(src);
-      ms.unshift(t);
-      src=src.outer$;
-      t=coicont$(t);
-    }
-    var qn=className(cc[0]);
-  }
-  var qn=qname$(mm);
-  if (coi.tipo.$$ && coi.tipo.$$.prototype && coi.tipo.$$.prototype.getT$name) {
-    console.trace("WTF");
-    qn=coi.tipo.$$.prototype.getT$name();
-  }
-  if (mm.tp) {
-    qn+="<";
-    var first=true;
-    var coitargs = coi.$$targs$$ && coi.$$targs$$.Type$ClassOrInterface;
-    if (coitargs && coitargs.t==='T') {
-      coitargs = retpl$(coitargs);
-    }
-    for (var tp in mm.tp) {
-      var targ;
-      if (coitargs && coitargs.a && coitargs.a[tp]) {
-        var _targ=coitargs.a[tp];
-        if (typeof(_targ)==='string') {
-          console.log("TODO buscar " + tp + "->" + _targ + " para " + coi.declaration.qualifiedName);
-          _targ={t:Anything};
-        }
-        targ=typeLiteral$meta({Type$typeLiteral:_targ});
-      } else {
-        targ=typeLiteral$meta({Type$typeLiteral:{t:Anything}});
-      }
-      if (first)first=false; else qn+=",";
-      if (is$(targ,{t:ClassOrInterface$meta$model})) {
-        qn+=coistr$(targ);
-      } else if (targ.declaration) {
-        qn+=targ.declaration.qualifiedName;
-      } else {
-        qn+=targ.string;
-      }
-    }
-    qn+=">";
-  }
-  return qn;
 }
 //ClassOrInterface.hash
 function coihash$(coi) {
