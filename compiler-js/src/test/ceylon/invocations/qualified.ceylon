@@ -89,22 +89,15 @@ class Node5835_2(StringBuilder sb) extends Node5835(sb) {
 shared void test5835() {
     value sb = StringBuilder();
     value f = Node5835.SubNode;
-    print("should print nothing");
     f(Node5835(sb));
     f(Node5835_2(sb));
     check(sb.string=="", "#5835.1");
-
-    print("should print 1 1 2");
     f(Node5835(sb))();
     f(Node5835_2(sb))();
     check(sb.string=="112", "#5835.2");
-
-    print("TWO should print nothing");
     Node5835.SubNode(Node5835(sb));
     Node5835.SubNode(Node5835_2(sb));
     check(sb.string=="112", "#5835.3");
-
-    print("TWO should print 1 1 2");
     Node5835.SubNode(Node5835(sb))();
     Node5835.SubNode(Node5835_2(sb))();
     check(sb.string=="112112", "#5835.4");
