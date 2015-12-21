@@ -64,7 +64,7 @@ public class CeylonTestTool extends AbstractTestTool {
             ceylonRunTool.run();
         }catch(Throwable x){
             // Get around class loader issues where we can't compare the class statically
-            if(x.getClass().getCanonicalName().equals("ceylon.test.cli.TestFailureException")) {
+            if(x.getClass().getCanonicalName().equals("ceylon.test.engine.internal.TestFailureException")) {
                 throw new CeylonTestFailureError();
             }
             throw x;
