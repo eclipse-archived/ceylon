@@ -79,4 +79,15 @@ void testGraph() {
     Graph<BasicGraph.Node, BasicGraph.Edge> gbg = BasicGraph();
     BasicGraph.Node bgn = gbg.Node() of BasicGraph.Node;
     BasicGraph.Edge bge = gbg.Edge(bgn,bgn) of BasicGraph.Edge;
+
+
+    Edge createEdge<Node,Edge>(Graph<Node, Edge> g) 
+            given Node satisfies Graph<Node,Edge>.Node 
+            given Edge satisfies Graph<Node,Edge>.Edge {
+        return g.Edge(g.Node() of Node, g.Node() of Node) of Edge;
+    }
+    
+    BasicGraph.Edge edge1 = createEdge(BasicGraph());
+    OnOffGraph.Edge edge2 = createEdge(OnOffGraph());
+    
 }
