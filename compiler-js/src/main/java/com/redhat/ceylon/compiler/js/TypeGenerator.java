@@ -226,10 +226,43 @@ public class TypeGenerator {
         String tfn;
         //#628 If coi is anonymous and inside cont, qualify the path from cont instead
         if (coi != null && coi.isAnonymous() && cont instanceof Scope && ModelUtil.contains((Scope)cont, coi)) {
-            tfn = gen.memberAccessBase(type, d, false, gen.qualifiedPath(type, cont, inProto));
+            tfn = gen.qualifiedPath(type, cont, inProto);
+        } else if (inProto && d.isClassOrInterfaceMember()) {
+            List<TypeDeclaration> parents = new ArrayList<>(3);
+            TypeDeclaration path=d;
+            parents.add(path);
+            while (path.isClassOrInterfaceMember()) {
+                path = ModelUtil.getContainingClassOrInterface(path.getContainer());
+                parents.add(0, path);
+            }
+            StringBuilder sb = new StringBuilder();
+            String qp = gen.qualifiedPath(type, parents.get(0), inProto);
+            if (qp != null && !qp.isEmpty()) {
+                sb.append(qp);
+            }
+            boolean first = true;
+            for (TypeDeclaration td : parents) {
+                if (first) {
+                    first=false;
+                } else {
+                    sb.append(".$$.prototype");
+                }
+                if (sb.length() > 0) {
+                    sb.append('.');
+                }
+                if (!td.isAlias()) {
+                    sb.append("$init$");
+                }
+                sb.append(gen.getNames().name(td));
+                if (!td.isAlias()) {
+                    sb.append("()");
+                }
+            }
+            return sb.toString();
         } else {
-            tfn = gen.memberAccessBase(type, d, false, gen.qualifiedPath(type, d, inProto));
+            tfn = gen.qualifiedPath(type, d, inProto);
         }
+        tfn = gen.memberAccessBase(type, d, false, tfn);
         if (removeAlias && !imported) {
             int idx = tfn.lastIndexOf('.');
             if (idx > 0) {
