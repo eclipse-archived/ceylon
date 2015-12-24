@@ -3325,13 +3325,15 @@ tupleType returns [TupleType type]
         { $type.addElementType($spt.type); }
       |
         t1=defaultedType
-        { $type.addElementType($t1.type); }
+        { if ($t1.type!=null)
+              $type.addElementType($t1.type); }
         (
           c=COMMA
           { $type.setEndToken($c); }
           t2=defaultedType
-          { $type.addElementType($t2.type);
-            $type.setEndToken(null); }
+          { if ($t2.type!=null) {
+                $type.addElementType($t2.type);
+                $type.setEndToken(null); } }
         )*
       )?
       RBRACKET

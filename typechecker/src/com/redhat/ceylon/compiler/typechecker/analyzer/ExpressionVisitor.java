@@ -8042,7 +8042,9 @@ public class ExpressionVisitor extends Visitor {
         Tree.IsCase ic = (Tree.IsCase) ci;
         Tree.Type t = ic.getType();
         if (t!=null) {
-            return t.getTypeModel().getUnionOfCases();
+            Type type = t.getTypeModel();
+            return type==null ? null :
+                type.getUnionOfCases();
         }
         else {
             return null;
