@@ -1,4 +1,4 @@
-import check { check }
+import check { check, fail }
 
 interface Holder327<T> given T satisfies Object {
   shared formal T t;
@@ -62,6 +62,24 @@ void test665() {
     check(C().Middle().D().ob == 2, "#665");
 }
 
+interface Node5834 {
+    shared formal class SubNode(String? name = "YAY")
+            satisfies Node5834 {}
+}
+
+interface MyNode5834 satisfies Node5834 {
+    shared actual class SubNode(String? name)
+            extends super.SubNode(name)
+            satisfies MyNode5834 {
+        if (exists name) {
+            check(name=="YAY", "#5834 expected YAY got '``name``'");
+        } else {
+            fail("#5834 name doesn't even exist!");
+        }
+    }
+}
+class Inst5834() satisfies MyNode5834 {}
+
 shared void testIssues() {
   value a = Fuera327(1);
   value b = a.Parent(2);
@@ -69,4 +87,13 @@ shared void testIssues() {
   check(c.t == 1, "Issue 327");
   test628();
   test665();
+  try {
+    Inst5834().SubNode();
+  } catch (Throwable e) {
+    if ("ReferenceError" in e.message) {
+      print("Inherited defaulted initializer params only work in prototype mode");
+    } else {
+      throw e;
+    }
+  }
 }
