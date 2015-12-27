@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -136,8 +137,9 @@ public class ClassGenerator {
             addSatisfiedTypeArguments(sats, that, me, gen);
         }
         addFunctionTypeArguments(d, me, gen);
+        List<Tree.Parameter> defparams = null;
         if (plist != null) {
-            gen.initParameters(plist, d, null);
+            defparams = gen.initParameters(plist, d, null);
         }
 
         callSupertypes(that, d, typeName, gen);
@@ -188,6 +190,23 @@ public class ClassGenerator {
             for (Tree.Statement st : stmts) {
                 if (st instanceof Tree.Enumerated) {
                     Singletons.valueConstructor(that, (Tree.Enumerated)st, gen);
+                }
+            }
+        }
+        if (defparams != null) {
+            for (Tree.Parameter p : defparams) {
+                final SpecifierOrInitializerExpression expr = gen.getDefaultExpression(p);
+                if (expr != null) {
+                    gen.out(typeName, ".$defs$", p.getParameterModel().getName(),
+                            "=function(", me);
+                    for (Parameter otherP : d.getParameterList().getParameters()) {
+                        if (!otherP.equals(p.getParameterModel())) {
+                            gen.out(",", gen.getNames().name(otherP));
+                        }
+                    }
+                    gen.out("){return ");
+                    gen.generateParameterExpression(p, expr, d);
+                    gen.out("};");
                 }
             }
         }

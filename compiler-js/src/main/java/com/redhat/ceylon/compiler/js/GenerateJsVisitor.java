@@ -1189,7 +1189,7 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     /** Get the specifier expression for a Parameter, if one is available. */
-    private SpecifierOrInitializerExpression getDefaultExpression(final Tree.Parameter param) {
+    SpecifierOrInitializerExpression getDefaultExpression(final Tree.Parameter param) {
         final SpecifierOrInitializerExpression expr;
         if (param instanceof ParameterDeclaration || param instanceof Tree.InitializerParameter) {
             MethodDeclaration md = null;
@@ -1245,8 +1245,11 @@ public class GenerateJsVisitor extends Visitor {
         }
     }
 
-    /** Initialize the sequenced, defaulted and captured parameters in a type declaration. */
-    void initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Function m) {
+    /** Initialize the sequenced, defaulted and captured parameters in a type declaration.
+     * @return The defaulted parameters that belong to a class, since their values have to be
+     * set later on. */
+    List<Tree.Parameter> initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Function m) {
+        List<Tree.Parameter> rparams = null;
         for (final Tree.Parameter param : params.getParameters()) {
             Parameter pd = param.getParameterModel();
             String paramName = names.name(pd);
@@ -1262,19 +1265,27 @@ public class GenerateJsVisitor extends Visitor {
                             out(names.name(p));
                         }
                         out(")");
+                    } else if (pd.getDeclaration() instanceof Class) {
+                        Class cdec = (Class)pd.getDeclaration().getRefinedDeclaration();
+                        out(TypeGenerator.pathToType(params, cdec, this),
+                                ".$defs$", pd.getName(), "(", names.self(cdec));
+                        for (Parameter p : ((Class)pd.getDeclaration()).getParameterList().getParameters()) {
+                            if (!p.equals(pd)) {
+                                out(",", names.name(p));
+                            }
+                        }
+                        out(")");
+                        if (rparams == null) {
+                            rparams = new ArrayList<>(3);
+                        }
+                        rparams.add(param);
                     } else {
                         final SpecifierOrInitializerExpression expr = getDefaultExpression(param);
                         if (expr == null) {
                             param.addUnexpectedError("Default expression missing for " + pd.getName(), Backend.JavaScript);
-                            out("null");
-                        } else if (param instanceof ParameterDeclaration &&
-                                ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
-                            // function parameter defaulted using "=>"
-                            FunctionHelper.singleExprFunction(
-                                    ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                                    expr.getExpression(), m, true, true, this);
+                            out("undefined");
                         } else {
-                            expr.visit(this);
+                            generateParameterExpression(param, expr, m);
                         }
                     }
                 } else {
@@ -1291,6 +1302,20 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 endLine(true);
             }
+        }
+        return rparams;
+    }
+
+    void generateParameterExpression(Tree.Parameter param, SpecifierOrInitializerExpression expr,
+            Scope m) {
+        if (param instanceof ParameterDeclaration &&
+                ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
+            // function parameter defaulted using "=>"
+            FunctionHelper.singleExprFunction(
+                    ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
+                    expr.getExpression(), m, true, true, this);
+        } else {
+            expr.visit(this);
         }
     }
 
