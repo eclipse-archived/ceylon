@@ -228,37 +228,7 @@ public class TypeGenerator {
         if (coi != null && coi.isAnonymous() && cont instanceof Scope && ModelUtil.contains((Scope)cont, coi)) {
             tfn = gen.qualifiedPath(type, cont, inProto);
         } else if (inProto && d.isClassOrInterfaceMember()) {
-            List<TypeDeclaration> parents = new ArrayList<>(3);
-            TypeDeclaration path=d;
-            parents.add(path);
-            while (path.isClassOrInterfaceMember()) {
-                path = ModelUtil.getContainingClassOrInterface(path.getContainer());
-                parents.add(0, path);
-            }
-            StringBuilder sb = new StringBuilder();
-            String qp = gen.qualifiedPath(type, parents.get(0), inProto);
-            if (qp != null && !qp.isEmpty()) {
-                sb.append(qp);
-            }
-            boolean first = true;
-            for (TypeDeclaration td : parents) {
-                if (first) {
-                    first=false;
-                } else {
-                    sb.append(".$$.prototype");
-                }
-                if (sb.length() > 0) {
-                    sb.append('.');
-                }
-                if (!td.isAlias()) {
-                    sb.append("$init$");
-                }
-                sb.append(gen.getNames().name(td));
-                if (!td.isAlias()) {
-                    sb.append("()");
-                }
-            }
-            return sb.toString();
+            return pathToType(type, d, gen);
         } else {
             tfn = gen.qualifiedPath(type, d, inProto);
         }
@@ -272,6 +242,41 @@ public class TypeGenerator {
             }
         }
         return tfn;
+    }
+
+    static String pathToType(Node that, TypeDeclaration d, GenerateJsVisitor gen) {
+        List<TypeDeclaration> parents = new ArrayList<>(3);
+        TypeDeclaration path=d;
+        parents.add(path);
+        while (path.isClassOrInterfaceMember()) {
+            path = ModelUtil.getContainingClassOrInterface(path.getContainer());
+            parents.add(0, path);
+        }
+        StringBuilder sb = new StringBuilder();
+        String qp = gen.qualifiedPath(that, parents.get(0), gen.opts.isOptimize()
+                && ModelUtil.getContainingDeclaration(d) instanceof TypeDeclaration);
+        if (qp != null && !qp.isEmpty()) {
+            sb.append(qp);
+        }
+        boolean first = true;
+        for (TypeDeclaration td : parents) {
+            if (first) {
+                first=false;
+            } else {
+                sb.append(".$$.prototype");
+            }
+            if (sb.length() > 0) {
+                sb.append('.');
+            }
+            if (!td.isAlias()) {
+                sb.append("$init$");
+            }
+            sb.append(gen.getNames().name(td));
+            if (!td.isAlias()) {
+                sb.append("()");
+            }
+        }
+        return sb.toString();
     }
 
     static void interfaceDefinition(final Tree.InterfaceDefinition that, final GenerateJsVisitor gen, InitDeferrer initDeferrer) {
