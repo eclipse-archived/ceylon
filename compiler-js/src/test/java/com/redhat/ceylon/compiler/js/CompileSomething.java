@@ -22,8 +22,8 @@ public class CompileSomething {
 
     public static void main(String[] x) throws IOException {
         final Options opts = new Options().outRepo("/tmp/modules").addRepo("build/runtime")
-                .addRepo("../ceylon.ast/modules")
-                .addRepo("../ceylon-sdk/modules").addRepo("build/test/proto")
+                .addRepo("../../ceylon.ast/modules")
+                .addRepo("../../ceylon-sdk/modules").addRepo("build/test/proto")
                 .optimize(true).verbose("all")
                 .generateSourceArchive(false)
                 .suppressWarnings(EnumUtil.enumsFromStrings(Warning.class, Arrays.asList("unusedImport")))
