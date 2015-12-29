@@ -64,6 +64,11 @@ public class TypeUtils {
                 final TypeDeclaration d = pt.getDeclaration();
                 if (pt.isTypeParameter()) {
                     resolveTypeParameter(node, (TypeParameter)d, gen, skipSelfDecl);
+                    if (((TypeParameter)d).isInvariant() &&
+                            (e.getKey().isCovariant() || e.getKey().isContravariant())) {
+                        gen.out("/*ORALE!",d.getQualifiedNameString()," inv pero ",
+                                e.getKey().getQualifiedNameString()," var*/");
+                    }
                 } else {
                     closeBracket = !pt.isTypeAlias();
                     if (closeBracket)gen.out("{t:");
@@ -515,6 +520,17 @@ public class TypeUtils {
             final Node n, final ParameterList plist, final GenerateJsVisitor gen) {
         boolean first = true;
         gen.out("[");
+        Map<String,Tree.Parameter> treeParams = new HashMap<>();
+        //Map of the parameters in the tree
+        if (n instanceof Tree.AnyMethod) {
+            for (Tree.ParameterList tplist : ((Tree.AnyMethod)n).getParameterLists()) {
+                for (Tree.Parameter tparm : tplist.getParameters()) {
+                    if (tparm.getParameterModel() != null && tparm.getParameterModel().getName() != null) {
+                        treeParams.put(tparm.getParameterModel().getName(), tparm);
+                    }
+                }
+            }
+        }
         for (Parameter p : plist.getParameters()) {
             if (first) first=false; else gen.out(",");
             gen.out("{", MetamodelGenerator.KEY_NAME, ":'", p.getName(), "',");
@@ -542,8 +558,16 @@ public class TypeUtils {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 encodeParameterListForRuntime(resolveTargs, n, ((Function)p.getModel()).getFirstParameterList(), gen);
             }
-            if (p.getModel().getAnnotations() != null && !p.getModel().getAnnotations().isEmpty()) {
-                new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
+            Tree.Parameter tparm = p.getName() == null ? null : treeParams.get(p.getName());
+            if (tparm == null) {
+                if (p.getModel().getAnnotations() != null && !p.getModel().getAnnotations().isEmpty()) {
+                    new ModelAnnotationGenerator(gen, p.getModel(), n).generateAnnotations();
+                }
+            } else if (tparm instanceof Tree.ParameterDeclaration) {
+                Tree.TypedDeclaration tdec = ((Tree.ParameterDeclaration)tparm).getTypedDeclaration();
+                if (tdec.getAnnotationList() != null && !tdec.getAnnotationList().getAnnotations().isEmpty()) {
+                    outputAnnotationsFunction(tdec.getAnnotationList(), p.getDeclaration(), gen);
+                }
             }
             gen.out("}");
         }
@@ -746,6 +770,14 @@ public class TypeUtils {
         } else {
             encodeForRuntime(that, d, gen, new ModelAnnotationGenerator(gen, d, that));
         }
+    }
+
+    public static void encodeMethodForRuntime(final Tree.AnyMethod that, final GenerateJsVisitor gen) {
+        encodeForRuntime(that, that.getDeclarationModel(), gen, new RuntimeMetamodelAnnotationGenerator() {
+            @Override public void generateAnnotations() {
+                outputAnnotationsFunction(that.getAnnotationList(), that.getDeclarationModel(), gen);
+            }
+        });
     }
 
     /** Output a metamodel map for runtime use. */

@@ -236,7 +236,7 @@ public class FunctionHelper {
                 gen.out(gen.getNames().self(outer), ".");
             }
             gen.out(gen.getNames().name(m), ".$crtmm$=");
-            TypeUtils.encodeForRuntime(m, that.getAnnotationList(), gen);
+            TypeUtils.encodeMethodForRuntime(that, gen);
             gen.endLine(true);
             gen.share(m);
         }

@@ -1183,7 +1183,7 @@ public class GenerateJsVisitor extends Visitor {
             FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
             //Add reference to metamodel
             out(names.name(d), ".$crtmm$=");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+            TypeUtils.encodeMethodForRuntime(that, this);
             endLine(true);
         }
     }
@@ -1331,7 +1331,7 @@ public class GenerateJsVisitor extends Visitor {
         FunctionHelper.methodDefinition(that, this, false, verboseStitcher);
         //Add reference to metamodel
         out(names.self(outer), ".", names.name(d), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+        TypeUtils.encodeMethodForRuntime(that, this);
         endLine(true);
     }
 
