@@ -17,6 +17,9 @@ function validate$params(ps,t,msg,nothrow) {
     }
   } else if (t.t===Empty) {
     if (!ps || ps.length===0)return true;
+    var countDefs=0;
+    for (var i=0;i<ps.length;i++)if (ps[i].def)countDefs++;
+    if (countDefs===ps.length)return true;
   } else if (t.t==='u' && ps.length===1) {
     if (extendsType(ps[0].$t,t))return true;
   } else if (t.t===Sequential || t.t===Sequence) {
