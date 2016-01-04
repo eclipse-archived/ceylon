@@ -143,7 +143,9 @@ public class ConditionGenerator {
         //The first pass is gathering the conditions, which we already get here
         //Second pass: generate the conditions
         gen.out(keyword);
-        gen.out("(");
+        if (!keyword.isEmpty()) {
+            gen.out("(");
+        }
         boolean first = true;
         final Iterator<VarHolder> ivars = vars.iterator();
         for (Condition cond : conditions.getConditions()) {
@@ -164,7 +166,9 @@ public class ConditionGenerator {
                 }
             }
         }
-        gen.out(")");
+        if (!keyword.isEmpty()) {
+            gen.out(")");
+        }
     }
 
     private void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
@@ -257,6 +261,8 @@ public class ConditionGenerator {
         if (vars.isEmpty()) {
             if (nested) {
                 gen.out(" return ");
+            } else {
+                gen.out("(");
             }
             //No special conditions means we can use a simple ternary
             specialConditions(vars, that.getIfClause().getConditionList(), "");
@@ -267,6 +273,9 @@ public class ConditionGenerator {
                 gen.out("null;");
             } else {
                 anoserque.getExpression().visit(gen);
+            }
+            if (!nested) {
+                gen.out(")");
             }
         } else {
             if (nested) {
