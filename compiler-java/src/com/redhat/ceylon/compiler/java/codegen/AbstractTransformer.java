@@ -5272,12 +5272,24 @@ public abstract class AbstractTransformer implements Transformation {
                         makeSelect(makeTypeDescriptorType(), "typeParameter"),
                         List.<JCExpression>of(
                             make().Literal(tp.getName()),
-                            makeVariance(tp.isContravariant() ? SiteVariance.IN : tp.isCovariant() ? SiteVariance.OUT : null),
-                            tp.getSatisfiedTypes().isEmpty() ? makeNull() : make.NewArray(makeTypeDescriptorType(), List.<JCExpression>nil(), makeReifiedTypeArguments(tp.getSatisfiedTypes())),
-                            tp.getCaseTypes() == null || tp.getCaseTypes().isEmpty() ? makeNull() : make.NewArray(makeTypeDescriptorType(), List.<JCExpression>nil(), makeReifiedTypeArguments(tp.getCaseTypes()))));
+                            makeVariance(tp.isContravariant() ? SiteVariance.IN : tp.isCovariant() ? SiteVariance.OUT : null)));
                 typeParameterVars.add(makeVar(naming.getTypeArgumentDescriptorName(tp), 
                         makeSelect(makeTypeDescriptorType(), "TypeParameter"), 
                         init));
+                if (tp.getSatisfiedTypes() != null 
+                        && !tp.getSatisfiedTypes().isEmpty()) {
+                    typeParameterVars.add(make().Exec(
+                            make().Apply(null,
+                                makeSelect(naming.getTypeArgumentDescriptorName(tp), "setSatisfiedTypes"),
+                                List.<JCExpression>of(make.NewArray(makeTypeDescriptorType(), List.<JCExpression>nil(), makeReifiedTypeArguments(tp.getSatisfiedTypes()))))));
+                }
+                if (tp.getCaseTypes() != null && !tp.getCaseTypes().isEmpty()) {
+                    typeParameterVars.add(make().Exec(
+                        make().Apply(null,
+                                makeSelect(naming.getTypeArgumentDescriptorName(tp), "setCaseTypes"),
+                                List.<JCExpression>of(make.NewArray(makeTypeDescriptorType(), List.<JCExpression>nil(), makeReifiedTypeArguments(tp.getCaseTypes()))))));
+                }
+                
                 arg.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
             }
             JCExpression invoke = make().Apply(null, makeSelect(makeTypeDescriptorType(), "typeConstructor"),

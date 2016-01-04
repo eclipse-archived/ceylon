@@ -54,6 +54,7 @@ public abstract class TypeDescriptor
     
     public static final TypeDescriptor NothingType = new Nothing();
     private static final Variance[] NO_VARIANCE = new Variance[0];
+    private static final TypeDescriptor[] EMPTY_TYPE_DESCRIPTORS = new TypeDescriptor[0];
 
     //
     // Methods
@@ -189,19 +190,32 @@ public abstract class TypeDescriptor
         
         private final String name;
         private final Variance variance;
-        private final TypeDescriptor[] satisfiedTypes;
-        private final TypeDescriptor[] caseTypes;
+        private TypeDescriptor[] satisfiedTypes;
+        private TypeDescriptor[] caseTypes;
 
         public TypeAlias container;
         
         public TypeParameter(String name,
-                Variance variance,
-                TypeDescriptor[] satisfiedTypes,
-                TypeDescriptor[] caseTypes) {
+                Variance variance) {
             this.name = name;
             this.variance = variance == null ? Variance.NONE : variance;
-            this.satisfiedTypes = satisfiedTypes == null ? new TypeDescriptor[0] : satisfiedTypes;
-            this.caseTypes = caseTypes == null ? new TypeDescriptor[0] : caseTypes;
+            this.satisfiedTypes = EMPTY_TYPE_DESCRIPTORS;
+            this.caseTypes = EMPTY_TYPE_DESCRIPTORS;
+        }
+        
+        public void setSatisfiedTypes(TypeDescriptor[] satisfiedTypes) {
+            /* Why a setter and not an immutable class?
+             * To represent the type constructor
+             *   <Number> given Number satisfies Summable<Number> => Number(Number,Number)
+             * we need a TypeParameter whose upper bound involves itself
+             * so an immutable TypeParameter could never work. 
+             */
+            this.satisfiedTypes = satisfiedTypes;
+        }
+        
+        public void setCaseTypes(TypeDescriptor[] caseTypes) {
+            // see comment in setSatisfiedTypes() above
+            this.caseTypes = caseTypes;
         }
         
         public String getName() {
@@ -1264,8 +1278,8 @@ public abstract class TypeDescriptor
         return new TypeConstructor(name, parameters, result);
     }
     
-    public static TypeDescriptor.TypeParameter typeParameter(String name, Variance variance, TypeDescriptor[] satisfiesTypes, TypeDescriptor[] caseTypes) {
-        return new TypeParameter(name, variance, satisfiesTypes, caseTypes);
+    public static TypeDescriptor.TypeParameter typeParameter(String name, Variance variance) {
+        return new TypeParameter(name, variance);
     }
 
     private static TypeDescriptor.Tuple unwrapTupleType(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments, boolean allOptional) {
