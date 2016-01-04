@@ -1,194 +1,326 @@
 package com.redhat.ceylon.compiler.java.test.structure.typefn;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
 final class pipe_ {
     
     private pipe_() {
     }
     
-    static <Any>Any pipe(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Any, final Any anything) {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Any")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Any",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <Any>Any pipe(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Any, @.com.redhat.ceylon.compiler.java.metadata.Name("anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Any")
+    final Any anything) {
         return anything;
     }
 }
-final class genericFunctionReference_ {
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class add_ {
     
-    private genericFunctionReference_() {
+    private add_() {
     }
     
-    static void genericFunctionReference() {
-        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor pipeRef = (
-            let
-            {
-                
-                class Anonymous#pipe<Any> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "Number",
+            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Number",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {"ceylon.language::Summable<Number>"},
+            caseTypes = {})})
+    static <Number extends .ceylon.language.Summable<Number>>Number add(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Number, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "Number",
+            erased = true)
+    final Number x, @.com.redhat.ceylon.compiler.java.metadata.Name("y")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "Number",
+            erased = true)
+    final Number y) {
+        return ((Number)x).plus((Number)y);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("pipeRef")
+final class pipeRef_ {
+    
+    private pipeRef_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (
+                let
+                {
                     
-                    Anonymous#pipe() {
-                        super("<Any> => Any(Any)");
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
-                        return $apply$(applied);
-                    }
-                    
-                    private .ceylon.language.Callable<? extends Any> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
-                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Any = applied[0];
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Any>($reified$Any, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Any), "Any(Any)", (short)-1){
-                            
-                            @.java.lang.Override
-                            public Any $call$(final .java.lang.Object $param$0) {
-                                final Any $ceylontmp$anything = (Any)$param$0;
-                                return .com.redhat.ceylon.compiler.java.test.structure.typefn.pipe_.<Any>pipe(applied[0], $ceylontmp$anything);
-                            }
-                        };
+                    class Anonymous#pipe<Any> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        Anonymous#pipe() {
+                            super("<Any> => Any(Any)");
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                            return $apply$(applied);
+                        }
+                        
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        private .ceylon.language.Callable<? extends Any> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Any = applied[0];
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Any>($reified$Any, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Any), "Any(Any)", (short)-1){
+                                
+                                @.java.lang.Override
+                                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                                public Any $call$(final .java.lang.Object $param$0) {
+                                    final Any $ceylontmp$anything = (Any)$param$0;
+                                    return .com.redhat.ceylon.compiler.java.test.structure.typefn.pipe_.<Any>pipe(applied[0], $ceylontmp$anything);
+                                }
+                            };
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return (
+                                let
+                                {
+                                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Any = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Any", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                                }
+                                returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#pipe", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Any}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Any, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Any)));
+                            );
+                        }
                     }
                 }
-            }
-            returning new Anonymous#pipe();
-        );
-        final .ceylon.language.Callable<? extends .ceylon.language.String> stringPipeRef = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)pipeRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$});
-        if (.ceylon.language.String.instance("").equals(stringPipeRef.$call$((.java.lang.Object).ceylon.language.String.instance("")))) {
-        } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"\" == stringPipeRef(\"\")"));
+                returning new Anonymous#pipe();
+            );
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
         }
-        if (.ceylon.language.String.instance("hello").equals(((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)pipeRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello")))) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any(Any)",
+            erased = true)
+    public static .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor get_() {
+        if (pipeRef_.$init$value) {
+            return value;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello\" == pipeRef(\"hello\")"));
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'pipeRef\' before it was set");
         }
     }
 }
-final class genericLocalFunctionReference_ {
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("addRef")
+final class addRef_ {
     
-    private genericLocalFunctionReference_() {
+    private addRef_() {
     }
-    
-    static void genericLocalFunctionReference() {
-        
-        final class add_ {
-            
-            private add_() {
-            }
-            
-            <Number extends .ceylon.language.Summable<Number>>Number add(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Number, final Number x, final Number y) {
-                return ((Number)x).plus((Number)y);
-            }
-        }
-        final add_ add = new add_();
-        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor addRef = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(
-            let
-            {
-                
-                class Anonymous#add<Number extends .ceylon.language.Summable<Number>> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+    private static final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(
+                let
+                {
                     
-                    Anonymous#add() {
-                        super("<Number> given Number satisfies Summable<Number> => Number(Number, Number)");
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
-                        return $apply$(applied);
-                    }
-                    
-                    private .ceylon.language.Callable<? extends Number> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
-                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Number = applied[0];
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Number>($reified$Number, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Number, $reified$Number), "Number(Number, Number)", (short)-1){
-                            
-                            @.java.lang.Override
-                            public Number $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                                final Number $ceylontmp$x = (Number)$param$0;
-                                final Number $ceylontmp$y = (Number)$param$1;
-                                return (Number)add.<Number>add(applied[0], $ceylontmp$x, $ceylontmp$y);
-                            }
-                        };
+                    class Anonymous#add<Number extends .ceylon.language.Summable<Number>> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        Anonymous#add() {
+                            super("<Number> given Number satisfies Summable<Number> => Number(Number, Number)");
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                            return $apply$(applied);
+                        }
+                        
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        private .ceylon.language.Callable<? extends Number> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Number = applied[0];
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<Number>($reified$Number, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Number, $reified$Number), "Number(Number, Number)", (short)-1){
+                                
+                                @.java.lang.Override
+                                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                                public Number $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                                    final Number $ceylontmp$x = (Number)$param$0;
+                                    final Number $ceylontmp$y = (Number)$param$1;
+                                    return (Number).com.redhat.ceylon.compiler.java.test.structure.typefn.add_.<Number>add(applied[0], $ceylontmp$x, $ceylontmp$y);
+                                }
+                            };
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return (
+                                let
+                                {
+                                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Number = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Number", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                                    $reified$Number.setSatisfiedTypes(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Summable.class, $reified$Number)});
+                                }
+                                returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#add", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Number}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Number, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Number, $reified$Number)));
+                            );
+                        }
                     }
                 }
-            }
-            returning new Anonymous#add();
-        );
-        final .ceylon.language.Callable<? extends .ceylon.language.Float> floatAddRef = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)addRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.Float.$TypeDescriptor$});
-        if (.ceylon.language.Float.instance(2.0).equals(floatAddRef.$call$((.java.lang.Object).ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(1.0)))) {
-        } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2.0 == floatAddRef(1.0, 1.0)"));
+                returning new Anonymous#add();
+            );
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
         }
-        final .ceylon.language.Callable<? extends .ceylon.language.String> stringAddRef = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)addRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$});
-        if (.ceylon.language.String.instance("hello world").equals(stringAddRef.$call$((.java.lang.Object).ceylon.language.String.instance("hello"), .ceylon.language.String.instance(" world")))) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Number> given Number satisfies ceylon.language::Summable<Number> => Number(Number, Number)",
+            erased = true)
+    public static .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor get_() {
+        if (addRef_.$init$value) {
+            return value;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello world\" == stringAddRef(\"hello\", \" world\")"));
-        }
-        if (.ceylon.language.String.instance("hello, world").equals(((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)addRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello,"), .ceylon.language.String.instance(" world")))) {
-        } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello, world\" == addRef(\"hello,\", \" world\")"));
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'addRef\' before it was set");
         }
     }
 }
-final class genericClassReference_ {
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("pairRef")
+final class pairRef_ {
     
-    private genericClassReference_() {
+    private pairRef_() {
     }
-    
-    static void genericClassReference() {
-        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor pairRef = (
-            let
-            {
-                
-                class Anonymous#Entry<Key, Item> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+    private static final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (
+                let
+                {
                     
-                    Anonymous#Entry() {
-                        super("<out Key, out Item> given Key satisfies Object => <Key->Item>(Key, Item)");
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
-                        return $apply$(applied);
-                    }
-                    
-                    private .ceylon.language.Callable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
-                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key = applied[0];
-                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item = applied[1];
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Entry<? extends Key, ? extends Item>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Key, $reified$Item), "<Key->Item>(Key, Item)", (short)-1){
-                            
-                            @.java.lang.Override
-                            public .ceylon.language.Entry<? extends Key, ? extends Item> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                                final Key $ceylontmp$key = (Key)$param$0;
-                                final Item $ceylontmp$item = (Item)$param$1;
-                                return new .ceylon.language.Entry<Key, Item>(applied[0], applied[1], $ceylontmp$key, $ceylontmp$item);
-                            }
-                        };
+                    class Anonymous#Entry<Key, Item> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                        
+                        Anonymous#Entry() {
+                            super("<out Key, out Item> given Key satisfies Object => <Key->Item>(Key, Item)");
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                            return $apply$(applied);
+                        }
+                        
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        private .ceylon.language.Callable<? extends .ceylon.language.Entry<? extends Key, ? extends Item>> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key = applied[0];
+                            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item = applied[1];
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Entry<? extends Key, ? extends Item>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Key, $reified$Item), "<Key->Item>(Key, Item)", (short)-1){
+                                
+                                @.java.lang.Override
+                                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                                public .ceylon.language.Entry<? extends Key, ? extends Item> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                                    final Key $ceylontmp$key = (Key)$param$0;
+                                    final Item $ceylontmp$item = (Item)$param$1;
+                                    return new .ceylon.language.Entry<Key, Item>(applied[0], applied[1], $ceylontmp$key, $ceylontmp$item);
+                                }
+                            };
+                        }
+                        
+                        @.java.lang.Override
+                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return (
+                                let
+                                {
+                                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Key = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Key", .com.redhat.ceylon.compiler.java.metadata.Variance.OUT);
+                                    $reified$Key.setSatisfiedTypes(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.Object.$TypeDescriptor$});
+                                    .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Item = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Item", .com.redhat.ceylon.compiler.java.metadata.Variance.OUT);
+                                }
+                                returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#Entry", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{
+                                        $reified$Key,
+                                        $reified$Item}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Key, $reified$Item)));
+                            );
+                        }
                     }
                 }
-            }
-            returning new Anonymous#Entry();
-        );
-        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor pairRef2 = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)pairRef;
-        final .ceylon.language.Callable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>> stringPair = (.ceylon.language.Callable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>>)(.ceylon.language.Callable)pairRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{
-                .ceylon.language.String.$TypeDescriptor$,
-                .ceylon.language.String.$TypeDescriptor$});
-        if ("hello->world".equals(stringPair.$call$((.java.lang.Object).ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")).toString())) {
-        } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello->world\" == stringPair(\"hello\", \"world\").string"));
+                returning new Anonymous#Entry();
+            );
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
         }
-        if ("hello->world".equals(((.ceylon.language.Callable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.String>>)(.ceylon.language.Callable)pairRef.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{
-                .ceylon.language.String.$TypeDescriptor$,
-                .ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world")).toString())) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<First, Second> given First satisfies ceylon.language::Object => <First->Second>(First, Second)",
+            erased = true)
+    public static .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor get_() {
+        if (pairRef_.$init$value) {
+            return value;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"hello->world\" == pairRef(\"hello\", \"world\").string"));
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'pairRef\' before it was set");
         }
     }
 }
-final class genericMethodReference_ {
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("pairRef2")
+final class pairRef2_ {
     
-    private genericMethodReference_() {
+    private pairRef2_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor).com.redhat.ceylon.compiler.java.test.structure.typefn.pairRef_.get_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
     }
     
-    static void genericMethodReference() {
-    }
-}
-final class useNonFunctional_ {
-    
-    private useNonFunctional_() {
-    }
-    
-    static void useNonFunctional() {
-        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor nonFunctional = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
-        final .ceylon.language.Sequence<? extends .ceylon.language.String> xx = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)nonFunctional.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$});
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<First, Second> given First satisfies ceylon.language::Object given Second satisfies ceylon.language::Object => <First->Second>(First, Second)",
+            erased = true)
+    public static .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor get_() {
+        if (pairRef2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'pairRef2\' before it was set");
+        }
     }
 }

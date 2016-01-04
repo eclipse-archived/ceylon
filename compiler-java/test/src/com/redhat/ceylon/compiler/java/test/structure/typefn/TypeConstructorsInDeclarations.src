@@ -82,7 +82,7 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             let
             {
                 
-                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     Anonymous#identity() {
                         super("<Value> => Value(Value)");
@@ -106,6 +106,18 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                                 return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
                             }
                         };
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Value = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Value", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                            }
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#identity", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Value}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value)));
+                        );
                     }
                 }
             }
@@ -115,7 +127,7 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             let
             {
                 
-                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     Anonymous#identity() {
                         super("<Value> => Value(Value)");
@@ -139,6 +151,18 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                                 return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
                             }
                         };
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Value = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Value", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                            }
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#identity", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Value}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value)));
+                        );
                     }
                 }
             }
@@ -148,7 +172,7 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             let
             {
                 
-                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor {
+                class Anonymous#identity<Value> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
                     Anonymous#identity() {
                         super("<Value> => Value(Value)");
@@ -172,6 +196,18 @@ class ConsumesTc implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                                 return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
                             }
                         };
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Value = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Value", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                            }
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#identity", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Value}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Value, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value)));
+                        );
                     }
                 }
             }

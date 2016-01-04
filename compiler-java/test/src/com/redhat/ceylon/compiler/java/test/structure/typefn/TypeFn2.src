@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.structure.typefn;
+
+final class genericMethodReference_ {
+    
+    private genericMethodReference_() {
+    }
+    
+    static void genericMethodReference() {
+    }
+}
+final class useNonFunctional_ {
+    
+    private useNonFunctional_() {
+    }
+    
+    static void useNonFunctional() {
+        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor nonFunctional = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> xx = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)nonFunctional.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$});
+    }
+}

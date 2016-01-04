@@ -17,9 +17,9 @@ package com.redhat.ceylon.compiler.java.test.structure.typefn;
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
                 satisfies = {"ceylon.language::List<Z>"},
                 caseTypes = {})})
-class ParameterizedTypeParameter<T extends .ceylon.language.Callable, U extends .ceylon.language.Callable<? extends .java.lang.Object>, V extends .ceylon.language.List> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+class ParameterizedTypeParameterWithConstraints<T extends .ceylon.language.Callable, U extends .ceylon.language.Callable<? extends .java.lang.Object>, V extends .ceylon.language.List> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    ParameterizedTypeParameter(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    ParameterizedTypeParameterWithConstraints(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
@@ -43,6 +43,265 @@ class ParameterizedTypeParameter<T extends .ceylon.language.Callable, U extends 
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameter.class, $reified$T, $reified$U, $reified$V);
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterWithConstraints.class, $reified$T, $reified$U, $reified$V);
     }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Container",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.IN,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Container2",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {},
+                caseTypes = {})})
+public interface ParameterizedTypeParameter<Container, Container2> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public abstract <Element>.java.lang.Object acceptInstantiateTp(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.com.redhat.ceylon.compiler.java.metadata.Name("instance")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Container<Element>")
+    final Container instance);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object acceptInstantiateClass(@.com.redhat.ceylon.compiler.java.metadata.Name("instance")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Container<ceylon.language::String>")
+    final Container instance);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Container2<Element>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public abstract <Element>Container2 returnInstantiateTp(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Container2<ceylon.language::String>")
+    public abstract Container2 returnInstantiateClass();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.typefn::ParameterizedTypeParameter<ceylon.language::List,ceylon.language::List>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "X",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public class ParameterizedTypeParameterSatisfier<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameter<.ceylon.language.List, .ceylon.language.List>, .java.io.Serializable {
+    
+    public ParameterizedTypeParameterSatisfier(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element2",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public final <Element2>.java.lang.Object acceptInstantiateTp(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element2, @.com.redhat.ceylon.compiler.java.metadata.Name("instance")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::List<Element2>")
+    final .ceylon.language.List instance) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object acceptInstantiateClass(@.com.redhat.ceylon.compiler.java.metadata.Name("instance")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::List<ceylon.language::String>")
+    final .ceylon.language.List instance) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::List<Element>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public final <Element>.ceylon.language.List<? extends Element> returnInstantiateTp(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        return (.ceylon.language.List<? extends Element>).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::List<ceylon.language::String>")
+    public final .ceylon.language.List<? extends .ceylon.language.String> returnInstantiateClass() {
+        return (.ceylon.language.List<? extends .ceylon.language.String>).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <T>.java.lang.Object acceptInstantiateTp2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("X<T>")
+    final X x) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public .java.lang.Object acceptInstantiateClass2(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("X<ceylon.language::String>")
+    final X x) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("X<T>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <T>X returnInstantiateTp2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (X).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("X<ceylon.language::String>")
+    public X returnInstantiateClass2() {
+        return (X).ceylon.language.nothing_.get_();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterSatisfier(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterSatisfier.class, $reified$X);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.typefn::ParameterizedTypeParameterSatisfier<ceylon.language::Set>")
+public class ParameterizedTypeParameterExtender extends .com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterSatisfier<.ceylon.language.Set> {
+    
+    public ParameterizedTypeParameterExtender() {
+        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, .ceylon.language.Object.$TypeDescriptor$));
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public final <T>.java.lang.Object acceptInstantiateTp2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<T>")
+    final .ceylon.language.Set x) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object acceptInstantiateClass2(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::String>")
+    final .ceylon.language.Set x) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<U>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "U",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public final <U>.ceylon.language.Set<? extends U> returnInstantiateTp2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        return (.ceylon.language.Set<? extends U>).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::String>")
+    public final .ceylon.language.Set<? extends .ceylon.language.String> returnInstantiateClass2() {
+        return (.ceylon.language.Set<? extends .ceylon.language.String>).ceylon.language.nothing_.get_();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterExtender();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterExtender.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterExtender.class);
 }

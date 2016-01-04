@@ -2,9 +2,29 @@ package com.redhat.ceylon.compiler.java.test.structure.typefn;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class typeFnReifiedIsFunction_ {
+final class typeFnReifiedIsPlus_ {
     
-    private typeFnReifiedIsFunction_() {
+    private typeFnReifiedIsPlus_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{T+}")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <T>.ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> typeFnReifiedIsPlus(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t) {
+        return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance($reified$T, new .java.lang.Object[]{t});
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class typeFnReifiedIsStar_ {
+    
+    private typeFnReifiedIsStar_() {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{T*}")
@@ -13,7 +33,7 @@ final class typeFnReifiedIsFunction_ {
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
             satisfies = {},
             caseTypes = {})})
-    static <T>.ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> typeFnReifiedIsFunction(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static <T>.ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> typeFnReifiedIsStar(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t) {
@@ -34,9 +54,72 @@ public final class typeFnReifiedIs_ {
             let
             {
                 
-                class Anonymous#typeFnReifiedIsFunction<T> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                class Anonymous#typeFnReifiedIsPlus<T> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     
-                    Anonymous#typeFnReifiedIsFunction() {
+                    Anonymous#typeFnReifiedIsPlus() {
+                        super("<T> => {T+}(T)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object>> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T = applied[0];
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends T, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T), "{T+}(T)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                                final T $ceylontmp$t = (T)$param$0;
+                                return .com.redhat.ceylon.compiler.java.test.structure.typefn.typeFnReifiedIsPlus_.<T>typeFnReifiedIsPlus(applied[0], $ceylontmp$t);
+                            }
+                        };
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$T = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("T", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                            }
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#typeFnReifiedIsPlus", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$T}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T)));
+                        );
+                    }
+                }
+            }
+            returning new Anonymous#typeFnReifiedIsPlus();
+        );
+        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor ref$2;
+        .java.lang.Object ref$1 = null;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(ref$1 = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)ref, (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$S = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("S", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+            }
+            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#1", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$S}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$S, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$S)));
+        ))) {
+            ref$2 = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)ref$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is <S> => {S+}(S) ref"));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> s = ((.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>)(.ceylon.language.Callable)ref$2.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello"));
+        if (((.ceylon.language.String)s.getFirst()).equals(.ceylon.language.String.instance("hello"))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "s.first == \"hello\""));
+        }
+        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor ref2 = (
+            let
+            {
+                
+                class Anonymous#typeFnReifiedIsStar<T> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    Anonymous#typeFnReifiedIsStar() {
                         super("<T> => {T*}(T)");
                     }
                     
@@ -55,7 +138,7 @@ public final class typeFnReifiedIs_ {
                             @.com.redhat.ceylon.compiler.java.metadata.Ignore
                             public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
                                 final T $ceylontmp$t = (T)$param$0;
-                                return .com.redhat.ceylon.compiler.java.test.structure.typefn.typeFnReifiedIsFunction_.<T>typeFnReifiedIsFunction(applied[0], $ceylontmp$t);
+                                return .com.redhat.ceylon.compiler.java.test.structure.typefn.typeFnReifiedIsStar_.<T>typeFnReifiedIsStar(applied[0], $ceylontmp$t);
                             }
                         };
                     }
@@ -66,32 +149,27 @@ public final class typeFnReifiedIs_ {
                         return (
                             let
                             {
-                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$T = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("T", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, null, null);
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$T = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("T", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
                             }
-                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#typeFnReifiedIsFunction", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$T}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$T, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T)));
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#typeFnReifiedIsStar", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$T}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$T, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T)));
                         );
                     }
                 }
             }
-            returning new Anonymous#typeFnReifiedIsFunction();
+            returning new Anonymous#typeFnReifiedIsStar();
         );
-        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor ref$2;
-        .java.lang.Object ref$1 = null;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(ref$1 = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)ref, (
+        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor ref2$6;
+        .java.lang.Object ref2$5 = null;
+        if (!.com.redhat.ceylon.compiler.java.Util.isReified(ref2$5 = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)ref2, (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$S = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("S", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE, null, null);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$S = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("S", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
             }
-            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#1", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$S}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.List.class, $reified$S), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$S)));
+            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#3", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$S}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$S, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$S)));
         ))) {
-            ref$2 = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)ref$1;
+            ref2$6 = (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)ref2$5;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is <S> => List<S>(S) ref"));
-        }
-        final .ceylon.language.List<? extends .ceylon.language.String> s = ((.ceylon.language.Callable<? extends .ceylon.language.List<? extends .ceylon.language.String>>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends .ceylon.language.List<? extends .ceylon.language.String>>)(.ceylon.language.Callable)ref$2.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance("hello"));
-        if (s.equals((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")}))) {
-        } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "s == [\"hello\"]"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is <S> => {S+}(S) ref2"));
         }
     }
     

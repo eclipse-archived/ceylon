@@ -130,9 +130,15 @@ public class StructureTests3 extends CompilerTests {
     @Test
     public void testTypefnTypeFn1(){
         compareWithJavaSource("typefn/TypeFn1");
+        compareWithJavaSource("typefn/TypeFn1Apply");
         run("com.redhat.ceylon.compiler.java.test.structure.typefn.genericFunctionReference");
         run("com.redhat.ceylon.compiler.java.test.structure.typefn.genericLocalFunctionReference");
         run("com.redhat.ceylon.compiler.java.test.structure.typefn.genericClassReference");
+    }
+    
+    @Test
+    public void testTypefnTypeFn2(){
+        compareWithJavaSource("typefn/TypeFn2");
     }
     
     @Test
@@ -147,8 +153,8 @@ public class StructureTests3 extends CompilerTests {
     
     @Test
     public void testTypefnTypeFnReifiedIs(){
-        //compareWithJavaSource("typefn/TypeFnReifiedIs");
-        compile("typefn/TypeFnReifiedIs.ceylon");
+        compareWithJavaSource("typefn/TypeFnReifiedIs");
+        //compile("typefn/TypeFnReifiedIs.ceylon");
         run("com.redhat.ceylon.compiler.java.test.structure.typefn.typeFnReifiedIs");
     }
 }
