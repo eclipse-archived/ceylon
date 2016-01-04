@@ -44,6 +44,7 @@ Array.prototype.contains=function arrayContains(o){
   }
   return false;
 }
+empty().nativeArray=function(){return [];}
 
 atr$(arrprot$,'string', function() {
   if (this.size===0)return '{}';

@@ -19,7 +19,7 @@ COMPILE core_functions.js, is-op.js, exists-nonempty.js, type_arithmetic.js, -An
 ...and some not-so-core stuff that needs to be defined early on, with some native code in between.
 
 COMPILE Basic, Throwable, Exception, Comparison, Iterable, comprehensions.js, -Boolean, Boolean.js, Tuple, tuples.js, impl/
-COMPILE Numeric, Integral, Scalable, Number, -Integer, -Float, numbers.js, Array, sequences.js, String, strings.js
+COMPILE Numeric, Integral, Scalable, Number, -Integer, -Float, numbers.js, Array, Empty, sequences.js, String, strings.js
 COMPILE process.js
 
 Now compile the rest of the language module, except the files we already compiled before...
