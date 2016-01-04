@@ -117,4 +117,9 @@ shared void testConditions() {
     } else {
       fail("#620.2");
     }
+
+    Integer x5876 = 1;
+    Integer y5876 = 2;
+    String text5876 = (if (x5876 > 0) then x5876.string + "a " else "") + y5876.string + "b";
+    check(text5876 == "1a 2b", "#5876 expected '1a2b' got '``text5876``'");
 }
