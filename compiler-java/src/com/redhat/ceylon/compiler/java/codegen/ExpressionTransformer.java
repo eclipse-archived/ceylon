@@ -3946,7 +3946,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         Invocation invocation;
         if (ce.getPositionalArgumentList() != null) {
-            if ((isIndirectInvocation(ce)
+            if ((isIndirectInvocation(ce, true)
                     || isWithinDefaultParameterExpression(primaryDeclaration.getContainer()))
                     && !Decl.isJavaStaticOrInterfacePrimary(ce.getPrimary())){
                 // indirect invocation

@@ -317,7 +317,7 @@ public class CodegenUtil {
     
     public static boolean isMemberReferenceInvocation(Tree.InvocationExpression expr) {
         Tree.Term p = unwrapExpressionUntilTerm(expr.getPrimary());
-        if (isIndirectInvocation(expr)
+        if (isIndirectInvocation(expr, true)
                 && p instanceof Tree.QualifiedMemberOrTypeExpression) {
             Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)p;
             Tree.Term q = unwrapExpressionUntilTerm(primary.getPrimary());
