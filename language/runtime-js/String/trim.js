@@ -9,8 +9,5 @@ function(/*Category*/chars) {
     }
     if (from===0 && to===size) {return this;}
     var result = this.substring(from, to);
-    if (this.codePoints !== undefined) {
-        result.codePoints = this.codePoints - from - size + to;
-    }
     return result;
 }

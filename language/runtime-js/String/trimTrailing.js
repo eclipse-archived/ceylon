@@ -7,8 +7,5 @@ function(/*Boolean(Character)*/chars) {
     if (to===this.size) {return this;}
     else if (to===0) { return ""; }
     var result = this.substring(0, to);
-    if (this.codePoints !== undefined) {
-        result.codePoints = this.codePoints - this.length + to;
-    }
     return result;
 }

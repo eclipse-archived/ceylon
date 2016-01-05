@@ -6,8 +6,7 @@ function(length) {
         if ((this.charCodeAt(--i)&0xfc00) === 0xdc00) {--i}
     }
     if (i <= 0) {
-        this.codePoints = count;
         return this;
     }
-    return $_String(this.substr(i), count);
+    return $_String(this.substr(i));
 }
