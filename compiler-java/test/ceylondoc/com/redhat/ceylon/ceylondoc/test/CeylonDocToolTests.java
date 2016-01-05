@@ -611,7 +611,7 @@ public class CeylonDocToolTests {
                 "ceylon/interop/java/internal/Util.java",
                 "ceylon/transaction/internal/RecoveryHelper.java",
                 "ceylon/transaction/internal/RecoveryXAResource.java",
-                "ceylon/test/cli/Workaround.java",
+                "ceylon/test/engine/internal/Workaround.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){
