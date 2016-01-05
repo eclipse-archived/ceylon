@@ -1639,22 +1639,32 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.StringTemplate that) {
         if (errVisitor.hasErrors(that))return;
-        //TODO optimize to avoid generating initial "" and final .plus("")
         List<Tree.StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
         for (int i = 0; i < literals.size(); i++) {
             Tree.StringLiteral literal = literals.get(i);
-            literal.visit(this);
-            if (i>0)out(")");
-            if (i < exprs.size()) {
+            boolean skip = (i==0 || i==literals.size()-1) && literal.getText().isEmpty();
+            if (i>0 && !skip) {
                 out(".plus(");
+            }
+            if (!skip) {
+                literal.visit(this);
+            }
+            if (i>0 && !skip) {
+                out(")");
+            }
+            if (i < exprs.size()) {
+                if (!skip) {
+                    out(".plus(");
+                }
                 final Expression expr = exprs.get(i);
                 expr.visit(this);
-                if (expr.getTypeModel() == null || !"ceylon.language::String".equals(
-                        expr.getTypeModel().asQualifiedString())) {
+                if (expr.getTypeModel() == null || !expr.getTypeModel().isString()) {
                     out(".string");
                 }
-                out(").plus(");
+                if (!skip) {
+                    out(")");
+                }
             }
         }
     }
