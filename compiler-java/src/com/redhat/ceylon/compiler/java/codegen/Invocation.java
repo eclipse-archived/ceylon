@@ -296,6 +296,7 @@ abstract class Invocation {
             }
             if (isIndirect()) {
                 if (getPrimaryDeclaration() != null
+                        && (!(getPrimaryDeclaration() instanceof TypedDeclaration) || !((TypedDeclaration)getPrimaryDeclaration()).getType().isTypeConstructor())
                         && (Decl.isGetter(getPrimaryDeclaration())
                                 || Decl.isToplevel(getPrimaryDeclaration())
                                 || (Decl.isValueOrSharedOrCapturedParam(getPrimaryDeclaration()) 
