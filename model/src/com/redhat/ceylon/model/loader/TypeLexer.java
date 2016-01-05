@@ -24,6 +24,10 @@ public class TypeLexer {
     public final static int THIN_ARROW = PLUS + 1;// ->
     public final static int QN = THIN_ARROW + 1;// ?
     public final static int EQ = QN + 1;// =
+    public final static int FAT_ARROW = EQ + 1;// =>
+    public final static int GIVEN = FAT_ARROW + 1;// given
+    public final static int SATISFIES = GIVEN + 1;// satisfies
+    public final static int OF = SATISFIES + 1;// satisfies
 
     // type string to parse
     char[] type;
@@ -77,7 +81,13 @@ public class TypeLexer {
         case '*': token = STAR; break;
         case '+': token = PLUS; break;
         case '?': token = QN; break;
-        case '=': token = EQ; break;
+        case '=': 
+            if((index + 1) < type.length
+                    && type[index + 1] == '>')
+                token = FAT_ARROW;
+            else
+                token = EQ; 
+            break;
         case '-':
             if((index + 1) < type.length
                     && type[index + 1] == '>')
@@ -87,8 +97,13 @@ public class TypeLexer {
             if((index + 3) < type.length
                     && type[index + 1] == 'u'
                     && type[index + 2] == 't'
-                    && type[index + 3] == ' ')
-            token = OUT; 
+                    && type[index + 3] == ' ') {
+                token = OUT;
+            } else if((index + 2) < type.length
+                    && type[index + 1] == 'f'
+                    && type[index + 2] == ' ') {
+                token = OF;
+            }
             break;
         case 'i':
             if((index + 2) < type.length
@@ -101,6 +116,28 @@ public class TypeLexer {
                 token = DBLCOLON;
                 break;
             }
+        case 'g':
+            if((index + 5) < type.length
+                    && type[index + 1] == 'i'
+                    && type[index + 2] == 'v'
+                    && type[index + 3] == 'e'
+                    && type[index + 4] == 'n'
+                    && type[index + 5] == ' ')
+            token = GIVEN;
+            break;
+        case 's':
+            if((index + 9) < type.length
+                    && type[index + 1] == 'a'
+                    && type[index + 2] == 't'
+                    && type[index + 3] == 'i'
+                    && type[index + 4] == 's'
+                    && type[index + 5] == 'f'
+                    && type[index + 6] == 'i'
+                    && type[index + 7] == 'e'
+                    && type[index + 8] == 's'
+                    && type[index + 9] == ' ')
+            token = SATISFIES;
+            break;
         }
         return token;
     }
@@ -217,6 +254,14 @@ public class TypeLexer {
             index += 4;
         } else if(lookingAt(THIN_ARROW)){
             index += 2;
+        } else if(lookingAt(FAT_ARROW)){
+            index += 2;
+        } else if(lookingAt(OF)){
+            index += 2;
+        } else if(lookingAt(SATISFIES)){
+            index += 9;
+        } else if(lookingAt(GIVEN)){
+            index += 5;
         } else if(lookingAt(WORD)){
             eatWord();
         } else {

@@ -4720,7 +4720,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private Type decodeType(String value, Scope scope, Module moduleScope, String targetType, Declaration target) {
         try{
-            return typeParser.decodeType(value, scope, moduleScope, getUnitForModule(moduleScope));
+            return typeParser.decodeType(value, scope, moduleScope, getUnitForModule(moduleScope), (Scope)target);
         }catch(TypeParserException x){
             String text = formatTypeErrorMessage("Error while parsing type of", targetType, target, scope);
             return logModelResolutionException(x.getMessage(), scope, text);

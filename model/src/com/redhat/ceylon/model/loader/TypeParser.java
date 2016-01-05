@@ -17,6 +17,7 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -106,12 +107,17 @@ public class TypeParser {
     private TypeLexer lexer = new TypeLexer();
     private Scope scope;
     private Module moduleScope;
+    private Scope target;
 
     public TypeParser(ModelLoader loader){
         this.loader = loader;
     }
     
-    public Type decodeType(String type, Scope scope, Module moduleScope, Unit unit){
+    public Type decodeType(String type, Scope scope, Module moduleScope, Unit unit) {
+        return decodeType(type, scope, moduleScope, unit, null);
+    }
+    
+    public Type decodeType(String type, Scope scope, Module moduleScope, Unit unit, Scope target){
         // save the previous state (this method is reentrant)
         char[] oldType = lexer.type;
         int oldIndex = lexer.index;
@@ -119,6 +125,7 @@ public class TypeParser {
         Scope oldScope = this.scope;
         Module oldModuleScope = this.moduleScope;
         Unit oldUnit = this.unit;
+        this.target = target;
         try{
             // setup the new state
             lexer.setup(type);
@@ -152,12 +159,132 @@ public class TypeParser {
      * entryType: unionType -> unionType
      */
     private Type parseType(){
-        Type type = parseUnionType();
-        if (lexer.lookingAt(TypeLexer.THIN_ARROW)) {
-            lexer.eat(TypeLexer.THIN_ARROW);
-            type = unit.getEntryType(type, parseUnionType()); 
+        if (lexer.lookingAt(TypeLexer.LT)
+                && isTypeConstructor()) {
+            // it could either be a type constructor <...> => ...
+            // or it's a grouped type <...>
+            // we need to look inside the brackets to know
+            return parseTypeConstructor();
+        } else {
+            Type type = parseUnionType();
+            if (lexer.lookingAt(TypeLexer.THIN_ARROW)) {
+                lexer.eat(TypeLexer.THIN_ARROW);
+                type = unit.getEntryType(type, parseUnionType()); 
+            }
+            return type;
         }
-        return type;
+        
+    }
+
+    private boolean isTypeConstructor() {
+        boolean tc = false;
+        int index = lexer.index;
+        int mark = lexer.mark;
+        lexer.eat(TypeLexer.LT);
+        if (lexer.isWord()) {
+            lexer.eat(TypeLexer.WORD);
+            if (lexer.lookingAt(TypeLexer.COMMA)) {
+                // <FOO,    -- must be a type constructor, because you can't 
+                // group a type list
+                tc = true;
+            } else if (lexer.lookingAt(TypeLexer.GT)) {
+                lexer.eat(TypeLexer.GT);
+                // <FOO> =>
+                tc = lexer.lookingAt(TypeLexer.FAT_ARROW)
+                        || lexer.lookingAt(TypeLexer.GIVEN);
+            } else {
+                tc = false;
+            }
+        } else if (lexer.lookingAt(TypeLexer.GT)) {
+            lexer.eat(TypeLexer.GT);
+            tc = lexer.lookingAt(TypeLexer.FAT_ARROW)
+                    || lexer.lookingAt(TypeLexer.GIVEN);
+        } else {
+            tc = false;
+        }
+        lexer.index = index;
+        lexer.mark = mark;
+        return tc;
+    }
+
+    protected Type parseTypeConstructor() {
+        try {
+            TypeAlias ta = new TypeAlias();
+            ta.setAnonymous(true);
+            ta.setShared(true);
+            ta.setContainer(this.target);
+            ta.setScope(this.target);
+            ModelUtil.setVisibleScope(ta);
+            ta.setUnit(unit);
+            
+            List<TypeParameter> tps = parseTypeParameterList(ta);
+            ta.setTypeParameters(tps);
+            Scope oldScope = scope;
+            scope = ta;
+            while(lexer.lookingAt(TypeLexer.GIVEN)) {
+                parseTypeConstraint(ta);
+            }
+            lexer.eat(TypeLexer.FAT_ARROW);
+            Type et = parseType();
+            ta.setExtendedType(et);
+            scope = oldScope;
+            
+            Type type = ta.getType();
+            type.setTypeConstructor(true);
+            return type;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    private void parseTypeConstraint(TypeAlias ta) {
+        lexer.eat(TypeLexer.GIVEN);
+        String name = lexer.eatWord();
+        TypeParameter tp = null;
+        for (TypeParameter tp1 : ta.getTypeParameters()) {
+            if (name.equals(tp1.getName())) {
+                tp = tp1;
+                break;
+            }
+        }
+        if (tp == null) {
+            return;
+        }
+        if (lexer.lookingAt(TypeLexer.SATISFIES)) {
+            lexer.eat(TypeLexer.SATISFIES);
+            Type t = parseType();
+            tp.getSatisfiedTypes().add(t);
+        } else if (lexer.lookingAt(TypeLexer.OF)){
+            lexer.eat(TypeLexer.OF);
+            Type t = parseType();
+            tp.getCaseTypes().add(t);
+        }
+    }
+
+    private List<TypeParameter> parseTypeParameterList(Scope scope) {
+        ArrayList<TypeParameter> names = new ArrayList<TypeParameter>(3);
+        lexer.eat(TypeLexer.LT);
+        while (true) {
+            TypeParameter tp = new TypeParameter();
+            tp.setName(lexer.eatWord());
+            tp.setUnit(unit);
+            tp.setContainer(scope);
+            tp.setScope(scope);
+            tp.setDeclaration((Declaration) scope);
+            ModelUtil.setVisibleScope(tp);
+            tp.setExtendedType(unit.getAnythingType());
+            names.add(tp);
+            if (lexer.lookingAt(TypeLexer.GT)) {
+                lexer.eat(TypeLexer.GT);
+                return names;
+            } else if (lexer.lookingAt(TypeLexer.COMMA)) {
+                lexer.eat(TypeLexer.COMMA);
+                continue;
+            } else {
+                throw new TypeParserException("malformed type parameter list: "+lexer.index);
+            }
+        }
+        
     }
 
     /**
