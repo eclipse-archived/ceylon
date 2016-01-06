@@ -387,7 +387,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
 
-        Type callableType = model.getTypedReference().getFullType();//functionArg.getTypeModel();
+        Type callableType = functionArg.getTypeModel();
         CallableBuilder callableBuilder = CallableBuilder.methodArgument(gen(),
                 functionArg,
                 model,
