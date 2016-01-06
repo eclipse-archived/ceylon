@@ -157,4 +157,10 @@ public class StructureTests3 extends CompilerTests {
         //compile("typefn/TypeFnReifiedIs.ceylon");
         run("com.redhat.ceylon.compiler.java.test.structure.typefn.typeFnReifiedIs");
     }
+    
+    @Test
+    public void testTypefnBox(){
+        compareWithJavaSource("typefn/Box");
+        run("com.redhat.ceylon.compiler.java.test.structure.typefn.boxtest");
+    }
 }

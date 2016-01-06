@@ -30,6 +30,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
@@ -55,6 +56,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -147,6 +149,8 @@ public class CallableBuilder {
     private Naming.Substitution instanceSubstitution;
 
     private List<JCAnnotation> annotations;
+
+    private FunctionOrValue model;
     
     private CallableBuilder(CeylonTransformer gen, Node node, Type typeModel, ParameterList paramLists) {
         this.gen = gen;
@@ -582,6 +586,7 @@ public class CallableBuilder {
         cb.delegateDefaultedCalls = delegateDefaultedCalls;
         cb.useDefaultTransformation(stmts);
         cb.annotations = gen.makeAtMethod().prependList(gen.makeAtName(model.getName())).prependList(gen.makeAtLocalDeclaration(model.getQualifier(), false));
+        cb.model = model;
         return cb;
     }
     
@@ -1545,7 +1550,9 @@ public class CallableBuilder {
         
         JCExpression result;
         if (typeModel.isTypeConstructor()) {
-            result = buildTypeConstructor(callableType, callableInstance, typeModel);
+            result = buildTypeConstructor(typeModel.getDeclaration(), callableType, callableInstance, typeModel);
+        } else if (this.model != null && AnalyzerUtil.isGeneric(this.model)) {
+            result = buildTypeConstructor(this.model, callableType, callableInstance, this.model.getTypedReference().getType());
         } else {
             result = callableInstance;
         }
@@ -1557,7 +1564,9 @@ public class CallableBuilder {
         return result;
     }
 
-    protected JCExpression buildTypeConstructor(Type callableType,
+    protected JCExpression buildTypeConstructor(
+            Declaration generic,
+            Type callableType,
             JCNewClass callableInstance, Type typeConstructorType) {
         JCExpression result;
         // Wrap in an anonymous TypeConstructor subcla
@@ -1594,7 +1603,7 @@ public class CallableBuilder {
             typedApply.parameter(pdb);
         }
         ListBuffer<JCTypeParameter> typeParameters = ListBuffer.<JCTypeParameter>lb();
-        for (TypeParameter typeParameter : typeModel.getDeclaration().getTypeParameters()) {
+        for (TypeParameter typeParameter : ((Generic)generic).getTypeParameters()) {
             Type typeArgument = typeModel.getTypeArguments().get(typeParameter);
             typeParameters.add(gen.makeTypeParameter(typeParameter, null));
             typedApply.body(gen.makeVar(Flags.FINAL, 
@@ -1610,7 +1619,7 @@ public class CallableBuilder {
         MethodDefinitionBuilder ctor = MethodDefinitionBuilder.constructor(gen);
         ctor.body(gen.make().Exec(gen.make().Apply(null, gen.naming.makeSuper(), List.<JCExpression>of(gen.make().Literal(typeModel.asString(true))))));
         
-        SyntheticName n = gen.naming.synthetic(typeModel.getDeclaration().getName());
+        SyntheticName n = gen.naming.synthetic(((Declaration)generic).getName());
         
         MethodDefinitionBuilder getType = ClassDefinitionBuilder.makeGetTypeMethod(gen, typeConstructorType);
         

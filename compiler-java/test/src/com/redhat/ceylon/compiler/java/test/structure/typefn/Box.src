@@ -1,0 +1,242 @@
+package com.redhat.ceylon.compiler.java.test.structure.typefn;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class boxit_ {
+    
+    private boxit_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Box<Item>")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Box",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Item",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {})})
+    static <Box, Item>Box boxit(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Box, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, @.com.redhat.ceylon.compiler.java.metadata.Name("boxer")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<T> => Box<T>(T)",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor boxer, @.com.redhat.ceylon.compiler.java.metadata.Name("item")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Item")
+    final Item item) {
+        return ((.ceylon.language.Callable<? extends Box>)(.ceylon.language.Callable)(.ceylon.language.Callable<? extends Box>)(.ceylon.language.Callable)boxer.apply(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{$reified$Item})).$call$((.java.lang.Object)item);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class boxtest_ {
+    
+    private boxtest_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void boxtest() {
+        .java.lang.Object boxed = null;
+        boxed = .com.redhat.ceylon.compiler.java.test.structure.typefn.boxit_.<.ceylon.language.Singleton, .ceylon.language.String>boxit((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Element = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Element", .com.redhat.ceylon.compiler.java.metadata.Variance.OUT);
+            }
+            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Singleton", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Element}, .ceylon.language.Object.$TypeDescriptor$);
+        ), .ceylon.language.String.$TypeDescriptor$, (
+            let
+            {
+                
+                class Anonymous#Singleton<Element> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    Anonymous#Singleton() {
+                        super("<out Element> => Singleton<Element>(Element)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends .ceylon.language.Singleton<? extends Element>> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element = applied[0];
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Singleton<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, $reified$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element), "Singleton<Element>(Element)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .ceylon.language.Singleton<? extends Element> $call$(final .java.lang.Object $param$0) {
+                                final Element $ceylontmp$element = (Element)$param$0;
+                                return new .ceylon.language.Singleton<Element>(applied[0], $ceylontmp$element);
+                            }
+                        };
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Element = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Element", .com.redhat.ceylon.compiler.java.metadata.Variance.OUT);
+                            }
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#Singleton", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Element}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, $reified$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element)));
+                        );
+                    }
+                }
+            }
+            returning new Anonymous#Singleton();
+        ), .ceylon.language.String.instance("hello"));
+        .java.lang.String $ceylontmp$assert$0 = null;
+        final .ceylon.language.Singleton<? extends .ceylon.language.String> b$2;
+        .java.lang.Object b$1 = null;
+        if ((b$1 = boxed) instanceof .ceylon.language.Singleton && .com.redhat.ceylon.compiler.java.Util.isReified(b$1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.String.$TypeDescriptor$))) {
+            b$2 = (.ceylon.language.Singleton<? extends .ceylon.language.String>)(.ceylon.language.Singleton)b$1;
+            if (.ceylon.language.String.instance("hello").equals((.ceylon.language.String)(.java.lang.Object)b$2.getFirst())) {
+            } else {
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "is Singleton<String> b=boxed" + (.java.lang.System.lineSeparator() + "\tviolated ") + "\"hello\" == b.first";
+            }
+        } else {
+            b$2 = null;
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "is Singleton<String> b=boxed" + (.java.lang.System.lineSeparator() + "\tuntested ") + "\"hello\" == b.first";
+        }
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
+        boxed = .com.redhat.ceylon.compiler.java.test.structure.typefn.boxit_.<.ceylon.language.Singleton, .ceylon.language.String>boxit((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Element = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Element", .com.redhat.ceylon.compiler.java.metadata.Variance.OUT);
+            }
+            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Singleton", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Element}, .ceylon.language.Object.$TypeDescriptor$);
+        ), .ceylon.language.String.$TypeDescriptor$, (
+            let
+            {
+                
+                class Anonymous#anonymous#1<T> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    Anonymous#anonymous#1() {
+                        super("<T> => Singleton<T>(T)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends .ceylon.language.Singleton<? extends T>> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T = applied[0];
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Singleton<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T), "Singleton<T>(T)", (short)-1)
+                        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+                        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
+                        @.com.redhat.ceylon.compiler.java.metadata.Method
+                        {
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .ceylon.language.Singleton<? extends T> $call$(final .java.lang.Object $param$0) {
+                                final T t = (T)$param$0;
+                                return new .ceylon.language.Singleton<T>($reified$T, t);
+                            }
+                        };
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$T = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("T", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                            }
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#anonymous#1", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$T}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T)));
+                        );
+                    }
+                }
+            }
+            returning new Anonymous#anonymous#1();
+        ), .ceylon.language.String.instance("hello"));
+        .java.lang.String $ceylontmp$assert$3 = null;
+        final .ceylon.language.Singleton<? extends .ceylon.language.String> b2$5;
+        .java.lang.Object b2$4 = null;
+        if ((b2$4 = boxed) instanceof .ceylon.language.Singleton && .com.redhat.ceylon.compiler.java.Util.isReified(b2$4, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.String.$TypeDescriptor$))) {
+            b2$5 = (.ceylon.language.Singleton<? extends .ceylon.language.String>)(.ceylon.language.Singleton)b2$4;
+            if (.ceylon.language.String.instance("hello").equals((.ceylon.language.String)(.java.lang.Object)b2$5.getFirst())) {
+            } else {
+                $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "is Singleton<String> b2=boxed" + (.java.lang.System.lineSeparator() + "\tviolated ") + "\"hello\" == b2.first";
+            }
+        } else {
+            b2$5 = null;
+            $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "is Singleton<String> b2=boxed" + (.java.lang.System.lineSeparator() + "\tuntested ") + "\"hello\" == b2.first";
+        }
+        if ($ceylontmp$assert$3 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$3);
+        final .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor boxr = (
+            let
+            {
+                
+                class Anonymous#anonymous#3<T> extends .com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    Anonymous#anonymous#3() {
+                        super("<T> => Singleton<T>(T)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends .ceylon.language.Singleton<? extends T>> $apply$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T = applied[0];
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Singleton<? extends T>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T), "Singleton<T>(T)", (short)-1)
+                        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+                        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
+                        @.com.redhat.ceylon.compiler.java.metadata.Method
+                        {
+                            
+                            @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            public .ceylon.language.Singleton<? extends T> $call$(final .java.lang.Object $param$0) {
+                                final T t = (T)$param$0;
+                                return new .ceylon.language.Singleton<T>($reified$T, t);
+                            }
+                        };
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$T = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("T", .com.redhat.ceylon.compiler.java.metadata.Variance.NONE);
+                            }
+                            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Anonymous#anonymous#3", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$T}, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, $reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T)));
+                        );
+                    }
+                }
+            }
+            returning new Anonymous#anonymous#3();
+        );
+        boxed = .com.redhat.ceylon.compiler.java.test.structure.typefn.boxit_.<.ceylon.language.Singleton, .ceylon.language.String>boxit((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Element = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Element", .com.redhat.ceylon.compiler.java.metadata.Variance.OUT);
+            }
+            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Singleton", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Element}, .ceylon.language.Object.$TypeDescriptor$);
+        ), .ceylon.language.String.$TypeDescriptor$, (.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)(.com.redhat.ceylon.compiler.java.language.AbstractTypeConstructor)boxr, .ceylon.language.String.instance("hello"));
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.typefn.boxtest_.boxtest();
+    }
+}
