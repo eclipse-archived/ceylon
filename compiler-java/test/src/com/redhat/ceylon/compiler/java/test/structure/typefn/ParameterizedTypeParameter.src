@@ -236,7 +236,14 @@ public class ParameterizedTypeParameterSatisfier<X> implements .com.redhat.ceylo
 public class ParameterizedTypeParameterExtender extends .com.redhat.ceylon.compiler.java.test.structure.typefn.ParameterizedTypeParameterSatisfier<.ceylon.language.Set> {
     
     public ParameterizedTypeParameterExtender() {
-        super(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, .ceylon.language.Object.$TypeDescriptor$));
+        super((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter $reified$Element = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeParameter("Element", .com.redhat.ceylon.compiler.java.metadata.Variance.OUT);
+                $reified$Element.setSatisfiedTypes(new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.Object.$TypeDescriptor$});
+            }
+            returning .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.typeConstructor("Set", new .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.TypeParameter[]{$reified$Element}, .ceylon.language.Object.$TypeDescriptor$);
+        ));
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

@@ -5187,7 +5187,8 @@ public abstract class AbstractTransformer implements Transformation {
             pt = pt.getExtendedType();
             declaration = pt.getDeclaration();
         }
-        if(pt.isClassOrInterface()){
+        if(pt.isClassOrInterface()
+                && !pt.isTypeConstructor()){
             if(declaration.isJavaEnum()){
                 pt = pt.getExtendedType();
                 declaration = pt.getDeclaration();
