@@ -1179,7 +1179,7 @@ public class GenerateJsVisitor extends Visitor {
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) ||
                 (TypeUtils.isNativeExternal(d) && compiler.isCompilingLanguageModule()))) {
             comment(that);
-            initDefaultedParameters(that.getParameterLists().get(0), d);
+            initDefaultedParameters(that.getParameterLists().get(0), that);
             FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
             //Add reference to metamodel
             out(names.name(d), ".$crtmm$=");
@@ -1215,8 +1215,11 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     /** Create special functions with the expressions for defaulted parameters in a parameter list. */
-    void initDefaultedParameters(final Tree.ParameterList params, Function container) {
-        if (!container.isMember())return;
+    void initDefaultedParameters(final Tree.ParameterList params, Tree.AnyMethod container) {
+        if (!(container instanceof Tree.MethodDeclaration || container.getDeclarationModel().isMember())) {
+            return;
+        }
+        final boolean isMember = container.getDeclarationModel().isMember();
         for (final Tree.Parameter param : params.getParameters()) {
             Parameter pd = param.getParameterModel();
             if (pd.isDefaulted()) {
@@ -1224,8 +1227,12 @@ public class GenerateJsVisitor extends Visitor {
                 if (expr == null) {
                     continue;
                 }
-                qualify(params, container);
-                out(names.name(container), "$defs$", pd.getName(), "=function");
+                if (isMember) {
+                    qualify(params, container.getDeclarationModel());
+                    out(names.name(container.getDeclarationModel()), "$defs$", pd.getName(), "=function");
+                } else {
+                    out("function ", names.name(container.getDeclarationModel()), "$defs$", pd.getName());
+                }
                 params.visit(this);
                 out("{");
                 initSelf(expr);
@@ -1248,7 +1255,7 @@ public class GenerateJsVisitor extends Visitor {
     /** Initialize the sequenced, defaulted and captured parameters in a type declaration.
      * @return The defaulted parameters that belong to a class, since their values have to be
      * set later on. */
-    List<Tree.Parameter> initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Function m) {
+    List<Tree.Parameter> initParameters(final Tree.ParameterList params, TypeDeclaration typeDecl, Functional m) {
         List<Tree.Parameter> rparams = null;
         for (final Tree.Parameter param : params.getParameters()) {
             Parameter pd = param.getParameterModel();
@@ -1256,15 +1263,23 @@ public class GenerateJsVisitor extends Visitor {
             if (pd.isDefaulted() || pd.isSequenced()) {
                 out("if(", paramName, "===undefined){", paramName, "=");
                 if (pd.isDefaulted()) {
-                    if (m !=null && m.isMember()) {
-                        qualify(params, m);
-                        out(names.name(m), "$defs$", pd.getName(), "(");
-                        boolean firstParam=true;
-                        for (Parameter p : m.getFirstParameterList().getParameters()) {
-                            if (firstParam){firstParam=false;}else out(",");
-                            out(names.name(p));
+                    boolean done = false;
+                    if (m instanceof Function) {
+                        Function mf = (Function)m;
+                        if (mf.getRefinedDeclaration() != mf) {
+                            mf = (Function)mf.getRefinedDeclaration();
+                            if (mf.isMember() || !mf.isImplemented()) {
+                                qualify(params, mf);
+                                out(names.name(mf), "$defs$", pd.getName(), "(");
+                                boolean firstParam=true;
+                                for (Parameter p : m.getFirstParameterList().getParameters()) {
+                                    if (firstParam){firstParam=false;}else out(",");
+                                    out(names.name(p));
+                                }
+                                out(")");
+                                done = true;
+                            }
                         }
-                        out(")");
                     } else if (pd.getDeclaration() instanceof Class) {
                         Class cdec = (Class)pd.getDeclaration().getRefinedDeclaration();
                         out(TypeGenerator.pathToType(params, cdec, this),
@@ -1279,13 +1294,16 @@ public class GenerateJsVisitor extends Visitor {
                             rparams = new ArrayList<>(3);
                         }
                         rparams.add(param);
-                    } else {
+                        done = true;
+                    }
+                    if (!done) {
                         final SpecifierOrInitializerExpression expr = getDefaultExpression(param);
                         if (expr == null) {
                             param.addUnexpectedError("Default expression missing for " + pd.getName(), Backend.JavaScript);
                             out("undefined");
                         } else {
-                            generateParameterExpression(param, expr, m);
+                            generateParameterExpression(param, expr,
+                                    pd.getDeclaration() instanceof Scope? (Scope)pd.getDeclaration() : null);
                         }
                     }
                 } else {
@@ -1313,7 +1331,7 @@ public class GenerateJsVisitor extends Visitor {
             // function parameter defaulted using "=>"
             FunctionHelper.singleExprFunction(
                     ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                    expr.getExpression(), m, true, true, this);
+                    expr.getExpression(), m, false, true, this);
         } else {
             expr.visit(this);
         }
@@ -1326,7 +1344,7 @@ public class GenerateJsVisitor extends Visitor {
         Function d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        initDefaultedParameters(that.getParameterLists().get(0), d);
+        initDefaultedParameters(that.getParameterLists().get(0), that);
         out(names.self(outer), ".", names.name(d), "=");
         FunctionHelper.methodDefinition(that, this, false, verboseStitcher);
         //Add reference to metamodel
@@ -2229,30 +2247,37 @@ public class GenerateJsVisitor extends Visitor {
                     if (moval instanceof Function) {
                         //same as fat arrow
                         qualify(specStmt, bmeDecl);
-                        out(names.name(moval), "=function ", names.name(moval), "(");
-                        //Build the parameter list, we'll use it several times
-                        final StringBuilder paramNames = new StringBuilder();
-                        final List<Parameter> params = ((Function) moval).getFirstParameterList().getParameters();
-                        for (Parameter p : params) {
-                            if (paramNames.length() > 0) paramNames.append(",");
-                            paramNames.append(names.name(p));
-                        }
-                        out(paramNames.toString());
-                        out("){");
-                        for (Parameter p : params) {
-                            if (p.isDefaulted()) {
-                                out("if(", names.name(p), "===undefined)", names.name(p),"=");
-                                qualify(specStmt, moval);
-                                out(names.name(moval), "$defs$", p.getName(), "(", paramNames.toString(), ")");
-                                endLine(true);
-                            }
-                        }
-                        out("return ");
-                        if (!isNaturalLiteral(specStmt.getSpecifierExpression().getExpression().getTerm())) {
+                        if (expr.getTerm() instanceof Tree.FunctionArgument) {
+                            ((Tree.FunctionArgument)expr.getTerm()).getDeclarationModel().setRefinedDeclaration(moval);
+                            out(names.name(moval), "=");
                             specStmt.getSpecifierExpression().visit(this);
+                            out(";");
+                        } else {
+                            out(names.name(moval), "=function ", names.name(moval), "(");
+                            //Build the parameter list, we'll use it several times
+                            final StringBuilder paramNames = new StringBuilder();
+                            final List<Parameter> params = ((Function) moval).getFirstParameterList().getParameters();
+                            for (Parameter p : params) {
+                                if (paramNames.length() > 0) paramNames.append(",");
+                                paramNames.append(names.name(p));
+                            }
+                            out(paramNames.toString());
+                            out("){");
+                            for (Parameter p : params) {
+                                if (p.isDefaulted()) {
+                                    out("if(", names.name(p), "===undefined)", names.name(p),"=");
+                                    qualify(specStmt, moval);
+                                    out(names.name(moval), "$defs$", p.getName(), "(", paramNames.toString(), ")");
+                                    endLine(true);
+                                }
+                            }
+                            out("return ");
+                            if (!isNaturalLiteral(specStmt.getSpecifierExpression().getExpression().getTerm())) {
+                                specStmt.getSpecifierExpression().visit(this);
+                            }
+                            out("(", paramNames.toString(), ");}");
+                            endLine(true);
                         }
-                        out("(", paramNames.toString(), ");}");
-                        endLine(true);
                     } else {
                         // Specifier for a member attribute. This actually defines the
                         // member (e.g. in shortcut refinement syntax the attribute
@@ -2284,6 +2309,10 @@ public class GenerateJsVisitor extends Visitor {
                         TypeUtils.generateDynamicCheck(expr, ((FunctionOrValue) bmeDecl).getType(), this, false,
                                 expr.getTypeModel().getTypeArguments());
                     } else {
+                        if (expr.getTerm() instanceof Tree.FunctionArgument &&
+                                (((Tree.FunctionArgument)expr.getTerm()).getDeclarationModel()).isAnonymous()) {
+                            (((Tree.FunctionArgument)expr.getTerm()).getDeclarationModel()).setRefinedDeclaration(moval);
+                        }
                         specStmt.getSpecifierExpression().visit(this);
                     }
                     out(";");

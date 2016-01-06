@@ -207,7 +207,7 @@ public class FunctionHelper {
                 // member in prototype style.
                 if (gen.opts.isOptimize() && m.isMember()) { return; }
                 gen.comment(that);
-                gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+                gen.initDefaultedParameters(that.getParameterLists().get(0), that);
                 if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && TypeUtils.isNativeExternal(m)) {
                     if (gen.stitchNative(m, that)) {
                         if (verboseStitcher) {
@@ -224,7 +224,7 @@ public class FunctionHelper {
             else {
                 // prototype definition
                 gen.comment(that);
-                gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+                gen.initDefaultedParameters(that.getParameterLists().get(0), that);
                 gen.out(gen.getNames().self(outer), ".");
             }
             gen.out(gen.getNames().name(m));
@@ -256,7 +256,7 @@ public class FunctionHelper {
                 gen.getNames().forceName(m, name);
             }
             //Only the first paramlist can have defaults
-            gen.initDefaultedParameters(that.getParameterLists().get(0), m);
+            gen.initDefaultedParameters(that.getParameterLists().get(0), that);
             if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && TypeUtils.isNativeExternal(m)) {
                 if (gen.stitchNative(m, that)) {
                     if (verboseStitcher) {
