@@ -633,7 +633,7 @@ Use this when NOT doing a release!">
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar"/>
         	<pathelement location="${jboss-modules.lib}"/>
         </path>
-    	<java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath">
+    	<java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath" if:set="jigsaw">
     		<arg value="${module.jar}"/>
     	</java>
 
