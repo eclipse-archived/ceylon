@@ -340,6 +340,11 @@ function retpl$(t) { //receives {t:'T',l:[...]}
 function detpl$(t) {
   if (t.t==='T')return t;
   if (t.t===Empty)return t;
+  if (t.t==='u') {
+    for (var i=0;i<t.l.length;i++) {
+      if (t.l[i].t==='T')return t.l[i];
+    }
+  }
   function stet(args,count) {
     if (t.t==='u') {
       if (t.l.length!==2)return null;
