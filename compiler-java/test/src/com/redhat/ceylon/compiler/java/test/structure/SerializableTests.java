@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.structure;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class SerializableTests extends CompilerTests {
@@ -73,6 +74,14 @@ public class SerializableTests extends CompilerTests {
     @Test
     public void testKlsSerializableMethodSpecification() {
         compareWithJavaSource("klass/SerializableMethodSpecification");
+    }
+    
+    @Test
+    public void testKlsImplicitCallable() {
+        assertErrors("klass/ImplicitCallableField",
+                new CompilerError(1,  "requires a Callable field: f"),
+                new CompilerError(4,  "requires a Callable field: f"),
+                new CompilerError(8,  "requires a Callable field: f"));
     }
     
 }
