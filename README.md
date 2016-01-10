@@ -1,3 +1,5 @@
+[![Build Status](https://ci-ceylon.rhcloud.com/buildStatus/icon?job=ceylon-distribution)](https://ci-ceylon.rhcloud.com/job/ceylon-distribution/)
+
 # Ceylon
 
 This is the 1.2 _"A Series Of Unlikely Explanations"_ release of the Ceylon 
