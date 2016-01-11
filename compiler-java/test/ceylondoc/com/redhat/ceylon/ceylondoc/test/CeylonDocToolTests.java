@@ -240,6 +240,7 @@ public class CeylonDocToolTests {
         File destDir = getOutputDir(tool, moduleName, "3.1.4");
         
         assertFileExists(destDir, includeNonShared);
+        assertResourcesExists(destDir, ".resources");
         assertBasicContent(destDir, includeNonShared);
         assertConstructors(destDir, includeNonShared);
         assertBy(destDir);
@@ -565,6 +566,20 @@ public class CeylonDocToolTests {
             assertFileExists(destDir, "index.html");
         }
     }
+    
+    @Test
+    public void customResourcesFolder() throws Exception {
+        String pathname = "test/ceylondoc";
+        String docname = "test/ceylondoc-doc";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.single";
+
+        CeylonDocTool tool = tool(pathname, docname, moduleName, true, false);
+        tool.setResourceFolder("assets");
+        tool.run();
+        
+        File destDir = getOutputDir(tool, moduleName, "3.1.4");
+        assertResourcesExists(destDir, "assets");
+    }
 
     /**
      * This is disgusting, but the current CeylonDoc doesn't handle source files, so we need to compile them first,
@@ -783,19 +798,6 @@ public class CeylonDocToolTests {
     }
 
     private void assertFileExists(File destDir, boolean includeNonShared) {
-        assertDirectoryExists(destDir, ".resources");
-        assertFileExists(destDir, ".resources/index.js");
-        assertFileExists(destDir, ".resources/ceylondoc.css");
-        assertFileExists(destDir, ".resources/ceylondoc.js");
-        assertFileExists(destDir, ".resources/bootstrap.min.css");
-        assertFileExists(destDir, ".resources/bootstrap.min.js");
-        assertFileExists(destDir, ".resources/jquery-1.8.2.min.js");
-        assertFileExists(destDir, ".resources/ceylon.css");
-        assertFileExists(destDir, ".resources/ceylon.js");
-        assertFileExists(destDir, ".resources/rainbow.min.js");
-        assertFileExists(destDir, ".resources/ceylondoc-logo.png");
-        assertFileExists(destDir, ".resources/ceylondoc-icons.png");
-        assertFileExists(destDir, ".resources/favicon.ico");
         assertFileExists(destDir, "index.html");
         assertFileExists(destDir, "api-index.html");
         assertFileExists(destDir, "search.html");
@@ -812,6 +814,22 @@ public class CeylonDocToolTests {
             assertFileNotExists(destDir, "PrivateClass.type.html");
             assertFileNotExists(destDir, "privatepackage");
         }
+    }
+    
+    private void assertResourcesExists(File destDir, String resourceFolder) {
+        assertDirectoryExists(destDir, resourceFolder);
+        assertFileExists(destDir, resourceFolder+"/index.js");
+        assertFileExists(destDir, resourceFolder+"/ceylondoc.css");
+        assertFileExists(destDir, resourceFolder+"/ceylondoc.js");
+        assertFileExists(destDir, resourceFolder+"/bootstrap.min.css");
+        assertFileExists(destDir, resourceFolder+"/bootstrap.min.js");
+        assertFileExists(destDir, resourceFolder+"/jquery-1.8.2.min.js");
+        assertFileExists(destDir, resourceFolder+"/ceylon.css");
+        assertFileExists(destDir, resourceFolder+"/ceylon.js");
+        assertFileExists(destDir, resourceFolder+"/rainbow.min.js");
+        assertFileExists(destDir, resourceFolder+"/ceylondoc-logo.png");
+        assertFileExists(destDir, resourceFolder+"/ceylondoc-icons.png");
+        assertFileExists(destDir, resourceFolder+"/favicon.ico");
     }
 
     private void assertBasicContent(File destDir, boolean includeNonShared) throws Exception {

@@ -148,6 +148,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private static final String OPTION_IGNORE_MISSING_THROWS = OPTION_SECTION + "ignore-missing-throws";
     private static final String OPTION_IGNORE_BROKEN_LINK = OPTION_SECTION + "ignore-broken-link";
     private static final String OPTION_LINK = OPTION_SECTION + "link";
+    private static final String OPTION_RESOURCE_FOLDER = OPTION_SECTION + "resource-folder";
 
     private String encoding;
     private String header;
@@ -160,6 +161,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private boolean browse;
     private boolean haltOnError = true;
     private boolean bootstrapCeylon;
+    private String resourceFolder;
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> docFolders = DefaultToolOptions.getCompilerDocDirs();
     private List<String> moduleSpecs = Arrays.asList("*");
@@ -193,6 +195,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         ignoreMissingDoc = config.getBoolOption(OPTION_IGNORE_MISSING_DOC, false);
         ignoreMissingThrows = config.getBoolOption(OPTION_IGNORE_MISSING_THROWS, false);
         ignoreBrokenLink = config.getBoolOption(OPTION_IGNORE_BROKEN_LINK, false);
+        resourceFolder = config.getOption(OPTION_RESOURCE_FOLDER, ".resources");
 
         String[] linkValues = config.getOptionValues(OPTION_LINK);
         if (linkValues != null) {
@@ -364,6 +367,12 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     @Description("Open module documentation in browser.")
     public void setBrowse(boolean browse) {
         this.browse = browse;
+    }
+    
+    @OptionArgument(longName="resource-folder", argumentName="dir")
+    @Description("A directory name, where the documentation resources (css, js, ...) will be placed (default: .resources)")
+    public void setResourceFolder(String resourceFolder) {
+        this.resourceFolder = resourceFolder;
     }
 
     public List<String> getCompiledClasses() {
@@ -955,9 +964,8 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     }
 
     private File getResourcesDir(Module module) throws IOException {
-        File dir = new File(getApiOutputFolder(module), ".resources");
-        if (!dir.exists()
-                && !FileUtil.mkdirs(dir)) {
+        File dir = new File(getApiOutputFolder(module), resourceFolder);
+        if (!dir.exists() && !FileUtil.mkdirs(dir)) {
             throw new IOException();
         }
         return dir;
@@ -1142,7 +1150,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     protected String getResourceUrl(Object from, String to) throws IOException {
         Module module = getModule(from);
         URI fromUrl = getAbsoluteObjectUrl(from);
-        URI toUrl = getBaseUrl(module).resolve(".resources/" + to);
+        URI toUrl = getBaseUrl(module).resolve(resourceFolder + "/" + to);
         String result = relativize(module, fromUrl, toUrl).toString();
         return result;
     }
