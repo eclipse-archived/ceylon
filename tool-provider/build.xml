@@ -189,7 +189,7 @@
 	<target name="ide-quick-internal" depends="tool.provider.classes">
         <property name="toolProviderArchivePath" value="${ceylon.tool.provider.lib}"/>
         <basename file="${toolProviderArchivePath}" property="toolProviderArchiveFileName"/>
-        <property name="toolProvider-proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${toolProviderArchiveFileName}"/>
+        <property name="toolProvider-proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${toolProviderArchiveFileName}"/>
         <mkdir dir="${toolProvider-proxy-project}"/>
         <delete failonerror="false" dir="${toolProvider-proxy-project}/META-INF"/>
         <copy toDir="${toolProvider-proxy-project}" overwrite="true">

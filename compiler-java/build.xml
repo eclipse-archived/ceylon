@@ -397,7 +397,7 @@
 	<target name="ide-quick-internal" depends="test.classes">
         <property name="compilerArchivePath" value="${ceylon.compiler.lib}"/>
         <basename file="${compilerArchivePath}" property="compilerArchiveFileName"/>
-        <property name="compiler-proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${compilerArchiveFileName}"/>
+        <property name="compiler-proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${compilerArchiveFileName}"/>
         <mkdir dir="${compiler-proxy-project}"/>
         <delete failonerror="false" dir="${compiler-proxy-project}/META-INF"/>
         <copy toDir="${compiler-proxy-project}" overwrite="true">
@@ -410,7 +410,7 @@
 
 		<property name="bootstrapArchivePath" value="${ceylon.bootstrap.lib}"/>
         <basename file="${bootstrapArchivePath}" property="bootstrapArchiveFileName"/>
-        <property name="bootstrap-proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${bootstrapArchiveFileName}"/>
+        <property name="bootstrap-proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${bootstrapArchiveFileName}"/>
         <mkdir dir="${bootstrap-proxy-project}"/>
         <delete failonerror="false" dir="${bootstrap-proxy-project}/META-INF"/>
         <copy toDir="${bootstrap-proxy-project}" overwrite="true">
@@ -421,16 +421,16 @@
             <attribute name="Bundle-Classpath" value="${bootstrapArchiveFileName}"/>
         </manifest>
 
-        <jar destfile="../../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
+        <jar destfile="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
                 <include name="com/redhat/ceylon/compiler/java/test/**" />
             </fileset>
         </jar>
-        <delete dir="../../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
-        <copy todir="../../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+        <delete dir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
+        <copy todir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
             <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon,bogus*.ceylon,module.ceylon,package.ceylon" />
         </copy>
-        <copy todir="../../ceylon-ide-eclipse/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+        <copy todir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
             <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.java" excludes="?ogus*.java,*Tests.java,*Test.java" />
             <filterset beginToken=" " endToken=";"><filter token="com.redhat.ceylon.compiler.java.test.model" value=" declarations;" /></filterset>
         </copy>

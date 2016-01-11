@@ -139,7 +139,7 @@
 	<target name="ide-quick-internal" depends="classfile.classes">
         <property name="classfileArchivePath" value="${ceylon.classfile.lib}"/>
         <basename file="${classfileArchivePath}" property="classfileArchiveFileName"/>
-        <property name="classfile-proxy-project" value="../../ceylon-ide-eclipse/required-bundle-proxies/${classfileArchiveFileName}"/>
+        <property name="classfile-proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${classfileArchiveFileName}"/>
         <mkdir dir="${classfile-proxy-project}"/>
         <delete failonerror="false" dir="${classfile-proxy-project}/META-INF"/>
         <copy toDir="${classfile-proxy-project}" overwrite="true">
