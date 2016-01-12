@@ -591,6 +591,11 @@ public abstract class CompilerTests {
         ErrorCollector c = new ErrorCollector();
         assertCompilesOk(c, getCompilerTask(c, ceylon).call2());
     }
+    
+    protected void compile(List<String> options, String... ceylon) {
+        ErrorCollector c = new ErrorCollector();
+        assertCompilesOk(c, getCompilerTask(options, c, ceylon).call2());
+    }
 
     protected void compilesWithoutWarnings(String... ceylon) {
         compilesWithoutWarnings(defaultOptions, ceylon);

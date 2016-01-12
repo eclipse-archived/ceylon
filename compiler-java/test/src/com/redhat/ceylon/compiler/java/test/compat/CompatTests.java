@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -105,6 +106,14 @@ public class CompatTests extends CompilerTests {
         } finally {
             err.delete();
         }
+    }
+    
+    @Test
+    public void ceylonTargetVersion() {
+        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        options.add("-ceylon-target");
+        options.add("1.2.0");
+        compile(options, "target/CeylonTargetVersion.ceylon");
     }
 
 }
