@@ -853,7 +853,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 markup.tag("link href='" + getResourceUrl(pkg, "favicon.ico") + "' rel='shortcut icon'");
                 markup.tag("link href='" + getResourceUrl(pkg, "ceylon.css") + "' rel='stylesheet' type='text/css'");
                 markup.tag("link href='" + getResourceUrl(pkg, "ceylondoc.css") + "' rel='stylesheet' type='text/css'");
-                markup.tag("link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'");
+                markup.tag("link href='//fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'");
                 
                 markup.open("script type='text/javascript'");
                 markup.write("var resourceBaseUrl = '" + getResourceUrl(pkg, "") + "'");

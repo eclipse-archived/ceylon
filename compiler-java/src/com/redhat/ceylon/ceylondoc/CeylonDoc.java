@@ -74,7 +74,7 @@ public abstract class CeylonDoc extends Markup {
         tag("link href='" + linkRenderer().getResourceUrl("ceylon.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='" + linkRenderer().getResourceUrl("bootstrap.min.css") + "' rel='stylesheet' type='text/css'");
         tag("link href='" + linkRenderer().getResourceUrl("ceylondoc.css") + "' rel='stylesheet' type='text/css'");
-        tag("link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Inconsolata|Inconsolata:700|PT+Sans|PT+Sans:700' rel='stylesheet' type='text/css'");
+        tag("link href='//fonts.googleapis.com/css?family=Source+Sans+Pro|Inconsolata|Inconsolata:700|PT+Sans|PT+Sans:700' rel='stylesheet' type='text/css'");
         
         for (String css : additionalCss) {
             if (!css.endsWith(".css")) {
