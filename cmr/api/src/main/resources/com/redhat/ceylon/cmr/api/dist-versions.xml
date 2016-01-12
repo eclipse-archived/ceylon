@@ -1,0 +1,32 @@
+<!-- this file serves to enumerate the modules in each released 
+     ceylon distribution.
+     
+     It's needed in order to support the `-​-target=1.2.0` compiler flag
+-->
+<dist-versions>
+    <dist version="1.2.0">
+      <module name="ceylon.language"/>
+      <module name="ceylon.runtime"/>
+      <module name="ceylon.bootstrap"/>
+      <module name="com.redhat.ceylon.common"/>
+      <module name="com.redhat.ceylon.typechecker"/>
+      <module name="com.redhat.ceylon.module-resolver"/>
+      <module name="com.redhat.ceylon.model"/>
+      <module name="com.redhat.ceylon.compiler.java"/>
+      <module name="com.redhat.ceylon.compiler.js"/>
+    </dist>
+    
+    <dist version="1.2.1">
+      <module name="ceylon.language"/>
+      <module name="ceylon.runtime"/>
+      <module name="ceylon.bootstrap"/>
+      <module name="com.redhat.ceylon.common"/>
+      <module name="com.redhat.ceylon.typechecker"/>
+      <module name="com.redhat.ceylon.module-resolver"/>
+      <module name="com.redhat.ceylon.model"/>
+      <module name="com.redhat.ceylon.compiler.java"/>
+      <module name="com.redhat.ceylon.compiler.js"/>
+      <module name="com.redhat.ceylon.tool.provider"/>
+      <module name="com.redhat.ceylon.langtools.classfile"/>
+    </dist>
+</dist-versions>
