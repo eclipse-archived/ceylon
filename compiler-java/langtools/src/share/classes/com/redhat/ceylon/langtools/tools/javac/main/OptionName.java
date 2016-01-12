@@ -70,6 +70,7 @@ public enum OptionName {
     CEYLONDISABLEOPT("-disableOptimization"),
     CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{"+optimizations()+"}"),
     CEYLONSUPPRESSWARNINGS("-suppress-warnings"),
+    CEYLONTARGETVERSION("-ceylon-target"),
     BOOTCLASSPATH("-bootclasspath"),
     XBOOTCLASSPATH_PREPEND("-Xbootclasspath/p:"),
     XBOOTCLASSPATH_APPEND("-Xbootclasspath/a:"),

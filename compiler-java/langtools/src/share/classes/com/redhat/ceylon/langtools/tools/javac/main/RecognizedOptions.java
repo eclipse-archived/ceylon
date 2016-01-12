@@ -150,6 +150,7 @@ public class RecognizedOptions {
         CEYLONJIGSAW,
         CEYLONNOPOM,
         CEYLONPACK200,
+        CEYLONTARGETVERSION,
         SOURCEPATH,
         CEYLONSOURCEPATH,
         CEYLONRESOURCEPATH,
@@ -251,6 +252,7 @@ public class RecognizedOptions {
         CEYLONAUTOEXPORTMAVENDEPENDENCIES,
         CEYLONMAVENOVERRIDES,
         CEYLONOVERRIDES,
+        CEYLONTARGETVERSION,
         S,
         ENCODING,
         SOURCE,
@@ -298,7 +300,8 @@ public class RecognizedOptions {
         BOOTSTRAPCEYLON,
         CEYLONDISABLEOPT,
         CEYLONDISABLEOPT_CUSTOM,
-        CEYLONSUPPRESSWARNINGS);
+        CEYLONSUPPRESSWARNINGS,
+        CEYLONTARGETVERSION);
 
     public static Option[] getJavaCompilerOptions(OptionHelper helper) {
         return getOptions(helper, javacOptions);
@@ -412,6 +415,7 @@ public class RecognizedOptions {
         new COption(CEYLONDISABLEOPT,                            "opt.ceylondisableopt"),
         new COption(CEYLONDISABLEOPT_CUSTOM,                     "opt.ceylondisableopt.suboptlist"),
         new COption(CEYLONSUPPRESSWARNINGS, "opt.arg.value",     "opt.ceylonsuppresswarnings"),
+        new COption(CEYLONTARGETVERSION, "opt.arg.value",        "opt.ceylontargetversion"),
         new Option(SOURCEPATH,              "opt.arg.path",      "opt.sourcepath"){
             @Override
             public boolean process(Options options, String option, String arg) {

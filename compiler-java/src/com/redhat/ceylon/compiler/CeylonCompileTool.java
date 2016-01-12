@@ -25,10 +25,12 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.Distribution;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
@@ -45,6 +47,7 @@ import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -179,6 +182,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean autoExportMavenDependencies;
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
 
+    private String target;
+
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -303,6 +308,21 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("Passes an option to the underlying java compiler.")
     public void setJavac(List<String> javac) {
         this.javac = javac;
+    }
+    
+    @OptionArgument
+    @Description("Sets the implicit distribution dependency to the "
+            + "given version. For example `--target=1.2.0` will produce "
+            + "a module that claims to be usable with a ceylon 1.2.0 "
+            + "distribution.")
+    public void setTarget(String targetVersion) {
+        Distribution distribution = Distribution.getDistribution();
+        if (distribution.getDistModules(targetVersion) == null) {
+            String versions = distribution.getDistVersions().toString();
+            versions = versions.substring(1, versions.length()-1);
+            throw new IllegalArgumentException("Unsupported distribution version. Supported versions are: " + versions);
+        }
+        this.target = targetVersion;
     }
     
     @Option(shortName='W')
@@ -438,6 +458,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
         if (pack200) {
             arguments.add("-pack200");
+        }
+        
+        if (target != null) {
+            arguments.add("-ceylon-target");
+            arguments.add(target);
         }
         
         if (verbose != null) {

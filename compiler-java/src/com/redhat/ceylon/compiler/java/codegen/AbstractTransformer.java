@@ -44,9 +44,11 @@ import java.util.TreeSet;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
+import com.redhat.ceylon.cmr.api.Distribution;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
@@ -152,6 +154,9 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean simpleAnnotationModels;
 
+    /** The target Ceylon dist version, as specified by --target (or javac -ceylon-target) */
+    private String targetVersion;
+
     public AbstractTransformer(Context context) {
         this.context = context;
         make = TreeMaker.instance(context);
@@ -162,6 +167,7 @@ public abstract class AbstractTransformer implements Transformation {
         log = CeylonLog.instance(context);
         naming = Naming.instance(context);
         simpleAnnotationModels = Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) != null;
+        targetVersion = Options.instance(context).get(OptionName.CEYLONTARGETVERSION);
     }
 
     Context getContext() {
@@ -2967,6 +2973,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     List<JCAnnotation> makeAtModule(ModuleDescriptor moduleDescriptor) {
+        Distribution distribution = Distribution.getDistribution();
         Module module = moduleDescriptor.getUnit().getPackage().getModule();
         ListBuffer<JCExpression> imports = new ListBuffer<JCTree.JCExpression>();
 
@@ -2979,8 +2986,16 @@ public abstract class AbstractTransformer implements Transformation {
                     make().Literal(dependencyModule.getNameAsString()));
             JCExpression dependencyVersion = null;
             
-            String versionInDescriptor = getImportVersionFromDescriptor(
-                    moduleDescriptor, dependency, dependencyModule);
+            String versionInDescriptor;
+            String moduleName = dependency.getModule().getNameAsString();
+            ModuleSpec distModule;
+            if (targetVersion != null
+                    && (distModule = distribution.getDistModule(targetVersion, moduleName)) != null) {
+                versionInDescriptor = distModule.getVersion();
+            } else {
+                versionInDescriptor = getImportVersionFromDescriptor(
+                        moduleDescriptor, dependency, dependencyModule);
+            }
             if(versionInDescriptor != null)
                 dependencyVersion = make().Assign(naming.makeUnquotedIdent("version"),
                         make().Literal(versionInDescriptor));
