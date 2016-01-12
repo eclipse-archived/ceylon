@@ -140,4 +140,20 @@ void issues() {
     }
     foo666([1]);
     foo671([1]);
+    class Issue5901Def(String s, Integer i){}
+    class Issue5901Cons {
+      shared new(String s, Integer i){}
+    }
+    value def5901 = `Issue5901Def`.defaultConstructor?.parameterTypes;
+    value cons5901 = `Issue5901Cons`.defaultConstructor?.parameterTypes;
+    if (exists x=def5901) {
+      check(x.size==2, "#5901.1 expected 2 params");
+    } else {
+      fail("#5901.1 constructor not found");
+    }
+    if (exists x=cons5901) {
+      check(x.size==2, "#5901.2 expected 2 params");
+    } else {
+      fail("#5901.2 constructor not found");
+    }
 }
