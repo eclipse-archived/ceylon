@@ -888,9 +888,16 @@ public class TypeUtils {
         } else if (d instanceof FunctionOrValue) {
 
             gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
-            //This needs a new setting to resolve types but not type parameters
-            metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
-                    ((FunctionOrValue)d).getType(), null, gen);
+            if (d instanceof Function && ((Function)d).getParameterLists().size() > 1) {
+                Type callableType = ((Function)d).getReference().getFullType();
+                //This needs a new setting to resolve types but not type parameters
+                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
+                        callableType.getTypeArgumentList().get(0), null, gen);
+            } else {
+                //This needs a new setting to resolve types but not type parameters
+                metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
+                        ((FunctionOrValue)d).getType(), null, gen);
+            }
             if (d instanceof Function) {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 //Parameter types of the first parameter list
