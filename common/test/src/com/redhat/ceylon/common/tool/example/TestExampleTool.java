@@ -185,9 +185,13 @@ public class TestExampleTool implements Tool {
 
     /**
      * The method used for initializing the tool
+     * @throws Exception 
      */
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        if (throwableClassName != null) {
+            throw (Exception)Class.forName(throwableClassName).newInstance();
+        }
         this.inited = true;
     }
     
