@@ -8,6 +8,14 @@ if (this.$defcons$===undefined) {
     if (m2 && m2.$cn===undefined) {
       cn=this.tipo;
       fc=true;
+    } else if (m2 && m2.$cn) {
+      //The class has constructors, but it's a local class or something
+      for (var mem in this.tipo) {
+        if (mem.endsWith("_$c$")) {
+          cn=this.tipo[mem];
+          break;
+        }
+      }
     }
   }
   if (cn) {
