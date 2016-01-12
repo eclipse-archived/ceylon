@@ -889,10 +889,10 @@ public class TypeUtils {
 
             gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
             if (d instanceof Function && ((Function)d).getParameterLists().size() > 1) {
-                Type callableType = ((Function)d).getReference().getFullType();
+                Type callableType = ((Function)d).getTypedReference().getFullType();
                 //This needs a new setting to resolve types but not type parameters
                 metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
-                        callableType.getTypeArgumentList().get(0), null, gen);
+                        that.getUnit().getCallableReturnType(callableType), null, gen);
             } else {
                 //This needs a new setting to resolve types but not type parameters
                 metamodelTypeNameOrList(false, that, d.getUnit().getPackage(),
