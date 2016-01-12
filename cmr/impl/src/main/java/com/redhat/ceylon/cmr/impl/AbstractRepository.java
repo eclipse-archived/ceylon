@@ -263,7 +263,7 @@ public abstract class AbstractRepository implements CmrRepository {
         }
         for (String suffix : lookup.getType().getSuffixes()) {
             if (getArtifactName(module, version, suffix).equals(name)) {
-                if (suffix.equals(ArtifactContext.CAR) || suffix.equals(ArtifactContext.JS)) {
+                if (shouldCheckBinaryVersion(suffix)) {
                     return checkBinaryVersion(module, version, node, lookup);
                 }
                 return true;
@@ -272,6 +272,14 @@ public abstract class AbstractRepository implements CmrRepository {
         return false;
     }
 
+    private boolean shouldCheckBinaryVersion(String suffix) {
+        return suffix.equals(ArtifactContext.CAR)
+                || suffix.equals(ArtifactContext.JS_MODEL) 
+                || suffix.equals(ArtifactContext.JS)
+                || suffix.equals(ArtifactContext.DART)
+                || suffix.equals(ArtifactContext.DART_MODEL);
+    }
+    
     private boolean checkBinaryVersion(String module, String version, Node node, ModuleQuery lookup) {
         if (lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null)
             return true;
@@ -446,11 +454,7 @@ public abstract class AbstractRepository implements CmrRepository {
                         continue;
                     }
                 }
-                if (suffix.equals(ArtifactContext.CAR)
-                        || suffix.equals(ArtifactContext.JS_MODEL) 
-                        || suffix.equals(ArtifactContext.JS)
-                        || suffix.equals(ArtifactContext.DART)
-                        || suffix.equals(ArtifactContext.DART_MODEL)) {
+                if (shouldCheckBinaryVersion(suffix)) {
                     if (!checkBinaryVersion(name, version, artifact, lookup)) {
                         if (lookup.getRetrieval() == Retrieval.ALL) {
                             break;
@@ -597,7 +601,7 @@ public abstract class AbstractRepository implements CmrRepository {
                 String artifactName = getArtifactName(moduleName, version, suffix);
                 Node artifact = child.getChild(artifactName);
                 if (artifact != null) {
-                    if (!checkBinaryVersion(moduleName, version, artifact, query)) {
+                    if (shouldCheckBinaryVersion(suffix) && !checkBinaryVersion(moduleName, version, artifact, query)) {
                         continue;
                     }
                     if (query.getRetrieval() == Retrieval.ANY) {
