@@ -5,7 +5,7 @@ function dre$$(object, type, loc) {
   if (is$(object, type))return object;
   //If it's already of another type, throw
   if (object.$$ !== undefined)throw new Error("Cannot modify the type of an object at runtime " + loc);
-  if (Object.isFrozen(object))throw new Error("Cannot add Ceylon type information to a frozen object");
+  if (typeof(object)==='object' && Object.isFrozen(object))throw new Error("Cannot add Ceylon type information to a frozen object");
   //Check members
   var actual = typeof(object)==='object'?Object.getOwnPropertyNames(object):[];
   var sats = type.t.$$.prototype.getT$all();
