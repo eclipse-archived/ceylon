@@ -525,18 +525,20 @@ public class FunctionHelper {
         String primaryVar = gen.createRetainedTempVar();
         gen.out("(", primaryVar, "=");
         that.getPrimary().visit(gen);
-        gen.out(",");
-        final String member = (name == null) ? gen.memberAccess(that, primaryVar) : (primaryVar+"."+name);
-        if (that.getDeclaration() instanceof Function
-                && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
-            //Function ref with type parameters
-            BmeGenerator.printGenericMethodReference(gen, that, primaryVar, member);
-        } else {
-            if (that.getUnit().isOptionalType(that.getPrimary().getTypeModel())) {
-                gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", gen.getClAlias(),
-                        "nn$(", primaryVar, ")?", member, ":null)");
+        if (!(that.getStaticMethodReferencePrimary() && !TypeUtils.isConstructor(that.getDeclaration()))) {
+            gen.out(",");
+            final String member = (name == null) ? gen.memberAccess(that, primaryVar) : (primaryVar+"."+name);
+            if (that.getDeclaration() instanceof Function
+                    && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
+                //Function ref with type parameters
+                BmeGenerator.printGenericMethodReference(gen, that, primaryVar, member);
             } else {
-                gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", member, ")");
+                if (that.getUnit().isOptionalType(that.getPrimary().getTypeModel())) {
+                    gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", gen.getClAlias(),
+                            "nn$(", primaryVar, ")?", member, ":null)");
+                } else {
+                    gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", member, ")");
+                }
             }
         }
         gen.out(")");

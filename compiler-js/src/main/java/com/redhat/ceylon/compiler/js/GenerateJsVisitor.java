@@ -1924,6 +1924,9 @@ public class GenerateJsVisitor extends Visitor {
         }
         final String member = (accessThroughGetter(decl) && !accessDirectly(decl))
                 ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) : names.name(decl);
+        if (!isConstructor && TypeUtils.isConstructor(decl)) {
+            sb.append(names.name((Declaration)decl.getContainer())).append("_");
+        }
         sb.append(member);
         if (!opts.isOptimize() && (scope != null)) {
             sb.append(names.scopeSuffix(scope));
