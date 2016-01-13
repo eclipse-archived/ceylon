@@ -22,6 +22,7 @@ import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.Distribution;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -298,6 +299,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Timer timer;
     private Map<String,LazyPackage> modulelessPackages = new HashMap<String,LazyPackage>();
     private ParameterNameParser parameterNameParser = new ParameterNameParser(this);
+    protected String distVersion;
+    
     
     protected final void initModuleManager(ModuleManager moduleManager) {
         this.moduleManager = moduleManager;
@@ -486,21 +489,36 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         nested.endTask();
     }
     protected Module loadLanguageModuleAndPackage() {
-        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
+        Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, distVersion);
         addModuleToClassPath(languageModule, null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);
         typeFactory.setPackage(languagePackage);
         
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
+        
+        
+        Distribution dist = Distribution.getDistribution();
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", 
+                getDistModuleVersion(dist, "com.redhat.ceylon.common")), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", 
+                getDistModuleVersion(dist, "com.redhat.ceylon.model")), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", 
+                getDistModuleVersion(dist, "com.redhat.ceylon.module-resolver")), false, false, Backend.Java));
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION), false, false, Backend.Java));
+        // TODO We should load these transitive deps either from Distribution
+        // or by parsing the module.xml from ceylon runtime (but that requires 
+        // we know the repo it's coming from)
+        //Module cr = findOrCreateModule("ceylon.runtime", getDistModuleVersion(dist, "ceylon.runtime"));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", 
+                getDistModuleVersion(dist, "org.jboss.modules")), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", 
+                getDistModuleVersion(dist, "org.jboss.jandex")), false, false, Backend.Java));
         
         return languageModule;
+    }
+    protected String getDistModuleVersion(Distribution dist, String moduleName) {
+        return dist.getDistModule(distVersion != null ? distVersion : Versions.CEYLON_VERSION_NUMBER, moduleName).getVersion();
     }
     protected void loadJDKModules() {
         for(String jdkModule : JDKUtils.getJDKModuleNames())
@@ -5525,8 +5543,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 || importedModuleName.equals("com.redhat.ceylon.module-resolver"))
                 && importedModule.getVersion().equals(Versions.CEYLON_VERSION_NUMBER))
                 return true;
+            Distribution dist = Distribution.getDistribution();
             if(importedModuleName.equals("org.jboss.modules")
-                    && importedModule.getVersion().equals(Versions.DEPENDENCY_JBOSS_MODULES_VERSION))
+                    && importedModule.getVersion().equals(getDistModuleVersion(dist, "org.jboss.modules")))
                 return true;
         }
         return false;

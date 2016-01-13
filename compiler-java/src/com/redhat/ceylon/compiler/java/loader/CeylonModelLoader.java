@@ -131,6 +131,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         fileManager = context.get(JavaFileManager.class);
         annotationLoader = new AnnotationLoader(this, typeFactory);
         moduleSourceMapper = phasedUnits.getModuleSourceMapper();
+        distVersion = Options.instance(context).get(OptionName.CEYLONTARGETVERSION);
     }
 
     @Override
