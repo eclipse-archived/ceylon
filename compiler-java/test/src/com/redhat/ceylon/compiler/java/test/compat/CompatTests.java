@@ -113,6 +113,14 @@ public class CompatTests extends CompilerTests {
         ArrayList<String> options = new ArrayList<String>(defaultOptions);
         options.add("-ceylon-target");
         options.add("1.2.0");
+        int cpi = options.indexOf("-cp");
+        String cp = options.get(cpi+1);
+        String langMod120 = System.getProperty("user.home")+"/.ceylon/repo/ceylon/language/1.2.0/ceylon.language-1.2.0.car";
+        if (!new File(langMod120).exists()) {
+            throw new RuntimeException("Couldn't find ceylon.language/1.2.0 on your system");
+        }
+        cp = cp.replace(LANGUAGE_MODULE_CAR, langMod120);
+        options.set(cpi+1, cp);
         compile(options, "target/CeylonTargetVersion.ceylon");
     }
 
