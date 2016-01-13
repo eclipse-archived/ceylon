@@ -15,7 +15,9 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.common.Distribution;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -219,6 +221,16 @@ public class ModuleValidator {
             
             boolean forCompiledModule = newImportDepth.isVisibleToCompiledModules();
             if ( ! module.isAvailable()) {
+                boolean moduleIsInTargetDist;
+                if (context.getDistVersion() != null) {
+                    // ceylon compile --target
+                    // and the dependency forms part of the target's distribution
+                    // we don't want to go applying the dist overrides 
+                    // (because the user explicitly passed their desired target)
+                    moduleIsInTargetDist = Distribution.getDistribution().getDistModule(context.getDistVersion(), module.getNameAsString()) != null;
+                } else {
+                    moduleIsInTargetDist = false;
+                }
                 ArtifactResult artifact = null;
                 boolean firstTime;
                 if (alreadySearchedArtifacts.containsKey(module)) {
@@ -229,6 +241,7 @@ public class ModuleValidator {
                     RepositoryManager repositoryManager = context.getRepositoryManager();
                     Exception exceptionOnGetArtifact = null;
                     ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
+                    artifactContext.setNoDistOverrides(moduleIsInTargetDist);
                     listener.retrievingModuleArtifact(module, artifactContext);
                     try {
                         artifact = repositoryManager.getArtifactResult(artifactContext);
@@ -255,7 +268,7 @@ public class ModuleValidator {
                     //parse module units and build module dependency and carry on
                     listener.resolvingModuleArtifact(module, artifact);
                     Module moduleOverride = moduleManager.overridesModule(artifact, module, moduleImport);
-                    if (moduleOverride != null) {
+                    if (!moduleIsInTargetDist && moduleOverride != null) {
                         module = moduleOverride;
                         if (importDepth.equals(ImportDepth.First)) {
                             moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 

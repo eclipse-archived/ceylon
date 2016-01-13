@@ -43,10 +43,17 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     private RepositoryManager manager;
     private ModuleInfo infos;
     private boolean resolved = false;
+    private boolean noDistOverrides;
 
     protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, String name, String version) {
         super(repository, name, version);
         this.manager = manager;
+    }
+    
+    protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, String name, String version, boolean noDistOverrides) {
+        super(repository, name, version);
+        this.manager = manager;
+        this.noDistOverrides = noDistOverrides;
     }
 
     public ArtifactResultType type() {
@@ -55,7 +62,12 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
 
     protected ModuleInfo resolve(){
         if(!resolved){
-            Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
+            Overrides overrides;
+            if (noDistOverrides) {
+                overrides =null;
+            } else {
+                overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
+            }
             this.infos = Configuration.getResolvers(manager).resolve(this, overrides);
             resolved = true;
         }

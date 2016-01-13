@@ -49,7 +49,12 @@ public class DefaultRepository extends AbstractRepository {
         private Node node;
 
         protected DefaultArtifactResult(CmrRepository repository, RepositoryManager manager, Node node) {
-            super(repository, manager, ArtifactContext.fromNode(node).getName(), ArtifactContext.fromNode(node).getVersion());
+            this(repository, manager, node, ArtifactContext.fromNode(node));
+            this.node = node;
+        }
+        
+        private DefaultArtifactResult(CmrRepository repository, RepositoryManager manager, Node node, ArtifactContext ac) {
+            super(repository, manager, ac.getName(), ac.getVersion(), ac.isNoDistOverrides());
             this.node = node;
         }
 

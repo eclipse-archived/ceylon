@@ -95,6 +95,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private boolean ignoreDependencies;
     private ArtifactCallback callback;
     private Repository repository;
+    private boolean noDistOverrides;
 
     public ArtifactContext(String name, String version) {
         this.name = name;
@@ -403,6 +404,14 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return repository;
     }
 
+    public boolean isNoDistOverrides() {
+        return noDistOverrides;
+    }
+    
+    public void setNoDistOverrides(boolean noDistOverrides) {
+        this.noDistOverrides = noDistOverrides;
+    }
+    
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
@@ -448,6 +457,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         forceDescriptorCheck = ac.forceDescriptorCheck;
         ignoreDependencies = ac.ignoreDependencies;
         callback = ac.callback;
+        noDistOverrides = ac.noDistOverrides;
         return ac;
     }
 
