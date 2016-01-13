@@ -84,6 +84,7 @@ public class Overrides {
     private Map<String, String> setVersions = new HashMap<>();
 
     private String source = null;
+    private boolean isDist;
     
     private Overrides() {}
     
@@ -274,6 +275,7 @@ public class Overrides {
         try(InputStream is = resource.openStream()){
             Overrides overrides = Overrides.parse(is, new Overrides());
             overrides.source = resource.toString();
+            overrides.isDist = true;
             return overrides;
         }
     }
@@ -561,13 +563,23 @@ public class Overrides {
     }
     
     public ArtifactContext applyOverrides(final ArtifactContext sought) {
-        ArtifactContext replacedContext = this.replace(sought);
+        final Overrides overrides;
+        if (sought.isNoDistOverrides()
+                && this.isDist) {
+            if (this.next == null) {
+                return sought;
+            }
+            overrides = this.next;
+        } else {
+            overrides = this;
+        }
+        ArtifactContext replacedContext = overrides.replace(sought);
         if(replacedContext == null) {
             replacedContext = sought;
         } else {
             log.fine(this + ": " + sought + " -> " + replacedContext);
         }
-        String versionOverride = this.getVersionOverride(replacedContext);
+        String versionOverride = overrides.getVersionOverride(replacedContext);
         if (versionOverride != null // only possible to default module, and we can't override that 
                 && !versionOverride.equals(replacedContext.getVersion())) {
             log.fine(this + ": " + replacedContext + " -> version " + versionOverride);

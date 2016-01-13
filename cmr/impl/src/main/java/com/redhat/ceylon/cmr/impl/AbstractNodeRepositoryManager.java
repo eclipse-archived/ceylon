@@ -187,7 +187,7 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     }
 
     private ArtifactContext applyOverrides(ArtifactContext context) {
-        context = context.isNoDistOverrides() ? context : overrides.applyOverrides(context);
+        context = overrides.applyOverrides(context);
         return context;
     }
     
