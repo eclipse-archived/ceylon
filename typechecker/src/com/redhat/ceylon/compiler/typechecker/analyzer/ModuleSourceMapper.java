@@ -67,7 +67,7 @@ public class ModuleSourceMapper {
     }
 
     public void initCoreModules(){
-        moduleManager.initCoreModules(modules);
+        moduleManager.initCoreModules(modules, context.getDistVersion());
         packageStack.clear();
         packageStack.addLast( modules.getDefaultModule().getPackages().get(0) );
     }

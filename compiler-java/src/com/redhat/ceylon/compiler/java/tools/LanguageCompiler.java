@@ -181,7 +181,8 @@ public class LanguageCompiler extends JavaCompiler {
         if (ceylonContext == null) {
             CeyloncFileManager fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
             VFS vfs = new VFS();
-            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(fileManager.getRepositoryManager(), vfs);
+            String distVersion = Options.instance(context).get(OptionName.CEYLONTARGETVERSION);            
+            ceylonContext = new com.redhat.ceylon.compiler.typechecker.context.Context(fileManager.getRepositoryManager(), vfs, distVersion);
             context.put(ceylonContextKey, ceylonContext);
         }
         return ceylonContext;

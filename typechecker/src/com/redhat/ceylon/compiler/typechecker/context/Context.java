@@ -14,12 +14,23 @@ public class Context {
     private Modules modules;
     private VFS vfs;
     private RepositoryManager repositoryManager;
+    private String distVersion;
 
     public Context(RepositoryManager repositoryManager, VFS vfs) {
         this.vfs = vfs;
         this.repositoryManager = repositoryManager;
     }
+    
+    public Context(RepositoryManager repositoryManager, VFS vfs, String distVersion) {
+        this.vfs = vfs;
+        this.repositoryManager = repositoryManager;
+        this.distVersion = distVersion;
+    }
 
+    public String getDistVersion() {
+        return distVersion;
+    }
+    
     public Modules getModules() {
         return modules;
     }

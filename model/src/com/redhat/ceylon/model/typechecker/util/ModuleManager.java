@@ -40,7 +40,7 @@ public class ModuleManager implements BackendSupport {
         return pkg;
     }
 
-    public void initCoreModules(Modules initialModules) {
+    public void initCoreModules(Modules initialModules, String distVersion) {
         modules = initialModules;
         if ( modules.getLanguageModule() == null ) {
             //build empty package
@@ -58,7 +58,7 @@ public class ModuleManager implements BackendSupport {
             //create language module and add it as a dependency of defaultModule
             //since packages outside a module cannot declare dependencies
             final List<String> languageName = Arrays.asList("ceylon", "language");
-            Module languageModule = createModule(languageName, Versions.CEYLON_VERSION_NUMBER);
+            Module languageModule = createModule(languageName, distVersion);
             languageModule.setLanguageModule(languageModule);
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);

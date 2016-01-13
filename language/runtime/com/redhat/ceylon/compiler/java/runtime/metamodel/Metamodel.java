@@ -18,6 +18,7 @@ import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
@@ -197,7 +198,7 @@ public class Metamodel {
     
     public static void resetModuleManager() {
         moduleManager = new RuntimeModuleManager();
-        moduleManager.initCoreModules(new Modules());
+        moduleManager.initCoreModules(new Modules(), Versions.CEYLON_VERSION_NUMBER);
         moduleManager.prepareForTypeChecking();
         classToDeclaration.clear();
         typeCheckModelToRuntimeModel.clear();
