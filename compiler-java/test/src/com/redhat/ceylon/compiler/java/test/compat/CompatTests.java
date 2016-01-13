@@ -108,8 +108,18 @@ public class CompatTests extends CompilerTests {
         }
     }
     
+    /**
+     * Tests that we can compile a module using a 1.2.1 compiler but with 
+     * 1.2.0 distribution dependencies 
+     * (i.e. compile-time backward compatibility), and that the resulting 
+     * module will run on both 1.2.0 and 1.2.1.
+     * 
+     * The resulting car should be pretty much identical to one compiled using 
+     * the 1.2.0 compiler, except for differences due to compile 
+     * transformations.
+     */
     @Test
-    public void ceylonTargetVersion() {
+    public void ceylonTargetVersion() throws InterruptedException, IOException {
         ArrayList<String> options = new ArrayList<String>(defaultOptions);
         options.add("-ceylon-target");
         options.add("1.2.0");
@@ -122,6 +132,22 @@ public class CompatTests extends CompilerTests {
         cp = cp.replace(LANGUAGE_MODULE_CAR, langMod120);
         options.set(cpi+1, cp);
         compile(options, "target/CeylonTargetVersion.ceylon");
+        
+        // So we compiled it for 1.2.0, now we need to run it in
+        // both 1.2.0 and 1.2.1. Hmm.
+        ProcessBuilder pb = new ProcessBuilder(
+                "/home/tom/Desktop/ceylon-1.2.0/bin/ceylon",
+                "run",
+                "--rep=build/test-cars/compat",
+                "com.redhat.ceylon.compiler.java.test.compat.target");
+        assert(0 == pb.inheritIO().start().waitFor());
+        
+        pb = new ProcessBuilder(
+                "/home/tom/ceylon/ceylon/dist/dist/bin/ceylon",
+                "run",
+                "--rep=build/test-cars/compat",
+                "com.redhat.ceylon.compiler.java.test.compat.target");
+        assert(0 == pb.inheritIO().start().waitFor());
     }
 
 }
