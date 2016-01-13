@@ -141,6 +141,9 @@ public class PrimitiveArrayIterableTest {
         // taking
         ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> zero_seven = zero_ten.take(8);
         Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven.sequence().toString());
+        IntArray zero50 = new IntArray( 50, 0);
+        ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> zero_seven2 = zero50.getIterable().take(8);
+        Assert.assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", zero_seven2.sequence().toString());
         
         // skipping
         ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> two_seven = zero_ten.take(8).skip(2);
