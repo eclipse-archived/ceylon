@@ -44,9 +44,9 @@ import java.util.TreeSet;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
-import com.redhat.ceylon.cmr.api.Distribution;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.common.Distribution;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;

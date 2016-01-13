@@ -6,11 +6,16 @@
 <dist-versions>
     <dist version="1.2.0">
       <module name="ceylon.language"/>
-      <module name="ceylon.runtime"/>
+      <module name="ceylon.runtime">
+          <module name="org.jboss.modules" version="1.3.3.Final"/>
+          <module name="org.jboss.logmanager" version="1.4.0.Final"/>
+      </module>
       <module name="ceylon.bootstrap"/>
       <module name="com.redhat.ceylon.common"/>
       <module name="com.redhat.ceylon.typechecker"/>
-      <module name="com.redhat.ceylon.module-resolver"/>
+      <module name="com.redhat.ceylon.module-resolver">
+          <module name="org.jboss.jandex" version="1.0.3.Final"/>
+      </module>
       <module name="com.redhat.ceylon.model"/>
       <module name="com.redhat.ceylon.compiler.java"/>
       <module name="com.redhat.ceylon.compiler.js"/>
@@ -18,11 +23,16 @@
     
     <dist version="1.2.1">
       <module name="ceylon.language"/>
-      <module name="ceylon.runtime"/>
+      <module name="ceylon.runtime">
+          <module name="org.jboss.modules" version="1.4.4.Final"/>
+          <module name="org.jboss.logmanager" version="2.0.3.Final"/>
+      </module>
       <module name="ceylon.bootstrap"/>
       <module name="com.redhat.ceylon.common"/>
       <module name="com.redhat.ceylon.typechecker"/>
-      <module name="com.redhat.ceylon.module-resolver"/>
+      <module name="com.redhat.ceylon.module-resolver">
+          <module name="org.jboss.jandex" version="2.0.0.Final"/>
+      </module>
       <module name="com.redhat.ceylon.model"/>
       <module name="com.redhat.ceylon.compiler.java"/>
       <module name="com.redhat.ceylon.compiler.js"/>

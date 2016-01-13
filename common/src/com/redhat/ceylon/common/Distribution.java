@@ -1,4 +1,4 @@
-package com.redhat.ceylon.cmr.api;
+package com.redhat.ceylon.common;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,14 +48,12 @@ public class Distribution {
             String name = qName;
             if ("dist".equals(name)) {
                 currentVersion = atts.getValue("version");
-                currentList = new ArrayList<>();
+                currentList = new ArrayList<ModuleSpec>();
                 byVersion.put(currentVersion, currentList);
             } else if ("module".equals(name)) {
                 String modName = atts.getValue("name");
-                // Currently all dist modules have the same version number as
-                // the dist itself.
-                // When that's no longer true, add support for <module name=... version=.../>
-                ModuleSpec modSpec = new ModuleSpec(modName, currentVersion);
+                String modVersion = atts.getValue("version");
+                ModuleSpec modSpec = new ModuleSpec(modName, modVersion != null ? modVersion : currentVersion);
                 currentList.add(modSpec);
             } else if ("dist-versions".equals(name)) {
                 // root element -- ignore
@@ -79,24 +77,31 @@ public class Distribution {
     }
     
     public static Distribution getDistribution() {
-        InputStream stream = Distribution.class.getResourceAsStream("/com/redhat/ceylon/cmr/api/dist-versions.xml");
+        InputStream stream = Distribution.class.getResourceAsStream("/com/redhat/ceylon/common/dist-versions.xml");
         if (stream == null) {
             throw new RuntimeException("dist-versions.xml not found");
         }
+        
         try {
-            try (InputStreamReader reader = new InputStreamReader(stream, "UTF-8")) {
-                SAXParserFactory spf = SAXParserFactory.newInstance();
-                SAXParser p = spf.newSAXParser();
-                Handler handler = new Handler();
-                p.parse(stream, handler);
-                return new Distribution(handler.byVersion);
-            }
+            InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser p = spf.newSAXParser();
+            Handler handler = new Handler();
+            p.parse(stream, handler);
+            return new Distribution(handler.byVersion);
+            
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (SAXException e) {
             throw new RuntimeException(e);
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     

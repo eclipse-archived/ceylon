@@ -30,10 +30,10 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.Distribution;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.Distribution;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
