@@ -151,7 +151,7 @@ public class RepositoryManagerBuilder {
     public static Overrides parseOverrides(String overridesFileName) {
         if(overridesFileName != null){
             try {
-                return Overrides.getDistOverrides().append(overridesFileName);
+                return Overrides.parse(overridesFileName);
             }catch(IllegalArgumentException x ){
                 throw x;
             } catch (Exception e) {

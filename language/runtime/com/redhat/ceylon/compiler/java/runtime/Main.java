@@ -886,15 +886,17 @@ public class Main {
      * @param version the version to load. Ignored if the module is the default module.
      */
     public void setup(String module, String version){
-        Overrides parsedOverrides = Overrides.getDistOverrides();
+        Overrides parsedOverrides;
         if (overrides != null) {
             try {
-                parsedOverrides = parsedOverrides.append(overrides);
+                parsedOverrides = Overrides.parse(overrides);
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        } else {
+            parsedOverrides = Overrides.getDistOverrides();
         }
         new OverridesRuntimeResolver(parsedOverrides).installInThreadLocal();
         if(moduleClassLoader == null)

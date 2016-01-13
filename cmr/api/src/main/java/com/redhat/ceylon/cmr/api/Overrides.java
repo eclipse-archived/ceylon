@@ -73,6 +73,7 @@ public class Overrides {
         }
     }
     
+    private Overrides next;
     private Map<ArtifactContext, ArtifactOverrides> overrides = new HashMap<>();
     private Map<String, ArtifactOverrides> overridesNoVersion = new HashMap<>();
     private Set<DependencyOverride> removed = new HashSet<DependencyOverride>();
@@ -96,8 +97,11 @@ public class Overrides {
         }
     }
     
-    public Overrides append(String overridesFileName) throws FileNotFoundException, Exception {
-        return parse(overridesFileName, this);
+    private Overrides append(String overridesFileName) throws FileNotFoundException, Exception {
+        Overrides next = new Overrides();
+        parse(overridesFileName, next);
+        this.next = next;
+        return this;
     }
     
     public String toString() {
@@ -114,7 +118,10 @@ public class Overrides {
         ArtifactOverrides ao = overrides.get(mc);
         if(ao == null){
             // fall-back to overrides with no version specified
-            return overridesNoVersion.get(mc.getName());
+            ao = overridesNoVersion.get(mc.getName());
+        }
+        if (ao == null && next != null) {
+            ao = next.getArtifactOverrides(mc);
         }
         return ao;
     }
@@ -128,6 +135,9 @@ public class Overrides {
             if(ro.matches(context))
                 return true;
         }
+        if (next != null) {
+            return next.isRemoved(context);
+        }
         return false;
     }
 
@@ -136,6 +146,9 @@ public class Overrides {
         if(ao == null){
             // fall-back to overrides with no version specified
             ao = replacedNoVersion.get(mc.getName());
+        }
+        if (ao == null && next != null) {
+            return next.getReplacement(mc);
         }
         return ao;
     }
@@ -181,13 +194,24 @@ public class Overrides {
     
     public String getVersionOverride(ArtifactContext context){
         String overriddenVersion = setVersions.get(context.getName());
-        if(overriddenVersion != null)
-            return overriddenVersion;
-        return context.getVersion();
+        if (overriddenVersion == null && next != null) {
+            overriddenVersion = next.getVersionOverride(context);
+        }
+        if(overriddenVersion == null) {
+            overriddenVersion = context.getVersion();
+        }
+        return overriddenVersion;
     }
     
     public boolean isVersionOverridden(ArtifactContext context){
-        return setVersions.containsKey(context.getName());
+        if (setVersions.containsKey(context.getName())) {
+            return true;
+        }
+        if (next != null) {
+            return next.isVersionOverridden(context);
+        } else {
+            return false;
+        }
     }
 
     public ModuleInfo applyOverrides(String module, String version, ModuleInfo source) {
@@ -234,7 +258,7 @@ public class Overrides {
         return new ModuleInfo(filter, result);
     }
 
-    private static Overrides parse(String overridesFileName, Overrides overrides) throws FileNotFoundException, Exception{
+    private static void parse(String overridesFileName, Overrides overrides) throws FileNotFoundException, Exception{
         File overridesFile = new File(overridesFileName);
         if (overridesFile.exists() == false) {
             throw new IllegalArgumentException("No such overrides file: " + overridesFile);
@@ -242,7 +266,6 @@ public class Overrides {
         try(InputStream is = new FileInputStream(overridesFile)){
             overrides = Overrides.parse(is, overrides);
             overrides.source = overridesFile.getAbsolutePath();
-            return overrides;
         }
     }
     
@@ -551,5 +574,13 @@ public class Overrides {
             replacedContext.setVersion(versionOverride);
         }
         return replacedContext;
+    }
+
+    public static Overrides parse(String filename) throws FileNotFoundException, Exception {
+        Overrides o = getDistOverrides();
+        if (filename != null) {
+            o = o.append(filename);
+        }
+        return o;
     }
 }
