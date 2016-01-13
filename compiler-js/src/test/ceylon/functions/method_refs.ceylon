@@ -61,6 +61,14 @@ void testStaticMethodReferences() {
     value test11=pad("x")(3,'.');
     check(test11=="..x", "Static method ref 11 expected ..x got ``test11``");
     check(mr.issue410() == "test", "Issue 410");
+    Object() newd = C5900().D.create;
+    check(newd() is C5900.D,"#5900");
+}
+
+shared class C5900() {
+    shared class D {
+        shared new create() {}
+    }
 }
 
 void test517() {
