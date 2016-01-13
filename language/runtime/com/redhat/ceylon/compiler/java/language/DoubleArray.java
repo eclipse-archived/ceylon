@@ -550,7 +550,7 @@ extends BaseIterable<ceylon.language.Float, ceylon.language.Null> {
         }
         return new DoubleArrayIterable(this.array, 
                 this.start, 
-                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step+1), 
+                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step), 
                 this.step);
     }
     
