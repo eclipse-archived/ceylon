@@ -21,7 +21,7 @@ import ceylon.language.meta.declaration { Module }
 shared native object modules {
     
     "Returns the list of all currently loaded modules. This may include modules that
-     were not imported directly but your module, and multiple versions of the same
+     were not imported directly by your module, and multiple versions of the same
      module."
     shared native Module[] list;
     
