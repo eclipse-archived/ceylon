@@ -153,7 +153,7 @@ public class CMRHTTPTests extends CompilerTests {
         carFile = getModuleArchive(moduleA, "6.6.6");
         assertFalse(carFile.exists());
         
-        rq.check(37);
+        rq.check(27);
     }
 
     @Test
@@ -257,8 +257,8 @@ public class CMRHTTPTests extends CompilerTests {
     
     @Test
     public void testMdlHTTPOutputRepo() throws IOException{
-        testMdlHTTPOutputRepo(true, 42);
-        testMdlHTTPOutputRepo(false, 103);
+        testMdlHTTPOutputRepo(true, 32);
+        testMdlHTTPOutputRepo(false, 93);
     }
     
     private void testMdlHTTPOutputRepo(boolean herd, int requests) throws IOException{
@@ -301,8 +301,8 @@ public class CMRHTTPTests extends CompilerTests {
 
     @Test
     public void testMdlHTTPMixedCompilation() throws IOException{
-        testMdlHTTPMixedCompilation(false, 199);
-        testMdlHTTPMixedCompilation(true, 86);
+        testMdlHTTPMixedCompilation(false, 179);
+        testMdlHTTPMixedCompilation(true, 66);
     }
     
     private void testMdlHTTPMixedCompilation(boolean herd, int requests) throws IOException{
