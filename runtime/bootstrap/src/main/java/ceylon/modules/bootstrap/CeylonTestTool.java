@@ -7,6 +7,7 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.AbstractTestTool;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 
@@ -28,8 +29,24 @@ import com.redhat.ceylon.common.tool.Summary;
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends AbstractTestTool {
 
+    private boolean flatClasspath;
+    private boolean autoExportMavenDependencies;
+
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE, ModuleQuery.Type.JVM, Versions.JVM_BINARY_MAJOR_VERSION, Versions.JVM_BINARY_MINOR_VERSION);
+    }
+
+    @Option(longName="flat-classpath")
+    @Description("Launches the Ceylon module using a flat classpath.")
+    public void setFlatClasspath(boolean flatClasspath) {
+        this.flatClasspath = flatClasspath;
+    }
+
+    @Option(longName="auto-export-maven-dependencies")
+    @Description("When using JBoss Modules (the default), treats all module dependencies between " +
+                 "Maven modules as shared.")
+    public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
+        this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
 
     @Override
@@ -52,6 +69,8 @@ public class CeylonTestTool extends AbstractTestTool {
         ceylonRunTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunTool.setArgs(args);
         ceylonRunTool.setRepository(repo);
+        ceylonRunTool.setFlatClasspath(flatClasspath);
+        ceylonRunTool.setAutoExportMavenDependencies(autoExportMavenDependencies);
         ceylonRunTool.setSystemRepository(systemRepo);
         ceylonRunTool.setCacheRepository(cacheRepo);
         ceylonRunTool.setOverrides(overrides);

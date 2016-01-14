@@ -54,6 +54,8 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     private Boolean tap = false;
     private Boolean report = false;
     private List<Test> tests = new ArrayList<Test>(0);
+	private boolean flatClasspath;
+	private boolean autoExportMavenDependencies;
 
     public CeylonTestAntTask() {
         super("test");
@@ -81,6 +83,21 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.moduleSet.addConfiguredSourceModules(sourceModules);
     }
+
+    /**
+     * Use a flat classpath
+     */
+    public void setFlatClasspath(boolean flatClasspath){
+    	this.flatClasspath = flatClasspath;
+    }
+
+    /**
+     * Auto-export Maven dependencies
+     */
+    public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
+        this.autoExportMavenDependencies = autoExportMavenDependencies;
+    }
+
 
     /**
      * Sets compile flags
@@ -149,6 +166,12 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
         }
         if(report) {
             appendOption(cmd, "--report");
+        }
+        if(autoExportMavenDependencies){
+        	appendOption(cmd, "--auto-export-maven-dependencies");
+        }
+        if(flatClasspath){
+        	appendOption(cmd, "--flat-classpath");
         }
         for (Test test : tests) {
             appendOptionArgument(cmd, "--test", test.getTest());
