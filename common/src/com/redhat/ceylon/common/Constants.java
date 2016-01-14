@@ -42,7 +42,7 @@ public abstract class Constants {
     public static final String DEFAULT_RUNTOOL_COMPILATION_FLAGS = "never";
     public static final String DEFAULT_TESTTOOL_COMPILATION_FLAGS = "never";
     
-    public static final String REPO_URL_CEYLON = "http://modules.ceylon-lang.org/repo/1";
+    public static final String REPO_URL_CEYLON = "https://modules.ceylon-lang.org/repo/1";
 
     // The default timeout for establishing connections is set to 20 seconds
     // The multiplier is applied on top of that for read timeouts

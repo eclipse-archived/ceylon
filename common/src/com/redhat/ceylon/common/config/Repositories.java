@@ -73,7 +73,7 @@ import com.redhat.ceylon.common.FileUtil;
  * of repositories that need authentication. For example:
  * 
  *   [repository "Test"]
- *   url=http://modules.ceylon-lang.org/repo/1
+ *   url=https://modules.ceylon-lang.org/repo/1
  *   user=john
  *   password=secret
  *   
@@ -241,7 +241,7 @@ public class Repositories {
                 File userRepoDir = getUserRepoDir();
                 return new SimpleRepository(REPO_NAME_USER, userRepoDir.getAbsolutePath(), null);
             } else if (REPO_NAME_REMOTE.equals(repoName)) {
-                // http://modules.ceylon-lang.org
+                // https://modules.ceylon-lang.org
                 return new SimpleRepository(REPO_NAME_REMOTE, Constants.REPO_URL_CEYLON, null);
             }
             return null;
@@ -451,7 +451,7 @@ public class Repositories {
         Repository[] repos = getRepositoriesByType(REPO_TYPE_OTHER_LOOKUP);
         if (repos == null) {
             repos = new Repository[1];
-            // By default "http://modules.ceylon-lang.org"
+            // By default "https://modules.ceylon-lang.org"
             repos[0] = getRepository(REPO_NAME_REMOTE);
         }
         return repos;

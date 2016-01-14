@@ -64,6 +64,7 @@ import com.redhat.ceylon.common.log.Logger;
  */
 public abstract class URLContentStore extends AbstractRemoteContentStore {
 
+	// Those are namespaces, they don't need to use https until Herd changes those namespaces too
     public final static String HERD_COMPLETE_MODULES_REL = "http://modules.ceylon-lang.org/rel/complete-modules";
     public final static String HERD_COMPLETE_VERSIONS_REL = "http://modules.ceylon-lang.org/rel/complete-versions";
     public final static String HERD_SEARCH_MODULES_REL = "http://modules.ceylon-lang.org/rel/search-modules";

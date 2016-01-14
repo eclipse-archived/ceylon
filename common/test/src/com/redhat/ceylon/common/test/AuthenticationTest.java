@@ -55,7 +55,7 @@ public class AuthenticationTest extends AbstractKeystoreTest {
     
     @Test
     public void testRepoWithPrompt() {
-        mockPrompt.prompts.put("Password for bar at http://modules.ceylon-lang.org:", "repopassword");
+        mockPrompt.prompts.put("Password for bar at https://modules.ceylon-lang.org:", "repopassword");
         Repository repository = repos.getRepository("repo-with-prompted");
         Assert.assertNotNull(repository);
         UsernamePassword up = Authentication.fromConfig(testConfig).getUsernameAndPassword(repository.getCredentials());
