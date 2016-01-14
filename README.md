@@ -21,19 +21,21 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Distribution layout
 
-- `cmr`            - *Ceylon Module Resolver* module
-- `common`         - Common code module
-- `compiler-java`  - JVM compiler module
-- `compiler-js`    - JS compiler module
-- `dist`           - Build files 
-- `language`       - Ceylon language module
-- `model`          - Type model module
-- `runtime`        - Runtime module
-- `typechecker`    - Typechecker module
-- `LICENSE-ASL`    - The Ceylon ASL license
-- `LICENSE-GPL-CP` - The Ceylon GPL/CP license
-- `LICENSE-LGPL`   - The Ceylon LGPL license
-- `README.md`      - This file
+- `cmr`                 - *Ceylon Module Resolver* module
+- `common`              - Common code module
+- `compiler-java`       - JVM compiler module
+- `compiler-js`         - JS compiler module
+- `dist`                - Build files 
+- `language`            - Ceylon language module
+- `model`               - Type model module
+- `runtime`             - Runtime module
+- `typechecker`         - Typechecker module
+- `langtools-classfile` - Java tools classfile module fork
+- `tool-provider`       - Ceylon tool provider module
+- `LICENSE-ASL`         - The Ceylon ASL license
+- `LICENSE-GPL-CP`      - The Ceylon GPL/CP license
+- `LICENSE-LGPL`        - The Ceylon LGPL license
+- `README.md`           - This file
 
 ## Building the distribution
 
