@@ -432,7 +432,7 @@ public class JsCompiler {
 
     /** This exists solely so that the web IDE can override it and use a different JsOutput */
     protected JsOutput newJsOutput(Module m) throws IOException {
-        return new JsOutput(m, opts.getEncoding(), isCompilingLanguageModule());
+        return new JsOutput(m, isCompilingLanguageModule());
     }
 
     JsOutput getOutputForModule(Module m) {

@@ -192,7 +192,7 @@ public class Stitcher {
             writer.write("ex$.$CCMM$=");
             ModelEncoder.encodeModel(mmg.getModel(), writer);
             writer.write(";\n");
-            final JsOutput jsout = new JsOutput(mod, "UTF-8", true) {
+            final JsOutput jsout = new JsOutput(mod, true) {
                 @Override
                 public Writer getWriter() throws IOException {
                     return writer;
@@ -251,7 +251,7 @@ public class Stitcher {
                     final int p0 = args[1].indexOf(".language-");
                     final String version = args[1].substring(p0+10,args[1].length()-3);
                     try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(outfile), "UTF-8")) {
-                        final JsOutput jsout = new JsOutput(mod, "UTF-8", true) {
+                        final JsOutput jsout = new JsOutput(mod, true) {
                             @Override
                             public Writer getWriter() throws IOException {
                                 return writer;

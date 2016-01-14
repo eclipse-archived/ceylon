@@ -37,12 +37,11 @@ public class JsOutput {
     private final Set<File> s = new HashSet<File>();
     final Map<String,String> requires = new HashMap<String,String>();
     public final MetamodelVisitor mmg;
-    final String encoding;
+    private static final String encoding = "UTF-8";
     private JsWriter jsw;
     private final boolean compilingLanguageModule;
     
-    public JsOutput(Module m, String encoding, boolean compilingLanguageModule) throws IOException {
-        this.encoding = encoding == null ? "UTF-8" : encoding;
+    public JsOutput(Module m, boolean compilingLanguageModule) throws IOException {
         this.module = m;
         this.compilingLanguageModule = compilingLanguageModule;
         mmg = m==null?null:new MetamodelVisitor(m);
