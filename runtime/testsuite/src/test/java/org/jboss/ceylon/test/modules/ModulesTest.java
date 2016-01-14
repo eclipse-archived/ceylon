@@ -30,6 +30,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.junit.Assert;
 
+import ceylon.modules.bootstrap.loader.InitialModuleLoader;
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
 
@@ -208,6 +209,7 @@ public abstract class ModulesTest {
             System.err.print(arg + " ");
         }
         System.err.println("");
+        System.setProperty("boot.module.loader", InitialModuleLoader.class.getName());
         Main.main(args.toArray(new String[args.size()]));
     }
 }
