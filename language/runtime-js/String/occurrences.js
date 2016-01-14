@@ -1,5 +1,4 @@
 function(e,from,len){
-  if (this.codePoints===undefined)this.codePoints=countCodepoints(this);
   if (from===undefined||from<0)from=0;
   if (len===undefined)len=this.size;
   var r=[];

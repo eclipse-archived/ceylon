@@ -12,8 +12,7 @@ function(from, len) {
         if ((this.charCodeAt(i2)&0xfc00) === 0xd800) {++i2}
     }
     if (i2 >= this.length) {
-        this.codePoints = count;
         if (fromIndex === 0) {return this;}
     }
-    return $_String(this.substring(i1, i2), count-fromIndex);
+    return $_String(this.substring(i1, i2));
 }

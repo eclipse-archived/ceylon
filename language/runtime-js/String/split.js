@@ -20,7 +20,7 @@ function(sep, discard, group) {
     var separator = true;
 
     function pushToken(tokenEnd) {
-        tokens.push($_String(value.substring(tokenBegin, tokenEnd), count-tokenBeginCount));
+        tokens.push($_String(value.substring(tokenBegin, tokenEnd)));
     }
     
     for (var i=0; i<this.length; ++count) {
@@ -36,7 +36,7 @@ function(sep, discard, group) {
                 pushToken(j);
                 if (!discard) {
                     // store separator as token
-                    tokens.push($_String(this.substring(j, i), 1));
+                    tokens.push($_String(this.substring(j, i)));
                 }
                 // next token begins after this character
                 tokenBegin = i;
@@ -72,6 +72,5 @@ function(sep, discard, group) {
         tokens.push("");
     }
 
-    this.codePoints = count;
     return $arr$(tokens,{t:$_String});
 }

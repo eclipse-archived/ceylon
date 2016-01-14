@@ -1,5 +1,4 @@
 function(subc,from,len) {
-    if (this.codePoints === undefined) {this.codePoints = countCodepoints(this);}
     if (from===undefined||from<0)from=0;
     else if (from>this.size)return null;
     if (len===undefined)len=this.size-from;
