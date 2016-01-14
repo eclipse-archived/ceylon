@@ -66,6 +66,7 @@ public class RunToolTestCase extends AbstractToolTest {
         } else {
             cacheDir = cacheDirGeneral + File.separator + moduleName.substring(lastDot+1);
         }
+        new File(cacheDir).mkdirs();
     }
     
     private List<String> options(String... strings){
