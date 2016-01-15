@@ -2275,6 +2275,8 @@ shared void run() {
     sandbox(bug779);
     sandbox(bug782);
     sandbox(bug783);
+    // those are in the OBR
+    sandbox(bug5893);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
     sandbox(bugC1197);
