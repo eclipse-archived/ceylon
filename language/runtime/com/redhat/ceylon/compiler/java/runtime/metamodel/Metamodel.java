@@ -1957,7 +1957,7 @@ public class Metamodel {
                     cls.declaration.declaration.getUnit(), 
                     (Functional) cls.declaration.declaration, 
                     producedReference);
-            if(reifiedArguments.isSubtypeOf(argumentsType)) {
+            if(reifiedArguments == null || reifiedArguments.isSubtypeOf(argumentsType)) {
                 if(hasAllAnnotations(((ClassWithInitializerDeclarationImpl)cls.declaration).getDefaultConstructor(), annotationTypeDescriptors)) {
                     // TODO test for arguments too
                     //ctors.add(new AppliedInitializer((AppliedClass)cls));
