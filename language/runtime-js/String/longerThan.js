@@ -1,6 +1,6 @@
 function(length) {
     //TODO: OPTIMIZE THIS!
-    if (this.length <= length) {return false}
-    if (this.length<<1 > length) {return true}
-    return countCodepoints(this)>length;
+    if (this.size <= length) {return false}
+    if (this.size<<1 > length) {return true}
+    return this.size>length;
 }
