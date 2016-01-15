@@ -72,7 +72,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private boolean profile = false;
     private boolean optimize = true;
     private boolean modulify = true;
-    private boolean indent = true;
     private boolean comments = false;
     private boolean skipSrc = false;
 
@@ -130,15 +129,13 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
 
     @Option
-    @Description("Do **not** indent code")
+    @Description("Do **not** indent code (deprecated)")
     public void setNoIndent(boolean noindent) {
-        this.indent = !noindent;
     }
 
     @Option
     @Description("Equivalent to `--no-indent` `--no-comments`")
     public void setCompact(boolean compact) {
-        this.setNoIndent(compact);
         this.setNoComments(compact);
     }
 
@@ -237,7 +234,6 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .pass(pass)
                 .optimize(optimize)
                 .modulify(modulify)
-                .indent(indent)
                 .comment(comments)
                 .verbose(getVerbose())
                 .profile(profile)
