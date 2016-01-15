@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -41,7 +40,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ConditionList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
@@ -52,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
 import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
@@ -80,7 +79,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -2554,7 +2552,6 @@ public class StatementTransformer extends AbstractTransformer {
         SyntheticName iterableName = optForArray || optForTuple ? naming.alias("iterable") : null;
         SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
         SyntheticName isTupleName = optForTuple ? naming.alias("isTuple") : null;
-        SyntheticName arrayName = optForArray || optForTuple ? naming.alias("array") : null;
         SyntheticName arrayIndex = optForArray || optForTuple ? naming.alias("i") : null;
         SyntheticName arrayLength = optForArray || optForTuple ? naming.alias("length") : null;
         if (optForArray || optForTuple) {
@@ -2595,63 +2592,33 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression getIter;
         if (optForArray || optForTuple) {
             at(node);
-            result.append(makeVar(FINAL, arrayName, make().Type(syms().objectType), null));
             result.append(makeVar(arrayIndex, make().Type(syms().intType), make().Literal(0)));
             result.append(makeVar(FINAL, arrayLength, make().Type(syms().intType), null));
-            ListBuffer<JCStatement> whenTuple = ListBuffer.<JCTree.JCStatement>lb();
-            whenTuple.append(make().Exec(make().Assign(
-                    arrayName.makeIdent(), 
-                    make().Apply(null, 
-                            naming.makeQualIdent(
-                                    make().TypeCast(make().QualIdent(syms().ceylonTupleType.tsym), iterableName.makeIdent()),
-                                    Unfix.$getArray$.toString()),
-                            List.<JCExpression>nil()))));
-            whenTuple.append(make().Exec(make().Assign(
-                    arrayIndex.makeIdent(),
-                    make().Apply(null, 
-                            naming.makeQualIdent(
-                                    make().TypeCast(make().QualIdent(syms().ceylonTupleType.tsym), iterableName.makeIdent()),
-                                    Unfix.$getFirst$.toString()),
-                            List.<JCExpression>nil()))));
-            whenTuple.append(make().Exec(make().Assign(
+            ListBuffer<JCStatement> whenTupleOrArray = ListBuffer.<JCTree.JCStatement>lb();
+            whenTupleOrArray.append(make().Exec(make().Assign(
                     arrayLength.makeIdent(),
-                    make().Binary(JCTree.PLUS, arrayIndex.makeIdent(), make().Apply(null, 
-                            naming.makeQualIdent(
-                                    make().TypeCast(make().QualIdent(syms().ceylonTupleType.tsym), iterableName.makeIdent()),
-                                    Unfix.$getLength$.toString()),
-                            List.<JCExpression>nil())))));
-            
-            ListBuffer<JCStatement> whenArray = ListBuffer.<JCTree.JCStatement>lb();
-            whenArray.append(make().Exec(make().Assign(
-                    arrayName.makeIdent(), 
-                    make().Apply(null, 
-                            naming.makeQualIdent(
-                                    make().TypeCast(makeJavaType(typeFact().getArrayType(typeFact().getAnythingType()), JT_RAW), iterableName.makeIdent()),
-                                    "toArray"),
-                            List.<JCExpression>nil()))));
-            whenArray.append(make().Exec(make().Assign(
-                    arrayLength.makeIdent(),
-                    make().Apply(null, 
-                            naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.arrayLength"),
-                            List.<JCExpression>of(arrayName.makeIdent())))));
+                    make().TypeCast(make().Type(syms().intType),
+                    		make().Apply(null,
+                    				naming.makeQualIdent(
+                    						iterableName.makeIdent(),
+                    						"getSize"),
+                    				List.<JCExpression>nil())))));
+
             ListBuffer<JCStatement> whenIterable = ListBuffer.<JCTree.JCStatement>lb();
-            whenIterable.append(make().Exec(make().Assign(
-                    arrayName.makeIdent(),
-                    makeNull())));
             whenIterable.append(make().Exec(make().Assign(
                     arrayLength.makeIdent(),
                     make().Literal(0))));
-            if (optForArray && optForTuple) {
-                result.append(make().If(isTupleName.makeIdent(),
-                        make().Block(0, whenTuple.toList()),
-                        make().If(isArrayName.makeIdent(),
-                            make().Block(0, whenArray.toList()),
-                            make().Block(0, whenIterable.toList()))));
-            } else {
-                result.append(make().If((optForArray ? isArrayName : isTupleName).makeIdent(),
-                        make().Block(0, (optForArray ? whenArray : whenTuple).toList()),
+            
+        	JCExpression cond;
+        	if(optForArray && optForTuple)
+        		cond = make().Binary(JCTree.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
+        	else if(optForArray)
+        		cond = isArrayName.makeIdent();
+        	else
+        		cond = isTupleName.makeIdent();
+        	result.append(make().If(cond,
+                        make().Block(0, whenTupleOrArray.toList()),
                         make().Block(0, whenIterable.toList())));
-            }
             
             getIter = make().Conditional(
                     optForArray && optForTuple ? make().Binary(JCTree.OR, isTupleName.makeIdent(), isArrayName.makeIdent()): optForArray ? isArrayName.makeIdent() : isTupleName.makeIdent(), 
@@ -2668,21 +2635,19 @@ public class StatementTransformer extends AbstractTransformer {
         ListBuffer<JCStatement> loopBody = ListBuffer.<JCStatement>lb();
         
         if(optForArray || optForTuple) {
-            JCExpression cond;
-            if (optForArray && optForTuple) {
-                cond = make().Binary(JCTree.OR, isTupleName.makeIdent(), isArrayName.makeIdent());
-            } else if (optForArray) {
-                cond = isArrayName.makeIdent();
-            } else {
-                cond = isTupleName.makeIdent();
-            }
-            loopBody.append(make().If(cond,
-                    make().Exec(make().Assign(iterationVarName.makeIdent(),
-                            make().Apply(null, 
-                                    naming.makeQuotedFQIdent("com.redhat.ceylon.compiler.java.Util.getObjectArray"), 
-                                    List.<JCExpression>of(arrayName.makeIdent(), 
-                                            make().Unary(JCTree.POSTINC, arrayIndex.makeIdent()))))),
-                    null));
+        	JCExpression cond;
+        	if(optForArray && optForTuple)
+        		cond = make().Binary(JCTree.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
+        	else if(optForArray)
+        		cond = isArrayName.makeIdent();
+        	else
+        		cond = isTupleName.makeIdent();
+        	loopBody.append(make().If(cond,
+        						make().Exec(make().Assign(iterationVarName.makeIdent(),
+        								make().Apply(null,
+        										naming.makeQualIdent(iterableName.makeIdent(), "getFromFirst"),
+        										List.<JCExpression>of(make().Unary(JCTree.POSTINC, arrayIndex.makeIdent()))))),
+                    				null));
         }
         
         if (itemDecls != null) {
