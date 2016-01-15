@@ -44,7 +44,7 @@ public class ModuleHelper {
 //                    }
         error.append("\n\t- dependency tree: ");
         buildDependencyString(dependencyTree, module, error);
-        if ( module.getLanguageModule() == module ) {
+        if ( moduleManagerUtil.getContext().getModules().getLanguageModule() == module) {
             error.append("\n\tget ceylon.language and run 'ant publish' (more information at http://ceylon-lang.org/code/source/#ceylonlanguage_module)");
             //ceylon.language is essential to the type checker
             throw new LanguageModuleNotFoundException(error.toString());
