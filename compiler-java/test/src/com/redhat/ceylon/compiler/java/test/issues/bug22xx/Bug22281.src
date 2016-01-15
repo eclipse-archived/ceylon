@@ -112,8 +112,8 @@ final class bug2228Test_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$args$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                bug2228Test($reified$T, $ceylontmp$args$10);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$args$9 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                bug2228Test($reified$T, $ceylontmp$args$9);
             }
             returning null;
         );
@@ -134,20 +134,16 @@ final class bug2228Test_ {
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = args;
         final boolean isTuple$6 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
         .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$7;
-        int i$8 = 0;
-        final int length$9;
+        int i$7 = 0;
+        final int length$8;
         if (isTuple$6) {
-            array$7 = ((.ceylon.language.Tuple)iterable$5).$getArray$();
-            i$8 = ((.ceylon.language.Tuple)iterable$5).$getFirst$();
-            length$9 = i$8 + ((.ceylon.language.Tuple)iterable$5).$getLength$();
+            length$8 = (int)iterable$5.getSize();
         } else {
-            array$7 = null;
-            length$9 = 0;
+            length$8 = 0;
         }
         .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$1 = isTuple$6 ? null : iterable$5.iterator();
-        loop_0: while (isTuple$6 ? i$8 < length$9 : !((elem$0 = arg$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$6) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$7, i$8++);
+        loop_0: while (isTuple$6 ? i$7 < length$8 : !((elem$0 = arg$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$6) elem$0 = iterable$5.getFromFirst(i$7++);
             final .java.lang.Object arg = elem$0;
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append(" value ").append(arg.toString()).toString()));
             final T arg$4;

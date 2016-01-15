@@ -9,9 +9,9 @@ public final class bug675_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$6 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug675($reified$Element, $ceylontmp$elements$7);
+            returning bug675($reified$Element, $ceylontmp$elements$6);
         );
     }
     
@@ -22,23 +22,16 @@ public final class bug675_ {
         final boolean isArray$2 = iterable$1 instanceof .ceylon.language.Array;
         final boolean isTuple$3 = iterable$1 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$1).$getArray$() != null;
         .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$4;
-        int i$5 = 0;
-        final int length$6;
-        if (isTuple$3) {
-            array$4 = ((.ceylon.language.Tuple)iterable$1).$getArray$();
-            i$5 = ((.ceylon.language.Tuple)iterable$1).$getFirst$();
-            length$6 = i$5 + ((.ceylon.language.Tuple)iterable$1).$getLength$();
-        } else if (isArray$2) {
-            array$4 = ((.ceylon.language.Array)iterable$1).toArray();
-            length$6 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$4);
+        int i$4 = 0;
+        final int length$5;
+        if (isArray$2 || isTuple$3) {
+            length$5 = (int)iterable$1.getSize();
         } else {
-            array$4 = null;
-            length$6 = 0;
+            length$5 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> elem$0$iterator$ = isTuple$3 || isArray$2 ? null : iterable$1.iterator();
-        loop_0: while (isTuple$3 || isArray$2 ? i$5 < length$6 : !((elem$0 = elem$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$3 || isArray$2) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
+        loop_0: while (isTuple$3 || isArray$2 ? i$4 < length$5 : !((elem$0 = elem$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$2 || isTuple$3) elem$0 = iterable$1.getFromFirst(i$4++);
             final long k = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getKey()).longValue();
             final long v = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getItem()).longValue();
         }

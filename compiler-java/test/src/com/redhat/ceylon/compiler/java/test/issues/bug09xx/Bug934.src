@@ -11,20 +11,16 @@ final class bug934_collectMatches_ {
         final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> iterable$3 = data;
         final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
         .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$5;
-        int i$6 = 0;
-        final int length$7;
+        int i$5 = 0;
+        final int length$6;
         if (isTuple$4) {
-            array$5 = ((.ceylon.language.Tuple)iterable$3).$getArray$();
-            i$6 = ((.ceylon.language.Tuple)iterable$3).$getFirst$();
-            length$7 = i$6 + ((.ceylon.language.Tuple)iterable$3).$getLength$();
+            length$6 = (int)iterable$3.getSize();
         } else {
-            array$5 = null;
-            length$7 = 0;
+            length$6 = 0;
         }
         .ceylon.language.Iterator<? extends Element> element$iterator$$1 = isTuple$4 ? null : iterable$3.iterator();
-        loop_0: while (isTuple$4 ? i$6 < length$7 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$4) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$5, i$6++);
+        loop_0: while (isTuple$4 ? i$5 < length$6 : !((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$4) elem$0 = iterable$3.getFromFirst(i$5++);
             final Element element = (Element)elem$0;
             final long result = search.$call$((.java.lang.Object)element).longValue();
             if (result > 0L) {

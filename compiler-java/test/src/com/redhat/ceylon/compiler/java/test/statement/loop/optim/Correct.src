@@ -315,23 +315,16 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final boolean isArray$55 = iterable$54 instanceof .ceylon.language.Array;
         final boolean isTuple$56 = iterable$54 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$54).$getArray$() != null;
         .java.lang.Object elem$52 = null;
-        final .java.lang.Object array$57;
-        int i$58 = 0;
-        final int length$59;
-        if (isTuple$56) {
-            array$57 = ((.ceylon.language.Tuple)iterable$54).$getArray$();
-            i$58 = ((.ceylon.language.Tuple)iterable$54).$getFirst$();
-            length$59 = i$58 + ((.ceylon.language.Tuple)iterable$54).$getLength$();
-        } else if (isArray$55) {
-            array$57 = ((.ceylon.language.Array)iterable$54).toArray();
-            length$59 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$57);
+        int i$57 = 0;
+        final int length$58;
+        if (isArray$55 || isTuple$56) {
+            length$58 = (int)iterable$54.getSize();
         } else {
-            array$57 = null;
-            length$59 = 0;
+            length$58 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$53 = isTuple$56 || isArray$55 ? null : iterable$54.iterator();
-        loop_11: while (isTuple$56 || isArray$55 ? i$58 < length$59 : !((elem$52 = i$iterator$$53.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$56 || isArray$55) elem$52 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$57, i$58++);
+        loop_11: while (isTuple$56 || isArray$55 ? i$57 < length$58 : !((elem$52 = i$iterator$$53.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$55 || isTuple$56) elem$52 = iterable$54.getFromFirst(i$57++);
             final long i = ((.ceylon.language.Integer)elem$52).longValue();
             sum += i;
         }

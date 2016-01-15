@@ -45,20 +45,16 @@ public final class bugCl566_ {
         final .ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object> iterable$2 = (.ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object>)(.ceylon.language.Iterable)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$);
         final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
         .java.lang.Object elem$0 = null;
-        final .java.lang.Object array$4;
-        int i$5 = 0;
-        final int length$6;
+        int i$4 = 0;
+        final int length$5;
         if (isTuple$3) {
-            array$4 = ((.ceylon.language.Tuple)iterable$2).$getArray$();
-            i$5 = ((.ceylon.language.Tuple)iterable$2).$getFirst$();
-            length$6 = i$5 + ((.ceylon.language.Tuple)iterable$2).$getLength$();
+            length$5 = (int)iterable$2.getSize();
         } else {
-            array$4 = null;
-            length$6 = 0;
+            length$5 = 0;
         }
         .ceylon.language.Iterator<? extends .ceylon.language.meta.declaration.ValueDeclaration> option$iterator$$1 = isTuple$3 ? null : iterable$2.iterator();
-        loop_0: while (isTuple$3 ? i$5 < length$6 : !((elem$0 = option$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$3) elem$0 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$4, i$5++);
+        loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$0 = option$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$3) elem$0 = iterable$2.getFromFirst(i$4++);
             final .ceylon.language.meta.declaration.ValueDeclaration option = (.ceylon.language.meta.declaration.ValueDeclaration)elem$0;
             .ceylon.language.print_.print(option);
         }

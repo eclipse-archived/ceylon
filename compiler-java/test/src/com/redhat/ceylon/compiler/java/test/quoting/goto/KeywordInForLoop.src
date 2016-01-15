@@ -219,20 +219,16 @@ class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.mode
         final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .java.lang.Object> iterable$38 = people;
         final boolean isTuple$39 = iterable$38 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$38).$getArray$() != null;
         .java.lang.Object elem$34 = null;
-        final .java.lang.Object array$40;
-        int i$41 = 0;
-        final int length$42;
+        int i$40 = 0;
+        final int length$41;
         if (isTuple$39) {
-            array$40 = ((.ceylon.language.Tuple)iterable$38).$getArray$();
-            i$41 = ((.ceylon.language.Tuple)iterable$38).$getFirst$();
-            length$42 = i$41 + ((.ceylon.language.Tuple)iterable$38).$getLength$();
+            length$41 = (int)iterable$38.getSize();
         } else {
-            array$40 = null;
-            length$42 = 0;
+            length$41 = 0;
         }
         .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> $byte$iterator$$35 = isTuple$39 ? null : iterable$38.iterator();
-        loop_11: while (isTuple$39 ? i$41 < length$42 : !((elem$34 = $byte$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$39) elem$34 = .com.redhat.ceylon.compiler.java.Util.getObjectArray(array$40, i$41++);
+        loop_11: while (isTuple$39 ? i$40 < length$41 : !((elem$34 = $byte$iterator$$35.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$39) elem$34 = iterable$38.getFromFirst(i$40++);
             final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3 $byte = (.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3)elem$34;
             if ($byte.getAge() < 18L) {
                 minors$32 = true;
@@ -243,7 +239,7 @@ class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.mode
         }
         if (doforelse$33) {
             minors$32 = false;
-            final boolean minors$43 = minors$32;
+            final boolean minors$42 = minors$32;
         }
         minors = minors$32;
     }
