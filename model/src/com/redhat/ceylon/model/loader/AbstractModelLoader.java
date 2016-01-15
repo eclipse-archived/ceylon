@@ -1623,7 +1623,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else if ("java.lang.Exception".equals(typeName)) {
                     // FIXME: this being here is highly dubious
                     return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
-                } else if ("java.lang.Annotation".equals(typeName)) {
+                } else if ("java.lang.annotation.Annotation".equals(typeName)) {
                     // FIXME: this being here is highly dubious
                     // here we prefer Annotation over ConstrainedAnnotation but that's fine
                     return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Annotation", declarationType);
