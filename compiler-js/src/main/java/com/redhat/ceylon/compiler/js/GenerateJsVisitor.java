@@ -2464,9 +2464,11 @@ public class GenerateJsVisitor extends Visitor {
                         scope = scope.getContainer();
                     } else if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
-                            if (scope instanceof Constructor==false &&
-                                    TypeUtils.getConstructor((TypeDeclaration)scope) == null) {
-                                path.append(".outer$");
+                            if (scope instanceof Constructor==false) {
+                                Constructor constr = scope instanceof Class ? ((Class)scope).getDefaultConstructor() : null;
+                                if (constr == null || !ModelUtil.contains(constr, (Scope)innermostDeclaration)) {
+                                    path.append(".outer$");
+                                }
                             }
                         } else if (d instanceof Constructor && ModelUtil.getContainingDeclaration(d) == scope) {
                             if (!d.getName().equals(((TypeDeclaration)scope).getName())) {
