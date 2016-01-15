@@ -4,9 +4,9 @@ import ceylon.interop.java { createJavaLongArray }
 Integer arrayIterationStaticN = 1_000_000;
 LongArray arrayIterationStaticLongs = createJavaLongArray( 0:200 );
 "The optimized version"
-Integer arrayIterationStaticBench() {
+Integer arrayIterationBoxedStaticBench() {
     // avoid getter overhead by declaring a local var
-    value array = arrayIterationStaticLongs.integerArray;
+    {Integer*} array = arrayIterationStaticLongs.integerArray;
     variable value i = arrayIterationStaticN;
     variable value sum = 0;
     value t0 = system.nanoseconds;
@@ -22,9 +22,9 @@ Integer arrayIterationStaticBench() {
     return t1-t0;
 }
 "The unoptimized version"
-Integer arrayIterationStaticBenchDis() {
+Integer arrayIterationBoxedStaticBenchDis() {
     // avoid getter overhead by declaring a local var
-    value array = arrayIterationStaticLongs.integerArray;
+    {Integer*} array = arrayIterationStaticLongs.integerArray;
     variable value i = arrayIterationStaticN;
     variable value sum = 0;
     value t0 = system.nanoseconds;

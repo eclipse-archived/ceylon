@@ -1,8 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.statement;
 
+import java.io.File;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
@@ -86,11 +89,16 @@ public class OptimizationTests extends CompilerTests {
         long java = arrayIterationStaticJava();
         java = arrayIterationStaticJava();
         System.gc();
-        long unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis");
-        unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis");
+        
+        ModuleWithArtifact[] modules = new ModuleWithArtifact[]{
+        		getDestModuleWithArtifact("ignored"),
+        		new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
+        };
+		long unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis", modules);
+        unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis", modules);
         System.gc();
-        long opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBench");
-        opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBench");
+        long opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBench", modules);
+        opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBench", modules);
         System.gc();
         
         System.out.println("Optimized took " + opt/1_000_000 + "ms");
@@ -98,19 +106,43 @@ public class OptimizationTests extends CompilerTests {
         System.out.println("Java took " + java/1_000_000 + "ms");
     }
 
+    @Test
+    @Ignore("For benchmarking only")
+    public void testLopOptimArrayIterationBoxedStaticBench(){
+    	compile("loop/optim/ArrayIterationBoxedStaticBench.ceylon");
+    	long java = arrayIterationBoxedStaticJava();
+    	java = arrayIterationBoxedStaticJava();
+    	System.gc();
+
+    	ModuleWithArtifact[] modules = new ModuleWithArtifact[]{
+    			getDestModuleWithArtifact("ignored"),
+    			new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
+    	};
+    	long unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);
+    	unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);
+    	System.gc();
+    	long opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBench", modules);
+    	opt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBench", modules);
+    	System.gc();
+
+    	System.out.println("Optimized took " + opt/1_000_000 + "ms");
+    	System.out.println("Unoptimized took " + unopt/1_000_000 + "ms");
+    	System.out.println("Java took " + java/1_000_000 + "ms");
+    }
+
     private long arrayIterationStaticJava() {
         int arrayIterationStaticN = 1_000_000;
-        int[] arrayIterationStaticInts = new int[100];
+        long[] arrayIterationStaticInts = new long[200];
         for (int i = 0; i < arrayIterationStaticInts.length; i++) {
             arrayIterationStaticInts[i] = i;
         }
         int i = arrayIterationStaticN;
-        int sum = 0;
+        long sum = 0;
         long t0 = System.nanoTime();
         while (i > 0) {
             sum = 0;
             for (int ii = 0; ii < arrayIterationStaticInts.length; ii++) {
-                int x = arrayIterationStaticInts[ii];
+                long x = arrayIterationStaticInts[ii];
                 sum += x;
             }
             i--;
@@ -119,7 +151,29 @@ public class OptimizationTests extends CompilerTests {
         System.out.println("Java result " + sum);
         return t1-t0;
     }
-    
+
+    private long arrayIterationBoxedStaticJava() {
+        int arrayIterationStaticN = 1_000_000;
+        long[] arrayIterationStaticInts = new long[200];
+        for (int i = 0; i < arrayIterationStaticInts.length; i++) {
+            arrayIterationStaticInts[i] = i;
+        }
+        int i = arrayIterationStaticN;
+        long sum = 0;
+        long t0 = System.nanoTime();
+        while (i > 0) {
+            sum = 0;
+            for (int ii = 0; ii < arrayIterationStaticInts.length; ii++) {
+                long x = ceylon.language.Integer.instance(arrayIterationStaticInts[ii]).longValue();
+                sum += x;
+            }
+            i--;
+        }
+        long t1 = System.nanoTime();
+        System.out.println("Java result " + sum);
+        return t1-t0;
+    }
+
     @Test
     @Ignore("For benchmarking only")
     public void testLopOptimTupleIterationStaticBench(){
