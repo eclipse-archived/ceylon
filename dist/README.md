@@ -49,7 +49,7 @@ that should fix it.)
 - Go into the newly created `ceylon` directory and build the complete distribution by running:
 
 <!-- lang: bash -->
-    $ ant clean publish
+    $ ant clean dist
 
 After this you'll have a newly built distribution in the `dist` 
 folder of your current directory. You can run the `ceylon` command 
