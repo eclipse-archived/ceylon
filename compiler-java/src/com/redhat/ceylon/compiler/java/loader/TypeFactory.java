@@ -261,5 +261,14 @@ public class TypeFactory extends Unit {
             return null;
         }
     }
+    
+    public Interface getJavaIterable() {
+        for (com.redhat.ceylon.model.typechecker.model.Module m : context.getModules().getListOfModules()) {
+            if ("java.base".equals(m.getNameAsString())) {
+                return (Interface)m.getPackage("java.lang").getDirectMember("Iterable", null, false);
+            }
+        }
+        return null;
+    }
 
 }

@@ -85,7 +85,9 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -1518,7 +1520,11 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.Term iterableTerm = ExpressionTransformer.eliminateParens(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTerm());
         Tree.Term baseIterable = iterableTerm;
         Tree.Term step = null;
+        if (isJavaIterable(iterableTerm.getTypeModel())) {
+            return new JavaIterationTransformation(stmt).transform();
+        }
         if (iterableTerm instanceof Tree.InvocationExpression) {
+            // check for `iterable.by(step)`
             Tree.InvocationExpression invocation = (Tree.InvocationExpression)iterableTerm;
             if (invocation.getPrimary() instanceof Tree.QualifiedMemberExpression) {
                 Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression)invocation.getPrimary();
@@ -1561,6 +1567,72 @@ public class StatementTransformer extends AbstractTransformer {
             transformation = new ForStatementTransformation(stmt);
         }
         return transformation.transform();
+    }
+
+    private class JavaIterationTransformation extends ForStatementTransformation {
+
+        JavaIterationTransformation(ForStatement stmt) {
+            super(stmt);
+        }
+        
+        protected ListBuffer<JCStatement> transformForClause() {
+            
+            Tree.ForIterator forIterator = stmt.getForClause().getForIterator();
+            List<JCStatement> itemDecls = List.nil();
+            Naming.SyntheticName elem_name = naming.alias("elem");
+            JCVariableDecl loopvar;
+            SyntheticName iteratorVarName;
+            if (forIterator instanceof Tree.ValueIterator) {
+                Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
+                elem_name = naming.synthetic(variable);
+                iteratorVarName = naming.synthetic(variable.getDeclarationModel()).suffixedBy(Suffix.$iterator$).alias();
+                JCVariableDecl varExpr = transformVariable(variable, iteratorVarName.makeIdent()).build();
+                itemDecls = itemDecls.append(varExpr);
+                loopvar = makeVar(iteratorVarName, makeJavaType(
+                        variable.getDeclarationModel().getType(), JT_NO_PRIMITIVES), null);
+            } else if (forIterator instanceof Tree.PatternIterator) {
+                Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
+                Tree.Pattern pat = patIter.getPattern();
+                elem_name = naming.synthetic(pat);
+                iteratorVarName = elem_name.suffixedBy(Suffix.$iterator$);
+                List<VarDefBuilder> varsDefs = transformPattern(pat, iteratorVarName.makeIdent());
+                for (VarDefBuilder vdb : varsDefs) {
+                    itemDecls = itemDecls.append(vdb.build());
+                }
+                
+                Type t = typeFact().getIteratedType(forIterator.getSpecifierExpression().getExpression().getTypeModel());
+                loopvar = makeVar(iteratorVarName, makeJavaType(
+                        t, JT_NO_PRIMITIVES), null);
+            } else {
+                throw BugException.unhandledNodeCase(forIterator);
+            }
+            
+            
+            List<JCStatement> body = transformBlock(stmt.getForClause().getBlock());
+            body = body.prependList(itemDecls);
+            
+            JCStatement forLoop = make().Labelled(label, make().ForeachLoop(loopvar, 
+                    expressionGen().transformExpression(forIterator.getSpecifierExpression().getExpression()), 
+                    make().Block(0, body)));
+            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            result.add(forLoop);
+            if (failVar != null) {
+                
+            }
+            
+            return result;
+        }
+        
+    }
+
+    protected boolean isJavaIterable(Type iterableType) {
+        Interface javaIterable = typeFact().getJavaIterable();
+        for (Type s : iterableType.getSupertypes()) {
+            if (s.getDeclaration().equals(javaIterable)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /** 

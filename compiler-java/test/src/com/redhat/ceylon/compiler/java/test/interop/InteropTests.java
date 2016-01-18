@@ -646,4 +646,14 @@ public class InteropTests extends CompilerTests {
         		new ModuleSpec("com.redhat.ceylon.compiler.java.test.interop.java9.user", "1"), 
         		Collections.<String>emptyList()));
     }
+    
+    @Test
+    public void testIopJavaIterableInFor(){
+        compareWithJavaSource("JavaIterableInFor");
+    }
+    
+    @Test
+    public void testIopJavaAutoCloseableInTry(){
+        compareWithJavaSource("JavaAutoCloseableInTry");
+    }
 }
