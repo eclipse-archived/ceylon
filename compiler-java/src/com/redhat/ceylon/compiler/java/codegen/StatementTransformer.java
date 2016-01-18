@@ -87,7 +87,6 @@ import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -1627,9 +1626,11 @@ public class StatementTransformer extends AbstractTransformer {
 
     protected boolean isJavaIterable(Type iterableType) {
         Interface javaIterable = typeFact().getJavaIterable();
-        for (Type s : iterableType.getSupertypes()) {
-            if (s.getDeclaration().equals(javaIterable)) {
-                return true;
+        if (iterableType.getDeclaration() instanceof ClassOrInterface) {
+            for (Type s : iterableType.getSupertypes()) {
+                if (s.getDeclaration().equals(javaIterable)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -3548,6 +3549,85 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
 
+    interface TryResourceTransformation {
+        public Type getType();
+        public String getInitMethodName();
+        public String getRecoverMethodName();
+        public JCExpression makeRecover(JCExpression resVar1, JCExpression thrownException);
+    }
+    
+    final TryResourceTransformation destroyableResource = new TryResourceTransformation() {
+
+        @Override
+        public Type getType() {
+            return typeFact().getDestroyableType();
+        }
+
+        @Override
+        public String getInitMethodName() {
+            return null;
+        }
+
+        @Override
+        public String getRecoverMethodName() {
+            return "destroy";
+        }
+
+        @Override
+        public JCExpression makeRecover(JCExpression resVar1, JCExpression thrownException) {
+            return make().Apply(null, makeQualIdent(resVar1, getRecoverMethodName()), List.<JCExpression>of(thrownException));
+        }
+        
+    };
+    
+    final TryResourceTransformation obtainableResource = new TryResourceTransformation() {
+
+        @Override
+        public Type getType() {
+            return typeFact().getObtainableType();
+        }
+
+        @Override
+        public String getInitMethodName() {
+            return "obtain";
+        }
+
+        @Override
+        public String getRecoverMethodName() {
+            return "release";
+        }
+
+        @Override
+        public JCExpression makeRecover(JCExpression resVar1, JCExpression thrownException) {
+            return make().Apply(null, makeQualIdent(resVar1, getRecoverMethodName()), List.<JCExpression>of(thrownException));
+        }
+        
+    };
+    
+    final TryResourceTransformation javaAutoCloseableResource = new TryResourceTransformation() {
+
+        @Override
+        public Type getType() {
+            return typeFact().getJavaAutoCloseable().getType();
+        }
+
+        @Override
+        public String getInitMethodName() {
+            return null;
+        }
+
+        @Override
+        public String getRecoverMethodName() {
+            return "close";
+        }
+
+        @Override
+        public JCExpression makeRecover(JCExpression resVar1, JCExpression thrownException) {
+            return make().Apply(null, makeQualIdent(resVar1, getRecoverMethodName()), List.<JCExpression>nil());
+        }
+        
+    };
+    
     public JCStatement transform(Tree.Throw t) {
         // Remove the inner substitutions for any deferred values specified 
         // in the control block
@@ -3593,11 +3673,19 @@ public class StatementTransformer extends AbstractTransformer {
                 } else {
                     throw new BugException(res, "missing resource expression");
                 }
-                boolean isDestroyable = typeFact().getDestroyableType().isSupertypeOf(resExpr.getTypeModel());
+                TryResourceTransformation resourceTx;
+                if (typeFact().getDestroyableType().isSupertypeOf(resExpr.getTypeModel())) {
+                    resourceTx = destroyableResource;
+                } else if (typeFact().getObtainableType().isSupertypeOf(resExpr.getTypeModel())) {
+                    resourceTx = obtainableResource;
+                } else if (typeFact().isJavaAutoCloseable(resExpr.getTypeModel())) {
+                    resourceTx = javaAutoCloseableResource;
+                } else {
+                    throw BugException.unhandledCase(resExpr.getTypeModel());
+                }
+                
                 Type resVarType = resExpr.getTypeModel();
-                Type resVarExpectedType = isDestroyable 
-                        ? typeFact().getDestroyableType()
-                        : typeFact().getObtainableType();
+                Type resVarExpectedType = resourceTx.getType();
                 
                 // CloseableType $var = resource-expression
                 JCExpression expr = expressionGen().transformExpression(resExpr);
@@ -3607,9 +3695,9 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // $var.open() /// ((Closeable)$var).open()
                 
-                if (!isDestroyable) {
+                if (resourceTx.getInitMethodName() != null) {
                     JCExpression resVar0 = expressionGen().applyErasureAndBoxing(makeUnquotedIdent(resVarName), resVarType, true, BoxingStrategy.BOXED, resVarExpectedType);
-                    JCMethodInvocation openCall = make().Apply(null, makeQualIdent(resVar0, "obtain"), List.<JCExpression>nil());
+                    JCMethodInvocation openCall = make().Apply(null, makeQualIdent(resVar0, resourceTx.getInitMethodName()), List.<JCExpression>nil());
                     stats = stats.append(make().Exec(openCall));
                 }
                 
@@ -3633,7 +3721,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // $var.close() /// ((Closeable)$var).close()
                 JCExpression exarg = makeUnquotedIdent(innerExTmpVarName);
                 JCExpression resVar1 = expressionGen().applyErasureAndBoxing(makeUnquotedIdent(resVarName), resVarType, true, BoxingStrategy.BOXED, resVarExpectedType);
-                JCMethodInvocation closeCall = make().Apply(null, makeQualIdent(resVar1, isDestroyable ? "destroy" : "release"), List.<JCExpression>of(exarg));
+                JCExpression closeCall = resourceTx.makeRecover(resVar1, exarg);
                 JCBlock closeTryBlock = make().Block(0, List.<JCStatement>of(make().Exec(closeCall)));
                 
                 // try { $var.close() } catch (Exception closex) { $tmpex.addSuppressed(closex); }
@@ -3648,7 +3736,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // $var.close() /// ((Closeable)$var).close()
                 JCExpression exarg2 = makeUnquotedIdent(innerExTmpVarName);
                 JCExpression resVar2 = expressionGen().applyErasureAndBoxing(makeUnquotedIdent(resVarName), resVarType, true, BoxingStrategy.BOXED, resVarExpectedType);
-                JCMethodInvocation closeCall2 = make().Apply(null, makeQualIdent(resVar2, isDestroyable ? "destroy" : "release"), List.<JCExpression>of(exarg2));
+                JCExpression closeCall2 = resourceTx.makeRecover(resVar1, exarg);
                 
                 // if ($tmpex != null) { ... } else { ... }
                 JCBinary closeCatchCond = make().Binary(JCTree.NE, makeUnquotedIdent(innerExTmpVarName), makeNull());

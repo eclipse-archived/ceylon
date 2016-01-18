@@ -22,10 +22,12 @@ package com.redhat.ceylon.compiler.java.loader;
 
 import java.util.Collections;
 
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -269,6 +271,30 @@ public class TypeFactory extends Unit {
             }
         }
         return null;
+    }
+    
+    public Interface getJavaAutoCloseable() {
+        for (com.redhat.ceylon.model.typechecker.model.Module m : context.getModules().getListOfModules()) {
+            if ("java.base".equals(m.getNameAsString())) {
+                return (Interface)m.getPackage("java.lang").getDirectMember("AutoCloseable", null, false);
+            }
+        }
+        return null;
+    }
+    
+    public boolean isJavaAutoCloseable(Type t) {
+        Interface ac = getJavaAutoCloseable();
+        if (t.getDeclaration().equals(ac)) {
+            return true;
+        }
+        if (t.getDeclaration() instanceof ClassOrInterface) {
+            for (Type s : t.getSupertypes()) {
+                if (s.getDeclaration().equals(ac)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
