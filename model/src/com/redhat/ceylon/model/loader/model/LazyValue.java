@@ -9,6 +9,7 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
@@ -152,9 +153,9 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable  cancellable) {
         load();
-        return super.getMatchingDeclarations(unit, startingWith, proximity);
+        return super.getMatchingDeclarations(unit, startingWith, proximity, cancellable);
     }
 
     @Override

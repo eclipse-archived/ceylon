@@ -86,10 +86,10 @@ public class ImportList implements Scope {
     
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
         if (importedScope!=null) {
             if (unit.getPackage().equals(importedScope)) {
-                return unit.getPackage().getMatchingDeclarations(unit, startingWith, proximity);
+                return unit.getPackage().getMatchingDeclarations(unit, startingWith, proximity, canceller);
             }
             else {
                 return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);

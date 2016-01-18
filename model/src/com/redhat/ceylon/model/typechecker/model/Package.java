@@ -207,7 +207,7 @@ public class Package
     @Override
     public Map<String,DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, String startingWith, 
-            int proximity) {
+            int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 getMatchingDirectDeclarations(startingWith, 
                         //package toplevels - just less than 
@@ -220,7 +220,7 @@ public class Package
         Map<String,DeclarationWithProximity> importables = 
                 getModule()
                     .getAvailableDeclarations(
-                            startingWith, proximity);
+                            startingWith, proximity, canceller);
         List<Map.Entry<String,DeclarationWithProximity>> 
         entriesToAdd =
                 new ArrayList

@@ -886,10 +886,10 @@ public abstract class TypeDeclaration extends Declaration
     @Override
     public Map<String,DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, String startingWith, 
-            int proximity) {
+            int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 super.getMatchingDeclarations(unit, 
-                        startingWith, proximity);
+                        startingWith, proximity, canceller);
         //Inherited declarations hide outer and imported declarations
         result.putAll(getMatchingMemberDeclarations(unit, 
                 null, startingWith, proximity));

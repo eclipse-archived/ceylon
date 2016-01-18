@@ -225,11 +225,11 @@ public abstract class Element {
     
     public Map<String, DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, String startingWith, 
-            int proximity) {
+            int proximity, Cancellable canceller) {
     	Map<String, DeclarationWithProximity> result = 
     	        getScope()
     			    .getMatchingDeclarations(unit, 
-    			            startingWith, proximity+1);
+    			            startingWith, proximity+1, canceller);
         for (Declaration d: getMembers()) {
             if (isResolvable(d) && !isOverloadedVersion(d)){
                 if(isNameMatching(startingWith, d)) {
