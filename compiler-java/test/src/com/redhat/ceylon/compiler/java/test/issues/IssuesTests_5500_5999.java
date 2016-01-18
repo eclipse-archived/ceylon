@@ -123,7 +123,11 @@ public class IssuesTests_5500_5999 extends CompilerTests {
                 b64.delete();
             }
         }
+    }
         
+    @Test
+    public void testBug5892() {
+        compile("bug58xx/bug5892.ceylon");
     }
 
     @Test
