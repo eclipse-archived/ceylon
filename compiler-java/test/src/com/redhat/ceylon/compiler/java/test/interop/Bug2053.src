@@ -39,7 +39,7 @@ public final class bug2053_ {
             {
                 .ceylon.language.Sequential $ceylontmp$8$0 = items$7.sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Long>toArray($ceylontmp$8$0, (.java.lang.Long[])new .java.lang.Number[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$8$0.getSize())]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Long>toArray($ceylontmp$8$0, new .java.lang.Long[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$8$0.getSize())]);
         ));
         final .ceylon.language.Iterable items3 = (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
         ((.com.redhat.ceylon.compiler.java.test.interop.Right)(.java.lang.Object).com.redhat.ceylon.compiler.java.Util.checkNull(x.<.com.redhat.ceylon.compiler.java.test.interop.Top>bound2((
@@ -47,7 +47,7 @@ public final class bug2053_ {
             {
                 .ceylon.language.Sequential $ceylontmp$9$0 = items3.sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.com.redhat.ceylon.compiler.java.test.interop.Left>toArray($ceylontmp$9$0, (.com.redhat.ceylon.compiler.java.test.interop.Left[])new .com.redhat.ceylon.compiler.java.test.interop.Top[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$9$0.getSize())]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.com.redhat.ceylon.compiler.java.test.interop.Left>toArray($ceylontmp$9$0, new .com.redhat.ceylon.compiler.java.test.interop.Left[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$9$0.getSize())]);
         )))).right();
     }
 }
