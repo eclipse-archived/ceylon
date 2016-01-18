@@ -3,9 +3,17 @@ Setting up Eclipse to build the Ceylon compiler
 
 First make sure you have compiled the ceylon projects according to the instruction in the README.md file!
 
- 0. Set your default "Text file encoding" to "UTF-8" and your default "New text file line delimiter"
-    to "Unix" in your Eclipse preferences (Window -> Preferences -> General -> Workspace). If you do
-    this you can skip Step 6 below.
+Global Eclipse configuration:
+
+ i.  Set your default "Text file encoding" to "UTF-8" and your default "New text file line delimiter"
+     to "Unix" in your Eclipse preferences (Window -> Preferences -> General -> Workspace). If you do
+     this you can skip Step 6 below.
+
+ ii. Go to the preferences of the installed JREs (Window -> Preferebces -> Java -> Installed JREs) and
+     select the active JRE and click "Edit". In the popup type "-ea" in the "Default VM arguments" field.
+     Then click "Finish" and "Ok". (Repeat this for any JREs you intend to use with Ceylon)
+
+Importing the Ceylon projects:
 
  1. NB, in this file, "/path/to/ceylon" should be replaced with the
     full path of the directory containing this file.
