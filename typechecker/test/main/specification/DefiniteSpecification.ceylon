@@ -741,3 +741,51 @@ void initInLoop() {
         @error data2 = data2.append([]);
     }
 }
+
+Boolean cond => true;
+
+shared void run3() {
+    String s;
+    if (cond) {
+        s = "a";
+    } else if (cond) {
+    } else {
+        throw AssertionError("");
+    }
+    @error print(s);
+}
+
+shared void run4() {
+    String s;
+    while (true) {
+        if (cond) {
+            return;
+        }
+        else {
+            if (cond) {
+                s = "hello";
+                break;
+            }
+        }
+    }
+    print(s);
+}
+
+shared void run5() {
+    String s;
+    for (x in 0:10) {
+        if (cond) {
+            return;
+        }
+        else {
+            if (cond) {
+                s = "hello";
+                break;
+            }
+        }
+    }
+    else {
+        s = "";
+    }
+    print(s);
+}
