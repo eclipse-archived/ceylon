@@ -4084,8 +4084,9 @@ public abstract class AbstractTransformer implements Transformation {
                                      sizeExpr,
                                      makeInteger(initialElements.size()));
         
-        JCExpression array = make().NewArray(makeJavaType(arrayType, JT_RAW | JT_NO_PRIMITIVES), List.of(sizeExpr), null);
-        if (!arrayType.isExactly(castType)) {
+        Type newArrayType = castType.isTypeParameter() ? arrayType : castType;
+        JCExpression array = make().NewArray(makeJavaType(newArrayType, JT_RAW | JT_NO_PRIMITIVES), List.of(sizeExpr), null);
+        if (castType.isTypeParameter()) {
             array = make().TypeCast(
                     make().TypeArray(makeJavaType(castType, JT_CLASS_NEW | JT_NO_PRIMITIVES)),
                     array);
