@@ -260,12 +260,15 @@ shared void types() {
     reifiedIs<Anything>("abc");
     reifiedIs<Null>(null);
     reifiedIs<Anything>(null);
+    value ex = Exception();
+    reifiedIs<Exception>(ex);
+    reifiedIs<Throwable>(ex);
     
     // https://github.com/ceylon/ceylon.language/issues/723
     Object x = 1;
     check(!x is Comparable<Anything>, "Integer is Comparable<Anything>");
 }
 
-void reifiedIs<T>(T|Integer obj) {
-    check(obj is T, "reified is");
+void reifiedIs<T>(T|Integer obj){
+    check(obj is T, "reified is: ``(obj else "<null DAMNIT>")`` is `` `T` ``");
 }
