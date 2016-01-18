@@ -1358,8 +1358,12 @@ public abstract class AbstractTransformer implements Transformation {
         return loader().getType(getLanguageModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
 
-    private Type javacJavaTypeToProducedType(com.redhat.ceylon.langtools.tools.javac.code.Type t) {
+    Type javacJavaTypeToProducedType(com.redhat.ceylon.langtools.tools.javac.code.Type t) {
         return loader().getType(getJDKBaseModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
+    }
+    
+    Declaration javacJavaTypeDeclaration(com.redhat.ceylon.langtools.tools.javac.code.Type t) {
+        return loader().getDeclaration(getJDKBaseModule(), t.tsym.packge().getQualifiedName().toString(), t.tsym.getQualifiedName().toString(), null);
     }
 
     /**

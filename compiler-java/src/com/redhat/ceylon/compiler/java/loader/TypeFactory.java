@@ -264,37 +264,5 @@ public class TypeFactory extends Unit {
         }
     }
     
-    public Interface getJavaIterable() {
-        for (com.redhat.ceylon.model.typechecker.model.Module m : context.getModules().getListOfModules()) {
-            if ("java.base".equals(m.getNameAsString())) {
-                return (Interface)m.getPackage("java.lang").getDirectMember("Iterable", null, false);
-            }
-        }
-        return null;
-    }
-    
-    public Interface getJavaAutoCloseable() {
-        for (com.redhat.ceylon.model.typechecker.model.Module m : context.getModules().getListOfModules()) {
-            if ("java.base".equals(m.getNameAsString())) {
-                return (Interface)m.getPackage("java.lang").getDirectMember("AutoCloseable", null, false);
-            }
-        }
-        return null;
-    }
-    
-    public boolean isJavaAutoCloseable(Type t) {
-        Interface ac = getJavaAutoCloseable();
-        if (t.getDeclaration().equals(ac)) {
-            return true;
-        }
-        if (t.getDeclaration() instanceof ClassOrInterface) {
-            for (Type s : t.getSupertypes()) {
-                if (s.getDeclaration().equals(ac)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
 }

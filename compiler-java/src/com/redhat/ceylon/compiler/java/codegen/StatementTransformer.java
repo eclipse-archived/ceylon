@@ -85,7 +85,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -1625,15 +1624,7 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     protected boolean isJavaIterable(Type iterableType) {
-        Interface javaIterable = typeFact().getJavaIterable();
-        if (iterableType.getDeclaration() instanceof ClassOrInterface) {
-            for (Type s : iterableType.getSupertypes()) {
-                if (s.getDeclaration().equals(javaIterable)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return iterableType.getSupertype((TypeDeclaration)javacJavaTypeDeclaration(syms().iterableType)) != null;
     }
     
     /** 
@@ -3608,7 +3599,7 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         public Type getType() {
-            return typeFact().getJavaAutoCloseable().getType();
+            return javacJavaTypeToProducedType(syms().autoCloseableType);
         }
 
         @Override
@@ -3678,7 +3669,7 @@ public class StatementTransformer extends AbstractTransformer {
                     resourceTx = destroyableResource;
                 } else if (typeFact().getObtainableType().isSupertypeOf(resExpr.getTypeModel())) {
                     resourceTx = obtainableResource;
-                } else if (typeFact().isJavaAutoCloseable(resExpr.getTypeModel())) {
+                } else if (javacJavaTypeToProducedType(syms().autoCloseableType).isSupertypeOf(resExpr.getTypeModel())) {
                     resourceTx = javaAutoCloseableResource;
                 } else {
                     throw BugException.unhandledCase(resExpr.getTypeModel());
