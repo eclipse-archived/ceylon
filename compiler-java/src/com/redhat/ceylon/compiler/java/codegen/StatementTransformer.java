@@ -3186,16 +3186,14 @@ public class StatementTransformer extends AbstractTransformer {
         private final Type type;
         private final long modifiers;
         private final Value value;
-        private final List<JCAnnotation> annots;
         private SyntheticName outerAlias;
         private Naming.Substitution outerSubst = null;
         private SyntheticName innerAlias;
         private Naming.Substitution innerSubst = null;
         
-        public DeferredSpecification(Value value, int modifiers, List<JCAnnotation> annots, Type type) {
+        public DeferredSpecification(Value value, int modifiers, Type type) {
             this.value = value;
             this.modifiers = modifiers;
-            this.annots = annots;
             this.type = type;
         }
         
@@ -3228,7 +3226,7 @@ public class StatementTransformer extends AbstractTransformer {
                     typeExpr = makeJavaType(type); 
                 }
                 return make().VarDef(
-                        make().Modifiers(modifiers & ~FINAL, annots), 
+                        make().Modifiers(modifiers & ~FINAL, List.<JCTree.JCAnnotation>nil()), 
                         outerAlias.asName(), 
                         typeExpr, 
                         valueExpr);
@@ -3367,7 +3365,7 @@ public class StatementTransformer extends AbstractTransformer {
             result.append(at(decl.getIdentifier()).VarDef(at(decl.getIdentifier()).Modifiers(modifiers, annots), attrName, typeExpr, initialValue));
             
             JCStatement outerSubs = openOuterSubstitutionIfNeeded(
-                    decl.getDeclarationModel(), t, annots, modifiers);
+                    decl.getDeclarationModel(), t, modifiers);
             if (outerSubs != null) {
                 result.append(outerSubs);
             }
@@ -3377,10 +3375,10 @@ public class StatementTransformer extends AbstractTransformer {
 
     JCStatement openOuterSubstitutionIfNeeded(
             Value value, Type t,
-            List<JCAnnotation> annots, int modifiers) {
+            int modifiers) {
         JCStatement result = null;
         if (value.isSpecifiedInForElse()) {
-            DeferredSpecification d = new DeferredSpecification(value, modifiers, annots, t);
+            DeferredSpecification d = new DeferredSpecification(value, modifiers, t);
             deferredSpecifications.put(value, d);
             result = d.openOuterSubstitution();
         }

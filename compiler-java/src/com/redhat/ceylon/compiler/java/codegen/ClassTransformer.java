@@ -3435,9 +3435,8 @@ public class ClassTransformer extends AbstractTransformer {
             
             // A shared attribute might be initialized in a for statement, so
             // we might need a def-assignment subst for it
-            List<JCAnnotation> annots = makeJavaTypeAnnotations(decl.getDeclarationModel());
             JCStatement outerSubs = statementGen().openOuterSubstitutionIfNeeded(
-                    decl.getDeclarationModel(), model.getType(), annots, 0);
+                    decl.getDeclarationModel(), model.getType(), 0);
             if (outerSubs != null) {
                 classBuilder.getInitBuilder().init(outerSubs);
             }
