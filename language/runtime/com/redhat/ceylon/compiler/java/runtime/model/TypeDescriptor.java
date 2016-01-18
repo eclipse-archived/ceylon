@@ -216,10 +216,10 @@ public abstract class TypeDescriptor
                     return isIdentifiable(instanceKlass);
                 }
                 java.lang.Class<?> realKlass;
-                if (klass==Exception.class) {
+                if (klass==ceylon.language.Exception.class) {
                     realKlass = java.lang.Exception.class;
                 }
-                else if (klass==Throwable.class) {
+                else if (klass==ceylon.language.Throwable.class) {
                     realKlass = java.lang.Throwable.class;
                 }
                 else if (klass==ceylon.language.Annotation.class
