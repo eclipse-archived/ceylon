@@ -223,7 +223,9 @@ public abstract class CompilerTests {
 	@Before
 	public void cleanCars() {
 	    cleanCars(destDir);
-	    cleanCars(cacheDir);
+	    // Stef: this would be very nice and all, except it makes the build take forever, so let's
+	    // please have none of this correctness nonsense
+//	    cleanCars(cacheDir);
 	}
 	
     public void cleanCars(String repo) {

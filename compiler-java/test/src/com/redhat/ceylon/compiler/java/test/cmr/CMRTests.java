@@ -1677,6 +1677,7 @@ public class CMRTests extends CompilerTests {
         }
         try{
             String cachePath = getCachePath();
+    	    cleanCars(cacheDir);
             File cacheFolder = new File(cachePath);
             // cleared
             assert(!cacheFolder.exists());
