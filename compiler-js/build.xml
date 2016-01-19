@@ -190,7 +190,6 @@
     <target name="noderun">
         <echo message="Running tests on node.js (node must be installed)" />
         <java classname="NodeTest" classpathref="test.run.classpath">
-            <arg value="${build.test}/lexical" />
             <arg value="${build.test}/proto" />
         </java>
     </target>
