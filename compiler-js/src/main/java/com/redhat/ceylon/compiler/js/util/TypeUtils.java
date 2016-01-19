@@ -269,7 +269,7 @@ public class TypeUtils {
         boolean first = true;
         for (Type t : subs) {
             if (!first) gen.out(",");
-            if (t==subs.get(subs.size()-1) && seq>0) {
+            if (t==subs.get(subs.size()-1) && seq>0 && t.getCaseTypes() != null) {
                 //The non-empty, non-tuple tail
                 gen.out("{t:'u',l:[");
                 typeNameOrList(node, t.getCaseTypes().get(0), gen, skipSelfDecl);
