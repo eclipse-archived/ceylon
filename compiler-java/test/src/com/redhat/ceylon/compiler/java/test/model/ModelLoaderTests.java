@@ -1635,7 +1635,13 @@ public class ModelLoaderTests extends CompilerTests {
         compile("JavaContainer1.java", "JavaContainer2.java");
         compile("JavaContainerTest.ceylon");
     }
-    
+
+    @Test
+    public void loadJavaAnnotationContainer(){
+        compile("JavaAnnotationContainer.java", "JavaAnnotationContainer2.java");
+        compile("JavaAnnotationContainerTest.ceylon");
+    }
+
     private static final ClosableVirtualFile getLatestZippedLanguageSourceFile() {
         VFS vfs = new VFS();
         File langDir = new File("../dist/dist/repo/ceylon/language");
