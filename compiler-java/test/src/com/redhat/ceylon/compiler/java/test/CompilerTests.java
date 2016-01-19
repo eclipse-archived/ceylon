@@ -36,7 +36,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,7 +52,6 @@ import org.junit.Before;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.Java9ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
@@ -72,19 +70,19 @@ import com.redhat.ceylon.javax.tools.DiagnosticListener;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
-import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.source.util.TaskEvent.Kind;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.launcher.Launcher;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.cmr.VisibilityType;
-import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -916,6 +914,36 @@ public abstract class CompilerTests {
     
     protected void runInJBossModules(String runner, String module, List<String> runnerArgs) throws Throwable {
         Assert.assertEquals("Unexpected exit code", 0, runInJBossModules(runner, module, runnerArgs, null, null));
+    }
+    
+    protected void runInJBossModulesSameVM(String runner, String module, List<String> runnerArgs) throws Throwable{
+        // JBoss modules fucks up just about everything. We force loading the Module class, which fucks up the JAXP
+        // system properties
+        org.jboss.modules.Module.getStartTime();
+        // So we restore them immediatly
+        __redirected.__JAXPRedirected.restorePlatformFactory();
+
+        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, "../dist/dist");
+
+        int exit = -1;
+        // make sure the class loader is cleaned up
+        String[] args = new String[4 + runnerArgs.size()];
+        args[0] = runner;
+        args[1] = "--rep";
+        args[2] = getOutPath();
+        for(int i=0;i<runnerArgs.size();i++)
+        	args[3+i] = runnerArgs.get(i);
+        args[args.length-1] = module;
+        exit = Launcher.run(true, args);
+        Assert.assertEquals(0, exit);
+
+        // Now the TCCL is fucked up, so restore it too
+        Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
+
+        // And restore JAXP again because Launcher reloaded the Module class (and static init) in its own class
+        // loader, which re-fucked up the JAXP System properties
+        __redirected.__JAXPRedirected.restorePlatformFactory();
+
     }
     
     /**
