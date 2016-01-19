@@ -80,7 +80,7 @@ class AnnotationInterop() {
     resource{
         name="tom";
         authenticationType=application;
-        type=`AnnotationInterop`;
+        type=`class AnnotationInterop`;
     }
     javaAnnotationDefaultTarget__FIELD
     javaAnnotationDefaultTarget__GETTER

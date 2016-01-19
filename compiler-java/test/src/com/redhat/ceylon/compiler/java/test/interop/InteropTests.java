@@ -465,7 +465,8 @@ public class InteropTests extends CompilerTests {
                 new CompilerError(12, "function or value does not exist: 'javaAnnotationNoTarget__PARAMETER' (did you mean 'javaAnnotationDefaultTarget__PARAMETER'?)"),
                 new CompilerError(14, "function or value does not exist: 'javaAnnotationNoTarget__LOCAL_VARIABLE' (did you mean 'javaAnnotationDefaultTarget__LOCAL_VARIABLE'?)"),
                 new CompilerError(19, "function or value does not exist: 'javaAnnotationNoTarget__ANNOTATION_TYPE' (did you mean 'javaAnnotationDefaultTarget__ANNOTATION_TYPE'?)"),
-                new CompilerError(21, "illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference")
+                new CompilerError(21, "illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference"),
+                new CompilerError(21, "named argument must be assignable to parameter 'clas' of 'javaAnnotationClass2': 'Class<String>' is not assignable to 'ClassOrInterfaceDeclaration'")
                 );
     }
     
