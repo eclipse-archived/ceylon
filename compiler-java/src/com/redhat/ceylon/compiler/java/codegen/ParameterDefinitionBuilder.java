@@ -22,7 +22,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.util.Iterator;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
@@ -34,7 +33,6 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class ParameterDefinitionBuilder {
 
@@ -134,7 +132,6 @@ public class ParameterDefinitionBuilder {
                 }
             }
             if (pm instanceof Function) {
-                Function meth = (Function)pm;
                 functionalName(sb, (Function)pm);
             }
             if (parameters.hasNext()) {

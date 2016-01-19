@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.codegen.recovery;
 
-import java.util.List;
-
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 

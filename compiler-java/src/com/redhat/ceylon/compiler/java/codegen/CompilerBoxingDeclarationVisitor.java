@@ -20,7 +20,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
 public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {

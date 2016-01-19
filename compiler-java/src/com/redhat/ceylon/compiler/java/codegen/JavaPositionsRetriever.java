@@ -23,10 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import java.io.BufferedReader;
 import java.io.CharArrayReader;
 import java.io.CharArrayWriter;
-import java.io.FilterWriter;
 import java.io.IOException;
-import java.io.PipedReader;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -36,7 +33,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -91,7 +87,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCWildcard;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.LetExpr;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.TypeBoundKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Position;
-import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 
 public class JavaPositionsRetriever {
 

@@ -20,9 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.loader;
 
-import com.redhat.ceylon.langtools.tools.javac.code.Type;
-import com.redhat.ceylon.langtools.tools.javac.code.Type.ClassType;
-import com.redhat.ceylon.langtools.tools.javac.code.Type.MethodType;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCArrayTypeTree;

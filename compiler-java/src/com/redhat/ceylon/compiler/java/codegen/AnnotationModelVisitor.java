@@ -155,7 +155,6 @@ public class AnnotationModelVisitor extends Visitor {
                 defaultedParameter(defaultArgument);
             }
             pop();
-            Tree.ValueParameterDeclaration vp;
             
         }
         // Ignore statements in parameters

@@ -30,8 +30,6 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
-import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,8 +49,6 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.cmr.util.JarUtils;
-import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
@@ -75,8 +71,6 @@ import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.util.NewlineFixingStringStream;
 import com.redhat.ceylon.javax.annotation.processing.Processor;
@@ -111,7 +105,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;

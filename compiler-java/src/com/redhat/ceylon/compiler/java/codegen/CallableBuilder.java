@@ -26,7 +26,6 @@ import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;

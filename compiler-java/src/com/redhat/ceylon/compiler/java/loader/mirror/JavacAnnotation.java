@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Attribute;
-import com.redhat.ceylon.langtools.tools.javac.code.Type;
 import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
 import com.redhat.ceylon.langtools.tools.javac.util.Pair;

@@ -20,7 +20,6 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.loader.TypeFactory;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
