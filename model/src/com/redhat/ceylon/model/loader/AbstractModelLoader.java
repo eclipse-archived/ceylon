@@ -4434,9 +4434,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Type iterableType = unit.getIterableType(elementType);
             return iterableType;
         } else if ("java.lang::Class".equals(type.getDeclaration().getQualifiedNameString())) {
-            // TODO Replace with metamodel ClassOrInterface type
-            // once we have support for metamodel references
-            return unit.getAnythingType();
+            // Note we lose the upper bound (method had type Class<? extends Foo>), see #5918
+            return ((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType();
         } else {
             return type;
         }
