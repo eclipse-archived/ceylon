@@ -145,7 +145,10 @@ public class UnionType extends TypeDeclaration {
     
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        if (dec.isAnything()) {
+        if (dec==null) {
+            return false;
+        }
+        else if (dec.isAnything()) {
             return true;
         }
         else {
