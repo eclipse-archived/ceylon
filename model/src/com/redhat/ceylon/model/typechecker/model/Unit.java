@@ -430,21 +430,29 @@ public class Unit {
     public Interface getIterableDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Iterable");
     }
-    
+
     public Interface getJavaIterableDeclaration() {
-        return (Interface) 
-                getPackage()
-                    .getModule()
-                    .getPackage("java.lang")
-                    .getMember("Iterable", null, false);
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Interface) lang.getMember("Iterable", null, false);
+        }
+    }
+
+    public Interface getJavaAutoCloseableDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Interface) lang.getMember("AutoCloseable", null, false);
+        }
     }
     
-    public Interface getJavaAutoCloseableDeclaration() {
-        return (Interface) 
-                getPackage()
-                    .getModule()
-                    .getPackage("java.lang")
-                    .getMember("AutoCloseable", null, false);
+    private Package getJavaLangPackage() {
+        return getPackage().getModule().getPackage("java.lang");
     }
     
     public Interface getSequentialDeclaration() {
@@ -2126,9 +2134,7 @@ public class Unit {
     }
     
     public Type getType(TypeDeclaration td) {
-        return td==null ?
-                getUnknownType() :
-                td.getType();
+        return td==null ? getUnknownType() : td.getType();
     }
     
     public Type getPackageDeclarationType() {
