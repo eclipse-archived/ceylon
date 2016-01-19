@@ -431,6 +431,22 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Iterable");
     }
     
+    public Interface getJavaIterableDeclaration() {
+        return (Interface) 
+                getPackage()
+                    .getModule()
+                    .getPackage("java.lang")
+                    .getMember("Iterable", null, false);
+    }
+    
+    public Interface getJavaAutoCloseableDeclaration() {
+        return (Interface) 
+                getPackage()
+                    .getModule()
+                    .getPackage("java.lang")
+                    .getMember("AutoCloseable", null, false);
+    }
+    
     public Interface getSequentialDeclaration() {
         return (Interface) getLanguageModuleDeclaration("Sequential");
     }
@@ -771,6 +787,10 @@ public class Unit {
         return getType(getObtainableDeclaration());
     }
     
+    public Type getJavaAutoCloseableType() {
+        return getType(getJavaAutoCloseableDeclaration());
+    }
+
     public Type getSequenceType(Type et) {
         return appliedType(getSequenceDeclaration(), et);
     }
@@ -860,6 +880,18 @@ public class Unit {
         }
     }
 
+    public Type getJavaIteratedType(Type type) {
+        Interface id = getJavaIterableDeclaration();
+        Type st = type.getSupertype(id);
+        if (st!=null && 
+                st.getTypeArguments().size()>0) {
+            return st.getTypeArgumentList().get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
     public Type getAbsentType(Type type) {
         Interface id = getIterableDeclaration();
         Type st = type.getSupertype(id);
@@ -930,6 +962,11 @@ public class Unit {
     public boolean isIterableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getIterableDeclaration());
+    }
+    
+    public boolean isJavaIterableType(Type pt) {
+        return pt.getDeclaration()
+                .inherits(getJavaIterableDeclaration());
     }
     
     public boolean isUsableType(Type pt) {

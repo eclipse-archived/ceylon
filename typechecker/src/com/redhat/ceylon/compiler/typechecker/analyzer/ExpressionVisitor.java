@@ -1055,16 +1055,19 @@ public class ExpressionVisitor extends Visitor {
                 if (e != null) {
                     Type ot = unit.getObtainableType();
                     Type dt = unit.getDestroyableType();
-                    if (isInstantiationExpression(e)) {
-                        if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
-                            typedNode.addError("resource must be either obtainable or destroyable: '" +
-                                    t.asString(unit) + 
-                                    "' is neither 'Obtainable' nor 'Destroyable'");
+                    Type act = unit.getJavaAutoCloseableType();
+                    if (!t.isSubtypeOf(act)) {
+                        if (isInstantiationExpression(e)) {
+                            if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
+                                typedNode.addError("resource must be either obtainable or destroyable: '" +
+                                        t.asString(unit) + 
+                                        "' is neither 'Obtainable' nor 'Destroyable'");
+                            }
                         }
-                    }
-                    else {
-                        checkAssignable(t, ot, typedNode, 
-                                "resource must be obtainable");
+                        else {
+                            checkAssignable(t, ot, typedNode, 
+                                    "resource must be obtainable");
+                        }
                     }
                 }
             }
@@ -1080,7 +1083,8 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 Type et = e.getTypeModel();
                 if (!isTypeUnknown(et)) {
-                    if (!unit.isIterableType(et)) {
+                    if (!unit.isIterableType(et) &&
+                        !unit.isJavaIterableType(et)) {
                         se.addError("expression is not iterable: '" + 
                                 et.asString(unit) + 
                                 "' is not a subtype of 'Iterable'");
@@ -2433,10 +2437,11 @@ public class ExpressionVisitor extends Visitor {
         Type emptyType = unit.getEmptyType();
         Tree.Expression e = se.getExpression();
         if (e!=null) {
-            Type et = e.getTypeModel();
-            if (!isTypeUnknown(et)) {
+            Type expressionType = e.getTypeModel();
+            if (!isTypeUnknown(expressionType)) {
                 emptyType = 
-                        intersectionType(et, emptyType, unit);
+                        intersectionType(expressionType, 
+                                emptyType, unit);
             }
         }
         local.setTypeModel(emptyType);
@@ -2449,15 +2454,18 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierExpression se, Tree.Variable that) {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
-            Type expressionType = 
-                    e.getTypeModel();
+            Type expressionType = e.getTypeModel();
             if (expressionType!=null) {
-                expressionType = 
+                Type elementType = 
                         unit.getIteratedType(expressionType);
-                if (expressionType!=null) {
-                    local.setTypeModel(expressionType);
+                if (elementType==null) {
+                    elementType = 
+                            unit.getJavaIteratedType(expressionType);
+                }
+                if (elementType!=null) {
+                    local.setTypeModel(elementType);
                     that.getDeclarationModel()
-                        .setType(expressionType);
+                        .setType(elementType);
                 }
             }
         }
