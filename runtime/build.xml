@@ -299,7 +299,7 @@
         </copy>
     </target>
 
-    <target name="compile.tests" depends="dist">
+    <target name="compile.tests">
         <mkdir dir="${build.test}"/>
         <javac debug="true"
                encoding="UTF-8"
@@ -312,9 +312,12 @@
                includeantruntime="false"/>
     </target>
 
-    <target name="test" depends="compile.tests,dist-for-tests" description="Runs the JUnit tests">
+    <target name="test" depends="dist,test-quick" description="Runs the JUnit tests">
+    </target>
+
+    <target name="test-quick" depends="compile.tests,dist-for-tests" description="Runs the JUnit tests">
         <mkdir dir="${test.reports}"/>
-        <junit printsummary="yes" haltonfailure="no">
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
             <classpath refid="test.run.classpath"/>
             <formatter type="xml"/>
             <batchtest fork="yes" todir="${test.reports}">
@@ -330,5 +333,7 @@
             </fileset>
             <report format="frames" todir="${test.reports}"/>
         </junitreport>
+
+        <fail message="Test failure detected, check test results." if="test.failed" />
     </target>
 </project>

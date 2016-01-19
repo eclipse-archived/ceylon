@@ -248,8 +248,8 @@
         
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no" 
-            errorproperty="test.fail.junit"
-            failureproperty="test.fail.junit">
+            errorproperty="test.failed"
+            failureproperty="test.failed">
           <classpath refid="test.run.classpath"/>
           <formatter type="xml"/>
 
@@ -267,7 +267,7 @@
           <report format="frames" todir="${test.reports}"/>
         </junitreport>-->
         
-        <fail if="${test.fail.junit}"  message="There were Junit test failures"/>
+        <fail message="Test failure detected, check test results." if="test.failed" />
         
     </target>
 

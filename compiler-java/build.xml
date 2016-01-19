@@ -360,18 +360,22 @@
         <mkdir dir="${test.reports}" />
     </target>
 
-    <target name="test" depends="test.all" description="Runs the tests and generates a test report.">
+    <target name="test" depends="build,test-quick" description="Runs the tests and generates a test report.">
+    </target>
+
+    <target name="test-quick" depends="test.all">
         <junitreport todir="${test.reports}">
             <fileset dir="${test.reports}">
                 <include name="TEST-*.xml" />
             </fileset>
             <report format="frames" todir="${test.reports}" />
         </junitreport>
+        <fail message="Test failure detected, check test results." if="test.failed" />
     </target>
 
     <!-- Runs the JUnit tests -->
     <target name="test.all" depends="-test.prepare">
-        <junit printsummary="yes" haltonfailure="no">
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
             <classpath refid="test.run.classpath" />
 
             <formatter type="xml" />

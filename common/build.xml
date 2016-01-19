@@ -37,6 +37,7 @@
 
     <path id="test.run.classpath">
         <pathelement path="${build.classes}" />
+        <pathelement path="${hamcrest.lib}" />
         <pathelement path="${junit.lib}" />
     </path>
 
@@ -213,15 +214,17 @@
     </target>
 
     <target name="test"
-        depends="publish,compile.tests"
-        description="Run tests">
+        depends="publish,compile.tests,test-quick">
+    </target>
+
+    <target name="test-quick">
         <mkdir dir="${test.reports}" />
-        <junit printsummary="yes" haltonfailure="no">
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
             <classpath refid="test.run.classpath" />
 
             <formatter type="xml" />
             <test
-                name="com.redhat.ceylon.common.test.AllTests"
+                name="com.redhat.ceylon.common.test.AllCommonTests"
                 fork="yes"
                 todir="${test.reports}" />
         </junit>
@@ -231,5 +234,6 @@
             </fileset>
             <report format="frames" todir="${test.reports}" />
         </junitreport>
+        <fail message="Test failure detected, check test results." if="test.failed" />
     </target>
 </project>

@@ -734,7 +734,11 @@
         </ceylon-run-js>
     </target>
 
-    <target name="test" depends="test.java,test.js" 
+    <target name="test" depends="build,test-quick" 
+        description="compile and run the tests for JVM and Node.js (requires node)">
+    </target>
+
+    <target name="test-quick" depends="test.java,test.js" 
         description="compile and run the tests for JVM and Node.js (requires node)">
     </target>
 </project>
