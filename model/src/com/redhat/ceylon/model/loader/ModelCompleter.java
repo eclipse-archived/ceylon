@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
+import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyClassAlias;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
@@ -80,4 +82,14 @@ public interface ModelCompleter {
      * Returns a lock we can use for thread-safety
      */
     Object getLock();
+
+    /**
+     * Completes loading of an annotation proxy class
+     */
+    void complete(AnnotationProxyClass annotationProxyClass);
+
+    /**
+     * Completes loading of an annotation proxy method
+     */
+    void complete(AnnotationProxyMethod annotationProxyMethod);
 }

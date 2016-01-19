@@ -2099,6 +2099,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     // ModelCompleter
     
     @Override
+    public void complete(AnnotationProxyClass klass) {
+        synchronized(getLock()){
+            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            complete(klass, klass.iface);
+            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        }
+    }
+    
+    @Override
+    public void complete(AnnotationProxyMethod ctor) {
+        synchronized(getLock()){
+            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            AnnotationProxyClass klass = ctor.proxyClass;
+            LazyInterface iface = klass.iface;
+            
+            complete(ctor, klass, iface);
+            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        }
+    }
+    
+    @Override
     public void complete(LazyInterface iface)  {
         synchronized(getLock()){
             timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
@@ -2212,6 +2233,71 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
             completeLazyAlias(alias, alias.classMirror, CEYLON_TYPE_ALIAS_ANNOTATION);
             timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+        }
+    }
+
+    private void complete(AnnotationProxyMethod ctor, AnnotationProxyClass klass, LazyInterface iface) {
+        ParameterList ctorpl = new ParameterList();
+        ctorpl.setPositionalParametersSupported(false);
+        ctor.addParameterList(ctorpl);
+        
+        List<Parameter> ctorParams = new ArrayList<Parameter>();
+        for (Declaration member : iface.getMembers()) {
+            boolean isValue = member.getName().equals("value");
+            if (member instanceof JavaMethod) {
+                JavaMethod m = (JavaMethod)member;
+                
+                
+                Parameter ctorParam = new Parameter();
+                ctorParams.add(ctorParam);
+                Value value = new Value();
+                ctorParam.setModel(value);
+                value.setInitializerParameter(ctorParam);
+                ctorParam.setDeclaration(ctor);
+                value.setContainer(klass);
+                value.setScope(klass);
+                ctorParam.setDefaulted(m.isDefaultedAnnotation());
+                value.setName(member.getName());
+                ctorParam.setName(member.getName());
+                value.setType(annotationParameterType(iface.getUnit(), m));
+                value.setUnboxed(true);
+                value.setUnit(iface.getUnit());
+                if(isValue)
+                    ctorpl.getParameters().add(0, ctorParam);
+                else
+                    ctorpl.getParameters().add(ctorParam);
+                ctor.addMember(value);
+            }
+        }
+        makeInteropAnnotationConstructorInvocation(ctor, klass, ctorParams);
+    }
+
+    private void complete(AnnotationProxyClass klass, LazyInterface iface) {
+        ParameterList classpl = new ParameterList();
+        klass.addParameterList(classpl);
+
+        for (Declaration member : iface.getMembers()) {
+            boolean isValue = member.getName().equals("value");
+            if (member instanceof JavaMethod) {
+                JavaMethod m = (JavaMethod)member;
+                Parameter klassParam = new Parameter();
+                Value value = new Value();
+                klassParam.setModel(value);
+                value.setInitializerParameter(klassParam);
+                klassParam.setDeclaration(klass);
+                value.setContainer(klass);
+                value.setScope(klass);
+                value.setName(member.getName());
+                klassParam.setName(member.getName());
+                value.setType(annotationParameterType(iface.getUnit(), m));
+                value.setUnboxed(true);
+                value.setUnit(iface.getUnit());
+                if(isValue)
+                    classpl.getParameters().add(0, klassParam);
+                else
+                    classpl.getParameters().add(klassParam);
+                klass.addMember(value);
+            }
         }
     }
 
@@ -4276,9 +4362,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public AnnotationProxyMethod makeInteropAnnotationConstructor(LazyInterface iface,
             AnnotationProxyClass klass, OutputElement oe, Package pkg){
         String ctorName = oe == null ? NamingBase.getJavaBeanName(iface.getName()) : NamingBase.getDisambigAnnoCtorName(iface, oe);
-        AnnotationProxyMethod ctor = new AnnotationProxyMethod();
+        AnnotationProxyMethod ctor = new AnnotationProxyMethod(this, klass);
         ctor.setAnnotationTarget(oe);
-        ctor.setProxyClass(klass);
         ctor.setContainer(pkg);
         ctor.setAnnotation(true);
         ctor.setName(ctorName);
@@ -4289,39 +4374,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         ctor.setType(((TypeDeclaration)iface).getType());
         ctor.setUnit(iface.getUnit());
         
-        ParameterList ctorpl = new ParameterList();
-        ctorpl.setPositionalParametersSupported(false);
-        ctor.addParameterList(ctorpl);
-        
-        List<Parameter> ctorParams = new ArrayList<Parameter>();
-        for (Declaration member : iface.getMembers()) {
-            boolean isValue = member.getName().equals("value");
-            if (member instanceof JavaMethod) {
-                JavaMethod m = (JavaMethod)member;
-                
-                
-                Parameter ctorParam = new Parameter();
-                ctorParams.add(ctorParam);
-                Value value = new Value();
-                ctorParam.setModel(value);
-                value.setInitializerParameter(ctorParam);
-                ctorParam.setDeclaration(ctor);
-                value.setContainer(klass);
-                value.setScope(klass);
-                ctorParam.setDefaulted(m.isDefaultedAnnotation());
-                value.setName(member.getName());
-                ctorParam.setName(member.getName());
-                value.setType(annotationParameterType(iface.getUnit(), m));
-                value.setUnboxed(true);
-                value.setUnit(iface.getUnit());
-                if(isValue)
-                    ctorpl.getParameters().add(0, ctorParam);
-                else
-                    ctorpl.getParameters().add(ctorParam);
-                ctor.addMember(value);
-            }
-        }
-        makeInteropAnnotationConstructorInvocation(ctor, klass, ctorParams);
         return ctor;
     }
 
@@ -4341,7 +4393,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      */
     public AnnotationProxyClass makeInteropAnnotationClass(
             LazyInterface iface, Package pkg) {
-        AnnotationProxyClass klass = new AnnotationProxyClass(iface);
+        AnnotationProxyClass klass = new AnnotationProxyClass(this, iface);
         klass.setContainer(pkg);
         klass.setScope(pkg);
         klass.setName(iface.getName()+"$Proxy");
@@ -4352,33 +4404,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.getAnnotations().add(annotationAnnotation);
         klass.getSatisfiedTypes().add(iface.getType());
         klass.setUnit(iface.getUnit());
-        ParameterList classpl = new ParameterList();
-        klass.addParameterList(classpl);
         klass.setScope(pkg);
         
-        for (Declaration member : iface.getMembers()) {
-            boolean isValue = member.getName().equals("value");
-            if (member instanceof JavaMethod) {
-                JavaMethod m = (JavaMethod)member;
-                Parameter klassParam = new Parameter();
-                Value value = new Value();
-                klassParam.setModel(value);
-                value.setInitializerParameter(klassParam);
-                klassParam.setDeclaration(klass);
-                value.setContainer(klass);
-                value.setScope(klass);
-                value.setName(member.getName());
-                klassParam.setName(member.getName());
-                value.setType(annotationParameterType(iface.getUnit(), m));
-                value.setUnboxed(true);
-                value.setUnit(iface.getUnit());
-                if(isValue)
-                    classpl.getParameters().add(0, klassParam);
-                else
-                    classpl.getParameters().add(klassParam);
-                klass.addMember(value);
-            }
-        }
         return klass;
     }
 
