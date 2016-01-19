@@ -1841,8 +1841,10 @@ public class ExpressionVisitor extends Visitor {
                 Type set = e.getTypeModel();
                 if (!isTypeUnknown(vt) && 
                         !isTypeUnknown(set)) {
-                    Type it = 
-                            unit.getIteratedType(set);
+                    Type it = unit.getIteratedType(set);
+                    if (it==null) {
+                        it = unit.getJavaIteratedType(set);
+                    }
                     checkAssignable(it, vt, var, 
                             "iterable element type must be assignable to iterator variable type");
                 }
