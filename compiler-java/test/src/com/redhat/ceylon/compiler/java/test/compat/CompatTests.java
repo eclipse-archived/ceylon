@@ -1,12 +1,13 @@
 package com.redhat.ceylon.compiler.java.test.compat;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -18,6 +19,68 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class CompatTests extends CompilerTests {
 
+    /** The location of the ceylon 1.2.0 distribution (as downloaded). */
+    private static String ceylon120Dist;
+    
+    /** The location of the ceylon 1.2.1 distribution. */
+    private static String ceylon121Dist;
+    
+    
+    protected String get120DistPath() {
+        synchronized (CompatTests.class) { 
+            if (ceylon120Dist == null) {
+            ceylon120Dist = System.getProperty("ceylon120Dist");
+            if (ceylon120Dist == null) {
+                ceylon120Dist = "/home/tom/Desktop/ceylon-1.2.0";
+            }
+            checkVersion(ceylon120Dist, "ceylon version 1.2.0");
+            }
+        }
+        return ceylon120Dist;
+    }
+    protected String get121DistPath() {
+        synchronized (CompatTests.class) { 
+            if (ceylon121Dist == null) {
+                ceylon121Dist = System.getProperty("ceylon121Dist");
+                if (ceylon121Dist == null) {
+                    ceylon121Dist = "../dist/dist/";
+                }
+                checkVersion(ceylon121Dist, "ceylon version 1.2.1");
+            }
+        }
+        return ceylon121Dist;
+    }
+    
+    protected final String[] getAll12xDistPaths() {
+        return new String[]{get120DistPath(), get121DistPath()};
+    }
+
+    protected static void checkVersion(String path, String expect) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder(
+                    path+"/bin/ceylon",
+                    "--version");
+            pb.redirectInput(Redirect.INHERIT);
+            pb.redirectError(Redirect.INHERIT);
+            File out = File.createTempFile("ceylon--version", ".out");
+            pb.redirectOutput(out);
+            assert(0 == pb.start().waitFor());
+            try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+                String line = r.readLine();
+                if (line == null) {
+                    throw new RuntimeException("No output from " + path+"/bin/ceylon --version");
+                }
+                if (!line.startsWith(expect)) {
+                    throw new RuntimeException("Output from " + path+"/bin/ceylon --version was " +line + " not the expected "+ expect);
+                }
+                
+            }
+            out.delete();
+        } catch (Exception e) {
+            throw new RuntimeException("Error while checking the version of distribution " + path, e);
+        }
+    }
+    
     /**
      * Tests we can run a module that was compiled using the 1.2.0 compiler in 
      * a 1.2.1 runtime. 
@@ -105,6 +168,16 @@ public class CompatTests extends CompilerTests {
         } finally {
             err.delete();
         }
+    }
+    
+    @Test
+    public void bug5935() throws InterruptedException, IOException {
+        ProcessBuilder pb = new ProcessBuilder(
+                get121DistPath()+"/bin/ceylon",
+                "doc",
+                "--src=test/src",
+                "com.redhat.ceylon.compiler.java.test.compat.bug5935");
+        assert(0 == pb.inheritIO().start().waitFor());
     }
 
 }
