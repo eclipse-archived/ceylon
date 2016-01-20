@@ -39,8 +39,9 @@ void javaIterableInFor() {
     } else {
         sum = 0;
     }
-    
+    /* not supported by the typechecker
     // entry and tuple patterns
+    
     JIterable<String->Integer> stringsToInts = nothing;
     JIterable<JString->JInteger> jstringsToJints = nothing;
     for (s->i in stringsToInts) {
@@ -63,5 +64,6 @@ void javaIterableInFor() {
         sum += s.hash;
         sum += i.hash;
     }
+    */
     
 }
