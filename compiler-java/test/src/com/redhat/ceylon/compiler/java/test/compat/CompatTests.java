@@ -209,4 +209,14 @@ public class CompatTests extends CompilerTests {
         }
     }
     
+    @Test
+    public void bug5935() throws InterruptedException, IOException {
+        ProcessBuilder pb = new ProcessBuilder(
+                get121DistPath()+"/bin/ceylon",
+                "doc",
+                "--src=test/src",
+                "com.redhat.ceylon.compiler.java.test.compat.bug5935");
+        assert(0 == pb.inheritIO().start().waitFor());
+    }
+
 }
