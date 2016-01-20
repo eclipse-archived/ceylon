@@ -5535,15 +5535,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(ModelUtil.equalModules(importedModule, getLanguageModule()))
             return true;
         if(ModelUtil.equalModules(moduleScope, getLanguageModule())){
-            // this really sucks, I suppose we should set that up better somewhere else
-            if((importedModuleName.equals("com.redhat.ceylon.compiler.java")
-                || importedModuleName.equals("com.redhat.ceylon.typechecker")
-                || importedModuleName.equals("com.redhat.ceylon.common")
-                || importedModuleName.equals("com.redhat.ceylon.model")
-                || importedModuleName.equals("com.redhat.ceylon.module-resolver"))
-                && importedModule.getVersion().equals(Versions.CEYLON_VERSION_NUMBER))
-                return true;
             Distribution dist = Distribution.getDistribution();
+            if((dist.getDistModule(Versions.CEYLON_VERSION_NUMBER, importedModuleName) != null))
+                return true;
+            
             if(importedModuleName.equals("org.jboss.modules")
                     && importedModule.getVersion().equals(getDistModuleVersion(dist, "org.jboss.modules")))
                 return true;

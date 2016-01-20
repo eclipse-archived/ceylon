@@ -122,10 +122,8 @@ public class Distribution {
     
     /**
      * Get the module spec for the dist module with the given name for a given 
-     * version of the dist.
-     * @param distVersion
-     * @param moduleName
-     * @return
+     * version of the dist, or null if the given module is not a dist module 
+     * for that version of the distribution.
      */
     public ModuleSpec getDistModule(String distVersion, String moduleName) {
         List<ModuleSpec> mods = byVersion.get(distVersion);
