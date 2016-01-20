@@ -17,6 +17,7 @@ public class Backend {
         Header = createBackend("Header", "");
         Java = registerBackend("Java", "jvm");
         JavaScript = registerBackend("JavaScript", "js");
+        registerBackend("Dart", "dart");
     }
     
     public final String name;
