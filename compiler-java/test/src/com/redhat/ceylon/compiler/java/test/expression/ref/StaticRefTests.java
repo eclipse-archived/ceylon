@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.expression.ref;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class StaticRefTests extends CompilerTests {
@@ -91,6 +92,12 @@ public class StaticRefTests extends CompilerTests {
         compareWithJavaSource("MemberClassConstructorRef");
         //compile("MemberClassConstructorRef.ceylon");
         run("com.redhat.ceylon.compiler.java.test.expression.ref.memberClassConstructorRef");
+    }
+    
+    @Test
+    @Ignore
+    public void testRefBug5898() {
+        compareWithJavaSource("Bug5898");
     }
 
 }
