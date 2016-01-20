@@ -117,6 +117,11 @@ tool:
 
     ceylon help compile
 
+## Setting up Eclipse
+
+See [README.eclipse](../README.eclipse) for the instructions in setting up your Eclipse
+environment for Ceylon development.
+
 ## Ant tasks for Ceylon
 
 We include support for Ceylon ant tasks which are documented at 
