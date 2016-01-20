@@ -371,7 +371,11 @@ function coistr$(coi) {
     if (s.length)s+='>';
     return s;
   }
-  qn+=addtargs(cc[0].$$targs$$.Target$Type);
+  if (cc[0].tipo===Callable) {
+    qn+=addtargs({t:Callable});
+  } else {
+    qn+=addtargs(cc[0].$$targs$$.Target$Type);
+  }
   for (var i=1;i<cc.length;i++) {
     mm=getrtmm$$(cc[i].tipo)
     var nm=mm.d[mm.d.length-1];
