@@ -153,24 +153,36 @@ public class AbstractTest {
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager, ModuleQuery.Type type) {
-        testComplete(query, expected, manager, type, null, null);
+        testComplete(query, expected, manager, type, null, null, null, null);
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
-            ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
-        testComplete(query, expected, manager, type, ModuleQuery.Retrieval.ANY, binaryMajor, binaryMinor);
+            ModuleQuery.Type type, 
+            Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+            Integer jsBinaryMajor, Integer jsBinaryMinor) {
+        testComplete(query, expected, manager, type, ModuleQuery.Retrieval.ANY, 
+        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
-                                ModuleQuery.Type type, ModuleQuery.Retrieval retrieval, Integer binaryMajor, Integer binaryMinor) {
-        testComplete(query, expected, manager, type, retrieval, binaryMajor, binaryMinor, null);
+                                ModuleQuery.Type type, ModuleQuery.Retrieval retrieval, 
+                                Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+                                Integer jsBinaryMajor, Integer jsBinaryMinor) {
+        testComplete(query, expected, manager, type, retrieval, 
+        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor,
+        		null);
     }
 
     protected void testComplete(String query, ModuleDetails[] expected, RepositoryManager manager,
-                                ModuleQuery.Type type, ModuleQuery.Retrieval retrieval, Integer binaryMajor, Integer binaryMinor, String memberSearch) {
+                                ModuleQuery.Type type, ModuleQuery.Retrieval retrieval, 
+                                Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+                                Integer jsBinaryMajor, Integer jsBinaryMinor, 
+                                String memberSearch) {
         ModuleQuery lookup = new ModuleQuery(query, type, retrieval);
-        lookup.setBinaryMajor(binaryMajor);
-        lookup.setBinaryMinor(binaryMinor);
+        lookup.setJvmBinaryMajor(jvmBinaryMajor);
+        lookup.setJvmBinaryMinor(jvmBinaryMinor);
+        lookup.setJsBinaryMajor(jsBinaryMajor);
+        lookup.setJsBinaryMinor(jsBinaryMinor);
         lookup.setMemberName(memberSearch);
         ModuleSearchResult result = manager.completeModules(lookup);
         compareSearchResults(expected, result);
@@ -183,19 +195,39 @@ public class AbstractTest {
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
                                     RepositoryManager manager) throws Exception {
-        testListVersions(query, versionQuery, expected, manager, null, null);
+        testListVersions(query, versionQuery, expected, manager, null, null, null, null);
     }
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
-                                    RepositoryManager manager, Integer binaryMajor, Integer binaryMinor) throws Exception {
-        testListVersions(query, versionQuery, expected, manager, binaryMajor, binaryMinor, null);
+                                    RepositoryManager manager, 
+                                    Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+                                    Integer jsBinaryMajor, Integer jsBinaryMinor) throws Exception {
+        testListVersions(query, versionQuery, expected, manager, 
+        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor, 
+        		null);
     }
 
     protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
-                                    RepositoryManager manager, Integer binaryMajor, Integer binaryMinor, String memberSearch) throws Exception {
-        ModuleVersionQuery lookup = new ModuleVersionQuery(query, versionQuery, ModuleQuery.Type.JVM);
-        lookup.setBinaryMajor(binaryMajor);
-        lookup.setBinaryMinor(binaryMinor);
+    		RepositoryManager manager, 
+    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+    		Integer jsBinaryMajor, Integer jsBinaryMinor,
+    		String memberSearch) throws Exception {
+    	testListVersions(query, versionQuery, expected, manager, 
+    			jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor, 
+    			memberSearch, ModuleQuery.Type.JVM, ModuleQuery.Retrieval.ANY);
+    }
+
+    protected void testListVersions(String query, String versionQuery, ModuleVersionDetails[] expected,
+                                    RepositoryManager manager, 
+                                    Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+                                    Integer jsBinaryMajor, Integer jsBinaryMinor, 
+                                    String memberSearch, ModuleQuery.Type type, ModuleQuery.Retrieval retrieval) throws Exception {
+        ModuleVersionQuery lookup = new ModuleVersionQuery(query, versionQuery, type);
+        lookup.setRetrieval(retrieval);
+        lookup.setJvmBinaryMajor(jvmBinaryMajor);
+        lookup.setJvmBinaryMinor(jvmBinaryMinor);
+        lookup.setJsBinaryMajor(jsBinaryMajor);
+        lookup.setJsBinaryMinor(jsBinaryMinor);
         lookup.setMemberName(memberSearch);
         ModuleVersionResult result = manager.completeVersions(lookup);
         int i = 0;
@@ -224,7 +256,8 @@ public class AbstractTest {
 
     protected ModuleSearchResult testSearchResults(String q, Type type, Retrieval retrieval, ModuleDetails[] expected) throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        return testSearchResults(q, type, retrieval, expected, null, null, manager, null, null, null);
+        return testSearchResults(q, type, retrieval, expected, null, null, manager, 
+        		null, null, null, null, null);
     }
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected, RepositoryManager manager) throws Exception {
@@ -243,25 +276,31 @@ public class AbstractTest {
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected,
                                                    Long start, Long count, RepositoryManager manager, long[] pagingInfo) throws Exception {
-        return testSearchResults(q, type, expected, start, count, manager, pagingInfo, null, null);
+        return testSearchResults(q, type, expected, start, count, manager, pagingInfo, 
+        		null, null, null, null);
     }
 
     protected ModuleSearchResult testSearchResults(String q, Type type, ModuleDetails[] expected,
             Long start, Long count, RepositoryManager manager, long[] pagingInfo,
-            Integer binaryMajor, Integer binaryMinor) throws Exception {
-        return testSearchResults(q, type, Retrieval.ANY, expected, start, count, manager, pagingInfo, binaryMajor, binaryMinor);
+            Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+            Integer jsBinaryMajor, Integer jsBinaryMinor) throws Exception {
+        return testSearchResults(q, type, Retrieval.ANY, expected, start, count, manager, pagingInfo, 
+        		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
     }
     
     protected ModuleSearchResult testSearchResults(String q, Type type, Retrieval retrieval, ModuleDetails[] expected,
                                                    Long start, Long count, RepositoryManager manager, long[] pagingInfo,
-                                                   Integer binaryMajor, Integer binaryMinor) throws Exception {
+                                                   Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+                                                   Integer jsBinaryMajor, Integer jsBinaryMinor) throws Exception {
 
         ModuleQuery query = new ModuleQuery(q, type, retrieval);
         query.setStart(start);
         query.setCount(count);
         query.setPagingInfo(pagingInfo);
-        query.setBinaryMajor(binaryMajor);
-        query.setBinaryMinor(binaryMinor);
+        query.setJvmBinaryMajor(jvmBinaryMajor);
+        query.setJvmBinaryMinor(jvmBinaryMinor);
+        query.setJsBinaryMajor(jsBinaryMajor);
+        query.setJsBinaryMinor(jsBinaryMinor);
         ModuleSearchResult results = manager.searchModules(query);
 
         compareSearchResults(expected, results);
