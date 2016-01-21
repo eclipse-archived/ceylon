@@ -90,24 +90,6 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
         }
     }
 
-    private Set<String> getVersions(String name, Configuration conf, boolean offline) {
-        RepositoryManager repoman = createRepository(conf, offline);
-        ModuleVersionQuery query = new ModuleVersionQuery(name, null, ModuleQuery.Type.JVM);
-        query.setBinaryMajor(Versions.JVM_BINARY_MAJOR_VERSION);
-        ModuleVersionResult result = repoman.completeVersions(query);
-        NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
-        return versionMap.keySet();
-    }
-
-    private void appendVersions(StringBuilder sb, String name, Set<String> versions) {
-        for (String v : versions) {
-            sb.append("\n    ");
-            sb.append(name);
-            sb.append("/");
-            sb.append(v);
-        }
-    }
-
     private RepositoryManager createRepository(Configuration conf, boolean offline) {
         Logger log = new CMRJULLogger();
         final RepositoryManagerBuilder builder = CeylonUtils.repoManager()
