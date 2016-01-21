@@ -43,6 +43,7 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
                 ModuleQuery.Type.JVM,
                 Versions.JVM_BINARY_MAJOR_VERSION,
                 Versions.JVM_BINARY_MINOR_VERSION,
+                null, null, // JS binary but don't care since JVM
                 null);
         if(version == null)
             return;

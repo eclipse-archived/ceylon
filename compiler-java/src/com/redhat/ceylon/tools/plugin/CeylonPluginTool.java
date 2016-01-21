@@ -261,7 +261,8 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     private boolean installScripts(RepositoryManager repositoryManager, ModuleSpec module, boolean errorIfMissing) throws IOException {
         String version = module.getVersion();
         if((version == null || version.isEmpty()) && !module.getName().equals(Module.DEFAULT_MODULE_NAME)){
-            version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, ModuleQuery.Type.ALL, null, null);
+            version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, 
+            		ModuleQuery.Type.ALL, null, null, null, null);
             if(version == null)
                 return false;
         }

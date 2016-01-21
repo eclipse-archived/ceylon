@@ -89,8 +89,10 @@ public class CeylonInfoTool extends RepoUsingTool {
     private Formatting formatting;
     private List<File> sourceFolders = DefaultToolOptions.getCompilerSourceDirs();
 
-    private Integer binaryMajor = null;
-    private Integer binaryMinor = null;
+    private Integer jvmBinaryMajor = null;
+    private Integer jvmBinaryMinor = null;
+    private Integer jsBinaryMajor = null;
+    private Integer jsBinaryMinor = null;
     private ModuleQuery.Type queryType = ModuleQuery.Type.ALL;
     
     public CeylonInfoTool() {
@@ -257,15 +259,18 @@ public class CeylonInfoTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         if (showIncompatible != Incompatible.yes) {
-            binaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
-            binaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
+            jvmBinaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
+            jvmBinaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
+            jsBinaryMajor = Versions.JS_BINARY_MAJOR_VERSION;
+            jsBinaryMinor = Versions.JS_BINARY_MINOR_VERSION;
         }
         String msgkey = showIncompatible == Incompatible.no ? "module.not.found.compat" : "module.not.found";
 
         for (ModuleSpec module : modules) {
             String name = module.getName();
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
-                Collection<ModuleDetails> modules = getModules(getRepositoryManager(), name, queryType, binaryMajor, binaryMinor);
+                Collection<ModuleDetails> modules = getModules(getRepositoryManager(), name, queryType, 
+                		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (modules.isEmpty()) {
                     String err;
                     if (name.startsWith("*") || name.endsWith("*")) {
@@ -279,7 +284,9 @@ public class CeylonInfoTool extends RepoUsingTool {
                 }
                 outputModules(module, modules);
             } else {
-                Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), queryType, binaryMajor, binaryMinor);
+                Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), 
+                		module.getVersion(), queryType, 
+                		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (versions.isEmpty()) {
                     // try from source
                     ModuleVersionDetails fromSource = getVersionFromSource(name);
@@ -288,10 +295,11 @@ public class CeylonInfoTool extends RepoUsingTool {
                         versions = Arrays.asList(fromSource);
                     } else {
                         if (showIncompatible == Incompatible.auto &&
-                                (binaryMajor != null || binaryMinor != null)) {
+                                (jvmBinaryMajor != null || jvmBinaryMinor != null || jsBinaryMajor != null || jsBinaryMinor != null)) {
                             // If we were called with a specific version and we didn't find a "compatible"
                             // artifact then lets see if we can find an "incompatible" one
-                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), queryType, null, null);
+                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), 
+                            		queryType, null, null, null, null);
                         }
                         if (versions.isEmpty()) {
                             String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion(), msgkey);
@@ -310,7 +318,9 @@ public class CeylonInfoTool extends RepoUsingTool {
         }
     }
 
-    private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String name, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+    private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String name, ModuleQuery.Type type, 
+    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
         String queryString = name;
         if (queryString.startsWith("*")) {
             queryString = queryString.substring(1);
@@ -319,7 +329,9 @@ public class CeylonInfoTool extends RepoUsingTool {
             queryString = queryString.substring(0, queryString.length() - 1);
         }
         
-        ModuleVersionQuery query = getModuleVersionQuery(queryString, null, type, binaryMajor, binaryMinor);
+        ModuleVersionQuery query = getModuleVersionQuery(queryString, null, type, 
+        		jvmBinaryMajor, jvmBinaryMinor,
+        		jsBinaryMajor, jsBinaryMinor);
         
         ModuleSearchResult result;
         if (!name.startsWith("*") || name.equals("*")) {
@@ -331,8 +343,11 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     @Override
-    protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
-        ModuleVersionQuery query = super.getModuleVersionQuery(name, version, type, binaryMajor, binaryMinor);
+    protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, 
+    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
+        ModuleVersionQuery query = super.getModuleVersionQuery(name, version, type, jvmBinaryMajor, jvmBinaryMinor,
+        		jsBinaryMajor, jsBinaryMinor);
         if (findMember != null) {
             query.setMemberName(findMember);
         }
@@ -705,7 +720,8 @@ public class CeylonInfoTool extends RepoUsingTool {
         newline();
         
         if (recurse && !"ceylon.language".equals(dep.getName())) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, binaryMajor, binaryMinor);
+            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, 
+            		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), names, depth + 1);
             }

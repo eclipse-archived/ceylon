@@ -9,8 +9,10 @@ public class ModuleQuery {
     private Long start;
     private Long count;
     private long[] pagingInfo;
-    private Integer binaryMajor;
-    private Integer binaryMinor;
+    private Integer jvmBinaryMajor;
+    private Integer jvmBinaryMinor;
+    private Integer jsBinaryMajor;
+    private Integer jsBinaryMinor;
     private String memberName;
     private boolean memberSearchPackageOnly;
     private boolean memberSearchExact;
@@ -107,20 +109,36 @@ public class ModuleQuery {
         return pagingInfo;
     }
 
-    public Integer getBinaryMajor() {
-        return binaryMajor;
+    public Integer getJvmBinaryMajor() {
+        return jvmBinaryMajor;
     }
 
-    public void setBinaryMajor(Integer binaryMajor) {
-        this.binaryMajor = binaryMajor;
+    public void setJvmBinaryMajor(Integer binaryMajor) {
+        this.jvmBinaryMajor = binaryMajor;
     }
 
-    public Integer getBinaryMinor() {
-        return binaryMinor;
+    public Integer getJvmBinaryMinor() {
+        return jvmBinaryMinor;
     }
 
-    public void setBinaryMinor(Integer binaryMinor) {
-        this.binaryMinor = binaryMinor;
+    public void setJvmBinaryMinor(Integer binaryMinor) {
+        this.jvmBinaryMinor = binaryMinor;
+    }
+
+    public Integer getJsBinaryMajor() {
+        return jsBinaryMajor;
+    }
+
+    public void setJsBinaryMajor(Integer binaryMajor) {
+        this.jsBinaryMajor = binaryMajor;
+    }
+
+    public Integer getJsBinaryMinor() {
+        return jsBinaryMinor;
+    }
+
+    public void setJsBinaryMinor(Integer binaryMinor) {
+        this.jsBinaryMinor = binaryMinor;
     }
 
     public String getMemberName() {

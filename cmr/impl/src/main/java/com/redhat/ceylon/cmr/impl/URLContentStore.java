@@ -18,14 +18,10 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,7 +78,16 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private String herdCompleteModulesURL;
     private String herdCompleteVersionsURL;
     private String herdSearchModulesURL;
-    private int herdVersion = 1; // assume 1 until we find otherwise
+    
+    private static int HERD_V1 = 1;
+    private static int HERD_V2 = 2;
+    private static int HERD_V3 = 3;
+    private static int HERD_V4 = 4;
+    private static int HERD_V5 = 5;
+
+    private static int HERD_LATEST = HERD_V5;
+
+    private int herdVersion = HERD_V1; // assume 1 until we find otherwise
 
     protected URLContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy) {
         this(root, log, offline, timeout, proxy, null);
@@ -94,13 +99,14 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             throw new IllegalArgumentException("Null root url");
         this.root = root;
         this.proxy = proxy;
-        this.herdRequestedApi = apiVersion != null ? apiVersion : "4";
+        this.herdRequestedApi = apiVersion != null ? apiVersion : String.valueOf(HERD_LATEST);
         if(apiVersion != null
-                && !apiVersion.equals("1")
-                && !apiVersion.equals("2")
-                && !apiVersion.equals("3")
-                && !apiVersion.equals("4"))
-            throw new IllegalArgumentException("Only Herd APIs 1 to 4 are supported: requested API "+apiVersion);
+                && !apiVersion.equals(String.valueOf(HERD_V1))
+                && !apiVersion.equals(String.valueOf(HERD_V2))
+                && !apiVersion.equals(String.valueOf(HERD_V3))
+                && !apiVersion.equals(String.valueOf(HERD_V4))
+                && !apiVersion.equals(String.valueOf(HERD_V5)))
+            throw new IllegalArgumentException("Only Herd APIs 1 to "+HERD_LATEST+" are supported: requested API "+apiVersion);
     }
 
     @Override
@@ -121,7 +127,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             return false;
         }
         try{
-            // we support both API 1 to 3
+            // we support both API 1 to 5
             URL rootURL = getURL("?version="+herdRequestedApi);
             HttpURLConnection con;
             if (proxy != null) {
@@ -232,7 +238,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     protected String compatiblePath(String fullPath) {
-        if (isHerd() && herdVersion == 3) {
+        if (isHerd() && herdVersion == HERD_V3) {
             // For version 3 herd we transform requests for foo/1/module-doc.zip[.sha1]
             // to foo/1/foo-1.doc.zip[sha1] for backwards compatibility
             if (fullPath.endsWith(ArtifactContext.SHA1)) {
@@ -359,17 +365,24 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 List<WS.Param> params = new ArrayList<WS.Param>(10);
                 params.add(WS.param("module", query.getName()));
                 params.add(WS.param("type", getHerdTypeParam(query.getType())));
-                params.add(WS.param("binaryMajor", query.getBinaryMajor()));
-                params.add(WS.param("binaryMinor", query.getBinaryMinor()));
-                if (herdVersion < 4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
+                // not strictly correct, but we have to do something about old herds
+                params.add(WS.param("binaryMajor", query.getJvmBinaryMajor()));
+                params.add(WS.param("binaryMinor", query.getJvmBinaryMinor()));
+                if (herdVersion < HERD_V4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
                     // Earlier version of the Herd didn't support member searches so let's not pretend they did
                     return;
                 }
-                if (herdVersion >= 4) {
+                if (herdVersion >= HERD_V4) {
                     params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
+                }
+                if (herdVersion >= HERD_V5) {
+                	params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
+                	params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
+                	params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
+                	params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
                 }
                 WS.getXML(herdCompleteModulesURL, params, new XMLHandler(){
                     @Override
@@ -384,7 +397,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     private String getHerdTypeParam(Type type) {
-        if (herdVersion >= 4) {
+        if (herdVersion >= HERD_V4) {
             String[] suffixes = type.getSuffixes();
             StringBuilder arts = new StringBuilder(suffixes[0]);
             for (int i = 1; i < suffixes.length; i++) {
@@ -405,12 +418,12 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             case SRC:
                 return "source";
             case CODE:
-                if(herdVersion >= 3)
+                if(herdVersion >= HERD_V3)
                     return "code";
                 else
                     return "all";
             case CEYLON_CODE:
-                if(herdVersion >= 3)
+                if(herdVersion >= HERD_V3)
                     return "code";
                 else
                     return "all";
@@ -443,17 +456,24 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 params.add(WS.param("module", query.getName()));
                 params.add(WS.param("version", query.getVersion()));
                 params.add(WS.param("type", getHerdTypeParam(query.getType())));
-                params.add(WS.param("binaryMajor", query.getBinaryMajor()));
-                params.add(WS.param("binaryMinor", query.getBinaryMinor()));
-                if (herdVersion < 4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
+                // not strictly correct, but we have to do something about old herds
+                params.add(WS.param("binaryMajor", query.getJvmBinaryMajor()));
+                params.add(WS.param("binaryMinor", query.getJvmBinaryMinor()));
+                if (herdVersion < HERD_V4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
                     // Earlier version of the Herd didn't support member searches so let's not pretend they did
                     return;
                 }
-                if (herdVersion >= 4) {
+                if (herdVersion >= HERD_V4) {
                     params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
+                }
+                if (herdVersion >= HERD_V5) {
+                	params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
+                	params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
+                	params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
+                	params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
                 }
                 WS.getXML(herdCompleteVersionsURL, params, new XMLHandler(){
                     @Override
@@ -590,17 +610,24 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 params.add(WS.param("type", getHerdTypeParam(query.getType())));
                 params.add(WS.param("start", query.getStart()));
                 params.add(WS.param("count", query.getCount()));
-                params.add(WS.param("binaryMajor", query.getBinaryMajor()));
-                params.add(WS.param("binaryMinor", query.getBinaryMinor()));
-                if (herdVersion < 4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
+                // not strictly correct, but we have to do something about old herds
+                params.add(WS.param("binaryMajor", query.getJvmBinaryMajor()));
+                params.add(WS.param("binaryMinor", query.getJvmBinaryMinor()));
+                if (herdVersion < HERD_V4 && query.getMemberName() != null && !query.getMemberName().isEmpty()) {
                     // Earlier version of the Herd didn't support member searches so let's not pretend they did
                     return;
                 }
-                if (herdVersion >= 4) {
+                if (herdVersion >= HERD_V4) {
                     params.add(WS.param("memberName", query.getMemberName()));
                     params.add(WS.param("memberSearchPackageOnly", query.isMemberSearchPackageOnly()));
                     params.add(WS.param("memberSearchExact", query.isMemberSearchExact()));
                     params.add(WS.param("retrieval", getHerdRetrievalParam(query.getRetrieval())));
+                }
+                if (herdVersion >= HERD_V5) {
+                	params.add(WS.param("jvmBinaryMajor", query.getJvmBinaryMajor()));
+                	params.add(WS.param("jvmBinaryMinor", query.getJvmBinaryMinor()));
+                	params.add(WS.param("jsBinaryMajor", query.getJsBinaryMajor()));
+                	params.add(WS.param("jsBinaryMinor", query.getJsBinaryMinor()));
                 }
                 WS.getXML(herdSearchModulesURL, params, new XMLHandler(){
                     @Override
