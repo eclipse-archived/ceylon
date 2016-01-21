@@ -4,7 +4,7 @@ import ceylon.language.meta { modules }
 shared void bugC1523() {
     try{
         print("by `` `module modules.optional`.annotations<AuthorsAnnotation>() ``");
-        assert(false);
+        assert(runtime.name=="node.js");
     }catch(AssertionError x){
         assert(x.message == "Module modules.optional/1 is not available");
     }
