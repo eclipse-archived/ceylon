@@ -330,17 +330,25 @@ public abstract class AbstractRepository implements CmrRepository {
 
         // This allows us to never match the default module, since it's at "/default/default.car" which
         // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
+    	boolean retBool = false;
         for (Node versionNode : moduleNode.getChildren()) {
             String name = versionNode.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !versionNode.hasBinaries();
             if (isFolder
                     && !ArtifactContext.isDirectoryName(name)
-                    && containsAnyArtifact(moduleNode, versionNode, query, ret))
-                return true;
+                    && containsAnyArtifact(moduleNode, versionNode, query, ret)){
+            	retBool = true;
+            	// we found an artifact
+            	if(ret.foundRightType){
+            		// we're done
+            		return true;
+            	}
+            	// else try other versions before giving up on finding the right type
+            }
         }
-        // could not find any
-        return false;
+        // done with versions
+        return retBool;
     }
 
     /*
