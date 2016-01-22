@@ -208,7 +208,7 @@ public class AnalyzerUtil {
     
     static String correct(Scope scope, Unit unit, String name) {
         return best(name, 
-                scope.getMatchingDeclarations(unit, "", 0)
+                scope.getMatchingDeclarations(unit, "", 0, null)
                     .keySet());
     }
     

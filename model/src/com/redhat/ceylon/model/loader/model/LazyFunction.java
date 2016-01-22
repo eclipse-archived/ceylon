@@ -10,6 +10,7 @@ import com.redhat.ceylon.model.loader.ModelCompleter;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationKind;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
@@ -169,9 +170,9 @@ public class LazyFunction extends Function implements LazyElement, LocalDeclarat
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable canceller) {
         load();
-        return super.getMatchingDeclarations(unit, startingWith, proximity);
+        return super.getMatchingDeclarations(unit, startingWith, proximity, canceller);
     }
 
     @Override

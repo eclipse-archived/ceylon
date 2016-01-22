@@ -79,12 +79,6 @@ public class MainForJsTest {
         if (!jsc.generate()) {
             jsc.printErrorsAndCount(writer);
         }
-        System.out.println("Compiling in lexical scope style");
-        jsc = new JsCompiler(typeChecker, opts.optimize(false).outRepo("build/test/lexical")).stopOnErrors(false);
-        jsc.setResourceFiles(resfiles);
-        if (!jsc.generate()) {
-            jsc.printErrors(writer);
-        }
     }
 
 }

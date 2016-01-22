@@ -407,7 +407,10 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        if (dec.isAnything()) {
+        if (dec==null) {
+            return false;
+        }
+        else if (dec.isAnything()) {
             return true;
         }
         else if (dec.isObject()) {

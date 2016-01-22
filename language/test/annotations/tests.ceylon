@@ -370,8 +370,10 @@ shared void checkAAbstractClass() {
     // parameter
     assert(exists fmp = fm.parameterDeclarations[0]);
     // parameter doc
-    assert(exists fmpdoc = annotations(docAnnotation, fmp),
+    if (runtime.name=="jvm") {
+        assert(exists fmpdoc = annotations(docAnnotation, fmp),
             fmpdoc.description == "AAbstractClass.formalMethod.parameter");
+    }
     
     // InnerClass
     assert(exists icm=aAbstractClassDecl.apply<AAbstractClass>().getClassOrInterface<AAbstractClass, Class<AAbstractClass.InnerClass, [String]>>("InnerClass"));
@@ -390,10 +392,12 @@ shared void checkAAbstractClass() {
     assert(exists icmdoc = annotations(docAnnotation, `function AAbstractClass.InnerClass.method`),
             icmdoc.description == "AAbstractClass.InnerClass.method");
     // InnerClass method param doc
-    assert(
+    if (runtime.name=="jvm") {
+        assert(
             exists icmpDecl = `function AAbstractClass.InnerClass.method`.parameterDeclarations[0],
             exists icmpdoc = annotations(docAnnotation, icmpDecl),
             icmpdoc.description == "AAbstractClass.InnerClass.method.parameter");
+    }
     
     // InnerInterface
     assert(exists iim=aAbstractClassDecl.apply<AAbstractClass>().getClassOrInterface<AAbstractClass, Interface<AAbstractClass.InnerInterface>>("InnerInterface"));
@@ -407,9 +411,11 @@ shared void checkAAbstractClass() {
     assert(exists iimdoc = annotations(docAnnotation, `function AAbstractClass.InnerInterface.method`),
     iimdoc.description == "AAbstractClass.InnerInterface.method");
     // InnerInterface method parameter doc
-    assert(exists iimpDecl = `function AAbstractClass.InnerInterface.method`.parameterDeclarations[0],
-    exists iimpdoc = annotations(docAnnotation, iimpDecl),
-            iimpdoc.description == "AAbstractClass.InnerInterface.method.parameter");
+    if (runtime.name=="jvm") {
+        assert(exists iimpDecl = `function AAbstractClass.InnerInterface.method`.parameterDeclarations[0],
+               exists iimpdoc = annotations(docAnnotation, iimpDecl),
+               iimpdoc.description == "AAbstractClass.InnerInterface.method.parameter");
+    }
     
     // objectMember
     assert(exists omdoc = annotations(docAnnotation, `value AAbstractClass.objectMember`),
@@ -899,12 +905,12 @@ shared void checkMetamodelRefs() {
 shared void checkAClassAlias() {
     assert(exists acadoc = annotations(docAnnotation, `class AClassAlias`),
             acadoc.description == "AClassAlias");
-    
-    assert(
+    if (runtime.name=="jvm") { 
+        assert(
             exists acapDecl = `class AClassAlias`.parameterDeclarations[0],
             exists acapdoc = annotations(docAnnotation, acapDecl),
             acapdoc.description == "AClassAlias.p");
-    
+    }
 }
 
 @test

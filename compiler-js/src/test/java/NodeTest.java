@@ -41,26 +41,18 @@ public class NodeTest {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length < 2) {
-            System.out.println("You must specify the two directories containing the compiled JS (normal and optimized)");
+        if (args.length < 1) {
+            System.out.println("You must specify the directory containing the compiled JS");
         }
-        File root1 = new File(args[0]);
-        File root2 = new File(args[1]);
-        if (!(root1.exists() && root1.isDirectory() && root1.canRead())) {
-            System.out.printf("%s is not a readable directory%n", root1);
-            System.exit(1);
-        }
-        if (!(root2.exists() && root2.isDirectory() && root2.canRead())) {
-            System.out.printf("%s is not a readable directory%n", root2);
+        File root = new File(args[0]);
+        if (!(root.exists() && root.isDirectory() && root.canRead())) {
+            System.out.printf("%s is not a readable directory%n", root);
             System.exit(1);
         }
         final String nodePath = CeylonRunJsTool.findNode();
-        for (File subdir1 : root1.listFiles()) {
-            final String modname = subdir1.getName();
-            if (subdir1.isDirectory()) { //skip language module
-                File subdir2 = new File(root2, modname);
-                run(nodePath, subdir1);
-                run(nodePath, subdir2);
+        for (File subdir : root.listFiles()) {
+            if (subdir.isDirectory()) { //skip language module
+                run(nodePath, subdir);
             }
         }
     }

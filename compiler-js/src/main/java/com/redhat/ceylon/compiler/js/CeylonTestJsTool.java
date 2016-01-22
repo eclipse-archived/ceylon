@@ -41,7 +41,11 @@ public class CeylonTestJsTool extends AbstractTestTool {
     private boolean debug = true;
 
     public CeylonTestJsTool() {
-        super(CeylonRunJsMessages.RESOURCE_BUNDLE, ModuleQuery.Type.JS, Versions.JS_BINARY_MAJOR_VERSION, Versions.JS_BINARY_MINOR_VERSION);
+        super(CeylonRunJsMessages.RESOURCE_BUNDLE, 
+        		ModuleQuery.Type.JS,
+        		// JVM binary but don't care since JS
+        		null, null,
+        		Versions.JS_BINARY_MAJOR_VERSION, Versions.JS_BINARY_MINOR_VERSION);
     }
 
     @OptionArgument(argumentName = "node-exe")

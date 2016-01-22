@@ -264,7 +264,7 @@ public abstract class AbstractRepository implements CmrRepository {
         for (String suffix : lookup.getType().getSuffixes()) {
             if (getArtifactName(module, version, suffix).equals(name)) {
                 if (shouldCheckBinaryVersion(suffix)) {
-                    return checkBinaryVersion(module, version, node, lookup);
+                    return checkBinaryVersion(module, version, node, lookup, suffix);
                 }
                 return true;
             }
@@ -280,23 +280,35 @@ public abstract class AbstractRepository implements CmrRepository {
                 || suffix.equals(ArtifactContext.DART_MODEL);
     }
     
-    private boolean checkBinaryVersion(String module, String version, Node node, ModuleQuery lookup) {
-        if (lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null)
+    private boolean checkBinaryVersion(String module, String version, Node node, ModuleQuery lookup, String suffix) {
+    	Integer binaryMajor = null, binaryMinor = null;
+    	switch(suffix){
+    	case ArtifactContext.CAR:
+    	case ArtifactContext.JAR:
+    		binaryMajor = lookup.getJvmBinaryMajor();
+    		binaryMinor = lookup.getJvmBinaryMinor();
+    		break;
+    	case ArtifactContext.JS:
+    	case ArtifactContext.JS_MODEL:
+    		binaryMajor = lookup.getJsBinaryMajor();
+    		binaryMinor = lookup.getJsBinaryMinor();
+    		break;
+    	}
+        if (binaryMajor == null && binaryMinor == null)
             return true;
         try {
             File file = node.getContent(File.class);
             if (file == null)
                 return false; // can't verify
 
-            String suffix = ArtifactContext.getSuffixFromNode(node);
             ModuleInfoReader reader = getModuleInfoReader(suffix);
             if (reader != null) {
                 int[] versions = reader.getBinaryVersions(module, version, file);
                 if (versions == null)
                     return false; // can't verify
-                if (lookup.getBinaryMajor() != null
-                        && lookup.getBinaryMinor() != null 
-                        && !Versions.isBinaryVersionCompatible(lookup.getBinaryMajor(), lookup.getBinaryMinor(), versions[0], versions[1]))
+                if (binaryMajor != null
+                        && binaryMinor != null 
+                        && !Versions.isBinaryVersionCompatible(binaryMajor, binaryMinor, versions[0], versions[1]))
                     return false;
                 return true;
             }
@@ -318,17 +330,25 @@ public abstract class AbstractRepository implements CmrRepository {
 
         // This allows us to never match the default module, since it's at "/default/default.car" which
         // cannot match this rule. Normal modules always have at least one "/name/version/bla.car".
+    	boolean retBool = false;
         for (Node versionNode : moduleNode.getChildren()) {
             String name = versionNode.getLabel();
             // Winner of the less aptly-named method
             boolean isFolder = !versionNode.hasBinaries();
             if (isFolder
                     && !ArtifactContext.isDirectoryName(name)
-                    && containsAnyArtifact(moduleNode, versionNode, query, ret))
-                return true;
+                    && containsAnyArtifact(moduleNode, versionNode, query, ret)){
+            	retBool = true;
+            	// we found an artifact
+            	if(ret.foundRightType){
+            		// we're done
+            		return true;
+            	}
+            	// else try other versions before giving up on finding the right type
+            }
         }
-        // could not find any
-        return false;
+        // done with versions
+        return retBool;
     }
 
     /*
@@ -455,7 +475,7 @@ public abstract class AbstractRepository implements CmrRepository {
                     }
                 }
                 if (shouldCheckBinaryVersion(suffix)) {
-                    if (!checkBinaryVersion(name, version, artifact, lookup)) {
+                    if (!checkBinaryVersion(name, version, artifact, lookup, suffix)) {
                         if (lookup.getRetrieval() == Retrieval.ALL) {
                             break;
                         } else {
@@ -486,7 +506,9 @@ public abstract class AbstractRepository implements CmrRepository {
             // read the artifact's information
             if (((found && memberName == null) || foundInfo)
                     && (lookup.getRetrieval() == Retrieval.ANY || suffixesToFind.isEmpty())
-                    && ((lookup.getBinaryMajor() == null && lookup.getBinaryMinor() == null) || binaryMatch)) {
+                    && ((lookup.getJvmBinaryMajor() == null && lookup.getJvmBinaryMinor() == null
+                         && lookup.getJsBinaryMajor() == null && lookup.getJsBinaryMinor() == null) 
+                    		|| binaryMatch)) {
                 mvd.setRemote(root.isRemote());
                 mvd.setOrigin(getDisplayString());
                 result.addVersion(mvd);
@@ -601,7 +623,7 @@ public abstract class AbstractRepository implements CmrRepository {
                 String artifactName = getArtifactName(moduleName, version, suffix);
                 Node artifact = child.getChild(artifactName);
                 if (artifact != null) {
-                    if (shouldCheckBinaryVersion(suffix) && !checkBinaryVersion(moduleName, version, artifact, query)) {
+                    if (shouldCheckBinaryVersion(suffix) && !checkBinaryVersion(moduleName, version, artifact, query, suffix)) {
                         continue;
                     }
                     if (query.getRetrieval() == Retrieval.ANY) {

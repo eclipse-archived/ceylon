@@ -93,6 +93,14 @@ Some super-charged ant tasks:
              useNativeBasedir="true">
         </ant>
     </target>
+
+    <target name="test">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="test"
+             inheritall="false"
+             useNativeBasedir="true">
+        </ant>
+    </target>
     
     <!-- The following tasks all redirect to "dist/sdk-build.xml" -->
     

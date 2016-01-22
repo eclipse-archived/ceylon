@@ -20,6 +20,7 @@
 
     <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon.language,ceylon-tool-provider,ceylon-runtime" />
     <property name="moddirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,language,tool-provider,runtime" />
+    <property name="testdirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,language,tool-provider,runtime" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
@@ -177,6 +178,29 @@ Some super-charged ant tasks:
         <echo>Publishing ${project.item.name} to IDE</echo>
         <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
              target="ide-quick-internal"
+             dir="${projects.base.dir}/${project.item.name}"
+            inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="test" depends="install-all">
+        <antcall target="test-quick"/>
+    </target>
+    <target name="test-quick">
+        <foreach list="${testdirs}"
+                 target="test-item"
+                 param="project.item.name"
+                 inheritall="true" />
+    </target>
+    <target name="test-item">
+        <fail unless="projects.base.dir" />
+        <fail unless="project.item.name" />
+        <echo>Running tests for ${project.item.name}</echo>
+        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
+             target="test-quick"
              dir="${projects.base.dir}/${project.item.name}"
             inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>

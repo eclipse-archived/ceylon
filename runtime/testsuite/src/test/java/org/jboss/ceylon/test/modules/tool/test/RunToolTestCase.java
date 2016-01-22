@@ -72,7 +72,7 @@ public class RunToolTestCase extends AbstractToolTest {
     private List<String> options(String... strings){
         List<String> ret = new ArrayList<String>(strings.length+2);
         ret.add("--sysrep");
-        ret.add("../ceylon/dist/dist/repo");
+        ret.add("../dist/dist/repo");
         ret.add("--cacherep");
         ret.add(cacheDir);
         ret.add("--rep");

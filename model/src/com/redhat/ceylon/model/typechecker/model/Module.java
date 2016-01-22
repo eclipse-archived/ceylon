@@ -155,13 +155,23 @@ public class Module
             }
         }
     }
-    
+/*    
     public Map<String, DeclarationWithProximity> 
     getAvailableDeclarations(String startingWith, 
             int proximity) {
+        return getAvailableDeclarations(startingWith, proximity, null);
+    }
+*/    
+    public Map<String, DeclarationWithProximity> 
+    getAvailableDeclarations(String startingWith, 
+            int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Package p: getAllVisiblePackages()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                break;
+            }
             String packageName = 
                     p.getNameAsString();
             boolean isLanguageModule = 

@@ -38,14 +38,20 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     protected boolean tap;
     protected boolean report;
     private final Type type;
-    private final Integer binaryMajor;
-    private final Integer binaryMinor;
+    private final Integer jvmBinaryMajor;
+    private final Integer jvmBinaryMinor;
+    private final Integer jsBinaryMajor;
+    private final Integer jsBinaryMinor;
 
-    public AbstractTestTool(ResourceBundle bundle, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+    public AbstractTestTool(ResourceBundle bundle, ModuleQuery.Type type, 
+    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
         super(bundle);
         this.type = type;
-        this.binaryMajor = binaryMajor;
-        this.binaryMinor = binaryMinor;
+        this.jvmBinaryMajor = jvmBinaryMajor;
+        this.jvmBinaryMinor = jvmBinaryMinor;
+        this.jsBinaryMajor = jsBinaryMajor;
+        this.jsBinaryMinor = jsBinaryMinor;
     }
     
     @Override
@@ -112,8 +118,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
                 moduleName,
                 moduleVersion,
                 type,
-                binaryMajor,
-                binaryMinor,
+                jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor,
                 compileFlags);
 
         return moduleVersion != null ? moduleName + "/" + moduleVersion : null;
@@ -219,7 +224,8 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     }
 
     private String findTestVersionInDependecies(ModuleDependencyInfo module, Queue<ModuleDependencyInfo> queue) {
-        Collection<ModuleVersionDetails> moduleDetailsCollection = getModuleVersions(module.getName(), module.getVersion(), type, binaryMajor, binaryMinor);
+        Collection<ModuleVersionDetails> moduleDetailsCollection = getModuleVersions(module.getName(), module.getVersion(), 
+        		type, jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
         Iterator<ModuleVersionDetails> moduleDetailsIterator = moduleDetailsCollection.iterator();
         if( moduleDetailsIterator.hasNext() ) {
             ModuleVersionDetails moduleDetails = moduleDetailsIterator.next();

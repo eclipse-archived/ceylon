@@ -144,7 +144,8 @@ public class ModuleCopycat {
                 }
                 return;
             }
-            Collection<ModuleVersionDetails> versions = getModuleVersions(srcRepoman, context.getName(), context.getVersion(), ModuleQuery.Type.ALL, null, null);
+            Collection<ModuleVersionDetails> versions = getModuleVersions(srcRepoman, context.getName(), context.getVersion(), 
+            		ModuleQuery.Type.ALL, null, null, null, null);
             if (!versions.isEmpty()) {
                 ArtifactContext depContext = context.copy();
                 ModuleVersionDetails ver = versions.iterator().next();
@@ -199,13 +200,22 @@ public class ModuleCopycat {
         return cnt;
     }
 
-    private Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, Integer binaryMajor, Integer binaryMinor) {
+    private Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, 
+    		ModuleQuery.Type type, 
+    		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
+    		Integer jsBinaryMajor, Integer jsBinaryMinor) {
         ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
-        if (binaryMajor != null) {
-            query.setBinaryMajor(binaryMajor);
+        if (jvmBinaryMajor != null) {
+            query.setJvmBinaryMajor(jvmBinaryMajor);
         }
-        if (binaryMinor != null) {
-            query.setBinaryMinor(binaryMinor);
+        if (jvmBinaryMinor != null) {
+            query.setJvmBinaryMinor(jvmBinaryMinor);
+        }
+        if (jsBinaryMajor != null) {
+            query.setJsBinaryMajor(jsBinaryMajor);
+        }
+        if (jsBinaryMinor != null) {
+            query.setJsBinaryMinor(jsBinaryMinor);
         }
         ModuleVersionResult result = repoMgr.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();

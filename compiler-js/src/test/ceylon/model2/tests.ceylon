@@ -70,7 +70,7 @@ void typeTests() {
   check(type(3.14).string=="ceylon.language::Float", "type(3.14): ``type(3.14)``");
   check(type([]).string=="ceylon.language::empty", "type([]): ``type([])``");
   check(type(Example1()).string=="model2::Example1","type(Example1()):``type(Example1())``");
-  check(type(Example2).string=="ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Anything>","type(Example2):``type(Example2)``");
+  check(type(Example2).string=="ceylon.language::Callable<model2::Example2,ceylon.language::Empty>","type(Example2):``type(Example2)``");
   check(type("hello").string=="ceylon.language::String","type('hello'):``type("hello")``");
   check(type({1,2,4,5}).string=="ceylon.language::Array<ceylon.language::Integer>","type({1,2,4,5}):``type({1,2,4,5})`` (expected Array<Integer>)");
   check(type(1..2).string=="ceylon.language::Span<ceylon.language::Integer>","type(1..2):``type(1..2)`` expected Span<Integer>");

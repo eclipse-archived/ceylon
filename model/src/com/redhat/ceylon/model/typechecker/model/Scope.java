@@ -126,8 +126,9 @@ public interface Scope {
     public Map<String, DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, 
             String startingWith,
-            int proximity);
-    
+            int proximity,
+            Cancellable canceller);
+
     /**
      * Get a list of all declarations belonging directly to
      * this scope, even declarations which aren't normally

@@ -39,7 +39,10 @@ public class Interface extends ClassOrInterface {
 
     @Override
     public boolean inherits(TypeDeclaration dec) {
-        if (dec.isAnything() || dec.isObject()) {
+        if (dec==null) {
+            return false;
+        }
+        else if (dec.isAnything() || dec.isObject()) {
             return true;
         }
         else if (dec instanceof Class) {

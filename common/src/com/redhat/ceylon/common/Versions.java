@@ -79,10 +79,11 @@ public class Versions {
      * 1.0 is 6.0
      * 1.1 is 7.0
      * 1.2.0 is 8.0
+     * 1.2.1 is 8.0 for JVM, 9.0 for JS
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 0;
-    public static final int JS_BINARY_MAJOR_VERSION = 8;
+    public static final int JS_BINARY_MAJOR_VERSION = 9;
     public static final int JS_BINARY_MINOR_VERSION = 0;
     
     public static final int M1_BINARY_MAJOR_VERSION = 0;
@@ -114,6 +115,12 @@ public class Versions {
     
     public static final int V1_2_BINARY_MAJOR_VERSION = 8;
     public static final int V1_2_BINARY_MINOR_VERSION = 0;
+
+    public static final int V1_2_1_JVM_BINARY_MAJOR_VERSION = 8;
+    public static final int V1_2_1_JVM_BINARY_MINOR_VERSION = 0;
+
+    public static final int V1_2_1_JS_BINARY_MAJOR_VERSION = 9;
+    public static final int V1_2_1_JS_BINARY_MINOR_VERSION = 0;
 
     // Dependencies that end up in code
     public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.4.4.Final";

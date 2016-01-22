@@ -434,6 +434,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
         
         version = checkModuleVersionsOrShowSuggestions(
                 getRepositoryManager(), modname, version, ModuleQuery.Type.JS,
+                // JVM binary but don't care since JS
+                null, null,
                 Versions.JS_BINARY_MAJOR_VERSION, Versions.JS_BINARY_MINOR_VERSION, compileFlags);
         if (version == null) {
             return;

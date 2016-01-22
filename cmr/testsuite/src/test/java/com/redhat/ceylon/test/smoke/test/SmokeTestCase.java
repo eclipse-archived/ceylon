@@ -58,6 +58,7 @@ import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
@@ -593,10 +594,11 @@ public class SmokeTestCase extends AbstractTest {
         }
     }
 
+    private final static ModuleDependencyInfo language = new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false);
     public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails hello_js = new ModuleDetails("hello", null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo("ceylon.language", "0.6", false, false)), types(art(".js")), false, null);
-    public final static ModuleDetails hello_js_jvm = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 3, 0), art(".js")), false, null);
+    public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
+    public final static ModuleDetails hello_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
+    public final static ModuleDetails hello_js_jvm = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0), art(".js", 9, 0)), false, null);
     public final static ModuleDetails hello2 = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
     public final static ModuleDetails hello2_jvm = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
     public final static ModuleDetails hello2_js = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
@@ -687,7 +689,7 @@ public class SmokeTestCase extends AbstractTest {
 
         ModuleDetails[] expected = new ModuleDetails[]{
         };
-        testComplete("org", expected, manager, Type.JVM, 1234, 0);
+        testComplete("org", expected, manager, Type.JVM, 1234, 0, 1234, 0);
     }
 
     @Test
@@ -722,7 +724,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testListVersionBinaryIncompatible() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
         };
-        testListVersions("com.acme.helloworld", null, expected, getRepositoryManager(), 1234, 0);
+        testListVersions("com.acme.helloworld", null, expected, getRepositoryManager(), 1234, 0, 1234, 0);
     }
 
     @Test
@@ -781,6 +783,43 @@ public class SmokeTestCase extends AbstractTest {
         };
 
         testSearchResults("", Type.CAR, Retrieval.ALL, expected);
+    }
+
+    @Test
+    public void testSearchModulesJvmBinary() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                hello,
+                hello2_jvm
+        };
+
+        testSearchResults("hello", Type.CAR, Retrieval.ALL, expected, null, null, 
+        		getRepositoryManager(), null,
+        		Versions.V1_2_1_JVM_BINARY_MAJOR_VERSION, Versions.V1_2_1_JVM_BINARY_MINOR_VERSION,
+        		Versions.V1_2_1_JS_BINARY_MAJOR_VERSION, Versions.V1_2_1_JS_BINARY_MINOR_VERSION);
+    }
+
+    @Test
+    public void testSearchModulesJsBinary() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                hello_js,
+        };
+
+        testSearchResults("hello", Type.JS, Retrieval.ALL, expected, null, null, 
+        		getRepositoryManager(), null,
+        		Versions.V1_2_1_JVM_BINARY_MAJOR_VERSION, Versions.V1_2_1_JVM_BINARY_MINOR_VERSION,
+        		Versions.V1_2_1_JS_BINARY_MAJOR_VERSION, Versions.V1_2_1_JS_BINARY_MINOR_VERSION);
+    }
+
+    @Test
+    public void testSearchModulesJsOlderBinary() throws Exception {
+        ModuleDetails[] expected = new ModuleDetails[]{
+                hello2_js
+        };
+
+        testSearchResults("hello", Type.JS, Retrieval.ALL, expected, null, null, 
+        		getRepositoryManager(), null,
+        		Versions.V1_2_BINARY_MAJOR_VERSION, Versions.V1_2_BINARY_MINOR_VERSION,
+        		Versions.V1_2_BINARY_MAJOR_VERSION, Versions.V1_2_BINARY_MINOR_VERSION);
     }
 
     @Test
@@ -926,7 +965,7 @@ public class SmokeTestCase extends AbstractTest {
                 older_jar,
                 test_jar,
         };
-        testSearchResults("", Type.JVM, expected, null, null, getRepositoryManager(), null, 1234, 0);
+        testSearchResults("", Type.JVM, expected, null, null, getRepositoryManager(), null, 1234, 0, 1234, 0);
     }
 
     @Test

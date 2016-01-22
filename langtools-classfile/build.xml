@@ -152,4 +152,12 @@
 
     </target>
 	
+    <target name="test">
+        <echo>No tests available (yet)</echo>
+    </target>
+	
+    <target name="test-quick">
+        <echo>No tests available (yet)</echo>
+    </target>
 </project>
+
