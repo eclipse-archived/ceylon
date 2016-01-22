@@ -207,7 +207,7 @@ shared void numbers() {
     try {
        fail("Should have thrown Overflow Exception: ``922337203685477632.float``");
     } catch(OverflowException ex) {
-        check(ex.message == "922337203685477632 cannot be coerced into a 64 bit floating point value");
+        check("cannot be coerced into" in ex.message, "922337203685477632.float message: ``ex.message``");
     }
     
     check(922337203685477632.nearestFloat == 9.2233720368547763E17, "large nearest float 1");
