@@ -317,8 +317,12 @@ $addnm$('notLargerThan',Comparable.$$.prototype.notLargerThan);
 $specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','notSmallerThan']};})
 $specialiseForNumber$(Float, 'notLargerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','notLargerThan']};})
 
-atr$(JSNum$proto, '$_float', function(){ return Float(this.valueOf()); },
-  undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Float},$cont:Integer,d:['$','Integer','$at','float']};});
+atr$(JSNum$proto, '$_float', function(){
+  if (this.magnitude>runtime().maxExactIntegralFloat) {
+    throw OverflowException(this+' cannot be coerced into a 64 bit floating point value');
+  }
+  return Float(this.valueOf());
+},undefined,function(){return{pa:65,mod:$CCMM$,$t:{t:Float},$cont:Integer,d:['$','Integer','$at','float']};});
 $specialiseForNumber$(Integer, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Integer,d:['$','Integer','$at','float']};})
 // its (private) constructor parameter
 $specialiseForNumber$(Float, '$_float', function(){return {mod:$CCMM$,$t:{t:Float},pa:0,$cont:Float,d:['$','Float','$at','float$oirx2o']};})
