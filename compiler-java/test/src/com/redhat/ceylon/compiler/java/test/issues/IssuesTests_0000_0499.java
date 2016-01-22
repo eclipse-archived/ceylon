@@ -245,7 +245,7 @@ public class IssuesTests_0000_0499 extends CompilerTests {
     @Test
     public void testBug407(){
         // make sure we don't get an NPE error
-        assertErrors("bug04xx/Bug407", new CompilerError(25, "expression is not iterable: 'Set<Entry<String,Integer>>' is not a subtype of 'Iterable'"));
+        compile("bug04xx/Bug407.ceylon");
     }
 
     @Test
