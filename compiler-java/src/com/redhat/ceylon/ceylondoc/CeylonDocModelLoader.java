@@ -71,6 +71,11 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     }
     
     @Override
+    public boolean isModuleInClassPath(Module module) {
+        return modulesAddedToClassPath.contains(module);
+    }
+    
+    @Override
     protected Class<?> loadClass(Module module, String name) {
         Class<?> klass = null;
         try {
