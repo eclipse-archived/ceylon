@@ -48,33 +48,5 @@ final class javaIterableInFor_ {
         if (doforelse$8) {
             sum = 0L;
         }
-        final .java.lang.Iterable<.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.Integer>> stringsToInts = (.java.lang.Iterable<.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.Integer>>).ceylon.language.nothing_.get_();
-        final .java.lang.Iterable<.ceylon.language.Entry<? extends .java.lang.String, ? extends .java.lang.Integer>> jstringsToJints = (.java.lang.Iterable<.ceylon.language.Entry<? extends .java.lang.String, ? extends .java.lang.Integer>>).ceylon.language.nothing_.get_();
-        loop_5: for (.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.Integer> $pattern$entry$15$iterator$ : stringsToInts) {
-            final .java.lang.String s = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$15$iterator$).getKey()).toString();
-            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)$pattern$entry$15$iterator$).getItem()).longValue();
-            sum += .ceylon.language.String.hashCode(s);
-            sum += .ceylon.language.Integer.hashCode(i);
-        }
-        loop_6: for (.ceylon.language.Entry<? extends .java.lang.String, ? extends .java.lang.Integer> $pattern$entry$17$iterator$ : jstringsToJints) {
-            final .java.lang.String s = (.java.lang.String)((.ceylon.language.Entry)$pattern$entry$17$iterator$).getKey();
-            final .java.lang.Integer i = (.java.lang.Integer)((.ceylon.language.Entry)$pattern$entry$17$iterator$).getItem();
-            sum += s.hashCode();
-            sum += i.hashCode();
-        }
-        final .java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>> stringsInts = (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>).ceylon.language.nothing_.get_();
-        final .java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>> jstringsJints = (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>).ceylon.language.nothing_.get_();
-        loop_7: for (.ceylon.language.Sequence $pattern$tuple$19$iterator$ : (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.java.lang.Iterable)stringsInts) {
-            final .java.lang.String s = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$19$iterator$).getFromFirst(0)).toString();
-            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$19$iterator$).getFromFirst(1)).longValue();
-            sum += .ceylon.language.String.hashCode(s);
-            sum += .ceylon.language.Integer.hashCode(i);
-        }
-        loop_8: for (.ceylon.language.Sequence $pattern$tuple$21$iterator$ : (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.java.lang.Iterable)jstringsJints) {
-            final .java.lang.String s = (.java.lang.String)((.ceylon.language.Sequence)$pattern$tuple$21$iterator$).getFromFirst(0);
-            final .java.lang.Integer i = (.java.lang.Integer)((.ceylon.language.Sequence)$pattern$tuple$21$iterator$).getFromFirst(1);
-            sum += s.hashCode();
-            sum += i.hashCode();
-        }
     }
 }
