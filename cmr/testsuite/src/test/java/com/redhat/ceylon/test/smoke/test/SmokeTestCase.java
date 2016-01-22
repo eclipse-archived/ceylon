@@ -599,6 +599,7 @@ public class SmokeTestCase extends AbstractTest {
     public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
     public final static ModuleDetails hello_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
     public final static ModuleDetails hello_js_jvm = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0), art(".js", 9, 0)), false, null);
+    public final static ModuleDetails hello_120_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.0"), deps(language), types(art(".js", 8, 0)), false, null);
     public final static ModuleDetails hello2 = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
     public final static ModuleDetails hello2_jvm = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
     public final static ModuleDetails hello2_js = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
@@ -813,6 +814,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSearchModulesJsOlderBinary() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
+        		hello_120_js,
                 hello2_js
         };
 
@@ -1301,4 +1303,50 @@ public class SmokeTestCase extends AbstractTest {
         Assert.assertEquals(40, results.getStart());
     }
 
+    @Test
+    public void testListVersionBinaryCompat() throws Exception {
+    	String path = getRepositoryRoot().getAbsolutePath();
+        ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
+                new ModuleVersionDetails("hello", "1.0.0", "A test", "Apache Software License", 
+                		set("The Ceylon Team"), 
+                		deps(), 
+                		types(new ModuleVersionArtifact(".car", 3, 0)), false, path),
+                new ModuleVersionDetails("hello", "1.2.0", "A test", "Apache Software License", 
+                		set("The Ceylon Team"), 
+                		deps(language), 
+                		types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
+                new ModuleVersionDetails("hello", "1.2.1", "A test", "Apache Software License", 
+                		set("The Ceylon Team"), 
+                		deps(language), 
+                		types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
+        };
+        testListVersions("hello", null, expected, getRepositoryManager());
+
+        ModuleVersionDetails[] expectedBoth = new ModuleVersionDetails[]{
+                new ModuleVersionDetails("hello", "1.2.0", "A test", "Apache Software License", 
+                		set("The Ceylon Team"), 
+                		deps(language), 
+                		types(new ModuleVersionArtifact(".car", 8, 0),
+                				new ModuleVersionArtifact(".js", 8, 0)), false, path),
+                new ModuleVersionDetails("hello", "1.2.1", "A test", "Apache Software License", 
+                		set("The Ceylon Team"), 
+                		deps(language), 
+                		types(new ModuleVersionArtifact(".car", 8, 0),
+                				new ModuleVersionArtifact(".js", 9, 0)), false, path),
+        };
+        testListVersions("hello", null, expectedBoth, getRepositoryManager(), 
+        		8, 0, null, null, null,
+        		ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
+
+        ModuleVersionDetails[] expectedSingle = new ModuleVersionDetails[]{
+                new ModuleVersionDetails("hello", "1.2.1", "A test", "Apache Software License", 
+                		set("The Ceylon Team"), 
+                		deps(language), 
+                		types(new ModuleVersionArtifact(".car", 8, 0),
+                				new ModuleVersionArtifact(".js", 9, 0)), false, path),
+        };
+        testListVersions("hello", null, expectedSingle, getRepositoryManager(), 
+        		8, 0, 9, 0, null,
+        		ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
+    }
 }
