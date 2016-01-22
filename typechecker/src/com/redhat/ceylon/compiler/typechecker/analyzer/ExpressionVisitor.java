@@ -2092,82 +2092,91 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Class alias = that.getDeclarationModel();
         Type et = alias.getExtendedType();
-        if (et!=null) {
+        Tree.ClassSpecifier cs = that.getClassSpecifier();
+        if (cs!=null && et!=null) {
             TypeDeclaration etd = et.getDeclaration();
             if (etd instanceof Constructor) {
                 etd = etd.getExtendedType().getDeclaration();
             }
-            //TODO: some of this belongs in InheritanceVisitor! 
-            Class c = (Class) etd;
-            if (c.isAbstract()) {
-                if (!alias.isFormal() && 
-                    !alias.isAbstract()) {
-                    that.addError("alias of abstract class must be annotated abstract", 
-                            310);
+            if (etd instanceof Class) {
+                //TODO: some of this belongs in InheritanceVisitor! 
+                Class c = (Class) etd;
+                if (c.isAbstract()) {
+                    if (!alias.isFormal() && 
+                        !alias.isAbstract()) {
+                        that.addError("alias of abstract class must be annotated abstract", 
+                                310);
+                    }
+                }
+                if (c.isAbstraction()) {
+                    that.addError("class alias may not alias overloaded class");
+                }
+                else {
+                    Tree.InvocationExpression ie = 
+                            cs.getInvocationExpression();
+                    if (ie!=null) {
+                        checkClassAliasParameters(alias, that, ie);
+                    }
                 }
             }
-            if (c.isAbstraction()) {
-                that.addError("class alias may not alias overloaded class");
+        }
+    }
+
+    private void checkClassAliasParameters(Class alias, 
+            Tree.ClassDeclaration that, 
+            Tree.InvocationExpression ie) {
+        Tree.Primary primary = ie.getPrimary();
+        Tree.ExtendedTypeExpression smte= 
+                (Tree.ExtendedTypeExpression) 
+                    primary;
+        Functional classOrConstructor = 
+                (Functional) 
+                    smte.getDeclaration();
+        ParameterList cpl = 
+                classOrConstructor.getFirstParameterList();
+        ParameterList apl = alias.getParameterList();
+        if (cpl!=null && apl!=null) {
+            List<Parameter> cplps = 
+                    cpl.getParameters();
+            List<Parameter> aplps = 
+                    apl.getParameters();
+            int cps = cplps.size();
+            int aps = aplps.size();
+            if (cps!=aps) {
+                that.getParameterList()
+                    .addUnsupportedError(
+                            "wrong number of initializer parameters declared by class alias: '" + 
+                                    alias.getName() + "'");
             }
-            else if (c instanceof Class && 
-                    that.getClassSpecifier()!=null &&
-                    that.getClassSpecifier()
-                        .getInvocationExpression()!=null) {
-                Tree.Primary primary = 
-                        that.getClassSpecifier()
-                            .getInvocationExpression()
-                            .getPrimary();
-                Tree.ExtendedTypeExpression smte= 
-                        (Tree.ExtendedTypeExpression) 
-                            primary;
-                Functional classOrConstructor = 
-                        (Functional) smte.getDeclaration();
-                ParameterList cpl = 
-                        classOrConstructor.getFirstParameterList();
-                ParameterList apl = alias.getParameterList();
-                if (cpl!=null && apl!=null) {
-                    List<Parameter> cplps = 
-                            cpl.getParameters();
-                    List<Parameter> aplps = 
-                            apl.getParameters();
-                    int cps = cplps.size();
-                    int aps = aplps.size();
-                    if (cps!=aps) {
-                        that.getParameterList()
-                                .addUnsupportedError("wrong number of initializer parameters declared by class alias: '" + 
-                                        alias.getName() + "'");
+            
+            for (int i=0; i<cps && i<aps; i++) {
+                Parameter ap = aplps.get(i);
+                Parameter cp = cplps.get(i);
+                Reference target = smte.getTarget();
+                FunctionOrValue apm = ap.getModel();
+                if (apm!=null && target!=null) {
+                    Type pt = 
+                            target.getTypedParameter(cp)
+                                .getFullType();
+                    Type apt = 
+                            apm.getReference()
+                                .getFullType();
+                    if (!isTypeUnknown(pt) && 
+                        !isTypeUnknown(apt) &&
+                            !apt.isSubtypeOf(pt)) {
+                        that.addUnsupportedError(
+                                "alias parameter '" + 
+                                ap.getName() + 
+                                "' must be assignable to corresponding class parameter '" +
+                                cp.getName() + 
+                                "'" + 
+                                notAssignableMessage(
+                                        apt, pt, that));
                     }
-                    
-                    for (int i=0; i<cps && i<aps; i++) {
-                        Parameter ap = aplps.get(i);
-                        Parameter cp = cplps.get(i);
-                        Reference target = smte.getTarget();
-                        FunctionOrValue apm = ap.getModel();
-                        if (apm!=null && target!=null) {
-                            Type pt = 
-                                    target.getTypedParameter(cp)
-                                        .getFullType();
-                            Type apt = 
-                                    apm.getReference()
-                                        .getFullType();
-                            if (!isTypeUnknown(pt) && 
-                                !isTypeUnknown(apt) &&
-                                    !apt.isSubtypeOf(pt)) {
-                                that.addUnsupportedError(
-                                        "alias parameter '" + 
-                                        ap.getName() + 
-                                        "' must be assignable to corresponding class parameter '" +
-                                        cp.getName() + 
-                                        "'" + 
-                                        notAssignableMessage(
-                                                apt, pt, that));
-                            }
-                        }
-                    }
-                    //temporary restrictions
-                    checkAliasedClass(that, cpl, apl);
                 }
             }
+            //temporary restrictions
+            checkAliasedClass(that, cpl, apl);
         }
     }
 
@@ -2190,7 +2199,8 @@ public class ExpressionVisitor extends Visitor {
             int size = pas.size();
             
             if (cps != size) {
-                pal.addUnsupportedError("wrong number of arguments for aliased class: '" + 
+                pal.addUnsupportedError(
+                        "wrong number of arguments for aliased class: '" + 
                         that.getDeclarationModel().getName() + 
                         "' has " + cps + " parameters");
             }
@@ -2205,7 +2215,8 @@ public class ExpressionVisitor extends Visitor {
                         cpl.getParameters().get(i);
                 if (pa instanceof Tree.ListedArgument) {
                     if (cparam.isSequenced()) {
-                        pa.addUnsupportedError("argument to variadic parameter of aliased class must be spread");
+                        pa.addUnsupportedError(
+                                "argument to variadic parameter of aliased class must be spread");
                     }
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) pa;
@@ -2215,7 +2226,8 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (pa instanceof Tree.SpreadArgument) {
                     if (!cparam.isSequenced()) {
-                        pa.addUnsupportedError("argument to non-variadic parameter of aliased class may not be spread");
+                        pa.addUnsupportedError(
+                                "argument to non-variadic parameter of aliased class may not be spread");
                     }
                     Tree.SpreadArgument sa = 
                             (Tree.SpreadArgument) pa;
@@ -2224,7 +2236,8 @@ public class ExpressionVisitor extends Visitor {
                     checkAliasArg(aparam, e);
                 }
                 else if (pa!=null) {
-                    pa.addUnsupportedError("argument to parameter or aliased class must be listed or spread");
+                    pa.addUnsupportedError(
+                            "argument to parameter or aliased class must be listed or spread");
                 }
             }
         }
