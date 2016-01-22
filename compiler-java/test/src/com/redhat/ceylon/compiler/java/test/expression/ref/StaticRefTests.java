@@ -19,9 +19,9 @@
  */
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class StaticRefTests extends CompilerTests {
