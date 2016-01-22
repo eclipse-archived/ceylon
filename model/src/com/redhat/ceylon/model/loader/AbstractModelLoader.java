@@ -1979,8 +1979,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         int major = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "major", 0);
         int minor = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "minor", 0);
-        module.setMajor(major);
-        module.setMinor(minor);
+        module.setJvmMajor(major);
+        module.setJvmMinor(minor);
 
         // no need to load the "nativeBackends" annotation value, it's loaded from annotations
         setAnnotations(module, moduleClass, false);
@@ -2038,8 +2038,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 oldLangMod.setName(Arrays.asList("ceylon", "language"));
                 oldLangMod.setVersion(Versions.getJvmLanguageModuleVersion(major, minor));
                 oldLangMod.setNativeBackends(Backends.JAVA);
-                oldLangMod.setMajor(major);
-                oldLangMod.setMinor(minor);
+                oldLangMod.setJvmMajor(major);
+                oldLangMod.setJvmMinor(minor);
                 ModuleImport moduleImport = new ModuleImport(oldLangMod, false, false);
                 module.addImport(moduleImport);
             }

@@ -31,8 +31,8 @@ public class JsonModule extends Module {
         model = value;
         final String binVersion = (String)model.get("$mod-bin");
         final int dotidx = binVersion.indexOf('.');
-        setMajor(Integer.parseInt((String)binVersion.substring(0,dotidx), 10));
-        setMinor(Integer.parseInt((String)binVersion.substring(dotidx+1), 10));
+        setJsMajor(Integer.parseInt((String)binVersion.substring(0,dotidx), 10));
+        setJsMinor(Integer.parseInt((String)binVersion.substring(dotidx+1), 10));
         if (model.get("$mod-pa") != null) {
             int bits = (int)model.get("$mod-pa");
             setNativeBackends(JsonPackage.hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.ANY);

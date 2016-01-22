@@ -265,8 +265,8 @@ public class JsCompiler {
                     if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module) {
                         Module m = (Module)that.getImportPath().getModel();
                         //Binary version check goes here now
-                        String binVersion = m.getMajor() +"."+ m.getMinor();
-                        if (m.getMajor() == 0) {
+                        String binVersion = m.getJsMajor() +"."+ m.getJsMinor();
+                        if (m.getJsMajor() == 0) {
                             //Load the module (most likely we're in the IDE if we need to do this)
                             ArtifactContext ac = new ArtifactContext(m.getNameAsString(),
                                     m.getVersion(), ArtifactContext.JS_MODEL);

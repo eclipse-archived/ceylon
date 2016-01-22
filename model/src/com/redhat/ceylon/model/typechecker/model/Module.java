@@ -24,8 +24,10 @@ public class Module
 
     private List<String> name;
     private String version;
-    private int major;
-    private int minor;
+    private int jvmMajor;
+    private int jvmMinor;
+    private int jsMajor;
+    private int jsMinor;
     private List<Package> packages = 
             new ArrayList<Package>();
     private List<ModuleImport> imports = 
@@ -338,22 +340,6 @@ public class Module
         this.unit = unit;
     }
 
-    public int getMajor() {
-        return major;
-    }
-
-    public void setMajor(int major) {
-        this.major = major;
-    }
-
-    public int getMinor() {
-        return minor;
-    }
-
-    public void setMinor(int minor) {
-        this.minor = minor;
-    }
-
     @Override
     public int compareTo(Module other) {
         if (this == other) {
@@ -432,5 +418,37 @@ public class Module
         else {
             return false;
         }
+    }
+
+    public int getJvmMajor() {
+        return jvmMajor;
+    }
+
+    public void setJvmMajor(int jvmMajor) {
+        this.jvmMajor = jvmMajor;
+    }
+
+    public int getJvmMinor() {
+        return jvmMinor;
+    }
+
+    public void setJvmMinor(int jvmMinor) {
+        this.jvmMinor = jvmMinor;
+    }
+
+    public int getJsMajor() {
+        return jsMajor;
+    }
+
+    public void setJsMajor(int jsMajor) {
+        this.jsMajor = jsMajor;
+    }
+
+    public int getJsMinor() {
+        return jsMinor;
+    }
+
+    public void setJsMinor(int jsMinor) {
+        this.jsMinor = jsMinor;
     }
 }

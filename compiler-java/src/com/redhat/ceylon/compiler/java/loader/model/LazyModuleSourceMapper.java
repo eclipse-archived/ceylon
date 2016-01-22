@@ -166,12 +166,12 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                         module.overrideImports(newModuleImports);
                     }
                 }
-                if(!Versions.isJvmBinaryVersionSupported(lazyModule.getMajor(), lazyModule.getMinor())){
+                if(!Versions.isJvmBinaryVersionSupported(lazyModule.getJvmMajor(), lazyModule.getJvmMinor())){
                     attachErrorToDependencyDeclaration(moduleImport,
                             dependencyTree,
                             "version '"+ lazyModule.getVersion() + "' of module '" + module.getNameAsString() + 
                             "' was compiled by an incompatible version of the compiler (binary version " +
-                            lazyModule.getMajor() + "." + lazyModule.getMinor() + 
+                            lazyModule.getJvmMajor() + "." + lazyModule.getJvmMinor() + 
                             " of module is not compatible with binary version " + 
                             Versions.JVM_BINARY_MAJOR_VERSION + "." + Versions.JVM_BINARY_MINOR_VERSION +
                             " of this compiler)");
