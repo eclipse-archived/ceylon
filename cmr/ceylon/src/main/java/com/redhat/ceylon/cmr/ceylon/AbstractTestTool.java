@@ -204,6 +204,11 @@ public abstract class AbstractTestTool extends RepoUsingTool {
         if( verbose != null && (verbose.equals("") || verbose.equals("test")) ) {
             msg("test.version.info", version).newline();
         }
+
+        // before ceylon.test 1.2.1 were used com.redhat.ceylon.test* modules as entry point for tests execution
+        if( version.equals("1.2.0") || version.equals("1.1.0") || version.equals("1.0.0") ) {
+            throw new ToolUsageError(Messages.msg(bundle, "test.version.incompatible"));
+        }
     }
 
     private String findTestVersionInDependecies(String moduleAndVersion) {
