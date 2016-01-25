@@ -31,6 +31,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_NOPOM = "compiler.nopom";
     public final static String COMPILER_GENERATE_MODULE_INFO = "compiler.generatemoduleinfo";
     public final static String COMPILER_PACK200 = "compiler.pack200";
+    public final static String COMPILER_TARGET = "compiler.target";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
     public final static String TESTTOOL_COMPILE = "testtool.compile";
@@ -247,5 +248,13 @@ public class DefaultToolOptions {
 
     public static String getTestToolCompileFlags(CeylonConfig config) {
         return config.getOption(TESTTOOL_COMPILE, Constants.DEFAULT_TESTTOOL_COMPILATION_FLAGS);
+    }
+
+    public static String getCompilerTarget() {
+        return getCompilerTarget(CeylonConfig.get());
+    }
+
+    public static String getCompilerTarget(CeylonConfig config) {
+        return config.getOption(COMPILER_TARGET);
     }
 }

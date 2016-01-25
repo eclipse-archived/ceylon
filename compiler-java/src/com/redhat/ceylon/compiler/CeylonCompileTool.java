@@ -182,7 +182,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean autoExportMavenDependencies;
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
 
-    private String target;
+    private String target = DefaultToolOptions.getCompilerTarget();
 
 
     public CeylonCompileTool() {
