@@ -863,7 +863,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                     mname = Module.LANGUAGE_MODULE_NAME;
                 }
                 com.redhat.ceylon.model.typechecker.model.Package rp;
-                if ("$".equals(pname)) {
+                if ("$".equals(pname) || "ceylon.language".equals(pname)) {
                     //Language module package
                     rp = Module.LANGUAGE_MODULE_NAME.equals(getNameAsString())? this :
                         getModule().getLanguageModule().getDirectPackage(Module.LANGUAGE_MODULE_NAME);
