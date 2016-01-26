@@ -28,6 +28,9 @@ shared void fail(String message) {
 
 shared void results() {
     print("assertions ``assertions``, failures ``failures``");
+    if (runtime.name=="node.js" && failures>0) {
+        process.exit(1);
+    }
 }
 
 shared Integer assertionCount() { return assertions; }

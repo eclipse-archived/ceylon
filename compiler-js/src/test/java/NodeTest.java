@@ -16,10 +16,10 @@ public class NodeTest {
             new File(subdir, "0.1" + File.separator + subdir.getName() + "-0.1.js");
     }
 
-    private static void run(final String nodePath, final File subdir) throws IOException, InterruptedException {
+    private static int run(final String nodePath, final File subdir) throws IOException, InterruptedException {
         final File root = subdir.getParentFile();
         final File jsf = getJavaScript(subdir);
-        if (!jsf.exists())return;
+        if (!jsf.exists())return 0;
         final String path = jsf.getPath();
         String subpath = path.substring(root.getPath().length()+1);
         System.out.printf("RUNNING %s/%s%n", root.getName(), subdir.getName());
@@ -34,10 +34,11 @@ public class NodeTest {
         new CeylonRunJsTool.ReadErrorStream(proc.getErrorStream(), System.out, true).start();
         int xv = proc.waitFor();
         proc.getInputStream().close();
-        if (xv != 0) {
+        if (xv != 0 && xv != 1) {
             System.out.printf("ERROR abnormal termination of node: %s%n", xv);
         }
         System.out.println("------------------------------------------------------");
+        return xv;
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -50,10 +51,14 @@ public class NodeTest {
             System.exit(1);
         }
         final String nodePath = CeylonRunJsTool.findNode();
+        boolean errs = false;
         for (File subdir : root.listFiles()) {
             if (subdir.isDirectory()) { //skip language module
-                run(nodePath, subdir);
+                errs |= run(nodePath, subdir) != 0;
             }
+        }
+        if (errs) {
+            System.exit(-1);
         }
     }
 }
