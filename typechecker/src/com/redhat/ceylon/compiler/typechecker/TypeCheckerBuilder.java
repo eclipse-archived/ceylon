@@ -29,6 +29,7 @@ public class TypeCheckerBuilder {
     private boolean verbose = false;
     private boolean statistics = false;
     private String encoding;
+    private String distVersion;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
     private List<VirtualFile> srcFiles = null;
     private final VFS vfs;
@@ -150,6 +151,11 @@ public class TypeCheckerBuilder {
         return this;
     }
 
+    public TypeCheckerBuilder distVersion(String distVersion) {
+        this.distVersion = distVersion;
+        return this;
+    }
+
     public TypeChecker getTypeChecker() {
         if (repositoryManager == null) {
             repositoryManager = CeylonUtils.repoManager()
@@ -157,7 +163,7 @@ public class TypeCheckerBuilder {
                     .buildManager();
         }
         return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor,
-                moduleManagerFactory, verbose, statistics, moduleFilters, srcFiles, encoding);
+                moduleManagerFactory, verbose, statistics, moduleFilters, srcFiles, encoding, distVersion);
     }
 
 }

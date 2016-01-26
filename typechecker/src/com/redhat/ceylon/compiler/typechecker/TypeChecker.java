@@ -46,10 +46,38 @@ public class TypeChecker {
             List<String> moduleFilters, 
             List<VirtualFile> srcFiles, 
             String encoding) {
+        this(vfs,
+                srcDirectories, 
+                repositoryManager, 
+                verifyDependencies,
+                assertionVisitor, 
+                moduleManagerFactory, 
+                verbose, statistics,
+                moduleFilters, 
+                srcFiles, 
+                encoding,
+                null);
+    }
+    
+    TypeChecker(VFS vfs, 
+            List<VirtualFile> srcDirectories, 
+            RepositoryManager repositoryManager, 
+            boolean verifyDependencies,
+            AssertionVisitor assertionVisitor, 
+            ModuleManagerFactory moduleManagerFactory, 
+            boolean verbose, boolean statistics,
+            List<String> moduleFilters, 
+            List<VirtualFile> srcFiles, 
+            String encoding,
+            String distVersion) {
         long start = System.nanoTime();
         this.verbose = verbose;
         this.statistics = statistics;
-        this.context = new Context(repositoryManager, vfs);
+        if (distVersion != null) {
+            this.context = new Context(repositoryManager, vfs, distVersion);
+        } else {
+            this.context = new Context(repositoryManager, vfs);
+        }
         this.phasedUnits = 
                 new PhasedUnits(context, 
                         moduleManagerFactory);
