@@ -1,10 +1,13 @@
-import com.redhat.ceylon.compiler.java.test.interop.bug4389.a{A}
+import com.redhat.ceylon.compiler.java.test.interop.bug4389.a{
+    A
+}
 
 void b() {
-    for (s in A()) {
+    A a = A();
+    for (s in a) {
         
     }
-    for (s in A().it) {
+    for (s in a.iterable) {
         
     }
 }

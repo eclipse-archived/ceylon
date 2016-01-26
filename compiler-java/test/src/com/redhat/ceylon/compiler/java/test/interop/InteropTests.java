@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.zip.ZipEntry;
@@ -659,8 +660,10 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testIopJavaIterableWithoutJavaBase() {
-        compile("bug4389/a/a.ceylon", "bug4389/a/package.ceylon");
-        compile("bug4389/b/b.ceylon");
-        
+        ArrayList<String> opts = new ArrayList<String>(defaultOptions);
+        opts.add("-rep");
+        opts.add("test/modules");
+        compareWithJavaSource(opts, null, "bug4389/b/b.ceylon");
+        //
     }
 }
