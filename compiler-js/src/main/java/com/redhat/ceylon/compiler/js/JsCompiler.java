@@ -148,7 +148,9 @@ public class JsCompiler {
     /** Sets the names of the files to compile. By default this is null, which means all units from the typechecker
      * will be compiled. */
     public JsCompiler setSourceFiles(List<File> files) {
-        this.srcFiles = files;
+        if (files != null && !files.isEmpty()) {
+            this.srcFiles = files;
+        }
         return this;
     }
 
