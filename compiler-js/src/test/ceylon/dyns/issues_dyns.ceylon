@@ -269,4 +269,27 @@ shared void issues() {
         check(e.message == "Undefined or null reference: foo");
     }*/
     issue604();
+    issue5952();
+}
+
+void issue5952() {
+  dynamic {
+    dynamic a=Test5952.a;
+    dynamic b=Test5952.a();
+    check(a()=="Test.a","#5952.1");
+    check(b=="Test.a","#5952.2");
+    dynamic c=Test5952.a.b;
+    dynamic d=Test5952.a.b();
+    check(c()=="Test.a.b","#5952.3");
+    check(d=="Test.a.b","#5952.4");
+    //dynamic e=Test5952.a.b;
+    dynamic f=Test5952.A.b;
+    dynamic g=Test5952.A.b();
+    check(f().string=="Test.A.b","#5952.5");
+    check(g.string=="Test.A.b","#5952.6 ``g``");
+    dynamic h=Test5952.A.B;
+    dynamic i=Test5952.A.B();
+    check(h().string=="Test.A.B","#5952.7 ``h()``");
+    check(i.string=="Test.A.B","#5952.8 ``i``");
+  }
 }
