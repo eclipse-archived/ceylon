@@ -103,6 +103,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private Boolean jigsaw;
     private Boolean noPom;
     private Boolean pack200;
+    private String target;
     private List<SuppressWarning> suppressWarnings = new ArrayList<SuppressWarning>(0);
     private boolean suppressAllWarnings = false;
     
@@ -162,6 +163,14 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
     public Boolean getPack200() {
         return pack200;
+    }
+    
+    public String getTarget() {
+        return target;
+    }
+    
+    public void setTarget(String target) {
+        this.target = target;
     }
     
     /**
@@ -504,6 +513,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         if (pack200!= null && pack200.booleanValue())
             appendOption(cmd, "--pack200");
         
+        if (target != null) {
+            appendOptionArgument(cmd, "--target", target);
+        }
         if (suppressWarnings != null) {
             if (suppressAllWarnings) {
                 appendOption(cmd, "--suppress-warning");
