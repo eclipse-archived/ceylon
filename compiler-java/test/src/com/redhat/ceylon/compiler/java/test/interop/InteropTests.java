@@ -656,4 +656,11 @@ public class InteropTests extends CompilerTests {
     public void testIopJavaAutoCloseableInTry(){
         compareWithJavaSource("JavaAutoCloseableInTry");
     }
+    
+    @Test
+    public void testIopJavaIterableWithoutJavaBase() {
+        compile("bug4389/a/a.ceylon", "bug4389/a/package.ceylon");
+        compile("bug4389/b/b.ceylon");
+        
+    }
 }
