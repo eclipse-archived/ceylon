@@ -1,9 +1,7 @@
 package com.redhat.ceylon.compiler.js;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -326,22 +324,8 @@ public class JsCompiler {
                     if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
                         final JsOutput lastOut = getOutput(lastUnit);
-                        VirtualFile vpath = findFile(path);
-                        try (BufferedReader reader = new BufferedReader(new InputStreamReader(vpath.getInputStream(), opts.getEncoding()))) {
-                            String line = null;
-                            while ((line = reader.readLine()) != null) {
-                                if (opts.isMinify()) {
-                                    line = line.trim();
-                                    if (!opts.isComment() && line.startsWith("//") && !line.contains("*/")) {
-                                        continue;
-                                    }
-                                }
-                                if (line.length()==0) {
-                                    continue;
-                                }
-                                lastOut.getWriter().write(line);
-                                lastOut.getWriter().write('\n');
-                            }
+                        try {
+                            lastOut.outputFile(path);
                         } finally {
                             lastOut.addSource(path);
                         }
@@ -580,12 +564,16 @@ public class JsCompiler {
     /** Create a path for a require call to fetch the specified module. */
     public static String scriptPath(Module mod) {
         StringBuilder path = new StringBuilder(mod.getNameAsString().replace('.', '/')).append('/');
+        String version = mod.getVersion();
+        if ("ceylon.language".equals(mod.getNameAsString()) && "1.2.0".equals(version)) {
+            version = "1.2.1";
+        }
         if (!mod.isDefault()) {
-            path.append(mod.getVersion()).append('/');
+            path.append(version).append('/');
         }
         path.append(mod.getNameAsString());
         if (!mod.isDefault()) {
-            path.append('-').append(mod.getVersion());
+            path.append('-').append(version);
         }
         return path.toString();
     }

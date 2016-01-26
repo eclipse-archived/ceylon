@@ -144,7 +144,11 @@ public class JsOutput {
         if (requires.put(path, modAlias) == null) {
             out("var ", modAlias, "=require('", path, "');\n");
             if (modAlias != null && !modAlias.isEmpty()) {
-                out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
+                String version = mod.getVersion();
+                if ("ceylon.language".equals(mod.getNameAsString()) && "1.2.0".equals(version)) {
+                    version = "1.2.1";
+                }
+                out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", version, "');\n");
             }
         }
     }
