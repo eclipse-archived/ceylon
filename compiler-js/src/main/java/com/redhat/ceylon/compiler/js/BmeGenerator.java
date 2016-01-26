@@ -188,21 +188,23 @@ public class BmeGenerator {
 
     static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen) {
         Tree.Primary prim = that.getPrimary();
+        final boolean dyncall = gen.isInDynamicBlock() && that.getDeclaration() == null;
         if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, gen);
-        } else if (that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false
-                && prim instanceof Tree.BaseTypeExpression == false) {
-            if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
+        } else if ((that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false
+                && prim instanceof Tree.BaseTypeExpression == false) || dyncall) {
+            final boolean isQte = prim instanceof Tree.QualifiedTypeExpression;
+            if (dyncall && that.getDirectlyInvoked() && !isQte) {
                 gen.out("new ");
             }
             if (prim instanceof Tree.BaseMemberExpression) {
                 generateBme((Tree.BaseMemberExpression)prim, gen);
-            } else if (prim instanceof Tree.QualifiedTypeExpression) {
+            } else if (isQte) {
                 generateQte((Tree.QualifiedTypeExpression)prim, gen);
             } else {
                 prim.visit(gen);
             }
-            if (gen.isInDynamicBlock() && that.getDeclaration() == null) {
+            if (dyncall) {
                 gen.out(".", that.getIdentifier().getText());
             } else if (TypeUtils.isConstructor(that.getDeclaration())) {
                 gen.out("_", gen.getNames().name(that.getDeclaration()));
