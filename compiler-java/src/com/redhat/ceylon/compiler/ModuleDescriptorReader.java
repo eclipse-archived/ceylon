@@ -150,19 +150,19 @@ class ModuleDescriptorReader {
     }
     
     /**
-     * Gets the module backend
-     * @return The name of the supported backend, or null if no native backend was found
+     * Gets the module backends
+     * @return The name of the supported backend
      */
-    public String getModuleBackend() {
+    public ArrayList<String> getModuleBackends() {
+        ArrayList<String> backends = new ArrayList<String>();
         for (Annotation ann : moduleDescriptor.getAnnotations()) {
             if (ann.getName().equals("native")) {
-                List<String> args = ann.getPositionalArguments();
-                if (args != null && !args.isEmpty()) {
-                    return removeQuotes(args.get(0));
+                for (String backend : ann.getPositionalArguments()) {
+                    backends.add(removeQuotes(backend));
                 }
             }
         }
-        return null;
+        return backends;
     }
     
     /**

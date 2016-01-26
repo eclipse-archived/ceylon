@@ -61,7 +61,7 @@ public class ModuleDescriptorReader {
             this.moduleVersion.setAccessible(true);
             this.moduleName = mdr.getMethod("getModuleName");
             this.moduleName.setAccessible(true);
-            this.moduleBackend = mdr.getMethod("getModuleBackend");
+            this.moduleBackend = mdr.getMethod("getModuleBackends");
             this.moduleBackend.setAccessible(true);
             this.moduleLicense = mdr.getMethod("getModuleLicense");
             this.moduleLicense.setAccessible(true);
@@ -107,12 +107,13 @@ public class ModuleDescriptorReader {
     }
     
     /**
-     * Gets the module backend
-     * @return The name of the supported backend, or null if no native backend was found
+     * Gets the module backends
+     * @return A list of names of the supported backends
      */
-    public String getModuleBackend() {
+    @SuppressWarnings("unchecked")
+    public List<String> getModuleBackends() {
         try {
-            return (String)moduleBackend.invoke(instance);
+            return (List<String>)moduleBackend.invoke(instance);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

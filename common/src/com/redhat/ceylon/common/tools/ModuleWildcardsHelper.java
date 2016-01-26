@@ -202,8 +202,8 @@ public abstract class ModuleWildcardsHelper {
         if (forBackend != null) {
             try {
                 ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, sourceRoot);
-                String backend = mdr.getModuleBackend();
-                return (backend == null) || backend.equals(forBackend.nativeAnnotation);
+                List<String> backends = mdr.getModuleBackends();
+                return backends.isEmpty() || backends.contains(forBackend.nativeAnnotation);
             } catch(ModuleDescriptorReader.NoSuchModuleException x) {
                 x.printStackTrace();
             }
