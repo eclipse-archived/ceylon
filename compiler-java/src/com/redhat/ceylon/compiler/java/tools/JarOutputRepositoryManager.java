@@ -256,6 +256,7 @@ public class JarOutputRepositoryManager {
                     // Copy the previous manifest
                     Manifest manifest = (module.isDefault() 
                     		? new OsgiUtil.DefaultModuleManifest() 
+                                    // using old compiler-generated manifest, so don't worry about conflicts: null logger 
                     	    : new OsgiUtil.OsgiManifest(module, getPreviousManifest(), osgiProvidedBundles, null)).build();
                     writeManifestJarEntry(manifestFirst, manifest);
                 } else if (manifest != null && !module.isDefault()) {
