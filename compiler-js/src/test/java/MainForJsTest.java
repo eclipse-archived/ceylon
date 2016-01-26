@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -74,10 +75,32 @@ public class MainForJsTest {
         System.out.println("Compiling in prototype style");
         opts.resourceDirs(resdirs);
         JsCompiler jsc = new JsCompiler(typeChecker, opts).stopOnErrors(true);
+        ArrayList<File> sources = new ArrayList<>();
+        for (String dir : args) {
+            //The arg is src/test/ceylon for example
+            addFilesToList(new File(dir),sources);
+        }
+        jsc.setSourceFiles(sources);
         jsc.setResourceFiles(resfiles);
         PrintWriter writer = new PrintWriter(System.out);
         if (!jsc.generate()) {
             jsc.printErrorsAndCount(writer);
+        }
+    }
+
+    private static void addFilesToList(File dir, ArrayList<File> list) {
+        if (dir.exists() && dir.isDirectory()) {
+            for (File sd: dir.listFiles()) {
+                final String fname = sd.getName();
+                if (sd.isFile() && (fname.endsWith(".js") || fname.endsWith(".ceylon"))) {
+                    list.add(sd);
+                    if (fname.endsWith(".js")) {
+                        System.out.println("Adding JS file " + sd);
+                    }
+                } else {
+                    addFilesToList(sd, list);
+                }
+            }
         }
     }
 
