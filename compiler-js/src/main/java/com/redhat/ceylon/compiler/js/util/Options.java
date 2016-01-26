@@ -297,6 +297,9 @@ public class Options {
     }
     
     public Options encoding(String encoding) {
+        if (encoding == null) {
+            encoding = System.getProperty("file.encoding");
+        }
         this.encoding = encoding;
         return this;
     }
