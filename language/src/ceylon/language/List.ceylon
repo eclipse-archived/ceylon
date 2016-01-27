@@ -324,11 +324,18 @@ shared interface List<out Element=Anything>
      
      For example:
      
-     - `(-2..2).patch([],1,3)` produces the list `{-2,2}`, 
+     - `(-2..2).patch([],1,3)` produces the list `{-2, 2}`, 
        and
      - `[-2, 2].patch(-1..1,1)` produces the list 
-       `{-2,-1,0,1,2}`.'
-     - `0:3`.patch(2..0) produces the list `{0,1,2,2,1,0}`.
+       `{-2, -1, 0, 1, 2}`.'
+     - `0:3`.patch(2..0) produces the list 
+       `{0, 1, 2, 2, 1, 0}`.
+     
+     Finally, to patch a single element, leaving the `size`
+     of the list unchanged, explicitly specify `length==1`:
+     
+     - `[0, 1, 0, 1].patch([-1],2,1)` produces the list
+       `{0, 1, -1, 1}`.
      
      If `length<0`, or if `from` is outside the range 
      `0..size`, return this list."
