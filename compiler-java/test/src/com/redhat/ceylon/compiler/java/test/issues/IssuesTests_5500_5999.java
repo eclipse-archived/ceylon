@@ -53,5 +53,9 @@ public class IssuesTests_5500_5999 extends CompilerTests {
         compile("bug59xx/bug5924.ceylon");
     }
 
+    @Test
+    public void testBug5953() {
+        compile("bug59xx/bug5953.ceylon");
+    }
 
 }
