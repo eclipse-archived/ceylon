@@ -269,19 +269,29 @@ public class JsCompiler {
                         //Binary version check goes here now
                         String binVersion = m.getJsMajor() +"."+ m.getJsMinor();
                         if (m.getJsMajor() == 0) {
-                            //Load the module (most likely we're in the IDE if we need to do this)
-                            ArtifactContext ac = new ArtifactContext(m.getNameAsString(),
-                                    m.getVersion(), ArtifactContext.JS_MODEL);
-                            ac.setIgnoreDependencies(true);
-                            ac.setThrowErrorIfMissing(false);
-                            ArtifactResult ar = tc.getContext().getRepositoryManager().getArtifactResult(ac);
-                            if (ar == null) {
-                                return;
+                            //Check if it's something we're compiling
+                            for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
+                                if (pu.getPackage() != null && pu.getPackage().getModule() == m) {
+                                    m.setJsMajor(Versions.JS_BINARY_MAJOR_VERSION);
+                                    m.setJsMinor(Versions.JS_BINARY_MINOR_VERSION);
+                                    binVersion = BIN_VERSION;
+                                }
                             }
-                            File js = ar.artifact();
-                            if (js != null) {
-                                Map<String,Object> json = JsModuleSourceMapper.loadJsonModel(js);
-                                binVersion = json.get("$mod-bin").toString();
+                            if (m.getJsMajor() == 0) {
+                                //Load the module (most likely we're in the IDE if we need to do this)
+                                ArtifactContext ac = new ArtifactContext(m.getNameAsString(),
+                                        m.getVersion(), ArtifactContext.JS_MODEL);
+                                ac.setIgnoreDependencies(true);
+                                ac.setThrowErrorIfMissing(false);
+                                ArtifactResult ar = tc.getContext().getRepositoryManager().getArtifactResult(ac);
+                                if (ar == null) {
+                                    return;
+                                }
+                                File js = ar.artifact();
+                                if (js != null) {
+                                    Map<String,Object> json = JsModuleSourceMapper.loadJsonModel(js);
+                                    binVersion = json.get("$mod-bin").toString();
+                                }
                             }
                         }
                         if (!BIN_VERSION.equals(binVersion)) {
