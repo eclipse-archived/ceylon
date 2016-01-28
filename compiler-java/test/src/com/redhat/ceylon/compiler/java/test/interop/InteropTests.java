@@ -663,7 +663,7 @@ public class InteropTests extends CompilerTests {
         ArrayList<String> opts = new ArrayList<String>(defaultOptions);
         opts.add("-rep");
         opts.add("test/modules");
-        compareWithJavaSource(opts, null, "bug4389/b/b.ceylon");
+        compareWithJavaSource(opts, "bug4389/b/b.src", "bug4389/b/b.ceylon");
         //
     }
 }
