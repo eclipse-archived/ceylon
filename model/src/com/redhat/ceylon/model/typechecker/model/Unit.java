@@ -451,7 +451,7 @@ public class Unit {
         }
     }
     
-    private Package getJavaLangPackage() {
+    protected Package getJavaLangPackage() {
         return getPackage().getModule().getPackage("java.lang");
     }
     
