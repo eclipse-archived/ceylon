@@ -275,6 +275,7 @@ public class JsCompiler {
                                     m.setJsMajor(Versions.JS_BINARY_MAJOR_VERSION);
                                     m.setJsMinor(Versions.JS_BINARY_MINOR_VERSION);
                                     binVersion = BIN_VERSION;
+                                    break;
                                 }
                             }
                             if (m.getJsMajor() == 0) {
