@@ -4,31 +4,66 @@ function dre$$(object, type, loc) {
   //If it's already dressed up as the type, leave it alone
   if (is$(object, type))return object;
   //If it's already of another type, throw
-  if (object.$$ !== undefined)throw new Error("Cannot modify the type of an object at runtime " + loc);
-  if (typeof(object)==='object' && Object.isFrozen(object))throw new Error("Cannot add Ceylon type information to a frozen object");
+  if (object.$$ !== undefined && object.getT$all()[object.getT$name()].dynmem$===undefined) {
+    throw new TypeError("Cannot modify the type of an object to "+qname$(type)+" at runtime " + loc);
+  }
+  //If it's frozen, throw because we won't be able to dress it up
+  if (typeof(object)==='object' && Object.isFrozen(object)) {
+    throw new Error("Cannot add Ceylon type information to a frozen object");
+  }
+  function memberTypeIsDynamicInterface$(t) {
+    if (t.t && t.t.dynmem$) {
+      return t;
+    }
+    if (t.t==='u') {
+      var c=0,st;
+      for (var i=0; i<t.l.length;i++) {
+        if (t.l[i].t.dynmem$) {
+          c++;
+          st=t.l[i];
+        }
+      }
+      if (c===1) {
+        return st;
+      }
+    }
+    return undefined;
+  }
   //Check members
   var actual = typeof(object)==='object'?Object.getOwnPropertyNames(object):[];
   var sats = type.t.$$.prototype.getT$all();
+  object.$$=type.t.$$;
+  object.getT$name=function(){return type.t.$$.T$name};
+  object.getT$all=function(){return type.t.$$.T$all};
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
     if (expected) {
       for (var i=0; i < expected.length; i++) {
-        if (actual.indexOf(expected[i])<0) {
-          throw new Error("Native object is missing property " + expected[i] + " " + loc);
-        } else {
-          var propname="$prop$get"+expected[i][0].uppercased+expected[i].substring(1);
-          var proptype=type.t.$$.prototype[propname];
-          if (proptype) {
-            proptype=getrtmm$$(proptype);
+        var propname="$prop$get"+expected[i][0].uppercased+expected[i].substring(1);
+        var proptype=type.t.$$.prototype[propname];
+        if (proptype) {
+          proptype=getrtmm$$(proptype);
+        }
+        if (actual.indexOf(expected[i])<0 && object[expected[i]]===undefined) {
+          if (extendsType({t:Null},proptype.$t)) {
+            object[expected[i]]=null;
+          } else {
+            throw new Error("Native object is missing property '" + expected[i] + "' " + loc);
           }
-          var val=object[expected[i]];
-          if (proptype && proptype.$t && !is$(val,proptype.$t)) {
+        } else {
+          var val=object[expected[i]],dynmemberType;
+          if (val===object) {
+            //avoid instance circularity
+          } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
             if (proptype.$t.t===$_Array) {
               object[expected[i]]=natc$(val,proptype.$t.a.Element$Array,loc);
             } else if (proptype.$t.t===Integer) {
               object[expected[i]]=ndnc$(val,'i',loc);
             } else if (proptype.$t.t===Float) {
               object[expected[i]]=ndnc$(val,'f',loc);
+            } else if ((dynmemberType=memberTypeIsDynamicInterface$(proptype.$t))!==undefined) {
+              //If the member type is a dynamic interface, dress up the value
+              dre$$(val,dynmemberType,loc);
             } else {
               object[expected[i]]=ndtc$(val,proptype.$t,loc);
             }
@@ -37,9 +72,6 @@ function dre$$(object, type, loc) {
       }
     }
   }
-  object.$$=type.t.$$;
-  object.getT$name=function(){return type.t.$$.T$name};
-  object.getT$all=function(){return type.t.$$.T$all};
   if (typeof(object)==='object') {
     if (actual.indexOf('string')<0) {
       atr$(object,'string',function(){return object.toString();},undefined,
