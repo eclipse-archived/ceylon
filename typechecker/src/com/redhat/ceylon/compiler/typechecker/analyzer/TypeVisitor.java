@@ -931,7 +931,10 @@ public class TypeVisitor extends Visitor {
                             type.getDeclaration();
                     td.setConstructor(dec);
                     if (dec instanceof Constructor) {
-                        if (dec.isAbstract()) {
+                        if (dec.isValueConstructor()) {
+                            ct.addError("aliases a value constructor");
+                        }
+                        else if (dec.isAbstract()) {
                             ct.addError("aliases a partial constructor: '" +
                                     dec.getName(unit) + 
                                     "' is declared abstract");

@@ -303,3 +303,5 @@ class WithValueConstructorRefInInitializerSub
     @error print(instance);
     @error print(WithValueConstructorRefInInitializerSub.instance);
 }
+
+@error class BoolTrue() => Bool.true();
