@@ -48,7 +48,8 @@ final class bug1937_ {
                     final long obj$7 = ((.ceylon.language.Integer)obj$6).longValue();
                     $ceylontmp$ifResult$4 = .ceylon.language.Integer.instance(.ceylon.language.Integer.getSuccessor(obj$7));
                 } else {
-                    $ceylontmp$ifResult$4 = (.ceylon.language.Integer)null;
+                    null;
+                    $ceylontmp$ifResult$4 = null;
                 }
             }
             returning $ceylontmp$ifResult$4;

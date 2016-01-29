@@ -46,7 +46,8 @@ public final class bug2423_ {
                     final .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String> ns$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423)ns$3;
                     $ceylontmp$ifResult$1 = ns$4.getItems();
                 } else {
-                    $ceylontmp$ifResult$1 = (.ceylon.language.Sequential)ns;
+                    ns;
+                    $ceylontmp$ifResult$1 = null;
                 }
             }
             returning $ceylontmp$ifResult$1;

@@ -41,8 +41,10 @@ public final class bug2280_ {
             {
                 .java.lang.Object $ceylontmp$ifResult$0;
                 if (true) {
+                    null;
                     $ceylontmp$ifResult$0 = null;
                 } else {
+                    null;
                     $ceylontmp$ifResult$0 = null;
                 }
             }
@@ -53,8 +55,10 @@ public final class bug2280_ {
             {
                 .java.lang.Object $ceylontmp$ifResult$2;
                 if (true) {
+                    null;
                     $ceylontmp$ifResult$2 = null;
                 } else {
+                    null;
                     $ceylontmp$ifResult$2 = null;
                 }
             }
@@ -65,8 +69,10 @@ public final class bug2280_ {
             {
                 .java.lang.Object $ceylontmp$ifResult$4;
                 if (true) {
+                    null;
                     $ceylontmp$ifResult$4 = null;
                 } else {
+                    null;
                     $ceylontmp$ifResult$4 = null;
                 }
             }
@@ -80,8 +86,10 @@ public final class bug2280_ {
                     {
                         .java.lang.Object $ceylontmp$ifResult$7;
                         if (true) {
+                            null;
                             $ceylontmp$ifResult$7 = null;
                         } else {
+                            null;
                             $ceylontmp$ifResult$7 = null;
                         }
                     }
@@ -99,8 +107,10 @@ public final class bug2280_ {
                 {
                     long sel$10 = i;
                     if (sel$10 == 1L) {
+                        null;
                         $ceylontmp$ifResult$9 = null;
                     } else {
+                        null;
                         $ceylontmp$ifResult$9 = null;
                     }
                 }
@@ -117,8 +127,10 @@ public final class bug2280_ {
                         {
                             long sel$13 = i;
                             if (sel$13 == 1L) {
+                                null;
                                 $ceylontmp$ifResult$12 = null;
                             } else {
+                                null;
                                 $ceylontmp$ifResult$12 = null;
                             }
                         }

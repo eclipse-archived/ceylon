@@ -46,7 +46,7 @@ final class IBug2062$impl<Element> implements .java.io.Serializable {
                     .ceylon.language.Sequence sel$5 = other.getElements();
                     if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$5, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element))) {
                         final .ceylon.language.Sequence otherElems$7 = (.ceylon.language.Sequence)sel$5;
-                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062)$this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, $reified$Element), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
+                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)$this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, $reified$Element), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
                     } else {
                         final .ceylon.language.Sequence<? extends Other> otherElems$6 = (.ceylon.language.Sequence)sel$5;
                         $ceylontmp$ifResult$4 = $this;
