@@ -48,9 +48,13 @@ public class RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
+        this(log, offline, timeout, proxy, overrides, true);
+    }
+    
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, Proxy.class, Overrides.class);
-            delegate = ctor.newInstance(log, offline, timeout, proxy, overrides);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, Proxy.class, Overrides.class, boolean.class);
+            delegate = ctor.newInstance(log, offline, timeout, proxy, overrides, upgradeDist);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {
@@ -70,9 +74,13 @@ public class RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
+        this(mainRepository, log, offline, timeout, proxy, overrides, true);
+    }
+    
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, Proxy.class, Overrides.class);
-            delegate = ctor.newInstance(mainRepository, log, offline, timeout, proxy, overrides);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, Proxy.class, Overrides.class, boolean.class);
+            delegate = ctor.newInstance(mainRepository, log, offline, timeout, proxy, overrides, upgradeDist);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {

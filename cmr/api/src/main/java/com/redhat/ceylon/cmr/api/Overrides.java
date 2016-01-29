@@ -87,8 +87,12 @@ public class Overrides {
     private Overrides() {}
     
     public static Overrides getDistOverrides() {
+        return getDistOverrides(true);
+    }
+    
+    public static Overrides getDistOverrides(boolean upgradeDist) {
         try {
-            return parseDistOverrides();
+            return parseDistOverrides(upgradeDist);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -240,67 +244,97 @@ public class Overrides {
             throw new IllegalArgumentException("No such overrides file: " + overridesFile);
         }
         try(InputStream is = new FileInputStream(overridesFile)){
-            overrides = Overrides.parse(is, overrides);
+            Overrides.parse(is, overrides);
             overrides.source = overridesFile.getAbsolutePath();
             return overrides;
         }
     }
     
-    public static Overrides parseDistOverrides() throws FileNotFoundException, Exception{
+    public static Overrides parseDistOverrides(boolean upgradeDist) throws FileNotFoundException, Exception{
         URL resource = Overrides.class.getResource("/com/redhat/ceylon/cmr/api/dist-overrides.xml");
         try(InputStream is = resource.openStream()){
-            Overrides overrides = Overrides.parse(is, new Overrides());
-            overrides.source = resource.toString();
-            return overrides;
+            try {
+                Document document = parseXml(is);
+                String elementName = upgradeDist ? "dist-upgrade" : "dist-downgrade";
+                List<Element> e = getChildren(document.getDocumentElement(), elementName);
+                if (e.size() == 1) {
+                    Overrides overrides = new Overrides();
+                    parseOverrides(overrides, e.get(0));
+                    overrides.source = resource.toString();
+                    return overrides;
+                } else {
+                    throw new InvalidOverrideException(String.format("Expected exactly one '%s' element in dist-overrides.xml, but found %d", elementName, e.size()), document.getDocumentElement());
+                }
+                
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
     }
     
     
-    static Overrides parse(InputStream is, Overrides result) throws Exception {
+    static void parse(InputStream is, Overrides result) throws Exception {
         try {
             Document document = parseXml(is);
-            Map<String,String> interpolation = new HashMap<>();
-            List<Element> defines = getChildren(document.getDocumentElement(), "define");
-            for (Element define : defines) {
-                // do not interpolate while we're defining things
-                String name = getRequiredAttribute(define, "name", null);
-                String value = getRequiredAttribute(define, "value", null);
-                interpolation.put(name, value);
-            }
             
-            // old name
-            List<Element> artifacts = getChildren(document.getDocumentElement(), "artifact");
-            parseArtifacts(artifacts, result, interpolation);
-            // new name
-            List<Element> modules = getChildren(document.getDocumentElement(), "module");
-            parseArtifacts(modules, result, interpolation);
-
-            List<Element> removedArtifacts = getChildren(document.getDocumentElement(), "remove");
-            for (Element artifact : removedArtifacts) {
-                ArtifactContext context = getArtifactContext(artifact, true, interpolation);
-                DependencyOverride doo = new DependencyOverride(context, Type.REMOVE, false, false);
-                result.addRemovedArtifact(doo);
-            }
-            List<Element> replacedArtifacts = getChildren(document.getDocumentElement(), "replace");
-            for (Element artifact : replacedArtifacts) {
-                ArtifactContext context = getArtifactContext(artifact, true, interpolation);
-                List<Element> withs = getChildren(artifact, "with");
-                for (Element with : withs) {
-                    ArtifactContext withContext = getArtifactContext(with, true, interpolation);
-                    result.addReplacedArtifact(context, withContext);
-                }
-            }
-            List<Element> setArtifacts = getChildren(document.getDocumentElement(), "set");
-            for (Element artifact : setArtifacts) {
-                ArtifactContext context = getArtifactContext(artifact, true, interpolation);
-                result.addSetArtifact(context);
-            }
-            return result;
+            Element rootElement = document.getDocumentElement();
+            parseOverrides(result, rootElement);
         } finally {
             try {
                 is.close();
             } catch (IOException ignored) {
             }
+        }
+    }
+
+    /**
+     * Parse the overrides in the given root element (usually called 
+     * {@code <overrides>}, but the name doesn't actually matter) 
+     * updating the given result.
+     * @param result
+     * @param rootElement
+     * @return
+     * @throws TransformerException
+     */
+    protected static void parseOverrides(final Overrides result, Element rootElement) throws TransformerException {
+        Map<String,String> interpolation = new HashMap<>();
+        List<Element> defines = getChildren(rootElement, "define");
+        for (Element define : defines) {
+            // do not interpolate while we're defining things
+            String name = getRequiredAttribute(define, "name", null);
+            String value = getRequiredAttribute(define, "value", null);
+            interpolation.put(name, value);
+        }
+        
+        // old name
+        List<Element> artifacts = getChildren(rootElement, "artifact");
+        parseArtifacts(artifacts, result, interpolation);
+        // new name
+        List<Element> modules = getChildren(rootElement, "module");
+        parseArtifacts(modules, result, interpolation);
+
+        List<Element> removedArtifacts = getChildren(rootElement, "remove");
+        for (Element artifact : removedArtifacts) {
+            ArtifactContext context = getArtifactContext(artifact, true, interpolation);
+            DependencyOverride doo = new DependencyOverride(context, Type.REMOVE, false, false);
+            result.addRemovedArtifact(doo);
+        }
+        List<Element> replacedArtifacts = getChildren(rootElement, "replace");
+        for (Element artifact : replacedArtifacts) {
+            ArtifactContext context = getArtifactContext(artifact, true, interpolation);
+            List<Element> withs = getChildren(artifact, "with");
+            for (Element with : withs) {
+                ArtifactContext withContext = getArtifactContext(with, true, interpolation);
+                result.addReplacedArtifact(context, withContext);
+            }
+        }
+        List<Element> setArtifacts = getChildren(rootElement, "set");
+        for (Element artifact : setArtifacts) {
+            ArtifactContext context = getArtifactContext(artifact, true, interpolation);
+            result.addSetArtifact(context);
         }
     }
 
@@ -459,7 +493,12 @@ public class Overrides {
     final static String LINE_NUMBER_KEY_NAME = "lineNumber";
     final static String COLUMN_NUMBER_KEY_NAME = "columnNumber";
 
+    /**
+     * Parse the given input stream to a Document
+     */
     protected static Document parseXml(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+        // We parse using SAX so that we can add location info to the DOM
+        // for error reporting
         final Document doc;
         SAXParser parser;
         final SAXParserFactory factory = SAXParserFactory.newInstance();

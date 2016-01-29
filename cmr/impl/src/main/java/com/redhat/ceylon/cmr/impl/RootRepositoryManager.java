@@ -56,9 +56,16 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     public RootRepositoryManager(Logger log, Overrides overrides) {
         this(getRootDir(), log, overrides);
     }
+    
+    public RootRepositoryManager(Logger log, Overrides overrides, boolean upgradeDist) {
+        this(getRootDir(), log, overrides, upgradeDist);
+    }
 
     public RootRepositoryManager(File rootDir, Logger log, Overrides overrides) {
-        super(log, overrides);
+        this(rootDir, log, overrides, true);
+    }
+    public RootRepositoryManager(File rootDir, Logger log, Overrides overrides, boolean upgradeDist) {
+        super(log, overrides, upgradeDist);
         if(rootDir != null){
             this.fileContentStore = new FileContentStore(rootDir);
             final CmrRepository aaca = new DefaultRepository(new RootNode(fileContentStore, fileContentStore));
@@ -67,6 +74,8 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             this.fileContentStore = null;
         }
     }
+
+    
 
     @Override
     protected ArtifactResult getArtifactResult(ArtifactContext context, Node node) throws RepositoryException {

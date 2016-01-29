@@ -216,8 +216,12 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     protected synchronized RepositoryManager getRepositoryManager() {
+        return getRepositoryManager(true);
+    }
+    protected synchronized RepositoryManager getRepositoryManager(boolean upgradeDist) {
         if (rm == null) {
             CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder(true);
+            rmb.upgradeDist(upgradeDist);
             rm = rmb.buildManager();   
         }
         return rm;

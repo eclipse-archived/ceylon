@@ -13,6 +13,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
@@ -55,6 +56,7 @@ public class CeylonUtils {
         private Logger log;
         private String avoidRepository;
         private boolean skipRemoteRepositories;
+        private boolean upgradeDist;
 
         /**
          * Sets the configuration to use for building the repository manager
@@ -356,7 +358,7 @@ public class CeylonUtils {
                 skipRemoteRepositories = true;
             }
 
-            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getProxy(config), getOverrides(config));
+            final RepositoryManagerBuilder builder = new RepositoryManagerBuilder(root, log, isOffline(config), getTimeout(config), getProxy(config), getOverrides(config), upgradeDist);
 
             // Now we add all the rest of the repositories in the order that they will be searched
             
@@ -628,6 +630,11 @@ public class CeylonUtils {
 
         protected Overrides getOverrides(File f) {
             return RepositoryManagerBuilder.parseOverrides(f.getPath());
+        }
+
+        public CeylonRepoManagerBuilder upgradeDist(boolean upgradeDist) {
+            this.upgradeDist = upgradeDist;
+            return this;
         }
     }
 

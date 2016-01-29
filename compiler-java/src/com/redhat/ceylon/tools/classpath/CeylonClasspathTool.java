@@ -3,6 +3,8 @@ package com.redhat.ceylon.tools.classpath;
 import java.io.File;
 import java.util.SortedSet;
 
+import org.apache.tools.ant.taskdefs.UpToDate;
+
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -32,12 +34,12 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
     public void setForce(boolean force) {
         this.force = force;
     }
-
+    
     @Override
     public void run() throws Exception {
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(),
+                getRepositoryManager(upgradeDist),
                 module,
                 ModuleUtil.moduleVersion(moduleNameOptVersion),
                 ModuleQuery.Type.JVM,

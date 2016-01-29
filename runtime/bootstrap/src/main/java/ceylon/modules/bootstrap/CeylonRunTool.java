@@ -22,12 +22,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -84,6 +86,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private List<String> args = Collections.emptyList();
 
     private boolean autoExportMavenDependencies;
+    private boolean upgradeDist = true;
 
     public CeylonRunTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -137,6 +140,20 @@ public class CeylonRunTool extends RepoUsingTool {
     public void setVerbose(String verbose) {
         super.setVerbose(verbose);
     }
+    
+    
+    
+    @Option
+    @Description("Link modules which were compiled with a more recent "
+            + "version of the distribution to the version of that module "
+            + "present in this distribution (" + Versions.CEYLON_VERSION_NUMBER + "). "
+            + "This might fail with a linker error at runtime. For example "
+            + "if the module depended on an API present in the more "
+            + "recent version, but absent from " + Versions.CEYLON_VERSION_NUMBER +". "
+                    + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
+    public void setDowngradeDist(boolean downgradeDist) {
+        this.upgradeDist = !downgradeDist;
+    }
 
     @Override
     public void initialize(CeylonTool mainTool) {
@@ -155,7 +172,7 @@ public class CeylonRunTool extends RepoUsingTool {
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(),
+                getRepositoryManager(upgradeDist),
                 module,
                 ModuleUtil.moduleVersion(moduleNameOptVersion),
                 ModuleQuery.Type.JVM,
@@ -211,6 +228,10 @@ public class CeylonRunTool extends RepoUsingTool {
 
         argList.add("-sysrep");
         argList.add(sysRep);
+        
+        if (!upgradeDist) {
+            argList.add("-downgrade-dist");
+        }
 
         if (cacheRepo != null) {
             argList.add("-cacherep");

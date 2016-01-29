@@ -45,7 +45,10 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     private final Proxy proxy;
 
     public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
-        repository = new RootRepositoryManager(log, overrides);
+        this(log, offline, timeout, proxy, overrides, true);
+    }
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+        repository = new RootRepositoryManager(log, overrides, upgradeDist);
         this.log = log;
         this.offline = offline;
         this.timeout = timeout;
@@ -54,7 +57,11 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
-        repository = new RootRepositoryManager(mainRepository, log, overrides);
+        this(mainRepository, log, offline, timeout, proxy, overrides, true);
+    }
+    
+    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+        repository = new RootRepositoryManager(mainRepository, log, overrides, upgradeDist);
         this.log = log;
         this.offline = offline;
         this.timeout = timeout;

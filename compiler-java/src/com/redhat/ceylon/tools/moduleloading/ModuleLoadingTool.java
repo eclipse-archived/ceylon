@@ -14,6 +14,8 @@ import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
@@ -25,11 +27,24 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
     protected Map<String, ArtifactResult> loadedModules = new HashMap<>();
     protected Map<String, SortedSet<String>> loadedModuleVersions = new HashMap<>();
+    protected boolean upgradeDist = true;
 
 	public ModuleLoadingTool() {
 		super(ModuleLoadingMessages.RESOURCE_BUNDLE);
 	}
-
+    
+    @Option
+    @Description("Downgrade which were compiled with a more recent "
+            + "version of the distribution to the version of that module "
+            + "present in this distribution (" + Versions.CEYLON_VERSION_NUMBER + "). "
+            + "This might fail with a linker error at runtime. For example "
+            + "if the module depended on an API present in the more "
+            + "recent version, but absent from " + Versions.CEYLON_VERSION_NUMBER +". "
+                    + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
+    public void setDowngradeDist(boolean downgradeDist) {
+        this.upgradeDist = !downgradeDist;
+    }
+	
 	protected String moduleVersion(String moduleNameOptVersion) throws IOException {
 		return checkModuleVersionsOrShowSuggestions(
 				getRepositoryManager(),
@@ -87,7 +102,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         }
         loadedVersions.add(version);
         
-        RepositoryManager repositoryManager = getRepositoryManager();
+        RepositoryManager repositoryManager = getRepositoryManager(upgradeDist);
         ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
         if(!optional

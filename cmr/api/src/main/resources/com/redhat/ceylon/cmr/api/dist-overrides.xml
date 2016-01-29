@@ -1,37 +1,55 @@
-<overrides>
-  <replace module="ceylon.language" version="1.2.0">
-    <with module="ceylon.language" version="1.2.1"/>
-  </replace>
+<dist-overrides>
+  <dist-downgrade>
+    <!-- used for explicit downgrading at runtime -->
+    <define name="dv" value="1.2.1"/>
+    <set module="ceylon.language" version="${dv}"/>
+    <set module="ceylon.runtime" version="${dv}"/>
+    <set module="ceylon.bootstrap" version="${dv}"/>
+    <set module="com.redhat.ceylon.common" version="${dv}"/>
+    <set module="com.redhat.ceylon.typechecker" version="${dv}"/>
+    <set module="com.redhat.ceylon.module-resolver" version="${dv}"/>
+    <set module="com.redhat.ceylon.model" version="${dv}"/>
+    <set module="com.redhat.ceylon.compiler.java" version="${dv}"/>
+    <set module="com.redhat.ceylon.compiler.js" version="${dv}"/>
+  </dist-downgrade>
   
-  <replace module="ceylon.runtime" version="1.2.0">
-    <with module="ceylon.runtime" version="1.2.1"/>
-  </replace>
-  
-  <replace module="ceylon.bootstrap" version="1.2.0">
-    <with module="ceylon.bootstrap" version="1.2.1"/>
-  </replace>
-  
-  <replace module="com.redhat.ceylon.common" version="1.2.0">
-    <with module="com.redhat.ceylon.common" version="1.2.1"/>
-  </replace>
-  
-  <replace module="com.redhat.ceylon.typechecker" version="1.2.0">
-    <with module="com.redhat.ceylon.typechecker" version="1.2.1"/>
-  </replace>
-  
-  <replace module="com.redhat.ceylon.module-resolver" version="1.2.0">
-    <with module="com.redhat.ceylon.module-resolver" version="1.2.1"/>
-  </replace>
-  
-  <replace module="com.redhat.ceylon.model" version="1.2.0">
-    <with module="com.redhat.ceylon.model" version="1.2.1"/>
-  </replace>
-  
-  <replace module="com.redhat.ceylon.compiler.java" version="1.2.0">
-    <with module="com.redhat.ceylon.compiler.java" version="1.2.1"/>
-  </replace>
-  
-  <replace module="com.redhat.ceylon.compiler.js" version="1.2.0">
-    <with module="com.redhat.ceylon.compiler.js" version="1.2.1"/>
-  </replace>
-</overrides>
+    <dist-upgrade>
+      <!-- used for auto-upgrading at runtime -->
+      <replace module="ceylon.language" version="1.2.0">
+        <with module="ceylon.language" version="1.2.1"/>
+      </replace>
+      
+      <replace module="ceylon.runtime" version="1.2.0">
+        <with module="ceylon.runtime" version="1.2.1"/>
+      </replace>
+      
+      <replace module="ceylon.bootstrap" version="1.2.0">
+        <with module="ceylon.bootstrap" version="1.2.1"/>
+      </replace>
+      
+      <replace module="com.redhat.ceylon.common" version="1.2.0">
+        <with module="com.redhat.ceylon.common" version="1.2.1"/>
+      </replace>
+      
+      <replace module="com.redhat.ceylon.typechecker" version="1.2.0">
+        <with module="com.redhat.ceylon.typechecker" version="1.2.1"/>
+      </replace>
+      
+      <replace module="com.redhat.ceylon.module-resolver" version="1.2.0">
+        <with module="com.redhat.ceylon.module-resolver" version="1.2.1"/>
+      </replace>
+      
+      <replace module="com.redhat.ceylon.model" version="1.2.0">
+        <with module="com.redhat.ceylon.model" version="1.2.1"/>
+      </replace>
+      
+      <replace module="com.redhat.ceylon.compiler.java" version="1.2.0">
+        <with module="com.redhat.ceylon.compiler.java" version="1.2.1"/>
+      </replace>
+      
+      <replace module="com.redhat.ceylon.compiler.js" version="1.2.0">
+        <with module="com.redhat.ceylon.compiler.js" version="1.2.1"/>
+      </replace>
+    </dist-upgrade>
+</dist-overrides>
+

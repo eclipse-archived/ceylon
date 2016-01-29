@@ -24,6 +24,7 @@ import java.util.Map;
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.ArgumentType;
 
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.common.Versions;
 
 /**
@@ -97,6 +98,8 @@ public class Configuration {
      */
     public boolean offline;
     
+    public boolean upgradeDist = true;
+    
     // Non-Ceylon
     public String executable;
     public boolean cacheContent;
@@ -151,6 +154,9 @@ public class Configuration {
             case OVERRIDES:
             case MAVEN_OVERRIDES:
                 overrides = values[arg];
+                break;
+            case DOWNGRADE_DIST:
+                upgradeDist = false;
                 break;
             case NO_DEFAULT_REPOSITORIES:
                 noDefaultRepositories = true;

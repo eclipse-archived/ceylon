@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
@@ -249,10 +250,12 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String cacheRepo = getCacheRepoOption();
         String outRepo = getOutputRepoOption();
         String overrides = options.get(OptionName.CEYLONOVERRIDES);
+        boolean upgradeDist = !options.getBoolean(OptionName.CEYLONDOWNGRADEDIST.optionName);
         
         repoManager = CeylonUtils.repoManager()
                 .config(CompilerConfig.instance(context))
                 .cwd(getCurrentWorkingDir())
+                .upgradeDist(upgradeDist)
                 .overrides(overrides)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)

@@ -175,6 +175,7 @@ public class RecognizedOptions {
         CEYLONAUTOEXPORTMAVENDEPENDENCIES,
         CEYLONMAVENOVERRIDES,
         CEYLONOVERRIDES,
+        CEYLONDOWNGRADEDIST,
         S,
         IMPLICIT,
         ENCODING,
@@ -251,6 +252,7 @@ public class RecognizedOptions {
         CEYLONAUTOEXPORTMAVENDEPENDENCIES,
         CEYLONMAVENOVERRIDES,
         CEYLONOVERRIDES,
+        CEYLONDOWNGRADEDIST,
         S,
         ENCODING,
         SOURCE,
@@ -491,6 +493,12 @@ public class RecognizedOptions {
             @Override
             public boolean process(Options options, String option, String arg) {
                 return super.process(options, "-overrides", arg);
+            } 
+        },
+        new COption(OptionName.CEYLONDOWNGRADEDIST,   "opt.ceylondistpolicy",        "opt.ceylondistpolicy") {
+            @Override
+            public boolean process(Options options, String option, String arg) {
+                return super.process(options, "-dist-version-policy", arg);
             } 
         },
         new Option(S,                   "opt.arg.directory",    "opt.sourceDest"),

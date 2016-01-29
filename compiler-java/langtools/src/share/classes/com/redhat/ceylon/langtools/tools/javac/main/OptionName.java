@@ -90,6 +90,7 @@ public enum OptionName {
     // Backwards-compat
     CEYLONMAVENOVERRIDES("-maven-overrides"),
     CEYLONOVERRIDES("-overrides"),
+    CEYLONDOWNGRADEDIST("-downgrade-dist"),
     CEYLONFLATCLASSPATH("-flat-classpath"),
     CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies"),
     S("-s"),
