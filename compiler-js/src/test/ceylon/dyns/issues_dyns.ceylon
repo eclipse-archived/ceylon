@@ -270,6 +270,7 @@ shared void issues() {
     }*/
     issue604();
     issue5952();
+    issue5959();
 }
 
 void issue5952() {
@@ -291,5 +292,30 @@ void issue5952() {
     dynamic i=Test5952.A.B();
     check(h().string=="Test.A.B","#5952.7 ``h()``");
     check(i.string=="Test.A.B","#5952.8 ``i``");
+  }
+}
+
+dynamic A5959 {
+  shared formal String m1();
+  shared formal Integer p1;
+  shared formal B5959 b;
+}
+dynamic B5959 {
+  shared formal String m2();
+  shared formal Integer p2;
+  shared formal A5959 a;
+}
+
+void issue5959() {
+  dynamic {
+    A5959 a = test5959();
+    dynamic b = a;
+    check(b is B5959, "#5959 1");
+    check(b is A5959, "#5959 2");
+    check(b.b is A5959, "#5959 3");
+    check(b.a is B5959, "#5959 4");
+    check(b is A5959&B5959, "#5959 5");
+    check(b.b is A5959&B5959, "#5959 6");
+    check(b.a is A5959&B5959, "#5959 7");
   }
 }
