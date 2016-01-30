@@ -34,7 +34,7 @@ function dre$$(object, type, loc) {
   var sats = type.t.$$.prototype.getT$all();
   object.$$=type.t.$$;
   object.getT$name=function(){return type.t.$$.T$name};
-  object.getT$all=function(){return type.t.$$.T$all};
+  object.getT$all=function(){return sats;}
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
     if (expected) {
@@ -53,7 +53,18 @@ function dre$$(object, type, loc) {
         } else {
           var val=object[expected[i]],dynmemberType;
           if (val===object) {
-            //avoid instance circularity
+            //avoid instance circularity, and make this an intersection type
+            var tname=object.getT$name()+"|"+proptype.$t.t.$$.T$name;
+            object.getT$name=function(){return tname;}
+            //Copy the satisfied types and add the new one
+            var _ts={};
+            for (var _tn in object.getT$all()) {
+              _ts[_tn]=object.getT$all()[_tn];
+            }
+            _ts[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
+            object.getT$all=function(){return _ts;}
+            //TODO type arguments
+            object.$$=$_Object.$$;
           } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
             if (proptype.$t.t===$_Array) {
               object[expected[i]]=natc$(val,proptype.$t.a.Element$Array,loc);
