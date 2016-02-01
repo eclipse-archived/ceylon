@@ -35,6 +35,9 @@ function dre$$(object, type, loc) {
   object.$$=type.t.$$;
   object.getT$name=function(){return type.t.$$.T$name};
   object.getT$all=function(){return sats;}
+  if (type.a) {
+    object.$$targs$$=type.a;
+  }
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
     if (expected) {
@@ -53,18 +56,21 @@ function dre$$(object, type, loc) {
         } else {
           var val=object[expected[i]],dynmemberType;
           if (val===object) {
-            //avoid instance circularity, and make this an intersection type
-            var tname=object.getT$name()+"|"+proptype.$t.t.$$.T$name;
-            object.getT$name=function(){return tname;}
-            //Copy the satisfied types and add the new one
-            var _ts={};
-            for (var _tn in object.getT$all()) {
-              _ts[_tn]=object.getT$all()[_tn];
+            //avoid instance circularity
+            if (!is$(val,proptype.$t)) {
+              //and make this an intersection type
+              var tname=object.getT$name()+"|"+proptype.$t.t.$$.T$name;
+              object.getT$name=function(){return tname;}
+              //Copy the satisfied types and add the new one
+              var _ts={};
+              for (var _tn in object.getT$all()) {
+                _ts[_tn]=object.getT$all()[_tn];
+              }
+              _ts[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
+              object.getT$all=function(){return _ts;}
+              //type arguments
+              object.$$=$_Object.$$;
             }
-            _ts[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
-            object.getT$all=function(){return _ts;}
-            //TODO type arguments
-            object.$$=$_Object.$$;
           } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
             if (proptype.$t.t===$_Array) {
               object[expected[i]]=natc$(val,proptype.$t.a.Element$Array,loc);
@@ -76,7 +82,23 @@ function dre$$(object, type, loc) {
               //If the member type is a dynamic interface, dress up the value
               dre$$(val,dynmemberType,loc);
             } else {
-              object[expected[i]]=ndtc$(val,proptype.$t,loc);
+              var _t=proptype.$t;
+              if (typeof(_t)==='string') {
+                if (object.$$targs$$[_t]) {
+                  _t=object.$$targs$$[_t];
+                } else {
+                  var mm=getrtmm$$(type.t);
+                  if (mm && mm.sts) {
+                    for (var i=0;i<mm.sts.length;i++) {
+                      if (mm.sts[i].a && mm.sts[i].a[_t]) {
+                        object.$$targs$$[_t]=mm.sts[i].a[_t];
+                        _t=mm.sts[i].a[_t]; break;
+                      }
+                    }
+                  }
+                }
+              }
+              object[expected[i]]=ndtc$(val,_t,loc);
             }
           }
         }
