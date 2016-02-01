@@ -21,3 +21,9 @@ function test5959() {
   }
   return $test$5959;
 }
+function genC5959() {
+  return {t:"c5959"};
+}
+function genD5959() {
+  return {t:"d5959",s:1};
+}

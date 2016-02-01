@@ -305,6 +305,12 @@ dynamic B5959 {
   shared formal Integer p2;
   shared formal A5959 a;
 }
+dynamic C5959<T>{
+  shared formal T t;
+}
+dynamic D5959<S> satisfies C5959<String> {
+  shared formal S s;
+}
 
 void issue5959() {
   dynamic {
@@ -317,5 +323,10 @@ void issue5959() {
     check(b is A5959&B5959, "#5959 5");
     check(b.b is A5959&B5959, "#5959 6");
     check(b.a is A5959&B5959, "#5959 7");
+    C5959<String> c = genC5959();
+    check((c of Object) is C5959<String>, "#5959 targs 1");
+    D5959<Integer> d = genD5959();
+    check((d of Object) is D5959<Integer>, "#5959 targs 2");
+    check((d of Object) is C5959<String>, "#5959 targs3");
   }
 }
