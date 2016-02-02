@@ -1079,9 +1079,15 @@ public abstract class CompilerTests {
         return p.waitFor();
     }
     protected String mainApiClasspath(String rep, ModuleSpec module) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, 0, null);
+        return mainApiClasspath(rep, module, false);
+    }
+    protected String mainApiClasspath(String rep, ModuleSpec module, boolean distDowngrade) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, distDowngrade, 0, null);
     }
     protected String mainApiClasspath(String rep, ModuleSpec module, int expectedSc, File err1) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, false, expectedSc, err1);
+    }
+    protected String mainApiClasspath(String rep, ModuleSpec module, boolean distDowngrade, int expectedSc, File err1) throws IOException, InterruptedException {
         File dir = new File("build/mainapi");
         dir.mkdirs();
         File out = File.createTempFile("classpath-"+module, ".out", dir);
@@ -1091,6 +1097,9 @@ public abstract class CompilerTests {
         a.add("classpath");
         a.add("--rep");
         a.add(rep);
+        if (distDowngrade) {
+            a.add("--downgrade-dist");
+        }
         a.add(module.toString());
         System.err.println(a);
         ProcessBuilder pb = new ProcessBuilder(a);
@@ -1101,9 +1110,11 @@ public abstract class CompilerTests {
         
         if (err.length()!=0) {
             if (err1 == null) {
-                try (BufferedReader r = new BufferedReader(new FileReader(out))) {
+                try (BufferedReader r = new BufferedReader(new FileReader(err))) {
                     String error = r.readLine();
-                    Assert.fail("ceylon classpath " + module + " produced standard error output: " + error);
+                    String msg = "`ceylon classpath " + module + "` produced standard error output: " + error + " (see " + err + " for full stderr output and " + out + " for stdout output)";
+                    System.err.println(msg);
+                    Assert.fail(msg);
                     return error;
                 }
             }

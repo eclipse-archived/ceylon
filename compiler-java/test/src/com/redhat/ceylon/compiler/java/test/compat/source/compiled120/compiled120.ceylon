@@ -30,21 +30,21 @@ import ceylon.language.meta {
     modules
 }
 "Run the module `compat`."
-shared void run() {
+shared void test(String expectedRuntime = "1.2.1") {
     print("Compiled with ``Versions.\iCEYLON_VERSION`` according to com.redhat.ceylon.common::Versions");
-    assert("1.2.0 (A Series Of Unlikely Explanations)" == Versions.\iCEYLON_VERSION);
+    assert("1.2.0" == Versions.\iCEYLON_VERSION_NUMBER);
     print("Running on ``language.version`` (``language.versionName``) according to language.version");
-    assert("1.2.1" == language.version);
+    assert(expectedRuntime == language.version);
     
     // Check module literals of direct dependencies
-    assert("module compat120/1.0.0" == `module`.string);
-    assert("module ceylon.language/1.2.1" == `module ceylon.language`.string);
+    assert("module compiled120/1.0.0" == `module`.string);
+    assert("module ceylon.language/``expectedRuntime``" == `module ceylon.language`.string);
     //XXX see ceylon-compiler#2428 print("\`module ceylon.runtime\` is `` `module ceylon.runtime` ``");
-    assert("module com.redhat.ceylon.common/1.2.1" == `module com.redhat.ceylon.common`.string);
+    assert("module com.redhat.ceylon.common/``expectedRuntime``" == `module com.redhat.ceylon.common`.string);
     //XXX see ceylon-compiler#2428print(`module com.redhat.ceylon.typechecker`); 
     //XXX WTF print(`module "com.redhat.ceylon.module-resolver"`); 
-    assert("module com.redhat.ceylon.compiler.java/1.2.1" == `module com.redhat.ceylon.compiler.java`.string);
-    assert("module com.redhat.ceylon.compiler.js/1.2.1" == `module com.redhat.ceylon.compiler.js`.string);
+    assert("module com.redhat.ceylon.compiler.java/``expectedRuntime``" == `module com.redhat.ceylon.compiler.java`.string);
+    assert("module com.redhat.ceylon.compiler.js/``expectedRuntime``" == `module com.redhat.ceylon.compiler.js`.string);
     //XXX see ceylon-compiler#2428 print(`module com.redhat.ceylon.model`); 
     //XXX see ceylon-compiler#2428print("\`module ceylon.bootstrap\` is `` `module ceylon.bootstrap` ``"); 
     
@@ -52,7 +52,7 @@ shared void run() {
     for (imp in `module`.dependencies) {
         print("  ``imp``");
         // All our dependencies should be version 1.2.1 as runtime 
-        assert("1.2.1" == imp.version);
+        assert(expectedRuntime == imp.version);
     }
     // check we can list all the loaded modules
     print("modules.list: ");
@@ -82,4 +82,12 @@ shared void run() {
     print("  ``runtime``");
     Class<Bootstrap> bootstrap = `Bootstrap`;
     print("  ``bootstrap``");
+}
+
+shared void runOn120() {
+    test("1.2.0");
+}
+
+shared void runOn121() {
+    test("1.2.1");
 }
