@@ -12,6 +12,7 @@ public class Options {
     private boolean noDefaultRepositories;
     private String run;
     private String overrides;
+    private boolean downgradeDist;
     
     public String getSystemRepository() {
         return systemRepository;
@@ -97,4 +98,12 @@ public class Options {
     public void setOverrides(String overrides) {
         this.overrides = overrides;
     }
+    public boolean isDowngradeDist() {
+        return downgradeDist;
+    }
+    public void setDowngradeDist(boolean downgradeDist) {
+        this.downgradeDist = downgradeDist;
+    }
+    
+    
 }

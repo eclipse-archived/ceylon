@@ -303,6 +303,7 @@ public class CeylonRunTool extends RepoUsingTool {
         options.setVerboseCategory(verbose);
         options.setRun(run);
         options.setOverrides(overrides);
+        options.setDowngradeDist(!upgradeDist);
         try {
             Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
             runner.run(args.toArray(new String[args.size()]));

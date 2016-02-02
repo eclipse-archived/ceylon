@@ -47,14 +47,6 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
 
         private void preloadModules() {
             try {
-                // those come from the delegate class loader
-                loadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false, true, null);
-                loadModule("com.redhat.ceylon.compiler.java", Versions.CEYLON_VERSION_NUMBER, false, true, null);
-                loadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false, true, null);
-                loadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false, true, null);
-                loadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false, true, null);
-                loadModule("com.redhat.ceylon.typechecker", Versions.CEYLON_VERSION_NUMBER, false, true, null);
-                // these ones not necessarily
                 loadModule(module, modver, false, false, null);
                 if(extraModules != null){
                     for(Entry<String,String> entry : extraModules.entrySet()){
