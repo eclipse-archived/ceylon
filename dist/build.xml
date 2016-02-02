@@ -15,6 +15,7 @@
     
     <property name="ceylon.dist.dir" location="${basedir}/dist"/>
     <property name="ceylon.repo.dir" location="${ceylon.dist.dir}/repo"/>
+    <property name="ceylon.user.repo" location="${user.home}/.ceylon/repo"/>
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
@@ -120,6 +121,13 @@ Some super-charged ant tasks:
                  target="publish-item"
                  param="project.item.name"
                  inheritall="true" />
+        <copy todir="${ceylon.user.repo}" overwrite="true">
+            <fileset dir="${ceylon.repo.dir}">
+                <include name="ceylon/**/*.xml" />
+                <include name="com/redhat/ceylon/**/*.xml" />
+                <exclude name="com/redhat/ceylon/maven-support" />
+            </fileset>
+        </copy>
     </target>
     <target name="publish-item">
         <fail unless="projects.base.dir" />
