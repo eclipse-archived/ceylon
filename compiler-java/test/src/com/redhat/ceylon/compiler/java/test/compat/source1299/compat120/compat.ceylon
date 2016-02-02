@@ -20,8 +20,8 @@ import com.redhat.ceylon.compiler.java.codegen {
 import com.redhat.ceylon.compiler.js.util {
     TypeUtils
 }
-import com.redhat.ceylon.compiler.typechecker {
-    TypeCheckerBuilder
+import com.redhat.ceylon.compiler.typechecker.tree {
+    TreeUtil
 }
 import com.redhat.ceylon.model.typechecker.model {
     ModelClass=Class
@@ -74,7 +74,7 @@ shared void run() {
     Class<TypeUtils> js = `TypeUtils`;
     print("  ``js``");
     assert(js.declaration.containingModule == `module com.redhat.ceylon.compiler.js`);
-    Class<TypeCheckerBuilder> tc = `TypeCheckerBuilder`;
+    Class<TreeUtil> tc = `TreeUtil`;
     print("  ``tc``");
     Class<Versions> common = `Versions`;
     print("  ``common``");
