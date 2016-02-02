@@ -182,4 +182,58 @@ shared final serializable class Singleton<out Element>
             => other.follow(element);
     
     each(void step(Element element)) => step(element);
+    
+    indexed => { 0->element };
+    
+    "A stream with given [[head]], followed by the [[element]]
+     of this singleton.
+     
+     For example, the expression
+     
+         Singleton(1).follow(2)
+     
+     evaluates to the stream `{ 2, 1 }`."
+    shared actual {Other|Element+} follow<Other>(Other head) 
+            => { head, element };
+    
+    "An infinite stream that produces the [[element]] of 
+     this singleton, repeatedly.
+     
+     For example, the expression
+     
+         Singleton(null).cycled.take(4)
+     
+     evaluates to the stream `{ null, null, null, null }`."
+    see (`function repeat`)
+    shared actual 
+    {Element+} cycled 
+            => object satisfies {Element+} {
+        string => outer.string + ".cycled";
+        shared actual Integer size {
+            "stream is infinite" 
+            assert (false); 
+        }
+        iterator() 
+                => object satisfies Iterator<Element> {
+            next() => element; 
+            string => outer.string + ".iterator()";
+        };
+    };
+    
+    "This singleton."
+    shared actual
+    Singleton<Element> interpose<Other>(
+        Other element,
+        Integer step) {
+        "step must be strictly positive"
+        assert (step>=1);
+        return this;
+    }
+    
+    "This singleton."
+    shared actual Singleton<Element> distinct => this;
+    
+    "An empty stream."
+    shared actual [] paired => [];
+    
 }

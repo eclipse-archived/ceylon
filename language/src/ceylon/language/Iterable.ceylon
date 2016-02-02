@@ -1359,7 +1359,10 @@ shared interface Iterable<out Element=Anything,
      
          {6, 9}.cycled.take(5)
      
-     evaluates to the stream `{ 6, 9, 6, 9, 6 }`."
+     evaluates to the stream `{ 6, 9, 6, 9, 6 }`.
+     
+     If this stream is empty, the resulting stream also
+     empty."
     see (`function repeat`)
     shared default 
     Iterable<Element,Absent> cycled 
@@ -1383,7 +1386,6 @@ shared interface Iterable<out Element=Anything,
                         iter = orig.iterator();
                         return iter.next();
                     }
-                    
                 }
                 string => outer.string + ".iterator()";
             };
