@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tools.ModuleSpec;
@@ -288,7 +287,6 @@ public class CompatTests extends CompilerTests {
         }
     }
     
-    @Ignore
     @Test
     public void runCompiled1299With121FlatClassPathNoDowngrade() throws Throwable {
         File err = File.createTempFile("compattest", "out");
@@ -308,6 +306,24 @@ public class CompatTests extends CompilerTests {
     }
     
     @Test
+    public void runCompiled1299With121FlatClassPathDowngrade() throws Throwable {
+        File out = File.createTempFile("compattest", "out");
+        try {
+            int sc = runInJBossModules("run", "compiled1299", 
+                    Arrays.asList("--flat-classpath", 
+                            "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
+                            "--run", "compiled1299::runOn121_",
+                            "--downgrade-dist"),
+                    null, out);
+            // Check it returned an error status code
+            assertFileContainsLine(out, "Running on 1.2.1 (A Series Of Unlikely Explanations) according to language.version");
+            Assert.assertEquals(0, sc);
+        } finally {
+            out.delete();
+        }
+    }
+    
+    @Test
     public void classpathCompiled1299With121NoDowngrade() throws Throwable {
         File err = File.createTempFile("compattest", "out");
         mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", new ModuleSpec("compiled1299", "1.0.0"), 1, err);
@@ -318,26 +334,6 @@ public class CompatTests extends CompilerTests {
     public void classpathCompiled1299With121Downgrade() throws Throwable {
         // TODO pass --dist-downgrade to ceylon classpath and check it works
         mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", new ModuleSpec("compiled1299", "1.0.0"), true);
-    }
-    
-    @Ignore
-    @Test
-    public void runCompiled1299With121FlatClassPathDowngrade() throws Throwable {
-        File err = File.createTempFile("compattest", "out");
-        try {
-            int sc = runInJBossModules("run", "compiled1299", 
-                    Arrays.asList("--flat-classpath", 
-                            "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
-                            "--run", "compiled1299::runOn121_",
-                            "--downgrade-dist"),
-                    err, null);
-            // Check it returned an error status code
-            String expectedLine = "ceylon run: Could not find module: ceylon.language/1.2.99";
-            assertFileContainsLine(err, expectedLine);
-            Assert.assertEquals(1, sc);
-        } finally {
-            err.delete();
-        }
     }
     
     @Test
@@ -360,24 +356,38 @@ public class CompatTests extends CompilerTests {
                 "--run", "compiled121depends120::runOn121"));
     }
     
-    @Ignore
     @Test
     public void runCompiled121Depends120In121FlatClasspath() throws Throwable {
         runInJBossModules("run", "compiled121depends120", Arrays.asList(
                 "--offline",
                 "--flat-classpath",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                "--run", "compiled121depends120::runOn121"));
+                "--run", "compiled121depends120::runOn121_"));
     }
     
-    @Ignore
     @Test
     public void runCompiled1299Depends120In121FlatClasspath() throws Throwable {
-        runInJBossModules("run", "compiled121depends120", Arrays.asList(
+        File err = File.createTempFile("compattest", "out");
+        try {
+            runInJBossModules("run", "compiled1299depends120", Arrays.asList(
+                    "--offline",
+                    "--flat-classpath",
+                    "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
+                    "--run", "compiled1299depends120::runOn121"), err, null);
+            assertFileContainsLine(err, "ceylon run: Could not find module: ceylon.language/1.2.99");
+        } finally {
+            err.delete();
+        }
+    }
+    
+    @Test
+    public void runCompiled1299Depends120In121FlatClasspathDowngrade() throws Throwable {
+        runInJBossModules("run", "compiled1299depends120", Arrays.asList(
                 "--offline",
                 "--flat-classpath",
+                "--downgrade-dist",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                "--run", "compiled121depends120::runOn121"));
+                "--run", "compiled1299depends120::runOn121_"));
     }
     
     @Test
