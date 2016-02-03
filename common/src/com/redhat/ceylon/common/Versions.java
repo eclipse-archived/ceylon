@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.2.0 "A Series Of Unlikely Explanations"
+    // The current version is Ceylon 1.2.1 "Irregular Apocalypse"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -62,7 +62,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "A Series Of Unlikely Explanations";
+    public static final String CEYLON_VERSION_NAME = "Irregular Apocalypse";
     
     /**
      * The version number + code name description string.
