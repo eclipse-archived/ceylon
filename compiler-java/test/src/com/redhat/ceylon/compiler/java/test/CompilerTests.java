@@ -1098,7 +1098,7 @@ public abstract class CompilerTests {
         a.add("--rep");
         a.add(rep);
         if (distDowngrade) {
-            a.add("--downgrade-dist");
+            a.add("--link-with-current-distribution");
         }
         a.add(module.toString());
         System.err.println(a);

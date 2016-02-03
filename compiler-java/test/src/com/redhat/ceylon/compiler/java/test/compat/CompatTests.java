@@ -182,7 +182,7 @@ public class CompatTests extends CompilerTests {
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299::runOn121",
-                            "--downgrade-dist"),
+                            "--link-with-current-distribution"),
                     null, out);
             // Check it returned OK
             Assert.assertEquals(0, sc);
@@ -222,7 +222,7 @@ public class CompatTests extends CompilerTests {
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299depends121::runOn121",
-                            "--downgrade-dist"),
+                            "--link-with-current-distribution"),
                     null, out);
             // Check it returned an error status code
             Assert.assertEquals(0, sc);
@@ -261,7 +261,7 @@ public class CompatTests extends CompilerTests {
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299depends120::runOn121",
-                            "--downgrade-dist"),
+                            "--link-with-current-distribution"),
                     null, out);
             // Check it returned an error status code
             Assert.assertEquals(0, sc);
@@ -313,7 +313,7 @@ public class CompatTests extends CompilerTests {
                     Arrays.asList("--flat-classpath", 
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299::runOn121",
-                            "--downgrade-dist"),
+                            "--link-with-current-distribution"),
                     null, out);
             // Check it returned an error status code
             assertFileContainsLine(out, "Running on 1.2.1 (A Series Of Unlikely Explanations) according to language.version");
@@ -385,7 +385,7 @@ public class CompatTests extends CompilerTests {
         runInJBossModules("run", "compiled1299depends120", Arrays.asList(
                 "--offline",
                 "--flat-classpath",
-                "--downgrade-dist",
+                "--link-with-current-distribution",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
                 "--run", "compiled1299depends120::runOn121"));
     }

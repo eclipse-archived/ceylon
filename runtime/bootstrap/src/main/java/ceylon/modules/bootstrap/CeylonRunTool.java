@@ -150,7 +150,7 @@ public class CeylonRunTool extends RepoUsingTool {
             + "if the module depended on an API present in the more "
             + "recent version, but absent from " + Versions.CEYLON_VERSION_NUMBER +". "
                     + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
-    public void setDowngradeDist(boolean downgradeDist) {
+    public void setLinkWithCurrentDistribution(boolean downgradeDist) {
         this.upgradeDist = !downgradeDist;
     }
 
