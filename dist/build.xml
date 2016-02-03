@@ -117,20 +117,7 @@ Some super-charged ant tasks:
     <target name="publish" depends="clean-projects,install-all,publish-quick"
             description="Publishes all sibling projects" />
     <target name="publish-quick">
-        <foreach list="${moddirs}"
-                 target="publish-item"
-                 param="project.item.name"
-                 inheritall="true" />
-    </target>
-    <target name="publish-item">
-        <fail unless="projects.base.dir" />
-        <fail unless="project.item.name" />
-        <echo>Publishing ${project.item.name}</echo>
-        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
-             target="publish-internal"
-             dir="${projects.base.dir}/${project.item.name}"
-             inheritall="false">
-        </ant>
+        <echo>Deprecated: we don't publish anymore</echo>
     </target>
 
     <target name="copy-herd">
