@@ -56,7 +56,7 @@ public class CeylonUtils {
         private Logger log;
         private String avoidRepository;
         private boolean skipRemoteRepositories;
-        private boolean upgradeDist;
+        private boolean upgradeDist = true;
 
         /**
          * Sets the configuration to use for building the repository manager
