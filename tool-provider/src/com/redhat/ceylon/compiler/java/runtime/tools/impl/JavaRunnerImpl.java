@@ -6,6 +6,7 @@ import java.net.URL;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunner;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
@@ -16,7 +17,7 @@ public class JavaRunnerImpl implements JavaRunner {
     
     private BaseModuleLoaderImpl moduleLoader;
     private ClassLoader moduleClassLoader;
-    private String className;
+    private String run;
     
     public JavaRunnerImpl(RunnerOptions options, String module, String version){
         this.module = module;
@@ -38,13 +39,7 @@ public class JavaRunnerImpl implements JavaRunner {
         
         moduleLoader = new FlatpathModuleLoader(repositoryManager, delegateClassLoader, options.getExtraModules(), options.isVerbose("cmr"));
         moduleClassLoader = moduleLoader.loadModule(module, version);
-        
-        if(options.getRun() != null)
-            className = options.getRun().replace("::", ".");
-        else if(module.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME))
-            className = "run_";
-        else
-            className = module + ".run_";
+        run = options.getRun();
     }
 
     @Override
@@ -75,6 +70,8 @@ public class JavaRunnerImpl implements JavaRunner {
     }
     
     private void invokeMain(String module, String[] arguments) {
+        String className = JVMModuleUtil.javaClassNameFromCeylon(module, run);
+        
         try {
             Class<?> runClass = moduleClassLoader.loadClass(className);
             Method main = runClass.getMethod("main", String[].class);

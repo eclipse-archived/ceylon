@@ -200,4 +200,45 @@ public class JVMModuleUtil {
         }
         return sb.subSequence(0, sb.length() - sep.length()).toString();
     }
+    
+    public static final String RUN_INFO_CLASS = "run";
+    
+    /**
+     * Convert a ceylon runnable name (as passed via 
+     * {@code ceylon run --run=...}) to the corresponding Java class 
+     * name.
+     * @param moduleName The name of the module being run
+     * @param ceylonRunnableName The name passed to {@code --run}
+     * @return
+     */
+    public static String javaClassNameFromCeylon(String moduleName, String ceylonRunnableName) {
+        String runClassName1 = ceylonRunnableName;
+        if (runClassName1 == null || runClassName1.isEmpty()) {
+            // "default" is not a package name
+            if (moduleName.equals("default")) {
+                runClassName1 = RUN_INFO_CLASS;
+            } else {
+                runClassName1 = moduleName + "." + RUN_INFO_CLASS;
+            }
+        } else {
+            // replace any :: with a dot to allow for both java and ceylon-style run methods
+            runClassName1 = runClassName1.replace("::", ".");
+        }
+        ceylonRunnableName = runClassName1;
+        
+        
+        
+        char firstChar = ceylonRunnableName.charAt(0);
+        int lastDot = ceylonRunnableName.lastIndexOf('.');
+        if (lastDot > 0) {
+            firstChar = ceylonRunnableName.charAt(lastDot + 1);
+            String lastPart = ceylonRunnableName.substring(lastDot+1);
+            String pkgPart = ceylonRunnableName.substring(0, lastDot);
+            // only quote the package parts
+            ceylonRunnableName = JVMModuleUtil.quoteJavaKeywords(pkgPart) + "." + lastPart;
+        }
+        // if we have no package part, we don't need quoting
+        // we add _ to run class
+        return Character.isLowerCase(firstChar) ? ceylonRunnableName + "_" : ceylonRunnableName;
+    }
 }

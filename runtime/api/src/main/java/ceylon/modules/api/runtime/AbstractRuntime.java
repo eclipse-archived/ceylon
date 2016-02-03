@@ -36,52 +36,44 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
 
     public static final String MODULE_INFO_CLASS = ".$module_";
     public static final String OLD_MODULE_INFO_CLASS = ".module_";
-    public static final String RUN_INFO_CLASS = "run";
+    
 
-    protected static void invokeRun(ClassLoaderHolder clh, String moduleName, String runClassName, final String[] args) throws Exception {
+    protected static void invokeRun(ClassLoaderHolder clh, String moduleName, String ceylonRunnableName, final String[] args) throws Exception {
         final Class<?> runClass;
         ClassLoader cl = clh.getClassLoader();
         ClassLoader oldClassLoader = SecurityActions.setContextClassLoader(cl);
         try {
             try {
-                char firstChar = runClassName.charAt(0);
-                int lastDot = runClassName.lastIndexOf('.');
-                if (lastDot > 0) {
-                    firstChar = runClassName.charAt(lastDot + 1);
-                    String lastPart = runClassName.substring(lastDot+1);
-                    String pkgPart = runClassName.substring(0, lastDot);
-                    // only quote the package parts
-                    runClassName = JVMModuleUtil.quoteJavaKeywords(pkgPart) + "." + lastPart;
-                }
-                // if we have no package part, we don't need quoting
-                // we add _ to run class
-                runClass = cl.loadClass(Character.isLowerCase(firstChar) ? runClassName + "_" : runClassName);
+                String javaClassName = JVMModuleUtil.javaClassNameFromCeylon(moduleName, ceylonRunnableName);
+                runClass = cl.loadClass(javaClassName);
             } catch (ClassNotFoundException cnfe) {
-                String type = Character.isUpperCase(runClassName.charAt(0)) ? "class" : "function";
-                String msg = String.format("Could not find toplevel %s '%s'.", type, runClassName);
-                if (!moduleName.equals(Constants.DEFAULT.toString()) && !runClassName.contains(".")) {
-                    msg += String.format(" Class and method names need to be fully qualified, maybe you meant '%s'?", moduleName + "::" + runClassName);
+                String type = Character.isUpperCase(ceylonRunnableName.charAt(0)) ? "class" : "function";
+                String msg = String.format("Could not find toplevel %s '%s'.", type, ceylonRunnableName);
+                if (!moduleName.equals(Constants.DEFAULT.toString()) && !ceylonRunnableName.contains(".")) {
+                    msg += String.format(" Class and method names need to be fully qualified, maybe you meant '%s'?", moduleName + "::" + ceylonRunnableName);
                 }
                 //msg += " [" + clh + "]";
                 throw new CeylonRuntimeException(msg);
             }
             
             if ((runClass.getModifiers()&Modifier.PUBLIC) == 0) {
-                String type = Character.isUpperCase(runClassName.charAt(0)) ? "class" : "function";
-                String msg = String.format("Cannot run toplevel %s '%s': it should be shared.", type, runClassName);
+                String type = Character.isUpperCase(ceylonRunnableName.charAt(0)) ? "class" : "function";
+                String msg = String.format("Cannot run toplevel %s '%s': it should be shared.", type, ceylonRunnableName);
                 throw new CeylonRuntimeException(msg);
             }
             try {
                 SecurityActions.invokeRun(runClass, args);
             } catch (NoSuchMethodException ex) {
-                String type = Character.isUpperCase(runClassName.charAt(0)) ? "class" : "function";
-                String msg = String.format("Cannot run toplevel %s '%s': it should have no parameters or they should all have default values.", type, runClassName);
+                String type = Character.isUpperCase(ceylonRunnableName.charAt(0)) ? "class" : "function";
+                String msg = String.format("Cannot run toplevel %s '%s': it should have no parameters or they should all have default values.", type, ceylonRunnableName);
                 throw new CeylonRuntimeException(msg);
             }
         } finally {
             SecurityActions.setContextClassLoader(oldClassLoader);
         }
     }
+    
+ 
 
     public void execute(Configuration conf) throws Exception {
         String exe = conf.module;
@@ -107,18 +99,8 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
     }
 
     protected void execute(Configuration conf, String name, ClassLoaderHolder clh) throws Exception {
-        String runClassName = conf.run;
-        if (runClassName == null || runClassName.isEmpty()) {
-            // "default" is not a package name
-            if (name.equals(Constants.DEFAULT.toString())) {
-                runClassName = RUN_INFO_CLASS;
-            } else {
-                runClassName = name + "." + RUN_INFO_CLASS;
-            }
-        } else {
-            // replace any :: with a dot to allow for both java and ceylon-style run methods
-            runClassName = runClassName.replace("::", ".");
-        }
-        invokeRun(clh, name, runClassName, conf.arguments);
+        invokeRun(clh, name, conf.run, conf.arguments);
     }
+
+
 }

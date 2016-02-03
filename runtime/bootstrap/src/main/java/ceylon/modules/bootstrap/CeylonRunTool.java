@@ -22,14 +22,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -80,6 +78,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private static volatile Module runtimeModule;
 
     private String moduleNameOptVersion;
+    /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
     private String compileFlags;
     private boolean flatClasspath;
