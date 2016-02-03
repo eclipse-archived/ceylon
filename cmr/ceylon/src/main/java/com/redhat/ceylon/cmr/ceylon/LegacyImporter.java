@@ -18,10 +18,16 @@ import java.lang.reflect.WildcardType;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -61,6 +67,7 @@ public class LegacyImporter {
     private Set<String> externalClasses;
     private Set<Type> checkedTypes;
     private Set<ModuleDependencyInfo> expectedDependencies;
+    private Map<String, List<Pattern>> missingDependenciesPackages;
     private boolean descriptorLoaded;
     private boolean hasProblems;
     private boolean hasErrors;
@@ -257,6 +264,23 @@ public class LegacyImporter {
         return hasErrors;
     }
 
+    public LegacyImporter missingDependenciesPackages(Map<String,List<String>> missingDependenciesPackages){
+    	if(missingDependenciesPackages == null)
+    		return this;
+    	this.missingDependenciesPackages = new HashMap<>();
+    	for(Map.Entry<String,List<String>> entry : missingDependenciesPackages.entrySet()){
+    		List<Pattern> patterns = new ArrayList<>(entry.getValue().size());
+    		for(String pkg : entry.getValue()){
+    			// match on the package regex plus whatever name of the class
+    			String regex = wildcardToRegex(pkg);
+    			Pattern pattern = Pattern.compile(regex);
+				patterns.add(pattern);
+    		}
+			this.missingDependenciesPackages.put(entry.getKey(), patterns );
+    	}
+    	return this;
+    }
+    
     public LegacyImporter moduleDescriptor(File descriptorFile) {
         this.descriptorFile = descriptorFile;
         return this;
@@ -495,8 +519,23 @@ public class LegacyImporter {
                             hasErrors = true;
                         }
                     } else {
-                        feedback.dependency(DependencyResults.DEP_NOT_FOUND, dep);
-                        hasErrors = true;
+                    	boolean handled = false;
+                        if(dep.isOptional()){
+                        	String key = ModuleUtil.makeModuleName(dep.getName(), dep.getVersion());
+                        	if(missingDependenciesPackages != null && missingDependenciesPackages.containsKey(key)){
+                        		List<Pattern> packages = missingDependenciesPackages.get(key);
+                        		if(removeMatchingPackages(packages)){
+                                    feedback.dependency(DependencyResults.DEP_OK, dep);
+                        		}else{
+                                    feedback.dependency(DependencyResults.DEP_OK_UNUSED, dep);
+                        		}
+                        		handled = true;
+                        	}
+                        }
+                        if(!handled){
+                        	feedback.dependency(DependencyResults.DEP_NOT_FOUND, dep);
+                        	hasErrors = true;
+                        }
                     }
                 }
                 feedback.afterDependency(dep);
@@ -506,7 +545,53 @@ public class LegacyImporter {
         feedback.afterDependencies();
     }
     
-    // Create the set of class names for those types referenced by the
+    private static String wildcardToRegex(String wildcard){
+		// ? -> .
+		// * -> [^.]*
+		// ** -> .*
+    	StringBuffer strbuf = new StringBuffer(wildcard.length());
+    	char[] chars = wildcard.toCharArray();
+    	for (int i = 0; i < chars.length; i++) {
+    		char c = chars[i];
+    		if(c == '?'){
+    			strbuf.append('.');
+    			continue;
+    		}
+    		if(c == '*'){
+    			if(i+1 < chars.length){
+    				char next = chars[i+1];
+    				if(next == '*'){
+    	    			strbuf.append(".*");
+    	    			i++;
+    					continue;
+    				}
+    			}
+    			strbuf.append("[^.]*");
+    			continue;
+    		}
+    		// quote
+    		strbuf.append("\\Q").append(c).append("\\E");
+		}
+    	return strbuf.toString();
+    }
+    
+    private boolean removeMatchingPackages(List<Pattern> patterns) {
+    	boolean matched = false;
+    	for(Pattern pattern : patterns){
+    		Iterator<String> it = externalClasses.iterator();
+    		while(it.hasNext()){
+    			String klass = it.next();
+    			String pkg = getPackageFromClass(klass);
+    			if(pattern.matcher(pkg).matches()){
+    				it.remove();
+    				matched = true;
+    			}
+    		}
+    	}
+    	return matched;
+	}
+
+	// Create the set of class names for those types referenced by the
     // public API of the classes in the JAR we're importing and that are
     // not part of the JAR itself
     private void gatherExternalClasses() throws MalformedURLException, IOException {

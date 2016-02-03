@@ -21,6 +21,10 @@ package com.redhat.ceylon.tools.importjar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -83,9 +87,19 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     private boolean dryRun;
     private boolean showClasses;
     private boolean showSuggestions;
+	private List<String> missingDependenciesPackages;
+	private Map<String, List<String>> parsedMissingDependenciesPackages;
     
     public CeylonImportJarTool() {
         super(ImportJarMessages.RESOURCE_BUNDLE);
+    }
+    
+    @OptionArgument(longName="missing-dependency-packages")
+    @Description("Specifies which packages a missing dependency contains. Can be specified multiple times. " +
+            "Format: `module-name/module-version=package-wildcard(,package-wildcard)*`, where "+
+    		"`package-wildcard` supports `*`, `**` and `?` wildcards.")
+    public void setMissingDependencyPackages(List<String> missingDependencyPackages) {
+        this.missingDependenciesPackages = missingDependencyPackages;
     }
     
     @OptionArgument(argumentName="file")
@@ -176,6 +190,27 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             if(!(descriptor.toString().toLowerCase().endsWith(".xml") ||
                     descriptor.toString().toLowerCase().endsWith(".properties")))
                 throw new ImportJarException("error.descriptorFile.badSuffix", new Object[]{descriptor}, null);
+        }
+        if(missingDependenciesPackages != null){
+        	parsedMissingDependenciesPackages = new HashMap<>();
+        	for(String spec : missingDependenciesPackages){
+        		int moduleSeparator = spec.indexOf('=');
+        		if(moduleSeparator == -1)
+        			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+        		String moduleSpec = spec.substring(0, moduleSeparator);
+        		String packagesSpec = spec.substring(moduleSeparator+1);
+        		if(moduleSpec.isEmpty() || packagesSpec.isEmpty())
+        			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+        		List<String> packages = new LinkedList<>();
+        		for(String pkg : packagesSpec.split(",")){
+            		if(pkg.isEmpty())
+            			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+            		packages.add(pkg);
+        		}
+        		if(packages.isEmpty())
+        			throw new ImportJarException("error.missingDependenciesPackages.badSyntax", new Object[]{spec}, null);
+        		parsedMissingDependenciesPackages.put(moduleSpec, packages);
+        	}
         }
     }
     
@@ -328,7 +363,9 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     
     @Override
     public void run() throws Exception {
-        LegacyImporter importer = createImporter().moduleDescriptor(applyCwd(descriptor));
+        LegacyImporter importer = createImporter()
+        		.moduleDescriptor(applyCwd(descriptor))
+        		.missingDependenciesPackages(parsedMissingDependenciesPackages);
         if (!force || updateDescriptor) {
             try {
                 importer.loadModuleDescriptor();

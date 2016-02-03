@@ -20,6 +20,9 @@
 
 package com.redhat.ceylon.ant;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.tools.ant.types.Commandline;
 
 /**
@@ -27,6 +30,31 @@ import org.apache.tools.ant.types.Commandline;
  * @author tom
  */
 public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
+
+    public static class Package {
+        String pkg;
+        
+        public void setPackage(String pkg) {
+            this.pkg = pkg;
+        }
+
+        public void addText(String value) {
+            this.pkg = value;
+        }
+    }
+
+    public static class MissingDependencyPackages {
+        String module;
+        List<Package> packages;
+        
+        public void setModule(String module) {
+            this.module = module;
+        }
+
+        public void addConfiguredPackage(Package pkg) {
+            this.packages.add(pkg);
+        }
+    }
 
     public CeylonImportJarAntTask() {
         super("import-jar");
@@ -42,6 +70,12 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
     private String sourceJar;
     private String descriptor;
     private boolean force;
+	private List<MissingDependencyPackages> missingDependenciesPackages = new LinkedList<>();
+
+    /** Adds an list of packages to be considered as part of the specified module if it's missing */
+    public void addConfiguredMissingDependencyPackages(MissingDependencyPackages missingDependencyPackages) {
+        this.missingDependenciesPackages .add(missingDependencyPackages);
+    }
 
     public String getModule() {
         return module;
@@ -97,6 +131,17 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         
         if (module != null) {
             cmd.createArgument().setValue(getModule());
+        }
+        
+        for(MissingDependencyPackages missingDependencyPackages : missingDependenciesPackages){
+        	StringBuffer packages = new StringBuffer();
+        	for(Package pkg : missingDependencyPackages.packages){
+        		if(packages.length() > 0){
+        			packages.append(",");
+        		}
+        		packages.append(pkg);
+        	}
+        	appendOptionArgument(cmd, "--missing-dependency-packages", missingDependencyPackages.module + "=" + packages.toString());
         }
         
         if (jar != null) {
