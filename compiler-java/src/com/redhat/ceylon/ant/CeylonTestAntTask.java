@@ -56,6 +56,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     private List<Test> tests = new ArrayList<Test>(0);
 	private boolean flatClasspath;
 	private boolean autoExportMavenDependencies;
+    private boolean linkWithCurrentDistribution;
 
     public CeylonTestAntTask() {
         super("test");
@@ -89,6 +90,10 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
      */
     public void setFlatClasspath(boolean flatClasspath){
     	this.flatClasspath = flatClasspath;
+    }
+    
+    public void setLinkWithCurrentDistribution(boolean linkWithCurrentDistribution){
+        this.linkWithCurrentDistribution = linkWithCurrentDistribution;
     }
 
     /**
@@ -172,6 +177,9 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
         }
         if(flatClasspath){
         	appendOption(cmd, "--flat-classpath");
+        }
+        if (linkWithCurrentDistribution) {
+            appendOption(cmd, "--link-with-current-distribution");
         }
         for (Test test : tests) {
             appendOptionArgument(cmd, "--test", test.getTest());

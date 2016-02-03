@@ -52,6 +52,7 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
     private String out;
     private String resourceRoot;
     private List<Exclude> excludeModules = new ArrayList<Exclude>(0);
+    private boolean linkWithCurrentDistribution;
 
     public CeylonWarAntTask() {
         super("war");
@@ -86,6 +87,10 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
         this.resourceRoot = resourceRoot;
     }
 
+    public void setLinkWithCurrentDistribution(boolean linkWithCurrentDistribution){
+        this.linkWithCurrentDistribution = linkWithCurrentDistribution;
+    }
+    
     /**
      * Adds a module to exclude from the WAR file. The module attribute
      * of the nested exclude element can be a module name or a
@@ -130,6 +135,10 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
 
         if (resourceRoot != null){
             appendOptionArgument(cmd, "--resource-root", resourceRoot);
+        }
+        
+        if (linkWithCurrentDistribution) {
+            appendOption(cmd, "--link-with-current-distribution");
         }
 
         for (Exclude exclude : excludeModules) {

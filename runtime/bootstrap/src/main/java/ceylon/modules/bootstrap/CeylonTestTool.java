@@ -31,6 +31,7 @@ public class CeylonTestTool extends AbstractTestTool {
 
     private boolean flatClasspath;
     private boolean autoExportMavenDependencies;
+    private boolean linkWithCurrentDistribution;
 
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE, ModuleQuery.Type.JVM, 
@@ -45,6 +46,18 @@ public class CeylonTestTool extends AbstractTestTool {
         this.flatClasspath = flatClasspath;
     }
 
+    @Option
+    @Description("Link modules which were compiled with a more recent "
+            + "version of the distribution to the version of that module "
+            + "present in this distribution (" + Versions.CEYLON_VERSION_NUMBER + "). "
+            + "This might fail with a linker error at runtime. For example "
+            + "if the module depended on an API present in the more "
+            + "recent version, but absent from " + Versions.CEYLON_VERSION_NUMBER +". "
+                    + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
+    public void setLinkWithCurrentDistribution(boolean linkWithCurrentDistribution) {
+        this.linkWithCurrentDistribution = linkWithCurrentDistribution;
+    }
+    
     @Option(longName="auto-export-maven-dependencies")
     @Description("When using JBoss Modules (the default), treats all module dependencies between " +
                  "Maven modules as shared.")
@@ -73,6 +86,7 @@ public class CeylonTestTool extends AbstractTestTool {
         ceylonRunTool.setArgs(args);
         ceylonRunTool.setRepository(repo);
         ceylonRunTool.setFlatClasspath(flatClasspath);
+        ceylonRunTool.setLinkWithCurrentDistribution(linkWithCurrentDistribution);
         ceylonRunTool.setAutoExportMavenDependencies(autoExportMavenDependencies);
         ceylonRunTool.setSystemRepository(systemRepo);
         ceylonRunTool.setCacheRepository(cacheRepo);
