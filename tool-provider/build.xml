@@ -6,8 +6,6 @@
     <property file="build.properties" />
 
     <property name="name" value="Ceylon tool provider" />
-    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo" />
-    <property name="ceylon.bin.dir" location="${basedir}/../dist/dist/bin" />
 
     <!-- The Java source files for the tool provider -->
     <property name="tool.provider.src" location="src" />
@@ -29,32 +27,9 @@
     <property name="build.test.repo" location="${build}/test-repo"/>
 
     <!-- Jarfiles everything ends up in -->
-    <property name="ceylon.tool.provider.dir" value="com/redhat/ceylon/tool/provider/${module.com.redhat.ceylon.tool.provider.version}" />
-    <property name="ceylon.tool.provider.jar" value="${ceylon.tool.provider.dir}/com.redhat.ceylon.tool.provider-${module.com.redhat.ceylon.tool.provider.version}.jar" />
     <property name="ceylon.tool.provider.src" value="${ceylon.tool.provider.dir}/com.redhat.ceylon.tool.provider-${module.com.redhat.ceylon.tool.provider.version}.src" />
-    <property name="ceylon.tool.provider.lib" location="${ceylon.repo.dir}/${ceylon.tool.provider.jar}" />
     <property name="ceylon.tool.provider.repo" value="${ceylon.repo.dir}/${ceylon.tool.provider.dir}" />
     <property name="ceylon.tool.provider.dist" value="${build.dist.repo}/${ceylon.tool.provider.dir}" />
-
-    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
-    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
-    <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
-    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
-    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
-    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
-    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
-    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
-    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
-    <property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
-    <property name="ceylon.compiler-js.jar" value="${ceylon.compiler-js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar"/>
-    <property name="ceylon.compiler-js.lib" location="${ceylon.repo.dir}/${ceylon.compiler-js.jar}"/>
-    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
-    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
-    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
-    <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}"/>
-    <property name="ceylon.language.car"
-              value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
-    <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}"/>
 
     <tstamp>
         <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
@@ -64,7 +39,7 @@
         <pathelement path="${jboss-modules.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${ceylon.compiler.lib}"/>
-        <pathelement path="${ceylon.compiler-js.lib}"/>
+        <pathelement path="${ceylon.js.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
@@ -239,11 +214,10 @@
         <delete dir="${build.test}/modules/optional"/>
     </target>
     
-    <target name="test" depends="compile.tests,test.quick">
+    <target name="test" depends="build,test.quick" description="compile and run the JVM tests">
     </target>
 
-    <target name="test.quick"
-        description="compile and run the JVM tests">
+    <target name="test.quick" depends="compile.tests">
         
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no" 

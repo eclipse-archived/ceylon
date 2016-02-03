@@ -21,49 +21,6 @@
     <property file="../lib/build.properties"/>
     <property file="build.properties"/>
 
-    <!-- Local repository -->
-    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo"/>
-    <property name="ceylon.bin.dir" location="${basedir}/../dist/dist/bin"/>
-    <property name="ceylon.common.dir"
-              value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
-    <property name="ceylon.common.jar"
-              value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
-    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
-    <property name="ceylon.model.dir"
-              value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
-    <property name="ceylon.model.jar"
-              value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
-    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
-    <property name="ceylon.tool.provider.dir"
-              value="com/redhat/ceylon/tool/provider/${module.com.redhat.ceylon.tool.provider.version}"/>
-    <property name="ceylon.tool.provider.jar"
-              value="${ceylon.tool.provider.dir}/com.redhat.ceylon.tool.provider-${module.com.redhat.ceylon.tool.provider.version}.jar"/>
-    <property name="ceylon.tool.provider.lib" location="${ceylon.repo.dir}/${ceylon.tool.provider.jar}"/>
-    <property name="ceylon.typechecker.dir"
-              value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
-    <property name="ceylon.typechecker.jar"
-              value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
-    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
-    <property name="ceylon.compiler.java.dir"
-              value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
-    <property name="ceylon.compiler.java.jar"
-              value="${ceylon.compiler.java.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
-    <property name="ceylon.compiler.java.lib" location="${ceylon.repo.dir}/${ceylon.compiler.java.jar}"/>
-    <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}"/>
-    <property name="ceylon.language.car"
-              value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car"/>
-    <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}"/>
-    <property name="ceylon.module-resolver.dir"
-              value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
-    <property name="ceylon.module-resolver.jar"
-              value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
-    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
-    <property name="ceylon.maven-support.dir"
-              value="com/redhat/ceylon/maven-support/${module.com.redhat.ceylon.maven-support.version}"/>
-    <property name="ceylon.maven-support.jar"
-              value="${ceylon.maven-support.dir}/com.redhat.ceylon.maven-support-${module.com.redhat.ceylon.maven-support.version}.jar"/>
-    <property name="ceylon.maven-support.lib" location="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
-
     <!-- Set build directories for all formats. -->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="build.bin" location="${build.dir}/bin"/>
@@ -92,12 +49,8 @@
     <property name="module.runtime.name" value="ceylon.runtime"/>
 
     <!-- module archives -->
-    <property name="ceylon.runtime.dir" value="${module.runtime.dir}/${module.ceylon.runtime.version}"/>
-    <property name="ceylon.runtime.jar"
-              value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.jar"/>
     <property name="ceylon.runtime.src"
               value="${ceylon.runtime.dir}/${module.runtime.name}-${module.ceylon.runtime.version}.src"/>
-    <property name="ceylon.runtime.lib" value="${ceylon.repo.dir}/${ceylon.runtime.jar}"/>
     <property name="ceylon.runtime.repo" value="${ceylon.repo.dir}/${ceylon.runtime.dir}"/>
     <property name="ceylon.runtime.dist" value="${build.dist.repo}/${ceylon.runtime.dir}"/>
 

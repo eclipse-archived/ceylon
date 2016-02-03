@@ -6,8 +6,6 @@
     <property file="build.properties" />
 
     <property name="name" value="Ceylon langtools classfile" />
-    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo" />
-    <property name="ceylon.bin.dir" location="${basedir}/../dist/dist/bin" />
 
     <!-- The Java source files for the langtools classfile -->
     <property name="classfile.src" location="src" />
@@ -23,10 +21,7 @@
     <property name="build.dist.repo" location="${build.dist}/repo" />
 
     <!-- Jarfiles everything ends up in -->
-    <property name="ceylon.classfile.dir" value="com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}" />
-    <property name="ceylon.classfile.jar" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar" />
     <property name="ceylon.classfile.src" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.src" />
-    <property name="ceylon.classfile.lib" location="${ceylon.repo.dir}/${ceylon.classfile.jar}" />
     <property name="ceylon.classfile.repo" value="${ceylon.repo.dir}/${ceylon.classfile.dir}" />
     <property name="ceylon.classfile.dist" value="${build.dist.repo}/${ceylon.classfile.dir}" />
 

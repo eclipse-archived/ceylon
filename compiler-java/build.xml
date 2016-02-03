@@ -6,32 +6,6 @@
     <property file="build.properties" />
 
     <property name="name" value="Ceylon compiler" />
-    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo" />
-    <property name="ceylon.bin.dir" location="${basedir}/../dist/dist/repo" />
-    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
-    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
-    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
-    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}" />
-    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar" />
-    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}" />
-    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
-    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
-    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
-    <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}" />
-    <property name="ceylon.language.car" value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car" />
-    <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}" />
-    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
-    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
-    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
-    <property name="ceylon.classfile.dir" value="com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}" />
-    <property name="ceylon.classfile.jar" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar" />
-    <property name="ceylon.classfile.lib" location="${ceylon.repo.dir}/${ceylon.classfile.jar}" />
-    <property name="ceylon.maven-support.dir" value="com/redhat/ceylon/maven-support/${module.com.redhat.ceylon.maven-support.version}" />
-    <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.dir}/com.redhat.ceylon.maven-support-${module.com.redhat.ceylon.maven-support.version}.jar" />
-    <property name="ceylon.maven-support.lib" location="${ceylon.repo.dir}/${ceylon.maven-support.jar}" />
-    <property name="ceylon.bootstrap.dir" value="ceylon/bootstrap/${module.ceylon.bootstrap.version}" />
-    <property name="ceylon.bootstrap.jar" value="${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar" />
-    <property name="ceylon.bootstrap.lib" location="${ceylon.repo.dir}/${ceylon.bootstrap.jar}" />
 
     <!-- The Java source files for the compiler -->
     <property name="javac.src" location="langtools/src/share/classes" />
@@ -53,10 +27,7 @@
     <property name="test.reports" location="${build}/test-reports" />
 
     <!-- Jarfiles everything ends up in -->
-    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
-    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
     <property name="ceylon.compiler.src" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.src" />
-    <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
     <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}" />
     <property name="ceylon.compiler.dist" value="${build.dist.repo}/${ceylon.compiler.dir}" />
     <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}" />
@@ -355,7 +326,7 @@
     </target>
 
     <!-- Runs the JUnit tests -->
-    <target name="-test.prepare" depends="publish,test.classes,-test.cond">
+    <target name="-test.prepare" depends="test.classes,-test.cond">
         <mkdir dir="${test.reports}" />
     </target>
 

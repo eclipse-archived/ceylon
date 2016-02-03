@@ -28,31 +28,9 @@
     <tstamp />
 
     <!-- Local repository -->
-    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo" />
-    <property name="ceylon.bin.dir" location="${basedir}/../dist/dist/bin" />
-    <property name="ceylon.js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}" />
     <property name="ceylon.js.repo" value="${ceylon.repo.dir}/${ceylon.js.dir}" />
     <property name="ceylon.js.dist" value="${build.dist.repo}/${ceylon.js.dir}"/>
-    <property name="ceylon.js.jar" value="${ceylon.js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar" />
     <property name="ceylon.js.src" value="${ceylon.js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.src" />
-    <property name="ceylon.js.lib" location="${build.dist.repo}/${ceylon.js.jar}" />
-
-    <!-- module archives -->
-    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
-    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
-    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
-    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}" />
-    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar" />
-    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}" />
-    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
-    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
-    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
-    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
-    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
-    <property name="ceylon.module-resolver.lib" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
-    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
-    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
-    <property name="ceylon.compiler.lib" value="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
 
     <path id="test.run.classpath">
         <pathelement path="${antlr.lib}"/>

@@ -30,8 +30,6 @@
 
     <!-- Local repository -->
     <property name="ceylon.dist.dir" location="${basedir}/../dist/dist"/>
-    <property name="ceylon.dist.repo" location="${ceylon.dist.dir}/repo"/>
-    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo"/>
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     
     <!-- ceylon.language -->
@@ -42,32 +40,10 @@
 
     <!-- module archives -->
     <property name="ceylon.language.name" value="${module.language.name}-${module.ceylon.language.version}"/>
-    <property name="ceylon.language.dir" value="${module.language.dir}/${module.ceylon.language.version}"/>
     <property name="ceylon.language.src" value="${ceylon.language.dir}/${ceylon.language.name}.src"/>
-    <property name="ceylon.language.car" value="${ceylon.language.dir}/${ceylon.language.name}.car"/>
     <property name="ceylon.language.js" value="${ceylon.language.dir}/${ceylon.language.name}.js"/> 
     <property name="ceylon.language.repo" value="${ceylon.repo.dir}/${ceylon.language.dir}"/>
     <property name="ceylon.language.dist" value="${build.dist.repo}/${ceylon.language.dir}"/>
-    <property name="ceylon.compiler.loc" value="${ceylon.dist.dir}/bin/ceylon"/>
-    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}"/>
-    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
-    <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}"/>
-    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}"/>
-    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
-    <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}"/>
-    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}"/>
-    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
-    <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}"/>
-    <!-- For JS -->
-    <property name="ceylon.compiler-js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}"/>
-    <property name="ceylon.compiler-js.jar" value="${ceylon.compiler-js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.jar"/>
-    <property name="ceylon.compiler-js.lib" location="${ceylon.repo.dir}/${ceylon.compiler-js.jar}"/>
-    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}"/>
-    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
-    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
-    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
-    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
-    <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}"/>
 
     <property name="ceylon.ant.lib" location="${ceylon.dist.dir}/lib/ceylon-ant.jar"/>
 
@@ -105,7 +81,7 @@
         <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
         <pathelement path="${ceylon.typechecker.lib}"/>
-        <pathelement path="${ceylon.compiler-js.lib}"/>
+        <pathelement path="${ceylon.js.lib}"/>
     </path>
     
     <path id="js.test.compile.classpath">
@@ -424,7 +400,7 @@
             noMtimeCheck="true"
         	generateModuleInfo="${generateModuleInfo}"
             src="${module.language.src}:${runtime.src}"
-            sysrep="${ceylon.dist.repo}"
+            sysrep="${ceylon.repo.dir}"
             out="${build.dist.repo}">
             <suppressWarning>ceylonNamespace</suppressWarning>
             <suppressWarning>unusedDeclaration</suppressWarning>
@@ -534,7 +510,7 @@
         <delete dir="${build.test.repo}"/>
         <mkdir dir="${build.test.repo}"/>
         <copy todir="${build.test.repo}">
-            <fileset dir="${ceylon.dist.dir}/repo">
+            <fileset dir="${ceylon.repo.dir}">
                 <exclude name="ceylon/language/**"/>
             </fileset>
         </copy>
@@ -544,7 +520,7 @@
             </fileset>
         </copy>
         <copy todir="${build.test.repo}">
-            <fileset dir="${ceylon.dist.dir}/repo">
+            <fileset dir="${ceylon.repo.dir}">
                 <include name="ceylon/language/${module.ceylon.language.version}/module.xml"/>
             </fileset>
         </copy>

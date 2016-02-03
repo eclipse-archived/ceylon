@@ -19,23 +19,23 @@
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon.language,ceylon-tool-provider,ceylon-runtime" />
-    <property name="moddirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,language,tool-provider,runtime" />
-    <property name="testdirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,language,tool-provider,runtime" />
+    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon.language,ceylon-runtime" />
+    <property name="moddirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime" />
+    <property name="testdirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
     <property name="projects.base.dir" location="${basedir}/.." />
-    <property name="ceylon-common.dir" location="${projects.base.dir}/common"/>
-    <property name="ceylon-model.dir" location="${projects.base.dir}/model"/>
-    <property name="ceylon-compiler.dir" location="${projects.base.dir}/compiler-java"/>
-    <property name="ceylon-langtools-classfile.dir" value="${projects.base.dir}/langtools-classfile"/>
-    <property name="ceylon-spec.dir" location="${projects.base.dir}/typechecker"/>
-    <property name="ceylon.language.dir" location="${projects.base.dir}/language"/>
-    <property name="ceylon-module-resolver.dir" location="${projects.base.dir}/cmr"/>
-    <property name="ceylon-runtime.dir" location="${projects.base.dir}/runtime"/>
-    <property name="ceylon-tool-provider.dir" value="${projects.base.dir}/tool-provider"/>
-    <property name="ceylon-js.dir" location="${projects.base.dir}/compiler-js"/>
+    <property name="project-common.dir" location="${projects.base.dir}/common"/>
+    <property name="project-model.dir" location="${projects.base.dir}/model"/>
+    <property name="project-compiler.dir" location="${projects.base.dir}/compiler-java"/>
+    <property name="project-langtools-classfile.dir" value="${projects.base.dir}/langtools-classfile"/>
+    <property name="project-spec.dir" location="${projects.base.dir}/typechecker"/>
+    <property name="project-language.dir" location="${projects.base.dir}/language"/>
+    <property name="project-module-resolver.dir" location="${projects.base.dir}/cmr"/>
+    <property name="project-runtime.dir" location="${projects.base.dir}/runtime"/>
+    <property name="project-tool-provider.dir" value="${projects.base.dir}/tool-provider"/>
+    <property name="project-js.dir" location="${projects.base.dir}/compiler-js"/>
     
     <property name="github-url" value="https://github.com/"/>
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
@@ -326,7 +326,7 @@ Use this when NOT doing a release!">
     <target name="copy-compiler-binaries">
         <mkdir dir="${ceylon.dist.dir}/bin"/>
         <copy todir="${ceylon.dist.dir}/bin">
-            <fileset dir="${ceylon-common.dir}/build/bin">
+            <fileset dir="${project-common.dir}/build/bin">
                 <include name="java.bat"/>
                 <include name="ceylon"/>
                 <include name="ceylon.bat"/>
@@ -345,7 +345,7 @@ Use this when NOT doing a release!">
     <target name="copy-jvm-compiler-libraries">
         <mkdir dir="${ceylon.dist.dir}/lib"/>
         <copy todir="${ceylon.dist.dir}/lib">
-            <fileset dir="${ceylon-compiler.dir}/build/lib">
+            <fileset dir="${project-compiler.dir}/build/lib">
                 <include name="ceylon-bootstrap.jar"/>
                 <include name="ceylon-ant.jar"/>
             </fileset>
@@ -397,25 +397,25 @@ Use this when NOT doing a release!">
 
     <target name="install-langtools-classfile" depends="install-langtools-classfile-nodeps"/>
     <target name="install-langtools-classfile-nodeps">
-        <ant antfile="${ceylon-langtools-classfile.dir}/build.xml" target="publish" dir="${ceylon-langtools-classfile.dir}" inheritall="false">
+        <ant antfile="${project-langtools-classfile.dir}/build.xml" target="publish" dir="${project-langtools-classfile.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-compiler" depends="install-typechecker,install-compiler-nodeps" />
+    <target name="install-compiler" depends="install-common,install-langtools-classfile,install-model,install-cmr,install-typechecker,install-compiler-nodeps" />
     <target name="install-compiler-nodeps">
-        <ant antfile="${ceylon-compiler.dir}/build.xml" target="publish" dir="${ceylon-compiler.dir}" inheritall="false">
+        <ant antfile="${project-compiler.dir}/build.xml" target="publish" dir="${project-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-js" depends="install-typechecker,install-js-nodeps" />
+    <target name="install-js" depends="install-common,install-model,install-cmr,install-typechecker,install-js-nodeps" />
     <target name="install-js-nodeps">
-        <ant antfile="${ceylon-js.dir}/build.xml" target="publish" dir="${ceylon-js.dir}" inheritall="false">
+        <ant antfile="${project-js.dir}/build.xml" target="publish" dir="${project-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
@@ -424,18 +424,18 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-typechecker" depends="install-model,install-cmr,install-typechecker-nodeps" />
+    <target name="install-typechecker" depends="install-common,install-model,install-cmr,install-typechecker-nodeps" />
     <target name="install-typechecker-nodeps">
-        <ant antfile="${ceylon-spec.dir}/build.xml" target="publish" dir="${ceylon-spec.dir}" inheritall="false">
+        <ant antfile="${project-spec.dir}/build.xml" target="publish" dir="${project-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-language" depends="install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,install-language-nodeps" />
+    <target name="install-language" depends="install-common,install-model,install-cmr,install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,install-language-nodeps" />
     <target name="install-language-nodeps">
-        <ant antfile="${ceylon.language.dir}/build.xml" target="publish" dir="${ceylon.language.dir}" inheritall="false">
+        <ant antfile="${project-language.dir}/build.xml" target="publish" dir="${project-language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
@@ -444,7 +444,7 @@ Use this when NOT doing a release!">
 
     <target name="install-common" depends="install-common-nodeps" />
     <target name="install-common-nodeps">
-        <ant antfile="${ceylon-common.dir}/build.xml" target="publish" dir="${ceylon-common.dir}" inheritall="false">
+        <ant antfile="${project-common.dir}/build.xml" target="publish" dir="${project-common.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
@@ -453,46 +453,38 @@ Use this when NOT doing a release!">
 
     <target name="install-model" depends="install-common,install-langtools-classfile,install-model-nodeps" />
     <target name="install-model-nodeps">
-        <ant antfile="${ceylon-model.dir}/build.xml" target="publish" dir="${ceylon-model.dir}" inheritall="false">
+        <ant antfile="${project-model.dir}/build.xml" target="publish" dir="${project-model.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-cmr" depends="install-model,install-cmr-nodeps" />
+    <target name="install-cmr" depends="install-common,install-model,install-cmr-nodeps" />
     <target name="install-cmr-nodeps">
-        <ant antfile="${ceylon-module-resolver.dir}/build.xml" target="publish" dir="${ceylon-module-resolver.dir}" inheritall="false">
+        <ant antfile="${project-module-resolver.dir}/build.xml" target="publish" dir="${project-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-tool-provider" depends="install-language,install-tool-provider-nodeps" />
+    <target name="install-tool-provider" depends="install-common,install-model,install-cmr,install-compiler,install-js,install-language,install-tool-provider-nodeps" />
     <target name="install-tool-provider-nodeps">
-        <ant antfile="${ceylon-tool-provider.dir}/build.xml" target="publish" dir="${ceylon-tool-provider.dir}" inheritall="false">
+        <ant antfile="${project-tool-provider.dir}/build.xml" target="publish" dir="${project-tool-provider.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
     </target>
 
-    <target name="install-runtime" depends="install-tool-provider,install-runtime-nodeps" />
+    <target name="install-runtime" depends="install-common,install-model,install-cmr,install-tool-provider,install-language,install-runtime-nodeps" />
     <target name="install-runtime-nodeps">
-        <ant antfile="${ceylon-runtime.dir}/build.xml" target="publish" dir="${ceylon-runtime.dir}" inheritall="false">
+        <ant antfile="${project-runtime.dir}/build.xml" target="publish" dir="${project-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
         </ant>
-    </target>
-
-    <target name="add-module-descriptors">
-        <foreach target="add-module-descriptor" param="module.descriptor.file">
-            <fileset dir="${ceylon.repo.dir}" casesensitive="yes">
-                <include name="**/module.xml"/>
-            </fileset>
-        </foreach>
     </target>
 
     <!-- Helper target, used to create a sha1 checksum file  -->
@@ -514,6 +506,66 @@ Use this when NOT doing a release!">
             <pathelement location="${base.path}/xmltask-1.16.jar"/>
         </classpath>
     </taskdef>
+    
+    <target name="add-module-descriptors">
+        <foreach target="add-module-descriptor" param="module.descriptor.file">
+            <fileset dir="${ceylon.repo.dir}" casesensitive="yes">
+                <include name="**/module.xml"/>
+            </fileset>
+        </foreach>
+    </target>
+
+    <target name="add-module-descriptor">
+        <dirname property="module.dir" file="${module.descriptor.file}"/>
+        <pathconvert property="module.dir.relative" pathsep="${line.separator}">
+            <propertyresource name="module.dir" />
+            <mapper type="regexp"
+                from="^(.*)[/\\]dist[/\\]repo[/\\](.*)"
+                to="\2"/>
+        </pathconvert>
+        <pathconvert property="module.jar" setonempty="false">
+            <first>
+                <fileset dir="${ceylon.dist.dir}/repo/${module.dir.relative}" includes="*.?ar" />
+            </first>
+        </pathconvert>
+        <echo>Adding module descriptor for ${module.descriptor.file} to ${module.jar}</echo>
+        <basename property="module.jar.name" file="${module.jar}" if:set="module.jar"/>
+        <antcall target="addRequiredOSGIHeaders" inheritall="true" if:set="module.jar"/>
+        <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
+        <copy file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" />
+        <jar destfile="${module.jar}.result" if:set="module.jar" filesetmanifest="merge">
+            <zipfileset dir="${module.dir}" 
+                            includes="module.xml"
+                            fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
+            <zipfileset src="${module.jar}.original" includes="**" excludes="META-INF/MANIFEST.MF"/>
+            <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF" unless:set="jigsaw"/>
+        </jar>
+        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
+    	
+        <property file="../common/common-build.properties" />
+        <path id="compiler.classpath">
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar"/>
+        	<pathelement location="${jboss-modules.lib}"/>
+        </path>
+    	<java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath" if:set="jigsaw">
+    		<arg value="${module.jar}"/>
+    	</java>
+
+        <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
+            <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
+        </pathconvert>
+        <antcall target="sha1sum" if:set="module.sha1">
+            <param name="file" value="${module.jar}" />
+        </antcall>
+
+        <delete file="${module.jar}.original" failonerror="false" deleteonexit="true"/>
+        <delete file="${module.jar}.bnd.jar" failonerror="false" deleteonexit="true"/>
+        <delete file="${module.jar}.result" failonerror="false" deleteonexit="true"/>
+    </target>
 
     <target name="addRequiredOSGIHeaders">
         <loadproperties>
@@ -536,12 +588,12 @@ Use this when NOT doing a release!">
                 <actions>
                     <if>
                         <not>
-                        	<or>
+                            <or>
                                 <equals arg1="@{moduleName}" arg2="java.base"/>
                                 <equals arg1="@{moduleName}" arg2="java.compiler"/>
                                 <equals arg1="@{moduleName}" arg2="java.logging"/>
                                 <equals arg1="@{moduleName}" arg2="javax.xml"/>
-                        	</or>
+                            </or>
                         </not>
                         <then>
                             <if>
@@ -609,68 +661,17 @@ Use this when NOT doing a release!">
         </bndwrap>
         <delete file="${bundleDefinitionFile}"/>
     </target>
-    
-    <target name="add-module-descriptor">
-        <dirname property="module.dir" file="${module.descriptor.file}"/>
-        <pathconvert property="module.dir.relative" pathsep="${line.separator}">
-            <propertyresource name="module.dir" />
-            <mapper type="regexp"
-                from="^(.*)[/\\]dist[/\\]repo[/\\](.*)"
-                to="\2"/>
-        </pathconvert>
-        <pathconvert property="module.jar" setonempty="false">
-            <first>
-                <fileset dir="${ceylon.dist.dir}/repo/${module.dir.relative}" includes="*.?ar" />
-            </first>
-        </pathconvert>
-        <basename property="module.jar.name" file="${module.jar}" if:set="module.jar"/>
-        <antcall target="addRequiredOSGIHeaders" inheritall="true" if:set="module.jar"/>
-        <echo message="Adding module descriptor to ${module.jar}" if:set="module.jar"/>
-        <copy file="${module.jar}" tofile="${module.jar}.original" if:set="module.jar" />
-        <jar destfile="${module.jar}.result" if:set="module.jar" filesetmanifest="merge">
-            <zipfileset dir="${module.dir}" 
-                            includes="module.xml"
-                            fullpath="META-INF/jbossmodules/${module.dir.relative}/module.xml"/>
-            <zipfileset src="${module.jar}.original" includes="**" excludes="META-INF/MANIFEST.MF"/>
-            <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF" unless:set="jigsaw"/>
-        </jar>
-        <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
-    	
-        <property file="../common/common-build.properties" />
-        <path id="compiler.classpath">
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar"/>
-        	<pathelement location="${jboss-modules.lib}"/>
-        </path>
-    	<java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath" if:set="jigsaw">
-    		<arg value="${module.jar}"/>
-    	</java>
-
-        <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
-            <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
-        </pathconvert>
-        <antcall target="sha1sum" if:set="module.sha1">
-            <param name="file" value="${module.jar}" />
-        </antcall>
-
-        <delete file="${module.jar}.original" failonerror="false" deleteonexit="true"/>
-        <delete file="${module.jar}.bnd.jar" failonerror="false" deleteonexit="true"/>
-        <delete file="${module.jar}.result" failonerror="false" deleteonexit="true"/>
-    </target>
 
     <target name="generate-spec">
-        <ant antfile="${ceylon-spec.dir}/build.xml" target="doc" dir="${ceylon-spec.dir}" inheritall="false"/>
+        <ant antfile="${project-spec.dir}/build.xml" target="doc" dir="${project-spec.dir}" inheritall="false"/>
         <copy todir="${ceylon.dist.dir}/doc/en/spec">
-            <fileset dir="${ceylon-spec.dir}/build/en"/>            
+            <fileset dir="${project-spec.dir}/build/en"/>            
         </copy>
     </target>
 
     <target name="generate-apidoc" depends="ceylondefs">
         <ceylon-doc
-            src="${ceylon.language.dir}/src"
+            src="${project-language.dir}/src"
             out="${ceylon.dist.dir}/repo"
             includesourcecode="true"
             bootstrapceylon="true"

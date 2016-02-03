@@ -36,47 +36,14 @@
 
     <tstamp/>
 
-    <!-- Local repositoryManager -->
-    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo"/>
-
     <!-- ceylon.module-resolver -->
-    <property name="module.module-resolver.dir" value="com/redhat/ceylon/module-resolver"/>
     <property name="module.module-resolver.name" value="com.redhat.ceylon.module-resolver"/>
 
-    <!-- ceylon.common -->
-    <property name="module.common.dir" value="com/redhat/ceylon/common"/>
-    <property name="module.common.name" value="com.redhat.ceylon.common"/>
-
-    <!-- ceylon.model -->
-    <property name="module.model.dir" value="com/redhat/ceylon/model"/>
-    <property name="module.model.name" value="com.redhat.ceylon.model"/>
-
     <!-- module archives -->
-    <property name="ceylon.module-resolver.dir"
-              value="${module.module-resolver.dir}/${module.com.redhat.ceylon.module-resolver.version}"/>
     <property name="ceylon.module-resolver.src"
               value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.src"/>
-    <property name="ceylon.module-resolver.jar"
-              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
-    <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
     <property name="ceylon.module-resolver.dist" value="${build.dist.repo}/${ceylon.module-resolver.dir}"/>
-
-    <property name="ceylon.maven-support.jar" value="${ceylon.maven-support.repo}"/>
-    <property name="ceylon.maven-support.repo" value="${ceylon.repo.dir}/${ceylon.maven-support.dir}"/>
-    <property name="ceylon.maven-support.dist" value="${build.dist.repo}/${ceylon.maven-support.dir}"/>
-
-    <property name="ceylon.common.dir"
-              value="${module.common.dir}/${module.com.redhat.ceylon.common.version}"/>
-    <property name="ceylon.common.jar"
-              value="${ceylon.common.dir}/${module.common.name}-${module.com.redhat.ceylon.common.version}.jar"/>
-    <property name="ceylon.common.lib" value="${ceylon.repo.dir}/${ceylon.common.jar}"/>
-
-    <property name="ceylon.model.dir"
-              value="${module.model.dir}/${module.com.redhat.ceylon.model.version}"/>
-    <property name="ceylon.model.jar"
-              value="${ceylon.model.dir}/${module.model.name}-${module.com.redhat.ceylon.model.version}.jar"/>
-    <property name="ceylon.model.lib" value="${ceylon.repo.dir}/${ceylon.model.jar}"/>
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}"/>
@@ -142,7 +109,7 @@
             <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
         </manifest>
         
-        <property name="archivePath2" value="${ceylon.repo.dir}/${ceylon.maven-support.repo}"/>
+        <property name="archivePath2" value="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
     	<echo>TWO ${archivePath2}</echo>
         <basename file="${archivePath2}" property="archiveFileName2"/>
         <property name="proxy-project2" value="${eclipse.project.path}/required-bundle-proxies/${archiveFileName2}"/>
