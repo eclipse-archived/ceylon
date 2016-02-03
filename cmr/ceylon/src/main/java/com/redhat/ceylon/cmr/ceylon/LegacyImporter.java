@@ -802,7 +802,11 @@ public class LegacyImporter {
             th = th.getCause();
         }
         String name = th.getMessage().replace('/', '.');
-        if (name.startsWith("L") && name.endsWith(";")) {
+        while (name.startsWith("[")) {
+            name = name.substring(1, name.length());
+        }
+        // in theory there's only one there
+        while (name.startsWith("L") && name.endsWith(";")) {
             name = name.substring(1, name.length() - 1);
         }
         if (externalClasses.add(name)) {
