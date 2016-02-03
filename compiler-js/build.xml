@@ -28,9 +28,8 @@
     <tstamp />
 
     <!-- Local repository -->
-    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
-    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
-    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
+    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo" />
+    <property name="ceylon.bin.dir" location="${basedir}/../dist/dist/bin" />
     <property name="ceylon.js.dir" value="com/redhat/ceylon/compiler/js/${module.com.redhat.ceylon.compiler.js.version}" />
     <property name="ceylon.js.repo" value="${ceylon.repo.dir}/${ceylon.js.dir}" />
     <property name="ceylon.js.dist" value="${build.dist.repo}/${ceylon.js.dir}"/>

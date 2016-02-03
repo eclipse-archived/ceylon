@@ -40,8 +40,7 @@
     <property name="db.style.info" value="texinfo.xsl"/>
 
     <!-- Local repository -->
-    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
-    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
+    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo"/>
     <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}"/>
     <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar"/>
     <property name="ceylon.typechecker.src" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.src"/>

@@ -6,9 +6,8 @@
     <property file="build.properties" />
 
     <property name="name" value="Ceylon tool provider" />
-    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
-    <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
-    <property name="ceylon.bin.dir" location="${user.home}/.ceylon/bin" />
+    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo" />
+    <property name="ceylon.bin.dir" location="${basedir}/../dist/dist/bin" />
 
     <!-- The Java source files for the tool provider -->
     <property name="tool.provider.src" location="src" />

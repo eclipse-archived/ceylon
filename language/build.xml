@@ -31,7 +31,7 @@
     <!-- Local repository -->
     <property name="ceylon.dist.dir" location="${basedir}/../dist/dist"/>
     <property name="ceylon.dist.repo" location="${ceylon.dist.dir}/repo"/>
-    <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo"/>
+    <property name="ceylon.repo.dir" location="${basedir}/../dist/dist/repo"/>
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     
     <!-- ceylon.language -->

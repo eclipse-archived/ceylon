@@ -121,13 +121,6 @@ Some super-charged ant tasks:
                  target="publish-item"
                  param="project.item.name"
                  inheritall="true" />
-        <copy todir="${ceylon.user.repo}" overwrite="true">
-            <fileset dir="${ceylon.repo.dir}">
-                <include name="ceylon/**/*.xml" />
-                <include name="com/redhat/ceylon/**/*.xml" />
-                <exclude name="com/redhat/ceylon/maven-support" />
-            </fileset>
-        </copy>
     </target>
     <target name="publish-item">
         <fail unless="projects.base.dir" />
