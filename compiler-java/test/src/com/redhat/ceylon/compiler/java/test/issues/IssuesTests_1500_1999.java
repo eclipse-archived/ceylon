@@ -1069,6 +1069,8 @@ public class IssuesTests_1500_1999 extends CompilerTests {
             options.addAll(Arrays.asList("-src", getSourcePath()));
         if(!options.contains("-cacherep"))
             options.addAll(Arrays.asList("-cacherep", getCachePath()));
+        if(!options.contains("-sysrep"))
+            options.addAll(Arrays.asList("-sysrep", getSysRepPath()));
         if(!options.contains("-cp"))
             options.addAll(Arrays.asList("-cp", getClassPathAsPath()));
         options.add("-verbose");

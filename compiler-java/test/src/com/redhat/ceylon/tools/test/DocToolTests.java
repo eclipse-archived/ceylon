@@ -26,18 +26,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.ceylondoc.CeylonDocTool;
-import com.redhat.ceylon.common.tool.ToolFactory;
-import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
-import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class DocToolTests extends AbstractToolTests {
     
     private List<String> options(String... strings){
-        List<String> ret = new ArrayList<String>(strings.length+2);
+        List<String> ret = new ArrayList<String>(strings.length+4);
         for(String s : strings)
             ret.add(s);
+        ret.add("--sysrep");
+        ret.add(getSysRepPath());
         ret.add("--out");
         ret.add(destDir);
         return ret;

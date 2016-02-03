@@ -300,6 +300,7 @@ public class ModelLoaderTests extends CompilerTests {
     
     protected void verifyRuntimeClassLoading(RunnableTest test) {
         RepositoryManager repoManager = CeylonUtils.repoManager()
+                .systemRepo(getSysRepPath())
                 .buildManager();
         VFS vfs = new VFS();
         com.redhat.ceylon.compiler.typechecker.context.Context context = new com.redhat.ceylon.compiler.typechecker.context.Context(repoManager, vfs);

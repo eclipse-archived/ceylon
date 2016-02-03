@@ -217,6 +217,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         List<String> args = new ArrayList<>();
 //            args.add("-verbose:code");
         args.add("-g");
+        args.add("-sysrep"); 
+        args.add("../dist/dist/repo"); 
         args.add("-src"); 
         args.add(srcDir.getCanonicalPath());
         args.add("-res"); 

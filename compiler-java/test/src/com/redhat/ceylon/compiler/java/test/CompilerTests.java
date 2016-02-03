@@ -156,7 +156,10 @@ public abstract class CompilerTests {
         } else {
             cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = new ArrayList<String>(Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", 
+        defaultOptions = new ArrayList<String>(Arrays.asList(
+                "-out", destDir,
+                "-cacherep", cacheDir,
+                "-g", 
                 "-cp", getClassPathAsPath(),
                 "-suppress-warnings", "compilerAnnotation"));
     }
@@ -838,6 +841,8 @@ public abstract class CompilerTests {
             options.addAll(Arrays.asList("-src", getSourcePath()));
         if(!options.contains("-cacherep"))
             options.addAll(Arrays.asList("-cacherep", getCachePath()));
+        if(!options.contains("-sysrep"))
+            options.addAll(Arrays.asList("-sysrep", getSysRepPath()));
         if(!options.contains("-cp"))
             options.addAll(Arrays.asList("-cp", getClassPathAsPath()));
         boolean hasVerbose = false;
@@ -865,6 +870,11 @@ public abstract class CompilerTests {
 
     protected String getOutPath() {
         return destDir;
+    }
+    
+    protected String getSysRepPath() {
+        File sysrep = new File("../dist/dist/repo");
+        return sysrep.getAbsolutePath();
     }
 
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
@@ -1095,6 +1105,8 @@ public abstract class CompilerTests {
         ArrayList<String> a = new ArrayList<String>();
         a.add("../dist/dist/bin/ceylon");
         a.add("classpath");
+        a.add("--sysrep");
+        a.add(getSysRepPath());
         a.add("--rep");
         a.add(rep);
         if (distDowngrade) {

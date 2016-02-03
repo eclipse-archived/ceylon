@@ -97,6 +97,7 @@ public class CeylonDocToolTests {
             throws Exception {
         
         CeylonDocTool tool = new CeylonDocTool();
+        tool.setSystemRepository("../dist/dist/repo");
         tool.setSourceFolders(sourceFolders);
         tool.setRepositoryAsStrings(Arrays.asList(repositories));
         tool.setModuleSpecs(moduleName);
@@ -592,9 +593,9 @@ public class CeylonDocToolTests {
             FileUtil.delete(dir);
         }
         dir.mkdirs();
-
+        
         // download a required jar
-        RepositoryManager repoManager = CeylonUtils.repoManager().buildManager();
+        RepositoryManager repoManager = CeylonUtils.repoManager().systemRepo("../dist/dist/repo").buildManager();
         File jbossModulesModule = repoManager.getArtifact(new ArtifactContext("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
         File runtimeModule = repoManager.getArtifact(new ArtifactContext("ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
         File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
@@ -1527,7 +1528,7 @@ public class CeylonDocToolTests {
     
     private void compile(String pathname, String destDir, String moduleName) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", destDir, "-cp", CompilerTests.getClassPathAsPath());
+        List<String> options = Arrays.asList("-src", pathname, "-out", destDir, "-sysrep", "../dist/dist/repo", "-cp", CompilerTests.getClassPathAsPath());
         JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
@@ -1535,7 +1536,7 @@ public class CeylonDocToolTests {
 
     private void compileJavaModule(String pathname, String... fileNames) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-cp", CompilerTests.getClassPathAsPath());
+        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-sysrep", "../dist/dist/repo", "-cp", CompilerTests.getClassPathAsPath());
         JavacFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){

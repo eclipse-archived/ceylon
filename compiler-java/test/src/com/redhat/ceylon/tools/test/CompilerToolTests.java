@@ -34,24 +34,20 @@ import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.OptionArgumentException.ToolInitializationException;
-import com.redhat.ceylon.common.tool.ToolFactory;
-import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
-import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
 import com.redhat.ceylon.compiler.CompilerErrorException;
 import com.redhat.ceylon.compiler.SystemErrorException;
-import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class CompilerToolTests extends AbstractToolTests {
     
     private List<String> options(String... strings){
-        List<String> ret = new ArrayList<String>(strings.length+2);
+        List<String> ret = new ArrayList<String>(strings.length+5);
         for(String s : strings)
             ret.add(s);
+        ret.add("--sysrep");
+        ret.add(getSysRepPath());
         ret.add("--out");
         ret.add(destDir);
         ret.add("--javac=-cp="+getClassPathAsPath());
@@ -105,6 +101,7 @@ public class CompilerToolTests extends AbstractToolTests {
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 Arrays.asList(
                         "--cwd", destDir.getPath(),
+                        "--sysrep", getSysRepPath(),
                         "--src=src",
                         "--resource=res",
                         "--out=mod",

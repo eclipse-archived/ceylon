@@ -28,7 +28,7 @@ import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -42,17 +42,26 @@ import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
-import com.redhat.ceylon.common.tool.ToolFactory;
-import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
 import com.redhat.ceylon.tools.test.AbstractToolTests;
 
 public class NewProjectToolTests extends AbstractToolTests {
 
     private List<String> args(String... args) {
-        return Arrays.asList(args);
+        List<String> ret = new ArrayList<String>(args.length+2);
+        for(String s : args)
+            ret.add(s);
+        return ret;
+    }
+    
+    private List<String> options(String... strings){
+        List<String> ret = new ArrayList<String>(strings.length+2);
+        ret.add("--sysrep");
+        ret.add(getSysRepPath());
+        for(String s : strings)
+            ret.add(s);
+        return ret;
     }
     
     private void delete(File file) {
@@ -272,7 +281,7 @@ public class NewProjectToolTests extends AbstractToolTests {
             ToolModel<CeylonCompileTool> compileModel = pluginLoader.loadToolModel("compile");
             Assert.assertNotNull(compileModel);
             CeylonCompileTool compileTool = pluginFactory.bindArguments(compileModel, getMainTool(),
-                    args("--src=" + tmpDir.getAbsolutePath() + "/source",
+                    options("--src=" + tmpDir.getAbsolutePath() + "/source",
                             "--out=" + tmpDir.getAbsolutePath(),
                             "org.example.hello"));
             runTool(compileTool);

@@ -334,6 +334,7 @@ public class MiscTests extends CompilerTests {
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
                 Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk",
+                        "-sysrep", getSysRepPath(),
                         "-suppress-warnings", "ceylonNamespace",
                         "-overrides", "../../ceylon-sdk/overrides.xml",
                         "-cp", getClassPathAsPath()), 
@@ -368,7 +369,7 @@ public class MiscTests extends CompilerTests {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-rep", depsDir, "-d", "build/classes-sdk", "-cp", getClassPathAsPath()), 
+                Arrays.asList("-sourcepath", sourceDir, "-sysrep", getSysRepPath(), "-rep", depsDir, "-d", "build/classes-sdk", "-cp", getClassPathAsPath()), 
                 moduleNames, null);
         
         Boolean result = task.call();
