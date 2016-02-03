@@ -6,14 +6,7 @@
     <property file="build.properties" />
 
     <!-- Set build directories for all formats. -->
-    <property name="build.dir" value="${basedir}/build" />
-    <property name="build.classes" location="${build.dir}/classes/main" />
     <property name="build.test-classes" location="${build.dir}/classes/test" />
-    <property name="build.dist" location="${build.dir}/dist" />
-    <property name="build.dist.repo" location="${build.dist}/repo" />
-    <property name="build.bin" location="${build.dir}/bin" />
-    <property name="build.lib" location="${build.dir}/lib" />
-    <property name="build.test" location="${build.dir}/test" />
 
     <property name="test-src" location="${basedir}/src/test/java" />
     <property name="test-lib" location="${build.lib}/compiler.js.test.jar" />

@@ -5,15 +5,6 @@
     <property file="../lib/build.properties"/>
     <property file="build.properties"/>
 
-    <!-- Set build directories for all formats. -->
-    <property name="build.dir" value="${basedir}/build"/>
-    <property name="build.classes" location="${build.dir}/classes"/>
-    <property name="build.dist" location="${build.dir}/dist"/>
-    <property name="build.dist.repo" location="${build.dist}/repo"/>
-    <property name="build.lib" location="${build.dir}/lib"/>
-    <property name="build.test" location="${build.dir}/test"/>
-    <property name="test.reports" location="${build.dir}/test-reports"/>
-
     <!-- The Java source files for the module-resolver -->
     <property name="cmr-api.src" location="${basedir}/api/src/main/java"/>
     <property name="cmr-api.resources" location="${basedir}/api/src/main/resources"/>

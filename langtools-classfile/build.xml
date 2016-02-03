@@ -10,16 +10,6 @@
     <!-- The Java source files for the langtools classfile -->
     <property name="classfile.src" location="src" />
 
-    <!-- Directories everything gets built into -->
-    <property name="build" location="build" />
-    <property name="build.classes" location="${build}/classes" />
-    <property name="build.poms" location="${build}/poms" />
-    <property name="build.bin" location="${build}/bin" />
-    <property name="build.lib" location="${build}/lib" />
-    <property name="build.api" location="${build}/api" />
-    <property name="build.dist" location="${build}/dist" />
-    <property name="build.dist.repo" location="${build.dist}/repo" />
-
     <!-- Jarfiles everything ends up in -->
     <property name="ceylon.classfile.src" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.src" />
     <property name="ceylon.classfile.repo" value="${ceylon.repo.dir}/${ceylon.classfile.dir}" />
@@ -49,7 +39,7 @@
 
     <!-- Rule to clean everything up -->
     <target name="clean">
-        <delete dir="${build}" />
+        <delete dir="${build.dir}" />
     </target>
 
     <!-- Repository targets -->

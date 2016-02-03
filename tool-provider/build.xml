@@ -11,20 +11,9 @@
     <property name="tool.provider.src" location="src" />
     <property name="test.src" location="test"/>
     <property name="test-launcher.src" location="test-launcher"/>
-    <property name="test.reports" location="${build.dir}/test-reports"/>
 
     <!-- Directories everything gets built into -->
-    <property name="build" location="build" />
-    <property name="build.classes" location="${build}/classes" />
-    <property name="build.poms" location="${build}/poms" />
-    <property name="build.bin" location="${build}/bin" />
-    <property name="build.lib" location="${build}/lib" />
-    <property name="build.api" location="${build}/api" />
-    <property name="build.dist" location="${build}/dist" />
-    <property name="build.dist.repo" location="${build.dist}/repo" />
-    <property name="build.test" location="${build}/test"/>
-    <property name="build.tools-test" location="${build}/toolsTest/launcher-classes"/>
-    <property name="build.test.repo" location="${build}/test-repo"/>
+    <property name="build.tools-test" location="${build.dir}/toolsTest/launcher-classes"/>
 
     <!-- Jarfiles everything ends up in -->
     <property name="ceylon.tool.provider.src" value="${ceylon.tool.provider.dir}/com.redhat.ceylon.tool.provider-${module.com.redhat.ceylon.tool.provider.version}.src" />
@@ -79,7 +68,7 @@
 
     <!-- Rule to clean everything up -->
     <target name="clean">
-        <delete dir="${build}" />
+        <delete dir="${build.dir}" />
     </target>
 
     <!-- Repository targets -->

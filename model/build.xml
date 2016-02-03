@@ -5,15 +5,8 @@
     <property file="../lib/build.properties"/>
     <property file="build.properties" />
 
-    <!-- Set build directories for all formats. -->
-    <property name="build.dir" value="${basedir}/build" />
-    <property name="build.dist" value="${build.dir}/dist" />
-    <property name="build.dist.repo" value="${build.dist}/repo" />
-    <property name="build.classes" location="${build.dir}/classes" />
-
     <property name="src" location="src" />
     <property name="test.src" location="test/src" />
-    <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Local repository -->
     <property name="ceylon.model.src" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.src" />

@@ -17,12 +17,6 @@
     <!-- Allow this to be overriden by others importing this project. -->
     <dirname property="imported.basedir" file="${ant.file.ReferenceDocumentation}"/>
 
-    <!-- Set build directories for all formats. -->
-    <property name="build.dir" value="${basedir}/build"/>
-    <property name="build.dist" value="${build.dir}/dist"/>
-    <property name="build.dist.repo" value="${build.dist}/repo"/>
-    <property name="build.classes" location="${build.dir}/classes"/>
-
     <property name="src" location="src"/>
     <property name="gensrc" location="gensrc"/>
 

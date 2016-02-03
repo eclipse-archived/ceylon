@@ -15,16 +15,7 @@
     <property name="test.ceylond.src" location="test/ceylondoc" />
 
     <!-- Directories everything gets built into -->
-    <property name="build" location="build" />
-    <property name="build.classes" location="${build}/classes" />
-    <property name="build.ceylon.cars" location="${build}/ceylon-cars" />
-    <property name="build.poms" location="${build}/poms" />
-    <property name="build.bin" location="${build}/bin" />
-    <property name="build.lib" location="${build}/lib" />
-    <property name="build.api" location="${build}/api" />
-    <property name="build.dist" location="${build}/dist" />
-    <property name="build.dist.repo" location="${build.dist}/repo" />
-    <property name="test.reports" location="${build}/test-reports" />
+    <property name="build.ceylon.cars" location="${build.dir}/ceylon-cars" />
 
     <!-- Jarfiles everything ends up in -->
     <property name="ceylon.compiler.src" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.src" />
@@ -36,7 +27,7 @@
     <!-- The directory that parser tests live in, and
        the directory test results get written into -->
     <property name="parser.test.src" location="corpus/tests" />
-    <property name="parser.test.dst" location="${build}/test/parser" />
+    <property name="parser.test.dst" location="${build.dir}/test/parser" />
     <tstamp>
         <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
     </tstamp>
@@ -97,7 +88,7 @@
 
     <!-- Rule to clean everything up -->
     <target name="clean">
-        <delete dir="${build}" />
+        <delete dir="${build.dir}" />
         <delete dir="samples/helloworld/modules" />
         <delete dir="samples/no-module/modules" />
     </target>

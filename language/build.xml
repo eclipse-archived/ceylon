@@ -6,12 +6,6 @@
     <property file="build.properties"/>
 
     <!-- Set build directories for all formats. -->
-    <property name="build.dir" value="${basedir}/build"/>
-    <property name="build.classes" location="${build.dir}/classes"/>
-    <property name="build.dist" location="${build.dir}/dist"/>
-    <property name="build.dist.repo" location="${build.dist}/repo"/>
-    <property name="build.lib" location="${build.dir}/lib"/>
-    <property name="build.test" location="${build.dir}/test"/>
     <property name="build.test.repo" location="${build.dir}/test-repo"/>
     <property name="ide.dist" location="${basedir}/ide-dist"/>
     
