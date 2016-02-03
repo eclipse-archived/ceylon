@@ -70,7 +70,7 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
     private String sourceJar;
     private String descriptor;
     private boolean force;
-	private List<MissingDependencyPackages> missingDependenciesPackages = new LinkedList<>();
+	private List<MissingDependencyPackages> missingDependenciesPackages = new LinkedList<MissingDependencyPackages>();
 
     /** Adds an list of packages to be considered as part of the specified module if it's missing */
     public void addConfiguredMissingDependencyPackages(MissingDependencyPackages missingDependencyPackages) {

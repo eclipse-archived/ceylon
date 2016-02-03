@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -35,6 +36,7 @@ import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolError;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.tools.importjar.CeylonImportJarTool;
 import com.redhat.ceylon.tools.importjar.ImportJarException;
 
@@ -450,6 +452,9 @@ public class ImportJarToolTests extends AbstractToolTests {
 
     @Test
     public void testMissingOptionalPackages() throws Exception {
+    	// Jetty is compiled for JDK8
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
+        
     	CeylonRepoManagerBuilder builder = CeylonUtils.repoManager();
     	RepositoryManager repository = builder.buildManager();
     	File artifact = repository.getArtifact("org.eclipse.jetty:jetty-server", "9.3.2.v20150730");
