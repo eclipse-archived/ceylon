@@ -520,7 +520,6 @@
         </copy>
         <delete dir="${build.test}"/>
         <mkdir dir="${build.test}"/>
-        <mkdir dir="${build.tools-test}"/>
     </target>
 
     <target name="compile.tests.java" depends="ceylon.language.java,compile.tests.setup,compile.tests.java.quick">
@@ -704,11 +703,11 @@
         </ceylon-run-js>
     </target>
 
-    <target name="test" depends="build,test-quick" 
+    <target name="test" depends="build,test.java,test.js" 
         description="compile and run the tests for JVM and Node.js (requires node)">
     </target>
 
-    <target name="test-quick" depends="test.java,test.js" 
+    <target name="test-quick" depends="compile.tests.setup,compile.tests.java.quick,test.java.quick,compile.tests.js.quick,test.js.quick" 
         description="compile and run the tests for JVM and Node.js (requires node)">
     </target>
 </project>
