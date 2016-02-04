@@ -100,19 +100,20 @@ public class AetherUtils {
         settingsXml = getDefaultMavenSettings();
     }
 
-    MavenArtifactInfo[] getDependencies(File pomXml) {
+    MavenArtifactInfo[] getDependencies(File pomXml, String name, String version) {
         MavenResolverSystem system = getResolver();
         PomEquippedResolveStage resolverStage = system.loadPomFromFile(pomXml).importDependencies(SCOPES);
-        MavenStrategyStage strategyStage = resolverStage.resolve();
+        String coordinates = toCanonicalForm(name, version);
+        MavenStrategyStage strategyStage = resolverStage.resolve(coordinates);
         MavenFormatStage formatStage = strategyStage.using(SCOPED_STRATEGY);
         return formatStage.asResolvedArtifact();
     }
 
-    MavenArtifactInfo[] getDependencies(InputStream pomXml) {
+    MavenArtifactInfo[] getDependencies(InputStream pomXml, String name, String version) {
         File tempFile = null;
         try {
             tempFile = IOUtils.toTempFile(pomXml);
-            return getDependencies(tempFile);
+            return getDependencies(tempFile, name, version);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         } finally {
