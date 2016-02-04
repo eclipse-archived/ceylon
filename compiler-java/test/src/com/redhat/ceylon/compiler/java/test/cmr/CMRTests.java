@@ -53,6 +53,7 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.hamcrest.CoreMatchers;
@@ -61,6 +62,11 @@ import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
+import com.redhat.ceylon.cmr.maven.MavenDependencyResolver;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.Repositories;
@@ -1705,5 +1711,26 @@ public class CMRTests extends CompilerTests {
                 new CompilerError(21, "missing module version"),
                 new CompilerError(21, "cannot find module artifact null-null(.car|.jar)\n  \t- dependency tree: com.redhat.ceylon.compiler.java.test.cmr.modules.nullVersion/1 -> null/null")
                 );
+    }
+    
+    @Test
+    public void testMavenFileResolver() throws ZipException, IOException{
+        CeylonRepoManagerBuilder builder = CeylonUtils.repoManager();
+        RepositoryManager repository = builder.buildManager();
+        String groupId = "javax.el";
+        String artifactId = "javax.el-api";
+        String version = "3.0.0";
+        String coord = groupId + ":" + artifactId;
+        File artifact = repository.getArtifact(coord, version);
+        Assert.assertNotNull(artifact);
+        try(ZipFile zf = new ZipFile(artifact)){
+            String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
+            ZipEntry entry = zf.getEntry(descriptorPath);
+            Assert.assertNotNull(entry);
+            try(InputStream is = zf.getInputStream(entry)){
+                DependencyResolver resolver = new MavenDependencyResolver();
+                resolver.resolveFromInputStream(is, coord, version, null);
+            }
+        }
     }
 }
