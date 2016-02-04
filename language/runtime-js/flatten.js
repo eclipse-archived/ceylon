@@ -79,7 +79,7 @@ function flatten(tf, $$$mptypes) {
       if (is$(s,{t:ArraySequence})){
         //This is awful but it's the only way to get the array directly out of its sequence
         //Don't forget to update the property name when it changes
-        return tf(tpl$(s.$g1.arr$),$mpt);
+        return tf(tpl$(s.$ff.arr$),$mpt);
       }
       if (is$(s,{t:$_Array}))return tf(tpl$(s.arr$),$mpt);
       return tf(s?tpl$(s):empty(),$mpt);

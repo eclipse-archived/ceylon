@@ -13,6 +13,8 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -150,7 +152,9 @@ public class Stitcher {
                 compiledFiles.add(src);
             }
         } else if (src.exists() && src.isDirectory()) {
-            for (File sub : src.listFiles()) {
+            List<File> subs = Arrays.asList(src.listFiles());
+            Collections.sort(subs);
+            for (File sub : subs) {
                 if (!compiledFiles.contains(sub)) {
                     includes.add(sub);
                     compiledFiles.add(sub);
