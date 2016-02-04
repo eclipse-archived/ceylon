@@ -42,9 +42,9 @@ public class ResolverTestCase extends AbstractAetherTest {
         final MavenDependencyResolver resolver = new MavenDependencyResolver();
         doTest(new Tester() {
             public void run(CmrRepository repository, final File artifact) {
-                ModuleInfo infos = resolver.resolve(new TestArtifactResult(repository, "org.apache.camel.camel-core", "2.9.2", artifact), null);
+                ModuleInfo infos = resolver.resolve(new TestArtifactResult(repository, "org.apache.camel:camel-core", "2.9.2", artifact), null);
                 Assert.assertNotNull(infos);
-                Assert.assertEquals(String.valueOf(infos), 3, infos.getDependencies().size());
+                Assert.assertEquals(String.valueOf(infos), 4, infos.getDependencies().size());
             }
         });
     }
@@ -52,7 +52,7 @@ public class ResolverTestCase extends AbstractAetherTest {
     private void doTest(Tester tester) throws Exception {
         CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
+        ArtifactResult result = manager.getArtifactResult("org.apache.camel:camel-core", "2.9.2");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "org.apache.camel:camel-core");
         File artifact = result.artifact();

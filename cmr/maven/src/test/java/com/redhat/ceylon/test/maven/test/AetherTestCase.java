@@ -46,7 +46,7 @@ public class AetherTestCase extends AbstractAetherTest {
         StructureBuilder structureBuilder = new AetherContentStore(log, false, 60000);
         CmrRepository repository = MavenRepositoryHelper.getMavenRepository(structureBuilder);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        File artifact = manager.getArtifact("org.slf4j.slf4j-api", "1.6.4");
+        File artifact = manager.getArtifact("org.slf4j:slf4j-api", "1.6.4");
         boolean exists = false;
         try {
             Assert.assertNotNull(artifact);
@@ -63,7 +63,7 @@ public class AetherTestCase extends AbstractAetherTest {
     public void testAether() throws Throwable {
         CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult("org.slf4j.slf4j-api", "1.6.4");
+        ArtifactResult result = manager.getArtifactResult("org.slf4j:slf4j-api", "1.6.4");
         Assert.assertNotNull(result);
         File artifact = result.artifact();
         boolean exists = false;
@@ -84,7 +84,7 @@ public class AetherTestCase extends AbstractAetherTest {
     public void testWithSources() throws Throwable {
         CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult(new ArtifactContext("org.slf4j.slf4j-api", "1.6.4", ArtifactContext.LEGACY_SRC));
+        ArtifactResult result = manager.getArtifactResult(new ArtifactContext("org.slf4j:slf4j-api", "1.6.4", ArtifactContext.LEGACY_SRC));
         Assert.assertNotNull(result);
         File artifact = result.artifact();
         boolean exists = false;
@@ -123,7 +123,7 @@ public class AetherTestCase extends AbstractAetherTest {
     public void testAetherWithExternalSettings() throws Throwable {
         CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult("org.apache.camel.camel-core", "2.9.2");
+        ArtifactResult result = manager.getArtifactResult("org.apache.camel:camel-core", "2.9.2");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "org.apache.camel:camel-core");
         File artifact = result.artifact();
