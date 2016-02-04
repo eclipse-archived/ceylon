@@ -626,7 +626,7 @@ public class JsCompiler {
     VirtualFile getStitchedConstructorFile(final Declaration d, final String suffix) {
         VirtualFile f;
         if (isCompilingLanguageModule()) {
-            f = getStitchedFile(d, suffix + ".js");
+            f = getStitchedFile(d, suffix + ArtifactContext.JS);
         } else {
             f = findFile(new File(new File(d.getUnit().getFullPath()).getParentFile(),
                     String.format("%s%s.js", names.name(d), suffix)));
@@ -652,7 +652,7 @@ public class JsCompiler {
                 return true;
             }
         }
-        VirtualFile f = getStitchedFile(d, ".js");
+        VirtualFile f = getStitchedFile(d, ArtifactContext.JS);
         if (f != null)
             return true;
         if (isCompilingLanguageModule()) {
