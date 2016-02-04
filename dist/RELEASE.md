@@ -23,7 +23,7 @@ How to do a release of Ceylon.
     $ cd ceylon.language
     ceylon.language $ ant test
 
-# Before (requirements & testing)
+# Before (packaging)
 
 1. Make sure the RedHat packaging is up-to-date by following the steps in the `dist/redhat/README` file
 2. Do the same for the Debian packaging by reading `dist/debian/README`
