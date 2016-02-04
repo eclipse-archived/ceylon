@@ -460,17 +460,33 @@ public class CeylonRunJsTool extends RepoUsingTool {
         customizeDependencies(localRepos, getRepositoryManager());
 
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
-        Process nodeProcess = proc.start();
+        final Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows
         new ReadStream(nodeProcess.getInputStream(), output == null ? System.out : output).start();
         if (output == null) {
             new ReadErrorStream(nodeProcess.getErrorStream(), System.err, debug).start();
         }
-        int exitCode = nodeProcess.waitFor();
-        if (exitCode != 0) {
-            if(exitCode == 11)
-                exitCode = 2;
-            throw new CeylonRunJsException("Node process exited with non-zero exit code: "+exitCode, exitCode);
+        Thread stopThread = new Thread() {
+            public void run() {
+                try {
+                    nodeProcess.destroy();
+                } catch(Throwable t) {}
+            };
+        };
+        try {
+            try {
+                Runtime.getRuntime().addShutdownHook(stopThread);
+            } catch(Throwable t) {}
+            int exitCode = nodeProcess.waitFor();
+            if (exitCode != 0) {
+                if(exitCode == 11)
+                    exitCode = 2;
+                throw new CeylonRunJsException("Node process exited with non-zero exit code: "+exitCode, exitCode);
+            }
+        } finally {
+            try {
+                Runtime.getRuntime().removeShutdownHook(stopThread);
+            } catch(Throwable t) {}
         }
     }
 
