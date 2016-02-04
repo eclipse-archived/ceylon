@@ -18,9 +18,14 @@
 package com.redhat.ceylon.test.smoke.test;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.SortedSet;
 
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
@@ -71,6 +76,20 @@ public class HerdTestCase extends AbstractTest {
     private final static String CEYLON_RELEASE = "6.6.6";
 	private static final ModuleDependencyInfo ceylonCollectionDep = new ModuleDependencyInfo("ceylon.collection", CEYLON_RELEASE, false, true);
     
+	@BeforeClass
+	public static void setup() {
+	    boolean running = false;
+	    try {
+	        URL url = new URL(HERD_URL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.connect();
+            con.disconnect();
+            running = true;
+        } catch (IOException e) {
+        }
+	    Assume.assumeTrue("Herd server is not running", running);
+	}
+	
     @Test
     public void testDummy() {
     }
