@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -80,6 +81,7 @@ public class MainForJsTest {
             //The arg is src/test/ceylon for example
             addFilesToList(new File(dir),sources);
         }
+        Collections.sort(sources);
         jsc.setSourceFiles(sources);
         jsc.setResourceFiles(resfiles);
         PrintWriter writer = new PrintWriter(System.out);
