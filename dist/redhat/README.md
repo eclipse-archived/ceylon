@@ -48,3 +48,5 @@ And finally we get to the point where we actually build the RPM (and SRPM) packa
  - `rpmbuild -ba --clean ~/rpmbuild/SPECS/ceylon.spec`
 
 The result you'll be able to find in `~/rpmbuild/RPMS/noarch`!
+
+Your next step is going to be to build an RPM repo so follow the instructions at https://github.com/ceylon/ceylon-rpm-repo
