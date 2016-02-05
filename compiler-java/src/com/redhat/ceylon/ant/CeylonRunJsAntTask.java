@@ -28,6 +28,21 @@ package com.redhat.ceylon.ant;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Commandline;
 
+@ToolEquivalent("run-js")
+@AntDoc("This task runs a top-level JavaScript method compiled from Ceylon code.\n"+
+        "It requires [node.js](http://nodejs.org/) to run the generated JS code.\n"+
+        "\n"+
+        "To execute the `com.example.foo::start` top level method in\n"+ 
+        "version 1.1 of module `com.example.foo` residing\n"+
+        "in the `build` directory (repository):\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"execute\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-run-js run=\"start\"\n"+
+        "        module=\"com.example.foo/1.1\">\n"+
+        "        <rep url=\"build\"/>\n"+
+        "      </ceylon-run-js>\n"+
+        "    </target>\n")
 public class CeylonRunJsAntTask extends RepoUsingCeylonAntTask {
 
     private String module;
@@ -38,10 +53,12 @@ public class CeylonRunJsAntTask extends RepoUsingCeylonAntTask {
         super("run-js");
     }
     
+    @AntDoc("The module and optional version to run")
     public void setModule(String value) {
         module = value;
     }
     
+    @OptionEquivalent
     public void setRun(String value) {
         func = value;
     }
@@ -49,6 +66,7 @@ public class CeylonRunJsAntTask extends RepoUsingCeylonAntTask {
     /**
      * Sets compile flags
      */
+    @OptionEquivalent
     public void setCompile(String compileFlags) {
         this.compileFlags = compileFlags;
     }

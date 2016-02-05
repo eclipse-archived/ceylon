@@ -21,17 +21,28 @@
 package com.redhat.ceylon.ant;
 
 import org.apache.tools.ant.types.DataType;
+import org.apache.tools.ant.types.Reference;
 
 public class Link extends DataType {
     public String url;
     public String pattern;
 
+    @AntDoc("A URL or path of a module repository containing documentation "
+            + "for external dependencies.")
     public void setUrl(String url){
         this.url = url;
     }
-
+    
+    @AntDoc("A module name prefix limiting the applicability of the "
+            + "URL to modules whose name matches the prefix.")
     public void setPattern(String pattern){
         this.pattern = pattern;
+    }
+    
+    @Override
+    @AntDoc("A reference to a `<link>` defined outside this task.")
+    public void setRefid(Reference reference) {
+        super.setRefid(reference);
     }
 
     @Override

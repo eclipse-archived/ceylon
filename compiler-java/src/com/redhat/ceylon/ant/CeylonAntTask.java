@@ -47,18 +47,36 @@ public abstract class CeylonAntTask extends Task {
 
     private static final int MAX_COMMAND_LENGTH = 4096;
     
+    @AntDoc("The value for the system property can "
+            + "either be passed as a `value` attribute:\n"
+            + "\n"
+            + "    <define key=\"org.example.helloworld.greeting\" value=\"Hi\"/>\n"
+            + "\n"
+            + "or it can be the text between the begin and end tags:\n"
+            + "\n"
+            + "<!-- lang: xml -->\n"
+            + "    <define key=\"org.example.helloworld.greeting\">Hi</define>\n"
+            + "\n"
+            + "Alternatively, it is "
+            + "posible to dispense with the attributes and use the "
+            + "syntax\n"
+            + "\n"
+            + "    <define>org.example.helloworld.greeting=Hi</define>\n")
     public static class Define {
         String key;
         String value;
         
+        @AntDoc("The property to be defined")
         public void setKey(String key) {
             this.key = key;
         }
 
+        @AntDoc("The value of the define")
         public void setValue(String value) {
             this.value = value;
         }
 
+        @AntDocIgnore
         public void addText(String value) {
             this.value = value;
         }
@@ -100,6 +118,7 @@ public abstract class CeylonAntTask extends Task {
      * Sets the current working directory
      * @param cwd path to the current working directory
      */
+    @OptionEquivalent("--cwd")
     public void setCwd(String cwd) {
         this.cwd = cwd;
     }
@@ -112,15 +131,20 @@ public abstract class CeylonAntTask extends Task {
      * Specifies the configuration file to use for this task
      * @param config path to the configuration file
      */
+    @OptionEquivalent("--config")
     public void setConfig(String config) {
         this.config = config;
     }
 
+    @OptionEquivalent("--verbose")
     public void setVerbose(String verbose){
         this.verbose = verbose;
     }
 
     /** Adds an define (key=value) to be passed to the tool */
+    @AntDoc("A `<define>` element is used to set system properties for the ant "
+            + "task being executed.")
+    @OptionEquivalent("--define")
     public void addConfiguredDefine(Define define) {
         this.defines.add(define);
     }
@@ -130,6 +154,7 @@ public abstract class CeylonAntTask extends Task {
     }
     
     /** Sets the location of the ceylon executable script */
+    @AntDoc("The location of the ceylon executable script.")
     public void setExecutable(String executable) {
         this.executable = new File(Util.getScriptName(executable));
     }
@@ -139,6 +164,7 @@ public abstract class CeylonAntTask extends Task {
     }
 
     /** Sets whether the task should be run in a separate VM */
+    @AntDoc("Whether the task should be run in a separate VM (default: `false`)")
     public void setFork(boolean fork) {
         this.fork = fork;
     }
@@ -151,6 +177,8 @@ public abstract class CeylonAntTask extends Task {
      * Sets whether a task should inherit environment and properties.
      * Only applies when forked == true
      */
+    @AntDoc("Whether a task should inherit environment and properties. "
+            + "Only applies when `forked == true`.")
     public void setInheritAll(boolean inheritAll) {
         this.inheritAll = inheritAll;
     }
@@ -160,6 +188,7 @@ public abstract class CeylonAntTask extends Task {
     }
 
     /** Sets whether the task should show any stacktraces that are generated during execution */
+    @OptionEquivalent("--stacktraces")
     public void setStacktraces(boolean stacktraces) {
         this.stacktraces = stacktraces;
     }
@@ -169,6 +198,7 @@ public abstract class CeylonAntTask extends Task {
     }
 
     /** Sets whether an error in executing this task should fail the build */
+    @AntDoc("Whether an error in executing this task should fail the ant build")
     public void setFailOnError(boolean failOnError) {
         this.exitHandler.setFailOnError(failOnError);
     }
@@ -178,6 +208,7 @@ public abstract class CeylonAntTask extends Task {
     }
 
     /** Sets name of a property to set to true in the event of an error */
+    @AntDoc("The ant property to set to true in the event of an error")
     public void setErrorProperty(String errorProperty) {
         this.exitHandler.setErrorProperty(errorProperty);
     }
@@ -186,6 +217,7 @@ public abstract class CeylonAntTask extends Task {
      * Sets the Ceylon program exit code into the given property
      * @param resultProperty the property to set to the Ceylon program exit code
      */
+    @AntDoc("The ant property to set to the Ceylon program exit code")
     public void setResultProperty(String resultProperty){
         this.exitHandler.setResultProperty(resultProperty);
     }

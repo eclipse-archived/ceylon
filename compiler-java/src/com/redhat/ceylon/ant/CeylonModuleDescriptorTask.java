@@ -33,10 +33,28 @@ import com.redhat.ceylon.launcher.ClassLoaderSetupException;
 
 
 /**
- * Any task to extract information from a Ceylon module descriptor and 
+ * Ant task to extract information from a Ceylon module descriptor and 
  * set ant properties with it
  * @author tom
  */
+@AntDoc("Task which sets ant properties according to information extracted "
+      + "from a Ceylon module descriptor (`module.ceylon`).\n"
+      + "To retrieve the name, version and license information from the `sources`\n"
+      + "for module `com.example.foo` and exposing them as ant properties:\n"
+      + "\n"
+      + "<!-- lang: xml -->\n"
+      + "    <target name=\"descriptor\" depends=\"ceylon-ant-taskdefs\">\n"
+      + "      <ceylon-module-descriptor\n"
+      + "            src=\"src\"\n"
+      + "            module=\"com.example.foo\"\n"
+      + "            name=\"modulename\"\n"
+      + "            version=\"moduleversion\"\n"
+      + "            license=\"modulelicense\"\n"
+      + "      />\n"
+      + "      <echo message=\"Name ${modulename}\" />\n"
+      + "      <echo message=\"Version ${moduleversion}\" />\n"
+      + "      <echo message=\"License ${modulelicense}\" />\n"
+      + "    </target>\n")
 public class CeylonModuleDescriptorTask extends Task {
 
     private Module module;
@@ -45,6 +63,7 @@ public class CeylonModuleDescriptorTask extends Task {
     private String licenseProperty;
     private File src;
 
+    @AntDoc("The source directory containing ceylon modules. Defaults to `source`.")
     public void setSrc(File srcDir) {
         this.src = srcDir;
     }
@@ -54,15 +73,20 @@ public class CeylonModuleDescriptorTask extends Task {
         }
         return src;
     }
+    @AntDoc("The name of the module whose descriptor should be read")
+    @Required
     public void setModule(Module module){
         this.module = module;
     }
+    @AntDoc("The name of the ant property to set with the module version read from the descriptor")
     public void setVersionProperty(String versionProperty) {
         this.versionProperty = versionProperty;
     }
+    @AntDoc("The name of the ant property to set with the module name read from the descriptor")
     public void setNameProperty(String nameProperty) {
         this.nameProperty = nameProperty;
     }
+    @AntDoc("The name of the ant property to set with the module license read from the descriptor")
     public void setLicenseProperty(String licenseProperty) {
         this.licenseProperty = licenseProperty;
     }

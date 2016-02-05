@@ -41,10 +41,15 @@ import com.redhat.ceylon.launcher.ClassLoaderSetupException;
  * Generates a set of modules by scanning a source directory for ceylon modules.
  * {@code <sourcemodules>} is supported as a subelement of {@code <moduleset>}.
  */
+@AntDoc("Includes all the ceylon modules in a given source directory, "
+        + "as specified by the `dir` attribute. "
+        + "This saves you having to explicitly list all the modules to be "
+        + "compiled, you can instead just compile all the modules in a given directory.")
 public class SourceModules extends ProjectComponent {
 
     private File dir;
 
+    @AntDoc("The directory containing module source files")
     public void setDir(File dir) {
         this.dir = dir;
     }

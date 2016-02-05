@@ -32,6 +32,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 
+@ToolEquivalent("test")
 public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Test failed; see the error output for details.";
@@ -43,6 +44,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
             return test;
         }
 
+        @AntDoc("A test to run.")
         public void setTest(String test) {
             this.test = test;
         }
@@ -68,7 +70,14 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     protected boolean shouldSpawnJvm() {
         return true;
     }
+    
+    @Override
+    @AntDoc("Whether the task should be run in a separate VM (default: `true`).")
+    public void setFork(boolean fork) {
+        super.setFork(fork);
+    }
 
+    @AntDoc("Modules to test")
     public void addConfiguredModuleSet(ModuleSet moduleset) {
         this.moduleSet.addConfiguredModuleSet(moduleset);
     }
@@ -77,10 +86,12 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
      * Adds a module to compile
      * @param module the module name to compile
      */
+    @AntDoc("A module to test")
     public void addConfiguredModule(Module module) {
         this.moduleSet.addConfiguredModule(module);
     }
     
+    @AntDoc("Modules to test")
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.moduleSet.addConfiguredSourceModules(sourceModules);
     }
@@ -88,10 +99,12 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     /**
      * Use a flat classpath
      */
+    @OptionEquivalent
     public void setFlatClasspath(boolean flatClasspath){
     	this.flatClasspath = flatClasspath;
     }
     
+    @OptionEquivalent
     public void setLinkWithCurrentDistribution(boolean linkWithCurrentDistribution){
         this.linkWithCurrentDistribution = linkWithCurrentDistribution;
     }
@@ -99,6 +112,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     /**
      * Auto-export Maven dependencies
      */
+    @OptionEquivalent
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
@@ -107,6 +121,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     /**
      * Sets compile flags
      */
+    @OptionEquivalent
     public void setCompile(String compileFlags) {
         this.compileFlags = compileFlags;
     }
@@ -114,6 +129,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     /**
      * Sets the ceylon.test module version.
      */
+    @OptionEquivalent
     public void setVersion(String version) {
         this.version = version;
     }
@@ -122,6 +138,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
      * Enables the Test Anything Protocol v13.
      * @param tap
      */
+    @OptionEquivalent
     public void setTap(Boolean tap) {
         this.tap = tap;
     }
@@ -130,6 +147,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
      * Generates the test results report into HTML format, output directory is `reports/test` (experimental).
      * @param report
      */
+    @OptionEquivalent
     public void setReport(Boolean report) {
         this.report = report;
     }
@@ -138,6 +156,9 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
      * Adds a test to run.
      * @param test
      */
+    @AntDoc("The name of a test to run. If no `<test>`s are given then all "
+            + "tests in the given `<module>`/`<moduleset>`/`<sourcemodule>`")
+    @OptionEquivalent
     public void addTest(Test test) {
         this.tests.add(test);
     }

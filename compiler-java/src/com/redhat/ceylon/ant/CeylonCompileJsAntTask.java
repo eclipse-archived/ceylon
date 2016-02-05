@@ -42,6 +42,24 @@ import org.apache.tools.ant.types.Path;
 import com.redhat.ceylon.ant.CeylonCompileAntTask.SuppressWarning;
 import com.redhat.ceylon.common.Constants;
 
+@ToolEquivalent("compile-js")
+@AntDoc("This task compiles Ceylon code to JavaScript, by means of the\n"+
+        "`ceylon-js` command-line tool.\n"+
+        "\n"+
+        "The `<ceylon-compile-js>` task is fairly similar to `<ceylon-compile>`; the difference\n"+
+        "lies mainly with some options that are specific to JavaScript code\n"+
+        "generation.\n"+
+        "\n"+
+        "To compile the module `com.example.foo` whose source code is in the\n"+ 
+        "`src` directory to a module repository in the `build` directory, with\n"+ 
+        "verbose compiler messages:\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"compile\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-compile-js src=\"src\" out=\"build\" verbose=\"true\">\n"+
+        "        <module name=\"com.example.foo\"/>\n"+
+        "      </ceylon-compile-js>\n"+
+        "    </target>\n")
 public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
 
 // TODO Resources not implemented yet for the JS compiler
@@ -70,6 +88,7 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         super("compile-js");
     }
 
+    @OptionEquivalent
     public void addConfiguredSuppressWarning(SuppressWarning sw) {
         this.suppressWarnings.add(sw);
         if (sw.value == null || sw.value.isEmpty()) {
@@ -81,6 +100,7 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
      * Set the resource directories to find the resource files.
      * @param res the resource directories as a path
      */
+    @AntDocIgnore // not implemented by the tool yet
     public void setResource(Path res) {
         if (this.res == null) {
             this.res = res;
@@ -89,6 +109,7 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
         }
     }
 
+    @AntDocIgnore // not implemented by the tool yet
     public void addConfiguredResource(Src res) {
         Path p = new Path(getProject(), res.value);
         if (this.res == null) {
@@ -111,15 +132,18 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
     }
     
     /** Tells the JS compiler whether to wrap the generated code in CommonJS module format. */
+    @AntDoc("The opposite of `--no-module`")
     public void setWrapModule(boolean flag){
         modulify = flag;
     }
     /** Tells the JS compiler whether to use lexical scope style or not. */
+    @OptionEquivalent
     public void setLexicalScopeStyle(boolean flag){
         this.optimize = !flag;
     }
     /** Tells the JS compiler whether to generate the .src archive; default is true, but can be turned off
      * to save some time when doing joint jvm/js compilation. */
+    @AntDoc("The opposite of `--skip-src-archive`")
     public void setSrcArchive(boolean flag) {
         gensrc = flag;
     }
@@ -128,14 +152,17 @@ public class CeylonCompileJsAntTask extends LazyCeylonAntTask {
      * Adds a module to compile
      * @param module the module name to compile
      */
+    @AntDoc("A ceylon module to be compiled`")
     public void addConfiguredModule(Module module){
         this.moduleset.addConfiguredModule(module);
     }
     
+    @AntDoc("Ceylon modules to be compiled`")
     public void addConfiguredModuleset(ModuleSet moduleset){
         this.moduleset.addConfiguredModuleSet(moduleset);
     }
 
+    @AntDoc("Ceylon files to be compiled`")
     public void addFiles(FileSet fileset) {
         if (this.files != null) {
             throw new BuildException("<ceyloncjs> only supports a single <files> element");

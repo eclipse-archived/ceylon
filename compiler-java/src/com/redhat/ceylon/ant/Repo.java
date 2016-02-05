@@ -21,12 +21,21 @@
 package com.redhat.ceylon.ant;
 
 import org.apache.tools.ant.types.DataType;
+import org.apache.tools.ant.types.Reference;
 
 public class Repo extends DataType {
     public String url;
 
+    @AntDoc("The URL or path of the module repository.")
+    @Required("Yes, unless a `refid` is given")
     public void setUrl(String url){
         this.url = url;
+    }
+    
+    @Override
+    @AntDoc("A reference to a `<rep>` defined outside this task.")
+    public void setRefid(Reference reference) {
+        super.setRefid(reference);
     }
     
     @Override

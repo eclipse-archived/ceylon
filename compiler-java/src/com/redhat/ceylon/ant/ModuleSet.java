@@ -24,28 +24,40 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.tools.ant.types.DataType;
+import org.apache.tools.ant.types.Reference;
 
 /**
  * Runtime representation of a {@code <moduleset>} element, which can be 
  * defined at the top level of an ant project and referred to by other tasks.
  */
+@AntDoc("A `<moduleset>` containing a number of `<sourcemodule>`s "
+        + "and/or `<module>` subelements. It can be defined at the top level "
+        + "and then used by reference using the `refid` attribute, "
+        + "so you don't have to repeat the same list of modules all the time.")
 public class ModuleSet extends DataType {
 
     private final LinkedHashSet<Module> modules = new LinkedHashSet<Module>();
     private final LinkedHashSet<Pattern> patterns = new LinkedHashSet<Pattern>();
     
+    @Override
+    @AntDoc("A reference to a [`<moduleset>`](../ant/#_moduleset) defined elsewhere.")
+    public void setRefid(Reference reference) {
+        super.setRefid(reference);
+    }
+    @AntDocIgnore
     public void addConfiguredModule(Module module) {
         this.modules.add(module);
     }
-    
+    @AntDocIgnore
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.modules.addAll(sourceModules.getModules());
     }
     
+    @AntDocIgnore
     public void addConfiguredModuleSet(ModuleSet moduleset) {
         this.modules.addAll(moduleset.getModules());
     }
-
+    @AntDocIgnore
     public void addConfiguredPattern(Pattern pattern) {
         this.patterns.add(pattern);
     }

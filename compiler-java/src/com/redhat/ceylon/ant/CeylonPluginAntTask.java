@@ -35,6 +35,7 @@ import com.redhat.ceylon.common.Constants;
  * Ant task wrapping the {@code ceylon plugin} tool
  * @author tako
  */
+@ToolEquivalent("plugin")
 public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
 
     public CeylonPluginAntTask() {
@@ -59,14 +60,17 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
     private boolean system;
     private boolean local;
 
+    @AntDoc("A module to install the scripts of.")
     public void addConfiguredModule(Module module){
         this.moduleset.addConfiguredModule(module);
     }
     
+    @AntDoc("A set of modules to install the scripts of.")
     public void addConfiguredModuleset(ModuleSet moduleset){
         this.moduleset.addConfiguredModuleSet(moduleset);
     }
     
+    @AntDoc("A set of modules to install the scripts of.")
     public void addConfiguredSourceModules(SourceModules modules){
         this.moduleset.addConfiguredSourceModules(modules);
     }
@@ -75,10 +79,13 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
         return mode;
     }
 
+    @AntDoc("The action to perform. One of `list`, `install`, `uninstall` or `pack`")
+    @Required
     public void setMode(Mode mode) {
         this.mode = mode;
     }
 
+    @OptionEquivalent("--source")
     public void setSrc(Path src) {
         if (this.src == null) {
             this.src = src;
@@ -99,6 +106,7 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
         return result;
     }
 
+    @OptionEquivalent
     public void setScript(Path script) {
         if (this.script == null) {
             this.script = script;
@@ -123,6 +131,7 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
         return force;
     }
 
+    @OptionEquivalent
     public void setForce(boolean force) {
         this.force = force;
     }
@@ -131,6 +140,7 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
         return system;
     }
 
+    @OptionEquivalent
     public void setSystem(boolean system) {
         this.system = system;
     }
@@ -139,6 +149,7 @@ public class CeylonPluginAntTask extends OutputRepoUsingCeylonAntTask {
         return local;
     }
 
+    @OptionEquivalent
     public void setLocal(boolean local) {
         this.local = local;
     }

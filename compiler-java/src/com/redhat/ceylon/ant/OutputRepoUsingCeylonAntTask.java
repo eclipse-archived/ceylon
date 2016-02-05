@@ -44,6 +44,7 @@ abstract class OutputRepoUsingCeylonAntTask extends RepoUsingCeylonAntTask {
     /**
      * Sets the user name for the output module repository (HTTP only)
      */
+    @OptionEquivalent("--user")
     public void setUser(String user) {
         this.user = user;
     }
@@ -51,6 +52,7 @@ abstract class OutputRepoUsingCeylonAntTask extends RepoUsingCeylonAntTask {
     /**
      * Sets the password for the output module repository (HTTP only)
      */
+    @OptionEquivalent("--pass")
     public void setPass(String pass) {
         this.pass = pass;
     }
@@ -60,6 +62,7 @@ abstract class OutputRepoUsingCeylonAntTask extends RepoUsingCeylonAntTask {
      * compiled.
      * @param out the destination repository
      */
+    @OptionEquivalent("--out")
     public void setOut(String out) {
         this.out = out;
     }

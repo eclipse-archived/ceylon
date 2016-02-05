@@ -24,11 +24,15 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.tools.ant.types.DataType;
+import org.apache.tools.ant.types.Reference;
 
 /**
  * Runtime representation of a {@code <linkset>} element, which can be 
  * defined at the top level of an ant project and referred to by other tasks.
  */
+@AntDoc("May contain `<link>` and/or `<linkset>` nested elements. "
+        + "Alternatively make reference to a linkset defined elsewhere "
+        + "using the `refid` attribute. ")
 public class LinkSet extends DataType {
 
     private final LinkedHashSet<Link> links = new LinkedHashSet<Link>();
@@ -39,6 +43,12 @@ public class LinkSet extends DataType {
     
     public void addConfiguredLinkSet(LinkSet linkset) {
         links.addAll(linkset.getLinks());
+    }
+    
+    @Override
+    @AntDoc("A reference to a `<linkset>` defined outside this task.")
+    public void setRefid(Reference reference) {
+        super.setRefid(reference);
     }
     
     public Set<Link> getLinks() {

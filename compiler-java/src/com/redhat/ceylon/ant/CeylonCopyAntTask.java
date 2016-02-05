@@ -29,6 +29,16 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 
+@ToolEquivalent("copy")
+@AntDoc("To copy the module `com.example.foo` with all its dependencies\n"+
+        "to a module repository in the `build` directory:\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"copy\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-copy out=\"build\" recursive=\"true\">\n"+
+        "        <module name=\"com.example.foo\" version=\"1.5\"/>\n"+
+        "      </ceylon-copy>\n"+
+        "    </target>\n")
 public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Copy failed; see the error output for details.";
@@ -46,6 +56,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
         super("copy");
     }
 
+    @AntDoc("A set of modules to copy.")
     public void addConfiguredModuleSet(ModuleSet moduleset) {
         this.moduleSet.addConfiguredModuleSet(moduleset);
     }
@@ -54,10 +65,12 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
      * Adds a module to compile
      * @param module the module name to compile
      */
+    @AntDoc("A module to copy.")
     public void addConfiguredModule(Module module) {
         this.moduleSet.addConfiguredModule(module);
     }
     
+    @AntDoc("A set of modules to copy.")
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.moduleSet.addConfiguredSourceModules(sourceModules);
     }
@@ -65,6 +78,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Determines if dependencies should be recursively copied or not
      */
+    @OptionEquivalent("--with-dependencies")
     public void setWithDependencies(boolean withDependencies) {
         this.withDependencies = withDependencies;
     }
@@ -72,6 +86,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Set to true to copy JS artifacts (defaults: true)
      */
+    @OptionEquivalent
     public void setJs(Boolean js) {
         this.js = js;
     }
@@ -79,6 +94,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Set to true to copy JVM artifacts (defaults: true)
      */
+    @OptionEquivalent
     public void setJvm(Boolean jvm) {
         this.jvm = jvm;
     }
@@ -86,6 +102,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Set to true to copy source artifacts (defaults: false)
      */
+    @OptionEquivalent
     public void setSrc(Boolean src) {
         this.src = src;
     }
@@ -93,6 +110,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Set to true to copy script artifacts (defaults: false)
      */
+    @OptionEquivalent
     public void setScripts(Boolean scripts) {
         this.scripts = scripts;
     }
@@ -100,6 +118,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Set to true to copy documentation artifacts (defaults: false)
      */
+    @OptionEquivalent
     public void setDocs(Boolean docs) {
         this.docs = docs;
     }
@@ -107,6 +126,7 @@ public class CeylonCopyAntTask extends OutputRepoUsingCeylonAntTask {
     /**
      * Set to true to copy every artifact (js, jvm, docs, src)
      */
+    @OptionEquivalent
     public void setAll(Boolean all) {
         this.all = all;
     }

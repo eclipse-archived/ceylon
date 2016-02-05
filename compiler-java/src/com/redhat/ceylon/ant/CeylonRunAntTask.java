@@ -31,6 +31,18 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Commandline;
 
+@ToolEquivalent("run")
+@AntDoc("-To execute the `com.example.foo.lifecycle.start` top level method in\n"+ 
+        "version 1.1 of module `com.example.foo` residing\n"+
+        "in the `build` directory (repository):\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"execute\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-run run=\"com.example.foo.lifecycle.start\"\n"+ 
+        "        module=\"com.example.foo/1.1\">\n"+
+        "        <rep url=\"build\"/>\n"+
+        "      </ceylon-run>\n"+
+        "    </target>\n")
 public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "Run failed; see the compiler error output for details.";
@@ -38,6 +50,7 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
     public static class Arg {
         String value;
         
+        @AntDoc("A command line argument to be passed to the module.")
         public void setValue(String value) {
             this.value = value;
         }
@@ -65,10 +78,17 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
     protected boolean shouldSpawnJvm() {
         return true;
     }
+    
+    @Override
+    @AntDoc("Whether the task should be run in a separate VM (default: `true`).")
+    public void setFork(boolean fork) {
+        super.setFork(fork);
+    }
 
     /**
      * Set the fully qualified name of a toplevel method or class with no parameters.
      */
+    @OptionEquivalent
     public void setRun(String run) {
         this.run = run;
     }
@@ -76,6 +96,8 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
     /**
      * Set the name of a runnable module with an optional version
      */
+    @AntDoc("The name and optional version of the module to run")
+    @Required
     public void setModule(String module) {
         this.module = module;
     }
@@ -83,10 +105,12 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
     /**
      * Use a flat classpath
      */
+    @OptionEquivalent
     public void setFlatClasspath(boolean flatClasspath){
     	this.flatClasspath = flatClasspath;
     }
     
+    @OptionEquivalent
     public void setLinkWithCurrentDistribution(boolean linkWithCurrentDistribution){
         this.linkWithCurrentDistribution = linkWithCurrentDistribution;
     }
@@ -94,6 +118,7 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
     /**
      * Auto-export Maven dependencies
      */
+    @OptionEquivalent
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
@@ -101,11 +126,13 @@ public class CeylonRunAntTask extends RepoUsingCeylonAntTask {
     /**
      * Sets compile flags
      */
+    @OptionEquivalent
     public void setCompile(String compileFlags) {
         this.compileFlags = compileFlags;
     }
 
     /** Adds an argument to be passed to the tool */
+    @AntDoc("An argument to be passed to the module")
     public void addConfiguredArg(Arg arg) {
         this.args.add(arg);
     }

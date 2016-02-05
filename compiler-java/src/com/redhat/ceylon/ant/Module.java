@@ -26,6 +26,8 @@ import java.io.File;
  * Represents a module with a name and optionally a version.
  * @author tom
  */
+@AntDoc("A `<module>` element must specify a name, and may specify a version. "
+        + "If the relevant ceylon task don't require a version it will be ignored.")
 public class Module {
     
     private String name;
@@ -64,6 +66,8 @@ public class Module {
         return version;
     }
     
+    @AntDoc("The module version. Whether this is required depends on the "
+            + "task")
     public void setVersion(String version) {
         this.version = version;
     }
@@ -72,6 +76,8 @@ public class Module {
         return name;
     }
     
+    @AntDoc("The module name.")
+    @Required
     public void setName(String name) {
         this.name = name;
     }

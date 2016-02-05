@@ -34,6 +34,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.UnsupportedAttributeException;
 import org.apache.tools.ant.types.Commandline;
 
+@ToolEquivalent("test-js")
 public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements DynamicAttribute {
 
     static final String FAIL_MSG = "Test failed; see the error output for details.";
@@ -45,6 +46,8 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
             return test;
         }
 
+        @AntDoc("The name of a test to run.")
+        @OptionEquivalent("--test")
         public void setTest(String test) {
             this.test = test;
         }
@@ -63,6 +66,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
         super("test-js");
     }
 
+    @AntDoc("Modules to test")
     public void addConfiguredModuleSet(ModuleSet moduleset) {
         this.moduleSet.addConfiguredModuleSet(moduleset);
     }
@@ -71,10 +75,12 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
      * Adds a module to compile
      * @param module the module name to compile
      */
+    @AntDoc("A module to test")
     public void addConfiguredModule(Module module) {
         this.moduleSet.addConfiguredModule(module);
     }
     
+    @AntDoc("Modules to test")
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.moduleSet.addConfiguredSourceModules(sourceModules);
     }
@@ -82,6 +88,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
     /**
      * Sets compile flags
      */
+    @OptionEquivalent
     public void setCompile(String compileFlags) {
         this.compileFlags = compileFlags;
     }
@@ -89,6 +96,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
     /**
      * Sets the version of the ceylon.test module to use.
      */
+    @OptionEquivalent
     public void setVersion(String version) {
         this.version = version;
     }
@@ -98,6 +106,8 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
      * <p>
      * (This is a bit convoluted because 'setNode-exe' is not a legal Java method name.)
      */
+    @AntAttribute("node-exe")
+    @OptionEquivalent("--node-exe")
     public void setDynamicAttribute(String name, String value) {
         if (name.equals("node-exe")) {
             this.nodeExe = value;
@@ -109,6 +119,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
     /**
      * Enables more detailed output on errors.
      */
+    @OptionEquivalent
     public void setDebug(Boolean debug) {
         this.debug = debug;
     }
@@ -117,6 +128,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
      * Enables the Test Anything Protocol v13.
      * @param tap
      */
+    @OptionEquivalent
     public void setTap(Boolean tap) {
         this.tap = tap;
     }
@@ -125,6 +137,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
      * Generates the test results report into HTML format, output directory is `reports/test-js` (experimental).
      * @param report
      */
+    @OptionEquivalent
     public void setReport(Boolean report) {
         this.report = report;
     }
@@ -133,6 +146,9 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
      * Adds a test to run.
      * @param test
      */
+    @AntDoc("The name of a test to run. If no `<test>`s are given then all "
+            + "tests in the given `<module>`/`<moduleset>`/`<sourcemodule>`")
+    @OptionEquivalent
     public void addTest(Test test) {
         this.tests.add(test);
     }

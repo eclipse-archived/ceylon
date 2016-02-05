@@ -31,6 +31,7 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.types.Commandline;
 
+@ToolEquivalent("war")
 public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
 
     static final String FAIL_MSG = "War failed; see the compiler error output for details.";
@@ -41,7 +42,8 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
         public String getModule() {
             return module;
         }
-
+        @AntDoc("The module to exclude")
+        @Required
         public void setModule(String module) {
             this.module = module;
         }
@@ -64,10 +66,17 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
     protected boolean shouldSpawnJvm() {
         return true;
     }
+    
+    @Override
+    @AntDoc("Whether the task should be run in a separate VM (default: `true`).")
+    public void setFork(boolean fork) {
+        super.setFork(fork);
+    }
 
     /**
      * Sets name of the WAR file (default: moduleName-version.war)
      */
+    @OptionEquivalent
     public void setName(String name) {
         this.name = name;
     }
@@ -75,6 +84,7 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
     /**
      * Sets the output directory for the WAR file (default: .)
      */
+    @OptionEquivalent
     public void setOut(String out) {
         this.out = out;
     }
@@ -83,10 +93,12 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
      * Sets the special resource folder name whose files will end up in
      * the root of the resulting WAR file (no default).
      */
+    @OptionEquivalent
     public void setResourceRoot(String resourceRoot) {
         this.resourceRoot = resourceRoot;
     }
 
+    @OptionEquivalent
     public void setLinkWithCurrentDistribution(boolean linkWithCurrentDistribution){
         this.linkWithCurrentDistribution = linkWithCurrentDistribution;
     }
@@ -96,6 +108,7 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
      * of the nested exclude element can be a module name or a
      * file containing module names.
      */
+    @OptionEquivalent("--exclude-module")
     public void addExclude(Exclude module) {
         this.excludeModules.add(module);
     }
@@ -103,6 +116,8 @@ public class CeylonWarAntTask extends RepoUsingCeylonAntTask {
     /**
      * Set the name of a module for which to create the war
      */
+    @AntDoc("The module for which to create the `.war`")
+    @Required
     public void setModule(String module) {
         this.module = module;
     }

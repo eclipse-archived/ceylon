@@ -24,21 +24,33 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.tools.ant.types.DataType;
+import org.apache.tools.ant.types.Reference;
 
 /**
  * Runtime representation of a {@code <reposet>} element, which can be 
  * defined at the top level of an ant project and referred to by other tasks.
  */
+@AntDoc("A `<reposet>` element contains a number of `<repo>` and/or `<reposet>` elements. "
+        + "It can be defined at the top level, and then used by reference using the `refid` attribute "
+        + "so you don't have to repeat the same list of repositories all the time.")
 public class RepoSet extends DataType {
 
     private final LinkedHashSet<Repo> repos = new LinkedHashSet<Repo>();
     
+    @AntDoc("A `<repo>`")
     public void addConfiguredRepo(Repo repo) {
         repos.add(repo);
     }
     
+    @AntDoc("A nested `<reposet>`")
     public void addConfiguredRepoSet(RepoSet reposet) {
         repos.addAll(reposet.getRepos());
+    }
+    
+    @Override
+    @AntDoc("A reference to a [`<reposet>`](../ant/#_reposet) defined elsewhere.")
+    public void setRefid(Reference reference) {
+        super.setRefid(reference);
     }
     
     public Set<Repo> getRepos() {

@@ -58,6 +58,7 @@ abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements
      * Set the source directories to find the source Java and Ceylon files.
      * @param src the source directories as a path
      */
+    @AntDocIgnore
     public void setSrc(Path src) {
         if (this.src == null) {
             this.src = src;
@@ -66,6 +67,7 @@ abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements
         }
     }
 
+    @AntDocIgnore
     public void setSource(Path src) {
         if (this.src == null) {
             this.src = src;
@@ -77,15 +79,18 @@ abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements
     public static class Src {
         String value;
         
+        @AntDoc("The source path.")
         public void setValue(String value) {
             this.value = value;
         }
 
+        @AntDocIgnore
         public void addText(String value) {
             this.value = value;
         }
     }
     
+    @AntDoc("Synonymous with `<source>`")
     public void addConfiguredSrc(Src src) {
         Path p = new Path(getProject(), src.value);
         if (this.src == null) {
@@ -95,6 +100,13 @@ abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements
         }
     }
 
+    @OptionEquivalent("--src")
+    @AntDoc("A `<source>` path, specifying a source path, for example:\n"
+            + "\n"
+            + "    <source>my/src/directory</source>\n\n"
+            + "or\n"
+            + "\n"
+            + "    <source value=\"/src/directory\"/>\n")
     public void addConfiguredSource(Src src) {
         Path p = new Path(getProject(), src.value);
         if (this.src == null) {
@@ -120,6 +132,7 @@ abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements
      * Set the encoding for the the source files.
      * @param out Charset encoding name
      */
+    @OptionEquivalent("--encoding")
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
@@ -133,6 +146,8 @@ abstract class LazyCeylonAntTask extends OutputRepoUsingCeylonAntTask implements
      * Sets whether a file modification time check should be performed
      * @param noMtimeCheck
      */
+    @AntDoc("When `true` a file modification time check will be performed to "
+            + "avoid processing sources unnecessarily (default: `true`).")
     public void setNoMtimeCheck(Boolean noMtimeCheck) {
         this.noMtimeCheck = noMtimeCheck;
     }

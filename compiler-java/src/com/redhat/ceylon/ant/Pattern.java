@@ -29,6 +29,7 @@ import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
  * 
  * @author Tako Schotanus
  */
+@AntDoc("A pattern used in a `<moduleset>`")
 public class Pattern extends DataType {
     private String match;
     private String backend;

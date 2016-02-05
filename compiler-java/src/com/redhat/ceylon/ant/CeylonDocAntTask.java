@@ -38,6 +38,28 @@ import org.apache.tools.ant.types.Path;
 
 import com.redhat.ceylon.common.Constants;
 
+@ToolEquivalent("doc")
+@AntDoc("To compile the documentation for module `com.example.foo` whose\n"+ 
+        "source code is in the `src` directory to a module repository in\n"+ 
+        "the `build` directory:\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"documentation\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-doc src=\"src\" out=\"build\">\n"+
+        "        <module name=\"com.example.foo\"/>\n"+
+        "      </ceylon-doc>\n"+
+        "    </target>\n"+
+        "\n"+
+        "To compile the documentation for version 1.1 of module `com.example.foo`\n"+ 
+        "whose source code is in the `build` directory to a module repository in\n"+ 
+        "the `build` directory:\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"documentation\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-doc out=\"build\">\n"+
+        "        <module name=\"com.example.foo\" version=\"1.1\"/>\n"+
+        "      </ceylon-doc>\n"+
+        "    </target>\n")
 public class CeylonDocAntTask extends LazyCeylonAntTask {
     private static final FileFilter ARTIFACT_FILTER = new FileFilter() {
         @Override
@@ -64,6 +86,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
      * Set the doc directories to find the doc files.
      * @param res the doc directories as a path
      */
+    @OptionEquivalent
     public void setDoc(Path res) {
         if (this.doc == null) {
             this.doc = res;
@@ -87,6 +110,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     /**
      * Include even non-shared declarations
      */
+    @OptionEquivalent("--non-shared")
     public void setIncludeNonShared(boolean includeNonShared) {
         this.includeNonShared = includeNonShared;
     }
@@ -94,6 +118,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     /**
      * Include source code in the documentation
      */
+    @OptionEquivalent("--source-code")
     public void setIncludeSourceCode(boolean includeSourceCode) {
         this.includeSourceCode = includeSourceCode;
     }
@@ -101,6 +126,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     /**
      * Do not print warnings about missing documentation.
      */
+    @OptionEquivalent
     public void setIgnoreMissingDoc(boolean ignoreMissingDoc) {
         this.ignoreMissingDoc = ignoreMissingDoc;
     }
@@ -108,6 +134,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     /**
      * Do not print warnings about broken links.
      */
+    @OptionEquivalent
     public void setIgnoreBrokenLink(boolean ignoreBrokenLink) {
         this.ignoreBrokenLink = ignoreBrokenLink;
     }
@@ -115,6 +142,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     /**
      * Do not print warnings about missing throws annotations.
      */
+    @OptionEquivalent
     public void setIgnoreMissingThrows(boolean ignoreMissingThrows) {
         this.ignoreMissingThrows = ignoreMissingThrows;
     }
@@ -122,6 +150,7 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
     /**
      * To be set when documenting the Ceylon language module.
      */
+    @AntDocIgnore
     public void setBootstrapCeylon(boolean bootstrapCeylon) {
         this.bootstrapCeylon = bootstrapCeylon;
     }
@@ -130,14 +159,17 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
      * Adds a module to compile
      * @param module the module name to compile
      */
+    @AntDoc("A module to document.")
     public void addConfiguredModule(Module module){
         this.moduleset.addConfiguredModule(module);
     }
     
+    @AntDoc("A set of modules to document.")
     public void addConfiguredModuleset(ModuleSet moduleset){
         this.moduleset.addConfiguredModuleSet(moduleset);
     }
     
+    @AntDoc("A set of modules to document.")
     public void addConfiguredSourceModules(SourceModules modules){
         this.moduleset.addConfiguredSourceModules(modules);
     }
@@ -146,6 +178,9 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
      * Adds a link for a {@code <link>} nested element
      * @param link the new link
      */
+    @OptionEquivalent
+    @AntDoc("Specifies a URL or path to a module repository containing "
+            + "external API documentation.")
     public void addConfiguredLink(Link link) {
         linkset.addConfiguredLink(link);
     }
@@ -153,9 +188,12 @@ public class CeylonDocAntTask extends LazyCeylonAntTask {
      * Adds a set of links for a {@code <linkset>} nested element
      * @param linkset the new link set
      */
+    @OptionEquivalent(value="--link", transclude=false)
+    @AntDoc("Specifies a set of external link URLs.")
     public void addConfiguredLinkset(LinkSet reposet) {
         this.linkset.addConfiguredLinkSet(reposet);
     }
+    
     
     protected Set<Link> getLinkset() {
         return linkset.getLinks();

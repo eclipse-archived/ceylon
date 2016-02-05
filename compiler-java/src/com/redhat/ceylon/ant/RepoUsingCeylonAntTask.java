@@ -46,6 +46,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * Adds a module repository for a {@code <rep>} nested element
      * @param rep the new module repository
      */
+    @AntDoc("A module repository containing dependencies. Can be specified multiple times. Defaults to `<rep url=\"./modules\"/>`.")
     public void addConfiguredRep(Repo rep) {
         reposet.addConfiguredRepo(rep);
     }
@@ -53,6 +54,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * Adds a set of module repositories for a {@code <reposet>} nested element
      * @param reposet the new module repository
      */
+    @AntDoc("A set of module repositories containing dependencies. Can be specified multiple times. Default to `modules`.")
     public void addConfiguredReposet(RepoSet reposet) {
         this.reposet.addConfiguredRepoSet(reposet);
     }
@@ -69,6 +71,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * Sets the system repository
      * @param rep path to the new system repository
      */
+    @OptionEquivalent("--sysrep")
     public void setSysRep(String rep) {
         systemRepository = rep;
     }
@@ -81,6 +84,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * Sets the cache repository
      * @param rep path to the new cache repository
      */
+    @OptionEquivalent("--cacherep")
     public void setCacheRep(String rep) {
         cacheRepository = rep;
     }
@@ -94,6 +98,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * @param overrides the path to the module overrides XML file
      * @deprecated use {@link #setOverrides(String)}
      */
+    @AntDocIgnore
     public void setMavenOverrides(String overrides) {
         this.overrides = overrides;
     }
@@ -102,6 +107,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * Sets the path to the module overrides XML file.
      * @param overrides the path to the module overrides XML file
      */
+    @OptionEquivalent("--overrides")
     public void setOverrides(String overrides) {
         this.overrides = overrides;
     }
@@ -110,6 +116,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * Wether to use the default list of repositories or not
      * @param noDefaultRepositories
      */
+    @OptionEquivalent("--no-default-repositories")
     public void setNoDefaultRepositories(Boolean noDefaultRepositories) {
         this.noDefaultRepositories = noDefaultRepositories;
     }
@@ -122,6 +129,7 @@ abstract class RepoUsingCeylonAntTask extends CeylonAntTask {
      * Sets offline mode for remote repository handling
      * @param offline
      */
+    @OptionEquivalent("--offline")
     public void setOffline(Boolean offline) {
         this.offline = offline;
     }

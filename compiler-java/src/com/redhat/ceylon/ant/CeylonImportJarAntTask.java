@@ -29,11 +29,25 @@ import org.apache.tools.ant.types.Commandline;
  * Ant task wrapping the {@code ceylon import-jar} tool
  * @author tom
  */
+@ToolEquivalent("import-jar")
+@AntDoc("To import the `example-foo-1.1.jar` file in a Ceylon repository residing\n"+
+        "in the `build` directory as version 1.1 of module `com.example.foo`:\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"import\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-import-jar jar=\"example-foo-1.1.jar\"\n"+ 
+        "        module=\"com.example.foo/1.1\">\n"+
+        "        <rep url=\"build\"/>\n"+
+        "      </ceylon-import-jar>\n"+
+        "    </target>\n")
 public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
 
     public static class Package {
         String pkg;
         
+        @AntDoc("A comma-separated list of package wildcards. "
+                + "The wildcard syntax supports `*`, `**` and `?` metacharacters.")
+        @Required
         public void setPackage(String pkg) {
             this.pkg = pkg;
         }
@@ -47,10 +61,12 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         String module;
         List<Package> packages;
         
+        @AntDoc("The missing module name and version")
         public void setModule(String module) {
             this.module = module;
         }
 
+        @AntDoc("The packages the missing module contains")
         public void addConfiguredPackage(Package pkg) {
             this.packages.add(pkg);
         }
@@ -73,6 +89,7 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
 	private List<MissingDependencyPackages> missingDependenciesPackages = new LinkedList<MissingDependencyPackages>();
 
     /** Adds an list of packages to be considered as part of the specified module if it's missing */
+	@OptionEquivalent
     public void addConfiguredMissingDependencyPackages(MissingDependencyPackages missingDependencyPackages) {
         this.missingDependenciesPackages .add(missingDependencyPackages);
     }
@@ -81,6 +98,8 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         return module;
     }
 
+    @AntDoc("The module to import. This is equivalent to the `module` argument.")
+    @Required
     public void setModule(String module) {
         this.module = module;
     }
@@ -89,6 +108,8 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         return jar;
     }
 
+    @AntDoc("The jar file to import. This is equivalent to the `jar-file` argument.")
+    @Required
     public void setJar(String jar) {
         this.jar = jar;
     }
@@ -97,6 +118,7 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         return sourceJar;
     }
 
+    @AntDoc("The jar file to import. This is equivalent to the `source-jar-file` argument.")
     public void setSourceJar(String sourceJar) {
         this.sourceJar = sourceJar;
     }
@@ -105,6 +127,7 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         return descriptor;
     }
 
+    @OptionEquivalent
     public void setDescriptor(String descriptor) {
         this.descriptor = descriptor;
     }
@@ -113,6 +136,7 @@ public class CeylonImportJarAntTask extends OutputRepoUsingCeylonAntTask {
         return force;
     }
 
+    @OptionEquivalent
     public void setForce(boolean force) {
         this.force = force;
     }

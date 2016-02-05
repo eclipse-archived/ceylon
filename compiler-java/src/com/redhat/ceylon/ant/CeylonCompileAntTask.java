@@ -49,18 +49,39 @@ import org.apache.tools.ant.types.Reference;
 
 import com.redhat.ceylon.common.Constants;
 
+@ToolEquivalent("compile")
+@AntDoc("To compile the module `com.example.foo` whose source code is in the\n"+ 
+        "`src` directory to a module repository in the `build` directory, with\n"+ 
+        "verbose compiler messages:\n"+
+        "\n"+
+        "<!-- lang: xml -->\n"+
+        "    <target name=\"compile\" depends=\"ceylon-ant-taskdefs\">\n"+
+        "      <ceylon-compile src=\"src\" out=\"build\" verbose=\"true\">\n"+
+        "        <module name=\"com.example.foo\"/>\n"+
+        "      </ceylon-compile>\n"+
+        "    </target>\n")
 public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
     static final String FAIL_MSG = "Compile failed; see the compiler error output for details.";
 
+    @AntDoc("For example:\n\n"
+            + "<!-- lang: xml -->\n"
+            + "    <javac key=\"-encoding\">UTF-8</javac>\n\n"
+            + "or\n\n"
+            + "<!-- lang: xml -->\n"
+            + "    <javac key=\"-encoding\" value=\"UTF-8\"/>>\n")
     public static class JavacOption {
         String key;
         String value;
         
+        @AntDoc("The name of the `javac` option")
+        @Required
         public void setKey(String key) {
             this.key = key;
         }
 
+        @AntDoc("The value of the `javac` option. "
+                + "Required when the corresponding `javac` option requires an argument")
         public void setValue(String value) {
             this.value = value;
         }
@@ -70,13 +91,32 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         }
     }
     
+    @AntDoc("Suppresses compiler warnings. Warnings can be suppressed by "
+            + "type, for example\n"
+            + "\n"
+            + "<!-- lang: xml -->\n"
+            + "    <suppressWarning>filenameNonAscii</suppressWarning>\n"
+            + "\n"
+            + "or eqiuvalently \n"
+            + "\n"
+            + "<!-- lang: xml -->\n"
+            + "    <suppressWarning value=\"filenameNonAscii\">\n"
+            + "\n"
+            + "or all warnings can be suppressed by not naming any "
+            + "specific warnings:\n"
+            + "\n"
+            + "<!-- lang: xml -->\n"
+            + "    <suppressWarning/>\n"
+            + "\n")
     public static class SuppressWarning {
         String value;
         
+        @AntDoc("The name of the warning(s) to be suppressed.")
         public void setValue(String value) {
             this.value = value;
         }
 
+        @AntDocIgnore
         public void addText(String value) {
             this.value = value;
         }
@@ -116,6 +156,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     /**
      * Set to true to disable OSGi manifest declaration in the META-INF/MANIFEST.MF car file.
      */
+    @OptionEquivalent
     public void setNoOsgi(Boolean noOsgi) {
         this.noOsgi = noOsgi;
     }
@@ -127,6 +168,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     /**
      * Set to true to enable Java 9 (Jigsaw) module-info.class generation in the car file.
      */
+    @OptionEquivalent
     public void setGenerateModuleInfo(Boolean jigsaw) {
         this.jigsaw = jigsaw;
     }
@@ -141,6 +183,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      * and will be omitted from the 'Required-Bundle' OSGI header in the
      * manifest of the generated car file.
      */
+    @OptionEquivalent
     public void setOsgiProvidedBundles(String osgiProvidedBundles) {
         this.osgiProvidedBundles = osgiProvidedBundles;
     }
@@ -152,6 +195,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     /**
      * Set to true to disable Maven POM module declaration in the META-INF/maven/ car folder.
      */
+    @OptionEquivalent
     public void setNoPom(Boolean noPom) {
         this.noPom = noPom;
     }
@@ -167,10 +211,12 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     /**
      * Set to true to enable repacking the generated car file using pack200.
      */
+    @OptionEquivalent("--pack200")
     public void setPack200(Boolean pack200) {
         this.pack200 = pack200;
     }
 
+    @OptionEquivalent
     public void addConfiguredSuppressWarning(SuppressWarning sw) {
         this.suppressWarnings.add(sw);
         if (sw.value == null || sw.value.isEmpty()) {
@@ -182,6 +228,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      * Set the resource directories to find the resource files.
      * @param res the resource directories as a path
      */
+    @OptionEquivalent("--resource")
     public void setResource(Path res) {
         if (this.res == null) {
             this.res = res;
@@ -190,6 +237,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
         }
     }
 
+    @OptionEquivalent("--resource")
     public void addConfiguredResource(Src res) {
         Path p = new Path(getProject(), res.value);
         if (this.res == null) {
@@ -215,6 +263,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      * Sets the classpath
      * @param path
      */
+    @AntDocIgnore
     public void setClasspath(Path path){
         if(this.classpath == null)
             this.classpath = path;
@@ -236,10 +285,12 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      * Sets the classpath by a path reference
      * @param classpathReference
      */
+    @AntDocIgnore
 	public void setClasspathref(Reference classpathReference) {
 		createClasspath().setRefid(classpathReference);
 	}
 
+    @AntDoc("Modules to be compiled")
 	public void addConfiguredModuleSet(ModuleSet moduleset) {
         this.moduleSet.addConfiguredModuleSet(moduleset);
     }
@@ -248,14 +299,17 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
      * Adds a module to compile
      * @param module the module name to compile
      */
+	@AntDoc("A module to be compiled")
     public void addConfiguredModule(Module module) {
         this.moduleSet.addConfiguredModule(module);
     }
     
+    @AntDoc("Modules to be compiled")
     public void addConfiguredSourceModules(SourceModules sourceModules) {
         this.moduleSet.addConfiguredSourceModules(sourceModules);
     }
     
+    @AntDoc("A `<fileset>` containing Ceylon and Java files to be compiled (incremental compilation)")
     public void addFiles(FileSet fileset) {
         if (this.files != null) {
             throw new BuildException("<ceylonc> only supports a single <files> element");
@@ -264,6 +318,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     }
 
     /** Adds an option to be passed to javac via a {@code --javac=...} option */
+    @OptionEquivalent("--javac")
     public void addConfiguredJavacOption(JavacOption javacOption) {
         this.javacOptions.add(javacOption);
     }
