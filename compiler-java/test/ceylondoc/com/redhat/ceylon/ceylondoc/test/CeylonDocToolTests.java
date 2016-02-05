@@ -528,6 +528,7 @@ public class CeylonDocToolTests {
         String[] fullModuleNames = {
                 "ceylon.collection", 
                 "ceylon.dbc",
+                "ceylon.decimal",
                 "ceylon.file",
                 "ceylon.html",
                 "ceylon.interop.java", 

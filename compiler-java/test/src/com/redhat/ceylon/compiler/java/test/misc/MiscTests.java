@@ -272,6 +272,7 @@ public class MiscTests extends CompilerTests {
         String[] modules = {
                 "collection", 
                 "dbc",
+                "decimal",
                 "file",
                 "html",
                 "interop.java",
