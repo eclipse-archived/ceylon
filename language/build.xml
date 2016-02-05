@@ -62,6 +62,7 @@
         <pathelement path="${ceylon.typechecker.lib}"/>
         <pathelement path="${ceylon.compiler.lib}"/>
         <pathelement path="${jandex.lib}"/>
+        <pathelement path="${hamcrest.lib}"/>
     </path>
     
     <path id="ant-tasks">
@@ -635,12 +636,12 @@
           </batchtest>
         </junit>
      
-        <!--<junitreport todir="${test.reports}">
+        <junitreport todir="${test.reports}">
           <fileset dir="${test.reports}">
             <include name="TEST-*.xml"/>
           </fileset>
           <report format="frames" todir="${test.reports}"/>
-        </junitreport>-->
+        </junitreport>
         
         <fail if="${test.fail.ceylon}" message="There were failures in the Ceylon tests"/>
         <fail if="${test.fail.junit}"  message="There were Junit test failures"/>
