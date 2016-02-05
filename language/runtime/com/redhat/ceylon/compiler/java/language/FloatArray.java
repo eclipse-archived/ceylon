@@ -550,7 +550,7 @@ extends BaseIterable<ceylon.language.Float, ceylon.language.Null> {
         }
         return new FloatArrayIterable(this.array, 
                 this.start, 
-                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step), 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.start+take*this.step), 
                 this.step);
     }
     

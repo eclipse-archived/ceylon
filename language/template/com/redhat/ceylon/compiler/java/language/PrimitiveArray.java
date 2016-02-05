@@ -550,7 +550,7 @@ extends BaseIterable<@BoxedType@, ceylon.language.Null> {
         }
         return new @Classname@Iterable(this.array, 
                 this.start, 
-                com.redhat.ceylon.compiler.java.Util.toInt(take*this.step), 
+                com.redhat.ceylon.compiler.java.Util.toInt(this.start+take*this.step), 
                 this.step);
     }
     
