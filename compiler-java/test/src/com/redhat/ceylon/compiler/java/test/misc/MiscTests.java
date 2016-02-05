@@ -284,6 +284,7 @@ public class MiscTests extends CompilerTests {
                 "numeric",
                 "process",
                 "promise",
+                "random",
                 "regex",
                 "time",
                 "transaction",
@@ -291,11 +292,14 @@ public class MiscTests extends CompilerTests {
         };
         String[] extraModules = {
                 "ceylon.test",
+                "ceylon.whole",
                 "com.redhat.ceylon.war",
         };
         String[] extraTestModules = {
                 "test.ceylon.test.suite",
                 "test.ceylon.test.stubs",
+                "test.ceylon.whole.common",
+                "test.ceylon.whole.jvm",
         };
 //        System.out.println("Press enter to continue");
 //        System.in.read();
