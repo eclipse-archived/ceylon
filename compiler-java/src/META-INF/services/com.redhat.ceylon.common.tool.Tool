@@ -13,3 +13,4 @@ com.redhat.ceylon.tools.war.CeylonWarTool
 com.redhat.ceylon.tools.browse.CeylonBrowseTool
 com.redhat.ceylon.tools.p2.CeylonP2Tool
 com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool
+com.redhat.ceylon.tools.antdoc.CeylonAntTaskDocTool
