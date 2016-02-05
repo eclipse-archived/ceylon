@@ -281,6 +281,7 @@ public class MiscTests extends CompilerTests {
                 "logging",
                 "math",
                 "net",
+                "numeric",
                 "process",
                 "promise",
                 "regex",
@@ -290,7 +291,6 @@ public class MiscTests extends CompilerTests {
         };
         String[] extraModules = {
                 "ceylon.test",
-                "ceylon.numeric",
                 "com.redhat.ceylon.war",
         };
         String[] extraTestModules = {
