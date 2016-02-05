@@ -194,11 +194,13 @@ public class ClassWithInitializerDeclarationConstructor
         return getContainer().hashCode() ^ getName().hashCode();
     }
 
+    @Ignore
     @Override
     public CallableConstructorDeclaration$impl $ceylon$language$meta$declaration$CallableConstructorDeclaration$impl() {
         return null;
     }
     
+    @Ignore
     @Override
     public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
         return null;

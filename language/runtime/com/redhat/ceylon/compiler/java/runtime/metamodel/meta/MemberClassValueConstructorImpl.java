@@ -67,7 +67,7 @@ public class MemberClassValueConstructorImpl<Container, Get>
         return (ValueConstructorDeclaration)declaration;
     }
     
-    @TypeInfo("ceylon.language.meta.model::ValueConstructor<Type,Set>")
+    @TypeInfo("ceylon.language.meta.model::ValueConstructor<Get>")
     @Override
     public ValueConstructor<Get> bind(Object instance) {
         return null;

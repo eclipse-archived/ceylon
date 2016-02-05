@@ -52,6 +52,7 @@ public class SetterDeclarationImpl
         }
     }
     
+    @Ignore
     @Override
     public SetterDeclaration$impl $ceylon$language$meta$declaration$SetterDeclaration$impl() {
         return null;

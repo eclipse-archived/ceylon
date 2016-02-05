@@ -303,7 +303,7 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
     }
     
     @Override
-    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anyything>"))
+    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
     @TypeInfo("ceylon.language.meta.model::CallableConstructor<Type,Arguments>|ceylon.language.meta.model::ValueConstructor<Type>|ceylon.language::Null")
     public <Arguments extends Sequential<? extends Object>> java.lang.Object getConstructor(
             @Ignore
@@ -330,7 +330,7 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
     }
     
     @Override
-    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anyything>"))
+    @TypeParameters(@TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>"))
     @TypeInfo("ceylon.language.meta.model::CallableConstructor<Type,Arguments>|ceylon.language.meta.model::ValueConstructor<Type>|ceylon.language::Null")
     public <Arguments extends Sequential<? extends Object>> java.lang.Object getDeclaredConstructor(
             @Ignore

@@ -41,7 +41,7 @@ public class OpenIntersectionTypeImpl
     }
 
     @Override
-    @TypeInfo("ceylon.language.Sequential<ceylon.language.meta.declaration::OpenType>")
+    @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::OpenType>")
     public ceylon.language.Sequential<? extends ceylon.language.meta.declaration.OpenType> getSatisfiedTypes() {
         return satisfiedTypes;
     }
