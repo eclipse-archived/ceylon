@@ -537,13 +537,16 @@ public class CeylonDocToolTests {
                 "ceylon.json", 
                 "ceylon.math",
                 "ceylon.net",
+                "ceylon.numeric",
                 "ceylon.process",
                 "ceylon.promise",
+                "ceylon.random",
                 "ceylon.regex",
                 "ceylon.test",
                 "ceylon.time",
                 "ceylon.transaction",
-                "ceylon.unicode"
+                "ceylon.unicode",
+                "ceylon.whole"
         };
         
         compileSdkJavaFiles();
