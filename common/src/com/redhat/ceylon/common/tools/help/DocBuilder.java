@@ -445,7 +445,7 @@ public class DocBuilder {
         return model.getName();
     }
     
-    private String msg(ResourceBundle toolBundle, String key) {
+    private static String msg(ResourceBundle toolBundle, String key) {
         if (toolBundle != null && toolBundle.containsKey(key)) {
             String msg = toolBundle.getString(key);
             if (msg != null) {
@@ -457,7 +457,7 @@ public class DocBuilder {
         return "";
     }
     
-    private String getSummaryValue(ToolModel<?> model) {
+    public static String getSummaryValue(ToolModel<?> model) {
         if(model instanceof ScriptToolModel){
             return invokeScript((ScriptToolModel<?>) model, "--_print-summary");
         }
@@ -475,7 +475,7 @@ public class DocBuilder {
         return msg;
     }
 
-    private String invokeScript(ScriptToolModel<?> model, String arg) {
+    private static String invokeScript(ScriptToolModel<?> model, String arg) {
         ProcessBuilder processBuilder;
         if (OSUtil.isWindows()) {
             processBuilder = new ProcessBuilder("cmd.exe", "/C", model.getScriptName(), arg);
@@ -508,7 +508,7 @@ public class DocBuilder {
         return "";
     }
 
-    private ResourceBundle getToolBundle(ToolModel<?> model) {
+    private static ResourceBundle getToolBundle(ToolModel<?> model) {
         if(!(model instanceof AnnotatedToolModel))
             return null;
         AnnotatedToolModel<?> amodel = (AnnotatedToolModel<?>)model;
@@ -522,14 +522,14 @@ public class DocBuilder {
     }
 
     
-    private Summary getSummary(ToolModel<?> model) {
+    private static Summary getSummary(ToolModel<?> model) {
         if(!(model instanceof AnnotatedToolModel))
             return null;
         AnnotatedToolModel<?> amodel = (AnnotatedToolModel<?>)model;
         return amodel.getToolClass().getAnnotation(Summary.class);
     }
 
-    private String getDescription(ToolModel<?> model) {
+    public static String getDescription(ToolModel<?> model) {
         if(model instanceof ScriptToolModel){
             return invokeScript((ScriptToolModel<?>) model, "--_print-description");
         }
@@ -560,7 +560,7 @@ public class DocBuilder {
         return msg;
     }
 
-    private String getOptionDescription(ToolModel<?> model, OptionModel<?> opt) {
+    public static String getOptionDescription(ToolModel<?> model, OptionModel<?> opt) {
         ResourceBundle toolBundle = getToolBundle(model);
         String msg = msg(toolBundle, "option."+opt.getLongName());
         if (msg.isEmpty()) {
