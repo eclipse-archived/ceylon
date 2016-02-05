@@ -45,14 +45,14 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
     }
     
     @OptionArgument(argumentName="name")
-    @Description("Sets the user name for use with an authenticated output repository" +
+    @Description("Sets the user name for use with an authenticated output repository " +
             "(no default).")
     public void setUser(String user) {
         this.user = user;
     }
     
     @OptionArgument(argumentName="secret")
-    @Description("Sets the password for use with an authenticated output repository" +
+    @Description("Sets the password for use with an authenticated output repository " +
             "(no default).")
     public void setPass(String pass) {
         this.pass = pass;

@@ -212,7 +212,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     @Option(longName="generate-module-info")
-    @Description("Generate Java 9 (Jigsaw) module-info.class module descriptor in the generated Ceylon archive.")
+    @Description("Generate Java 9 (Jigsaw) `module-info.class` module descriptor in the generated Ceylon archive.")
     public void setJigsaw(boolean jigsaw) {
         this.jigsaw = jigsaw;
     }

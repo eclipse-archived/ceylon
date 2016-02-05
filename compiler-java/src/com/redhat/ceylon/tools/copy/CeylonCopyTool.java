@@ -62,37 +62,37 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
 
     @Option
-    @Description("Include artifacts compiled for the JVM (.car and .jar) (default: true)")
+    @Description("Include artifacts compiled for the JVM (`.car` and `.jar`) (default: `true`)")
     public void setJvm(boolean jvm) {
         this.jvm = jvm;
     }
 
     @Option
-    @Description("Include artifacts compiled for JavaScript (.js and -model.js) (default: true)")
+    @Description("Include artifacts compiled for JavaScript (`.js` and `-model.js`) (default: `true`)")
     public void setJs(boolean js) {
         this.js = js;
     }
 
     @Option
-    @Description("Include documentation (default: false)")
+    @Description("Include documentation (default: `false`)")
     public void setDocs(boolean docs) {
         this.docs = docs;
     }
 
     @Option
-    @Description("Include sources (default: false)")
+    @Description("Include sources (default: `false`)")
     public void setSrc(boolean src) {
         this.src = src;
     }
 
     @Option
-    @Description("Include scripts (default: false)")
+    @Description("Include scripts (default: `false`)")
     public void setScripts(boolean scripts) {
         this.scripts = scripts;
     }
 
     @Option
-    @Description("Include everything (jvm,js,docs,src,scripts) (default: false)")
+    @Description("Include everything (equivalent to `--jvm`, `--js`, `--docs`, `--src`, `--scripts`) (default: `false`)")
     public void setAll(boolean all) {
         this.all = all;
     }
