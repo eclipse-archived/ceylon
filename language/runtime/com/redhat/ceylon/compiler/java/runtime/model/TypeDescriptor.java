@@ -316,6 +316,9 @@ public abstract class TypeDescriptor
             return type;
         }
 
+        /**
+         * Warning: used by ceylon.interop.java::javaClass and friends
+         */
         @Override
         public java.lang.Class<?> getArrayElementClass() {
             if (klass==Null.class ||
@@ -325,9 +328,11 @@ public abstract class TypeDescriptor
                 klass==Identifiable.class) {
                 return java.lang.Object.class;
             }
-            if (klass==ceylon.language.Exception.class ||
-                klass==ceylon.language.Throwable.class) {
+            if (klass==ceylon.language.Throwable.class) {
                 return java.lang.Throwable.class;
+            }
+            if (klass==ceylon.language.Exception.class) {
+            	return java.lang.Exception.class;
             }
             if (klass==ceylon.language.Annotation.class
                     || klass==ceylon.language.ConstrainedAnnotation.class){
