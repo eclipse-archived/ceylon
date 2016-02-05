@@ -4,6 +4,7 @@ import org.jboss.modules.ModuleIdentifier;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**
  * Implements {@link RuntimeResolver} using {@link Overrides} with 
@@ -27,8 +28,7 @@ public class OverridesRuntimeResolver implements RuntimeResolver {
     
     @Override
     public String resolveVersion(String moduleName, String moduleVersion) {
-        if ("default".equals(moduleName)
-                && moduleVersion == null) {
+        if (Module.DEFAULT_MODULE_NAME.equals(moduleName)) {
             // JBoss Modules turns default/null into default:main
             return null;
         }

@@ -264,6 +264,10 @@ public class CeylonModuleLoader extends ModuleLoader
     
     @Override
     public String resolveVersion(String moduleName, String moduleVersion) {
+        if (com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME.equals(moduleName)) {
+            // JBoss Modules turns default/null into default:main
+            return null;
+        }
         return findOverride(ModuleIdentifier.create(moduleName, moduleVersion)).getSlot();
     }
 
