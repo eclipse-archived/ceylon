@@ -56,14 +56,25 @@
         </copy>
     </target>
 
+    <target name="defcurrentcommit">
+        <if>
+            <available file="../.git" type="dir"/>
+            <then>
+                <exec executable="git" failonerror="yes" outputproperty="currentcommit">
+                    <arg value="rev-parse"/>
+                    <arg value="--short"/>
+                    <arg value="HEAD"/>
+                </exec>
+            </then>
+            <else>
+                <property name="currentcommit" value="${buildid}" />
+            </else>
+        </if>
+    </target>
+
     <!-- Compile Versions.java with the HEAD commit ID embedded -->
-    <target name="compile-versions" description="compile filtered Versions.java">
+    <target name="compile-versions" depends="defcurrentcommit" description="compile filtered Versions.java">
         <mkdir dir="${build.classes}" />
-        <exec executable="git" failonerror="yes" outputproperty="currentcommit">
-            <arg value="rev-parse"/>
-            <arg value="--short"/>
-            <arg value="HEAD"/>
-        </exec>
         <mkdir dir="${build.dir}/gen-src" />
         <filter token="commit" value="${currentcommit}" />
         <copy toDir="${build.dir}/gen-src" filtering="true">

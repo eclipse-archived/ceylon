@@ -67,6 +67,7 @@ Some super-charged ant tasks:
              target="dist"
              inheritall="false"
              useNativeBasedir="true">
+            <property name="buildid" value="${buildid}" />
         </ant>
     </target>
     
@@ -75,6 +76,7 @@ Some super-charged ant tasks:
              target="package"
              inheritall="false"
              useNativeBasedir="true">
+            <property name="buildid" value="${buildid}" />
         </ant>
     </target>
     
@@ -83,6 +85,7 @@ Some super-charged ant tasks:
              target="release"
              inheritall="false"
              useNativeBasedir="true">
+            <property name="buildid" value="${buildid}" />
         </ant>
     </target>
     
@@ -91,6 +94,7 @@ Some super-charged ant tasks:
              target="nightly"
              inheritall="false"
              useNativeBasedir="true">
+            <property name="buildid" value="${buildid}" />
         </ant>
     </target>
 
@@ -99,6 +103,7 @@ Some super-charged ant tasks:
              target="test"
              inheritall="false"
              useNativeBasedir="true">
+            <property name="buildid" value="${buildid}" />
         </ant>
     </target>
     

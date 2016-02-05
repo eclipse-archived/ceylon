@@ -266,11 +266,19 @@ Use this when NOT doing a release!">
     </target>
 
     <target name="defcurrentcommit">
-        <exec executable="git" failonerror="yes" outputproperty="currentcommit">
-            <arg value="rev-parse"/>
-            <arg value="--short"/>
-            <arg value="HEAD"/>
-        </exec>
+        <if>
+            <available file="../.git" type="dir"/>
+            <then>
+                <exec executable="git" failonerror="yes" outputproperty="currentcommit">
+                    <arg value="rev-parse"/>
+                    <arg value="--short"/>
+                    <arg value="HEAD"/>
+                </exec>
+            </then>
+            <else>
+                <property name="currentcommit" value="${buildid}" />
+            </else>
+        </if>
     </target>
 
     <target name="generate-buildid" depends="defcurrentcommit">
@@ -448,6 +456,7 @@ Use this when NOT doing a release!">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+            <property name="buildid" value="${buildid}" />
         </ant>
     </target>
 
