@@ -222,10 +222,10 @@ public class FloatTest {
         assertParseFloat(1.0e12, "1T");
         assertParseFloat(null, "1_T");
         assertParseFloat(null, "1_m");
-        assertParseFloat(null, "1.");
-        assertParseFloat(null, ".1");
-        assertParseFloat(null, ".1e1");
-        assertParseFloat(null, "1.e1");
+        assertParseFloat(1.0, "1.");
+        assertParseFloat(0.1, ".1");
+        assertParseFloat(1.0, ".1e1");
+        assertParseFloat(10.0, "1.e1");
         assertParseFloat(null, "1.-1");
         assertParseFloat(null, "1.1-");
         assertParseFloat(null, "1-.1");
