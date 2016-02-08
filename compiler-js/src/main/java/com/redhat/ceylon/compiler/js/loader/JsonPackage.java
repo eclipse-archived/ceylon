@@ -996,7 +996,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
     /** Load a top-level declaration with the specified name, by parsing its model data. */
     Declaration load(String name, List<TypeParameter> existing) {
         if (model == null) {
-            throw new IllegalStateException("No model available to load " + name);
+            throw new IllegalStateException("No model available to load " + getNameAsString() + "::" + name);
         }
         @SuppressWarnings("unchecked")
         final Map<String,Object> map = model == null ? null : (Map<String,Object>)model.get(name);
