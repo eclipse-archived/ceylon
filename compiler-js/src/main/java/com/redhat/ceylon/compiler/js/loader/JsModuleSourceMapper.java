@@ -82,7 +82,9 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(),
                         imp.getModule().getVersion(), ArtifactContext.JS_MODEL);
                 artifact = getContext().getRepositoryManager().getArtifactResult(ac);
-                if (artifact != null) {
+                if (artifact == null) {
+                    throw new IllegalStateException("No model for " + imp.getModule());
+                } else {
                     resolveModule(artifact, imp.getModule(), imp, dependencyTree,
                             phasedUnitsOfDependencies, forCompiledModule & imp.isExport());
                 }
