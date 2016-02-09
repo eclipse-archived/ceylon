@@ -205,3 +205,23 @@ class Wrapper() {
         }
     }
 }
+
+shared void intersectAlias() {
+    // #5981
+    alias A => String?|String?();
+    A a = "a";
+    if(exists a) {
+        String | String?() aa = a;
+    }
+    if(is A & Object a) {
+        String | String?() aa = a;
+    }
+
+    alias ISN1 => Integer | String | Null;
+    alias ISN2 => Integer | <String | Null>;
+    ISN1 isn1 = "a";
+    ISN2 isn2 = "a";
+    value v1 = isn1 is ISN1 & Object; // ok
+    value v2 = isn2 is ISN2 & Object; // throws
+}
+
