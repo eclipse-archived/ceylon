@@ -13,7 +13,6 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
@@ -51,6 +50,7 @@ public class CeylonUtils {
         private Proxy proxy;
         private boolean offline;
         private boolean noSystemRepo;
+        private boolean noCacheRepo;
         private boolean noDefRepos;
         private boolean jdkIncluded;
         private Logger log;
@@ -157,6 +157,14 @@ public class CeylonUtils {
          */
         public CeylonRepoManagerBuilder noSystemRepo(boolean noSystemRepo){
             this.noSystemRepo = noSystemRepo;
+            return this;
+        }
+
+        /**
+         * Indicates that we don't need the default cache repository (defaults to false)
+         */
+        public CeylonRepoManagerBuilder noCacheRepo(boolean noCacheRepo){
+            this.noCacheRepo = noCacheRepo;
             return this;
         }
 
@@ -352,7 +360,7 @@ public class CeylonUtils {
             }
             // do not use the cache if we want to avoid its repo
             // For example, if we intend to write to it, we should never read from it
-            if(avoidRepository(root.getAbsolutePath())){
+            if (noCacheRepo || avoidRepository(root.getAbsolutePath())) {
                 root = null;
                 // remote repos don't work without cache
                 skipRemoteRepositories = true;

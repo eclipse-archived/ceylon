@@ -200,6 +200,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .cwd(cwd)
                 .overrides(overrides)
                 .noSystemRepo(!needsSystemRepo() && noDefRepos)
+                .noCacheRepo(noDefRepos && offline)
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(noDefRepos)
