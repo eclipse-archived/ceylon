@@ -139,6 +139,7 @@ Some super-charged ant tasks:
                 <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.langtools.classfile" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.tool.provider" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.js" version="${ceylon.version}"/>
                 <module name="ceylon.bootstrap" version="${ceylon.version}"/>
