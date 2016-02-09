@@ -482,6 +482,20 @@ public class CeylonDocToolTests {
     }
 
     @Test
+    public void documentDynamics() throws Exception {
+        String pathname = "test/ceylondoc";
+        String moduleName = "com.redhat.ceylon.ceylondoc.test.modules.dynamics";
+        
+        CeylonDocTool tool = tool(pathname, moduleName, true, "build/ceylon-cars");
+        tool.run();
+
+        File destDir = getOutputDir(tool, "com.redhat.ceylon.ceylondoc.test.modules.dynamics", "1.0.0");
+        
+        assertFileExists(destDir, "index.html");
+        assertFileExists(destDir, "DynaTest.type.html");
+    }
+
+    @Test
     public void ceylonLanguage() throws Exception {
         String pathname = "../language/src";
         String moduleName = AbstractModelLoader.CEYLON_LANGUAGE;
