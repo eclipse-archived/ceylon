@@ -1,7 +1,10 @@
 package main;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
@@ -19,10 +22,17 @@ public class MainForTest {
      */
     public static void main(String[] args) throws Exception {
         long start = System.nanoTime();
+        
+        RepositoryManager repositoryManager = CeylonUtils.repoManager()
+                .systemRepo("../dist/dist/repo")
+                .logger(new LeakingLogger())
+                .buildManager();
+        
         TypeChecker typeChecker = new TypeCheckerBuilder()
                 .statistics(true)
                 .verbose(false)
                 .addSrcDirectory( new File("test/main") )
+                .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
         Tree.CompilationUnit compilationUnit = 
@@ -55,6 +65,7 @@ public class MainForTest {
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory( new File("test/main/capture") )
+                .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
         compilationUnit = 
@@ -71,6 +82,7 @@ public class MainForTest {
                 .addSrcDirectory( new File("test/moduledep1") )
                 .addSrcDirectory( new File("test/moduledep2") )
                 .addSrcDirectory( new File("test/moduletest") )
+                .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
 
@@ -79,6 +91,7 @@ public class MainForTest {
         typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory( latestZippedLanguageSourceFile )
+                .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
         latestZippedLanguageSourceFile.close();
