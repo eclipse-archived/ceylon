@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 
 //Note that this class exists to support
 //autocompletion in the IDE
@@ -56,8 +57,8 @@ public class ImportList implements Scope {
     }
 
     @Override
-    public Declaration getDirectMemberForBackend(String name, Backends backends) {
-        return getContainer().getDirectMemberForBackend(name, backends);
+    public Declaration getDirectMemberForBackend(String name, Backends backends, boolean retrieveClassForObject) {
+        return getContainer().getDirectMemberForBackend(name, backends, retrieveClassForObject);
     }
 
     @Override

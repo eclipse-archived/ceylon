@@ -21,6 +21,8 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.model.loader.ModelLoader;
+import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 
 
@@ -158,9 +160,13 @@ public class ModelUtil {
     }
 
     public static boolean isResolvable(Declaration declaration) {
+        return isResolvable(declaration, false);
+    }
+    
+    public static boolean isResolvable(Declaration declaration, boolean retrieveClassForObject) {
         return declaration.getName()!=null &&
             !declaration.isSetter() && //return getters, not setters
-            !declaration.isAnonymous(); //don't return the type associated with an object dec 
+            (retrieveClassForObject || !declaration.isAnonymous()); //don't return the type associated with an object dec 
     }
     
     public static boolean isAbstraction(Declaration d) {
@@ -2697,17 +2703,34 @@ public class ModelUtil {
      * @return the matching declaration
      */
     public static Declaration lookupMemberForBackend(
-            List<Declaration> members, String name, Backends backends) {
+            List<Declaration> members, String name, Backends backends, boolean retrieveClassForObject) {
+        Value valueResult = null;
         for (Declaration dec: members) {
-            if (isResolvable(dec) && isNamed(name, dec)) {
+            if (isResolvable(dec, retrieveClassForObject) && isNamed(name, dec)) {
+                boolean isCompatibleWithBackends = false;
                 Backends bs = dec.getNativeBackends();
                 if (bs.none()) {
-                    return dec;
+                    isCompatibleWithBackends = true;
                 }
                 else if (backends.supports(bs)) {
+                    isCompatibleWithBackends = true;
+                }
+                if (isCompatibleWithBackends) {
+                	if (retrieveClassForObject && valueResult == null) {
+                        if (dec instanceof Value) {
+                            Value value = (Value) dec;
+                            if (isObject(value)) {
+                                valueResult = value;
+                                continue;
+                            }
+                        }
+                	}
                     return dec;
                 }
             }
+        }
+        if (valueResult != null) {
+            return valueResult.getType().getDeclaration();
         }
         return null;
     }
@@ -2741,16 +2764,7 @@ public class ModelUtil {
     public static Declaration getNativeHeader(Declaration dec) {
         Declaration header = 
                 getNativeHeader(dec.getContainer(), 
-                        dec.getName());
-        // In case of objects make sure we return the same type of
-        // declaration we were called with
-        if (dec instanceof ClassOrInterface && 
-                header instanceof Value) {
-            Value value = (Value) header;
-            if (isObject(value)) {
-                return value.getType().getDeclaration();
-            }
-        }
+                        dec.getName(), dec instanceof ClassOrInterface);
         // In case of constructors we make sure we return the same
         // type of declaration we were called with
         if (dec instanceof Constructor
@@ -2760,9 +2774,20 @@ public class ModelUtil {
         }
         return header;
     }
+
+    public static DeclarationType toDeclarationType(Declaration dec) {
+        DeclarationType declarationType = null;
+        if (dec instanceof TypeDeclaration) {
+            declarationType= DeclarationType.TYPE;
+        }
+        if (dec instanceof Value || dec instanceof Setter) {
+            declarationType= DeclarationType.VALUE;
+        }
+        return declarationType;
+    }
     
-    public static Declaration getNativeHeader(Scope container, String name) {
-        return getNativeDeclaration(container, name, Backends.HEADER);
+    public static Declaration getNativeHeader(Scope container, String name, boolean retrieveClassForObject) {
+        return getNativeDeclaration(container, name, Backends.HEADER, retrieveClassForObject);
     }
     
     /**
@@ -2778,23 +2803,15 @@ public class ModelUtil {
      * 
      * @return the matching declaration
      */
-    public static Declaration getNativeDeclaration(Scope container, String name, Backends backends) {
+    public static Declaration getNativeDeclaration(Scope container, String name, Backends backends, boolean retrieveClassForObject) {
         if (container instanceof Declaration) {
             Declaration cd = (Declaration) container;
             if (backends.header() && cd.isNativeImplementation() ||
                     !backends.header() && cd.isNativeHeader()) {
                 // The container is a native implementation so
                 // we first need to find _its_ header
-                Declaration c = getNativeDeclaration(cd.getContainer(), cd.getName(), backends);
+                Declaration c = getNativeDeclaration(cd.getContainer(), cd.getName(), backends, true);
                 if (c != null) {
-                    // Is this the Value part of an object?
-                    if (c instanceof Value) {
-                        Value v = (Value) c;
-                        if (isObject(v)) {
-                            // Then use the Class part as the container
-                            c = v.getType().getDeclaration();
-                        }
-                    }
                     container = (Scope) c;
                 }
             }
@@ -2810,7 +2827,8 @@ public class ModelUtil {
             decl =
                     container.getDirectMemberForBackend(
                             name,
-                            backends);
+                            backends,
+                            retrieveClassForObject);
         }
         return decl;
     }

@@ -18,7 +18,7 @@ public interface ModelLoader {
      *
      * @author Stéphane Épardaud <stef@epardaud.fr>
      */
-    enum DeclarationType {
+    public static enum DeclarationType {
         /**
          * We're looking for a type
          */

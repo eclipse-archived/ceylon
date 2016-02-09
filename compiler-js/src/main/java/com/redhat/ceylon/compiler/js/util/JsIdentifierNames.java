@@ -14,6 +14,7 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -323,7 +324,7 @@ public class JsIdentifierNames {
             //because for some reason the anonymous class has null overloads.
             if (decl.getContainer() != null &&
                     decl.getContainer().getDirectMemberForBackend(
-                            decl.getName(), Backend.JavaScript.asSet()) != null) {
+                            decl.getName(), Backend.JavaScript.asSet(), false) != null) {
                 name+="$$N";
             }
         }
