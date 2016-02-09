@@ -24,6 +24,8 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -151,5 +153,13 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         ArtifactResult result = outputRepositoryManager.getArtifactResult(ctx);
         if(result != null)
             getModelLoader().addModuleToClassPath(module, result);
+    }
+
+    @Override
+    public Backends getSupportedBackends() {
+        // This is most likely not the correct solution but it
+        // still works for all current cases and allows generating
+        // docs for non-JVM modules at the same time
+        return Backend.getRegisteredBackends();
     }
 }
