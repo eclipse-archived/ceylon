@@ -1276,7 +1276,7 @@ public class ModelUtil {
             if (type.isWellDefined()) {
                 TypeDeclaration dec = type.getDeclaration();
                 for (int i=0; i<list.size(); i++) {
-                    Type t = list.get(i);
+                    Type t = list.get(i).resolveAliases();
                     if (t.isSubtypeOf(type)) {
                         return;
                     }
