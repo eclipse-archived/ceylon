@@ -129,7 +129,14 @@ Some super-charged ant tasks:
             <pathelement location="${basedir}/dist/lib/ceylon-ant.jar"/>
         </path>
         <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
-        <ceylon-copy nodefaultrepositories="true" out="${herd.repo}" user="${herd.user}" pass="${herd.pass}" withdependencies="true">
+        <ceylon-copy
+            nodefaultrepositories="true"
+            out="${herd.repo}"
+            user="${herd.user}"
+            pass="${herd.pass}"
+            withdependencies="true"
+            verbose="files"
+            all="true">
             <reposet>
                 <repo url="${basedir}/dist/repo"/>
             </reposet>
