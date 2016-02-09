@@ -993,4 +993,14 @@ public class Decl {
         return member instanceof Value
                 && ((Value)member).getTypeDeclaration() instanceof Constructor;
     }
+    
+    public static boolean isDynamic(Declaration decl) {
+        if (decl instanceof TypeDeclaration) {
+            return ((TypeDeclaration)decl).isDynamic();
+        } else if (decl instanceof TypedDeclaration) {
+            return ((TypedDeclaration)decl).isDynamicallyTyped();
+        }
+        return false;
+    }
+    
 }

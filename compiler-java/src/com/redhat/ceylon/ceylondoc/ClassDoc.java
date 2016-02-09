@@ -254,7 +254,9 @@ public class ClassDoc extends ClassOrPackageDoc {
     }
     
     private String getClassLabel() {
-        if (klass instanceof Interface) {
+        if (klass.isDynamic()) {
+            return "dynamic";
+        } else if (klass instanceof Interface) {
             return "interface";
         } else if (klass.isAnnotation()) {
             return "annotation";

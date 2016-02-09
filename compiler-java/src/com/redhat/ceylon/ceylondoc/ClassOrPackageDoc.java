@@ -155,6 +155,10 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             open("code class='signature'");
             around("span class='modifiers'", getModifiers(d));
             write(" ");
+            if (d.isDynamic()) {
+                around("span class='dynamic'", "dynamic");
+                write(" ");
+            }
             linkRenderer().to(d.getType()).useScope(d).printAbbreviated(!isAbbreviatedType(d)).printTypeParameterDetail(true).write();
             writeTypeParametersConstraints(d.getTypeParameters(), d);
             close("code");
@@ -211,12 +215,16 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             write(" ");
 
             if( !ModelUtil.isConstructor(d) ) {
-                if( d instanceof Functional && ((Functional) d).isDeclaredVoid() ) {
-                    around("span class='void'", "void");
-                } else if ( d instanceof TypedDeclaration) {
-                    linkRenderer().to(((TypedDeclaration) d).getType()).useScope(d).write();
+                if ( !Decl.isDynamic(d) ) {
+                    if( d instanceof Functional && ((Functional) d).isDeclaredVoid() ) {
+                        around("span class='void'", "void");
+                    } else if (d instanceof TypedDeclaration) {
+                        linkRenderer().to(((TypedDeclaration) d).getType()).useScope(d).write();
+                    } else {
+                        linkRenderer().to(d).useScope(d).write();
+                    }
                 } else {
-                    linkRenderer().to(d).useScope(d).write();
+                    around("span class='dynamic'", "dynamic");
                 }
             }
 
@@ -254,7 +262,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     private boolean isConstantValue(Declaration d) {
         if(Decl.isValue(d)) {
             Value value = (Value) d;
-            if( value.isShared() && !value.isVariable() ) {
+            if( value.isShared() && !value.isVariable() && !value.isDynamicallyTyped()) {
                 Unit unit = value.getUnit();
                 Type type = value.getType();
                 
@@ -523,7 +531,11 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 if (param.getModel() instanceof Function) {
                     writeFunctionalParameter(param, scope);
                 } else {
-                    linkRenderer().to(param.getType()).useScope(scope).write();
+                    if (!Decl.isDynamic(param.getModel())) {
+                        linkRenderer().to(param.getType()).useScope(scope).write();
+                    } else {
+                        around("span class='dynamic'", "dynamic");
+                    }
                     write(" ");
                     around("span class='parameter'", param.getName());
                 }
@@ -577,10 +589,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     private void writeFunctionalParameter(Parameter functionParam, Referenceable scope) throws IOException {
-        if( functionParam.isDeclaredVoid() ) {
-            around("span class='void'", "void");
+        if ( !Decl.isDynamic(functionParam.getModel()) ) {
+            if( functionParam.isDeclaredVoid() ) {
+                around("span class='void'", "void");
+            } else {
+                linkRenderer().to(functionParam.getType()).useScope(scope).write();
+            }
         } else {
-            linkRenderer().to(functionParam.getType()).useScope(scope).write();
+            around("span class='dynamic'", "dynamic");
         }
         write(" ");
         write(functionParam.getName());

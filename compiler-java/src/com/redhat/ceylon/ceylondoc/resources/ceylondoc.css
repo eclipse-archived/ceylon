@@ -246,6 +246,10 @@ code {
     color: rgb(76,76,76);
 }
 
+.dynamic {
+    color: rgb(76,76,76);
+}
+
 .type-parameter {
 	font-style: italic;
 	padding-right: 2px;
