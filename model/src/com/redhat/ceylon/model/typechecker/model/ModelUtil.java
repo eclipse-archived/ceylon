@@ -2793,6 +2793,7 @@ public class ModelUtil {
                         if (isObject(v)) {
                             // Then use the Class part as the container
                             c = v.getType().getDeclaration();
+                            c = getNativeDeclaration(c, backends);
                         }
                     }
                     container = (Scope) c;

@@ -1106,22 +1106,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // we first make a class
                 Declaration objectClassDecl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
                 setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
-                decls.add(objectClassDecl);
                 if (isCeylon && shouldCreateNativeHeader(objectClassDecl, container)) {
                     Declaration hdrobj = makeLazyClass(classMirror, null, null, true);
                     setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
                     decls.add(initNativeHeader(hdrobj, objectClassDecl));
                 }
+                decls.add(objectClassDecl);
                 // then we make a value for it, if it's not an inline object expr
                 if(objectClassDecl.isNamed()){
                     Declaration objectDecl = makeToplevelAttribute(classMirror, isNativeHeaderMember);
                     setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
-                    decls.add(objectDecl);
                     if (isCeylon && shouldCreateNativeHeader(objectDecl, container)) {
                         Declaration hdrobj = makeToplevelAttribute(classMirror, true);
                         setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
                         decls.add(initNativeHeader(hdrobj, objectDecl));
                     }
+                    decls.add(objectDecl);
                     // which one did we want?
                     decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
                 }else{
@@ -1220,14 +1220,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
 
         // objects have special handling above
-        if(type != ClassType.OBJECT){
-            decls.add(decl);
+        if (type != ClassType.OBJECT){
             if (hdr != null) {
                 decls.add(initNativeHeader(hdr, decl));
             }
+            decls.add(decl);
         }
         
-        return decl;
+        return hdr != null ? hdr : decl;
     }
     
     private ClassType getClassType(ClassMirror classMirror) {
@@ -1266,7 +1266,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // to all declarations that have a native header and check that here
         if (decl.isNative() && decl.isShared()) {
             Declaration container = (Declaration)decl.getContainer();
-            return container.isNativeHeader();
+            return container.isNative();
         }
         return false;
     }
@@ -1281,9 +1281,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return hdr;
     }
     
-    private void initNativeHeaderMember(Declaration hdr) {
-        Declaration impl = ModelUtil.getNativeDeclaration(hdr.getContainer(), hdr.getName(), Backends.JAVA);
-        initNativeHeader(hdr, impl);
+    private void initNativeHeaderMember(Declaration dec) {
+        if (dec.isNativeImplementation()) {
+            Declaration hdr = ModelUtil.getNativeDeclaration(dec.getContainer(), dec.getName(), Backends.HEADER);
+            if (hdr != null) {
+                hdr.getOverloads().add(dec);
+            }
+        }
     }
     
     /** Returns:
