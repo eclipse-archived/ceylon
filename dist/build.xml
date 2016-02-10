@@ -114,7 +114,7 @@ Some super-charged ant tasks:
 
     <target name="dist" depends="publish,ide-quick" />
 
-    <target name="publish" depends="clean-projects,install-all,publish-quick"
+    <target name="publish" depends="clean-projects,install-all,copy-dist-bin,publish-quick"
             description="Publishes all sibling projects" />
     <target name="publish-quick">
         <echo>Deprecated: we don't publish anymore</echo>
@@ -230,7 +230,7 @@ Use this when NOT doing a release!">
     </target>
 
     <target name="package" 
-            depends="clean-projects, install-all, generate-spec, generate-apidoc, generate-tooldoc, zip"
+            depends="clean-projects, install-all, generate-spec, generate-apidoc, generate-tooldoc, copy-dist-bin, zip"
             description="Generates a distributable zip file">
     </target>
 
@@ -238,7 +238,7 @@ Use this when NOT doing a release!">
             depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, 
                      copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
                      copy-licenses, install-runtime,
-                     add-module-descriptors, copy-dist-bin, generate-buildid"
+                     add-module-descriptors, generate-buildid"
             description="Generates all binaries and copies them to the distribution folder">
     </target>
 
