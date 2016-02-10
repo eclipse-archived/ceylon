@@ -2,9 +2,8 @@
 
 # Ceylon
 
-This is the 1.2 _"A Series Of Unlikely Explanations"_ release of the Ceylon 
-command line tools (version 1.2.0). This is a production version of 
-the platform.
+This is the 1.2.1 _"Irregular Apocalypse"_ release of the Ceylon 
+command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
 for the Java and JavaScript virtual machines. The language features 
