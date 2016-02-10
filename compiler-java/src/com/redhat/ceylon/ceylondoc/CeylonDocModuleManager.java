@@ -160,6 +160,9 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
         // This is most likely not the correct solution but it
         // still works for all current cases and allows generating
         // docs for non-JVM modules at the same time
-        return Backend.getRegisteredBackends();
+        return Backends.ANY
+                .merged(Backend.Header)
+                .merged(Backend.Java)
+                .merged(Backend.JavaScript);
     }
 }
