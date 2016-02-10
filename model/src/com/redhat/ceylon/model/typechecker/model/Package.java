@@ -152,9 +152,9 @@ public class Package
 
     @Override
     public Declaration getDirectMemberForBackend(String name, 
-            Backends backends, boolean retrieveClassForObject) {
+            Backends backends) {
         return lookupMemberForBackend(getMembers(), 
-                name, backends, retrieveClassForObject);
+                name, backends);
     }
 
     @Override

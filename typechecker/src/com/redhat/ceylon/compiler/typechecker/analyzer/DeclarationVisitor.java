@@ -259,7 +259,7 @@ public abstract class DeclarationVisitor extends Visitor {
                         }
                     } else {
                         member = model.getContainer().getDirectMemberForBackend(
-                                model.getName(), model.getNativeBackends(), false);
+                                model.getName(), model.getNativeBackends());
                         if (member != null && member != model) {
                             that.addError("duplicate native implementation: '" + 
                                     name + "'");
@@ -376,7 +376,7 @@ public abstract class DeclarationVisitor extends Visitor {
             Declaration overloadFromModelLoader = 
                     model.getContainer()
                         .getDirectMemberForBackend(name, 
-                                backendToSearch.asSet(), false);
+                                backendToSearch.asSet());
             if (overloadFromModelLoader 
                     instanceof FunctionOrValue) {
                 if (loadedFunctionsOrValues == null) {
@@ -536,7 +536,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Declaration member = 
                 setter.getContainer()
                     .getDirectMemberForBackend(name, 
-                        getNativeBackend(al, unit), false);
+                        getNativeBackend(al, unit));
         if (member==null) {
             that.addError("setter with no matching getter: '" + 
                     name + "'");

@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.model.loader.ModelLoader;
-import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 
 /**
  * Any program element of relevance to the model.
@@ -99,9 +97,9 @@ public abstract class Element {
      * with the given name and any of the given backends
      */
     public Declaration getDirectMemberForBackend(String name, 
-            Backends backends, boolean retrieveClassForObject) {
+            Backends backends) {
         return lookupMemberForBackend(getMembers(), 
-                name, backends, retrieveClassForObject);
+                name, backends);
     }
 
     /**

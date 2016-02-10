@@ -45,7 +45,7 @@ public interface Scope {
      * 
      * @return the best matching member
      */
-    public Declaration getDirectMemberForBackend(String name, Backends backends, boolean retrieveClassForObject);
+    public Declaration getDirectMemberForBackend(String name, Backends backends);
 
     /**
      * Resolve a qualified reference.

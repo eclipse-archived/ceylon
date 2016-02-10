@@ -1282,7 +1282,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private void initNativeHeaderMember(Declaration hdr) {
-        Declaration impl = ModelUtil.getNativeDeclaration(hdr.getContainer(), hdr.getName(), Backends.JAVA, false);
+        Declaration impl = ModelUtil.getNativeDeclaration(hdr.getContainer(), hdr.getName(), Backends.JAVA);
         initNativeHeader(hdr, impl);
     }
     
