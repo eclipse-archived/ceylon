@@ -102,7 +102,7 @@ the `bin` directory.
 The API documentation for the language module `ceylon.language` may 
 be found here:
 
-- `repo/ceylon/language/1.2.0/module-doc/api`
+- `repo/ceylon/language/1.2.1/module-doc/api`
 
 ## Running the sample programs
 
@@ -125,7 +125,7 @@ environment for Ceylon development.
 ## Ant tasks for Ceylon
 
 We include support for Ceylon ant tasks which are documented at 
-<http://ceylon-lang.org/documentation/1.2/reference/tool/ant/>.
+<http://ceylon-lang.org/documentation/1.2.1/reference/tool/ant/>.
 
 To run the "hello world" program using ant, type:
 
