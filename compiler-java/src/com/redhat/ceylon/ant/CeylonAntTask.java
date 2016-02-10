@@ -344,7 +344,7 @@ public abstract class CeylonAntTask extends Task {
                 Object val = props.get(k);
                 String arg = k + "=" + val;
                 if (isSafeProperty(arg)) {
-                    appendOption(cmd, "--define=" + arg);
+                    appendOption(cmd, "--define=" + encodeProperty(arg));
                 }
             }
         }
@@ -359,6 +359,10 @@ public abstract class CeylonAntTask extends Task {
 
     private boolean isSafeProperty(String str) {
         return !str.contains("\"") || !str.contains("'");
+    }
+    
+    private String encodeProperty(String str) {
+        return str.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
     }
     
     /**
