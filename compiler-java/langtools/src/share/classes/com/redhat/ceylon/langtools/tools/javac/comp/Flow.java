@@ -199,6 +199,8 @@ public class Flow {
     private final boolean allowEffectivelyFinalInInnerClasses;
     private final boolean enforceThisDotInit;
 
+    private SourceLanguage sourceLanguage;
+
     public static Flow instance(Context context) {
         Flow instance = context.get(flowKey);
         if (instance == null)
@@ -206,6 +208,11 @@ public class Flow {
         return instance;
     }
 
+    
+    protected boolean ceylonNoInitCheck(VarSymbol sym) {
+        return sourceLanguage.isCeylon() && sym.attribute(syms.ceylonAtNoInitCheckType.tsym) != null;
+    }
+    
     public void analyzeTree(Env<AttrContext> env, TreeMaker make) {
         new AliveAnalyzer().analyzeTree(env, make);
         new AssignAnalyzer().analyzeTree(env);
@@ -839,6 +846,9 @@ public class Flow {
          *  is caught.
          */
         void markThrown(JCTree tree, Type exc) {
+            if (sourceLanguage.isCeylon()) {
+                return;
+            }
             if (!chk.isUnchecked(tree.pos(), exc)) {
                 if (!chk.isHandled(exc, caught)) {
                     pendingExits.append(new FlowPendingExit(tree, exc));
@@ -1178,9 +1188,11 @@ public class Flow {
                 log.error(pos, "except.already.caught", exc);
             } else if (!chk.isUnchecked(pos, exc) &&
                     !isExceptionOrThrowable(exc) &&
-                    !chk.intersects(exc, thrownInTry)) {
+                    !chk.intersects(exc, thrownInTry) &&
+                    !sourceLanguage.isCeylon()) {
                 log.error(pos, "except.never.thrown.in.try", exc);
-            } else if (allowImprovedCatchAnalysis) {
+            } else if (allowImprovedCatchAnalysis &&
+                    !sourceLanguage.isCeylon()) {
                 List<Type> catchableThrownTypes = chk.intersect(List.of(exc), thrownInTry);
                 // 'catchableThrownTypes' cannnot possibly be empty - if 'exc' was an
                 // unchecked exception, the result list would not be empty, as the augmented
@@ -1490,12 +1502,18 @@ public class Flow {
         /** Do we need to track init/uninit state of this symbol?
          *  I.e. is symbol either a local or a blank final variable?
          */
-        protected boolean trackable(VarSymbol sym) {
+        boolean trackable(VarSymbol sym) {
+            return
+                (sym.owner.kind == MTH ||
+                 ((sym.flags() & (FINAL | HASINIT | PARAMETER)) == FINAL &&
+                  classDef.sym.isEnclosedBy((ClassSymbol)sym.owner)));
+        }
+        /*protected boolean trackable(VarSymbol sym) {
             return
                 sym.pos >= startPos &&
                 ((sym.owner.kind == MTH ||
                 isFinalUninitializedField(sym)));
-        }
+        }*/
 
         boolean isFinalUninitializedField(VarSymbol sym) {
             return sym.owner.kind == TYP &&
@@ -1503,6 +1521,10 @@ public class Flow {
                    classDef.sym.isEnclosedBy((ClassSymbol)sym.owner));
         }
 
+        protected boolean ceylonNoInitCheck(VarSymbol sym) {
+            return sourceLanguage.isCeylon() && sym.attribute(syms.ceylonAtNoInitCheckType.tsym) != null;
+        }
+        
         boolean isFinalUninitializedStaticField(VarSymbol sym) {
             return isFinalUninitializedField(sym) && sym.isStatic();
         }
@@ -1546,13 +1568,15 @@ public class Flow {
                                   sym);
                         }
                     } else if (!uninits.isMember(sym.adr)) {
+                        if (!sourceLanguage.isCeylon()) {
                         log.error(pos, flowKind.errKey, sym);
+                        }
                     } else {
                         uninit(sym);
                     }
                 }
                 inits.incl(sym.adr);
-            } else if ((sym.flags() & FINAL) != 0) {
+            } else if ((sym.flags() & FINAL) != 0 && !sourceLanguage.isCeylon() && !ceylonNoInitCheck(sym)) {
                 log.error(pos, "var.might.already.be.assigned", sym);
             }
         }
@@ -1591,7 +1615,8 @@ public class Flow {
         void checkInit(DiagnosticPosition pos, VarSymbol sym, String errkey) {
             if ((sym.adr >= firstadr || sym.owner.kind != TYP) &&
                 trackable(sym) &&
-                !inits.isMember(sym.adr)) {
+                !inits.isMember(sym.adr) && 
+                !ceylonNoInitCheck(sym)) {
                 log.error(pos, errkey, sym);
                 inits.incl(sym.adr);
             }
@@ -1652,6 +1677,9 @@ public class Flow {
          *  rather than (un)inits on exit.
          */
         void scanCond(JCTree tree) {
+            // Ceylon: moved it up from the else block because with Let we can have true/false and
+            // still need scanning for expressions/statements
+            scan(tree);
             if (tree.type.isFalse()) {
                 if (inits.isReset()) merge();
                 initsWhenTrue.assign(inits);
@@ -1669,7 +1697,7 @@ public class Flow {
                 initsWhenTrue.assign(inits);
                 uninitsWhenTrue.assign(uninits);
             } else {
-                scan(tree);
+                //scan(tree);
                 if (!inits.isReset())
                     split(tree.type != syms.unknownType);
             }
@@ -1885,6 +1913,16 @@ public class Flow {
             nextadr = nextadrPrev;
         }
 
+    @Override
+    public void visitLetExpr(LetExpr tree) {
+        int nextadrPrev = nextadr;
+        if(tree.stats != null)
+            scan(tree.stats);
+        if(tree.expr != null)
+            scanExpr(tree.expr);
+        nextadr = nextadrPrev;
+    }
+        
         public void visitDoLoop(JCDoWhileLoop tree) {
             ListBuffer<AssignPendingExit> prevPendingExits = pendingExits;
             FlowKind prevFlowKind = flowKind;

@@ -2390,11 +2390,6 @@ public class Gen extends JCTree.Visitor {
         return sym.kind == MTH && ((MethodSymbol)sym).isDynamic();
     }
 
-    // Backported by Ceylon from JDK8
-    public boolean isInvokeDynamic(Symbol sym) {
-        return sym.kind == MTH && ((MethodSymbol)sym).isDynamic();
-    }
-
     public void visitLiteral(JCLiteral tree) {
         if (tree.type.hasTag(BOT)) {
             code.emitop0(aconst_null);

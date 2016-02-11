@@ -32,6 +32,7 @@ import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.*;
 import com.redhat.ceylon.langtools.tools.javac.jvm.*;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
@@ -123,10 +124,17 @@ public class Symtab {
     public final Type stringType;
     public final Type stringBufferType;
     public final Type stringBuilderType;
+    public final Type booleanObjectType;    
+    public final Type integerObjectType;
+    public final Type longObjectType;
+    public final Type floatObjectType;
+    public final Type doubleObjectType;
+    public final Type characterObjectType;
     public final Type cloneableType;
     public final Type serializableType;
     public final Type serializedLambdaType;
     public final Type methodHandleType;
+    public final Type methodHandlesType;
     public final Type methodHandleLookupType;
     public final Type methodTypeType;
     public final Type nativeHeaderType;
@@ -154,6 +162,8 @@ public class Symtab {
     public final Type annotationTargetType;
     public final Type overrideType;
     public final Type retentionType;
+    public final Type retentionPolicyType;
+    public final Type targetType;
     public final Type deprecatedType;
     public final Type suppressWarningsType;
     public final Type inheritedType;
@@ -168,6 +178,122 @@ public class Symtab {
     public final Type elementTypeType;
     public final Type functionalInterfaceType;
 
+    public  Type ceylonAnythingType;
+    public  Type ceylonObjectType;
+    public  Type ceylonIdentifiableType;
+    public  Type ceylonFloatType;
+    public  Type ceylonIntegerType;
+    public  Type ceylonStringType;
+    public  Type ceylonTupleType;
+    public  Type ceylonArrayType;
+    public  Type ceylonArrayIterableType;
+    public  Type ceylonAbstractIterableType;
+    public  Type ceylonAbstractIteratorType;
+    public  Type ceylonLazyIterableType;
+    public  Type ceylonLazyInvokingIterableType;
+    public  Type ceylonCharacterType;
+    public  Type ceylonByteType;
+    public  Type ceylonBooleanType;
+    public  Type ceylonFinishedType;
+    public  Type ceylonExceptionType;
+    public  Type ceylonThrowableType;
+    public  Type ceylonAssertionErrorType;
+    public  Type ceylonInitializationErrorType;
+    public  Type ceylonEnumeratedTypeErrorType;
+    public  Type ceylonUninvokableErrorType;
+    public  Type ceylonUninitializedMethodErrorType;
+    public  Type ceylonUnresolvedCompilationErrorType;
+    public  Type ceylonAbstractCallableType;
+    public  Type ceylonAbstractTypeConstructorType;
+    public  Type ceylonSerializationProxyType;
+    public  Type ceylonVariableBoxType;
+    public  Type ceylonVariableBoxLongType;
+    public  Type ceylonVariableBoxIntType;
+    public  Type ceylonVariableBoxDoubleType;
+    public  Type ceylonVariableBoxByteType;
+    public  Type ceylonVariableBoxBooleanType;
+    public  Type ceylonGetterType;
+    public  Type ceylonGetterLongType;
+    public  Type ceylonGetterIntType;
+    public  Type ceylonGetterDoubleType;
+    public  Type ceylonGetterByteType;
+    public  Type ceylonGetterBooleanType;
+    
+    public final Type ceylonAtCeylonType;
+    public final Type ceylonAtDynamicType;
+    public final Type ceylonAtModuleType;
+    public final Type ceylonAtPackageType;
+    public final Type ceylonAtImportType;
+    public final Type ceylonAtNameType;
+    public final Type ceylonAtEnumeratedType;
+    public final Type ceylonAtSequencedType;
+    public final Type ceylonAtDefaultedType;
+    public final Type ceylonAtTypeInfoType;
+    public final Type ceylonAtAttributeType;
+    public final Type ceylonAtSetterType;
+    public final Type ceylonAtMethodType;
+    public final Type ceylonAtFunctionalParameterType;
+    public final Type ceylonAtObjectType;
+    public final Type ceylonAtClassType;
+    public final Type ceylonAtSatisfiedTypes;
+    public final Type ceylonAtCaseTypes;
+    public final Type ceylonAtIgnore;
+    public final Type ceylonAtConstructorName;
+    public final Type ceylonAtJpa;
+    public final Type ceylonVarianceType;
+    public final Type ceylonAtTypeParameters;
+    public final Type ceylonAtTypeParameter;
+    public final Type ceylonAtAnnotationsType;
+    public final Type ceylonAtAnnotationType;
+    public final Type ceylonAtAnnotationInstantiationType;
+    public final Type ceylonAtAnnotationInstantiationTreeType;
+    public final Type ceylonAtDeclarationReferenceType;
+    public final Type ceylonAtEnumerationReferenceType;
+    public final Type ceylonAtContainerType;
+    public final Type ceylonAtLocalContainerType;
+    public final Type ceylonAtLocalDeclarationType;
+    public final Type ceylonAtLocalDeclarationsType;
+    public final Type ceylonAtMemberType;
+    public final Type ceylonAtMembersType;
+    public final Type ceylonAtNamedArgumentType;
+    public final Type ceylonAtValueTypeType;
+    public final Type ceylonAtAliasType;
+    public final Type ceylonAtTypeAliasType;
+    public final Type ceylonAtTransientType;
+    public final Type ceylonAtCompileTimeErrorType;
+    public final Type ceylonAtNoInitCheckType;
+    
+    public final Type ceylonAtBooleanValueType;
+    public final Type ceylonAtBooleanExprsType;
+    public final Type ceylonAtCharacterValueType;
+    public final Type ceylonAtCharacterExprsType;
+    public final Type ceylonAtDeclarationValueType;
+    public final Type ceylonAtDeclarationExprsType;
+    public final Type ceylonAtFloatValueType;
+    public final Type ceylonAtFloatExprsType;
+    public final Type ceylonAtIntegerValueType;
+    public final Type ceylonAtIntegerExprsType;
+    public final Type ceylonAtObjectValueType;
+    public final Type ceylonAtObjectExprsType;
+    public final Type ceylonAtStringValueType;
+    public final Type ceylonAtStringExprsType;
+    public final Type ceylonAtParameterValueType;
+    
+    public final Type ceylonUtilType;
+    public final Type ceylonMetamodelType;
+    public final Type ceylonTypeDescriptorType;
+    public final Type ceylonReifiedTypeType;
+    public final Type ceylonSerializationType;
+    public final Type ceylonSerializableType;
+    public final Type ceylonReachableReferenceType;
+    public final Type ceylonMemberImplType;
+    public final Type ceylonMemberType;
+    public final Type ceylonOuterImplType;
+    public final Type ceylonOuterType;
+    public final Type ceylonElementImplType;
+    public final Type ceylonElementType;
+    public final Type ceylonUninitializedLateValueType;
+    
     /** The symbol representing the length field of an array.
      */
     public final VarSymbol lengthVar;
@@ -469,9 +595,16 @@ public class Symtab {
         stringBuilderType = enterClass("java.lang.StringBuilder");
         cloneableType = enterClass("java.lang.Cloneable");
         throwableType = enterClass("java.lang.Throwable");
+        booleanObjectType = enterClass("java.lang.Boolean");
+        integerObjectType = enterClass("java.lang.Integer");
+        longObjectType = enterClass("java.lang.Long");
+        floatObjectType = enterClass("java.lang.Float");
+        doubleObjectType = enterClass("java.lang.Double");
+        characterObjectType = enterClass("java.lang.Character");
         serializableType = enterClass("java.io.Serializable");
         serializedLambdaType = enterClass("java.lang.invoke.SerializedLambda");
         methodHandleType = enterClass("java.lang.invoke.MethodHandle");
+        methodHandlesType = enterClass("java.lang.invoke.MethodHandles");
         methodHandleLookupType = enterClass("java.lang.invoke.MethodHandles$Lookup");
         methodTypeType = enterClass("java.lang.invoke.MethodType");
         errorType = enterClass("java.lang.Error");
@@ -514,7 +647,6 @@ public class Symtab {
         inheritedType = enterClass("java.lang.annotation.Inherited");
         repeatableType = enterClass("java.lang.annotation.Repeatable");
         documentedType = enterClass("java.lang.annotation.Documented");
-        elementTypeType = enterClass("java.lang.annotation.ElementType");
         systemType = enterClass("java.lang.System");
         autoCloseableType = enterClass("java.lang.AutoCloseable");
         autoCloseableClose = new MethodSymbol(PUBLIC,
@@ -528,7 +660,7 @@ public class Symtab {
         functionalInterfaceType = enterClass("java.lang.FunctionalInterface");
 
         // Only load the ceylon symbols from class files if we're not boostrapping it
-        if(Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) == null){
+        if(Options.instance(context).get(Option.BOOTSTRAPCEYLON) == null){
             loadCeylonSymbols();
         }
         
@@ -628,21 +760,6 @@ public class Symtab {
         profileType = enterSyntheticAnnotation("jdk.Profile+Annotation");
         MethodSymbol m = new MethodSymbol(PUBLIC | ABSTRACT, names.value, intType, profileType.tsym);
         profileType.tsym.members().enter(m);
-
-        // Ceylon: guess backport from Java 8
-        // Enter a synthetic class that is used to mark JDK prfiles classes in ct.sym.  This class does not have a
-        // class file.
-        ClassType jdkProfileType = (ClassType)enterClass("jdk.Profile+Annotation");
-        this.jdkProfileType = jdkProfileType;
-        ClassSymbol jdkProfileSymbol = (ClassSymbol)jdkProfileType.tsym;
-        jdkProfileSymbol.completer = null;
-        jdkProfileSymbol.flags_field = PUBLIC|ACYCLIC|ANNOTATION|INTERFACE;
-        jdkProfileSymbol.erasure_field = jdkProfileType;
-        jdkProfileSymbol.members_field = new Scope(jdkProfileSymbol);
-        jdkProfileType.typarams_field = List.nil();
-        jdkProfileType.allparams_field = List.nil();
-        jdkProfileType.supertype_field = annotationType;
-        jdkProfileType.interfaces_field = List.nil();
 
         // Enter a class for arrays.
         // The class implements java.lang.Cloneable and java.io.Serializable.

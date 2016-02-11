@@ -41,7 +41,6 @@ package com.redhat.ceylon.langtools.source.tree;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public interface DoWhileLoopTree extends StatementTree {
     ExpressionTree getCondition();
     StatementTree getStatement();

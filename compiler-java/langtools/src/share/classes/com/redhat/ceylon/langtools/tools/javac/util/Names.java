@@ -254,6 +254,8 @@ public class Names {
 
         // package names
         java_lang = fromString("java.lang");
+        
+        ceylon_language = fromString("ceylon.language");
 
         // attribute names
         Annotation = fromString("Annotation");

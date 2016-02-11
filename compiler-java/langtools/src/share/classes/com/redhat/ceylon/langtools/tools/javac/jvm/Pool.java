@@ -132,19 +132,6 @@ public class Pool {
         }
     }
 
-    // Backported by Ceylon from JDK8
-    Object makePoolValue(Object o) {
-        if (o instanceof DynamicMethodSymbol) {
-            return new DynamicMethod((DynamicMethodSymbol)o);
-        } else if (o instanceof MethodSymbol) {
-            return new Method((MethodSymbol)o);
-        } else if (o instanceof VarSymbol) {
-            return new Variable((VarSymbol)o);
-        } else {
-            return o;
-        }
-    }
-
     /** Return the given object's index in the pool,
      *  or -1 if object is not in there.
      */
@@ -313,93 +300,6 @@ public class Pool {
                     break;
                 case ClassFile.REF_invokeSpecial:
                     interfaceOwner = true;
-                    expectedKind = Kinds.MTH;
-                    break;
-            }
-            Assert.check(!refSym.isStatic() || staticOk);
-            Assert.check(refSym.kind == expectedKind);
-            Assert.check(nameFilter.accepts(refSym.name));
-            Assert.check(!refSym.owner.isInterface() || interfaceOwner);
-        }
-        //where
-                Filter<Name> nonInitFilter = new Filter<Name>() {
-                    public boolean accepts(Name n) {
-                        return n != n.table.names.init && n != n.table.names.clinit;
-                    }
-                };
-
-                Filter<Name> initFilter = new Filter<Name>() {
-                    public boolean accepts(Name n) {
-                        return n == n.table.names.init;
-                    }
-                };
-    }
-
-    // Backported by Ceylon from JDK8
-    public static class MethodHandle {
-
-        /** Reference kind - see ClassFile */
-        int refKind;
-
-        /** Reference symbol */
-        Symbol refSym;
-
-        Type uniqueType;
-
-        public MethodHandle(int refKind, Symbol refSym) {
-            this.refKind = refKind;
-            this.refSym = refSym;
-            this.uniqueType = this.refSym.type;
-            checkConsistent();
-        }
-        public boolean equals(Object other) {
-            if (!(other instanceof MethodHandle)) return false;
-            MethodHandle mr = (MethodHandle) other;
-            if (mr.refKind != refKind)  return false;
-            Symbol o = mr.refSym;
-            return
-                o.name == refSym.name &&
-                o.owner == refSym.owner &&
-                ((MethodHandle)other).uniqueType.equals(uniqueType);
-        }
-        public int hashCode() {
-            return
-                refKind * 65 +
-                refSym.name.hashCode() * 33 +
-                refSym.owner.hashCode() * 9 +
-                uniqueType.hashCode();
-        }
-
-        /**
-         * Check consistency of reference kind and symbol (see JVMS 4.4.8)
-         */
-        @SuppressWarnings("fallthrough")
-        private void checkConsistent() {
-            boolean staticOk = false;
-            int expectedKind = -1;
-            Filter<Name> nameFilter = nonInitFilter;
-            boolean interfaceOwner = false;
-            switch (refKind) {
-                case ClassFile.REF_getStatic:
-                case ClassFile.REF_putStatic:
-                    staticOk = true;
-                case ClassFile.REF_getField:
-                case ClassFile.REF_putField:
-                    expectedKind = Kinds.VAR;
-                    break;
-                case ClassFile.REF_newInvokeSpecial:
-                    nameFilter = initFilter;
-                    expectedKind = Kinds.MTH;
-                    break;
-                case ClassFile.REF_invokeInterface:
-                    interfaceOwner = true;
-                    expectedKind = Kinds.MTH;
-                    break;
-                case ClassFile.REF_invokeStatic:
-                    interfaceOwner = true;
-                    staticOk = true;
-                case ClassFile.REF_invokeVirtual:
-                case ClassFile.REF_invokeSpecial:
                     expectedKind = Kinds.MTH;
                     break;
             }

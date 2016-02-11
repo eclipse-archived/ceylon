@@ -179,7 +179,7 @@ public class CallableBuilder {
      */
     public static JCExpression methodReference(CeylonTransformer gen, 
             final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList) {
-        ListBuffer<JCStatement> letStmts = ListBuffer.<JCTree.JCStatement>lb();
+        ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         Naming.SyntheticName instanceFieldName;
@@ -289,7 +289,7 @@ public class CallableBuilder {
             target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
             target = gen.expressionGen().applyErasureAndBoxing(target, producedReference.getQualifyingType(), true, BoxingStrategy.BOXED, qualifyingType);
         }
-        CallableBuilder inner = new CallableBuilder(gen, null, type, parameterList);
+        CallableBuilder inner = new CallableBuilder(gen, qmte, type, parameterList);
         inner.parameterTypes = inner.getParameterTypesFromCallableModel();//FromParameterModels();
         if (hasOuter) {
             inner.defaultValueCall = inner.new MemberReferenceDefaultValueCall(methodClassOrCtor);
@@ -330,7 +330,7 @@ public class CallableBuilder {
         } else {
             throw BugException.unhandledDeclarationCase((Declaration)methodClassOrCtor, qmte);
         }
-        ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
+        ListBuffer<ExpressionAndType> reified = new ListBuffer<ExpressionAndType>();
         
         DirectInvocation.addReifiedArguments(gen, producedReference, reified);
         for (ExpressionAndType reifiedArgument : reified) {
@@ -382,7 +382,7 @@ public class CallableBuilder {
         valueModel.setType(accessType);
         valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
-        CallableBuilder outer = new CallableBuilder(gen, null, typeModel, outerPl);
+        CallableBuilder outer = new CallableBuilder(gen, qmte, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
         List<JCStatement> outerBody = List.<JCStatement>of(gen.make().Return(inner.build()));
         outer.useDefaultTransformation(outerBody);
@@ -406,12 +406,13 @@ public class CallableBuilder {
         }
     }
     
-    public static CallableBuilder javaStaticMethodReference(CeylonTransformer gen, 
+    public static CallableBuilder javaStaticMethodReference(CeylonTransformer gen,
+            Node node,
             Type typeModel, 
             final Functional methodOrClass, 
             Reference producedReference) {
         final ParameterList parameterList = methodOrClass.getFirstParameterList();
-        CallableBuilder inner = new CallableBuilder(gen, null, typeModel, parameterList);
+        CallableBuilder inner = new CallableBuilder(gen, node, typeModel, parameterList);
         
         ArrayList<Type> pt = new ArrayList<>();
         for (Parameter p : methodOrClass.getFirstParameterList().getParameters()) {
@@ -493,7 +494,7 @@ public class CallableBuilder {
         valueModel.setType(accessType);
         valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
-        CallableBuilder outer = new CallableBuilder(gen, null, typeModel, outerPl);
+        CallableBuilder outer = new CallableBuilder(gen, qmte, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         outer.useDefaultTransformation(innerBody);
@@ -517,7 +518,7 @@ public class CallableBuilder {
         gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         
-        return methodArgument(gen, null, model, callableTypeModel, parameterListTree, stmts, delegateDefaultedCalls);
+        return methodArgument(gen, node, model, callableTypeModel, parameterListTree, stmts, delegateDefaultedCalls);
     }
 
     public static CallableBuilder methodArgument(
@@ -698,7 +699,7 @@ public class CallableBuilder {
             if(param.isDefaulted() || param.isSequenced()){
                 if(arity > CALLABLE_MAX_FIZED_ARITY){
                     // must check if it's defined
-                    JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
+                    JCExpression test = gen.make().Binary(JCTree.Tag.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
                     JCExpression elseBranch = makeDefaultValueCall(param, a);
                     varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
                 }else if(a >= arity && Strategy.hasDefaultParameterValueMethod(param)){
@@ -1104,7 +1105,7 @@ public class CallableBuilder {
         protected final int makeSequencedArgument(final int arity,
                 ListBuffer<JCStatement> stmts, ListBuffer<JCExpression> args,
                 int a) {
-            ListBuffer<JCExpression> varargs = ListBuffer.<JCExpression>lb();
+            ListBuffer<JCExpression> varargs = new ListBuffer<JCExpression>();
             for (; a < arity; a++) {
                 if (arity < numParams - 1) {
                     Parameter param1 = paramLists.getParameters().get(Math.min(a, numParams-1));
@@ -1176,7 +1177,7 @@ public class CallableBuilder {
                 return null;
             }
             ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-            ListBuffer<JCExpression> args = ListBuffer.lb();
+            ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
             if (arity <= CALLABLE_MAX_FIZED_ARITY) {
                 case3(arity, stmts, args);
             } else { 
@@ -1205,7 +1206,7 @@ public class CallableBuilder {
                         List.<JCExpression>of(
                                 gen.makeReifiedTypeArgument(getVariadicIteratedType()),
                                 gen.make().Literal(numParams-1),
-                                gen.make().Binary(JCTree.MINUS, gen.naming.makeQualIdent(makeParamIdent(gen,  0), "length"), gen.make().Literal(numParams-1)),
+                                gen.make().Binary(JCTree.Tag.MINUS, gen.naming.makeQualIdent(makeParamIdent(gen,  0), "length"), gen.make().Literal(numParams-1)),
                                 makeParamIdent(gen,  0),
                                 gen.makeEmpty())));
                 
@@ -1229,12 +1230,12 @@ public class CallableBuilder {
                 makeParameterArgument(arity1, stmts, args, a);
                 a++;
             }
-            ListBuffer<JCExpression> lb = ListBuffer.lb();
+            ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
             for (; a < arity1-1 && a < CALLABLE_MAX_FIZED_ARITY; a++) {
                 Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
                 lb.append(makeParameterExpr(param, a, getVariadicIteratedType(), false, false));
             }
-            ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
+            ListBuffer<JCExpression> spreadCallArgs = new ListBuffer<JCExpression>();
             spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
             if (arity1 > CALLABLE_MAX_FIZED_ARITY+1) {
                 spreadCallArgs.append(gen.make().Literal(getMinimumArguments()));
@@ -1255,7 +1256,7 @@ public class CallableBuilder {
                 return null;
             }
             ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-            ListBuffer<JCExpression> args = ListBuffer.lb();
+            ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
             if (arity <= CALLABLE_MAX_FIZED_ARITY) {
                 if (arity1 <  getMinimumParameters()) {
                     // We need to extract some arguments from the sequential parameter
@@ -1331,12 +1332,12 @@ public class CallableBuilder {
                 }
                 makeParameterArgument(arity, stmts, args, a);
             }
-            ListBuffer<JCExpression> variadicElements = ListBuffer.lb();
+            ListBuffer<JCExpression> variadicElements = new ListBuffer<JCExpression>();
             for (; a < arity; a++) {
                 Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
                 variadicElements.append(makeParameterExpr(param, a, getVariadicIteratedType(), false, false));
             }
-            ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
+            ListBuffer<JCExpression> spreadCallArgs = new ListBuffer<JCExpression>();
             spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
             if (arity > CALLABLE_MAX_FIZED_ARITY) {
                 spreadCallArgs.append(gen.make().Literal(getMinimumArguments()));
@@ -1491,7 +1492,7 @@ public class CallableBuilder {
     
     private CallableBuilder parameterDefaultValueMethods(Tree.ParameterList parameterListTree) {
         if (parameterDefaultValueMethods == null) {
-            parameterDefaultValueMethods = ListBuffer.lb();
+            parameterDefaultValueMethods = new ListBuffer<MethodDefinitionBuilder>();
         }
         for(Tree.Parameter p : parameterListTree.getParameters()){
             if(Decl.getDefaultArgument(p) != null){
@@ -1513,7 +1514,7 @@ public class CallableBuilder {
         }
         
         transformation.appendMethods(classBody);
-        
+        gen.at(node);
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0, annotations != null ? annotations : List.<JCAnnotation>nil()), classBody.toList());
         
         int variadicIndex = isVariadic ? numParams - 1 : -1;
@@ -1525,7 +1526,7 @@ public class CallableBuilder {
             callableType = typeModel;
         }
         
-        JCNewClass callableInstance = gen.make().NewClass(null, 
+        JCNewClass callableInstance = gen.at(node).NewClass(null, 
                 null, 
                 gen.makeJavaType(callableType, JT_EXTENDS | JT_CLASS_NEW), 
                 List.<JCExpression>of(gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(0)),
@@ -1584,7 +1585,7 @@ public class CallableBuilder {
             pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType)), null);
             typedApply.parameter(pdb);
         }
-        ListBuffer<JCTypeParameter> typeParameters = ListBuffer.<JCTypeParameter>lb();
+        ListBuffer<JCTypeParameter> typeParameters = new ListBuffer<JCTypeParameter>();
         for (TypeParameter typeParameter : typeModel.getDeclaration().getTypeParameters()) {
             Type typeArgument = typeModel.getTypeArguments().get(typeParameter);
             typeParameters.add(gen.makeTypeParameter(typeParameter, null));

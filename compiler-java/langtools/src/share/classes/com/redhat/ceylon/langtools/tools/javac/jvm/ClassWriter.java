@@ -141,12 +141,6 @@ public class ClassWriter extends ClassFile {
      */
     Map<DynamicMethod, MethodHandle> bootstrapMethods;
 
-    // Backported by Ceylon from JDK8
-    /** The bootstrap methods to be written in the corresponding class attribute
-     *  (one for each invokedynamic)
-     */
-    Map<DynamicMethod, MethodHandle> bootstrapMethods;
-
     /** The log to use for verbose output.
      */
     private final Log log;
@@ -1053,28 +1047,6 @@ public class ClassWriter extends ClassFile {
         endAttr(alenIdx);
     }
 
-    /** Write "bootstrapMethods" attribute.
-     */
-    void writeBootstrapMethods() {
-        int alenIdx = writeAttr(names.BootstrapMethods);
-        databuf.appendChar(bootstrapMethods.size());
-        for (Map.Entry<DynamicMethod, MethodHandle> entry : bootstrapMethods.entrySet()) {
-            DynamicMethod dmeth = entry.getKey();
-            DynamicMethodSymbol dsym = (DynamicMethodSymbol)dmeth.baseSymbol();
-            //write BSM handle
-            databuf.appendChar(pool.get(entry.getValue()));
-            //write static args length
-            databuf.appendChar(dsym.staticArgs.length);
-            //write static args array
-            Object[] uniqueArgs = dmeth.uniqueStaticArgs;
-            for (Object o : uniqueArgs) {
-                databuf.appendChar(pool.get(o));
-            }
-        }
-        endAttr(alenIdx);
-    }
-
-    // Backported by Ceylon from JDK8
     /** Write "bootstrapMethods" attribute.
      */
     void writeBootstrapMethods() {

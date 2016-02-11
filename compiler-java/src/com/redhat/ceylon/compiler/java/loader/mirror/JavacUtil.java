@@ -28,7 +28,7 @@ import java.util.Map;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeVariableSymbol;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
@@ -56,9 +56,9 @@ public class JavacUtil {
 
     public static List<TypeParameterMirror> getTypeParameters(Symbol symbol) {
         try{
-            com.redhat.ceylon.langtools.tools.javac.util.List<TypeSymbol> typeParameters = symbol.getTypeParameters();
+            com.redhat.ceylon.langtools.tools.javac.util.List<TypeVariableSymbol> typeParameters = symbol.getTypeParameters();
             List<TypeParameterMirror> ret = new ArrayList<TypeParameterMirror>(typeParameters.size());
-            for(TypeSymbol typeParameter : typeParameters)
+            for(TypeVariableSymbol typeParameter : typeParameters)
                 ret.add(new JavacTypeParameter(typeParameter));
             return ret;
         }catch(CompletionFailure x){

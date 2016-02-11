@@ -38,7 +38,6 @@ import com.redhat.ceylon.langtools.source.tree.*;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public class TreePathScanner<R, P> extends TreeScanner<R, P> {
 
     /**

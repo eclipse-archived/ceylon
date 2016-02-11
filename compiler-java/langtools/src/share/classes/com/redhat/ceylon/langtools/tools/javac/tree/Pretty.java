@@ -73,11 +73,6 @@ public class Pretty extends JCTree.Visitor {
      */
     Name enclClassName;
 
-    /** A table mapping trees to their documentation comments
-     *  (can be null)
-     */
-    DocCommentTable docComments = null;
-
     /**
      * A string sequence to be used when Pretty output should be constrained
      * to fit into a given size
@@ -284,36 +279,6 @@ public class Pretty extends JCTree.Visitor {
         }
     }
 
-    /** Print documentation comment, if it exists
-     *  @param tree    The tree for which a documentation comment should be printed.
-     */
-    public void printDocComment(JCTree tree) throws IOException {
-        if (docComments != null) {
-            String dc = docComments.getCommentText(tree);
-            if (dc != null) {
-                print("/**"); println();
-                int pos = 0;
-                int endpos = lineEndPos(dc, pos);
-                while (pos < dc.length()) {
-                    align();
-                    print(" *");
-                    if (pos < dc.length() && dc.charAt(pos) > ' ') print(" ");
-                    print(dc.substring(pos, endpos)); println();
-                    pos = endpos + 1;
-                    endpos = lineEndPos(dc, pos);
-                }
-                align(); print(" */"); println();
-                align();
-            }
-        }
-    }
-//where
-    static int lineEndPos(String s, int start) {
-        int pos = s.indexOf('\n', start);
-        if (pos < 0) pos = s.length();
-        return pos;
-    }
-
     /** If type parameter list is non-empty, print it enclosed in
      *  {@literal "<...>"} brackets.
      */
@@ -382,8 +347,6 @@ public class Pretty extends JCTree.Visitor {
      *                  toplevel tree.
      */
     public void printUnit(JCCompilationUnit tree, JCClassDecl cdef) throws IOException {
-        docComments = tree.docComments;
-        printDocComment(tree);
         if (tree.pid != null) {
             print("package ");
             printExpr(tree.pid);
@@ -458,7 +421,6 @@ public class Pretty extends JCTree.Visitor {
     public void visitClassDef(JCClassDecl tree) {
         try {
             println(); align();
-            printDocComment(tree);
             printAnnotations(tree.mods.annotations);
             printFlags(tree.mods.flags & ~INTERFACE);
             Name enclClassNamePrev = enclClassName;
@@ -504,7 +466,6 @@ public class Pretty extends JCTree.Visitor {
                     enclClassName == null &&
                     sourceOutput) return;
             println(); align();
-            printDocComment(tree);
             printExpr(tree.mods);
             printTypeParameters(tree.typarams);
             if (tree.name == tree.name.table.names.init) {
@@ -543,10 +504,6 @@ public class Pretty extends JCTree.Visitor {
 
     public void visitVarDef(JCVariableDecl tree) {
         try {
-            if (docComments != null && docComments.hasComment(tree)) {
-                println(); align();
-            }
-            printDocComment(tree);
             if ((tree.mods.flags & ENUM) != 0) {
                 print("/*public static final*/ ");
                 print(tree.name);
@@ -902,10 +859,10 @@ public class Pretty extends JCTree.Visitor {
             if (!tree.typeargs.isEmpty()) {
                 if (tree.meth.hasTag(SELECT)) {
                     JCFieldAccess left = (JCFieldAccess)tree.meth;
-                    if(left.selected.getTag() == JCTree.TYPECAST)
+                    if(left.selected.getTag() == JCTree.Tag.TYPECAST)
                         print("(");
                     printExpr(left.selected);
-                    if(left.selected.getTag() == JCTree.TYPECAST)
+                    if(left.selected.getTag() == JCTree.Tag.TYPECAST)
                         print(")");
                     print(".<");
                     printExprs(tree.typeargs);

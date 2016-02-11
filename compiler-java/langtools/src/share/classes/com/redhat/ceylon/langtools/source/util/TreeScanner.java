@@ -68,7 +68,6 @@ import com.redhat.ceylon.langtools.source.tree.*;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public class TreeScanner<R,P> implements TreeVisitor<R,P> {
 
     /** Scan a single node.

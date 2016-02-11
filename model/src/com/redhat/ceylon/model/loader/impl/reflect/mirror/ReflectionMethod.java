@@ -163,7 +163,12 @@ public class ReflectionMethod implements MethodMirror {
     public boolean isAbstract() {
         return Modifier.isAbstract(method.getModifiers());
     }
-
+    
+    @Override
+    public boolean isDefaultMethod() {
+        return method instanceof java.lang.reflect.Method && ((java.lang.reflect.Method)method).isDefault();
+    }
+    
     @Override
     public boolean isFinal() {
         return Modifier.isFinal(method.getModifiers());

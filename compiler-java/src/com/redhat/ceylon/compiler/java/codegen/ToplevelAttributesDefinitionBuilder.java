@@ -53,7 +53,7 @@ public class ToplevelAttributesDefinitionBuilder {
     }
     
     public ListBuffer<JCTree> build() {
-        ListBuffer<JCTree> result = ListBuffer.lb();
+        ListBuffer<JCTree> result = new ListBuffer<JCTree>();
         for (Tree.AnyAttribute attrib : attribs) {
             int annots = gen.checkCompilerAnnotations(attrib, result);
             String attrName = attrib.getIdentifier().getText();

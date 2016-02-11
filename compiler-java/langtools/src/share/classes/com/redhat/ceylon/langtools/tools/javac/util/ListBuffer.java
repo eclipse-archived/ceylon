@@ -68,7 +68,7 @@ public class ListBuffer<A> extends AbstractQueue<A> {
     public ListBuffer() {
         clear();
     }
-
+    
     public final void clear() {
         this.elems = List.nil();
         this.last = null;

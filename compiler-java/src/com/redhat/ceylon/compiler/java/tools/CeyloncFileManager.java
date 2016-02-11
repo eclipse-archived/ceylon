@@ -35,6 +35,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +60,7 @@ import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.file.RegularFileObject;
 import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeFile;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
@@ -245,12 +247,14 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
         // any user defined repos
         List<String> userRepos = new LinkedList<String>();
-        userRepos.addAll(options.getMulti(OptionName.CEYLONREPO));
+        if (options.get(Option.CEYLONREPO) != null) {
+            userRepos.addAll(Arrays.asList(options.get(Option.CEYLONREPO).split(":")));
+        }
         String systemRepo = getSystemRepoOption();
         String cacheRepo = getCacheRepoOption();
         String outRepo = getOutputRepoOption();
-        String overrides = options.get(OptionName.CEYLONOVERRIDES);
-        boolean upgradeDist = !options.getBoolean(OptionName.CEYLONDOWNGRADEDIST.optionName);
+        String overrides = options.get(Option.CEYLONOVERRIDES);
+        boolean upgradeDist = !options.getBoolean(Option.CEYLONDOWNGRADEDIST.text);
         
         repoManager = CeylonUtils.repoManager()
                 .config(CompilerConfig.instance(context))
@@ -280,8 +284,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String outRepo = getOutputRepoOption();
         
         // username and password for WebDAV
-        String user = options.get(OptionName.CEYLONUSER);
-        String password = options.get(OptionName.CEYLONPASS);
+        String user = options.get(Option.CEYLONUSER);
+        String password = options.get(Option.CEYLONPASS);
         
         outputRepoManager = CeylonUtils.repoManager()
                 .config(CompilerConfig.instance(context))
@@ -297,32 +301,32 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     }
 
     protected String getCurrentWorkingDir() {
-        return options.get(OptionName.CEYLONCWD);
+        return options.get(Option.CEYLONCWD);
     }
 
     private String getSystemRepoOption() {
-        return options.get(OptionName.CEYLONSYSTEMREPO);
+        return options.get(Option.CEYLONSYSTEMREPO);
     }
 
     private String getCacheRepoOption() {
-        return options.get(OptionName.CEYLONCACHEREPO);
+        return options.get(Option.CEYLONCACHEREPO);
     }
 
     private boolean getNoDefaultRepos() {
-        return options.get(OptionName.CEYLONNODEFREPOS) != null;
+        return options.get(Option.CEYLONNODEFREPOS) != null;
     }
 
     private String getOutputRepoOption() {
         // we use D and not CEYLONOUT here since that's where the option is stored
-        return options.get(OptionName.D);
+        return options.get(Option.D);
     }
 
     private boolean getOfflineOption() {
-        return options.get(OptionName.CEYLONOFFLINE) != null;
+        return options.get(Option.CEYLONOFFLINE) != null;
     }
 
     private int getTimeoutOption() {
-        String to = options.get(OptionName.CEYLONTIMEOUT);
+        String to = options.get(Option.CEYLONTIMEOUT);
         if(to != null){
             return Integer.parseInt(to);
         }
@@ -335,7 +339,11 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // set the default value for Ceylon
         if (outDir == null) {
             String dir = Repositories.withConfig(CompilerConfig.instance(context)).getOutputRepository().getUrl();
-            classOutDir = new File(dir);
+            try {
+                super.setLocation(StandardLocation.CLASS_OUTPUT, Collections.singleton(new File(dir)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return outDir;
     }

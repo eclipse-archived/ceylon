@@ -25,8 +25,6 @@
 
 package com.redhat.ceylon.langtools.tools.javac.util;
 
-import static com.redhat.ceylon.langtools.tools.javac.main.OptionName.*;
-
 import java.io.*;
 import java.util.Arrays;
 import java.util.EnumSet;

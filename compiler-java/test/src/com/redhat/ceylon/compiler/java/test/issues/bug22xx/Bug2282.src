@@ -23,7 +23,7 @@ class Bug2282 extends .java.lang.Object implements .com.redhat.ceylon.compiler.j
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean)((.ceylon.language.Callable<? extends .java.lang.Object>)equals$specifier$).$call$(that)).booleanValue();
+        return ((.ceylon.language.Boolean)((ceylon.language.Callable)equals$specifier$).$call$(that)).booleanValue();
     }
     
     @.java.lang.Override

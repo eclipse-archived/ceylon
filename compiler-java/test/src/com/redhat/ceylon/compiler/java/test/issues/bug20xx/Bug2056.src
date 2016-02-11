@@ -20,7 +20,7 @@ class Bug2056 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     
                     @.com.redhat.ceylon.compiler.java.metadata.Transient
                     public .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
-                        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1)
+                        return new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("s") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1)
                         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
                         @.com.redhat.ceylon.compiler.java.metadata.Name("s")
                         @.com.redhat.ceylon.compiler.java.metadata.Method

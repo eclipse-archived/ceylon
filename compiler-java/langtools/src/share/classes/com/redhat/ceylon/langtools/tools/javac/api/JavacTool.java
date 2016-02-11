@@ -61,7 +61,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Options;
  *
  * @author Peter von der Ah\u00e9
  */
-public final class JavacTool implements JavaCompiler {
+public class JavacTool implements JavaCompiler {
     /**
      * Constructor used by service provider mechanism.  The recommended way to
      * obtain an instance of this class is by using {@link #create} or the
@@ -194,9 +194,12 @@ public final class JavacTool implements JavaCompiler {
         while (flags.hasNext()) {
             String flag = flags.next();
             int j;
-            for (j=0; j<recognizedOptions.length; j++)
-                if (recognizedOptions[j].matches(flag))
+            
+            for (j=0; j<recognizedOptions.length; j++) {
+                Option ro = recognizedOptions[j];
+                if (ro.matches(flag))
                     break;
+            }
 
             if (j == recognizedOptions.length) {
                 if (fileManager.handleOption(flag, flags)) {

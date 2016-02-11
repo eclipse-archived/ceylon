@@ -1,5 +1,5 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
- // line 1
+
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
 class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
      // line 1
@@ -22,9 +22,9 @@ class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class);
-} // line 6
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
-@.com.redhat.ceylon.compiler.java.metadata.Method // line 1
+} // line 2
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
 final class anonymous_ {
      // line 6
     private anonymous_() { // line 6
@@ -35,7 +35,7 @@ final class anonymous_ {
         .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer id = ( // line 3
             let
             {
-                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 4
+                .ceylon.language.Callable arg$0$0 = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1") @.com.redhat.ceylon.compiler.java.metadata.Name("do") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1") // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 4
                 @.com.redhat.ceylon.compiler.java.metadata.Method // line 4
@@ -49,12 +49,12 @@ final class anonymous_ {
                     }
                 };
             }
-            returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 3
+            returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 3, 4
         );
         id = ( // line 6
             let
             {
-                .ceylon.language.Callable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 7
+                .ceylon.language.Callable arg$1$0 = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") @.com.redhat.ceylon.compiler.java.metadata.Name("do") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 7, 9
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") // line 9
                 @.com.redhat.ceylon.compiler.java.metadata.Name("do") // line 9
                 @.com.redhat.ceylon.compiler.java.metadata.Method // line 9
@@ -69,7 +69,7 @@ final class anonymous_ {
                     }
                 };
             }
-            returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$1$0); // line 6
+            returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$1$0); // line 6, 7
         );
     }
 }

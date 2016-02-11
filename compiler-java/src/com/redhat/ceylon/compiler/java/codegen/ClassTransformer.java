@@ -72,7 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
@@ -347,7 +347,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         List<JCTree> result;
         if (Decl.isAnnotationClass(def)) {
-            ListBuffer<JCTree> trees = ListBuffer.lb();
+            ListBuffer<JCTree> trees = new ListBuffer<JCTree>();
             trees.addAll(transformAnnotationClass((Tree.AnyClass)def));
             transformAnnotationClassConstructor((Tree.AnyClass)def, classBuilder);
             // you only need that method if you satisfy Annotation which is erased to j.l.a.Annotation
@@ -385,7 +385,7 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "writeReplace");
         mdb.resultType(null, make().Type(syms().objectType));
         mdb.modifiers(PRIVATE | FINAL);
-        ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         SyntheticName name = naming.synthetic(Unfix.$name$);
         stmts.add(makeVar(FINAL, name, make().Type(syms().stringType), null));
         if (model.hasEnumerated()) {
@@ -399,7 +399,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (Decl.isValueConstructor(member) ) {
                     Value val = (Value)member;
                     tail = make().If(
-                            make().Binary(JCTree.EQ, naming.makeThis(), 
+                            make().Binary(JCTree.Tag.EQ, naming.makeThis(), 
                                     naming.getValueConstructorFieldName(val).makeIdent()), 
                             make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(name.makeIdent(), make().Literal(Naming.getGetterName(member)))))), 
                             tail);
@@ -443,10 +443,10 @@ public class ClassTransformer extends AbstractTransformer {
             ctor.reifiedTypeParameter(tp);
         }
         
-        final ListBuffer<JCStatement> stmts = ListBuffer.lb();
+        final ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         
         // invoke super (or this if
-        ListBuffer<JCExpression> superArgs = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> superArgs = new ListBuffer<JCExpression>();
         if (model.isSerializable()) {
             superArgs.add(make().TypeCast(make().QualIdent(syms().ceylonSerializationType.tsym),
                     makeNull()));
@@ -486,7 +486,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
             if (formalMember instanceof Value) {
-                addRefinedThrowerAttribute(classBuilder, errorMessage, classModel,
+                addRefinedThrowerAttribute(classBuilder, errorMessage, def, classModel,
                         (Value)formalMember);
             } else if (formalMember instanceof Function) {
                 addRefinedThrowerMethod(classBuilder, errorMessage, classModel,
@@ -555,7 +555,7 @@ public class ClassTransformer extends AbstractTransformer {
                 mdb.reifiedTypeParameter(tp);
             }
             for (Parameter param : parameterList) {
-                mdb.parameter(param, null, 0, WideningRules.NONE);
+                mdb.parameter(null, param, null, 0, WideningRules.NONE);
             }
             mdb.resultType(refined, 0);
             mdb.body(makeThrowUnresolvedCompilationError(error));
@@ -676,6 +676,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private void addRefinedThrowerAttribute(
             ClassDefinitionBuilder classBuilder, String error,
+            Node node,
             ClassOrInterface classModel, Value formalAttribute) {
         Value refined = refineValue(formalAttribute, formalAttribute.appliedTypedReference(null, null), classModel, classModel.getUnit());
         AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder.getter(this, refined.getName(), refined);
@@ -684,7 +685,7 @@ public class ClassTransformer extends AbstractTransformer {
         getterBuilder.getterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
         classBuilder.attribute(getterBuilder);
         if (formalAttribute.isVariable()) {
-            AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, refined.getName(), refined);
+            AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, node, refined.getName(), refined);
             setterBuilder.skipField();
             setterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, false));
             setterBuilder.setterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
@@ -800,7 +801,7 @@ public class ClassTransformer extends AbstractTransformer {
         // It's up to the caller to invoke value() on the Java annotation for a sequenced
         // annotation
         
-        ListBuffer<JCExpression> args = ListBuffer.lb();
+        ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
         for (Tree.Parameter parameter : def.getParameterList().getParameters()) {
             at(parameter);
             Parameter parameterModel = parameter.getParameterModel();
@@ -820,7 +821,7 @@ public class ClassTransformer extends AbstractTransformer {
                     // Can't use Util.sequentialAnnotation becase we need to 'box'
                     // the Java annotations in their Ceylon annotation class
                     argExpr = make().Apply(null, naming.makeUnquotedIdent(naming.getAnnotationSequenceMethodName()), List.of(annoAttr));
-                    ListBuffer<JCStatement> stmts = ListBuffer.lb();
+                    ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
                     SyntheticName array = naming.synthetic(Unfix.$array$);
                     SyntheticName sb = naming.synthetic(Unfix.$sb$);
                     SyntheticName index = naming.synthetic(Unfix.$index$);
@@ -836,7 +837,7 @@ public class ClassTransformer extends AbstractTransformer {
                             array.makeIdent(), 
                             make().Exec(make().Assign(
                                     make().Indexed(sb.makeIdent(), 
-                                            make().Unary(JCTree.POSTINC, index.makeIdent())), 
+                                            make().Unary(JCTree.Tag.POSTINC, index.makeIdent())), 
                                     instantiateAnnotationClass(iteratedType, element.makeIdent())))));
                     stmts.append(make().Return(
                             make().NewClass(null,
@@ -1121,7 +1122,7 @@ public class ClassTransformer extends AbstractTransformer {
     JCExpression makeArrayInitializer(
             Tree.SequencedArgument sequencedArgument) {
         JCExpression defaultLiteral;
-        ListBuffer<JCExpression> elements = ListBuffer.<JCTree.JCExpression>lb();
+        ListBuffer<JCExpression> elements = new ListBuffer<JCExpression>();
         if (sequencedArgument != null) {
             for (Tree.PositionalArgument arg : sequencedArgument.getPositionalArguments()) {
                 if (arg instanceof Tree.ListedArgument) {
@@ -1213,7 +1214,7 @@ public class ClassTransformer extends AbstractTransformer {
             adb.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, memberTree));
             classBuilder.attribute(adb);
             if (value.isVariable()) {
-                AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl.getName(), decl.getModel());
+                AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, parameterTree, decl.getName(), decl.getModel());
                 setter.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
                 //setter.userAnnotations(expressionGen().transform(AnnotationTarget.SETTER, memberTree.getAnnotationList()));
                 classBuilder.attribute(setter);
@@ -1267,6 +1268,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
+        pdb.at(p);
         pdb.aliasName(Naming.getAliasedParameterName(param));
         if (Naming.aliasConstructorParameterName(param.getModel())) {
             naming.addVariableSubst(param.getModel(), naming.suffixName(Suffix.$param$, param.getName()));
@@ -1534,11 +1536,11 @@ public class ClassTransformer extends AbstractTransformer {
             ctor.reifiedTypeParameter(tp);
         }
         
-        final ListBuffer<JCStatement> stmts = ListBuffer.lb();
+        final ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
 
         if (extendsSerializable(model)) {
             // invoke super
-            ListBuffer<JCExpression> superArgs = ListBuffer.<JCExpression>lb();
+            ListBuffer<JCExpression> superArgs = new ListBuffer<JCExpression>();
             superArgs.add(naming.makeUnquotedIdent("ignored"));
             for (JCExpression ta : makeReifiedTypeArguments(model.getExtendedType())) {
                 superArgs.add(ta);
@@ -1616,24 +1618,24 @@ public class ClassTransformer extends AbstractTransformer {
             JCExpression nullOrZero;
             if (field.vartype instanceof JCPrimitiveTypeTree) {
                 switch (((JCPrimitiveTypeTree)field.vartype).typetag) {
-                case TypeTags.BYTE:
-                case TypeTags.SHORT:
-                case TypeTags.INT:
+                case BYTE:
+                case SHORT:
+                case INT:
                     nullOrZero = make().Literal(0);
                     break;
-                case TypeTags.LONG:
+                case LONG:
                     nullOrZero = make().Literal(0L);
                     break;
-                case TypeTags.FLOAT:
+                case FLOAT:
                     nullOrZero = make().Literal(0.0f);
                     break;
-                case TypeTags.DOUBLE:
+                case DOUBLE:
                     nullOrZero = make().Literal(0.0);
                     break;
-                case TypeTags.BOOLEAN:
+                case BOOLEAN:
                     nullOrZero = make().Literal(false);
                     break;
-                case TypeTags.CHAR:
+                case CHAR:
                     nullOrZero = make().Literal('\0');
                     break;
                 default:
@@ -1725,7 +1727,7 @@ public class ClassTransformer extends AbstractTransformer {
         mdb.resultType(null, make().TypeApply(naming.makeQuotedFQIdent("java.util.Collection"),
                 List.<JCExpression>of(make().Type(syms().ceylonReachableReferenceType))));
         
-        ListBuffer<JCStatement> stmts = ListBuffer.lb();
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         // TODO this is all static information, but the method itself needs to be 
         // callable virtually, so we should cache it somehow.
         SyntheticName r = naming.synthetic(Unfix.reference);
@@ -1807,22 +1809,22 @@ public class ClassTransformer extends AbstractTransformer {
          *     default:
          *           return super.get(reference);
          */
-        ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
+        ListBuffer<JCCase> cases = new ListBuffer<JCCase>();
         boolean[] needsLookup = new boolean[]{false};
         for (Declaration member : model.getMembers()) {
             if (hasField(member)) {
                 if (member instanceof Function)
                     continue; // TODO: This class is not serializable
-                ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> caseStmts = new ListBuffer<JCStatement>();
                 if (member instanceof Value
                         && ((Value)member).isLate()) {
                     // TODO this should be encapsulated so the ADB and this
                     // code can just call something common
                     JCExpression test;
                     if (CodegenUtil.needsLateInitField((Value)member, typeFact())) {
-                        test = make().Unary(JCTree.NOT, naming.makeUnquotedIdent(Naming.getInitializationFieldName(member.getName())));
+                        test = make().Unary(JCTree.Tag.NOT, naming.makeUnquotedIdent(Naming.getInitializationFieldName(member.getName())));
                     } else {
-                        test = make().Binary(JCTree.EQ, naming.makeQualifiedName(naming.makeThis(), (Value)member, Naming.NA_IDENT), makeNull());
+                        test = make().Binary(JCTree.Tag.EQ, naming.makeQualifiedName(naming.makeThis(), (Value)member, Naming.NA_IDENT), makeNull());
                     }
                     caseStmts.add(make().If(
                             test,
@@ -1833,7 +1835,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         SyntheticName reference = naming.synthetic(Unfix.reference);
-        ListBuffer<JCStatement> defaultCase = ListBuffer.lb();
+        ListBuffer<JCStatement> defaultCase = new ListBuffer<JCStatement>();
         if (extendsSerializable(model)) {
             // super.get(reference);
             defaultCase.add(make().Return(make().Apply(null,
@@ -1848,7 +1850,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         cases.add(make().Case(null, defaultCase.toList()));
         
-        ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         if (needsLookup[0]) {
             // if we needed to use a lookup object to reset final fields, 
             // prepend that variable
@@ -1945,13 +1947,13 @@ public class ClassTransformer extends AbstractTransformer {
         SyntheticName reference = naming.synthetic(Unfix.reference);
         SyntheticName instance = naming.synthetic(Unfix.instance);
         
-        ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
+        ListBuffer<JCCase> cases = new ListBuffer<JCCase>();
         boolean[] needsLookup = new boolean[]{false};
         for (Declaration member : model.getMembers()) {
             if (hasField(member)) {
                 if (member instanceof Function)
                     continue; // TODO: This class is not serializable 
-                ListBuffer<JCStatement> caseStmts = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> caseStmts = new ListBuffer<JCStatement>();
                 if (member instanceof Value
                         && ((Value)member).isLate()) {
                     caseStmts.add(make().If(make().TypeTest(instance.makeIdent(),
@@ -1964,7 +1966,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        ListBuffer<JCStatement> defaultCase = ListBuffer.lb();
+        ListBuffer<JCStatement> defaultCase = new ListBuffer<JCStatement>();
         if (extendsSerializable(model)) {
             // super.set(reference, instance);
             defaultCase.add(make().Exec(make().Apply(null,
@@ -1979,7 +1981,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         cases.add(make().Case(null, defaultCase.toList()));
         
-        ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         if (needsLookup[0]) {
             // if we needed to use a lookup object to reset final fields, 
             // prepend that variable
@@ -2000,7 +2002,7 @@ public class ClassTransformer extends AbstractTransformer {
                 swtch,
                 make().Throw(make().NewClass(null, null,
                         make().Type(syms().ceylonAssertionErrorType),
-                        List.<JCExpression>of(make().Binary(JCTree.PLUS,
+                        List.<JCExpression>of(make().Binary(JCTree.Tag.PLUS,
                                 make().Literal("unexpected reachable reference "), reference.makeIdent())),
                         null))));
     
@@ -2915,7 +2917,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> arguments = new ListBuffer<JCExpression>();
         if(typeParameters != null){
             for(TypeParameter tp : typeParameters){
                 arguments.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
@@ -2928,7 +2930,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         for (Parameter param : parameters) {
             final TypedReference typedParameter = typedMember.getTypedParameter(param);
-            concreteWrapper.parameter(param, typedParameter, null, FINAL, WideningRules.FOR_MIXIN);
+            concreteWrapper.parameter(null, param, typedParameter, null, FINAL, WideningRules.FOR_MIXIN);
             arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
         }
         if(includeBody){
@@ -3446,6 +3448,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (useField || withinInterface || lazy) {
             if (!withinInterface || model.isShared()) {
                 // Generate getter in main class or interface (when shared)
+                at(decl.getType());
                 classBuilder.attribute(makeGetter(decl, false, lazy));
             }
             if (withinInterface && lazy) {
@@ -3475,7 +3478,7 @@ public class ClassTransformer extends AbstractTransformer {
                  * We use the getter as TypedDeclaration here because this is the same type but has a refined
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
-            .setter(this, name, decl.getDeclarationModel().getGetter())
+            .setter(this, decl, name, decl.getDeclarationModel().getGetter())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
         
         // companion class members are never actual no matter what the Declaration says
@@ -3701,7 +3704,7 @@ public class ClassTransformer extends AbstractTransformer {
     private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
-        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
+        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl, attrName, decl.getDeclarationModel());
         setter.userAnnotationsSetter(expressionGen().transformAnnotations(OutputElement.SETTER, decl));
         return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
@@ -3738,7 +3741,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(Decl.isLocal(model)){
             builder.annotations(makeAtLocalDeclaration(model.getQualifier(), false));
         }
-        
+        builder.at(def);
         List<JCTree> result = builder.build();
         
         if (Decl.isLocal(def)) {
@@ -3768,7 +3771,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     public JCAnnotation makeAtAnnotationInstantiation(AnnotationInvocation invocation) {
-        return invocation.encode(this, ListBuffer.<JCExpression>lb());
+        return invocation.encode(this, new ListBuffer<JCExpression>());
     }
 
     private MethodDefinitionBuilder makeAnnotationMethod(Tree.Parameter parameter) {
@@ -3927,7 +3930,7 @@ public class ClassTransformer extends AbstractTransformer {
             DaoBody daoTransformation, 
             boolean defaultValuesBody) {
         
-        ListBuffer<MethodDefinitionBuilder> lb = ListBuffer.<MethodDefinitionBuilder>lb();
+        ListBuffer<MethodDefinitionBuilder> lb = new ListBuffer<MethodDefinitionBuilder>();
         Declaration refinedDeclaration = methodModel.getRefinedDeclaration();
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
@@ -3958,7 +3961,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if(typedDeclaration != null)
                     annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
             }
-            methodBuilder.parameter(parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
+            methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
@@ -4113,7 +4116,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (initializingParameter == null) {
                 // If the field isn't initialized by a parameter we have to 
                 // cope with the possibility that it's never initialized
-                final JCBinary cond = make().Binary(JCTree.EQ, makeUnquotedIdent(fieldName), makeNull());
+                final JCBinary cond = make().Binary(JCTree.Tag.EQ, makeUnquotedIdent(fieldName), makeNull());
                 final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
                         makeIdent(syms().ceylonUninitializedMethodErrorType), 
                         List.<JCExpression>nil(), 
@@ -4353,12 +4356,12 @@ public class ClassTransformer extends AbstractTransformer {
                 ParameterList parameterList,
                 Parameter currentParameter,
                 java.util.List<TypeParameter> typeParameterList) {
-            ListBuffer<JCExpression> delegateArgs = ListBuffer.<JCExpression>lb();
+            ListBuffer<JCExpression> delegateArgs = new ListBuffer<JCExpression>();
             overloaded.appendImplicitArgumentsDelegate(typeParameterList, delegateArgs);
-            ListBuffer<JCExpression> dpmArgs = ListBuffer.<JCExpression>lb();
+            ListBuffer<JCExpression> dpmArgs = new ListBuffer<JCExpression>();
             overloaded.appendImplicitArgumentsDpm(typeParameterList, dpmArgs);
             
-            ListBuffer<JCStatement> vars = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
             
             boolean initedVars = false;
             boolean useDefault = false;
@@ -4378,7 +4381,7 @@ public class ClassTransformer extends AbstractTransformer {
                         JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeDefaultArgumentValueMethodQualifier(), parameterModel);
                         defaultArgument = make().Apply(makeTypeArguments(overloaded), 
                                 defaultValueMethodName, 
-                                ListBuffer.<JCExpression>lb().appendList(dpmArgs).toList());
+                                new ListBuffer<JCExpression>().appendList(dpmArgs).toList());
                     } else if (Strategy.hasEmptyDefaultArgument(parameterModel)) {
                         defaultArgument = makeEmptyAsSequential(true);
                     } else {
@@ -4468,7 +4471,7 @@ public class ClassTransformer extends AbstractTransformer {
                 Parameter currentParameter,
                 java.util.List<TypeParameter> typeParameterList) {
             
-            ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+            ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
             for (Parameter parameter : parameterList.getParameters()) {
                 if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
                     break;
@@ -4519,7 +4522,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
                     break;
                 }
-                overloadBuilder.parameter(parameter, null, 0, getWideningRules(parameter));
+                overloadBuilder.parameter(null, parameter, null, 0, getWideningRules(parameter));
             }
         }
         
@@ -4714,7 +4717,7 @@ public class ClassTransformer extends AbstractTransformer {
                     break;
                 }
                 final TypedReference typedParameter = typedMember.getTypedParameter(param);
-                overloadBuilder.parameter(param, typedParameter, null, 0, forMixin ? WideningRules.FOR_MIXIN : WideningRules.CAN_WIDEN);
+                overloadBuilder.parameter(null, param, typedParameter, null, 0, forMixin ? WideningRules.FOR_MIXIN : WideningRules.CAN_WIDEN);
             }
         }
         
@@ -5155,7 +5158,7 @@ public class ClassTransformer extends AbstractTransformer {
                 break;
             }
             at(p);
-            methodBuilder.parameter(p.getParameterModel(), null, 0, wideningRules);
+            methodBuilder.parameter(p, p.getParameterModel(), null, 0, wideningRules);
         }
 
         // The method's return type is the same as the parameter's type
@@ -5294,7 +5297,7 @@ public class ClassTransformer extends AbstractTransformer {
             objectClassBuilder
             .modelAnnotations(model.getAnnotations())
             .modifiers(transformObjectDeclFlags(model));
-        
+        at(def);
         List<JCTree> result = objectClassBuilder.build();
         
         if (makeLocalInstance) {
@@ -5326,9 +5329,9 @@ public class ClassTransformer extends AbstractTransformer {
                 if (def instanceof Tree.ObjectDefinition) {
                     getter.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
                 }
-                ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
                 
-                stmts.add(make().If(make().Binary(JCTree.EQ,
+                stmts.add(make().If(make().Binary(JCTree.Tag.EQ,
                         naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
                         makeNull()), make().Exec(make().Assign(
                                 naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
@@ -5490,7 +5493,7 @@ public class ClassTransformer extends AbstractTransformer {
             String ctorName,
             List<JCStatement> ctorBody, 
             DeclNameFlag... declFlags) {
-        ListBuffer<JCTree> result = ListBuffer.<JCTree>lb();
+        ListBuffer<JCTree> result = new ListBuffer<JCTree>();
         Class clz = (Class)ctor.getContainer();
         
         at(that);

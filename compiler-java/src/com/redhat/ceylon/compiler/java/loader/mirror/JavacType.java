@@ -27,6 +27,7 @@ import java.util.List;
 import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeVariableSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.ArrayType;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.TypeVar;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.WildcardType;
@@ -154,7 +155,7 @@ public class JavacType implements TypeMirror {
         if(getKind() != TypeKind.TYPEVAR)
             return null;
         if(!typeParameterSet){
-            typeParameter = new JavacTypeParameter(type.tsym);
+            typeParameter = new JavacTypeParameter((TypeVariableSymbol)type.tsym);
             typeParameterSet = true;
         }
         return typeParameter;

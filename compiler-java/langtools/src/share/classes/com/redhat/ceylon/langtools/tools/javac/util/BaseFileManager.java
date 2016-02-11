@@ -100,6 +100,10 @@ public abstract class BaseFileManager {
     protected String classLoaderClass;
 
     protected Locations locations;
+    
+    public Locations getLocations() {
+        return locations;
+    }
 
     protected Source getSource() {
         String sourceName = options.get(Option.SOURCE);
@@ -378,7 +382,7 @@ public abstract class BaseFileManager {
     }
     // </editor-fold>
 
-    public static Kind getKind(String name) {
+    public Kind getKind(String name) {
         if (name.endsWith(Kind.CLASS.extension))
             return Kind.CLASS;
         else if (name.endsWith(Kind.SOURCE.extension))

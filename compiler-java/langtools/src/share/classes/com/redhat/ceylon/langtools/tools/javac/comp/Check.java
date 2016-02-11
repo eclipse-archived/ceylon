@@ -93,6 +93,8 @@ public class Check {
     // Attr as it visits new method declarations.
     private MethodSymbol method;
 
+    private SourceLanguage sourceLanguage;
+
     public static Check instance(Context context) {
         Check instance = context.get(checkKey);
         if (instance == null)
@@ -104,6 +106,7 @@ public class Check {
         context.put(checkKey, this);
 
         names = Names.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
         dfltTargetMeta = new Name[] { names.PACKAGE, names.TYPE,
             names.FIELD, names.METHOD, names.CONSTRUCTOR,
             names.ANNOTATION_TYPE, names.LOCAL_VARIABLE, names.PARAMETER};

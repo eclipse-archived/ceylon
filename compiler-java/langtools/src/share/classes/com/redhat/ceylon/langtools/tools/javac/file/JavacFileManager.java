@@ -479,6 +479,11 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
      */
     private Archive openArchive(File zipFileName, boolean useOptimizedZip) throws IOException {
         File origZipFileName = zipFileName;
+        if(zipFileName.getName().endsWith(".jimage")){
+                Archive archive = new JImageZipFile(this, zipFileName);
+             archives.put(origZipFileName, archive);
+             return archive;
+       }
         if (symbolFileEnabled && locations.isDefaultBootClassPathRtJar(zipFileName)) {
             File file = zipFileName.getParentFile().getParentFile(); // ${java.home}
             if (new File(file.getName()).equals(new File("jre")))
@@ -809,7 +814,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
         return locations.getLocation(location);
     }
 
-    private File getClassOutDir() {
+    protected File getClassOutDir() {
         return locations.getOutputLocation(CLASS_OUTPUT);
     }
 

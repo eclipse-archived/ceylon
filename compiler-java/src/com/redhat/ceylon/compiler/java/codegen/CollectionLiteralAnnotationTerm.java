@@ -31,7 +31,7 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
         if (factory == null) {// A tuple
             // TODO @TupleValue({elements...})
         } else {// A sequence
-            ListBuffer<JCExpression> lb = ListBuffer.lb();
+            ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
             for (LiteralAnnotationTerm term : (List<LiteralAnnotationTerm>)(List)elements) {
                 lb.add(term.makeLiteral(exprGen));
             }
@@ -47,7 +47,7 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     @Override
     protected JCExpression makeLiteral(ExpressionTransformer exprGen) {
-        ListBuffer<JCExpression> lb = ListBuffer.lb();
+        ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
         for (LiteralAnnotationTerm term : (List<LiteralAnnotationTerm>)(List)elements) {
             lb.add(term.makeLiteral(exprGen));
         }

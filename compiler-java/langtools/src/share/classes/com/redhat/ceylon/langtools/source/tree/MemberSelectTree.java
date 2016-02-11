@@ -41,7 +41,6 @@ import com.redhat.ceylon.javax.lang.model.element.Name;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public interface MemberSelectTree extends ExpressionTree {
     ExpressionTree getExpression();
     Name getIdentifier();

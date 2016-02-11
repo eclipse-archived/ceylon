@@ -63,16 +63,16 @@ public class Warner {
     }
 
     public boolean hasSilentLint(LintCategory lint) {
-        return silentLintSet.contains(lint);
+        return false;//silentLintSet.contains(lint);
     }
 
     public boolean hasNonSilentLint(LintCategory lint) {
-        return nonSilentLintSet.contains(lint);
+        return false;//nonSilentLintSet.contains(lint);
     }
 
     public boolean hasLint(LintCategory lint) {
-        return hasSilentLint(lint) ||
-                hasNonSilentLint(lint);
+        return false;//hasSilentLint(lint) ||
+                //hasNonSilentLint(lint);
     }
 
     public void clear() {

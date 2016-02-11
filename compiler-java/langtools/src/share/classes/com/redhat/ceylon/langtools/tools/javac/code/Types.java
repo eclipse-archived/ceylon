@@ -124,6 +124,7 @@ public class Types {
         diags = JCDiagnostic.Factory.instance(context);
         functionDescriptorLookupError = new FunctionDescriptorLookupError();
         noWarnings = new Warner(null);
+        sourceLanguage = SourceLanguage.instance(context);
     }
     // </editor-fold>
 
@@ -1725,10 +1726,18 @@ public class Types {
         return disjointType.visit(t, s);
     }
     // where
-        private TypeRelation disjointType = new TypeRelation() {
-
+    // Ceylon: turned this from an anonymous class to a real class
+    private DisjointTypeTypeRelation disjointType = new DisjointTypeTypeRelation();
+    
+    private class DisjointTypeTypeRelation extends TypeRelation
+        {
             private Set<TypePair> cache = new HashSet<TypePair>();
 
+            // Ceylon
+            private void reset(){
+                cache.clear();
+            }
+            
             @Override
             public Boolean visitType(Type t, Type s) {
                 if (s.hasTag(WILDCARD))
@@ -2859,7 +2868,8 @@ public class Types {
                         }
                         if (implmeth == null || implmeth == absmeth) {
                             undef = absmeth;
-                        }
+                        } else if(sourceLanguage.isCeylon())
+                            implmeth.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
                     }
                 }
                 if (undef == null) {

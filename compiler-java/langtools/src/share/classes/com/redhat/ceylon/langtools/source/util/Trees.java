@@ -51,7 +51,6 @@ import com.redhat.ceylon.langtools.source.tree.Tree;
  *
  * @author Peter von der Ah&eacute;
  */
-@jdk.Exported
 public abstract class Trees {
     /**
      * Gets a Trees object for a given CompilationTask.

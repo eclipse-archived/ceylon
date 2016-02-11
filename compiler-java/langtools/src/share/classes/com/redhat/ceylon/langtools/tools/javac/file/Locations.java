@@ -39,6 +39,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -52,7 +53,10 @@ import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.StringUtils;
-
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
 import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import static com.redhat.ceylon.javax.tools.StandardLocation.*;
@@ -471,6 +475,9 @@ public class Locations {
         protected Path computePath(String value) {
             String cp = value;
 
+           /*
+            * Ceylon: disabled because we use the -cp flag or set it up via module repos
+            * 
             // CLASSPATH environment variable when run from `javac'.
             if (cp == null) cp = System.getProperty("env.class.path");
 
@@ -478,9 +485,10 @@ public class Locations {
             // platform class path
             if (cp == null && System.getProperty("application.home") == null)
                 cp = System.getProperty("java.class.path");
-
+             
             // Default to current working directory.
             if (cp == null) cp = ".";
+            */
 
             return createPath().addFiles(cp);
         }
@@ -655,6 +663,27 @@ public class Locations {
             new BootClassPathLocationHandler(),
             new ClassPathLocationHandler(),
             new SimpleLocationHandler(StandardLocation.SOURCE_PATH, Option.SOURCEPATH),
+            new SimpleLocationHandler(CeylonLocation.RESOURCE_PATH, Option.CEYLONRESOURCEPATH) {
+                @Override
+                boolean handleOption(Option option, String value) {
+                    if (!options.contains(option) || value == null) {
+                        List<File> files = DefaultToolOptions.getCompilerResourceDirs(CeylonConfig.get());
+                        createPath().addFiles(files, warn);
+                        return true;
+                    }
+                    searchPath = value == null ? null :
+                            Collections.unmodifiableCollection(createPath().addFiles(value));
+                    return true;
+                }
+                @Override
+                Collection<File> getLocation() {
+                    if (searchPath == null) {
+                        List<File> files = DefaultToolOptions.getCompilerResourceDirs(CeylonConfig.get());
+                        searchPath = Collections.unmodifiableCollection(createPath().addFiles(files, warn));
+                    }
+                    return searchPath;
+                }
+            },
             new SimpleLocationHandler(StandardLocation.ANNOTATION_PROCESSOR_PATH, Option.PROCESSORPATH),
             new OutputLocationHandler((StandardLocation.CLASS_OUTPUT), Option.D),
             new OutputLocationHandler((StandardLocation.SOURCE_OUTPUT), Option.S),
@@ -673,7 +702,7 @@ public class Locations {
         return (h == null ? false : h.handleOption(option, value));
     }
 
-    Collection<File> getLocation(Location location) {
+    public Collection<File> getLocation(Location location) {
         LocationHandler h = getHandler(location);
         return (h == null ? null : h.getLocation());
     }
@@ -685,7 +714,7 @@ public class Locations {
         return ((OutputLocationHandler) h).outputDir;
     }
 
-    void setLocation(Location location, Iterable<? extends File> files) throws IOException {
+    public void setLocation(Location location, Iterable<? extends File> files) throws IOException {
         LocationHandler h = getHandler(location);
         if (h == null) {
             if (location.isOutputLocation())

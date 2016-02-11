@@ -33,9 +33,9 @@ public class CallBuilder {
     private final AbstractTransformer gen;
     private Kind kind;
     
-    private ListBuffer<JCExpression> typeargs = ListBuffer.<JCExpression>lb();
+    private ListBuffer<JCExpression> typeargs = new ListBuffer<JCExpression>();
     /** The transformed argument expressions and their transformed type expressions */
-    private ListBuffer<ExpressionAndType> argumentsAndTypes = ListBuffer.<ExpressionAndType>lb();
+    private ListBuffer<ExpressionAndType> argumentsAndTypes = new ListBuffer<ExpressionAndType>();
 
     private JCExpression methodOrClass;
     private ExpressionAndType instantiateQualfier;
@@ -43,7 +43,7 @@ public class CallBuilder {
     private Naming.SyntheticName basename;
     private boolean built = false;
     
-    private final ListBuffer<JCStatement> statements = ListBuffer.<JCStatement>lb();
+    private final ListBuffer<JCStatement> statements = new ListBuffer<JCStatement>();
     private boolean voidMethod;
     
     private boolean haveLocation = false;

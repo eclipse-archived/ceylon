@@ -50,7 +50,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.Context;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public abstract class JavacTask implements CompilationTask {
 
     /**

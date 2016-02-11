@@ -28,15 +28,18 @@ package com.redhat.ceylon.langtools.tools.javac.main;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 
-import com.sun.tools.doclint.DocLint;
 import com.redhat.ceylon.langtools.tools.javac.code.Lint;
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
@@ -48,6 +51,8 @@ import com.redhat.ceylon.langtools.tools.javac.util.Log.PrefixKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.StringUtils;
+import com.redhat.ceylon.model.typechecker.model.Module;
+
 import static com.redhat.ceylon.langtools.tools.javac.main.Option.ChoiceKind.*;
 import static com.redhat.ceylon.langtools.tools.javac.main.Option.OptionGroup.*;
 import static com.redhat.ceylon.langtools.tools.javac.main.Option.OptionKind.*;
@@ -83,24 +88,6 @@ public enum Option {
     XLINT_CUSTOM("-Xlint:", "opt.Xlint.suboptlist",
             EXTENDED,   BASIC, ANYOF, getXLintChoices()),
 
-    XDOCLINT("-Xdoclint", "opt.Xdoclint", EXTENDED, BASIC),
-
-    XDOCLINT_CUSTOM("-Xdoclint:", "opt.Xdoclint.subopts", "opt.Xdoclint.custom", EXTENDED, BASIC) {
-        @Override
-        public boolean matches(String option) {
-            return DocLint.isValidOption(
-                    option.replace(XDOCLINT_CUSTOM.text, DocLint.XMSGS_CUSTOM_PREFIX));
-        }
-
-        @Override
-        public boolean process(OptionHelper helper, String option) {
-            String prev = helper.get(XDOCLINT_CUSTOM);
-            String next = (prev == null) ? option : (prev + " " + option);
-            helper.put(XDOCLINT_CUSTOM.text, next);
-            return false;
-        }
-    },
-
     // -nowarn is retained for command-line backward compatibility
     NOWARN("-nowarn", "opt.nowarn", STANDARD, BASIC) {
         @Override
@@ -111,6 +98,15 @@ public enum Option {
     },
 
     VERBOSE("-verbose", "opt.verbose", STANDARD, BASIC),
+    VERBOSE_ALL("-verbose:all", "opt.verbose.all", STANDARD, BASIC) {
+        @Override
+        public boolean process(OptionHelper helper, String option) {
+            helper.put("-verbose:", "all");
+            return false;
+        }
+    },
+    VERBOSE_CUSTOM("-verbose:", "opt.verbose.suboptlist", STANDARD, BASIC, ANYOF, "loader", "ast", "code", "cmr", "benchmark"),
+    
 
     // -deprecation is retained for command-line backward compatibility
     DEPRECATION("-deprecation", "opt.deprecation", STANDARD, BASIC) {
@@ -440,6 +436,86 @@ public enum Option {
         }
     },
 
+    // Ceylon options
+    CEYLONCWD("-cwd", "opt.arg.value", "javac.opt.ceyloncwd", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONREPO("-rep", "opt.arg.url", "javac.opt.ceylonrepo", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            if (helper.get(this) == null) {
+                helper.put(option, arg);
+            } else {
+                helper.put(option, helper.get(this) + ":" + arg);
+            }
+            return false;
+        }
+    },
+    CEYLONSYSTEMREPO("-sysrep", "opt.arg.url", "opt.ceylonsystemrepo", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONCACHEREPO("-cacherep", "opt.arg.url", "opt.ceyloncacherepo", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNODEFREPOS("-nodefreps", "opt.ceylonnodefrepos", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONUSER("-user", "opt.arg.value", "opt.ceylonuser", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPASS("-pass", "opt.arg.value",     "opt.ceylonpass", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNOOSGI("-noosgi", "opt.ceylonnoosgi", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONJIGSAW("-module-info", "opt.ceylonjigsaw", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOSGIPROVIDEDBUNDLES("-osgi-provided-bundles", "opt.arg.value", "opt.ceylonosgiprovidedbundles", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNOPOM("-nopom", "opt.ceylonnopom", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPACK200("-pack200", "opt.ceylonpack200", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONSOURCEPATH("-src", "opt.arg.directory", "opt.ceylonsourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper options, String option, String arg) {
+            if (options.get(SOURCEPATH) == null) {
+                options.put(SOURCEPATH.getText(), arg);
+            } else {
+                options.put(SOURCEPATH.getText(), options.get(SOURCEPATH) + ":" + arg);
+            }
+            return false;
+        }
+    },
+    CEYLONRESOURCEPATH("-res", "opt.arg.url",      "opt.ceylonresourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper options, String option, String arg) {
+            if (options.get(this) == null) {
+                options.put(getText(), arg);
+            } else {
+                options.put(getText(), options.get(this) + ":" + arg);
+            }
+            return false;
+        }
+    },
+    CEYLONRESOURCEROOT("-resroot", "opt.arg.path",      "opt.ceylonresourceroot", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONDISABLEOPT("-disableOptimization", "opt.ceylondisableopt", OptionKind.STANDARD, OptionGroup.CEYLON),
+    //CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{"+optimizations()+"}", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONSUPPRESSWARNINGS("-suppress-warnings", "opt.arg.value",     "opt.ceylonsuppresswarnings", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOUT("-out", "opt.arg.url", "opt.ceylonout", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            return D.process(helper, "-d", arg);
+        } 
+    },
+    CEYLONOFFLINE("-offline", "opt.ceylonoffline", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONTIMEOUT("-timeout", "opt.arg.number",       "opt.ceylontimeout", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONCONTINUE("-continue", "opt.ceyloncontinue", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPROGRESS("-progress", "opt.ceylonprogress", OptionKind.STANDARD, OptionGroup.CEYLON),
+    // Backwards-compat
+    CEYLONMAVENOVERRIDES("-maven-overrides", "opt.arg.url",        "opt.ceylonoverrides", OptionKind.STANDARD, OptionGroup.CEYLON) {
+            @Override
+            public boolean process(OptionHelper options, String option, String arg) {
+                return super.process(options, "-overrides", arg);
+            }
+    },
+    CEYLONOVERRIDES("-overrides",  "opt.arg.url",        "opt.ceylonoverrides", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONDOWNGRADEDIST("-downgrade-dist", "opt.ceylondistpolicy",        "opt.ceylondistpolicy", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper options, String option, String arg) {
+            return super.process(options, "-dist-version-policy", arg);
+        } 
+    },
+    CEYLONFLATCLASSPATH("-flat-classpath",  "opt.ceylonflatclasspath", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", "opt.ceylonautoexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
+    BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON),
+    
+    // End of Ceylon options: Option parsing code depends on SOURCEFILE being 
+    // the last option in this enum.
+    
     /*
      * TODO: With apt, the matches method accepts anything if
      * -XclassAsDecls is used; code elsewhere does the lookup to
@@ -452,25 +528,96 @@ public enum Option {
         @Override
         public boolean matches(String s) {
             return s.endsWith(".java")  // Java source file
-                || SourceVersion.isName(s);   // Legal type name
+                    || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+                    || "default".equals(s) // FIX for ceylon because default is not a valid name for Java
+                    || isCeylonName(s)   // Legal type name for Ceylon
+                    || (new File(s)).isFile();   // Possibly a resource file
         }
         @Override
         public boolean process(OptionHelper helper, String option) {
-            if (option.endsWith(".java") ) {
-                File f = new File(option);
+            String s= option;
+            File f = new File(s);
+            if (s.endsWith(".java")
+                    || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+            ) {
+                // Most likely a source file
+                if (!f.isFile()) {
+                    // -sourcepath not -src because the COption for 
+                    // CEYLONSOURCEPATH puts it in the options map as -sourcepath
+                    String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                    if(sourcePaths == null || sourcePaths.length == 0)
+                        sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
+                    if (checkIfModule(sourcePaths, s)) {
+                        // A Ceylon module name that ends with .ceylon or .java
+                        helper.addClassName(s);
+                        return false;
+                    }
+
+                    if (f.exists()) {
+                        helper.error("err.file.not.file", f);
+                        return true;
+                    }
+                }
                 if (!f.exists()) {
                     helper.error("err.file.not.found", f);
                     return true;
                 }
-                if (!f.isFile()) {
-                    helper.error("err.file.not.file", f);
-                    return true;
-                }
+                helper.addFile(f);
+            } 
+            if (f.isFile()) {
+                // Most likely a resource file
                 helper.addFile(f);
             } else {
-                helper.addClassName(option);
+                // Should be a module name
+                // the default module is always allowed, it doesn't need to have any folder
+                if(s.equals(Module.DEFAULT_MODULE_NAME)){
+                    helper.addClassName(s);
+                    return false;
+                }
+                // find a corresponding physical module in the source path
+                String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                if(sourcePaths == null || sourcePaths.length == 0)
+                    sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
+                if (checkIfModule(sourcePaths, s)) {
+                    helper.addClassName(s);
+                    return false;
+                }
+
+                String paths = Arrays.toString(sourcePaths);
+                helper.error("err.module.not.found", s, paths.substring(1,  paths.length()-1));
+                return true;
             }
             return false;
+        }
+        
+        private boolean checkIfModule(String[] paths, String moduleName) {
+            String moduleDirName = moduleName.replace(".", File.separator);
+            // walk every path arg
+            for(String path : paths){
+                // split the path
+                for(String part : path.split("\\"+File.pathSeparator)){
+                    // try to see if it's a module folder
+                    File moduleFolder = new File(part, moduleDirName);
+                    if (moduleFolder.isDirectory()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        /**
+         * Version of isName for Ceylon which allows keywords since we do allow them as part of module names 
+         * @param name
+         * @return
+         */
+        public boolean isCeylonName(CharSequence name) {
+            String id = name.toString();
+            
+            for(String s : id.split("\\.", -1)) {
+                if (!SourceVersion.isIdentifier(s))
+                    return false;
+            }
+            return true;
         }
     };
 
@@ -496,7 +643,8 @@ public enum Option {
         /** A command-line option that requests information, such as -help. */
         INFO,
         /** A command-line "option" representing a file or class name. */
-        OPERAND
+        OPERAND,
+        CEYLON
     }
 
     /** The kind of choice for "choice" options. */
@@ -729,7 +877,7 @@ public enum Option {
         return choices;
     }
 
-    static Set<Option> getJavaCompilerOptions() {
+    public static Set<Option> getJavaCompilerOptions() {
         return EnumSet.allOf(Option.class);
     }
 
@@ -738,7 +886,7 @@ public enum Option {
     }
 
     public static Set<Option> getJavacToolOptions() {
-        return getOptions(EnumSet.of(BASIC));
+        return getOptions(EnumSet.of(BASIC, CEYLON));
     }
 
     static Set<Option> getOptions(Set<OptionGroup> desired) {

@@ -222,6 +222,11 @@ public class Annotate {
         }
     }
 
+    // Ceylon
+    public void reset(){
+        q.clear();
+    }
+
 /* ********************************************************************
  * Compute an attribute from its annotation.
  *********************************************************************/

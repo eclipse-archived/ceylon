@@ -23,17 +23,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeVariableSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 
 public class JavacTypeParameter implements TypeParameterMirror {
 
-    private TypeSymbol typeSymbol;
+    private TypeVariableSymbol typeSymbol;
     private List<TypeMirror> bounds;
 
-    public JavacTypeParameter(TypeSymbol typeSymbol) {
+    public JavacTypeParameter(TypeVariableSymbol typeSymbol) {
         this.typeSymbol = typeSymbol;
     }
     

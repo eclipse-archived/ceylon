@@ -30,7 +30,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeCast;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
-import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.code.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.UndetVar.InferenceBound;
@@ -75,6 +74,8 @@ public class Infer {
     /** should the graph solver be used? */
     boolean allowGraphInference;
 
+    private SourceLanguage sourceLanguage;
+
     public static Infer instance(Context context) {
         Infer instance = context.get(inferKey);
         if (instance == null)
@@ -93,6 +94,7 @@ public class Infer {
         log = Log.instance(context);
         inferenceException = new InferenceException(diags);
         Options options = Options.instance(context);
+        sourceLanguage = SourceLanguage.instance(context);
         allowGraphInference = Source.instance(context).allowGraphInference()
                 && options.isUnset("useLegacyInference");
     }
@@ -652,6 +654,16 @@ public class Infer {
                     for (Type u : uv.getBounds(InferenceBound.UPPER)) {
                         if (!isSubtype(inst, inferenceContext.asUndetVar(u), warn, infer)) {
                             infer.reportBoundError(uv, BoundErrorKind.UPPER);
+                        }
+                        if (inferenceContext.outer().sourceLanguage.isCeylon()) {
+                            /**
+                             * In Ceylon if we want to add a type cast due to erasure to a parameter of a method, we must cast it
+                             * to the first type of the bounds in order for it to work, since in Java we can't produce a type cast
+                             * to multiple bounds (A&B), so we limit the check here to the first bound, which is how it is erased
+                             * for raw types anyways.
+                             * See https://github.com/ceylon/ceylon-compiler/issues/193
+                             */
+                            break;
                         }
                     }
                     for (Type l : uv.getBounds(InferenceBound.LOWER)) {
@@ -1947,6 +1959,10 @@ public class Infer {
                 }
             };
 
+        public Infer outer() {
+            return Infer.this;
+        }
+        
         /**
          * add a new inference var to this inference context
          */

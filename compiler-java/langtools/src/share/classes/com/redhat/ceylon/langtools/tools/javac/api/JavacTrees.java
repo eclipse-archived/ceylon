@@ -25,6 +25,9 @@
 
 package com.redhat.ceylon.langtools.tools.javac.api;
 
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.ARRAY;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.CLASS;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +36,6 @@ import com.redhat.ceylon.javax.annotation.processing.ProcessingEnvironment;
 import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
 import com.redhat.ceylon.javax.lang.model.element.AnnotationValue;
 import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
 import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
 import com.redhat.ceylon.javax.lang.model.element.TypeElement;
 import com.redhat.ceylon.javax.lang.model.type.DeclaredType;
@@ -42,17 +44,10 @@ import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.JavaCompiler;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
-
-import com.redhat.ceylon.langtools.source.doctree.DocCommentTree;
-import com.redhat.ceylon.langtools.source.doctree.DocTree;
 import com.redhat.ceylon.langtools.source.tree.CatchTree;
 import com.redhat.ceylon.langtools.source.tree.CompilationUnitTree;
 import com.redhat.ceylon.langtools.source.tree.Scope;
 import com.redhat.ceylon.langtools.source.tree.Tree;
-import com.redhat.ceylon.langtools.source.util.DocSourcePositions;
-import com.redhat.ceylon.langtools.source.util.DocTreePath;
-import com.redhat.ceylon.langtools.source.util.DocTreeScanner;
-import com.redhat.ceylon.langtools.source.util.DocTrees;
 import com.redhat.ceylon.langtools.source.util.JavacTask;
 import com.redhat.ceylon.langtools.source.util.TreePath;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
@@ -60,7 +55,6 @@ import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.VarSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
@@ -78,33 +72,25 @@ import com.redhat.ceylon.langtools.tools.javac.comp.MemberEnter;
 import com.redhat.ceylon.langtools.tools.javac.comp.Resolve;
 import com.redhat.ceylon.langtools.tools.javac.model.JavacElements;
 import com.redhat.ceylon.langtools.tools.javac.processing.JavacProcessingEnvironment;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCBlockTag;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCDocComment;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCEndPosTree;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCErroneous;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCIdentifier;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCParam;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCReference;
-import com.redhat.ceylon.langtools.tools.javac.tree.DCTree.DCText;
-import com.redhat.ceylon.langtools.tools.javac.tree.EndPosTable;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCatch;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCClassDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeCopier;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
-import com.redhat.ceylon.langtools.tools.javac.util.Abort;
 import com.redhat.ceylon.langtools.tools.javac.util.Assert;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
-import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Names;
 import com.redhat.ceylon.langtools.tools.javac.util.Pair;
-import com.redhat.ceylon.langtools.tools.javac.util.Position;
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.*;
 
 /**
  * Provides an implementation of Trees.
@@ -116,7 +102,7 @@ import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.*;
  *
  * @author Peter von der Ah&eacute;
  */
-public class JavacTrees extends DocTrees {
+public class JavacTrees {
 
     // in a world of a single context per compilation, these would all be final
     private Resolve resolve;
@@ -176,89 +162,7 @@ public class JavacTrees extends DocTrees {
             javacTaskImpl = (JavacTaskImpl) t;
     }
 
-    public DocSourcePositions getSourcePositions() {
-        return new DocSourcePositions() {
-                public long getStartPosition(CompilationUnitTree file, Tree tree) {
-                    return TreeInfo.getStartPos((JCTree) tree);
-                }
-
-                public long getEndPosition(CompilationUnitTree file, Tree tree) {
-                    EndPosTable endPosTable = ((JCCompilationUnit) file).endPositions;
-                    return TreeInfo.getEndPos((JCTree) tree, endPosTable);
-                }
-
-                public long getStartPosition(CompilationUnitTree file, DocCommentTree comment, DocTree tree) {
-                    return ((DCTree) tree).getSourcePosition((DCDocComment) comment);
-                }
-                @SuppressWarnings("fallthrough")
-                public long getEndPosition(CompilationUnitTree file, DocCommentTree comment, DocTree tree) {
-                    DCDocComment dcComment = (DCDocComment) comment;
-                    if (tree instanceof DCEndPosTree) {
-                        int endPos = ((DCEndPosTree) tree).getEndPos(dcComment);
-
-                        if (endPos != Position.NOPOS) {
-                            return endPos;
-                        }
-                    }
-                    int correction = 0;
-                    switch (tree.getKind()) {
-                        case TEXT:
-                            DCText text = (DCText) tree;
-
-                            return dcComment.comment.getSourcePos(text.pos + text.text.length());
-                        case ERRONEOUS:
-                            DCErroneous err = (DCErroneous) tree;
-
-                            return dcComment.comment.getSourcePos(err.pos + err.body.length());
-                        case IDENTIFIER:
-                            DCIdentifier ident = (DCIdentifier) tree;
-
-                            return dcComment.comment.getSourcePos(ident.pos + (ident.name != names.error ? ident.name.length() : 0));
-                        case PARAM:
-                            DCParam param = (DCParam) tree;
-
-                            if (param.isTypeParameter && param.getDescription().isEmpty()) {
-                                correction = 1;
-                            }
-                        case AUTHOR: case DEPRECATED: case RETURN: case SEE:
-                        case SERIAL: case SERIAL_DATA: case SERIAL_FIELD: case SINCE:
-                        case THROWS: case UNKNOWN_BLOCK_TAG: case VERSION: {
-                            DocTree last = getLastChild(tree);
-
-                            if (last != null) {
-                                return getEndPosition(file, comment, last) + correction;
-                            }
-
-                            DCBlockTag block = (DCBlockTag) tree;
-
-                            return dcComment.comment.getSourcePos(block.pos + block.getTagName().length() + 1);
-                        }
-                        default:
-                            DocTree last = getLastChild(tree);
-
-                            if (last != null) {
-                                return getEndPosition(file, comment, last);
-                            }
-                            break;
-                    }
-
-                    return Position.NOPOS;
-                }
-            };
-    }
-
-    private DocTree getLastChild(DocTree tree) {
-        final DocTree[] last = new DocTree[] {null};
-
-        tree.accept(new DocTreeScanner<Void, Void>() {
-            @Override public Void scan(DocTree node, Void p) {
-                if (node != null) last[0] = node;
-                return null;
-            }
-        }, null);
-
-        return last[0];
-    }
+    
 
     public JCClassDecl getTree(TypeElement element) {
         return (JCClassDecl) getTree((Element) element);
@@ -337,126 +241,7 @@ public class JavacTrees extends DocTrees {
         }
         return sym;
     }
-
-    @Override
-    public Element getElement(DocTreePath path) {
-        DocTree forTree = path.getLeaf();
-        if (forTree instanceof DCReference)
-            return attributeDocReference(path.getTreePath(), ((DCReference) forTree));
-        if (forTree instanceof DCIdentifier) {
-            if (path.getParentPath().getLeaf() instanceof DCParam) {
-                return attributeParamIdentifier(path.getTreePath(), (DCParam) path.getParentPath().getLeaf());
-            }
-        }
-        return null;
-    }
-
-    private Symbol attributeDocReference(TreePath path, DCReference ref) {
-        Env<AttrContext> env = getAttrContext(path);
-
-        Log.DeferredDiagnosticHandler deferredDiagnosticHandler =
-                new Log.DeferredDiagnosticHandler(log);
-        try {
-            final TypeSymbol tsym;
-            final Name memberName;
-            if (ref.qualifierExpression == null) {
-                tsym = env.enclClass.sym;
-                memberName = ref.memberName;
-            } else {
-                // See if the qualifierExpression is a type or package name.
-                // javac does not provide the exact method required, so
-                // we first check if qualifierExpression identifies a type,
-                // and if not, then we check to see if it identifies a package.
-                Type t = attr.attribType(ref.qualifierExpression, env);
-                if (t.isErroneous()) {
-                    if (ref.memberName == null) {
-                        // Attr/Resolve assume packages exist and create symbols as needed
-                        // so use getPackageElement to restrict search to existing packages
-                        PackageSymbol pck = elements.getPackageElement(ref.qualifierExpression.toString());
-                        if (pck != null) {
-                            return pck;
-                        } else if (ref.qualifierExpression.hasTag(JCTree.Tag.IDENT)) {
-                            // fixup:  allow "identifier" instead of "#identifier"
-                            // for compatibility with javadoc
-                            tsym = env.enclClass.sym;
-                            memberName = ((JCIdent) ref.qualifierExpression).name;
-                        } else
-                            return null;
-                    } else {
-                        return null;
-                    }
-                } else {
-                    tsym = t.tsym;
-                    memberName = ref.memberName;
-                }
-            }
-
-            if (memberName == null)
-                return tsym;
-
-            final List<Type> paramTypes;
-            if (ref.paramTypes == null)
-                paramTypes = null;
-            else {
-                ListBuffer<Type> lb = new ListBuffer<Type>();
-                for (List<JCTree> l = ref.paramTypes; l.nonEmpty(); l = l.tail) {
-                    JCTree tree = l.head;
-                    Type t = attr.attribType(tree, env);
-                    lb.add(t);
-                }
-                paramTypes = lb.toList();
-            }
-
-            ClassSymbol sym = (ClassSymbol) types.cvarUpperBound(tsym.type).tsym;
-
-            Symbol msym = (memberName == sym.name)
-                    ? findConstructor(sym, paramTypes)
-                    : findMethod(sym, memberName, paramTypes);
-            if (paramTypes != null) {
-                // explicit (possibly empty) arg list given, so cannot be a field
-                return msym;
-            }
-
-            VarSymbol vsym = (ref.paramTypes != null) ? null : findField(sym, memberName);
-            // prefer a field over a method with no parameters
-            if (vsym != null &&
-                    (msym == null ||
-                        types.isSubtypeUnchecked(vsym.enclClass().asType(), msym.enclClass().asType()))) {
-                return vsym;
-            } else {
-                return msym;
-            }
-        } catch (Abort e) { // may be thrown by Check.completionError in case of bad class file
-            return null;
-        } finally {
-            log.popDiagnosticHandler(deferredDiagnosticHandler);
-        }
-    }
-
-    private Symbol attributeParamIdentifier(TreePath path, DCParam ptag) {
-        Symbol javadocSymbol = getElement(path);
-        if (javadocSymbol == null)
-            return null;
-        ElementKind kind = javadocSymbol.getKind();
-        List<? extends Symbol> params = List.nil();
-        if (kind == ElementKind.METHOD || kind == ElementKind.CONSTRUCTOR) {
-            MethodSymbol ee = (MethodSymbol) javadocSymbol;
-            params = ptag.isTypeParameter()
-                    ? ee.getTypeParameters()
-                    : ee.getParameters();
-        } else if (kind.isClass() || kind.isInterface()) {
-            ClassSymbol te = (ClassSymbol) javadocSymbol;
-            params = te.getTypeParameters();
-        }
-
-        for (Symbol param : params) {
-            if (param.getSimpleName() == ptag.getName().getName()) {
-                return param;
-            }
-        }
-        return null;
-    }
-
+    
     /** @see com.sun.tools.javadoc.ClassDocImpl#findField */
     private VarSymbol findField(ClassSymbol tsym, Name fieldName) {
         return searchField(tsym, fieldName, new HashSet<ClassSymbol>());
@@ -700,30 +485,6 @@ public class JavacTrees extends DocTrees {
         return new JavacScope(getAttrContext(path));
     }
 
-    public String getDocComment(TreePath path) {
-        CompilationUnitTree t = path.getCompilationUnit();
-        Tree leaf = path.getLeaf();
-        if (t instanceof JCTree.JCCompilationUnit && leaf instanceof JCTree) {
-            JCCompilationUnit cu = (JCCompilationUnit) t;
-            if (cu.docComments != null) {
-                return cu.docComments.getCommentText((JCTree) leaf);
-            }
-        }
-        return null;
-    }
-
-    public DocCommentTree getDocCommentTree(TreePath path) {
-        CompilationUnitTree t = path.getCompilationUnit();
-        Tree leaf = path.getLeaf();
-        if (t instanceof JCTree.JCCompilationUnit && leaf instanceof JCTree) {
-            JCCompilationUnit cu = (JCCompilationUnit) t;
-            if (cu.docComments != null) {
-                return cu.docComments.getCommentTree((JCTree) leaf);
-            }
-        }
-        return null;
-    }
-
     public boolean isAccessible(Scope scope, TypeElement type) {
         if (scope instanceof JavacScope && type instanceof ClassSymbol) {
             Env<AttrContext> env = ((JavacScope) scope).env;
@@ -895,13 +656,6 @@ public class JavacTrees extends DocTrees {
         printMessage(kind, msg, ((JCTree) t).pos(), root);
     }
 
-    public void printMessage(Diagnostic.Kind kind, CharSequence msg,
-            com.redhat.ceylon.langtools.source.doctree.DocTree t,
-            com.redhat.ceylon.langtools.source.doctree.DocCommentTree c,
-            com.redhat.ceylon.langtools.source.tree.CompilationUnitTree root) {
-        printMessage(kind, msg, ((DCTree) t).pos((DCDocComment) c), root);
-    }
-
     private void printMessage(Diagnostic.Kind kind, CharSequence msg,
             JCDiagnostic.DiagnosticPosition pos,
             com.redhat.ceylon.langtools.source.tree.CompilationUnitTree root) {
@@ -943,7 +697,6 @@ public class JavacTrees extends DocTrees {
         }
     }
 
-    @Override
     public TypeMirror getLub(CatchTree tree) {
         JCCatch ct = (JCCatch) tree;
         JCVariableDecl v = ct.param;

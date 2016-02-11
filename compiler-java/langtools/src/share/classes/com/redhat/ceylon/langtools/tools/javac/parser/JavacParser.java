@@ -163,7 +163,6 @@ public class JavacParser implements Parser {
         this.allowTypeAnnotations = source.allowTypeAnnotations();
         this.allowAnnotationsAfterTypeParams = source.allowAnnotationsAfterTypeParams();
         this.keepDocComments = keepDocComments;
-        docComments = newDocCommentTable(keepDocComments, fac);
         this.keepLineMap = keepLineMap;
         this.errorTree = F.Erroneous();
         endPosTable = newEndPosTable(keepEndPositions);
@@ -173,10 +172,6 @@ public class JavacParser implements Parser {
         return  keepEndPositions
                 ? new SimpleEndPosTable(this)
                 : new EmptyEndPosTable(this);
-    }
-
-    protected DocCommentTable newDocCommentTable(boolean keepDocComments, ParserFactory fac) {
-        return keepDocComments ? new LazyDocCommentTable(fac) : null;
     }
 
     /** Switch: Should generics be recognized?
@@ -521,11 +516,7 @@ public class JavacParser implements Parser {
 
 /* ---------- doc comments --------- */
 
-    /** A table to store all documentation comments
-     *  indexed by the tree nodes they refer to.
-     *  defined only if option flag keepDocComment is set.
-     */
-    private final DocCommentTable docComments;
+    
 
     /** Make an entry into docComments hashtable,
      *  provided flag keepDocComments is set and given doc comment is non-null.
@@ -533,10 +524,7 @@ public class JavacParser implements Parser {
      *  @param dc     The doc comment to associate with the tree, or null.
      */
     void attach(JCTree tree, Comment dc) {
-        if (keepDocComments && dc != null) {
-//          System.out.println("doc comment = ");System.out.println(dc);//DEBUG
-            docComments.putComment(tree, dc);
-        }
+        
     }
 
 /* -------- source positions ------- */
@@ -3167,8 +3155,6 @@ public class JavacParser implements Parser {
             attach(toplevel, firstToken.comment(CommentStyle.JAVADOC));
         if (defs.isEmpty())
             storeEnd(toplevel, S.prevToken().endPos);
-        if (keepDocComments)
-            toplevel.docComments = docComments;
         if (keepLineMap)
             toplevel.lineMap = S.getLineMap();
         this.endPosTable.setParser(null); // remove reference to parser
@@ -4152,9 +4138,9 @@ public class JavacParser implements Parser {
     /*
      * a default skeletal implementation without any mapping overhead.
      */
-    protected static class EmptyEndPosTable extends AbstractEndPosTable {
+    public static class EmptyEndPosTable extends AbstractEndPosTable {
 
-        EmptyEndPosTable(JavacParser parser) {
+        public EmptyEndPosTable(JavacParser parser) {
             super(parser);
         }
 

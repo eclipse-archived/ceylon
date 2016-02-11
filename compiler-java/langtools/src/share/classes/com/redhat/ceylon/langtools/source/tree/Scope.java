@@ -48,7 +48,6 @@ import com.redhat.ceylon.javax.lang.model.element.TypeElement;
  *
  * @since 1.6
  */
-@jdk.Exported
 public interface Scope {
     /**
      * Returns the enclosing scope.

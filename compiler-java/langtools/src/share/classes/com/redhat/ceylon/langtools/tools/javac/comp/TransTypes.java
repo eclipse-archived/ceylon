@@ -27,7 +27,6 @@ package com.redhat.ceylon.langtools.tools.javac.comp;
 
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
 import static com.redhat.ceylon.langtools.tools.javac.code.Kinds.*;
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTags.*;
 
 import java.util.*;
 
@@ -39,8 +38,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 
-import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
-import static com.redhat.ceylon.langtools.tools.javac.code.Kinds.*;
 import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.CLASS;
 import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.TYPEVAR;
 import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.VOID;
@@ -181,7 +178,7 @@ public class TransTypes extends TreeTranslator {
      */
     JCExpression retype(JCExpression tree, Type erasedType, Type target) {
 //      System.err.println("retype " + tree + " to " + erasedType);//DEBUG
-        if (!erasedType.isPrimitive()) {
+        if (erasedType != null && !erasedType.isPrimitive()) {
             if (target != null && target.isPrimitive()) {
                 target = erasure(tree.type);
             }

@@ -61,7 +61,7 @@ import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.jvm.ClassReader;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -69,6 +69,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Names;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -125,7 +126,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         typeParser = new TypeParser(this);
         options = Options.instance(context);
         timer = Timer.instance(context);
-        isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
+        isBootstrap = options.get(Option.BOOTSTRAPCEYLON) != null;
         initModuleManager(phasedUnits.getModuleManager());
         modules = ceylonContext.getModules();
         fileManager = context.get(JavaFileManager.class);
@@ -546,8 +547,8 @@ public class CeylonModelLoader extends AbstractModelLoader {
 
     @Override
     protected void logVerbose(String message) {
-        if(options.get(OptionName.VERBOSE) != null || options.get(OptionName.VERBOSE + ":loader") != null){
-            Log.printLines(log.noticeWriter, message);
+        if(options.get(Option.VERBOSE) != null || options.get(Option.VERBOSE + ":loader") != null){
+            log.printLines(WriterKind.NOTICE, message);
         }
     }
 
@@ -729,12 +730,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
     
     @Override
     protected boolean isFlatClasspath() {
-        return options.isSet(OptionName.CEYLONFLATCLASSPATH);
+        return options.isSet(Option.CEYLONFLATCLASSPATH);
     }
 
     @Override
     protected boolean isAutoExportMavenDependencies() {
-        return options.isSet(OptionName.CEYLONAUTOEXPORTMAVENDEPENDENCIES);
+        return options.isSet(Option.CEYLONAUTOEXPORTMAVENDEPENDENCIES);
     }
 
     @Override

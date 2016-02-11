@@ -54,6 +54,10 @@ public abstract class Attribute {
     public static final String LocalVariableTable       = "LocalVariableTable";
     public static final String LocalVariableTypeTable   = "LocalVariableTypeTable";
     public static final String MethodParameters         = "MethodParameters";
+    // Ceylon: backport from JDK9/Jigsaw
+    public static final String MainClass                = "MainClass";
+    // Ceylon: backport from JDK9/Jigsaw
+    public static final String Module                   = "Module";
     public static final String RuntimeVisibleAnnotations = "RuntimeVisibleAnnotations";
     public static final String RuntimeInvisibleAnnotations = "RuntimeInvisibleAnnotations";
     public static final String RuntimeVisibleParameterAnnotations = "RuntimeVisibleParameterAnnotations";
@@ -122,6 +126,8 @@ public abstract class Attribute {
             standardAttributes.put(LocalVariableTable, LocalVariableTable_attribute.class);
             standardAttributes.put(LocalVariableTypeTable, LocalVariableTypeTable_attribute.class);
             standardAttributes.put(MethodParameters,  MethodParameters_attribute.class);
+            standardAttributes.put(MainClass,         MainClass_attribute.class);
+            standardAttributes.put(Module,            Module_attribute.class);
             standardAttributes.put(RuntimeInvisibleAnnotations, RuntimeInvisibleAnnotations_attribute.class);
             standardAttributes.put(RuntimeInvisibleParameterAnnotations, RuntimeInvisibleParameterAnnotations_attribute.class);
             standardAttributes.put(RuntimeVisibleAnnotations, RuntimeVisibleAnnotations_attribute.class);
@@ -181,6 +187,8 @@ public abstract class Attribute {
         R visitLocalVariableTable(LocalVariableTable_attribute attr, P p);
         R visitLocalVariableTypeTable(LocalVariableTypeTable_attribute attr, P p);
         R visitMethodParameters(MethodParameters_attribute attr, P p);
+        R visitMainClass(MainClass_attribute attr, P p);
+        R visitModule(Module_attribute attr, P p);
         R visitRuntimeVisibleAnnotations(RuntimeVisibleAnnotations_attribute attr, P p);
         R visitRuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute attr, P p);
         R visitRuntimeVisibleParameterAnnotations(RuntimeVisibleParameterAnnotations_attribute attr, P p);

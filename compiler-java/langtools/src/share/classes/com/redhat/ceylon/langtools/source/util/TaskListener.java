@@ -32,7 +32,6 @@ package com.redhat.ceylon.langtools.source.util;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public interface TaskListener
 {
     public void started(TaskEvent e);

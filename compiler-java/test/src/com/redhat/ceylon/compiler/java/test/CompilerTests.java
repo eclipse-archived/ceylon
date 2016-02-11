@@ -378,7 +378,7 @@ public abstract class CompilerTests {
     protected void compileIgnoringErrors(ExpectedError expectedErrors, String... ceylon) {
         ErrorCollector c = new ErrorCollector();
         ExitState exitState = getCompilerTask(c, ceylon).call2();
-        assert(exitState.javacExitCode == Main.EXIT_ERROR);
+        assert(exitState.javacExitCode.exitCode == Main.EXIT_ERROR);
         assert(exitState.ceylonState == CeylonState.ERROR);
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors, 

@@ -212,7 +212,7 @@ public class CreateSymbols extends AbstractProcessor {
         Type.moreInfo = true;
         Types types = Types.instance(task.getContext());
         Pool pool = new Pool(types);
-        for (JavaFileObject file : fm.list(jarLocation, "", EnumSet.of(CLASS), true)) {
+        for (JavaFileObject file : fm.list(jarLocation, "", EnumSet.of(JavaFileObject.Kind.CLASS), true)) {
             String className = fm.inferBinaryName(jarLocation, file);
             int index = className.lastIndexOf('.');
             String pckName = index == -1 ? "" : className.substring(0, index);

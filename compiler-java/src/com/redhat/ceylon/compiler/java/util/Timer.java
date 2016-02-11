@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.util;
 
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
@@ -39,8 +39,8 @@ public class Timer extends com.redhat.ceylon.model.loader.Timer {
     
     private Timer(Context context) {
         Options options = Options.instance(context);
-        verbose = options.get(OptionName.VERBOSE) != null 
-                || options.get(OptionName.VERBOSE + ":benchmark" ) != null;
+        verbose = options.get(Option.VERBOSE) != null 
+                || options.get(Option.VERBOSE + ":benchmark" ) != null;
         out = context.get(Log.outKey);
     }
 }

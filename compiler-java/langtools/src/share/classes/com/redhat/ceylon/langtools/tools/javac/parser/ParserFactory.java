@@ -28,7 +28,6 @@ package com.redhat.ceylon.langtools.tools.javac.parser;
 import java.util.Locale;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
-import com.redhat.ceylon.langtools.tools.javac.tree.DocTreeMaker;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
@@ -57,7 +56,6 @@ public class ParserFactory {
     }
 
     final TreeMaker F;
-    final DocTreeMaker docTreeMaker;
     final Log log;
     final Tokens tokens;
     final Source source;
@@ -70,7 +68,6 @@ public class ParserFactory {
         super();
         context.put(parserFactoryKey, this);
         this.F = TreeMaker.instance(context);
-        this.docTreeMaker = DocTreeMaker.instance(context);
         this.log = Log.instance(context);
         this.names = Names.instance(context);
         this.tokens = Tokens.instance(context);

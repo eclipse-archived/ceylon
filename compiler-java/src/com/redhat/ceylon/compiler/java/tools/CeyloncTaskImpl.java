@@ -37,7 +37,7 @@ import com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 
 public class CeyloncTaskImpl extends JavacTaskImpl {
-    Main compilerMain;
+    private final Main compilerMain;
     
     // we're just making this constructor visible here
     CeyloncTaskImpl(Main compilerMain, Iterable<String> flags, Context context, Iterable<String> classes, Iterable<? extends JavaFileObject> fileObjects) {

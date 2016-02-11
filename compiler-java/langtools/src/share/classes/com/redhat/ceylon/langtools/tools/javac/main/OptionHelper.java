@@ -57,13 +57,13 @@ public abstract class OptionHelper {
     public abstract String getOwnName();
 
     /** Report an error. */
-    abstract void error(String key, Object... args);
+    protected abstract void error(String key, Object... args);
 
     /** Record a file to be compiled. */
-    abstract void addFile(File f);
+    protected abstract void addFile(File f);
 
     /** Record the name of a class for annotation processing. */
-    abstract void addClassName(String s);
+    protected abstract void addClassName(String s);
 
     /** An implementation of OptionHelper that mostly throws exceptions. */
     public static class GrumpyHelper extends OptionHelper {
@@ -99,7 +99,7 @@ public abstract class OptionHelper {
         }
 
         @Override
-        void error(String key, Object... args) {
+        protected void error(String key, Object... args) {
             throw new IllegalArgumentException(log.localize(PrefixKind.JAVAC, key, args));
         }
 

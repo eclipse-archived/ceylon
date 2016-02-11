@@ -37,6 +37,7 @@ import com.redhat.ceylon.langtools.source.tree.TreeVisitor;
 import com.redhat.ceylon.langtools.source.util.SimpleTreeVisitor;
 import com.redhat.ceylon.langtools.tools.javac.code.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Lint.LintCategory;
+import com.redhat.ceylon.langtools.tools.javac.code.Scope.DelegatedScope;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.*;
 import com.redhat.ceylon.langtools.tools.javac.comp.Check.CheckContext;
@@ -95,6 +96,8 @@ public class Attr extends JCTree.Visitor {
     final TypeAnnotations typeAnnotations;
     final DeferredLintHandler deferredLintHandler;
     final TypeEnvs typeEnvs;
+
+    private SourceLanguage sourceLanguage;
 
     public static Attr instance(Context context) {
         Attr instance = context.get(attrKey);
@@ -661,6 +664,18 @@ public class Attr extends JCTree.Visitor {
             attribStat(l.head, env);
     }
 
+    // Ceylon(Stef): Pre-enters local non-anonymous classes to allow mutual-visibility
+    // see https://github.com/ceylon/ceylon-compiler/issues/1165
+    <T extends JCTree> void completeLocalTypes(List<T> trees, Env<AttrContext> env) {
+        for (List<T> l = trees; l.nonEmpty(); l = l.tail){
+            T tree = l.head;
+            if(tree instanceof JCTree.JCClassDecl
+               && (env.info.scope.owner.kind & (VAR | MTH)) != 0
+               && !((JCTree.JCClassDecl) tree).name.isEmpty())
+                enter.classEnter(tree, env);
+        }
+    }
+    
     /** Attribute the arguments in a method call, returning the method kind.
      */
     int attribArgs(int initialKind, List<JCExpression> trees, Env<AttrContext> env, ListBuffer<Type> argtypes) {
@@ -837,8 +852,14 @@ public class Attr extends JCTree.Visitor {
     public void visitClassDef(JCClassDecl tree) {
         // Local and anonymous classes have not been entered yet, so we need to
         // do it now.
-        if ((env.info.scope.owner.kind & (VAR | MTH)) != 0) {
+        if ((env.info.scope.owner.kind & (VAR | MTH)) != 0){
+            // Ceylon(Stef): Java needs to enter local classes, but Ceylon does not unless they are anonymous
+            // because we pre-enter local non-anonymous classes in visitBlock to allow mutual-visibility
+            // see https://github.com/ceylon/ceylon-compiler/issues/1165
+            if(!sourceLanguage.isCeylon()
+                    || tree.name.isEmpty()){
             enter.classEnter(tree, env);
+            }
         } else {
             // If this class declaration is part of a class level annotation,
             // as in @MyAnno(new Object() {}) class MyClass {}, enter it in
@@ -991,7 +1012,7 @@ public class Attr extends JCTree.Visitor {
                 if (tree.name == names.init && owner.type != syms.objectType) {
                     JCBlock body = tree.body;
                     if (body.stats.isEmpty() ||
-                        !TreeInfo.isSelfCall(names, body.stats.head)) {
+                        !TreeInfo.isSelfCall(body.stats.head)) {
                         body.stats = body.stats.
                             prepend(memberEnter.SuperCall(make.at(body.pos),
                                                           List.<Type>nil(),
@@ -999,7 +1020,7 @@ public class Attr extends JCTree.Visitor {
                                                           false));
                     } else if ((env.enclClass.sym.flags() & ENUM) != 0 &&
                                (tree.mods.flags & GENERATEDCONSTR) == 0 &&
-                               TreeInfo.isSuperCall(names, body.stats.head)) {
+                               TreeInfo.isSuperCall(body.stats.head)) {
                         // enum constructors are not allowed to call super
                         // directly, so make sure there aren't any super calls
                         // in enum constructors, except in the compiler
@@ -1119,12 +1140,19 @@ public class Attr extends JCTree.Visitor {
                     cs.appendInitTypeAttributes(tas);
                 }
             }
-
+            // Ceylon(Stef): Ceylon pre-enters local non-anonymous classes to allow mutual-visibility
+            // see https://github.com/ceylon/ceylon-compiler/issues/1165
+            if(sourceLanguage.isCeylon())
+                completeLocalTypes(tree.stats, localEnv);
             attribStats(tree.stats, localEnv);
         } else {
             // Create a new local environment with a local scope.
             Env<AttrContext> localEnv =
                 env.dup(tree, env.info.dup(env.info.scope.dup()));
+            // Ceylon(Stef): Ceylon pre-enters local non-anonymous classes to allow mutual-visibility
+            // see https://github.com/ceylon/ceylon-compiler/issues/1165
+            if(sourceLanguage.isCeylon())
+                completeLocalTypes(tree.stats, localEnv);
             try {
                 attribStats(tree.stats, localEnv);
             } finally {
@@ -1882,9 +1910,9 @@ public class Attr extends JCTree.Visitor {
                     ((JCExpressionStatement) body.stats.head).expr == tree)
                     return true;
                 // given tree allowed as last stmt in a Let
-                if (body.stats.head.getTag() == JCTree.EXEC &&
+                if (body.stats.head.getTag() == JCTree.Tag.EXEC &&
                         (((JCExpressionStatement) body.stats.head).expr instanceof LetExpr) &&
-                        ((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.last().getTag() == JCTree.EXEC && 
+                        ((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.last().getTag() == JCTree.Tag.EXEC && 
                         ((JCExpressionStatement)((LetExpr)((JCExpressionStatement) body.stats.head).expr).stats.last()).expr == tree)
                     return true;
             }
@@ -3170,7 +3198,10 @@ public class Attr extends JCTree.Visitor {
         Symbol sym;
 
         // Find symbol
-        if (pt().hasTag(METHOD) || pt().hasTag(FORALL)) {
+        // Added by Ceylon
+        /*if(tree instanceof JCIndyIdent) {
+            sym = resolveIndyCall((JCIndyIdent) tree, pt().getParameterTypes());
+        } else*/ if (pt().hasTag(METHOD) || pt().hasTag(FORALL)) {
             // If we are looking for a method, the prototype `pt' will be a
             // method type with the type of the call's arguments as parameters.
             env.info.pendingResolutionPhase = null;
@@ -3244,12 +3275,14 @@ public class Attr extends JCTree.Visitor {
         result = checkId(tree, env1.enclClass.sym.type, sym, env, resultInfo);
     }
 
+    /*
     // Added by Ceylon
     private Symbol resolveIndyCall(JCIndyIdent tree, List<Type> parameterTypes) {
         return resolveIndyCall(tree, tree.indyReturnType, tree.indyParameterTypes, tree.name, 
                                tree.bsmType, tree.bsmName, tree.bsmStatic,
                                parameterTypes);
     }
+    */
 
     public void visitSelect(JCFieldAccess tree) {
         // Determine the expected kind of the qualifier expression.
@@ -3385,9 +3418,85 @@ public class Attr extends JCTree.Visitor {
             chk.checkElemAccessFromSerializableLambda(tree);
         }
 
+        // Ceylon: error if we try to select an interface static in < 1.8
+        /*if(sym != null 
+                && sym.isStatic() 
+                && (sym.kind & Kinds.MTH) != 0
+                && sitesym != null
+                && sitesym.isInterface()){
+            chk.checkStaticInterfaceMethodCall(tree);
+        }*/
+        
         env.info.selectSuper = selectSuperPrev;
         result = checkId(tree, site, sym, env, resultInfo);
     }
+    /*
+    // Added by Ceylon
+    private Symbol resolveIndyCall(JCTree tree,
+                                   JCExpression indyReturnTypeExpression, List<JCExpression> indyParameterTypeExpressions,
+                                   Name indyName,
+                                   JCExpression bsmType, Name bsmName, List<Object> bsmStatic, 
+                                   List<Type> parameterTypes){
+        // build the list of static bsm arguments
+        List<Type> bsm_staticArgs = List.of(syms.methodHandleLookupType,
+                syms.stringType,
+                syms.methodTypeType).appendList(bsmStaticArgToTypes(bsmStatic));
+
+        // find the type of the bootstrap method class
+        Type bsmSite = attribTree(bsmType, env, TYP, Infer.anyPoly);
+
+        // find the bsm method
+        Symbol bsm = rs.resolveInternalMethod(tree.pos(), env, bsmSite,
+                                              bsmName, bsm_staticArgs, List.<Type>nil());
+
+        if(!bsm.isStatic())
+            log.error(tree.pos(), "ceylon", "Bootstrap method must be static: " + bsmName.toString());
+        
+        // find the type of the indy call
+        Type indyReturnType = attribTree(indyReturnTypeExpression, env, TYP, Infer.anyPoly);
+        ListBuffer<Type> indyParameterTypes = new ListBuffer<Type>();
+        int c=0;
+        List<Type> givenParameterTypes = parameterTypes;
+        for(JCExpression expectedParamTypeExpr : indyParameterTypeExpressions){
+            // also check that the parameter types we are passing to the method are compatible with the declared type
+            Type givenParameterType = givenParameterTypes.head;
+            if(givenParameterType == null) {
+                log.error(tree.pos(), "ceylon", "Indy declared method expects more parameters than given. Expecting " + indyParameterTypeExpressions.size()
+                        + ", but given " + c);
+                return syms.errSymbol;
+            }
+            Type paramType = attribTree(expectedParamTypeExpr, env, TYP, Infer.anyPoly);
+            if(!types.isAssignable(givenParameterType, paramType)) {
+                log.error(tree.pos(), "ceylon", "Indy given method parameter "+c+" not compatible with expected parameter type: " + paramType
+                        + ", but given " + givenParameterType);
+                return syms.errSymbol;
+            }
+            indyParameterTypes.append(paramType);
+            c++;
+            givenParameterTypes = givenParameterTypes.tail;
+        }
+        if(!givenParameterTypes.isEmpty()) {
+            log.error(tree.pos(), "ceylon", "Indy declared method expects less parameters than given. Expecting " + indyParameterTypeExpressions.size()
+                    + ", but given " + parameterTypes.size());
+            return syms.errSymbol;
+        }
+        
+        MethodType indyType = new MethodType(indyParameterTypes.toList(), indyReturnType, List.<Type>nil(), syms.methodClass);
+        
+        // make an indy symbol for it
+        DynamicMethodSymbol dynSym =
+                new DynamicMethodSymbol(indyName,
+                                        syms.noSymbol,
+                                        bsm.isStatic() ?
+                                            ClassFile.REF_invokeStatic :
+                                            ClassFile.REF_invokeVirtual,
+                                        (MethodSymbol)bsm,
+                                        indyType,
+                                        bsmStatic.toArray());
+        return dynSym;
+    }
+    */
+    
     //where
         /** Determine symbol referenced by a Select expression,
          *
@@ -3870,8 +3979,12 @@ public class Attr extends JCTree.Visitor {
                         rs.methodArguments(Type.map(argtypes, checkDeferredMap)),
                         kindName(sym.location()),
                         sym.location());
+                // Don't erase the return type of the instantiated method type 
+                // for Ceylon #1095
                owntype = new MethodType(owntype.getParameterTypes(),
-                       types.erasure(owntype.getReturnType()),
+                       sourceLanguage.isCeylon() 
+                       && typeargtypes != null 
+                       && !typeargtypes.isEmpty() ? owntype.getReturnType() : types.erasure(owntype.getReturnType()),
                        types.erasure(owntype.getThrownTypes()),
                        syms.methodClass);
             }
@@ -4217,7 +4330,7 @@ public class Attr extends JCTree.Visitor {
                 attribStats(tree.stats, localEnv);
             }
             // now attribute the expression with the LET expected type (pt)
-            attribExpr(tree.expr, localEnv, pt);
+            attribExpr(tree.expr, localEnv, pt());
             // the type of the LET is the type of the expression
             tree.type = tree.expr.type;
             // if we have statements, drop any constant value from the type
@@ -4627,7 +4740,7 @@ public class Attr extends JCTree.Visitor {
                             tree.clazz.type.tsym);
                 }
                 if (tree.def != null) {
-                    checkForDeclarationAnnotations(tree.def.mods.annotations, tree.clazz.type.tsym);
+                    //checkForDeclarationAnnotations(tree.def.mods.annotations, tree.clazz.type.tsym);
                 }
 
                 validateAnnotatedType(tree.clazz, tree.clazz.type);
@@ -4938,7 +5051,7 @@ public class Attr extends JCTree.Visitor {
 
     //where
     private List<Type> bsmStaticArgToTypes(List<Object> args) {
-        ListBuffer<Type> argtypes = ListBuffer.lb();
+        ListBuffer<Type> argtypes = new ListBuffer<Type>();
         for (Object arg : args) {
             argtypes.append(bsmStaticArgToType(arg));
         }

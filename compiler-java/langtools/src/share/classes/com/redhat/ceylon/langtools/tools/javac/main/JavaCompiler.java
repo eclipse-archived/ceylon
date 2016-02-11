@@ -36,6 +36,7 @@ import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.javax.annotation.processing.Processor;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.tools.DiagnosticListener;
@@ -398,7 +399,8 @@ public class JavaCompiler {
 
         if (source.compareTo(Source.DEFAULT) < 0) {
             if (options.isUnset(XLINT_CUSTOM, "-" + LintCategory.OPTIONS.option)) {
-                if (fileManager instanceof BaseFileManager) {
+                if (fileManager instanceof BaseFileManager
+                        && !(fileManager instanceof CeyloncFileManager)) {
                     if (((BaseFileManager) fileManager).isDefaultBootClassPath())
                         log.warning(LintCategory.OPTIONS, "source.no.bootclasspath", source.name);
                 }
@@ -816,7 +818,7 @@ public class JavaCompiler {
     private long start_msec = 0;
     public long elapsed_msec = 0;
 
-    public void compile(List<JavaFileObject> sourceFileObject)
+    public final void compile(List<JavaFileObject> sourceFileObject)
         throws Throwable {
         compile(sourceFileObject, List.<String>nil(), null);
     }
@@ -1185,7 +1187,7 @@ public class JavaCompiler {
         }
     }
 
-    private boolean unrecoverableError() {
+    protected boolean unrecoverableError() {
         if (deferredDiagnosticHandler != null) {
             for (JCDiagnostic d: deferredDiagnosticHandler.getDiagnostics()) {
                 if (d.getKind() == JCDiagnostic.Kind.ERROR && !d.isFlagSet(RECOVERABLE))

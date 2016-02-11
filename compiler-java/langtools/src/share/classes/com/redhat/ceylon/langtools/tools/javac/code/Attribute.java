@@ -25,8 +25,6 @@
 
 package com.redhat.ceylon.langtools.tools.javac.code;
 
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTags.*;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 

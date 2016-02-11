@@ -506,7 +506,7 @@ implements CRTFlags {
         @Override
         public void visitLetExpr(LetExpr tree) {
             SourceRange sr = new SourceRange(startPos(tree), endPos(tree));
-            sr.mergeWith(csp(tree.defs));
+            sr.mergeWith(csp(tree.stats));
             sr.mergeWith(csp(tree.expr));
             result = sr;
         }

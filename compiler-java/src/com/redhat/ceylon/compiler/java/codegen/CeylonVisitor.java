@@ -299,7 +299,7 @@ public class CeylonVisitor extends Visitor {
             // lazy
             adb.initialValue(gen.makeNull());
             List<JCStatement> l = List.<JCStatement>of(
-            gen.make().If(gen.make().Binary(JCTree.EQ, field.makeIdent(), gen.makeNull()),
+            gen.make().If(gen.make().Binary(JCTree.Tag.EQ, field.makeIdent(), gen.makeNull()),
                     gen.make().Exec(gen.make().Assign(field.makeIdent(),
                             gen.make().NewClass(null, null, 
                                     gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
@@ -348,7 +348,7 @@ public class CeylonVisitor extends Visitor {
         
         final CtorDelegation delegation = delegates.get(ctorModel);
         
-        ListBuffer<JCStatement> stmts = ListBuffer.lb();
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         boolean delegatedTo = CtorDelegation.isDelegatedTo(delegates, ctorModel);
         if (delegatedTo
                 && !ctorModel.isAbstract()) {
@@ -371,7 +371,7 @@ public class CeylonVisitor extends Visitor {
             } else {
                 // In this case there is no extends clause in the source code
                 // so we have to construct the argument list "by hand".
-                ListBuffer<JCExpression> arguments = ListBuffer.<JCExpression>lb();
+                ListBuffer<JCExpression> arguments = new ListBuffer<JCExpression>();
                 for (TypeParameter tp : ((Class)delegation.getConstructor().getContainer()).getTypeParameters()) {
                     arguments.add(gen.makeReifiedTypeArgument(tp.getType()));
                 }
@@ -477,7 +477,7 @@ public class CeylonVisitor extends Visitor {
         // given in the source and then adds the executable initializer 
         // statements between this constructor and the delegated-to constructor)
         // delegating to a constructor in this class
-        ListBuffer<JCStatement> stmts = ListBuffer.lb();
+        ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         
         if (chainedCtorInvocation != null) {
             stmts.add(gen.expressionGen().transformConstructorDelegation(

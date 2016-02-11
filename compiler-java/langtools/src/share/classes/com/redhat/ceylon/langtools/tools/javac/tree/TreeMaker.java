@@ -573,19 +573,19 @@ public class TreeMaker implements JCTree.Factory {
     }
 
     public LetExpr LetExpr(JCVariableDecl def, List<JCStatement> stats, JCTree expr) {
-        LetExpr tree = new LetExpr(ListBuffer.<JCStatement>lb().append(def).appendList(stats).toList(), expr);
+        LetExpr tree = new LetExpr(new ListBuffer<JCStatement>().append(def).appendList(stats).toList(), expr);
         tree.pos = pos;
         return tree;
     }
 
     public LetExpr LetExpr(List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
-        LetExpr tree = new LetExpr(ListBuffer.<JCStatement>lb().appendList((List)defs).appendList(stats).toList(), expr);
+        LetExpr tree = new LetExpr(new ListBuffer<JCStatement>().appendList((List)defs).appendList(stats).toList(), expr);
         tree.pos = pos;
         return tree;
     }
     
     public LetExpr LetExpr(List<JCStatement> prestats, List<JCVariableDecl> defs, List<JCStatement> stats, JCTree expr) {
-        LetExpr tree = new LetExpr(ListBuffer.<JCStatement>lb()
+        LetExpr tree = new LetExpr(new ListBuffer<JCStatement>()
                     .appendList(prestats)
                     .appendList((List)defs)
                     .appendList(stats).toList(), 
@@ -968,7 +968,7 @@ public class TreeMaker implements JCTree.Factory {
     boolean isUnqualifiable(Symbol sym) {
         if (sym.name == names.empty ||
             sym.owner == null ||
-            sym.owner == syms.rootPackage ||
+            // sym.owner == syms.rootPackage ||
             sym.owner.kind == MTH || sym.owner.kind == VAR) {
             return true;
         } else if (sym.kind == TYP && toplevel != null) {

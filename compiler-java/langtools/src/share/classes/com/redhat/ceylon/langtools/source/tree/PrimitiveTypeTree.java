@@ -41,7 +41,6 @@ import com.redhat.ceylon.javax.lang.model.type.TypeKind;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public interface PrimitiveTypeTree extends Tree {
     TypeKind getPrimitiveTypeKind();
 }

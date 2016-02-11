@@ -25,8 +25,6 @@
 
 package com.redhat.ceylon.langtools.tools.javac.main;
 
-import static com.redhat.ceylon.langtools.tools.javac.main.OptionName.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,7 +43,6 @@ import com.redhat.ceylon.javax.tools.JavaFileObject;
 
 import com.redhat.ceylon.langtools.source.util.JavacTask;
 import com.redhat.ceylon.langtools.source.util.Plugin;
-import com.sun.tools.doclint.DocLint;
 import com.redhat.ceylon.langtools.tools.javac.api.BasicJavacTask;
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
 import com.redhat.ceylon.langtools.tools.javac.file.CacheFSInfo;
@@ -111,7 +108,7 @@ public class Main {
     private Option[] recognizedOptions =
             Option.getJavaCompilerOptions().toArray(new Option[0]);
 
-    private OptionHelper optionHelper = new OptionHelper() {
+    protected OptionHelper optionHelper = new OptionHelper() {
         @Override
         public String get(Option option) {
             return options.get(option);
@@ -170,7 +167,7 @@ public class Main {
     }
 
     /** A table of all options that's passed to the JavaCompiler constructor.  */
-    private Options options = null;
+    protected Options options = null;
 
     /** The list of source files to process
      */
@@ -279,13 +276,24 @@ public class Main {
             return null;
 
         String sourceString = options.get(SOURCE);
+        String targetString = options.get(TARGET);
+        
+        if (sourceString == null
+                && targetString == null) {
+            sourceString = "7";
+            options.put(SOURCE, sourceString);
+        }
         Source source = (sourceString != null)
             ? Source.lookup(sourceString)
-            : Source.DEFAULT;
-        String targetString = options.get(TARGET);
+            : Source.JDK1_7;
+        
+        if (targetString == null) {
+            targetString = "7";
+            options.put(TARGET, targetString);
+        }
         Target target = (targetString != null)
             ? Target.lookup(targetString)
-            : Target.DEFAULT;
+            : Target.JDK1_7;
         // We don't check source/target consistency for CLDC, as J2ME
         // profiles are not aligned with J2SE targets; moreover, a
         // single CLDC target may have many profiles.  In addition,
@@ -338,7 +346,7 @@ public class Main {
         return filenames;
     }
     // where
-        private boolean checkDirectory(Option option) {
+        protected boolean checkDirectory(Option option) {
             String value = options.get(option);
             if (value == null)
                 return true;
@@ -486,30 +494,6 @@ public class Main {
 
             comp = JavaCompiler.instance(context);
 
-            // FIXME: this code will not be invoked if using JavacTask.parse/analyze/generate
-            String xdoclint = options.get(XDOCLINT);
-            String xdoclintCustom = options.get(XDOCLINT_CUSTOM);
-            if (xdoclint != null || xdoclintCustom != null) {
-                Set<String> doclintOpts = new LinkedHashSet<String>();
-                if (xdoclint != null)
-                    doclintOpts.add(DocLint.XMSGS_OPTION);
-                if (xdoclintCustom != null) {
-                    for (String s: xdoclintCustom.split("\\s+")) {
-                        if (s.isEmpty())
-                            continue;
-                        doclintOpts.add(s.replace(XDOCLINT_CUSTOM.text, DocLint.XMSGS_CUSTOM_PREFIX));
-                    }
-                }
-                if (!(doclintOpts.size() == 1
-                        && doclintOpts.iterator().next().equals(DocLint.XMSGS_CUSTOM_PREFIX + "none"))) {
-                    JavacTask t = BasicJavacTask.instance(context);
-                    // standard doclet normally generates H1, H2
-                    doclintOpts.add(DocLint.XIMPLICIT_HEADERS + "2");
-                    new DocLint().init(t, doclintOpts.toArray(new String[doclintOpts.size()]));
-                    comp.keepComments = true;
-                }
-            }
-
             fileManager = context.get(JavaFileManager.class);
 
             if (!files.isEmpty()) {
@@ -630,7 +614,7 @@ public class Main {
     }
 
     /** Display the location and checksum of a class. */
-    void showClass(String className) {
+    protected void showClass(String className) {
         PrintWriter pw = log.getWriter(WriterKind.NOTICE);
         pw.println("javac: show class: " + className);
         URL url = getClass().getResource('/' + className.replace('.', '/') + ".class");
@@ -695,7 +679,7 @@ public class Main {
 //    }
 
     public static final String javacBundleName =
-        "com.redhat.ceylon.langtools.tools.javac.resources.javac";
+        "com.redhat.ceylon.langtools.tools.javac.resources.ceylonc";
 //
 //    private static JavacMessages messages;
 }

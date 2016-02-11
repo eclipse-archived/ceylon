@@ -14,7 +14,7 @@ class CE_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     private final void f$priv$() {
-        ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)getErasedGetter$priv$()).$call$();
+        ((ceylon.language.Callable)getErasedGetter$priv$()).$call$();
         getNonErasedGetter$priv$().$call$();
     }
     
@@ -100,7 +100,7 @@ public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public final .java.lang.Object m1() {
-        return ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)m1$specifier$).$call$();
+        return ((ceylon.language.Callable)m1$specifier$).$call$();
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2$specifier$;
     
@@ -116,7 +116,7 @@ public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public final .java.lang.Object m4() {
-        return ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)getErased$priv$()).$call$();
+        return ((ceylon.language.Callable)getErased$priv$()).$call$();
     }
     
     @.java.lang.Override

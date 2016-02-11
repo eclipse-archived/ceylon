@@ -50,16 +50,18 @@ import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticFlag;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticType;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
+import com.redhat.ceylon.compiler.java.loader.CeylonClassReader;
+import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
 
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
@@ -100,6 +102,9 @@ public class Resolve {
     private final boolean debugResolve;
     private final boolean compactMethodDiags;
     final EnumSet<VerboseResolutionMode> verboseResolutionMode;
+    
+    private final AbstractModelLoader modelLoader;
+    private final SourceLanguage sourceLanguage;
 
     Scope polymorphicSignatureScope;
 
@@ -1923,14 +1928,14 @@ public class Resolve {
                         && !nameString.equals("java.lang.Override")){
                     // Check if the class is accessible according to Ceylon's access rules
                     String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
-                    Package scopePackage = modelLoader.findPackage(scopePackageName);
+                    com.redhat.ceylon.model.typechecker.model.Package scopePackage = modelLoader.findPackage(scopePackageName);
                     // Don't check if we failed to find it
                     if(scopePackage != null){
                         Module scopeModule = scopePackage.getModule();
                         // Ugly special case where we skip the test when we're compiling the language module itself
                         if (scopeModule != modelLoader.getLanguageModule()) {
                             String importedPackageName = modelLoader.getPackageNameForQualifiedClassName(pkgName(nameString), nameString);
-                            Package importedPackage = scopeModule.getPackage(importedPackageName);
+                            com.redhat.ceylon.model.typechecker.model.Package importedPackage = scopeModule.getPackage(importedPackageName);
                             // Don't check if we failed to find it
                             if(importedPackage == null){
                                 return new ImportError(c, scopeModule);
@@ -4063,7 +4068,7 @@ public class Resolve {
                 Name name,
                 List<Type> argtypes,
                 List<Type> typeargtypes) {
-            if (sym.owner.type.tag == ERROR)
+            if (sym.owner.type.getTag() == ERROR)
                 return null;
 
             if (sym.name == names.init && sym.owner != site.tsym) {

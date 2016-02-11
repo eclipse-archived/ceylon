@@ -30,5 +30,4 @@
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 package com.redhat.ceylon.langtools.source.util;

@@ -21,7 +21,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
     private long modifiers = 0;
     // TODO remove this field
     private JCStatement delegateCall;
-    private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
+    private final ListBuffer<ParameterDefinitionBuilder> params = new ListBuffer<ParameterDefinitionBuilder>();
     /** 
      * For classes with parameter lists this is a {@code List<JCStatement>}.
      * For classes with constructors it's a 
@@ -30,7 +30,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
      * and which need to be appended. 
      */
     private final java.util.List<Object/* JCStatement|Constructor*/> init = new java.util.ArrayList<Object>();
-    private final ListBuffer<JCAnnotation> userAnnos = ListBuffer.lb();
+    private final ListBuffer<JCAnnotation> userAnnos = new ListBuffer<JCAnnotation>();
     
     public InitializerBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -45,7 +45,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
         int index = 0;
         for (JCStatement stmt : body) {
             if (stmt instanceof JCThrow) {
-                ListBuffer<JCStatement> filtered = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> filtered = new ListBuffer<JCStatement>();
                 filtered.addAll(body.subList(0, index+1));
                 body = filtered.toList();
                 break;
@@ -127,7 +127,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
     }
     
     private List<JCStatement> statementsBetween(Constructor first, Constructor second) {
-        ListBuffer<JCStatement> buffer = ListBuffer.lb();
+        ListBuffer<JCStatement> buffer = new ListBuffer<JCStatement>();
         boolean found = first == null;
         for (Object o : this.init) {
             if (found && o instanceof JCStatement) {

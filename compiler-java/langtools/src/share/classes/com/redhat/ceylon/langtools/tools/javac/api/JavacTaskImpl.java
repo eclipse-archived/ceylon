@@ -99,7 +99,7 @@ public class JavacTaskImpl extends BasicJavacTask {
         fileObjects.getClass();
     }
 
-    JavacTaskImpl(Main compilerMain,
+    protected JavacTaskImpl(Main compilerMain,
                 Iterable<String> args,
                 Context context,
                 Iterable<String> classes,

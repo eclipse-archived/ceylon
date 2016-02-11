@@ -121,6 +121,11 @@ public class JavacMethod implements MethodMirror {
     public boolean isAbstract() {
         return (methodSymbol.flags() & Flags.ABSTRACT) != 0;
     }
+    
+    @Override
+    public boolean isDefaultMethod() {
+        return (methodSymbol.flags() & Flags.DEFAULT) != 0;
+    }
 
     @Override
     public boolean isFinal() {

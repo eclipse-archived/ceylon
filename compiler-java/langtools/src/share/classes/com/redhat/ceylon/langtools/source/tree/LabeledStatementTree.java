@@ -41,7 +41,6 @@ import com.redhat.ceylon.javax.lang.model.element.Name;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-@jdk.Exported
 public interface LabeledStatementTree extends StatementTree {
     Name getLabel();
     StatementTree getStatement();

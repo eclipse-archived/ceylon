@@ -31,7 +31,6 @@ package com.redhat.ceylon.langtools.source.tree;
  *
  * @since 1.6
  */
-@jdk.Exported
 public interface LineMap {
     /**
      * Find the start position of a line.
