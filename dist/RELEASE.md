@@ -95,3 +95,10 @@ How to do a release of Ceylon.
 1. Fork it on https://github.com/mxcl/homebrew
 2. Update the file `Library/Formula/ceylon.rb`
 3. Make a pull-request
+
+# Update the SDKMAN candidate
+
+This is done via simple `curl` commands, but requires a key and token that will not be posted here for security reasons.
+
+1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://sdkman-vendor.herokuapp.com/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
+2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://sdkman-vendor.herokuapp.com/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
