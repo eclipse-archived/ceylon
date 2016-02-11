@@ -35,7 +35,7 @@ How to do a release of Ceylon.
   -  $ git push --tags
 2. Do the release zip
   -  $ mkdir /tmp/ceylon
-  -  $ docker run -t -v /tmp/ceylon:/output ceylon/ceylon-build:latest
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build:latest
 3. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1.zip ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
@@ -45,7 +45,7 @@ How to do a release of Ceylon.
     ceylon-dist $ dch -i
 2. Update the versions and rename some files in `debian/` to match the new version
 3. Package it
-  -  $ docker run -t -v /tmp/ceylon:/output ceylon/ceylon-package-deb:latest
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb:latest
 4. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1_1.2.1_all.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 5. Rebuild the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
@@ -60,7 +60,7 @@ How to do a release of Ceylon.
 # Build the RedHat file
 
 1. Build it
-  -  $ docker run -t -v /tmp/ceylon:/output ceylon/ceylon-package-rpm:latest
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm:latest
 2. Copy the rpm to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1-1.2.1-0.noarch.rpm ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 3. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
@@ -73,7 +73,7 @@ How to do a release of Ceylon.
 
 1. First create an Upload on the server
 2. Publish the official distribution to it
-  - $ docker run -ti --rm -v /tmp/ceylon:/output -e PUBLISH_VERSION=1.2.1 -e HERD_REPO="https://modules.ceylon-lang.org/uploads/**XXX**/repo/" -e HERD_USER=**user** -e HERD_PASS=**password** ceylon/ceylon-publish
+  - $ docker run -t --rm -v /tmp/ceylon:/output -e PUBLISH_VERSION=1.2.1 -e HERD_REPO="https://modules.ceylon-lang.org/uploads/**XXX**/repo/" -e HERD_USER=**user** -e HERD_PASS=**password** ceylon/ceylon-publish
 3. Publish the SDK modules by running the following in the `ceylon-sdk` project:
   - $ ant copy-herd -Dherd.repo=https://modules.ceylon-lang.org/uploads/**XXX**/repo/ -Dherd.user=**user** -Dherd.pass=**password**
 
