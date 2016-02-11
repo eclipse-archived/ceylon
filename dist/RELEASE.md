@@ -81,6 +81,15 @@ How to do a release of Ceylon.
 
  - See [this README](https://github.com/ceylon/ceylon-lang.org/blob/master/RELEASE.md)
 
+# Update OpenShift
+
+ - [openshift-cartridge](https://github.com/ceylon/openshift-cartridge)
+ - [ceylon.openshift](https://github.com/ceylon/ceylon.openshift)
+
+# Update the Web IDE
+
+ - [ceylon-web-ide-backend](https://github.com/ceylon/ceylon-web-ide-backend)
+
 # Update the brew formula for ceylon
 
 1. Fork it on https://github.com/mxcl/homebrew
