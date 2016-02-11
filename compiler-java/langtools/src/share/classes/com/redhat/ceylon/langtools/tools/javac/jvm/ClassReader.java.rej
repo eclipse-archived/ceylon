@@ -1,0 +1,12 @@
+--- src/share/classes/com/sun/tools/javac/jvm/ClassReader.java	2016-02-10 11:54:12.689194940 +0000
++++ src/share/classes/com/sun/tools/javac/jvm/ClassReader.java	2016-02-11 09:51:01.948962333 +0000
+@@ -1316,6 +1313,9 @@
+                 CompoundAnnotationProxy proxy = readCompoundAnnotation();
+                 if (proxy.type.tsym == syms.proprietaryType.tsym)
+                     sym.flags_field |= PROPRIETARY;
++                else if (proxy.type.tsym == syms.jdkProfileType.tsym)
++                    // Ceylon: skip jdk profiles for now
++                    continue;
+                 else
+                     proxies.append(proxy);
+                 if (majorVersion >= V51.major &&

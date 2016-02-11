@@ -1,0 +1,26 @@
+--- src/share/classes/javax/lang/model/util/AbstractAnnotationValueVisitor6.java	2016-02-10 11:54:12.615196414 +0000
++++ src/share/classes/javax/lang/model/util/AbstractAnnotationValueVisitor6.java	2016-02-11 09:50:58.816128651 +0000
+@@ -26,13 +26,19 @@
+ package javax.lang.model.util;
+ 
+ 
++import static javax.lang.model.SourceVersion.*;
++
+ import java.util.List;
+-import javax.lang.model.element.*;
+ 
+-import javax.lang.model.type.TypeMirror;
+-import static javax.lang.model.SourceVersion.*;
+-import javax.lang.model.SourceVersion;
++import javax.lang.model.element.AnnotationValue;
++import javax.lang.model.element.AnnotationValueVisitor;
++import javax.lang.model.element.UnknownAnnotationValueException;
++import javax.lang.model.util.AbstractAnnotationValueVisitor7;
++
+ import javax.annotation.processing.SupportedSourceVersion;
++import javax.lang.model.SourceVersion;
++import javax.lang.model.element.*;
++import javax.lang.model.type.TypeMirror;
+ 
+ /**
+  * A skeletal visitor for annotation values with default behavior

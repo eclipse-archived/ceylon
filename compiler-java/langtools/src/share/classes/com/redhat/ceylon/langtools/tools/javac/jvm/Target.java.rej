@@ -1,0 +1,49 @@
+--- src/share/classes/com/sun/tools/javac/jvm/Target.java	2016-02-10 11:54:12.694194840 +0000
++++ src/share/classes/com/sun/tools/javac/jvm/Target.java	2016-02-11 09:51:01.957961855 +0000
+@@ -25,14 +25,14 @@
+ 
+ package com.sun.tools.javac.jvm;
+ 
++import static com.sun.tools.javac.main.OptionName.*;
++
+ import java.util.*;
+ 
+ import com.sun.tools.javac.code.Flags;
+ import com.sun.tools.javac.code.Symbol;
+ import com.sun.tools.javac.util.*;
+ 
+-import static com.sun.tools.javac.main.OptionName.*;
+-
+ /** The classfile version target.
+  *
+  *  <p><b>This is NOT part of any supported API.
+@@ -66,7 +66,11 @@
+     JDK1_6("1.6", 50, 0),
+ 
+     /** JDK 7. */
+-    JDK1_7("1.7", 51, 0);
++    JDK1_7("1.7", 51, 0),
++    /* Ceylon: backport from Java 8*/
++
++    /** JDK 8. */
++    JDK1_8("1.8", 52, 0);
+ 
+     private static final Context.Key<Target> targetKey =
+         new Context.Key<Target>();
+@@ -99,6 +103,7 @@
+         tab.put("5", JDK1_5);
+         tab.put("6", JDK1_6);
+         tab.put("7", JDK1_7);
++        tab.put("8", JDK1_8);
+     }
+ 
+     public final String name;
+@@ -305,7 +310,7 @@
+         return
+             this == JSR14 &&
+             (c.flags() & Flags.ENUM) != 0 &&
+-            c.flatName().toString().startsWith("com.sun.tools.")
++            c.flatName().toString().startsWith("com.redhat.ceylon.langtools.tools.")
+             // && !Target.class.getSuperclass().getName().equals("java.lang.Enum")
+             ;
+     }

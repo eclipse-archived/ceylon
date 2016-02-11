@@ -1,0 +1,21 @@
+--- src/share/classes/javax/lang/model/util/AbstractElementVisitor7.java	2016-02-10 11:54:12.616196394 +0000
++++ src/share/classes/javax/lang/model/util/AbstractElementVisitor7.java	2016-02-11 09:50:58.819128492 +0000
+@@ -25,12 +25,14 @@
+ 
+ package javax.lang.model.util;
+ 
+-import javax.lang.model.element.*;
+-import javax.annotation.processing.SupportedSourceVersion;
+-import javax.lang.model.element.*;
+-import static javax.lang.model.element.ElementKind.*;
+ import static javax.lang.model.SourceVersion.*;
++import static javax.lang.model.element.ElementKind.*;
++
++import javax.lang.model.util.AbstractElementVisitor6;
++
++import javax.annotation.processing.SupportedSourceVersion;
+ import javax.lang.model.SourceVersion;
++import javax.lang.model.element.*;
+ 
+ 
+ /**

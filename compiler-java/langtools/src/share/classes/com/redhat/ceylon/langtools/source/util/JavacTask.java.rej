@@ -1,0 +1,13 @@
+--- src/share/classes/com/sun/source/util/JavacTask.java	2016-02-10 11:54:12.679195139 +0000
++++ src/share/classes/com/sun/source/util/JavacTask.java	2016-02-11 09:50:59.703081564 +0000
+@@ -25,9 +25,8 @@
+ 
+ package com.sun.source.util;
+ 
+-import com.sun.source.tree.CompilationUnitTree;
+-import com.sun.source.tree.Tree;
+ import java.io.IOException;
++
+ import javax.lang.model.element.Element;
+ import javax.lang.model.type.TypeMirror;
+ import javax.lang.model.util.Elements;

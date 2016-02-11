@@ -1,0 +1,26 @@
+--- src/share/classes/com/sun/tools/javac/comp/Annotate.java	2016-02-10 11:54:12.664195438 +0000
++++ src/share/classes/com/sun/tools/javac/comp/Annotate.java	2016-02-11 09:51:02.038957555 +0000
+@@ -25,11 +25,11 @@
+ 
+ package com.sun.tools.javac.comp;
+ 
+-import com.sun.tools.javac.util.*;
+ import com.sun.tools.javac.code.*;
+ import com.sun.tools.javac.code.Symbol.*;
+ import com.sun.tools.javac.tree.*;
+ import com.sun.tools.javac.tree.JCTree.*;
++import com.sun.tools.javac.util.*;
+ 
+ /** Enter annotations on symbols.  Annotations accumulate in a queue,
+  *  which is processed at the top level of any set of recursive calls
+@@ -122,6 +122,10 @@
+         String toString();
+     }
+ 
++    // Ceylon
++    public void reset(){
++        q.clear();
++    }
+ 
+ /* ********************************************************************
+  * Compute an attribute from its annotation.

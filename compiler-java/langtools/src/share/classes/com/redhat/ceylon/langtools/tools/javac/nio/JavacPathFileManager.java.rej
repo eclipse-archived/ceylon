@@ -1,0 +1,27 @@
+--- src/share/classes/com/sun/tools/javac/nio/JavacPathFileManager.java	2016-02-10 11:54:12.702194681 +0000
++++ src/share/classes/com/sun/tools/javac/nio/JavacPathFileManager.java	2016-02-11 09:51:02.322942479 +0000
+@@ -53,20 +54,19 @@
+ import javax.lang.model.SourceVersion;
+ import javax.tools.FileObject;
+ import javax.tools.JavaFileManager;
++import javax.tools.JavaFileManager.Location;
+ import javax.tools.JavaFileObject;
+-import javax.tools.JavaFileObject.Kind;
+ import javax.tools.StandardLocation;
+-
+-import static java.nio.file.FileVisitOption.*;
+-import static javax.tools.StandardLocation.*;
+-
++import javax.tools.JavaFileObject.Kind;
+ import com.sun.tools.javac.file.Paths;
+ import com.sun.tools.javac.util.BaseFileManager;
+ import com.sun.tools.javac.util.Context;
+ import com.sun.tools.javac.util.List;
+ import com.sun.tools.javac.util.ListBuffer;
+ 
++import static javax.tools.StandardLocation.*;
+ import static com.sun.tools.javac.main.OptionName.*;
++import static java.nio.file.FileVisitOption.*;
+ 
+ 
+ // NOTE the imports carefully for this compilation unit.

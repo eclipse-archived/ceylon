@@ -1,0 +1,13 @@
+--- src/share/classes/com/sun/tools/javac/jvm/CRTable.java	2016-02-10 11:54:12.687194980 +0000
++++ src/share/classes/com/sun/tools/javac/jvm/CRTable.java	2016-02-11 09:51:01.951962174 +0000
+@@ -28,9 +28,9 @@
+ import java.util.*;
+ 
+ import com.sun.tools.javac.tree.*;
++import com.sun.tools.javac.tree.JCTree.*;
+ import com.sun.tools.javac.util.*;
+ import com.sun.tools.javac.util.List;
+-import com.sun.tools.javac.tree.JCTree.*;
+ 
+ /** This class contains the CharacterRangeTable for some method
+  *  and the hashtable for mapping trees or lists of trees to their

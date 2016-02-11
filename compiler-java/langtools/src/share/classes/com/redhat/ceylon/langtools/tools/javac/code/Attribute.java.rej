@@ -1,0 +1,11 @@
+--- src/share/classes/com/sun/tools/javac/code/Attribute.java	2016-02-10 11:54:12.653195657 +0000
++++ src/share/classes/com/sun/tools/javac/code/Attribute.java	2016-02-11 09:51:02.002959466 +0000
+@@ -37,8 +40,6 @@
+ import com.sun.tools.javac.code.Symbol.*;
+ import com.sun.tools.javac.util.*;
+ 
+-import static com.sun.tools.javac.code.TypeTags.*;
+-
+ /** An annotation value.
+  *
+  *  <p><b>This is NOT part of any supported API.

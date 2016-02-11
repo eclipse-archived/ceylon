@@ -1,0 +1,12 @@
+--- src/share/classes/com/sun/tools/javac/comp/AttrContext.java	2016-02-10 11:54:12.668195358 +0000
++++ src/share/classes/com/sun/tools/javac/comp/AttrContext.java	2016-02-11 09:51:02.072955750 +0000
+@@ -25,8 +25,8 @@
+ 
+ package com.sun.tools.javac.comp;
+ 
+-import com.sun.tools.javac.util.*;
+ import com.sun.tools.javac.code.*;
++import com.sun.tools.javac.util.*;
+ 
+ /** Contains information specific to the attribute and enter
+  *  passes, to be used in place of the generic field in environments.

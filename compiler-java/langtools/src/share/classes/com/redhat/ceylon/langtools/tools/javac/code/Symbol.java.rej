@@ -1,0 +1,85 @@
+--- src/share/classes/com/sun/tools/javac/code/Symbol.java	2016-02-10 11:54:12.659195538 +0000
++++ src/share/classes/com/sun/tools/javac/code/Symbol.java	2016-02-11 09:51:02.021958458 +0000
+@@ -25,13 +25,26 @@
+ 
+ package com.sun.tools.javac.code;
+ 
++import static com.sun.tools.javac.code.Flags.*;
++import static com.sun.tools.javac.code.Kinds.*;
++import static com.sun.tools.javac.code.TypeTags.*;
++
+ import java.util.Set;
+ import java.util.concurrent.Callable;
++
++import javax.lang.model.element.Element;
++import javax.lang.model.element.ElementKind;
++import javax.lang.model.element.ElementVisitor;
++import javax.lang.model.element.ExecutableElement;
++import javax.lang.model.element.Modifier;
++import javax.lang.model.element.NestingKind;
++import javax.lang.model.element.PackageElement;
++import javax.lang.model.element.TypeElement;
++import javax.lang.model.element.TypeParameterElement;
++import javax.lang.model.element.VariableElement;
++
+ import javax.lang.model.element.*;
+ import javax.tools.JavaFileObject;
+-
+-import com.sun.tools.javac.util.*;
+-import com.sun.tools.javac.util.Name;
+ import com.sun.tools.javac.code.Type.*;
+ import com.sun.tools.javac.comp.Attr;
+ import com.sun.tools.javac.comp.AttrContext;
+@@ -39,10 +52,9 @@
+ import com.sun.tools.javac.jvm.*;
+ import com.sun.tools.javac.model.*;
+ import com.sun.tools.javac.tree.JCTree;
+-
+-import static com.sun.tools.javac.code.Flags.*;
+-import static com.sun.tools.javac.code.Kinds.*;
+-import static com.sun.tools.javac.code.TypeTags.*;
++import com.sun.tools.javac.util.*;
++import com.sun.tools.javac.util.List;
++import com.sun.tools.javac.util.Name;
+ 
+ /** Root class for Java symbols. It contains subclasses
+  *  for specific sorts of symbols, such as variables, methods and operators,
+@@ -495,6 +525,8 @@
+         public String toString() { return other.toString(); }
+         public Symbol location() { return other.location(); }
+         public Symbol location(Type site, Types types) { return other.location(site, types); }
++        // Backported by Ceylon from JDK8
++        public Symbol baseSymbol() { return other; }
+         public Type erasure(Types types) { return other.erasure(types); }
+         public Type externalType(Types types) { return other.externalType(types); }
+         public boolean isLocal() { return other.isLocal(); }
+@@ -938,7 +970,13 @@
+         /** Clone this symbol with new owner.
+          */
+         public VarSymbol clone(Symbol newOwner) {
+-            VarSymbol v = new VarSymbol(flags_field, name, type, newOwner);
++            VarSymbol v = new VarSymbol(flags_field, name, type, newOwner) {
++                // Backported by Ceylon from JDK8
++                @Override
++                public Symbol baseSymbol() {
++                    return VarSymbol.this;
++                }
++            };
+             v.pos = pos;
+             v.adr = adr;
+             v.data = data;
+@@ -1065,7 +1103,13 @@
+         /** Clone this symbol with new owner.
+          */
+         public MethodSymbol clone(Symbol newOwner) {
+-            MethodSymbol m = new MethodSymbol(flags_field, name, type, newOwner);
++            MethodSymbol m = new MethodSymbol(flags_field, name, type, newOwner) {
++                // Backported by Ceylon from JDK8
++                @Override
++                public Symbol baseSymbol() {
++                    return MethodSymbol.this;
++                }
++            };
+             m.code = code;
+             return m;
+         }

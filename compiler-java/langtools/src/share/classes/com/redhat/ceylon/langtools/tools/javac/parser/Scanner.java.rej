@@ -1,0 +1,22 @@
+--- src/share/classes/com/sun/tools/javac/parser/Scanner.java	2016-02-10 11:54:12.707194581 +0000
++++ src/share/classes/com/sun/tools/javac/parser/Scanner.java	2016-02-11 09:51:02.187949645 +0000
+@@ -25,16 +25,15 @@
+ 
+ package com.sun.tools.javac.parser;
+ 
++import static com.sun.tools.javac.parser.Token.*;
++import static com.sun.tools.javac.util.LayoutCharacters.*;
++
+ import java.nio.*;
+ 
+ import com.sun.tools.javac.code.Source;
+ import com.sun.tools.javac.file.JavacFileManager;
+ import com.sun.tools.javac.util.*;
+ 
+-
+-import static com.sun.tools.javac.parser.Token.*;
+-import static com.sun.tools.javac.util.LayoutCharacters.*;
+-
+ /** The lexical analyzer maps an input stream consisting of
+  *  ASCII characters and Unicode escapes into a token sequence.
+  *

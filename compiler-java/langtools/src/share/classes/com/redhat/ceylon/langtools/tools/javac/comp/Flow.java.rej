@@ -1,0 +1,142 @@
+--- src/share/classes/com/sun/tools/javac/comp/Flow.java	2016-02-10 11:54:12.672195279 +0000
++++ src/share/classes/com/sun/tools/javac/comp/Flow.java	2016-02-11 09:51:02.076955538 +0000
+@@ -27,21 +27,21 @@
+ 
+ package com.sun.tools.javac.comp;
+ 
++import static com.sun.tools.javac.code.Flags.*;
++import static com.sun.tools.javac.code.Kinds.*;
++import static com.sun.tools.javac.code.TypeTags.*;
++
+ import java.util.HashMap;
+ import java.util.Map;
+-import java.util.LinkedHashMap;
+ 
+ import com.sun.tools.javac.code.*;
++import com.sun.tools.javac.code.Symbol.*;
+ import com.sun.tools.javac.tree.*;
++import com.sun.tools.javac.tree.JCTree.*;
+ import com.sun.tools.javac.util.*;
+ import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ 
+-import com.sun.tools.javac.code.Symbol.*;
+-import com.sun.tools.javac.tree.JCTree.*;
+-
+-import static com.sun.tools.javac.code.Flags.*;
+-import static com.sun.tools.javac.code.Kinds.*;
+-import static com.sun.tools.javac.code.TypeTags.*;
++import java.util.LinkedHashMap;
+ 
+ /** This pass implements dataflow analysis for Java programs.
+  *  Liveness analysis checks that every statement is reachable.
+@@ -192,6 +192,7 @@
+     private       Lint lint;
+     private final boolean allowImprovedRethrowAnalysis;
+     private final boolean allowImprovedCatchAnalysis;
++    private final SourceLanguage sourceLanguage;
+ 
+     public static Flow instance(Context context) {
+         Flow instance = context.get(flowKey);
+@@ -340,6 +342,9 @@
+      *  is caught.
+      */
+     void markThrown(JCTree tree, Type exc) {
++        if (sourceLanguage.isCeylon()) {
++            return;
++        }
+         if (!chk.isUnchecked(tree.pos(), exc)) {
+             if (!chk.isHandled(exc, caught))
+                 pendingExits.append(new PendingExit(tree, exc));
+@@ -359,6 +364,10 @@
+               classDef.sym.isEnclosedBy((ClassSymbol)sym.owner)));
+     }
+ 
++    protected boolean ceylonNoInitCheck(VarSymbol sym) {
++        return sourceLanguage.isCeylon() && sym.attribute(syms.ceylonAtNoInitCheckType.tsym) != null;
++    }
++
+     /** Initialize new trackable variable by setting its address field
+      *  to the next available sequence number and entering it under that
+      *  index into the vars array.
+@@ -391,11 +400,13 @@
+                               sym);
+                     }
+                 } else if (!uninits.isMember(sym.adr)) {
++                    if (!sourceLanguage.isCeylon()) {
+                     log.error(pos,
+                               loopPassTwo
+                               ? "var.might.be.assigned.in.loop"
+                               : "var.might.already.be.assigned",
+                               sym);
++                    }
+                 } else if (!inits.isMember(sym.adr)) {
+                     // reachable assignment
+                     uninits.excl(sym.adr);
+@@ -406,7 +417,7 @@
+                 }
+             }
+             inits.incl(sym.adr);
+-        } else if ((sym.flags() & FINAL) != 0) {
++        } else if ((sym.flags() & FINAL) != 0 && !ceylonNoInitCheck(sym)) {
+             log.error(pos, "var.might.already.be.assigned", sym);
+         }
+     }
+@@ -430,7 +441,8 @@
+     void checkInit(DiagnosticPosition pos, VarSymbol sym) {
+         if ((sym.adr >= firstadr || sym.owner.kind != TYP) &&
+             trackable(sym) &&
+-            !inits.isMember(sym.adr)) {
++            !inits.isMember(sym.adr) && 
++            !ceylonNoInitCheck(sym)) {
+             log.error(pos, "var.might.not.have.been.initialized",
+                       sym);
+             inits.incl(sym.adr);
+@@ -564,6 +576,9 @@
+      *  rather than (un)inits on exit.
+      */
+     void scanCond(JCTree tree) {
++        // Ceylon: moved it up from the else block because with Let we can have true/false and
++        // still need scanning for expressions/statements
++        scan(tree);
+         if (tree.type.isFalse()) {
+             if (inits == null) merge();
+             initsWhenTrue = inits.dup();
+@@ -581,7 +596,6 @@
+             initsWhenTrue = inits;
+             uninitsWhenTrue = uninits;
+         } else {
+-            scan(tree);
+             if (inits != null)
+                 split(tree.type != syms.unknownType);
+         }
+@@ -803,6 +817,16 @@
+         nextadr = nextadrPrev;
+     }
+ 
++    @Override
++    public void visitLetExpr(LetExpr tree) {
++        int nextadrPrev = nextadr;
++        if(tree.stats != null)
++            scanStats(tree.stats);
++        if(tree.expr != null)
++            scanExpr(tree.expr);
++        nextadr = nextadrPrev;
++    }
++
+     public void visitDoLoop(JCDoWhileLoop tree) {
+         ListBuffer<PendingExit> prevPendingExits = pendingExits;
+         boolean prevLoopPassTwo = loopPassTwo;
+@@ -1155,9 +1179,11 @@
+             log.error(pos, "except.already.caught", exc);
+         } else if (!chk.isUnchecked(pos, exc) &&
+                 !isExceptionOrThrowable(exc) &&
+-                !chk.intersects(exc, thrownInTry)) {
++                !chk.intersects(exc, thrownInTry) &&
++                !sourceLanguage.isCeylon()) {
+             log.error(pos, "except.never.thrown.in.try", exc);
+-        } else if (allowImprovedCatchAnalysis) {
++        } else if (allowImprovedCatchAnalysis &&
++                !sourceLanguage.isCeylon()) {
+             List<Type> catchableThrownTypes = chk.intersect(List.of(exc), thrownInTry);
+             // 'catchableThrownTypes' cannnot possibly be empty - if 'exc' was an
+             // unchecked exception, the result list would not be empty, as the augmented

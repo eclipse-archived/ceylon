@@ -1,0 +1,56 @@
+--- src/share/classes/com/sun/tools/javac/processing/JavacProcessingEnvironment.java	2016-02-10 11:54:12.711194502 +0000
++++ src/share/classes/com/sun/tools/javac/processing/JavacProcessingEnvironment.java	2016-02-11 09:51:02.335941789 +0000
+@@ -29,6 +29,14 @@
+ import java.util.*;
+ import java.util.regex.*;
+ 
++import javax.annotation.processing.Filer;
++import javax.annotation.processing.Messager;
++import javax.annotation.processing.ProcessingEnvironment;
++import javax.annotation.processing.Processor;
++import javax.annotation.processing.RoundEnvironment;
++import javax.lang.model.util.ElementScanner7;
++import javax.lang.model.util.Elements;
++
+ import java.net.URL;
+ import java.io.Closeable;
+ import java.io.File;
+@@ -41,14 +49,13 @@
+ import javax.lang.model.SourceVersion;
+ import javax.lang.model.element.AnnotationMirror;
+ import javax.lang.model.element.Element;
+-import javax.lang.model.element.TypeElement;
+ import javax.lang.model.element.PackageElement;
++import javax.lang.model.element.TypeElement;
+ import javax.lang.model.util.*;
++import javax.tools.DiagnosticListener;
+ import javax.tools.JavaFileManager;
+-import javax.tools.StandardJavaFileManager;
+ import javax.tools.JavaFileObject;
+-import javax.tools.DiagnosticListener;
+-
++import javax.tools.StandardJavaFileManager;
+ import com.sun.source.util.TaskEvent;
+ import com.sun.source.util.TaskListener;
+ import com.sun.tools.javac.api.JavacTaskImpl;
+@@ -73,17 +80,17 @@
+ import com.sun.tools.javac.util.Convert;
+ import com.sun.tools.javac.util.FatalError;
+ import com.sun.tools.javac.util.JCDiagnostic;
++import com.sun.tools.javac.util.JavacMessages;
+ import com.sun.tools.javac.util.List;
+ import com.sun.tools.javac.util.Log;
+-import com.sun.tools.javac.util.JavacMessages;
+ import com.sun.tools.javac.util.Name;
+ import com.sun.tools.javac.util.Names;
+ import com.sun.tools.javac.util.Options;
+ 
+ import static javax.tools.StandardLocation.*;
+-import static com.sun.tools.javac.util.JCDiagnostic.DiagnosticFlag.*;
+-import static com.sun.tools.javac.main.OptionName.*;
+ import static com.sun.tools.javac.code.Lint.LintCategory.PROCESSING;
++import static com.sun.tools.javac.main.OptionName.*;
++import static com.sun.tools.javac.util.JCDiagnostic.DiagnosticFlag.*;
+ 
+ /**
+  * Objects of this class hold and manage the state needed to support

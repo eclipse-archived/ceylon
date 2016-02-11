@@ -1,0 +1,11 @@
+--- src/share/classes/com/sun/tools/javac/util/Log.java	2016-02-10 11:54:12.736194003 +0000
++++ src/share/classes/com/sun/tools/javac/util/Log.java	2016-02-11 09:51:02.237946991 +0000
+@@ -43,8 +45,6 @@
+ import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ import com.sun.tools.javac.util.JCDiagnostic.DiagnosticType;
+ 
+-import static com.sun.tools.javac.main.OptionName.*;
+-
+ /** A class for error logs. Reports errors and warnings, and
+  *  keeps track of error numbers and positions.
+  *

@@ -1,0 +1,23 @@
+--- src/share/classes/javax/lang/model/util/TypeKindVisitor7.java	2016-02-10 11:54:12.623196255 +0000
++++ src/share/classes/javax/lang/model/util/TypeKindVisitor7.java	2016-02-11 09:50:58.798129607 +0000
+@@ -25,11 +25,17 @@
+ 
+ package javax.lang.model.util;
+ 
+-import javax.lang.model.type.*;
+-import javax.annotation.processing.SupportedSourceVersion;
+-import static javax.lang.model.element.ElementKind.*;
+ import static javax.lang.model.SourceVersion.*;
++import static javax.lang.model.element.ElementKind.*;
++
++import javax.lang.model.type.TypeKind;
++import javax.lang.model.type.TypeMirror;
++import javax.lang.model.type.UnionType;
++import javax.lang.model.util.TypeKindVisitor6;
++
++import javax.annotation.processing.SupportedSourceVersion;
+ import javax.lang.model.SourceVersion;
++import javax.lang.model.type.*;
+ 
+ /**
+  * A visitor of types based on their {@linkplain TypeKind kind} with

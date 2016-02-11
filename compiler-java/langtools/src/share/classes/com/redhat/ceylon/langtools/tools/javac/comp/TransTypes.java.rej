@@ -1,0 +1,16 @@
+--- src/share/classes/com/sun/tools/javac/comp/TransTypes.java	2016-02-10 11:54:12.679195139 +0000
++++ src/share/classes/com/sun/tools/javac/comp/TransTypes.java	2016-02-11 09:51:02.071955803 +0000
+@@ -38,12 +41,8 @@
+ import com.sun.tools.javac.tree.*;
+ import com.sun.tools.javac.tree.JCTree.*;
+ import com.sun.tools.javac.util.*;
+-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ import com.sun.tools.javac.util.List;
+-
+-import static com.sun.tools.javac.code.Flags.*;
+-import static com.sun.tools.javac.code.Kinds.*;
+-import static com.sun.tools.javac.code.TypeTags.*;
++import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ 
+ /** This pass translates Generic Java to conventional Java.
+  *

@@ -1,0 +1,15 @@
+--- src/share/classes/com/sun/source/tree/Scope.java	2016-02-10 11:54:12.674195239 +0000
++++ src/share/classes/com/sun/source/tree/Scope.java	2016-02-11 09:50:59.764078326 +0000
+@@ -25,11 +25,11 @@
+ 
+ package com.sun.source.tree;
+ 
+-import com.sun.source.tree.Tree;
+ import javax.lang.model.element.Element;
+ import javax.lang.model.element.ExecutableElement;
+ import javax.lang.model.element.TypeElement;
+ import javax.lang.model.type.DeclaredType;
++import com.sun.source.tree.Tree;
+ 
+ /**
+  * Interface for determining locally available program elements, such as

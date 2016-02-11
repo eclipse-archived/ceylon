@@ -1,0 +1,34 @@
+--- src/share/classes/com/sun/tools/javac/jvm/Code.java	2016-02-10 11:54:12.691194900 +0000
++++ src/share/classes/com/sun/tools/javac/jvm/Code.java	2016-02-11 09:51:01.966961377 +0000
+@@ -25,16 +25,16 @@
+ 
+ package com.sun.tools.javac.jvm;
+ 
++import static com.sun.tools.javac.code.TypeTags.*;
++import static com.sun.tools.javac.jvm.ByteCodes.*;
++import static com.sun.tools.javac.jvm.ClassWriter.StackMapTableFrame;
++import static com.sun.tools.javac.jvm.UninitializedType.*;
++
+ import com.sun.tools.javac.code.*;
+ import com.sun.tools.javac.code.Symbol.*;
+ import com.sun.tools.javac.util.*;
+ import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ 
+-import static com.sun.tools.javac.code.TypeTags.*;
+-import static com.sun.tools.javac.jvm.ByteCodes.*;
+-import static com.sun.tools.javac.jvm.UninitializedType.*;
+-import static com.sun.tools.javac.jvm.ClassWriter.StackMapTableFrame;
+-
+ /** An internal structure that corresponds to the code attribute of
+  *  methods in a classfile. The class also provides some utility operations to
+  *  generate bytecode instructions.
+@@ -903,6 +903,9 @@
+         if (o instanceof Double) return syms.doubleType;
+         if (o instanceof ClassSymbol) return syms.classType;
+         if (o instanceof Type.ArrayType) return syms.classType;
++        // Backported by Ceylon from JDK8
++        if (o instanceof Type.MethodType) return syms.methodTypeType;
++        if (o instanceof Pool.MethodHandle) return syms.methodHandleType;
+         throw new AssertionError(o);
+     }
+ 

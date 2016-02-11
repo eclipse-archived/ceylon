@@ -1,0 +1,11 @@
+--- src/share/classes/javax/lang/model/element/VariableElement.java	2016-02-10 11:54:12.772193286 +0000
++++ src/share/classes/javax/lang/model/element/VariableElement.java	2016-02-11 09:50:58.838127483 +0000
+@@ -25,6 +25,8 @@
+ 
+ package javax.lang.model.element;
+ 
++import javax.lang.model.element.Element;
++
+ import javax.lang.model.type.TypeMirror;
+ import javax.lang.model.util.Elements;
+ 

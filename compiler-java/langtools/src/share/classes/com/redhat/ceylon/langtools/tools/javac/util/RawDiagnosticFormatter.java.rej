@@ -1,0 +1,25 @@
+--- src/share/classes/com/sun/tools/javac/util/RawDiagnosticFormatter.java	2016-02-10 11:54:12.740193924 +0000
++++ src/share/classes/com/sun/tools/javac/util/RawDiagnosticFormatter.java	2016-02-11 09:51:02.271945186 +0000
+@@ -24,18 +24,18 @@
+  */
+ package com.sun.tools.javac.util;
+ 
++import static com.sun.tools.javac.api.DiagnosticFormatter.PositionKind.*;
++
+ import java.util.Collection;
+ import java.util.EnumSet;
+ import java.util.Locale;
+-import javax.tools.JavaFileObject;
+ 
+-import com.sun.tools.javac.api.DiagnosticFormatter.Configuration.*;
++import javax.tools.JavaFileObject;
+ import com.sun.tools.javac.api.Formattable;
++import com.sun.tools.javac.api.DiagnosticFormatter.Configuration.*;
+ import com.sun.tools.javac.file.BaseFileObject;
+ import com.sun.tools.javac.util.AbstractDiagnosticFormatter.SimpleConfiguration;
+ 
+-import static com.sun.tools.javac.api.DiagnosticFormatter.PositionKind.*;
+-
+ /**
+  * A raw formatter for diagnostic messages.
+  * The raw formatter will format a diagnostic according to one of two format patterns, depending on whether

@@ -1,0 +1,37 @@
+--- src/share/classes/com/sun/tools/javac/code/Type.java	2016-02-10 11:54:12.661195498 +0000
++++ src/share/classes/com/sun/tools/javac/code/Type.java	2016-02-11 09:51:02.027958139 +0000
+@@ -25,17 +25,27 @@
+ 
+ package com.sun.tools.javac.code;
+ 
++import static com.sun.tools.javac.code.BoundKind.*;
++import static com.sun.tools.javac.code.Flags.*;
++import static com.sun.tools.javac.code.Kinds.*;
++import static com.sun.tools.javac.code.TypeTags.*;
++
+ import java.util.Collections;
+ 
+-import com.sun.tools.javac.util.*;
+-import com.sun.tools.javac.code.Symbol.*;
++import javax.lang.model.type.DeclaredType;
++import javax.lang.model.type.ExecutableType;
++import javax.lang.model.type.NoType;
++import javax.lang.model.type.NullType;
++import javax.lang.model.type.PrimitiveType;
++import javax.lang.model.type.TypeKind;
++import javax.lang.model.type.TypeMirror;
++import javax.lang.model.type.TypeVariable;
++import javax.lang.model.type.TypeVisitor;
++import javax.lang.model.type.UnionType;
+ 
+ import javax.lang.model.type.*;
+-
+-import static com.sun.tools.javac.code.Flags.*;
+-import static com.sun.tools.javac.code.Kinds.*;
+-import static com.sun.tools.javac.code.BoundKind.*;
+-import static com.sun.tools.javac.code.TypeTags.*;
++import com.sun.tools.javac.code.Symbol.*;
++import com.sun.tools.javac.util.*;
+ 
+ /** This class represents Java types. The class itself defines the behavior of
+  *  the following types:

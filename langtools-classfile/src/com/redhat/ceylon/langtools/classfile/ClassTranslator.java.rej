@@ -1,0 +1,19 @@
+--- com/sun/tools/classfile/ClassTranslator.java	2016-02-10 11:54:12.708194561 +0000
++++ com/sun/tools/classfile/ClassTranslator.java	2016-02-11 09:51:03.325889234 +0000
+@@ -25,6 +25,8 @@
+ 
+ package com.sun.tools.classfile;
+ 
++import java.util.Map;
++
+ import com.sun.tools.classfile.ConstantPool.CONSTANT_Class_info;
+ import com.sun.tools.classfile.ConstantPool.CONSTANT_Double_info;
+ import com.sun.tools.classfile.ConstantPool.CONSTANT_Fieldref_info;
+@@ -40,7 +42,6 @@
+ import com.sun.tools.classfile.ConstantPool.CONSTANT_String_info;
+ import com.sun.tools.classfile.ConstantPool.CONSTANT_Utf8_info;
+ import com.sun.tools.classfile.ConstantPool.CPInfo;
+-import java.util.Map;
+ 
+ /**
+  * Rewrites a class file using a map of translations.

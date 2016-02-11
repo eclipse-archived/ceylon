@@ -1,0 +1,14 @@
+--- src/share/classes/com/sun/source/util/TreePath.java	2016-02-10 11:54:12.681195099 +0000
++++ src/share/classes/com/sun/source/util/TreePath.java	2016-02-11 09:50:59.723080502 +0000
+@@ -25,9 +25,10 @@
+ 
+ package com.sun.source.util;
+ 
+-import com.sun.source.tree.*;
+ import java.util.Iterator;
+ 
++import com.sun.source.tree.*;
++
+ /**
+  * A path of tree nodes, typically used to represent the sequence of ancestor
+  * nodes of a tree node up to the top level CompilationUnitTree node.

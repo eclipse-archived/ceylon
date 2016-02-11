@@ -1,0 +1,22 @@
+--- src/share/classes/com/sun/tools/javac/comp/ConstFold.java	2016-02-10 11:54:12.670195318 +0000
++++ src/share/classes/com/sun/tools/javac/comp/ConstFold.java	2016-02-11 09:51:02.081955272 +0000
+@@ -25,15 +25,14 @@
+ 
+ package com.sun.tools.javac.comp;
+ 
++import static com.sun.tools.javac.code.TypeTags.*;
++import static com.sun.tools.javac.jvm.ByteCodes.*;
++
+ import com.sun.tools.javac.code.*;
++import com.sun.tools.javac.code.Type.*;
+ import com.sun.tools.javac.jvm.*;
+ import com.sun.tools.javac.util.*;
+ 
+-import com.sun.tools.javac.code.Type.*;
+-
+-import static com.sun.tools.javac.code.TypeTags.*;
+-import static com.sun.tools.javac.jvm.ByteCodes.*;
+-
+ /** Helper class for constant folding, used by the attribution phase.
+  *  This class is marked strictfp as mandated by JLS 15.4.
+  *

@@ -1,0 +1,65 @@
+--- src/share/classes/com/sun/tools/javac/comp/Check.java	2016-02-10 11:54:12.670195318 +0000
++++ src/share/classes/com/sun/tools/javac/comp/Check.java	2016-02-11 09:51:02.045957183 +0000
+@@ -25,27 +25,23 @@
+ 
+ package com.sun.tools.javac.comp;
+ 
++import static com.sun.tools.javac.code.Flags.*;
++import static com.sun.tools.javac.code.Kinds.*;
++import static com.sun.tools.javac.code.TypeTags.*;
++import static com.sun.tools.javac.main.OptionName.*;
++
+ import java.util.*;
+-import java.util.Set;
+ 
+ import com.sun.tools.javac.code.*;
++import com.sun.tools.javac.code.Lint.LintCategory;
++import com.sun.tools.javac.code.Symbol.*;
++import com.sun.tools.javac.code.Type.*;
+ import com.sun.tools.javac.jvm.*;
+ import com.sun.tools.javac.tree.*;
++import com.sun.tools.javac.tree.JCTree.*;
+ import com.sun.tools.javac.util.*;
+-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ import com.sun.tools.javac.util.List;
+-
+-import com.sun.tools.javac.tree.JCTree.*;
+-import com.sun.tools.javac.code.Lint;
+-import com.sun.tools.javac.code.Lint.LintCategory;
+-import com.sun.tools.javac.code.Type.*;
+-import com.sun.tools.javac.code.Symbol.*;
+-
+-import static com.sun.tools.javac.code.Flags.*;
+-import static com.sun.tools.javac.code.Kinds.*;
+-import static com.sun.tools.javac.code.TypeTags.*;
+-
+-import static com.sun.tools.javac.main.OptionName.*;
++import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ 
+ /** Type checking helper class for the attribution phase.
+  *
+@@ -70,6 +66,7 @@
+     private boolean suppressAbortOnBadClassFile;
+     private boolean enableSunApiLintControl;
+     private final TreeInfo treeinfo;
++    private final SourceLanguage sourceLanguage;
+ 
+     // The set of lint options currently in effect. It is initialized
+     // from the context, and then is set/reset as needed by Attr as it
+@@ -91,6 +88,7 @@
+         context.put(checkKey, this);
+ 
+         names = Names.instance(context);
++        sourceLanguage = SourceLanguage.instance(context);
+         log = Log.instance(context);
+         syms = Symtab.instance(context);
+         enter = Enter.instance(context);
+@@ -1823,6 +1840,8 @@
+                         MethodSymbol implmeth = absmeth.implementation(impl, types, true);
+                         if (implmeth == null || implmeth == absmeth)
+                             undef = absmeth;
++                        else if(sourceLanguage.isCeylon())
++                            implmeth.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
+                     }
+                 }
+                 if (undef == null) {

@@ -1,0 +1,38 @@
+--- src/share/classes/com/sun/tools/javac/comp/Lower.java	2016-02-10 11:54:12.675195219 +0000
++++ src/share/classes/com/sun/tools/javac/comp/Lower.java	2016-02-11 09:51:02.036957661 +0000
+@@ -25,26 +25,23 @@
+ 
+ package com.sun.tools.javac.comp;
+ 
++import static com.sun.tools.javac.code.Flags.*;
++import static com.sun.tools.javac.code.Kinds.*;
++import static com.sun.tools.javac.code.TypeTags.*;
++import static com.sun.tools.javac.jvm.ByteCodes.*;
++
+ import java.util.*;
+ 
+ import com.sun.tools.javac.code.*;
++import com.sun.tools.javac.code.Symbol.*;
++import com.sun.tools.javac.code.Type.*;
+ import com.sun.tools.javac.jvm.*;
+ import com.sun.tools.javac.main.RecognizedOptions.PkgInfo;
+ import com.sun.tools.javac.tree.*;
++import com.sun.tools.javac.tree.JCTree.*;
+ import com.sun.tools.javac.util.*;
+-import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ import com.sun.tools.javac.util.List;
+-
+-import com.sun.tools.javac.code.Symbol.*;
+-import com.sun.tools.javac.tree.JCTree.*;
+-import com.sun.tools.javac.code.Type.*;
+-
+-import com.sun.tools.javac.jvm.Target;
+-
+-import static com.sun.tools.javac.code.Flags.*;
+-import static com.sun.tools.javac.code.Kinds.*;
+-import static com.sun.tools.javac.code.TypeTags.*;
+-import static com.sun.tools.javac.jvm.ByteCodes.*;
++import com.sun.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+ 
+ /** This pass translates away some syntactic sugar: inner classes,
+  *  class literals, assertions, foreach loops, etc.

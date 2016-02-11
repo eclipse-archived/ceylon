@@ -1,0 +1,44 @@
+--- src/share/classes/com/sun/tools/javac/file/JavacFileManager.java	2016-02-10 11:54:12.681195099 +0000
++++ src/share/classes/com/sun/tools/javac/file/JavacFileManager.java	2016-02-11 09:51:02.092954688 +0000
+@@ -54,9 +55,8 @@
+ import javax.tools.JavaFileManager;
+ import javax.tools.JavaFileObject;
+ import javax.tools.StandardJavaFileManager;
+-
+-import com.sun.tools.javac.file.RelativePath.RelativeFile;
+ import com.sun.tools.javac.file.RelativePath.RelativeDirectory;
++import com.sun.tools.javac.file.RelativePath.RelativeFile;
+ import com.sun.tools.javac.main.OptionName;
+ import com.sun.tools.javac.util.BaseFileManager;
+ import com.sun.tools.javac.util.Context;
+@@ -104,7 +105,8 @@
+      *  If classOutDir = null, files are written into same directory as the sources
+      *  they were generated from.
+      */
+-    private File classOutDir = uninited;
++    // Ceylon: made protected
++    protected File classOutDir = uninited;
+ 
+     /** The output directory, used when generating sources while processing annotations.
+      *  Initialized by the "-s" option.
+@@ -499,6 +505,11 @@
+      */
+     private Archive openArchive(File zipFileName, boolean useOptimizedZip) throws IOException {
+         File origZipFileName = zipFileName;
++    	if(zipFileName.getName().endsWith(".jimage")){
++    		Archive archive = new JImageZipFile(this, zipFileName);
++            archives.put(origZipFileName, archive);
++            return archive;
++    	}
+         if (!ignoreSymbolFile && paths.isDefaultBootClassPathRtJar(zipFileName)) {
+             File file = zipFileName.getParentFile().getParentFile(); // ${java.home}
+             if (new File(file.getName()).equals(new File("jre")))
+@@ -869,7 +880,7 @@
+             return paths.getPathForLocation(location);
+     }
+ 
+-    private File getClassOutDir() {
++    protected File getClassOutDir() {
+         if (classOutDir == uninited)
+             classOutDir = getOutputLocation(null, D);
+         return classOutDir;

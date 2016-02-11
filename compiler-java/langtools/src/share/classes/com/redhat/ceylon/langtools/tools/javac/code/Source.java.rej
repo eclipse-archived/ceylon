@@ -1,0 +1,18 @@
+--- src/share/classes/com/sun/tools/javac/code/Source.java	2016-02-10 11:54:12.657195577 +0000
++++ src/share/classes/com/sun/tools/javac/code/Source.java	2016-02-11 09:51:02.013958882 +0000
+@@ -26,12 +26,12 @@
+ package com.sun.tools.javac.code;
+ 
+ import java.util.*;
+-import javax.lang.model.SourceVersion;
+-import static javax.lang.model.SourceVersion.*;
+ 
+-import com.sun.tools.javac.util.*;
++import javax.lang.model.SourceVersion;
+ import com.sun.tools.javac.jvm.Target;
++import com.sun.tools.javac.util.*;
+ 
++import static javax.lang.model.SourceVersion.*;
+ import static com.sun.tools.javac.main.OptionName.*;
+ 
+ /** The source language version accepted.

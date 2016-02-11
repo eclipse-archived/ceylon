@@ -1,0 +1,36 @@
+--- src/share/classes/com/sun/tools/javac/util/RichDiagnosticFormatter.java	2016-02-10 11:54:12.740193924 +0000
++++ src/share/classes/com/sun/tools/javac/util/RichDiagnosticFormatter.java	2016-02-11 09:51:02.217948053 +0000
+@@ -24,25 +24,26 @@
+  */
+ package com.sun.tools.javac.util;
+ 
++import static com.sun.tools.javac.code.Flags.*;
++import static com.sun.tools.javac.code.TypeTags.*;
++import static com.sun.tools.javac.util.LayoutCharacters.*;
++import static com.sun.tools.javac.util.RichDiagnosticFormatter.RichConfiguration.*;
++
+ import java.util.EnumSet;
+ import java.util.HashMap;
+ import java.util.LinkedHashMap;
+ import java.util.Locale;
+ import java.util.Map;
+ 
++import javax.lang.model.element.Name;
+ import com.sun.tools.javac.code.Kinds;
+ import com.sun.tools.javac.code.Printer;
+ import com.sun.tools.javac.code.Symbol;
+-import com.sun.tools.javac.code.Symbol.*;
+ import com.sun.tools.javac.code.Symtab;
+ import com.sun.tools.javac.code.Type;
+-import com.sun.tools.javac.code.Type.*;
+ import com.sun.tools.javac.code.Types;
+-
+-import static com.sun.tools.javac.code.TypeTags.*;
+-import static com.sun.tools.javac.code.Flags.*;
+-import static com.sun.tools.javac.util.LayoutCharacters.*;
+-import static com.sun.tools.javac.util.RichDiagnosticFormatter.RichConfiguration.*;
++import com.sun.tools.javac.code.Symbol.*;
++import com.sun.tools.javac.code.Type.*;
+ 
+ /**
+  * A rich diagnostic formatter is a formatter that provides better integration

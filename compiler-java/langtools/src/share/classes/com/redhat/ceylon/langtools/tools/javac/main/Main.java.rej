@@ -1,0 +1,64 @@
+--- src/share/classes/com/sun/tools/javac/main/Main.java	2016-02-10 11:54:12.697194780 +0000
++++ src/share/classes/com/sun/tools/javac/main/Main.java	2016-02-11 09:51:02.144951928 +0000
+@@ -34,20 +36,18 @@
+ import java.security.DigestInputStream;
+ import java.security.MessageDigest;
+ import java.util.MissingResourceException;
++
++import javax.annotation.processing.Processor;
+ import javax.tools.JavaFileManager;
+ import javax.tools.JavaFileObject;
+-import javax.annotation.processing.Processor;
+-
+ import com.sun.tools.javac.code.Source;
+ import com.sun.tools.javac.file.CacheFSInfo;
+ import com.sun.tools.javac.file.JavacFileManager;
+ import com.sun.tools.javac.jvm.Target;
+ import com.sun.tools.javac.main.JavacOption.Option;
+ import com.sun.tools.javac.main.RecognizedOptions.OptionHelper;
+-import com.sun.tools.javac.util.*;
+ import com.sun.tools.javac.processing.AnnotationProcessingError;
+-
+-import static com.sun.tools.javac.main.OptionName.*;
++import com.sun.tools.javac.util.*;
+ 
+ /** This class provides a commandline interface to the GJC compiler.
+  *
+@@ -104,6 +104,10 @@
+             help();
+         }
+ 
++        public void printJhelp() {
++            help();
++        }
++
+         public void printXhelp() {
+             xhelp();
+         }
+@@ -146,7 +150,7 @@
+ 
+     /** Print a string that explains usage.
+      */
+-    void help() {
++    protected void help() {
+         Log.printLines(out, getLocalizedString("msg.usage.header", ownName));
+         for (int i=0; i<recognizedOptions.length; i++) {
+             recognizedOptions[i].help(out);
+@@ -156,7 +160,7 @@
+ 
+     /** Print a string that explains usage for X options.
+      */
+-    void xhelp() {
++    protected void xhelp() {
+         for (int i=0; i<recognizedOptions.length; i++) {
+             recognizedOptions[i].xhelp(out);
+         }
+@@ -583,7 +587,7 @@
+     }
+ 
+     private static final String javacBundleName =
+-        "com.sun.tools.javac.resources.javac";
++        "com.sun.tools.javac.resources.ceylonc";
+ 
+     private static JavacMessages messages;
+ }
