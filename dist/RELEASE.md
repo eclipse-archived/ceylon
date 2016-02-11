@@ -69,6 +69,14 @@ How to do a release of Ceylon.
   -  $ vim ~stephane/src/ceylon-rpm-repo/build.sh # Add the new release
   -  $ ~stephane/src/ceylon-rpm-repo/build.sh
 
+# Publishing to the Herd
+
+1. First create an Upload on the server
+2. Publish the official distribution to it
+  - $ docker run -ti --rm -v /tmp/ceylon:/output -e PUBLISH_VERSION=1.2.1 -e HERD_REPO="https://modules.ceylon-lang.org/uploads/**XXX**/repo/" -e HERD_USER=**user** -e HERD_PASS=**password** ceylon/ceylon-publish
+3. Publish the SDK modules by running the following in the `ceylon-sdk` project:
+  - $ ant copy-herd -Dherd.repo=https://modules.ceylon-lang.org/uploads/**XXX**/repo/ -Dherd.user=**user** -Dherd.pass=**password**
+
 # Update the web site
 
  - See [this README](https://github.com/ceylon/ceylon-lang.org/blob/master/RELEASE.md)
