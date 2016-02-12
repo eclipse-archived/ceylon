@@ -130,4 +130,5 @@ shared void comprehensions() {
       w
   };
   check([ for (capfun in capfuncs3.sequence()) capfun() ]==capvalues, "Comprehension capture #4");
+  check([ for (k->v in "hey".indexed) for (s in {v}) s ]==['h','e','y'], "#5993");
 }
