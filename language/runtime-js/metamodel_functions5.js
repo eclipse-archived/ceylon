@@ -85,9 +85,10 @@ ex$.ser$et$=ser$et$;
 //return a new structure with the object's type
 function value2type$(t){
   if (t.t.$$ || t.t==='u' || t.t==='i' || t.t==='T')return t;
-  if (typeof(t.t)==='function'){
+  while (t.t.$$===undefined){
     //it's an alias
-    return getrtmm$$(t.t).sts[0];
+    t=getrtmm$$(t.t);
+    t=t.sts?t.sts[0]:t['super'];
   }
   var mm=getrtmm$$(t.t);
   if (mm) {
