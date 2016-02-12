@@ -77,7 +77,32 @@ class Issue519<A,B>(shared A key, shared B item)
   check(c is Test, "#519");
 }
 
-//class Alias563(Integer i=42) => Integer(i);
+shared class C5904 {
+    shared Integer i;
+    shared new (Integer a) {
+        this.i = a;
+    }
+    shared new create(Integer a, Integer b) {
+        this.i = a + b;
+    }
+}
+
+shared class CAlias5904(Integer x) => C5904(x);
+shared class CCreateAlias5904(Integer x, Integer y) => C5904.create(x, y);
+
+interface I5904 {
+    shared default String id => "I";
+}
+
+interface IAlias5904 => I5904;
+interface IAliasAlias5904 => IAlias5904;
+
+class Class5904() satisfies I5904 {
+    shared actual String id => "C";
+    shared String id_i => super.id;
+    shared String id_iAlias => (super of IAlias5904).id;
+    shared String id_iAliasAlias => (super of IAliasAlias5904).id;
+}
 
 void testAliasing() {
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
@@ -98,5 +123,30 @@ void testAliasing() {
     check(cualquiera(true,true,true), "seq arg method alias");
     check(Issue412().bleh exists, "Issue 412");
     Issue519(1, "2");
-    //check(Alias563()==42, "#563");
+
+    //nested aliases
+    Anything c = CAlias5904(10);
+    Anything cc = CCreateAlias5904(10, 20);
+
+    check((c of Anything) is C5904, "#5904.1"); // ok
+    check((c of Anything) is CAlias5904, "#5904.2"); // ok
+    check((c of Anything) is CCreateAlias5904, "#5904.3"); // TypeError: Cannot read property 'T$name' of undefined
+    check((cc of Anything) is C5904, "#5904.4"); // ok
+    check((cc of Anything) is CAlias5904, "#5904.5"); // ok
+    check((cc of Anything) is CCreateAlias5904, "#5904.6"); // TypeError: Cannot read property 'T$name' of undefined
+
+    value c2 = Class5904();
+
+    check(c2.id == "C", "#5904.7");
+    check(c2.id_i == "I", "#5904.8");
+    check(c2.id_iAlias == "I", "#5904.9");
+    check(c2.id_iAliasAlias == "I", "#5904.10");
+
+    check((c2 of Anything) is I5904, "#5904.11");
+    check((c2 of Anything) is IAlias5904, "#5904.12"); // error
+    check((c2 of Anything) is IAliasAlias5904, "#5904.13"); // error
+
+    check(!("" of Anything) is I5904, "#5904.14");
+    check(!("" of Anything) is IAlias5904, "#5904.15"); // error
+    check(!("" of Anything) is IAliasAlias5904, "#5904.16"); // error
 }
