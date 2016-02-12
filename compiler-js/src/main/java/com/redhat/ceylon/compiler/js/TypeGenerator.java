@@ -213,7 +213,15 @@ public class TypeGenerator {
         final boolean inProto = gen.opts.isOptimize()
                 && cont instanceof TypeDeclaration;
         final boolean imported = gen.isImported(type.getUnit().getPackage(), d);
-        final String initName = "$init$" + gen.getNames().name(d) + "()";
+        String dname = gen.getNames().name(d);
+        if (d.isAlias()) {
+            TypeDeclaration d2 = d;
+            while (d2.isAlias()) {
+                d2 = d2.getExtendedType().getDeclaration();
+            }
+            dname = gen.getNames().name(d2);
+        }
+        final String initName = "$init$" + dname + "()";
         if (!imported && !d.isClassOrInterfaceMember()) {
             return initName;
         }
