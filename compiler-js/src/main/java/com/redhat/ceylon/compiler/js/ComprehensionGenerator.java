@@ -286,7 +286,8 @@ class ComprehensionGenerator {
         // "while" part of the do-while loops
         for (int i=loops.size()-2; i>=0; i--) {
             gen.endBlock();
-            gen.out("while(n", loops.get(i).valueVarName, "()!==", finished, ")");
+            gen.out("while(n", loops.get(i).valueVarName, "()!==",
+                    (loops.get(i).pattern==null) ? finished : "undefined", ")");
             gen.endLine(true);
         }
 
