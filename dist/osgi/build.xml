@@ -65,6 +65,9 @@
         </classpath>
     </taskdef>
 
+    <taskdef name="bindex" classname="org.osgi.impl.bundle.bindex.ant.BindexTask"
+          classpath="${base.path}/org.osgi.impl.bundle.bindex-2.2.0.jar"/>
+	
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
             <pathelement location="${base.path}/ant-contrib-1.0b3.jar"/>
@@ -208,12 +211,19 @@
             todir="${build.dist.plugins}">
         </copy>
         <makeurl property="rootUrl" file="${build.dist}"/>
-        <repoindex name="Ceylon Distribution Bundles"            
-            out="${build.dist}/repository.xml" 
+        <repoindex name="Ceylon Distribution Bundles - R5 OBR format"            
+            out="${build.dist}/index.xml" 
             compressed="false"
+            pretty="true"
             rooturl="${rootUrl}">
             <fileset dir="${build.dist.plugins}" includes="*.jar"/>            
         </repoindex>
+        <bindex name="Ceylon Distribution Bundles - Old OBR format"
+            quiet="true"
+            repositoryFile="${build.dist}/repository.xml" 
+            root="${build.dist}">
+            <fileset dir="${build.dist.plugins}" includes="*.jar"/>
+        </bindex>
     </target>
 
     <target name="generateFeatures">
