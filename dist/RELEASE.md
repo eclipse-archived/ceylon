@@ -48,14 +48,10 @@ How to do a release of Ceylon.
   -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb:latest
 4. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1_1.2.1_all.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
-5. Rebuild the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
-  -  $ cd ../ceylon-debian-repo
-  -  $ vim build.sh # Add the new release
-  -  $ ./build.sh
-  -  $ rsync -rv --dry-run dists ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
-  -  $ ssh ceylon-lang.org
-  -  $ cd /var/www/downloads.ceylonlang/apt/
-  -  $ ~stephane/src/ceylon-debian-repo/makepool.sh ../cli/*.deb
+5. Build the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
+  - Make sure the [repo build file](https://github.com/ceylon/ceylon-debian-repo/blob/master/repo/build.sh) is up to date
+  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/home/ceylon/.gnupg ceylon/ceylon-repo-deb:latest
+  -  $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
 
 # Build the RedHat file
 
@@ -64,10 +60,9 @@ How to do a release of Ceylon.
 2. Copy the rpm to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1-1.2.1-0.noarch.rpm ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 3. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
-  -  $ ssh ceylon-lang.org
-  -  $ cd /var/www/downloads.ceylonlang/rpm/
-  -  $ vim ~stephane/src/ceylon-rpm-repo/build.sh # Add the new release
-  -  $ ~stephane/src/ceylon-rpm-repo/build.sh
+  - Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
+  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/home/ceylon/.gnupg ceylon/ceylon-repo-rpm:latest
+  -  $ rsync -rv --dry-run /tmp/ceylon/{*.noarch.rpm,repodata} ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
 # Publishing to the Herd
 
