@@ -279,7 +279,6 @@ public class AttributeGenerator {
                         if (!gen.isNaturalLiteral(expr.getTerm())) {
                             final int boxType = gen.boxStart(expr.getTerm());
                             expr.visit(gen);
-                            gen.endLine(true);
                             if (boxType == 4) gen.out("/*TODO: callable targs 3*/");
                             gen.boxUnboxEnd(boxType);
                         }
