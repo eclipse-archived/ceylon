@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
