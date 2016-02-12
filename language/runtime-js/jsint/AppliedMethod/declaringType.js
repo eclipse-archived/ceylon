@@ -1,1 +1,4 @@
-return Member$meta$model.$$.prototype.$prop$getDeclaringType.get.call(this);
+var _cont=getrtmm$$(this.tipo).$cont;
+var mmc=getrtmm$$(_cont);
+var mod=get_model(mmc);
+return typeLiteral$meta({Type$typeLiteral:this.$$targs$$.Container$AppliedMethod});
