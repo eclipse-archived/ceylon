@@ -18,7 +18,7 @@ shared native object language {
     shared Integer releaseVersion => 1;
     
     "The Ceylon language release name."
-    shared String versionName => "A Series Of Unlikely Explanations";
+    shared String versionName => "Irregular Apocalypse";
     
     "The major version of the code generated for the 
      underlying runtime."
