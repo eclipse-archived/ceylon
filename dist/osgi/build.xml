@@ -230,7 +230,7 @@
         <property name="feature.dir" value="${build.dist.features}/${feature.id}_${feature.version}"/>
         <mkdir dir="${feature.dir}"/>
         <property name="featureFile" value="${feature.dir}/feature.xml"/>
-        <xslt style="${p2}/${xslFileName}" in="${build.dist}/repository.xml" out="${featureFile}">
+        <xslt style="${p2}/${xslFileName}" in="${build.dist}/index.xml" out="${featureFile}">
             <param name="featureId" expression="${feature.id}"/>
             <param name="featureVersion" expression="${feature.version}"/>
         </xslt>            
