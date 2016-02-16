@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ceylon Distribution Bundle
 Bundle-SymbolicName: com.redhat.ceylon.dist
-Bundle-Version: 1.2.1.qualifier
+Bundle-Version: 1.2.2.qualifier
 Eclipse-BundleShape: dir
 Bundle-Vendor: RedHat
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.7
@@ -12,15 +12,15 @@ Export-Package: com.redhat.ceylon.dist.osgi
 Bundle-ActivationPolicy: lazy;exclude:="*"
 Import-Package: org.osgi.framework;version="1.6",
  org.osgi.framework.wiring;version="1.0"
-Require-Bundle: ceylon.bootstrap;bundle-version="1.2.1",
- ceylon.language;bundle-version="1.2.1",
- ceylon.runtime;bundle-version="1.2.1",
+Require-Bundle: ceylon.bootstrap;bundle-version="1.2.2",
+ ceylon.language;bundle-version="1.2.2",
+ ceylon.runtime;bundle-version="1.2.2",
  com.github.lookfirst.sardine;bundle-version="5.1",
- com.redhat.ceylon.common;bundle-version="1.2.1",
- com.redhat.ceylon.model;bundle-version="1.2.1",
- com.redhat.ceylon.langtools.classfile;bundle-version="1.2.1",
+ com.redhat.ceylon.common;bundle-version="1.2.2",
+ com.redhat.ceylon.model;bundle-version="1.2.2",
+ com.redhat.ceylon.langtools.classfile;bundle-version="1.2.2",
  com.redhat.ceylon.maven-support;bundle-version="2.0",
- com.redhat.ceylon.module-resolver;bundle-version="1.2.1",
+ com.redhat.ceylon.module-resolver;bundle-version="1.2.2",
  net.minidev.json-smart;bundle-version="1.1.1",
  org.apache.commons.codec;bundle-version="1.8",
  org.apache.commons.logging;bundle-version="1.1.1",

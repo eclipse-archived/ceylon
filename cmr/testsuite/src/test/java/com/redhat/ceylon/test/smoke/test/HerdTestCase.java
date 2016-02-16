@@ -198,9 +198,10 @@ public class HerdTestCase extends AbstractTest {
             		true, 
             		"The Herd");
 
+    static final ModuleDependencyInfo langmod = new ModuleDependencyInfo("ceylon.language", "1.2.2", false, false);
     static final ModuleDependencyInfo hello = new ModuleDependencyInfo("hello", "1.0.0", false, false);
     static final ModuleDependencyInfo moduletest_shopt = new ModuleDependencyInfo("moduletest", "0.1", true, true);
-
+    
     @Test
     public void testHerdCompleteEmptyJvm() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
@@ -722,8 +723,8 @@ public class HerdTestCase extends AbstractTest {
                 frEpardaudJavaDetails,
                 frEpardaudTestDetails,
                 frEpardaudTest2DetailsJvm,
-                new ModuleDetails("hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false)), types(art(".CAR", 8, 0)), true, "The Herd"),
-                new ModuleDetails("hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false)), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
                 new ModuleDetails("moduletest", null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
                 new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(moduletest_shopt), types(art(".JAR")), true, "The Herd"),
                 new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(moduletest_shopt), types(art(".JAR")), true, "The Herd"),
@@ -762,8 +763,8 @@ public class HerdTestCase extends AbstractTest {
         // second page
         expected = new ModuleDetails[]{
         		frEpardaudTest2DetailsJvm,
-                new ModuleDetails("hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false)), types(art(".CAR", 8, 0)), true, "The Herd"),
-                new ModuleDetails("hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false)), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
                 new ModuleDetails("moduletest", null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
         };
         results = testSearchResults("ceylon", Type.JVM, expected, 0L, 6L, getDualRepositoryManager(), pagingInfo);
@@ -781,7 +782,7 @@ public class HerdTestCase extends AbstractTest {
         		ceylonCollectionDetails,
                 frEpardaudTestDetails,
         		frEpardaudTest2DetailsJvm,
-                new ModuleDetails("hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false)), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
         };
         ModuleSearchResult results2 = testSearchResults("ceylon", Type.JVM, expected2, 0L, 4L, getDualRepositoryManager());
 
@@ -795,7 +796,7 @@ public class HerdTestCase extends AbstractTest {
 
         // second page
         expected2 = new ModuleDetails[]{
-                new ModuleDetails("hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false)), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
                 new ModuleDetails("moduletest", null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
         };
         results2 = testSearchResults("ceylon", Type.JVM, expected2, 0L, 4L, getDualRepositoryManager(), pagingInfo2);

@@ -37,7 +37,7 @@
     </target>
 
     <target name="run" depends="compile">
-        <ceylon-run module="com.example.interop/1.2.1" />
+        <ceylon-run module="com.example.interop/1.0" />
     </target>
 
     <target name="clean">

@@ -502,12 +502,12 @@ public class MiscTests extends CompilerTests {
     
     @Test
     public void testDistSampleHelloworld() throws IOException, InterruptedException {
-        testLaunchDistCeylon("helloworld", "com.example.helloworld", Versions.CEYLON_VERSION_NUMBER);
+        testLaunchDistCeylon("helloworld", "com.example.helloworld", "1.0");
     }
         
     @Test
     public void testDistSampleJavaInterop() throws IOException, InterruptedException {
-        testLaunchDistCeylon("interop-java", "com.example.interop", Versions.CEYLON_VERSION_NUMBER);
+        testLaunchDistCeylon("interop-java", "com.example.interop", "1.0");
     }
         
     @Test
@@ -517,7 +517,7 @@ public class MiscTests extends CompilerTests {
     
     @Test
     public void testDistSampleWithModule() throws IOException, InterruptedException {
-        testLaunchDistCeylon("with-module", "com.example.withmodule", Versions.CEYLON_VERSION_NUMBER);
+        testLaunchDistCeylon("with-module", "com.example.withmodule", "1.0");
     }
         
     public void launchCeylon(String[] args) throws IOException, InterruptedException {

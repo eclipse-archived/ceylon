@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.2.1 "Irregular Apocalypse"
+    // The current version is Ceylon 1.2.2 "In A Galaxy Far Far Away"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -14,9 +14,8 @@ public class Versions {
     * - dist/osgi/module.properties (versions)
     * - dist/osgi/META-INF/MANIFEST.MF (versions)
     * - dist/osgi/embeddedRepository/META-INF/MANIFEST.MF (versions)
-    * - dist/samples (versions, but not sure why we do that)
-    * - dist/README.MD (versions, name)
-    * - common/common-build.properties (version)
+    * - README.md and dist/README.MD (versions, name, doc links)
+    * - common-build.properties (version)
     * - ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/about.ini (version, name)
     *   Find all files on IDE which need to be updated:
     *    grep -rl --exclude-dir 'target' --exclude-dir required-bundle-proxies --exclude-dir .git --exclude '*.class' --exclude '*.car' --exclude '*.idx' '1\.1\.0' .
@@ -49,7 +48,7 @@ public class Versions {
      * <em>Beware</em> javac will inline this at compile time at use-sites,
      * use {@link #getCeylonVersionRelease()} to avoid that.
      */
-    public static final int CEYLON_VERSION_RELEASE = 1;
+    public static final int CEYLON_VERSION_RELEASE = 2;
     
     // SHA1 of current HEAD at moment of compilation
     public static final String CURRENT_COMMIT_ID = "@commit@";
@@ -62,7 +61,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "Irregular Apocalypse";
+    public static final String CEYLON_VERSION_NAME = "In A Galaxy Far Far Away";
     
     /**
      * The version number + code name description string.
@@ -79,7 +78,7 @@ public class Versions {
      * 1.0 is 6.0
      * 1.1 is 7.0
      * 1.2.0 is 8.0
-     * 1.2.1 is 8.0 for JVM, 9.0 for JS
+     * 1.2.1, 1.2.2 is 8.0 for JVM, 9.0 for JS
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 0;

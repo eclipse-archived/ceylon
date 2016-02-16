@@ -51,7 +51,7 @@ shared void test(String expectedRuntime = "1.2.1") {
     print("\`module\`.dependencies");
     for (imp in `module`.dependencies) {
         print("  ``imp``");
-        // All our dependencies should be version 1.2.1 as runtime 
+        // All our dependencies should be version 1.2.2 as runtime 
         assert(expectedRuntime == imp.version);
     }
     // check we can list all the loaded modules

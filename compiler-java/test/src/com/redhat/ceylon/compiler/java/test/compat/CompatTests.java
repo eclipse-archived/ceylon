@@ -186,7 +186,7 @@ public class CompatTests extends CompilerTests {
                     null, out);
             // Check it returned OK
             Assert.assertEquals(0, sc);
-            String expectedLine = "Running on 1.2.1 (Irregular Apocalypse) according to language.version";
+            String expectedLine = "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version";
             assertFileContainsLine(out, expectedLine);
         } finally {
             out.delete();
@@ -226,7 +226,7 @@ public class CompatTests extends CompilerTests {
                     null, out);
             // Check it returned an error status code
             Assert.assertEquals(0, sc);
-            String expectedLine = "Running on 1.2.1 (Irregular Apocalypse) according to language.version";
+            String expectedLine = "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version";
             assertFileContainsLine(out, expectedLine);
         } finally {
             out.delete();
@@ -265,7 +265,7 @@ public class CompatTests extends CompilerTests {
                     null, out);
             // Check it returned an error status code
             Assert.assertEquals(0, sc);
-            String expectedLine = "Running on 1.2.1 (Irregular Apocalypse) according to language.version";
+            String expectedLine = "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version";
             assertFileContainsLine(out, expectedLine);
         } finally {
             out.delete();
@@ -316,7 +316,7 @@ public class CompatTests extends CompilerTests {
                             "--link-with-current-distribution"),
                     null, out);
             // Check it returned an error status code
-            assertFileContainsLine(out, "Running on 1.2.1 (Irregular Apocalypse) according to language.version");
+            assertFileContainsLine(out, "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version");
             Assert.assertEquals(0, sc);
         } finally {
             out.delete();

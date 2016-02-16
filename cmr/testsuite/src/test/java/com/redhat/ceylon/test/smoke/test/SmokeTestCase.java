@@ -594,7 +594,7 @@ public class SmokeTestCase extends AbstractTest {
         }
     }
 
-    private final static ModuleDependencyInfo language = new ModuleDependencyInfo("ceylon.language", "1.2.1", false, false);
+    private final static ModuleDependencyInfo language = new ModuleDependencyInfo("ceylon.language", "1.2.2", false, false);
     public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
     public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
     public final static ModuleDetails hello_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);

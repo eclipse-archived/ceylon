@@ -6,7 +6,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="src" path="runtime-js"/>
-	<classpathentry kind="lib" path="ide-dist/ceylon.language-1.2.1.car" sourcepath=""/>
+	<classpathentry kind="lib" path="ide-dist/ceylon.language-1.2.2.car" sourcepath=""/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/jandex/2.0.0.Final/org.jboss.jandex-2.0.0.Final.jar"/>

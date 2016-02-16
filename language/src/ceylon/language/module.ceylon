@@ -29,6 +29,6 @@
 by ("Gavin King", "Tom Bentley", "Tako Schotanus",
    "Stephane Epardaud", "Enrique Zamudio")
 license ("http://www.apache.org/licenses/LICENSE-2.0.html")
-module ceylon.language "1.2.1" {
+module ceylon.language "1.2.2" {
     native("jvm") import java.base "7";
 }
