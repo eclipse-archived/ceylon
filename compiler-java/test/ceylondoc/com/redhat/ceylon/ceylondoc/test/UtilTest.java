@@ -66,6 +66,13 @@ public class UtilTest {
         assertFirstLine("<p>Blah blah blah</p>", "Blah blah blah \n\n Foo bar baz");
         assertFirstLine("<p>Blah blah <em>blah</em>.</p>", "Blah blah *blah*. Foo bar baz.");
         assertFirstLine("<p>Blah <a href=\"http://example.com\">link</a> blah.</p>", "Blah [link][] blah. Foo bar baz \n\n [link]: http://example.com");
+        
+        assertFirstLine("<p>Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah…</p>", 
+                "Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahhh <!-- xxx -->");
+        
+        // bug #5999
+        assertFirstLine("<p>This interface inherits from CharacterData and represents the content of a comment, i.e., all the characters between…</p>",
+                "This interface inherits from CharacterData and represents the content of a comment, i.e., all the characters between the starting '<!--' and ending '-->'.");
     }
 
     private void assertFirstLine(String expected, String text) {

@@ -199,7 +199,7 @@ public class Util {
                 String firstLine = trimFirstLine(text);
                 if( !text.equals(firstLine) ) {
                     done = true;
-                    lastPosition = pos + (data.length - (text.length() - firstLine.length()));
+                    lastPosition += data.length - (text.length() - firstLine.length());
                     return;
                 }
                 
