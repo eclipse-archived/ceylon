@@ -2604,44 +2604,6 @@ public class ModelUtil {
         return dec != null && dec.isNativeImplementation();
     }
     
-    public static Declaration getNativeDeclaration(
-            Declaration dec, Backend backend) {
-        return getNativeDeclaration(dec, backend.asSet());
-    }
-    
-    public static Declaration getNativeDeclaration(
-            Declaration dec, Backends backends) {
-        if (dec.isNative() && 
-                backends != null) {
-            Declaration abstraction = null;
-            if (backends.none() &&
-                    !dec.isNativeHeader()
-                || backends.supports(
-                        dec.getNativeBackends())) {
-                abstraction = dec;
-            }
-            else {
-                List<Declaration> overloads = 
-                        dec.getOverloads();
-                if (overloads != null) {
-                    for (Declaration d: overloads) {
-                        if (backends.none() &&
-                                !d.isNativeHeader()
-                            || backends.supports(
-                                    d.getNativeBackends())) {
-                            abstraction = d;
-                            break;
-                        }
-                    }
-                }
-            }
-            return abstraction;
-        }
-        else {
-            return dec;
-        }
-    }
-
     public static boolean isForBackend(Backends backends,
             Backend supported) {
         return isForBackend(backends, supported.asSet());
@@ -2739,30 +2701,65 @@ public class ModelUtil {
     }
     
     public static Declaration getNativeHeader(Declaration dec) {
-        Declaration header = 
-                getNativeHeader(dec.getContainer(), 
-                        dec.getName());
-        // In case of objects make sure we return the same type of
-        // declaration we were called with
-        if (dec instanceof ClassOrInterface && 
-                header instanceof Value) {
-            Value value = (Value) header;
-            if (isObject(value)) {
-                return value.getType().getDeclaration();
-            }
-        }
-        // In case of constructors we make sure we return the same
-        // type of declaration we were called with
-        if (dec instanceof Constructor
-                && header instanceof FunctionOrValue
-                && isConstructor(header)) {
-            return getConstructor(header);
-        }
-        return header;
+        return getNativeDeclaration(dec, Backends.HEADER);
     }
     
     public static Declaration getNativeHeader(Scope container, String name) {
         return getNativeDeclaration(container, name, Backends.HEADER);
+    }
+    
+    public static Declaration getNativeDeclaration(
+            Declaration dec, Backend backend) {
+        return getNativeDeclaration(dec, backend.asSet());
+    }
+    
+    public static Declaration getNativeDeclaration(Declaration dec, Backends backends) {
+        if (backends != null) {
+            Declaration nat;
+            if (dec.isNativeHeader() && !backends.header()) {
+                // The declaration is a header so the requested backend
+                // implementation must be part of its overloads
+                nat = null;
+                List<Declaration> overloads = 
+                        dec.getOverloads();
+                if (overloads != null) {
+                    for (Declaration d: overloads) {
+                        if (backends.none() &&
+                                !d.isNativeHeader()
+                            || backends.supports(
+                                    d.getNativeBackends())) {
+                            nat = d;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // In the rest of the cases we go look in the declaration's container
+                nat = getNativeDeclaration(dec.getContainer(), dec.getName(), backends);
+                
+                if (dec instanceof Setter && nat instanceof Value) {
+                    nat = ((Value)nat).getSetter();
+                } else if (dec instanceof ClassOrInterface && 
+                        nat instanceof Value) {
+                    // In case of objects make sure we return the same type of
+                    // declaration we were called with
+                    Value value = (Value) nat;
+                    if (isObject(value)) {
+                        nat = value.getType().getDeclaration();
+                    }
+                } else if (dec instanceof Constructor
+                        && nat instanceof FunctionOrValue
+                        && isConstructor(nat)) {
+                    // In case of constructors we make sure we return the same
+                    // type of declaration we were called with
+                    nat = getConstructor(nat);
+                }
+            }
+            
+            return nat;
+        } else {
+            return dec;
+        }
     }
     
     /**
