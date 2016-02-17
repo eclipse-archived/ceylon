@@ -1283,9 +1283,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private void initNativeHeaderMember(Declaration dec) {
         if (dec.isNativeImplementation()) {
-            Declaration hdr = ModelUtil.getNativeDeclaration(dec.getContainer(), dec.getName(), Backends.HEADER);
+            Declaration hdr = ModelUtil.getNativeHeader(dec);
             if (hdr != null) {
-                hdr.getOverloads().add(dec);
+                initNativeHeader(hdr, dec);
             }
         }
     }
@@ -3104,7 +3104,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         else if (decl instanceof Class) {
             return ((Class)decl).getOverloads();
         }
-        return Collections.emptyList();
+        return null;
     }
     
     public static void setOverloads(Declaration decl, List<Declaration> overloads) {
