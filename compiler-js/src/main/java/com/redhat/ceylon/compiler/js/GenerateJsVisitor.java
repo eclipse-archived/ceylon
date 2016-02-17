@@ -945,8 +945,8 @@ public class GenerateJsVisitor extends Visitor {
                 ((Function)p.getDeclaration()).getTypeDeclaration() instanceof Constructor) {
             return;
         }
-        final String privname = names.name(p) + "_";
         final FunctionOrValue pdec = p.getModel();
+        final String privname = names.valueName(pdec);
         defineAttribute(names.self(d), names.name(pdec));
         out("{");
         if (pdec.isLate()) {
@@ -1314,7 +1314,7 @@ public class GenerateJsVisitor extends Visitor {
             }
             if ((typeDecl != null && typeDecl instanceof ClassAlias==false) && (pd.getModel().isCaptured() ||
                     pd.getDeclaration() instanceof Class)) {
-                out(names.self(typeDecl), ".", paramName, "_=", paramName);
+                out(names.self(typeDecl), ".", names.valueName(pd.getModel()), "=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
                     out(";", names.self(typeDecl), ".", paramName, "=", paramName);
                 }
@@ -2118,7 +2118,7 @@ public class GenerateJsVisitor extends Visitor {
 
     private void assignment(final TypeDeclaration outer, final Declaration d, final Tree.Expression expr) {
         FunctionOrValue vdec = (FunctionOrValue)d;
-        final String atname = d.isShared() ? names.name(d)+"_" : names.privateName(d);
+        final String atname = names.valueName(vdec);
         if (outer instanceof Constructor) {
             if (d.isClassOrInterfaceMember()) {
                 out(names.self(outer), ".", atname, "=");
@@ -2288,11 +2288,7 @@ public class GenerateJsVisitor extends Visitor {
                         if (opts.isOptimize()) {
                             //#451
                             out(names.self(ModelUtil.getContainingClassOrInterface(moval.getScope())), ".",
-                                    names.name(moval));
-                            if (!(moval.isVariable() || moval.isLate())) {
-                                    out("_");
-                            }
-                            out("=");
+                                    names.valueName(moval), "=");
                             specStmt.getSpecifierExpression().visit(this);
                             endLine(true);
                         } else {

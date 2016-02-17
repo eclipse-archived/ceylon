@@ -122,6 +122,17 @@ public class JsIdentifierNames {
         return sanitize(name);
     }
 
+    public String privateName(Parameter param) {
+        if (param == null) { return null; }
+        FunctionOrValue decl = param.getModel();
+        String name = uniquePrivateName(decl, false);
+        return sanitize(name);
+    }
+
+    public String valueName(FunctionOrValue d) {
+        return d.isShared() && !d.isActual() ? name(d) + "_" : privateName(d);
+    }
+
     /**
      * Determine a secondary, private identifier name for the given declaration.
      */

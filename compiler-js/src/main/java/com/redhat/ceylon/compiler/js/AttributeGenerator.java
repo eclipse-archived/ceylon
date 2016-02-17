@@ -52,7 +52,7 @@ public class AttributeGenerator {
         final boolean asProp = defineAsProperty(decl) && (gen.isCaptured(decl) || decl.isToplevel());
         final String varName;
         if (asProp) {
-            varName = decl.isShared() ? gen.getNames().name(decl) + "_" : gen.getNames().privateName(decl);
+            varName = gen.getNames().valueName(decl);
         } else {
             varName = gen.getNames().name(decl);
         }
@@ -206,8 +206,7 @@ public class AttributeGenerator {
         final Value d = that.getDeclarationModel();
         if (!gen.opts.isOptimize()||d.isToplevel()||d.getTypeDeclaration()==null) return;
         gen.comment(that);
-        final String atname = d.isShared() ? gen.getNames().name(d) + "_" :
-            gen.getNames().privateName(d);
+        final String atname = gen.getNames().valueName(d);
         if (d.isFormal()) {
             generateAttributeMetamodel(that, false, false, gen);
         } else if (that.getSpecifierOrInitializerExpression() == null) {
