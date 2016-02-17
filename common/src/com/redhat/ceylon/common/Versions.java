@@ -209,20 +209,24 @@ public class Versions {
      * For unknown or illegal binary versions it will return null.
      */
     public static String getJvmLanguageModuleVersion(int binaryMajor, int binaryMinor) {
-        if (binaryMajor == 0) {
-            switch (binaryMinor) {
-            case 0: //return "0.2";
-            case 1: //return "0.3";
-            case 2: //return "0.3.1";
-            case 3: //return "0.4";
-                // Why 0.5? Because it's the lowest version available on the Herd
-                return "0.5";
-            case 4: return "0.5";
-            case 5: return "0.6";
-            case 6: return "1.0.0";
-            case 7: return "1.1.0";
-            case 8: return "1.2.0";
-            }
+        if (binaryMajor == 0 && binaryMinor == 0) {
+            return "0.5"; // should be "0.2" but "0.5" is the lowest version available on the Herd
+        } else if (binaryMajor == 1 && binaryMinor == 0) {
+            return "0.5"; // should be "0.3"
+        } else if (binaryMajor == 2 && binaryMinor == 0) {
+            return "0.5"; // should be "0.3.1"
+        } else if (binaryMajor == 3 && binaryMinor == 0) {
+            return "0.5"; // should be "0.4"
+        } else if (binaryMajor == 4 && binaryMinor == 0) {
+            return "0.5";
+        } else if (binaryMajor == 5 && binaryMinor == 0) {
+            return "0.6";
+        } else if (binaryMajor == 6 && binaryMinor == 0) {
+            return "1.0.0";
+        } else if (binaryMajor == 7 && binaryMinor == 0) {
+            return "1.1.0";
+        } else if (binaryMajor == 8 && binaryMinor == 0) {
+            return "1.2.0";
         }
         return null;
     }
