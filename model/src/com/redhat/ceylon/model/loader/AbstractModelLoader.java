@@ -2364,7 +2364,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 } else {
                     c = addConstructor((Class)klass, classMirror, ctorMirror, isNativeHeaderMember);
                 }
-                addConstructorMethorOrValue((Class)klass, classMirror, ctor, c, isNativeHeaderMember);
+                FunctionOrValue fov = addConstructorMethorOrValue((Class)klass, classMirror, ctor, c, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(c, klass)) {
                     Constructor hdr;
                     if (ctorMirror == null) {
@@ -2372,22 +2372,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     } else {
                         hdr = addConstructor((Class)klass, classMirror, ctorMirror, true);
                     }
-                    addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, hdr, true);
+                    FunctionOrValue hdrfov = addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, hdr, true);
                     initNativeHeader(hdr, c);
+                    initNativeHeader(hdrfov, fov);
                 } else if (isCeylon && shouldLinkNatives(c)) {
                     initNativeHeaderMember(c);
+                    initNativeHeaderMember(fov);
                 }
             }
             // Everything left must be a callable constructor, so add Function+Constructor
             for (MethodMirror ctorMirror : m.values()) {
                 Constructor c = addConstructor((Class)klass, classMirror, ctorMirror, isNativeHeaderMember);
-                addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, c, isNativeHeaderMember);
+                FunctionOrValue fov = addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, c, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(c, klass)) {
                     Constructor hdr = addConstructor((Class)klass, classMirror, ctorMirror, true);
-                    addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, hdr, true);
+                    FunctionOrValue hdrfov = addConstructorMethorOrValue((Class)klass, classMirror, ctorMirror, hdr, true);
                     initNativeHeader(hdr, c);
+                    initNativeHeader(hdrfov, fov);
                 } else if (isCeylon && shouldLinkNatives(c)) {
                     initNativeHeaderMember(c);
+                    initNativeHeaderMember(fov);
                 }
             }
         }
@@ -2830,7 +2834,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return constructor;
     }
     
-    protected void addConstructorMethorOrValue(Class klass, ClassMirror classMirror, MethodMirror ctor, Constructor constructor, boolean isNativeHeader) {
+    protected FunctionOrValue addConstructorMethorOrValue(Class klass, ClassMirror classMirror, MethodMirror ctor, Constructor constructor, boolean isNativeHeader) {
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
         if (ctor.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) != null) {
             klass.setEnumerated(true);
@@ -2845,6 +2849,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setNonLazyDeclarationProperties(v, ctor, ctor, classMirror, isCeylon);
             setAnnotations(v, ctor, isNativeHeader);
             klass.addMember(v);
+            return v;
         }
         else {
             setParameters(constructor, classMirror, ctor, true, klass);
@@ -2861,6 +2866,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setNonLazyDeclarationProperties(f, ctor, ctor, classMirror, isCeylon);
             setAnnotations(f, ctor, isNativeHeader);
             klass.addMember(f);
+            return f;
         }
     }
     
