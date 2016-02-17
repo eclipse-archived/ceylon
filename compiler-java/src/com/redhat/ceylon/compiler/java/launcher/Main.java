@@ -337,6 +337,20 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                     || this.nonCeylonErrorCount > 0;
         }
 
+        // More nastiness
+        private static boolean isAbnormalException(Throwable ex) {
+            // For now we'll just assume that in principle any runtime exception is abnormal
+            // Errors are considered normal because javac uses them
+            if (ex instanceof RuntimeException
+                    // We also assume our own errors are not abnormal
+                    && !ex.getClass().getName().startsWith("com.redhat.ceylon.")
+                    // And neither are CCEs from the javac code abnormal
+                    && !(ex instanceof ClassCastException && ex.getMessage().contains("com.redhat.ceylon.langtools."))) {
+                return true;
+            }
+            return false;
+        }
+        
         public static ExitState ok() {
             return new ExitState(EXIT_ERROR, CeylonState.OK, 0, null, null);
         }
@@ -359,7 +373,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null) {
                 // This is the heuristic javac uses
                 return new ExitState(EXIT_ABNORMAL, CeylonState.BUG, 0, ex, null);
-            } else if (hasCeylonCodegenErrors(comp)) {
+            } else if (hasCeylonCodegenErrors(comp) || isAbnormalException(ex)) {
                 return new ExitState(EXIT_ABNORMAL, CeylonState.BUG, comp.errorCount(), ex, comp);
             }
             return new ExitState(EXIT_ABNORMAL, CeylonState.ERROR, comp.errorCount(), null, null);
