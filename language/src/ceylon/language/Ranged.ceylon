@@ -30,7 +30,7 @@
  
  The first index may be omitted, implying that the subrange
  extends forward from the smallest possible index (in this
- case `runtime.minIntegerValue-1`) to the given index.
+ case `runtime.minIntegerValue`) to the given index.
  
      print(\"hello world\"[...4]) //prints \"hello\"
  
@@ -41,7 +41,7 @@
  
  The last index may be omitted, implying that the subrange 
  extends forward from the given index to the largest 
- possible index (in this case `runtime.maxIntegerValue+1`).
+ possible index (in this case `runtime.maxIntegerValue`).
  
      print(\"hello world\"[6...]) //prints \"world\"
  
