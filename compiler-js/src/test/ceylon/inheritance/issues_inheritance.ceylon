@@ -103,6 +103,24 @@ shared class D5906() extends C5906() {
     shared String() superId => super.id;
 }
 
+void test5887() {
+    class Super(shared actual default String string = "super") {
+      shared default Integer dos => 2;
+    }
+    class Sub() extends Super() {
+        shared actual String string;
+        string = "sub";
+        dos = 4;
+        shared void test() {
+            check(string=="sub","#5887.1");
+            check(super.string=="super","#5887.2");
+            check(dos==4,"#5887.3");
+            check(super.dos==2,"#5887.4");
+        }
+    }
+    Sub().test();
+}
+
 void testIssues() {
     check(C150((Integer i) => "i=``i``").f()=="i=100", "issue 150");
     check(Issue231_1("Hola").string == "Hola", "Issue 231 [1]");
@@ -160,4 +178,5 @@ void testIssues() {
     check(cd547 is Cont547<String>, "#547 gen 4");
     Test562().Bar().Baz();
     check(D5906().superId()=="C", "#5906");
+    test5887();
 }
