@@ -278,7 +278,8 @@ public class MiscTests extends CompilerTests {
     @Test
     public void compileSDK() throws IOException{
         String[] modules = {
-                "collection", 
+                "buffer",
+                "collection",
                 "dbc",
                 "decimal",
                 "file",
