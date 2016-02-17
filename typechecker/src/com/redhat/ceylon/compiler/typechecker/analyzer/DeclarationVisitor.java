@@ -88,6 +88,7 @@ public abstract class DeclarationVisitor extends Visitor {
     
     private static final Class[] NO_CLASSES = new Class[0];
     private static final FunctionOrValue[] NO_FUNCTIONS_OR_VALUES = new FunctionOrValue[0];
+    private static final Constructor[] NO_CONSTRUCTORS = new Constructor[0];
     
     private final Package pkg;
     private final String filename;
@@ -254,7 +255,14 @@ public abstract class DeclarationVisitor extends Visitor {
                                     (Tree.ObjectDefinition) 
                                         that;
                             handleNativeHeader(
-                                    od.getAnonymousClass(), 
+                                    od.getAnonymousClass(),
+                                    name);
+                        } else if (that instanceof Tree.Constructor) {
+                            Tree.Constructor c = 
+                                    (Tree.Constructor) 
+                                        that;
+                            handleNativeHeader(
+                                    c.getConstructor(),
                                     name);
                         }
                     } else {
@@ -308,6 +316,19 @@ public abstract class DeclarationVisitor extends Visitor {
                                                 .getDeclaration();
                                 objHdrCls.getOverloads()
                                     .add(objImplCls);
+                            } else if (that instanceof Tree.Constructor) {
+                                Tree.Constructor c = 
+                                        (Tree.Constructor) 
+                                            that;
+                                Declaration cd = 
+                                        c.getConstructor();
+                                FunctionOrValue fov = (FunctionOrValue) member;
+                                Constructor hdr = 
+                                        (Constructor) 
+                                            fov.getType()
+                                                .getDeclaration();
+                                hdr.getOverloads()
+                                    .add(cd);
                             }
                         }
                     }
@@ -372,6 +393,7 @@ public abstract class DeclarationVisitor extends Visitor {
         // Deal with implementations from the ModelLoader
         ArrayList<FunctionOrValue> loadedFunctionsOrValues = null;
         ArrayList<Class> loadedClasses = null;
+        ArrayList<Constructor> loadedConstructors = null;
         for (Backend backendToSearch: Backend.getRegisteredBackends()) {
             Declaration overloadFromModelLoader = 
                     model.getContainer()
@@ -395,6 +417,13 @@ public abstract class DeclarationVisitor extends Visitor {
                 Class c = (Class) overloadFromModelLoader;
                 loadedClasses.add(c);
             }
+            else if (overloadFromModelLoader instanceof Constructor) {
+                if (loadedConstructors == null) {
+                    loadedConstructors = new ArrayList<Constructor>();
+                }
+                Constructor c = (Constructor) overloadFromModelLoader;
+                loadedConstructors.add(c);
+            }
         }
         // Initialize the header's overloads
         if (model instanceof FunctionOrValue) {
@@ -413,6 +442,17 @@ public abstract class DeclarationVisitor extends Visitor {
             if (loadedClasses != null) {
                 c.initOverloads(
                         loadedClasses.toArray(NO_CLASSES));
+
+            }
+            else {
+                c.initOverloads();
+            }
+        }
+        else if (model instanceof Constructor) {
+            Constructor c = (Constructor) model;
+            if (loadedConstructors != null) {
+                c.initOverloads(
+                        loadedConstructors.toArray(NO_CONSTRUCTORS));
 
             }
             else {

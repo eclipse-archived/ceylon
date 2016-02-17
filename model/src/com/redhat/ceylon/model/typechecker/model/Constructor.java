@@ -104,6 +104,15 @@ public class Constructor extends TypeDeclaration implements Functional {
         this.overloads = overloads;
     }
     
+    public void initOverloads(Constructor... initial) {
+        overloads = 
+                new ArrayList<Declaration>
+                    (initial.length+1);
+        for (Declaration d: initial) {
+            overloads.add(d);
+        }
+    }
+    
     public Parameter getParameter(String name) {
         for (Declaration d : getMembers()) {
             if (d.isParameter() && ModelUtil.isNamed(name, d)) {
