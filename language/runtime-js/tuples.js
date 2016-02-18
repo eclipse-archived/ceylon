@@ -163,12 +163,6 @@ function $init$tpl$(){
             return finished();
           };
         },{Element$Iterable:$m.Result$map,Absent$Iterable:{t:Null}});
-        for (var i=0;i<this.elem$.length;i++) {
-          a[j++]=f(this.elem$[i]);
-        }
-        if (this.sp$)for (i=0;i<this.sp$.size;i++) {
-          a[j++]=f(this.sp$.getFromFirst(i));
-        }
       };
       tuple.$_map.$crtmm$=Tuple.$$.prototype.$_map.$crtmm$;
       tuple.withLeading=function(a,b){

@@ -6,5 +6,4 @@ function(i) {
   } else {
     return Byte(this.val$|(1<<i));
   }
-  return this;
 }
