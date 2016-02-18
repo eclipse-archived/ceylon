@@ -6603,6 +6603,10 @@ public class ExpressionVisitor extends Visitor {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 
                                 primary;
+                    if (qmte.getDeclaration()
+                            .isStaticallyImportable()) {
+                        return type;
+                    }
                     Tree.MemberOrTypeExpression pp = 
                             (Tree.MemberOrTypeExpression) 
                                 qmte.getPrimary();
