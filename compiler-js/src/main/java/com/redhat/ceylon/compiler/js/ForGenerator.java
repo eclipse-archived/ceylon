@@ -96,7 +96,7 @@ public class ForGenerator {
     }
 
     boolean iterateNative(final Tree.Term term, final String itemVar) {
-        if (!(gen.isInDynamicBlock() && term.getTypeModel().isUnknown())) {
+        if (!(gen.isInDynamicBlock() && (term.getTypeModel() == null || term.getTypeModel().isUnknown()))) {
             return false;
         }
         final String termVar = gen.getNames().createTempVariable();
