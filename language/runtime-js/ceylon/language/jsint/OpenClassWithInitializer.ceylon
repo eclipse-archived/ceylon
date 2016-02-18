@@ -1,6 +1,6 @@
 import ceylon.language { AnnotationType = Annotation }
 import ceylon.language.meta.declaration {
-  ClassDeclaration, ValueDeclaration, Package, Module,
+  ValueDeclaration, Package, Module,
   NestableDeclaration, OpenInterfaceType, OpenClassType, OpenType,
   FunctionOrValueDeclaration, TypeParameter, CallableConstructorDeclaration,
   ClassWithInitializerDeclaration

@@ -1,6 +1,5 @@
 import ceylon.language.meta.model {
   ClosedType=Type, ClassModel, InterfaceModel,
-  FunctionModel, ValueModel,
   Member, Class, ClassOrInterface, Attribute, Method,
   MemberInterface,MemberClass, TypeArgument,
   MemberClassValueConstructor,MemberClassCallableConstructor

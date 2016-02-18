@@ -1,5 +1,5 @@
 import ceylon.language.meta.declaration {
-  ValueConstructorDeclaration, FunctionOrValueDeclaration, Package,
+  ValueConstructorDeclaration, Package,
   ClassDeclaration, Module, OpenType
 }
 import ceylon.language.meta.model {
