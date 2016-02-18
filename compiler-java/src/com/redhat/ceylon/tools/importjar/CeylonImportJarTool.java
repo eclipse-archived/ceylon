@@ -37,6 +37,7 @@ import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Hidden;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
@@ -87,6 +88,8 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     private boolean dryRun;
     private boolean showClasses;
     private boolean showSuggestions;
+    private boolean allowCars;
+    private boolean ignoreAnnotations;
 	private List<String> missingDependenciesPackages;
 	private Map<String, List<String>> parsedMissingDependenciesPackages;
     
@@ -141,7 +144,20 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     public void setForce(boolean force) {
         this.force = force;
     }
-    
+
+    @Option(longName="ignore-annotations")
+    @Description("Do not check annotations for imports (default: `false`).")
+    public void setIgnoreAnnotations(boolean ignoreAnnotations) {
+        this.ignoreAnnotations = ignoreAnnotations;
+    }
+
+    @Hidden
+    @Option(longName="allow-cars")
+    @Description("Allows importing car files [for tests only].")
+    public void setAllowCars(boolean allowCars) {
+        this.allowCars = allowCars;
+    }
+
     @Option(longName="dry-run")
     @Description("Performs all the sanity checks but does not publish the JAR.")
     public void setDryRun(boolean dryRun) {
@@ -218,7 +234,11 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         File aJarFileWithCwd = applyCwd(aJarFile);
         checkReadableFile(aJarFileWithCwd, errorResource1, true);
 
-        if (! aJarFileWithCwd.getName().toLowerCase().endsWith(".jar")) {
+        String fileName = aJarFileWithCwd.getName().toLowerCase();
+        // allow: jar OK, car OK, other OK
+        // !allow: jar OK, car, other
+        if (! fileName.endsWith(".jar")
+        		 && !(allowCars && fileName.endsWith(".car"))) {
             throw new ImportJarException(errorResource2, 
                                          new Object[] { aJarFile.toString() }, 
                                          null);
@@ -269,7 +289,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     msg("error.checkFailed");
                     break;
                 case DEP_JDK:
-                    append("    ").append(dep.getName()).newline();
+                    append("    ").append(dep.getName());
+                    if(dep.isExport())
+                    	append(" ... [shared]");
+                    newline();
                     break;
                 }
             }
@@ -313,8 +336,11 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             }
 
             @Override
-            public void packageName(String pkg) throws IOException {
-                append("    ").append(pkg).newline();
+            public void packageName(String pkg, boolean shared) throws IOException {
+                append("    ").append(pkg);
+                if(shared)
+                	append(" ... [shared]");
+                newline();
             }
 
             @Override
@@ -327,8 +353,11 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             }
 
             @Override
-            public void className(String cls) throws IOException {
-                append("    ").append(cls).newline();
+            public void className(String cls, boolean shared) throws IOException {
+                append("    ").append(cls);
+                if(shared)
+                	append(" ... [shared]");
+                newline();
             }
 
             @Override
@@ -366,6 +395,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
         LegacyImporter importer = createImporter()
         		.moduleDescriptor(applyCwd(descriptor))
         		.missingDependenciesPackages(parsedMissingDependenciesPackages);
+        importer.setIgnoreAnnotations(ignoreAnnotations);
         if (!force || updateDescriptor) {
             try {
                 importer.loadModuleDescriptor();
