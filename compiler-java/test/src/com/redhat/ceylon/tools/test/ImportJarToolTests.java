@@ -20,6 +20,13 @@
 package com.redhat.ceylon.tools.test;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +35,7 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
@@ -556,4 +564,57 @@ public class ImportJarToolTests extends AbstractToolTests {
         	Assert.assertEquals("Invalid missing dependencies descriptor : 'org.eclipse.jetty:jetty-jmxnotfound'. 'Syntax is module-name/module-version=package-wildcard(,package-wildcard)*'.", e.getMessage());
         }
     }
+
+    @Test
+    public void testSystemRepositoryModuleDescriptors() throws Exception {
+    	CeylonRepoManagerBuilder builder = CeylonUtils.repoManager();
+        builder.outRepo(destDir.getPath())
+        	.cacheRepo(cacheDir.getPath())
+        	.systemRepo(getSysRepPath());
+    	final RepositoryManager repository = builder.buildManager();
+    	final Path repoPath = Paths.get(getSysRepPath());
+    	Files.walkFileTree(repoPath, new SimpleFileVisitor<Path>(){
+    		@Override
+    		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+    			if(file.getFileName().toString().endsWith(".jar") 
+    					|| file.getFileName().toString().endsWith(".car")){
+    				Path p = repoPath.relativize(file.getParent());
+    				String module = p.getParent().toString().replace('/', '.');
+    				String version = p.getFileName().toString();
+    				try {
+						checkModuleDescriptor(repository, module, version);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+    			}
+    			return super.visitFile(file, attrs);
+    		}
+    	});
+    }
+
+	protected void checkModuleDescriptor(RepositoryManager repository, String module, String version) throws Exception {
+		System.err.println("Checking "+module+"/"+version);
+    	File artifact = repository.getArtifact(new ArtifactContext(module, version, ArtifactContext.CAR, ArtifactContext.JAR));
+    	File descr = new File(artifact.getParentFile(), "module.xml");
+    	Assert.assertNotNull(artifact);
+        ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
+        Assert.assertNotNull(model);
+
+        CeylonImportJarTool tool;
+        List<String> options = options(
+        		"--dry-run", "--allow-cars",
+        		"--descriptor", descr.getAbsolutePath(),
+        		module+"/"+version, artifact.getAbsolutePath());
+        if(module.equals("org.apache.commons.logging")){
+        	options.addAll(0, Arrays.asList("--missing-dependency-packages", "org.apache.avalon.framework/4.1.3=org.apache.avalon.framework.**",
+        			"--missing-dependency-packages", "org.apache.log4j/1.2.12=org.apache.log4j.**",
+        			"--missing-dependency-packages", "org.apache.logkit/1.0.1=org.apache.log.**"
+        			));
+        }
+        if(module.equals("com.redhat.ceylon.maven-support")){
+        	options.addAll(0, Arrays.asList("--ignore-annotations"));
+        }
+        tool = pluginFactory.bindArguments(model, getMainTool(), options);
+        tool.run();
+	}
 }
