@@ -638,19 +638,27 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     private boolean share(Declaration d, boolean excludeProtoMembers) {
+        final boolean shared = sharePrefix(d, excludeProtoMembers);
+        if (shared) {
+            String dname=names.name(d);
+            if (dname.endsWith("()")){
+                dname = dname.substring(0, dname.length()-2);
+            }
+            out(dname, "=", dname);
+            endLine(true);
+        }
+        return shared;
+    }
+
+    private boolean sharePrefix(Declaration d, boolean excludeProtoMembers) {
         boolean shared = false;
         if (!(excludeProtoMembers && opts.isOptimize() && d.isClassOrInterfaceMember())
                 && (d instanceof ClassOrInterface || isCaptured(d))) {
             beginNewLine();
             if (outerSelf(d)) {
-                String dname=names.name(d);
-                if (dname.endsWith("()")){
-                    dname = dname.substring(0, dname.length()-2);
-                }
-                out(".", dname, "=", dname);
-                endLine(true);
+                out(".");
+                shared = true;
             }
-            shared = true;
         }
         return shared;
     }
@@ -829,6 +837,46 @@ public class GenerateJsVisitor extends Visitor {
         TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
+        if ((aliased instanceof Class && ((Class)aliased).hasConstructors()) || (aliased instanceof Constructor)) {
+            Class ac = aliased instanceof Constructor ? (Class)((Constructor)aliased).getContainer() :
+                (Class)aliased;
+            for (Declaration cm : ac.getMembers()) {
+                if (cm instanceof Constructor && cm!=ac.getDefaultConstructor() && cm.isShared()) {
+                    Constructor cons = (Constructor)cm;
+                    out("function ", aname, "_", names.name(cons), "(");
+                    ArrayList<String> pnames = new ArrayList<>(cons.getFirstParameterList().getParameters().size()+1);
+                    boolean first=true;
+                    for (int i=0;i<cons.getFirstParameterList().getParameters().size();i++) {
+                        final String pname = names.createTempVariable();
+                        pnames.add(pname);
+                        if (first) {
+                            first=false;
+                        } else {
+                            out(",");
+                        }
+                        out(pname);
+                    }
+                    out("){return ");
+                    qualify(that, cons);
+                    out(names.name(cons), "(");
+                    first=true;
+                    for (String pname : pnames) {
+                        if (first) {
+                            first=false;
+                        } else {
+                            out(",");
+                        }
+                        out(pname);
+                    }
+                    out(");}");
+                    if (ac.isShared()) {
+                        sharePrefix(ac, true);
+                        out(aname, "_", names.name(cons), "=", aname, "_", names.name(cons),";");
+                        endLine();
+                    }
+                }
+            }
+        }
     }
 
     @Override
