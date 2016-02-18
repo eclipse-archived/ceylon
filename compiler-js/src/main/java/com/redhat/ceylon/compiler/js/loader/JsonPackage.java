@@ -529,6 +529,9 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 _params.setNamedParametersSupported(first);
                 first = false;
                 md.addParameterList(_params);
+                for (Parameter p : _params.getParameters()) {
+                    md.addMember(p.getModel());
+                }
             }
         }
         return md;
