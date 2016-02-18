@@ -150,7 +150,7 @@ public class CeylonSrcTool extends RepoUsingTool {
                     copyResources(result, applyCwd(resource));
                 } else if (ArtifactContext.DOCS.equals(suffix)) {
                     append("    ").msg("extracting.docs").newline();
-                    copyFiles(result, "doc", new File(applyCwd(doc), modFolder), "doc");
+                    copyFiles(result, "doc", new File(applyCwd(doc), modFolder), "doc", false);
                 }
             }
             if (!hasSources) {
@@ -176,12 +176,15 @@ public class CeylonSrcTool extends RepoUsingTool {
         }
     }
 
-    private void copyFiles(ArtifactResult result, String fromSubDir, File destDir, String name) {
+    private void copyFiles(ArtifactResult result, String fromSubDir, File destDir, String name, boolean strict) {
         File fromDir = result.artifact();
         if (fromSubDir != null) {
             fromDir = new File(fromDir, fromSubDir);
         }
         if (!fromDir.isDirectory()) {
+            if (!strict) {
+                return;
+            }
             throw new RuntimeException(CeylonSrcMessages.msg("not.dir.input.dir", name, destDir));
         }
         if (!destDir.exists() && !FileUtil.mkdirs(destDir)) {
@@ -200,7 +203,7 @@ public class CeylonSrcTool extends RepoUsingTool {
     private void copyResources(ArtifactResult result, File destDir) {
         String[] parts = result.name().split("\\.");
         // First we copy the main resource files
-        copyFiles(result, parts[0], new File(destDir, parts[0]), "resource");
+        copyFiles(result, parts[0], new File(destDir, parts[0]), "resource", true);
         // And now any root resources if they exist
         String modFolder = result.name().replace('.', File.separatorChar);
         File destRoot = new File(new File(destDir, modFolder), resourceRoot);
