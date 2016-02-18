@@ -45,6 +45,7 @@
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
         <pathelement path="${ceylon.maven-support.lib}"/>
+        <pathelement path="${ceylon.classfile.lib}"/>
         <pathelement path="${json.lib}" />
     </path>
 
