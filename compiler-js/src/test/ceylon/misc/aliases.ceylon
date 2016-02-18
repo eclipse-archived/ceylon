@@ -117,6 +117,12 @@ shared class C5903 {
 shared class CAlias5903(Integer x) => C5903(x);
 shared class CCreateAlias5903(Integer x, Integer y) => C5903.create(x, y);
 
+alias A5962 => String;
+
+class C5962() {
+    shared void foo(A5962 str) {  }
+}
+
 void testAliasing() {
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
     class InnerSubalias() => AliasingSubclass();
@@ -166,4 +172,5 @@ void testAliasing() {
     check(CAlias5903.create(10, 20).i == 30, "#5903.2");
     check(CCreateAlias5903(10, 20).i == 30, "#5903.3");
     check(CCreateAlias5903.create(10, 20).i == 30, "#5903.4");
+    check(`C5962`.getMethods<C5962>().size>=1, "#5962");
 }
