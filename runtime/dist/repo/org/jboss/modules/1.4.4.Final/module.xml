@@ -30,6 +30,13 @@
          cannot find JDK modules in the parent class loader which is itself
     -->
     <dependencies>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.instrument" slot="7" export="true"/>
+        <module name="java.logging" slot="7" export="true"/>
+        <module name="java.management" slot="7"/>
+        <module name="java.prefs" slot="7"/>
+        <module name="javax.xml" slot="7" export="true"/>
+        <module name="oracle.jdk.base" slot="7"/>
         <system export="true">
             <paths>
                 <path name="org/jboss/modules"/>

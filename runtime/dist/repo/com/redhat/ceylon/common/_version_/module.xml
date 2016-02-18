@@ -28,7 +28,9 @@
     </resources>
 
     <dependencies>
-        <module name="org.tautua.markdownpapers.core" slot="1.2.7" optional="true"/>
-        <module name="java.logging" slot="7"/>
+        <module name="org.tautua.markdownpapers.core" slot="1.2.7" optional="true" export="true"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.logging" slot="7" export="true"/>
+        <module name="java.desktop" slot="7"/>
     </dependencies>
 </module>

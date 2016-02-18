@@ -28,8 +28,12 @@
     </resources>
 
     <dependencies>
-        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
+        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2" export="true"/>
+        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2" export="true"/>
         <module name="org.slf4j.api" slot="1.6.1"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="javax.jaxws" slot="7" export="true"/>
+        <module name="javax.xml" slot="7" export="true"/>
     </dependencies>
     
     <exports>

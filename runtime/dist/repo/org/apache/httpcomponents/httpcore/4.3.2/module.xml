@@ -28,5 +28,7 @@
     </resources>
 
     <dependencies>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.tls" slot="7" export="true"/>
     </dependencies>
 </module>

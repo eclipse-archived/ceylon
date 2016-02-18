@@ -28,6 +28,8 @@
     </resources>
 
     <dependencies>
-        <module name="org.antlr.antlr" slot="2.7.7"/>
+        <module name="org.antlr.antlr" slot="2.7.7" export="true"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.desktop" slot="7" export="true"/>
     </dependencies>
 </module>

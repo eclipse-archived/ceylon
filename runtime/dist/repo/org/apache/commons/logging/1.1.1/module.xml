@@ -28,10 +28,22 @@
     </resources>
 
     <dependencies>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.logging" slot="7" export="true"/>
+        <!--
+        See below for the excluded classes we prefer ignoring 
+        <module name="org.apache.avalon.framework" slot="4.1.3" optional="true" export="true"/>
+        <module name="org.apache.log4j" slot="1.2.12" optional="true" export="true"/>
+        <module name="org.apache.logkit" slot="1.0.1" optional="true" export="true"/>
+         -->
     </dependencies>
 
     <exports>
         <!-- Uses Servlet -->
         <exclude path="org/apache/commons/logging/impl/ServletContextCleaner*"/>
+        <!-- These would require extra optional deps that we don't want to include in the distrib -->
+        <exclude path="org/apache/commons/logging/impl/AvalonLogger*"/>
+        <exclude path="org/apache/commons/logging/impl/Log4JLogger*"/>
+        <exclude path="org/apache/commons/logging/impl/LogKitLogger*"/>
     </exports>
 </module>

@@ -30,12 +30,17 @@
     <main-class name="ceylon.modules.Main"/>
 
     <dependencies>
-        <module name="ceylon.language" slot="@ceylon-version@"/>
+        <module name="ceylon.language" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
-        <module name="com.redhat.ceylon.model" slot="@ceylon-version@"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.maven-support" slot="2.0" services="import" optional="true"/>
-        <module name="org.jboss.modules" slot="1.4.4.Final"/>
+        <module name="com.redhat.ceylon.tool.provider" slot="@ceylon-version@"/>
+        <module name="org.jboss.modules" slot="1.4.4.Final" export="true"/>
         <module name="org.jboss.logmanager" slot="2.0.3.Final"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.compiler" slot="7"/>
+        <module name="java.instrument" slot="7" export="true"/>
+        <module name="javax.xml" slot="7"/>
     </dependencies>
 </module>

@@ -22,5 +22,6 @@
     </resources>
 
     <dependencies>
+        <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

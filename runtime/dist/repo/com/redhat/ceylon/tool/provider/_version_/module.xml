@@ -28,13 +28,15 @@
     </resources>
 
     <dependencies>
-        <module name="com.redhat.ceylon.compiler.java" slot="@ceylon-version@"/>
+        <module name="ceylon.language" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.compiler.java" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.compiler.js" slot="@ceylon-version@"/>
-        <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
         <module name="org.jboss.modules" slot="1.4.4.Final"/>
         <module name="org.jboss.jandex" slot="2.0.0.Final"/>
+        <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

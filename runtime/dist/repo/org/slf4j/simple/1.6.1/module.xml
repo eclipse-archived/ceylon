@@ -28,5 +28,7 @@
     </resources>
 
     <dependencies>
+        <module name="org.slf4j.api" slot="1.6.1" export="true"/>
+        <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

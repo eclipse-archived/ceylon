@@ -29,8 +29,9 @@
 
     <dependencies>
         <module name="org.antlr.runtime" slot="3.4" export="true"/>
-        <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
+        <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

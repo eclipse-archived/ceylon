@@ -22,6 +22,16 @@
     </resources>
 
     <dependencies>
+    <!-- This one is in annotations, and it's not clear if that's the public API or not
+         For now it's ignored because it'd require us to add it to the dist, because this
+         module is used by our OSGi build and so all deps are required
+        <module name="javax.inject" slot="1" optional="true"/>
+     -->
+        <module name="org.slf4j.api" slot="1.6.1" optional="true" export="true"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.jdbc" slot="7"/>
+        <module name="java.logging" slot="7" export="true"/>
+        <module name="javax.xml" slot="7"/>
         <system export="true">
             <paths>
                 <path name="javax/xml"/>

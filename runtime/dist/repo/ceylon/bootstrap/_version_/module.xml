@@ -7,6 +7,9 @@
     <main-class name="com.redhat.ceylon.bootstrap.Main"/>
 
     <dependencies>
+        <!-- bytecode analysis says it's not used -->
         <module name="ceylon.runtime" slot="@ceylon-version@"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.logging" slot="7"/>
     </dependencies>
 </module>

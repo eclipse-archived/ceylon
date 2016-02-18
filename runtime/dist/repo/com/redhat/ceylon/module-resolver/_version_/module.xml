@@ -28,17 +28,22 @@
     </resources>
 
     <dependencies>
-        <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
+        <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
         <module name="org.jboss.jandex" slot="2.0.0.Final"/>
         <module name="org.jboss.modules" slot="1.4.4.Final"/>
-        <module name="com.redhat.ceylon.maven-support" slot="2.0" services="import" optional="true"/>
-        <module name="com.github.lookfirst.sardine" slot="5.1"/>
+        <module name="com.redhat.ceylon.maven-support" slot="2.0" services="import" optional="true" export="true"/>
+        <module name="com.github.lookfirst.sardine" slot="5.1" export="true"/>
         <module name="net.minidev.json-smart" slot="1.1.1"/>
         <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
+        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2"/>
         <!-- Aka java.xml/9 -->
-        <module name="javax.xml" slot="7"/>
-        <module name="java.logging" slot="7"/>
+        <module name="javax.xml" slot="7" export="true"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="javax.jaxws" slot="7"/>
+        <module name="javax.script" slot="7"/>
+        <module name="java.logging" slot="7" export="true"/>
         <system export="true">
             <paths>
                 <path name="javax/xml"/>
