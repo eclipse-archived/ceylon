@@ -10,6 +10,8 @@ public class Versions {
     * - language/src/ceylon/language/module.ceylon
     * - language/src/ceylon/language/language.ceylon
     * - language/test/process.ceylon (versions, name, binary version)
+    * - runtime/dist/dist-overrides.xml
+    * - cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml
     * - dist/build.properties (versions)
     * - dist/osgi/module.properties (versions)
     * - dist/osgi/META-INF/MANIFEST.MF (versions)
