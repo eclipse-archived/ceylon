@@ -104,6 +104,19 @@ class Class5904() satisfies I5904 {
     shared String id_iAliasAlias => (super of IAliasAlias5904).id;
 }
 
+shared class C5903 {
+    shared Integer i;
+    shared new (Integer a) {
+        this.i = a;
+    }
+    shared new create(Integer a, Integer b) {
+        this.i = a + b;
+    }
+}
+
+shared class CAlias5903(Integer x) => C5903(x);
+shared class CCreateAlias5903(Integer x, Integer y) => C5903.create(x, y);
+
 void testAliasing() {
     check(AliasingSubclass().aliasingSubclass(), "Aliased member class");
     class InnerSubalias() => AliasingSubclass();
@@ -149,4 +162,8 @@ void testAliasing() {
     check(!("" of Anything) is I5904, "#5904.14");
     check(!("" of Anything) is IAlias5904, "#5904.15"); // error
     check(!("" of Anything) is IAliasAlias5904, "#5904.16"); // error
+    check(CAlias5903(10).i == 10, "#5903.1");
+    check(CAlias5903.create(10, 20).i == 30, "#5903.2");
+    check(CCreateAlias5903(10, 20).i == 30, "#5903.3");
+    check(CCreateAlias5903.create(10, 20).i == 30, "#5903.4");
 }
