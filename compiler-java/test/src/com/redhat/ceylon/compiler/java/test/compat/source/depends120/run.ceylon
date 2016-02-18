@@ -2,5 +2,6 @@ import compat120{c=run}
 
 shared void run() {
     print("hello, world");
-    c();
+    assert(exists version = process.arguments[0]);
+    c(version);
 }

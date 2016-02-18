@@ -7,11 +7,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
@@ -85,11 +85,11 @@ public class CompatTests extends CompilerTests {
      * 
      * The source is in
      * <pre>
-     *   /ceylon-compiler/test/src/com/redhat/ceylon/compiler/java/test/compat/source/source/compat120
+     *   /ceylon-compiler/test/src/com/redhat/ceylon/compiler/java/test/compat/source/source/compiled120
      * </pre>
      * but the the module we execute,
      * <pre>  
-     *   /ceylon-compiler/test/src/com/redhat/ceylon/compiler/java/test/compat/modules/compat120/1.0.0/compat120-1.0.0.car
+     *   /ceylon-compiler/test/src/com/redhat/ceylon/compiler/java/test/compat/modules/compiled120/1.0.0/compiled120-1.0.0.car
      * </pre>
      * was compiled with the real 1.2.0 compiler
      */
@@ -98,7 +98,8 @@ public class CompatTests extends CompilerTests {
         runInJBossModules("run", "compiled120", Arrays.asList(
                 "--offline",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                "--run", "compiled120::runOn121"));
+                "--run", "compiled120::runOnLatest"),
+        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Test
@@ -106,14 +107,16 @@ public class CompatTests extends CompilerTests {
         runInJBossModules("run", "compiled120", Arrays.asList(
                 "--offline",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                "--run", "compiled120::runOn121",
-                "--flat-classpath"));
+                "--run", "compiled120::runOnLatest",
+                "--flat-classpath"),
+                Arrays.<String>asList(Versions.CEYLON_VERSION_NUMBER), null, null
+        		);
     }
     @Test
     public void runCompiled120CarIn121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled120", "1.0.0"), "compiled120.runOn121_", 
-                Collections.<String>emptyList());
+                new ModuleSpec("compiled120", "1.0.0"), "compiled120.runOnLatest_", 
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER));
     }
     
     @Test
@@ -128,10 +131,14 @@ public class CompatTests extends CompilerTests {
         assert(0 == pb.inheritIO().start().waitFor());
         
         // with the default upgrade dist behaviour
-        runInJBossModules("run", "depends120", Arrays.asList("--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"));
-        runInJBossModules("run", "depends120", Arrays.asList("--flat-classpath", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"));
+        runInJBossModules("run", "depends120", 
+        		Arrays.asList("--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
+        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
+        runInJBossModules("run", "depends120", 
+        		Arrays.asList("--flat-classpath", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
+        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("depends120", "1.0.0"), "depends120.run_", Collections.<String>emptyList());
+                new ModuleSpec("depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER));
     }
     
     
@@ -162,6 +169,7 @@ public class CompatTests extends CompilerTests {
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299::runOn121"),
+                    Arrays.<String>asList(),
                     err, null);
             // Check it returned an error status code
             Assert.assertEquals(1, sc);
@@ -181,12 +189,13 @@ public class CompatTests extends CompilerTests {
                     Arrays.asList(
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
-                            "--run", "compiled1299::runOn121",
+                            "--run", "compiled1299::runOnLatest",
                             "--link-with-current-distribution"),
+                    Arrays.<String>asList(Versions.CEYLON_VERSION_NUMBER),
                     null, out);
             // Check it returned OK
             Assert.assertEquals(0, sc);
-            String expectedLine = "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version";
+            String expectedLine = "Running on "+Versions.CEYLON_VERSION_NUMBER+" ("+Versions.CEYLON_VERSION_NAME+") according to language.version";
             assertFileContainsLine(out, expectedLine);
         } finally {
             out.delete();
@@ -203,6 +212,7 @@ public class CompatTests extends CompilerTests {
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299depends121::runOn121"),
+                    Arrays.<String>asList(),
                     err, null);
             // Check it returned an error status code
             Assert.assertEquals(1, sc);
@@ -221,12 +231,13 @@ public class CompatTests extends CompilerTests {
                     Arrays.asList(
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
-                            "--run", "compiled1299depends121::runOn121",
+                            "--run", "compiled1299depends121::runOnLatest",
                             "--link-with-current-distribution"),
+                    Arrays.<String>asList(Versions.CEYLON_VERSION_NUMBER),
                     null, out);
             // Check it returned an error status code
             Assert.assertEquals(0, sc);
-            String expectedLine = "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version";
+            String expectedLine = "Running on "+Versions.CEYLON_VERSION_NUMBER+" ("+Versions.CEYLON_VERSION_NAME+") according to language.version";
             assertFileContainsLine(out, expectedLine);
         } finally {
             out.delete();
@@ -242,6 +253,7 @@ public class CompatTests extends CompilerTests {
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299depends121::runOn121"),
+                    Arrays.<String>asList(),
                     err, null);
             // Check it returned an error status code
             Assert.assertEquals(1, sc);
@@ -260,12 +272,13 @@ public class CompatTests extends CompilerTests {
                     Arrays.asList(
                             "--offline",
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
-                            "--run", "compiled1299depends120::runOn121",
+                            "--run", "compiled1299depends120::runOnLatest",
                             "--link-with-current-distribution"),
+                    Arrays.<String>asList(Versions.CEYLON_VERSION_NUMBER),
                     null, out);
             // Check it returned an error status code
             Assert.assertEquals(0, sc);
-            String expectedLine = "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version";
+            String expectedLine = "Running on "+Versions.CEYLON_VERSION_NUMBER+" ("+Versions.CEYLON_VERSION_NAME+") according to language.version";
             assertFileContainsLine(out, expectedLine);
         } finally {
             out.delete();
@@ -295,6 +308,7 @@ public class CompatTests extends CompilerTests {
                     Arrays.asList("--flat-classpath", 
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
                             "--run", "compiled1299::runOn121"),
+                    Arrays.<String>asList(),
                     err, null);
             // Check it returned an error status code
             String expectedLine = "ceylon run: Could not find module: ceylon.language/1.2.99";
@@ -312,11 +326,12 @@ public class CompatTests extends CompilerTests {
             int sc = runInJBossModules("run", "compiled1299", 
                     Arrays.asList("--flat-classpath", 
                             "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules",
-                            "--run", "compiled1299::runOn121",
+                            "--run", "compiled1299::runOnLatest",
                             "--link-with-current-distribution"),
+                    Arrays.<String>asList(Versions.CEYLON_VERSION_NUMBER),
                     null, out);
             // Check it returned an error status code
-            assertFileContainsLine(out, "Running on 1.2.1 (In A Galaxy Far Far Away) according to language.version");
+            assertFileContainsLine(out, "Running on "+Versions.CEYLON_VERSION_NUMBER+" ("+Versions.CEYLON_VERSION_NAME+") according to language.version");
             Assert.assertEquals(0, sc);
         } finally {
             out.delete();
@@ -353,7 +368,8 @@ public class CompatTests extends CompilerTests {
         runInJBossModules("run", "compiled121depends120", Arrays.asList(
                 "--offline",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                "--run", "compiled121depends120::runOn121"));
+                "--run", "compiled121depends120::runOnLatest"),
+        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Test
@@ -362,7 +378,8 @@ public class CompatTests extends CompilerTests {
                 "--offline",
                 "--flat-classpath",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                "--run", "compiled121depends120::runOn121"));
+                "--run", "compiled121depends120::runOnLatest"),
+        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Test
@@ -373,7 +390,9 @@ public class CompatTests extends CompilerTests {
                     "--offline",
                     "--flat-classpath",
                     "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                    "--run", "compiled1299depends120::runOn121"), err, null);
+                    "--run", "compiled1299depends120::runOn121"),
+                    Arrays.<String>asList(),
+            		err, null);
             assertFileContainsLine(err, "ceylon run: Could not find module: ceylon.language/1.2.99");
         } finally {
             err.delete();
@@ -387,14 +406,15 @@ public class CompatTests extends CompilerTests {
                 "--flat-classpath",
                 "--link-with-current-distribution",
                 "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                "--run", "compiled1299depends120::runOn121"));
+                "--run", "compiled1299depends120::runOnLatest"),
+        		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
     @Test
     public void runCompiled121Depends120In121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled121depends120", "1.0.0"), "compiled121depends120.runOn121_", 
-                Collections.<String>emptyList());
+                new ModuleSpec("compiled121depends120", "1.0.0"), "compiled121depends120.runOnLatest_", 
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER));
     }
     
     @Test

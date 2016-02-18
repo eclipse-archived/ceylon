@@ -1,5 +1,6 @@
 import compiled121{test}
 
-shared void runOn121() {
-    test("1.2.1");
+shared void runOnLatest() {
+    assert(exists version = process.arguments[0]);
+    test(version);
 }

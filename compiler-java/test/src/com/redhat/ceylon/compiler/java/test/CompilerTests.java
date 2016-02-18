@@ -923,7 +923,7 @@ public abstract class CompilerTests {
     }
     
     protected void runInJBossModules(String runner, String module, List<String> runnerArgs) throws Throwable {
-        Assert.assertEquals("Unexpected exit code", 0, runInJBossModules(runner, module, runnerArgs, null, null));
+        Assert.assertEquals("Unexpected exit code", 0, runInJBossModules(runner, module, runnerArgs, Collections.<String>emptyList(), null, null));
     }
     
     protected void runInJBossModulesSameVM(String runner, String module, List<String> runnerArgs) throws Throwable{
@@ -965,7 +965,7 @@ public abstract class CompilerTests {
      * @param outFile A file to write the subprocess' standard output to, for later inspection
      * @throws Throwable
      */
-    protected int runInJBossModules(String runner, String module, List<String> runnerArgs,
+    protected int runInJBossModules(String runner, String module, List<String> runnerArgs, List<String> moduleArgs, 
             File errFile, File outFile) throws Throwable {
         /* Run this in its own process because jbmoss modules assumes it
          * owns the VM, and in particular because it likes to call 
@@ -980,6 +980,7 @@ public abstract class CompilerTests {
         a.add(getOutPath());
         a.addAll(runnerArgs);
         a.add(module);
+        a.addAll(moduleArgs);
         System.err.println(a);
         ProcessBuilder pb = new ProcessBuilder(a);
         if (errFile != null) {

@@ -88,6 +88,7 @@ shared void runOn120() {
     test("1.2.0");
 }
 
-shared void runOn121() {
-    test("1.2.1");
+shared void runOnLatest() {
+    assert(exists version = process.arguments[0]);
+    test(version);
 }
