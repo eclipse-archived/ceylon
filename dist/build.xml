@@ -599,7 +599,14 @@ Use this when NOT doing a release!">
             </filterchain>
         </loadproperties>
         
-        <var name="Require-Bundle" value=""/>
+        <xmlproperty file="${module.descriptor.file}" />
+        <property name="Bundle-SymbolicName" value="${module(name)}"/>
+        <if>
+            <not><isset property="Bundle-Version"/></not>
+            <then><property name="Bundle-Version" value="${module(slot)}"/></then>
+        </if>
+
+    	<var name="Require-Bundle" value=""/>
         <xmltask source="${module.descriptor.file}" standalone="true">
             <call path="/*[local-name()='module']/*[local-name()='dependencies']/*[local-name()='module']">
                 <param name="moduleName" path="@name" default="unknown"/>
@@ -625,6 +632,10 @@ Use this when NOT doing a release!">
                                 <equals arg1="@{moduleName}" arg2="java.tls"/>
                                 <equals arg1="@{moduleName}" arg2="java.management"/>
                                 <equals arg1="@{moduleName}" arg2="org.slf4j.simple"/>
+                                <and>
+                                    <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
+                                    <equals arg1="@{moduleName}" arg2="ceylon.language"/>
+                                </and>
                             </or>
                         </not>
                         <then>
@@ -654,23 +665,26 @@ Use this when NOT doing a release!">
                 </actions>
             </call>
         </xmltask>
-        <xmlproperty file="${module.descriptor.file}" />
-        <property name="Bundle-SymbolicName" value="${module(name)}"/>
-        <if>
-            <not><isset property="Bundle-Version"/></not>
-            <then><property name="Bundle-Version" value="${module(slot)}"/></then>
-        </if>
-        <if>
+<!--
+    	<if>
             <equals arg1="${Bundle-SymbolicName}"  arg2="ceylon.language"/>
             <then>
                 <var name="Require-Bundle" value="${Require-Bundle},com.redhat.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
             </then>
         </if>
+-->
         <tempfile property="bundleDefinitionFile"/>
         <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${Bundle-Version}${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *${line.separator}</echo>
         <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
+        <if>
+            <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
+            <then>
+                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${ceylon.base.version},com.redhat.ceylon.compiler.java.*;bundle-version=${ceylon.base.version}${line.separator}</echo>
+            </then>
+        	
+        </if>
         <if>
         	<or>
                 <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.compiler.java"/>

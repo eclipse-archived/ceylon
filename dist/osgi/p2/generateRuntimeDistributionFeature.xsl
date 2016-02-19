@@ -25,7 +25,7 @@ by the @authors tag, 2011.
       
       <xsl:for-each select="/*[local-name()='repository']/*[local-name()='resource']">
          <xsl:variable name="bundleName" select="./*[(local-name()='capability') and (@namespace='osgi.identity')]/*[(local-name()='attribute') and (@name='osgi.identity')]/@value"/>      
-            <xsl:if test="$bundleName != 'org.slf4j.simple' and $bundleName != 'com.github.rjeschke.txtmark' and $bundleName != 'com.redhat.ceylon.typechecker' and not(contains($bundleName, 'com.redhat.ceylon.compiler.')) and not(contains($bundleName, 'org.antlr.'))">
+            <xsl:if test="$bundleName != 'org.slf4j.simple' and $bundleName != 'com.redhat.ceylon.dist.repo' and $bundleName != 'com.github.rjeschke.txtmark' and $bundleName != 'com.redhat.ceylon.typechecker' and $bundleName != 'ceylon.runtime' and $bundleName != 'com.redhat.ceylon.tool.provider' and not(contains($bundleName, 'com.redhat.ceylon.compiler.')) and not(contains($bundleName, 'org.antlr.'))">
    <plugin
          id="{$bundleName}"
          download-size="{./*[(local-name()='capability') and (@namespace='osgi.content')]/*[(local-name()='attribute') and (@name='size')]/@value}"
