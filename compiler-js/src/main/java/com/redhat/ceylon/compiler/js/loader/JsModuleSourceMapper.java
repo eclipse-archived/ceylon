@@ -77,19 +77,6 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
             model.remove("$mod-deps");
         }
         ((JsonModule)module).setModel(model);
-        for (ModuleImport imp : module.getImports()) {
-            if (!imp.getModule().getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) {
-                ArtifactContext ac = new ArtifactContext(imp.getModule().getNameAsString(),
-                        imp.getModule().getVersion(), ArtifactContext.JS_MODEL);
-                artifact = getContext().getRepositoryManager().getArtifactResult(ac);
-                if (artifact == null) {
-                    throw new IllegalStateException("No model for " + imp.getModule());
-                } else {
-                    resolveModule(artifact, imp.getModule(), imp, dependencyTree,
-                            phasedUnitsOfDependencies, forCompiledModule & imp.isExport());
-                }
-            }
-        }
         ((JsonModule)module).loadDeclarations();
         return;
     }

@@ -69,9 +69,6 @@ public class JsonModule extends Module {
                         getPackages().add(p);
                     }
                 }
-                for (JsonPackage p : pks) {
-                    p.loadDeclarations();
-                }
             }
         }
     }

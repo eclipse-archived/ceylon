@@ -41,7 +41,7 @@ import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
-public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Package {
+public class JsonPackage extends LazyPackage {
 
     //Ugly hack to have a ref to Basic at hand, to use as implicit supertype of classes
     private final static Map<String,Object> idobj = new HashMap<String, Object>();
@@ -72,6 +72,16 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
         setName(ModuleManager.splitModuleName(pkgname));
     }
 
+    boolean inLoadIfNecessary = false;
+    protected void loadIfNecessary() {
+        // model will be null if this is a module that we are currently compiling
+        if (!inLoadIfNecessary && !loaded && null != model) {
+            inLoadIfNecessary = true;
+            loadDeclarations();
+            inLoadIfNecessary = false;
+        }
+    }
+
     public void setModule(com.redhat.ceylon.model.typechecker.model.Module module) {
         if (module instanceof JsonModule && model == null) {
             model = ((JsonModule)module).getModelForPackage(getNameAsString());
@@ -100,18 +110,23 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                     }
                 }
             }
+
+            // This was part of loadDeclarations() which is now being called lazily, but
+            // needs to run eagerly, for whatever reason.
+
+            if (module.getLanguageModule() == module && Module.LANGUAGE_MODULE_NAME.equals(pkgname)) {
+                //Mark the language module as immediately available to bypass certain validations
+                module.setAvailable(true);
+            }
         }
+
         super.setModule(module);
     };
     Map<String,Object> getModel() { return model; }
 
-    void loadDeclarations() {
+    private void loadDeclarations() {
         if (loaded) return;
         loaded = true;
-        if (getModule().getLanguageModule() == getModule() && Module.LANGUAGE_MODULE_NAME.equals(pkgname)) {
-            //Mark the language module as immediately available to bypass certain validations
-            getModule().setAvailable(true);
-        }
         //Ugly ass hack - add Nothing to the model
         nothing.setContainer(this);
         nothing.setUnit(u2);
@@ -887,7 +902,7 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                     throw new CompilerErrorException("Package not found: " + pname);
                 }
                 if (rp != this && rp instanceof JsonPackage && !((JsonPackage)rp).loaded) {
-                    ((JsonPackage) rp).loadDeclarations();
+                    ((JsonPackage) rp).loadIfNecessary();
                 }
                 final boolean nested = tname.indexOf('.') > 0;
                 final String level1 = nested ? tname.substring(0, tname.indexOf('.')) : tname;
