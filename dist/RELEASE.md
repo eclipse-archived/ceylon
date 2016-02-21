@@ -31,11 +31,11 @@ How to do a release of Ceylon.
 # The release
 
 1. Tag every project
-  -  $ git tag 1.2.1
+  -  $ git tag **1.2.1**
   -  $ git push --tags
 2. Do the release zip
   -  $ mkdir /tmp/ceylon
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build 1.2.1
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
 3. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1.zip ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
@@ -45,30 +45,30 @@ How to do a release of Ceylon.
     ceylon-dist $ dch -i
 2. Update the versions and rename some files in `debian/` to match the new version
 3. Package it
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb 1.2.1
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb **1.2.1**
 4. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1_1.2.1_all.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 5. Build the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-debian-repo/blob/master/repo/build.sh) is up to date
-  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb 1.2.1
+  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb **1.2.1**
   -  $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
 
 # Build the RedHat file
 
 1. Build it
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm 1.2.1
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm **1.2.1**
 2. Copy the rpm to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-1.2.1-1.2.1-0.noarch.rpm ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 3. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
-  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm 1.2.1
+  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
   -  $ rsync -rv --dry-run /tmp/ceylon/{*.noarch.rpm,repodata} ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
 # Publishing to the Herd
 
 1. First create an Upload on the server
 2. Publish the official distribution to it
-  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-publish 1.2.1 https://modules.ceylon-lang.org/uploads/**XXX**/repo/ **user** **password**
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-publish **1.2.1** https://modules.ceylon-lang.org/uploads/**XXX**/repo/ **user** **password**
 3. Publish the SDK modules by running the following in the `ceylon-sdk` project:
   - $ ant copy-herd -Dherd.repo=https://modules.ceylon-lang.org/uploads/**XXX**/repo/ -Dherd.user=**user** -Dherd.pass=**password**
 
