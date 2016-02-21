@@ -20,8 +20,10 @@
     </path>
 
     <path id="test.run.classpath">
+        <path refid="classpath" />
         <pathelement path="${build.classes}" />
         <pathelement path="${junit.lib}" />
+        <pathelement path="${hamcrest.lib}" />
     </path>
 
     <!-- ################################################################## -->
