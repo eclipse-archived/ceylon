@@ -351,6 +351,7 @@ public class CMRTests extends CompilerTests {
         car.close();
     }
 
+    @Ignore("See https://github.com/ceylon/ceylon/issues/6027")
     @Test
     public void testMdlCarWithInvalidSHA1() throws IOException{
         compile("modules/single/module.ceylon");
