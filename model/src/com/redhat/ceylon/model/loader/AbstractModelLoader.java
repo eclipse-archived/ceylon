@@ -529,7 +529,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private ClassMirror loadClass(Module module, String pkgName, String className) {
         ClassMirror moduleClass = null;
         try{
-            loadPackage(module, pkgName, false);
+            // no need loading the package since we know the name of the class
             moduleClass = lookupClassMirror(module, className);
         }catch(Exception x){
             logVerbose("[Failed to complete class "+className+"]");

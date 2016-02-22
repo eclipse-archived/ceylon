@@ -28,7 +28,7 @@ public class ReflectionModule extends LazyModule {
             synchronized(modelLoader.getLock()){
                 if(!packagesLoaded){
                     String name = getNameAsString();
-                    for(String pkg : jarPackages){
+                    for(String pkg : getJarPackages()){
                         // special case for the language module to hide stuff
                         if(!name.equals(AbstractModelLoader.CEYLON_LANGUAGE) || pkg.startsWith(AbstractModelLoader.CEYLON_LANGUAGE))
                             modelLoader.findOrCreatePackage(this, pkg);

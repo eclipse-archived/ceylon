@@ -15,6 +15,7 @@ import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.model.LazyModule.PackagePathsProvider;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -26,8 +27,14 @@ import com.redhat.ceylon.model.typechecker.model.Package;
  */
 public abstract class LazyModule extends Module {
 
+    public static interface PackagePathsProvider {
+        Set<String> getPackagePaths();
+    }
+    
     private boolean isJava = false;
     protected Set<String> jarPackages = new HashSet<String>();
+    private PackagePathsProvider packagePathsProvider;
+    
     /**
      * Set of exported Java9 Module packages, or null if not a Java9 module. Only
      * set if this is not a Ceylon module.
@@ -181,6 +188,7 @@ public abstract class LazyModule extends Module {
     }
 
     private void addPackageForPath(String path, PathFilter pathFilter) {
+        // some similar logic is in CachedTOCJars
         if(path.toLowerCase().endsWith(".class")
                 // skip Java 9 module descriptors
                 && !path.equals("module-info.class")){
@@ -219,14 +227,14 @@ public abstract class LazyModule extends Module {
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.language")
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.metadata");
             }
-            return jarPackages.contains(pkgName);
+            return getJarPackages().contains(pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
             if(JDKUtils.isJDKPackage(moduleName, pkgName)
                     || JDKUtils.isOracleJDKPackage(moduleName, pkgName))
                 return true;
             // otherwise we have the list of packages contained in that module jar
-            return jarPackages.contains(pkgName);
+            return getJarPackages().contains(pkgName);
         }
     }
     
@@ -252,5 +260,26 @@ public abstract class LazyModule extends Module {
 
     public void setExportedJavaPackages(List<String> exportedPackages) {
         this.exportedJavaPackages = exportedPackages;
+    }
+
+    private void loadPackageListFromPackagePaths(Set<String> packagePaths) {
+        for(String pkg : packagePaths){
+            // make sure we unquote any package part
+            pkg = pkg.replace("$", "");
+            pkg = pkg.replace('/', '.');
+            jarPackages.add(pkg);
+        }
+    }
+    
+    protected Set<String> getJarPackages(){
+        if(packagePathsProvider != null){
+            loadPackageListFromPackagePaths(packagePathsProvider.getPackagePaths());
+            packagePathsProvider = null;
+        }
+        return jarPackages;
+    }
+
+    public void setPackagePathsProvider(PackagePathsProvider packagePathsProvider) {
+        this.packagePathsProvider = packagePathsProvider;
     }
 }

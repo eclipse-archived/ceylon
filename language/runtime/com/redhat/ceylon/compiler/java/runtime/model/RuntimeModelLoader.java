@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jboss.modules.ModuleClassLoader;
 
@@ -108,14 +109,19 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     }
 
     @Override
-    public void addModuleToClassPath(Module module, ArtifactResult artifact) {
+    public void addModuleToClassPath(final Module module, ArtifactResult artifact) {
         String cacheKey = cacheKeyByModule(module.getNameAsString(), module.getVersion());
         moduleCache.put(cacheKey, module);
         if(artifact == null)
             return;
         jars.addJar(artifact, module);
         if(module instanceof LazyModule){
-            ((LazyModule) module).loadPackageList(artifact);
+            ((LazyModule) module).setPackagePathsProvider(new LazyModule.PackagePathsProvider() {
+				@Override
+				public Set<String> getPackagePaths() {
+					return jars.getPackagePaths(module);
+				}
+			});
         }
     }
 
