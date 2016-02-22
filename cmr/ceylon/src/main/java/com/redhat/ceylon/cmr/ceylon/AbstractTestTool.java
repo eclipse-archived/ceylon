@@ -169,7 +169,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
                 compileFlags = COMPILE_NEVER;
             }
         } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_ONCE;
+            compileFlags = COMPILE_CHECK;
         }
     }
 

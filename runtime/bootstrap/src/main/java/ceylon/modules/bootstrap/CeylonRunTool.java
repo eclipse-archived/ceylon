@@ -65,7 +65,7 @@ import ceylon.modules.bootstrap.loader.InitialModuleLoader;
         " - **check** - Compile when the sources are newer than the compiled module\n" +
         " - **force** - Always compile" +
         "\n\n" +
-        "If the `--compile` flag is given without an argument it's the same as specifying `once`. " +
+        "If the `--compile` flag is given without an argument it's the same as specifying `check`. " +
         "If no flag is given at all it's the same as specifying `never`.\n" +
         "\n\n" +
         "## Configuration file" +
@@ -178,7 +178,7 @@ public class CeylonRunTool extends RepoUsingTool {
                 compileFlags = COMPILE_NEVER;
             }
         } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_ONCE;
+            compileFlags = COMPILE_CHECK;
         }
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);

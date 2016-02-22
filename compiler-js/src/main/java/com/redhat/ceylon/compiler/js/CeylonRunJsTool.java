@@ -429,7 +429,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 compileFlags = COMPILE_NEVER;
             }
         } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_ONCE;
+            compileFlags = COMPILE_CHECK;
         }
         
         version = checkModuleVersionsOrShowSuggestions(
