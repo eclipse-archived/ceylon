@@ -48,6 +48,7 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**
  * Byte hacks / utils.
@@ -99,7 +100,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
      * @return module info list
      */
     private static ModuleInfo readModuleInformation(final String moduleName, final File jarFile, Overrides overrides) {
-        Index index = readModuleIndex(jarFile, false);
+        Index index = readModuleIndex(moduleName, jarFile, false);
         final AnnotationInstance ai = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (ai == null)
             return null;
@@ -131,17 +132,34 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return ret;
     }
 
-    private static Index readModuleIndex(final File jarFile, boolean everything) {
+    private static Index readModuleIndex(String moduleName, final File jarFile, boolean everything) {
         try {
             try(JarFile jar = new JarFile(jarFile)){
-                Enumeration<JarEntry> entries = jar.entries();
                 Indexer indexer = new Indexer();
+            	// FIXME: try reading the index directly rather than iterate
+            	if(!everything){
+            		// default module has no module descriptor
+            		if(Module.DEFAULT_MODULE_NAME.equals(moduleName))
+            			return indexer.complete();
+            		String modulePath = getModulePath(moduleName);
+            		String name1 = modulePath+"/$module_.class";
+            		JarEntry entry = jar.getJarEntry(name1);
+            		if(entry == null){
+                		String name2 = modulePath+"/module_.class";
+                		entry = jar.getJarEntry(name2);
+            		}
+            		if(entry != null){
+                        try(InputStream stream = jar.getInputStream(entry)){
+                        	indexer.index(stream);
+                        }
+            		}
+            		return indexer.complete();
+            	}
+                Enumeration<JarEntry> entries = jar.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
                     String name = entry.getName().toLowerCase();
-                    if(everything && name.endsWith(".class")
-                            || name.endsWith("/module_.class")
-                            || name.endsWith("/$module_.class")){
+                    if(everything && name.endsWith(".class")){
                         try(InputStream stream = jar.getInputStream(entry)){
                             indexer.index(stream);
                         }
@@ -154,7 +172,12 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         }
     }
     
-    private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
+    private static String getModulePath(String moduleName) {
+        String quotedModuleName = JVMModuleUtil.quoteJavaKeywords(moduleName);
+		return quotedModuleName.replace('.', '/');
+	}
+
+	private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
         // we need to escape any java keyword from the package list
         String quotedModuleName = JVMModuleUtil.quoteJavaKeywords(moduleName);
         DotName moduleClassName = DotName.createSimple(quotedModuleName + ".$module_");
@@ -169,7 +192,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
 
     @Override
     public int[] getBinaryVersions(String moduleName, String moduleVersion, File moduleArchive) {
-        Index index = readModuleIndex(moduleArchive, false);
+        Index index = readModuleIndex(moduleName, moduleArchive, false);
         final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
@@ -184,7 +207,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
 
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, String moduleVersion, File moduleArchive, boolean includeMembers, Overrides overrides) {
-        Index index = readModuleIndex(moduleArchive, true);
+        Index index = readModuleIndex(moduleName, moduleArchive, true);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
@@ -325,7 +348,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
     
     public boolean matchesModuleInfo(String moduleName, String moduleVersion, File moduleArchive, String query, Overrides overrides) {
-        Index index = readModuleIndex(moduleArchive, false);
+        Index index = readModuleIndex(moduleName, moduleArchive, false);
         final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return false;
