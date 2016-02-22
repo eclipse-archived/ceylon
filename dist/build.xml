@@ -610,6 +610,16 @@ Use this when NOT doing a release!">
                                 <equals arg1="@{moduleName}" arg2="java.compiler"/>
                                 <equals arg1="@{moduleName}" arg2="java.logging"/>
                                 <equals arg1="@{moduleName}" arg2="javax.xml"/>
+                            	<equals arg1="@{moduleName}" arg2="java.instrument"/>
+                                <equals arg1="@{moduleName}" arg2="javax.jaxws"/>
+                                <equals arg1="@{moduleName}" arg2="java.desktop"/>
+                                <equals arg1="@{moduleName}" arg2="java.prefs"/>
+                                <equals arg1="@{moduleName}" arg2="oracle.jdk.base"/>
+                                <equals arg1="@{moduleName}" arg2="java.jdbc"/>
+                                <equals arg1="@{moduleName}" arg2="javax.script"/>
+                                <equals arg1="@{moduleName}" arg2="java.auth.kerberos"/>
+                                <equals arg1="@{moduleName}" arg2="java.tls"/>
+                                <equals arg1="@{moduleName}" arg2="java.management"/>
                             </or>
                         </not>
                         <then>
