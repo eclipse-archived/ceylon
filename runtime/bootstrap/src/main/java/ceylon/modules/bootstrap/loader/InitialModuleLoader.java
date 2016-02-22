@@ -1,6 +1,5 @@
 package ceylon.modules.bootstrap.loader;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.modules.DependencySpec;
@@ -14,27 +13,6 @@ import org.jboss.modules.ModuleSpec;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class InitialModuleLoader extends ModuleLoader {
-    private static final DependencySpec JDK_DEPENDENCY;
-    private static final Set<String> JDK_MODULE_NAMES;
-
-    static{
-        Set<String> jdkPaths = new HashSet<>();
-        JDK_MODULE_NAMES = new HashSet<>();
-        // JDK
-        for (String module : JDKUtils.getJDKModuleNames()) {
-            Set<String> paths = JDKUtils.getJDKPathsByModule(module);
-            jdkPaths.addAll(paths);
-            JDK_MODULE_NAMES.add(module);
-        }
-        // Oracle
-        for (String module : JDKUtils.getOracleJDKModuleNames()) {
-            Set<String> paths = JDKUtils.getOracleJDKPathsByModule(module);
-            JDK_MODULE_NAMES.add(module);
-            jdkPaths.addAll(paths);
-        }
-        // always exported implicitely
-        JDK_DEPENDENCY = DependencySpec.createSystemDependencySpec(jdkPaths, true);
-    }
 
     public InitialModuleLoader() {
         super(new ModuleFinder[] { new LocalModuleFinder() });
@@ -42,9 +20,16 @@ public class InitialModuleLoader extends ModuleLoader {
     
     @Override
     protected ModuleSpec findModule(ModuleIdentifier module) throws ModuleLoadException {
-    	if(JDK_MODULE_NAMES.contains(module.getName())){
+    	if(JDKUtils.isJDKModule(module.getName())){
             ModuleSpec.Builder builder = ModuleSpec.build(module);
-            builder.addDependency(JDK_DEPENDENCY);
+            Set<String> jdkPaths = JDKUtils.getJDKPathsByModule(module.getName());
+            builder.addDependency(DependencySpec.createSystemDependencySpec(jdkPaths, true));
+            return builder.create();
+    	}
+    	if(JDKUtils.isOracleJDKModule(module.getName())){
+            ModuleSpec.Builder builder = ModuleSpec.build(module);
+            Set<String> jdkPaths = JDKUtils.getOracleJDKPathsByModule(module.getName());
+            builder.addDependency(DependencySpec.createSystemDependencySpec(jdkPaths, true));
             return builder.create();
     	}
     	return super.findModule(module);
