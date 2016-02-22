@@ -45,11 +45,14 @@ public abstract class AbstractRuntime implements ceylon.modules.spi.runtime.Runt
         try {
             try {
                 String javaClassName = JVMModuleUtil.javaClassNameFromCeylon(moduleName, ceylonRunnableName);
+                if (ceylonRunnableName == null) {
+                    ceylonRunnableName = moduleName + "::" + JVMModuleUtil.RUN_INFO_CLASS;
+                }
                 runClass = cl.loadClass(javaClassName);
             } catch (ClassNotFoundException cnfe) {
                 String type = Character.isUpperCase(ceylonRunnableName.charAt(0)) ? "class" : "function";
                 String msg = String.format("Could not find toplevel %s '%s'.", type, ceylonRunnableName);
-                if (!moduleName.equals(Constants.DEFAULT.toString()) && !ceylonRunnableName.contains(".")) {
+                if (!moduleName.equals(Constants.DEFAULT.toString()) && !ceylonRunnableName.contains(".") && !ceylonRunnableName.contains("::")) {
                     msg += String.format(" Class and method names need to be fully qualified, maybe you meant '%s'?", moduleName + "::" + ceylonRunnableName);
                 }
                 //msg += " [" + clh + "]";
