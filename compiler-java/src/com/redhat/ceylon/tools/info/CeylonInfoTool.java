@@ -259,10 +259,14 @@ public class CeylonInfoTool extends RepoUsingTool {
     @Override
     public void run() throws Exception {
         if (showIncompatible != Incompatible.yes) {
-            jvmBinaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
-            jvmBinaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
-            jsBinaryMajor = Versions.JS_BINARY_MAJOR_VERSION;
-            jsBinaryMinor = Versions.JS_BINARY_MINOR_VERSION;
+            if (queryType.includes(ArtifactContext.CAR)) {
+                jvmBinaryMajor = Versions.JVM_BINARY_MAJOR_VERSION;
+                jvmBinaryMinor = Versions.JVM_BINARY_MINOR_VERSION;
+            }
+            if (queryType.includes(ArtifactContext.JS)) {
+                jsBinaryMajor = Versions.JS_BINARY_MAJOR_VERSION;
+                jsBinaryMinor = Versions.JS_BINARY_MINOR_VERSION;
+            }
         }
         String msgkey = showIncompatible == Incompatible.no ? "module.not.found.compat" : "module.not.found";
 
