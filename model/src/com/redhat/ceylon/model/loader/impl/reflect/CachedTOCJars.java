@@ -121,7 +121,7 @@ public class CachedTOCJars {
                         ZipEntry entry = zf.getEntry(path);
                         if (entry != null) {
                             String uripath = FileUtil.absoluteFile(jar).toURI().getSchemeSpecificPart();
-                            return new URI("classpath:" + uripath + "!" + entry.getName());
+                            return new URI("classpath", uripath + "!" + entry.getName(), null);
                         }
                     }finally{
                         zf.close();
