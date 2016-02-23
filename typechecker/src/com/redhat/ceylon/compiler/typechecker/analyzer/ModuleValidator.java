@@ -212,7 +212,7 @@ public class ModuleValidator {
             Module module = moduleImport.getModule();
             if (moduleManager.findModule(module, dependencyTree, true) != null) {
                 //circular dependency: stop right here
-                return;
+                continue;
             }
             Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
             ImportDepth newImportDepth = importDepth.forModuleImport(moduleImport);
