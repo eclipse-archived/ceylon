@@ -1,9 +1,11 @@
 package com.redhat.ceylon.compiler.js.loader;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
@@ -83,25 +85,50 @@ public class JsonModule extends Module {
         if ("default".equals(name)) {
             name = "";
         }
+
+        // search direct packages
         Package p = getDirectPackage(name);
         if (p != null) {
             return p;
         }
+
+        // search imported modules
+        HashSet<Module> visited = new HashSet<Module>();
+        visited.add(this);
         for (ModuleImport imp : getImports()) {
-            final Module mod = imp.getModule();
-            p = mod.getDirectPackage(name);
+            p = getPackageFromImport(name, imp.getModule(), visited);
             if (p != null) {
                 return p;
             }
-            for (ModuleImport im2 : mod.getImports()) {
-                if (im2.isExport()) {
-                    p = im2.getModule().getPackage(name);
-                }
+        }
+
+        // not found
+        return null;
+    }
+
+    private Package getPackageFromImport(String name, Module module, Set<Module> visited) {
+        // break circularities
+        if (!visited.add(module)) {
+            return null;
+        }
+
+        // search direct packages
+        Package p = module.getDirectPackage(name);
+        if (p != null) {
+            return p;
+        }
+
+        // search exports
+        for (ModuleImport imp : module.getImports()) {
+            if (imp.isExport()) {
+                p = getPackageFromImport(name, imp.getModule(), visited);
                 if (p != null) {
                     return p;
                 }
             }
         }
+
+        // not found
         return null;
     }
 
