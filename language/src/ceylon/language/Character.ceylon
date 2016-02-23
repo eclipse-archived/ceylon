@@ -152,12 +152,12 @@ shared final native class Character(Character character)
     "The code point of the character."
     shared actual native Integer hash;
     
-    "The character with the unicode code point that is one
-     greater than this character."
+    "The character with the unicode code point that is the
+     predecessor of the unicode code point this character."
     shared actual native Character predecessor;
 
-    "The character with the unicode code point that is one
-     less than this character."
+    "The character with the unicode code point that is the
+     successor of the unicode code point this character."
     shared actual native Character successor;
     
     shared actual native Character neighbour(Integer offset);
