@@ -30,7 +30,7 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
             "Repositories like those specified with the `--rep` or `--out` options can be file paths, " +
             "HTTP urls to remote servers or can be names of repositories when prepended with a `+` symbol. " +
             "These names refer to repositories defined in the configuration file or can be any of " +
-            "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER` or `+REMOTE`. " +
+            "the following predefined names `+SYSTEM`, `+CACHE`, `+LOCAL`, `+USER`, `+REMOTE` or `+MAVEN`. " +
             "For more information see http://ceylon-lang.org/documentation/1.2/reference/repository/tools";
 
     public OutputRepoUsingTool(ResourceBundle bundle) {
