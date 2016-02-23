@@ -620,6 +620,7 @@ Use this when NOT doing a release!">
                                 <equals arg1="@{moduleName}" arg2="java.auth.kerberos"/>
                                 <equals arg1="@{moduleName}" arg2="java.tls"/>
                                 <equals arg1="@{moduleName}" arg2="java.management"/>
+                                <equals arg1="@{moduleName}" arg2="org.slf4j.simple"/>
                             </or>
                         </not>
                         <then>
