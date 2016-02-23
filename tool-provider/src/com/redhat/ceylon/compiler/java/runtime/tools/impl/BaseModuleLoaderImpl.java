@@ -15,6 +15,7 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
 import com.redhat.ceylon.compiler.java.runtime.tools.ModuleLoader;
 import com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleGraph.Module;
@@ -134,6 +135,8 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         }
 
         protected void initialiseMetamodel() {
+            Overrides overrides = repositoryManager.getOverrides();
+            Metamodel.resetModuleManager(new OverridesRuntimeResolver(overrides));
             moduleGraph.visit(new ModuleGraph.Visitor(){
                 @Override
                 public void visit(Module module) {

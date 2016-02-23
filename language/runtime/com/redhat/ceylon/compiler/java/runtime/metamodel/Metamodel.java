@@ -62,6 +62,7 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ValueConstructorIm
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
+import com.redhat.ceylon.compiler.java.runtime.model.RuntimeResolver;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
@@ -196,7 +197,11 @@ public class Metamodel {
     }
     
     public static void resetModuleManager() {
-        moduleManager = new RuntimeModuleManager();
+    	resetModuleManager(null);
+    }
+    
+    public static void resetModuleManager(RuntimeResolver runtimeResolver) {
+        moduleManager = new RuntimeModuleManager(runtimeResolver);
         moduleManager.initCoreModules(new Modules());
         moduleManager.prepareForTypeChecking();
         classToDeclaration.clear();

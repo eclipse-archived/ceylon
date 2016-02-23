@@ -23,8 +23,11 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class RuntimeModuleManager extends ReflectionModuleManager {
 
-    public RuntimeModuleManager() {
+    private RuntimeResolver runtimeResolver;
+
+	public RuntimeModuleManager(RuntimeResolver runtimeResolver) {
         super();
+        this.runtimeResolver = runtimeResolver;
     }
 
     @Override
@@ -118,7 +121,9 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
     }
 
     protected String runtimeVersion(String moduleName, String version) {
-        RuntimeResolver runtimeResolver = OverridesRuntimeResolver.getFromThreadLocal();
+        RuntimeResolver runtimeResolver = this.runtimeResolver;
+        if(runtimeResolver == null)
+        	runtimeResolver = OverridesRuntimeResolver.getFromThreadLocal();
         if (runtimeResolver == null && Thread.currentThread().getContextClassLoader() instanceof org.jboss.modules.ConcurrentClassLoader) {
             Object contextModuleLoader;
             try {

@@ -896,6 +896,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
+        // FIXME: we should get rid of that and call reset with the runtimeResolver
         new OverridesRuntimeResolver(parsedOverrides).installInThreadLocal();
         if(moduleClassLoader == null)
         	setupModuleClassLoader(module);
