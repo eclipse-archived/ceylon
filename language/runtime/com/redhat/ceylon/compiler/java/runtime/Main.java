@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -573,6 +574,12 @@ public class Main {
                     if(mavenDescriptor != null){
                         return loadMavenJar(file, zipFile, mavenDescriptor, name, version);
                     }
+                    // If the jar comes straight out of a Maven repo/cache we may have an external pom file
+                    String externalDescriptorPath = String.format("%s-%s.pom", artifactId, version);
+                    File externalDescriptor = new File(file.getParentFile(), externalDescriptorPath);
+                    if(externalDescriptor.exists()){
+                    	return loadMavenJar(file, externalDescriptor, name, version);
+                    }
                 }
                 
                 // Try Ceylon module first
@@ -726,30 +733,51 @@ public class Main {
                                         Type moduleType) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-                ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
-                if (moduleDependencies != null) {
-                    Module module = new Module(name, version, moduleType, file);
-                    for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
-                        module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
-                    }
-                    if(moduleDependencies.getFilter() != null)
-                        module.setFilter(PathFilterParser.parse(moduleDependencies.getFilter()));
-                    return module;
-                }
+        		return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
             }finally{
                 inputStream.close();
             }
-            return null;
         }
 
-        private Module loadJBossModuleXmlJar(File file, ZipFile zipFile, ZipEntry moduleXml, String name, String version) throws IOException {
+        private Module loadFromResolver(File file, File moduleDescriptor, 
+        		DependencyResolver dependencyResolver, String name, String version,
+        		Type moduleType) throws IOException {
+        	InputStream inputStream = new FileInputStream(moduleDescriptor);
+        	try{
+        		return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
+        	}finally{
+        		inputStream.close();
+        	}
+        }
+
+        private Module loadFromResolver(File file, InputStream inputStream, DependencyResolver dependencyResolver,
+				String name, String version, Type moduleType) throws IOException {
+    		ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
+    		if (moduleDependencies != null) {
+        		System.err.println("Load from resolver: "+name+"/"+version);
+    			Module module = new Module(name, version, moduleType, file);
+    			for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
+    				module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
+    			}
+    			if(moduleDependencies.getFilter() != null)
+    				module.setFilter(PathFilterParser.parse(moduleDependencies.getFilter()));
+    			return module;
+    		}
+    		return null;
+		}
+
+		private Module loadJBossModuleXmlJar(File file, ZipFile zipFile, ZipEntry moduleXml, String name, String version) throws IOException {
             return loadJBossModuleJar(file, zipFile, moduleXml, XmlDependencyResolver.INSTANCE, name, version);
         }
 
         private Module loadMavenJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
             return loadFromResolver(file, zipFile, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
         }
-        
+
+        private Module loadMavenJar(File file, File moduleDescriptor, String name, String version) throws IOException {
+            return loadFromResolver(file, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
+        }
+
         private Module loadDefaultJar(File file) throws IOException {
             return new Module("default", null, Type.CEYLON, file);
         }
