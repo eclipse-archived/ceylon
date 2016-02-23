@@ -139,7 +139,7 @@ public class CachedTOCJars {
                 try{
                     if(contents.contains(path) || folders.contains(path)){
                         String uripath = FileUtil.absoluteFile(jar).toURI().getSchemeSpecificPart();
-                        return new URI("classpath" + uripath + "!" + path);
+                        return new URI("classpath", uripath + "!" + path, null);
                     }
                 } catch (URISyntaxException e) {
                     throw new RuntimeException(e);
