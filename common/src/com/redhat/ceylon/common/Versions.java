@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.2.2 "In A Galaxy Far Far Away"
+    // The current version is Ceylon 1.2.2 "Charming But Irrational"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -63,7 +63,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "In A Galaxy Far Far Away";
+    public static final String CEYLON_VERSION_NAME = "Charming But Irrational";
     
     /**
      * The version number + code name description string.
