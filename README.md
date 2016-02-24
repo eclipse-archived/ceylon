@@ -108,9 +108,9 @@ release:
 
 Gavin King, Stéphane Épardaud, Tako Schotanus, Emmanuel Bernard, 
 Tom Bentley, Aleš Justin, David Festal, Max Rydahl Andersen, 
-David Festal, Enrique Zamudio, Lucas Werkmeister, Ross Tate,
+Enrique Zamudio, Lucas Werkmeister, Ross Tate,
 Alexander Altman, Alexander Zolotko, Alex Szczuczko, 
-Andrés G. Aragoneses, Anh Nhan Nguyen, Bastien, Bastien Jansen, 
+Andrés G. Aragoneses, Anh Nhan Nguyen, Bastien Jansen, 
 Brice Dutheil, Carlos Augusto Mar, Casey Dahlin,
 Charles Gould, Chris Gregory, Diego Coronel, Griffin DeJohn, 
 Henning Burdack, John Vasileff, Julien Viet, klinger, 
