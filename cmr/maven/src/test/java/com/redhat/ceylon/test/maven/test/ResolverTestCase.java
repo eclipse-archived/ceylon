@@ -44,7 +44,7 @@ public class ResolverTestCase extends AbstractAetherTest {
             public void run(CmrRepository repository, final File artifact) {
                 ModuleInfo infos = resolver.resolve(new TestArtifactResult(repository, "org.apache.camel:camel-core", "2.9.2", artifact), null);
                 Assert.assertNotNull(infos);
-                Assert.assertEquals(String.valueOf(infos), 4, infos.getDependencies().size());
+                Assert.assertEquals(String.valueOf(infos), 1, infos.getDependencies().size());
             }
         });
     }
