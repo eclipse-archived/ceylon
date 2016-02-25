@@ -163,7 +163,7 @@ public class RunToolTestCase extends AbstractToolTest {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
         CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("foo.long.module/1.0.0"));
-        assertOutput(tool, "Hello, World!");
+        assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
 
     @Test
@@ -171,7 +171,7 @@ public class RunToolTestCase extends AbstractToolTest {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
         CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--run", "foo.long.module::do", "foo.long.module/1.0.0"));
-        assertOutput(tool, "Hello, World!");
+        assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class RunToolTestCase extends AbstractToolTest {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
         CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("foo.long.module"));
-        assertOutput(tool, "Hello, World!");
+        assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class RunToolTestCase extends AbstractToolTest {
         ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
         Assert.assertNotNull(model);
         CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--run=foo.long.module::run", "foo.long.module/1.0.0"));
-        assertOutput(tool, "Hello, World!");
+        assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
     private void assertOutput(CeylonRunTool tool, String txt) throws IOException {
         PrintStream oldout = System.out;
