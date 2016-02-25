@@ -11,6 +11,8 @@ and you should be able to compile them by just running `ceylon compile` in this 
 And then to update the test repo run:
 
  - `rm -rf src/test/resources/repo/{hello,foo}`
+ - `rm -rf src/test/resources/alternative/moduletest`
  - `cp -a modules/{hello,foo} src/test/resources/repo/`
+ - `cp -a modules/moduletest src/test/resources/alternative/`
 
 
