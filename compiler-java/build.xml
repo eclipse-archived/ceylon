@@ -359,33 +359,76 @@
         </junit>
     </target>
 
+    <target name="bundle-proxy">
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+        <echo file="${proxy-project}/.project"><![CDATA[<projectDescription>
+    <name>${archiveFileName}</name>
+    <comment></comment>
+    <projects>
+    </projects>
+    <buildSpec>
+        <buildCommand>
+            <name>org.eclipse.jdt.core.javabuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.ManifestBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.SchemaBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+    </buildSpec>
+    <natures>
+        <nature>org.eclipse.pde.PluginNature</nature>
+        <nature>org.eclipse.jdt.core.javanature</nature>
+    </natures>
+    <linkedResources>
+        <link>
+            <name>project</name>
+            <type>2</type>
+            <locationURI>PARENT-3-PROJECT_LOC/ceylon/compiler-java</locationURI>
+        </link>
+    </linkedResources>
+</projectDescription>]]></echo> 	
+        <echo file="${proxy-project}/.classpath"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+    <classpathentry exported="true" kind="lib" path="${archiveFileName}" sourcepath="project"/>
+    <classpathentry kind="output" path="bin"/>
+</classpath>]]></echo>     
+        <echo file="${proxy-project}/.gitignore"><![CDATA[/META-INF
+/${archiveFileName}
+/.classpath
+/.project
+/.gitignore
+/bin/]]></echo>     
+	</target>
+	
 	<target name="ide-quick-internal" depends="test.classes">
-        <property name="compilerArchivePath" value="${ceylon.compiler.lib}"/>
-        <basename file="${compilerArchivePath}" property="compilerArchiveFileName"/>
-        <property name="compiler-proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${compilerArchiveFileName}"/>
-        <mkdir dir="${compiler-proxy-project}"/>
-        <delete failonerror="false" dir="${compiler-proxy-project}/META-INF"/>
-        <copy toDir="${compiler-proxy-project}" overwrite="true">
-            <zipfileset src="${compilerArchivePath}" includes="META-INF/**"/>
-            <fileset file="${compilerArchivePath}"/>
-        </copy>
-        <manifest file="${compiler-proxy-project}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Bundle-Classpath" value="${compilerArchiveFileName}"/>
-        </manifest>
-
-		<property name="bootstrapArchivePath" value="${ceylon.bootstrap.lib}"/>
-        <basename file="${bootstrapArchivePath}" property="bootstrapArchiveFileName"/>
-        <property name="bootstrap-proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${bootstrapArchiveFileName}"/>
-        <mkdir dir="${bootstrap-proxy-project}"/>
-        <delete failonerror="false" dir="${bootstrap-proxy-project}/META-INF"/>
-        <copy toDir="${bootstrap-proxy-project}" overwrite="true">
-            <zipfileset src="${bootstrapArchivePath}" includes="META-INF/**"/>
-            <fileset file="${bootstrapArchivePath}"/>
-        </copy>
-        <manifest file="${bootstrap-proxy-project}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Bundle-Classpath" value="${bootstrapArchiveFileName}"/>
-        </manifest>
-
+		<antcall target="bundle-proxy">
+			<param name="archivePath" value="${ceylon.compiler.lib}"/>
+		</antcall>
+        <antcall target="bundle-proxy">
+            <param name="archivePath" value="${ceylon.bootstrap.lib}"/>
+        </antcall>
+	    
+		<delete dir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
         <jar destfile="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
                 <include name="com/redhat/ceylon/compiler/java/test/**" />

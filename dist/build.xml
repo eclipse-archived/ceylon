@@ -162,6 +162,10 @@ Some super-charged ant tasks:
         <antcall target="ide-quick"/>
     </target>
     <target name="ide-quick">
+    	<echo message="Deleting ${eclipse.project.path}/required-bundle-proxies"/>
+    	<delete includeemptydirs="true" failonerror="false" verbose="true" defaultexcludes="false">
+    	    <fileset dir="${eclipse.project.path}/required-bundle-proxies" includes="**/*" defaultexcludes="false"/>
+    	</delete>
         <foreach list="${moddirs}"
                  target="ide-item"
                  param="project.item.name"

@@ -215,8 +215,7 @@
         </copy>
     </target>
 
-    <target name="ide-quick-internal">
-        <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.js.jar}"/>
+    <target name="bundle-proxy">
         <basename file="${archivePath}" property="archiveFileName"/>
         <property name="proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
@@ -228,6 +227,59 @@
         <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
         </manifest>
+        <echo file="${proxy-project}/.project"><![CDATA[<projectDescription>
+    <name>${archiveFileName}</name>
+    <comment></comment>
+    <projects>
+    </projects>
+    <buildSpec>
+        <buildCommand>
+            <name>org.eclipse.jdt.core.javabuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.ManifestBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.SchemaBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+    </buildSpec>
+    <natures>
+        <nature>org.eclipse.pde.PluginNature</nature>
+        <nature>org.eclipse.jdt.core.javanature</nature>
+    </natures>
+    <linkedResources>
+        <link>
+            <name>project</name>
+            <type>2</type>
+            <locationURI>PARENT-3-PROJECT_LOC/ceylon/compiler-js</locationURI>
+        </link>
+    </linkedResources>
+</projectDescription>]]></echo>     
+        <echo file="${proxy-project}/.classpath"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+    <classpathentry exported="true" kind="lib" path="${archiveFileName}" sourcepath="project"/>
+    <classpathentry kind="output" path="bin"/>
+</classpath>]]></echo>     
+        <echo file="${proxy-project}/.gitignore"><![CDATA[/META-INF
+/${archiveFileName}
+/.classpath
+/.project
+/.gitignore
+/bin/]]></echo>     
+    </target>
+    
+    <target name="ide-quick-internal">
+        <antcall target="bundle-proxy">
+            <param name="archivePath" value="${ceylon.repo.dir}/${ceylon.js.jar}"/>
+        </antcall>
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->

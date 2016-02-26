@@ -86,9 +86,7 @@
         <delete dir="${cmr-testsuite-test.src}/repo/com"/>
     </target>
 
-    <target name="ide-quick-internal">
-        <property name="archivePath" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
-    	<echo>ONE ${archivePath}</echo>
+    <target name="bundle-proxy">
         <basename file="${archivePath}" property="archiveFileName"/>
         <property name="proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${archiveFileName}"/>
         <mkdir dir="${proxy-project}"/>
@@ -100,20 +98,62 @@
         <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
         </manifest>
-        
-        <property name="archivePath2" value="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
-    	<echo>TWO ${archivePath2}</echo>
-        <basename file="${archivePath2}" property="archiveFileName2"/>
-        <property name="proxy-project2" value="${eclipse.project.path}/required-bundle-proxies/${archiveFileName2}"/>
-        <mkdir dir="${proxy-project2}"/>
-        <delete failonerror="false" dir="${proxy-project2}/META-INF"/>
-        <copy toDir="${proxy-project2}" overwrite="true">
-            <zipfileset src="${archivePath2}" includes="META-INF/**"/>
-            <fileset file="${archivePath2}"/>
-        </copy>
-        <manifest file="${proxy-project2}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Bundle-Classpath" value="${archiveFileName2}"/>
-        </manifest>
+        <echo file="${proxy-project}/.project"><![CDATA[<projectDescription>
+    <name>${archiveFileName}</name>
+    <comment></comment>
+    <projects>
+    </projects>
+    <buildSpec>
+        <buildCommand>
+            <name>org.eclipse.jdt.core.javabuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.ManifestBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.SchemaBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+    </buildSpec>
+    <natures>
+        <nature>org.eclipse.pde.PluginNature</nature>
+        <nature>org.eclipse.jdt.core.javanature</nature>
+    </natures>
+    <linkedResources>
+        <link>
+            <name>project</name>
+            <type>2</type>
+            <locationURI>PARENT-3-PROJECT_LOC/ceylon/cmr</locationURI>
+        </link>
+    </linkedResources>
+</projectDescription>]]></echo>     
+        <echo file="${proxy-project}/.classpath"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+    <classpathentry exported="true" kind="lib" path="${archiveFileName}" sourcepath="project"/>
+    <classpathentry kind="output" path="bin"/>
+</classpath>]]></echo>     
+        <echo file="${proxy-project}/.gitignore"><![CDATA[/META-INF
+/${archiveFileName}
+/.classpath
+/.project
+/.gitignore
+/bin/]]></echo>     
+    </target>
+    	
+    <target name="ide-quick-internal">
+        <antcall target="bundle-proxy">
+            <param name="archivePath" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+        </antcall>
+        <antcall target="bundle-proxy">
+            <param name="archivePath" value="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
+        </antcall>
     </target>
 
     <target name="dist"
