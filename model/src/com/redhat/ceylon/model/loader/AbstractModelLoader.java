@@ -280,7 +280,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     protected Map<String, Declaration> valueDeclarationsByName = new HashMap<String, Declaration>();
     protected Map<String, Declaration> typeDeclarationsByName = new HashMap<String, Declaration>();
-    protected Map<Package, Unit> unitsByPackage = new HashMap<Package, Unit>();
+    protected Map<String, Unit> unitsByPackage = new HashMap<String, Unit>();
     protected TypeParser typeParser;
     /** 
      * The type factory 
@@ -1524,13 +1524,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected Unit getCompiledUnit(LazyPackage pkg, ClassMirror classMirror) {
-        Unit unit = unitsByPackage.get(pkg);
+        String key = getPackageCacheKey(pkg);
+        Unit unit = unitsByPackage.get(key);
         if(unit == null){
             unit = new Unit();
             unit.setPackage(pkg);
-            unitsByPackage.put(pkg, unit);
+            unitsByPackage.put(key, unit);
         }
         return unit;
+    }
+    /** 
+     * Package.equals() just uses the package name, so collisions between 
+     * the same package in different versions of a module are possible, thus 
+     * we can't use the package itself a the cache key.
+     */
+    protected String getPackageCacheKey(LazyPackage pkg) {
+        String key = pkg.getQualifiedNameString()+"/"+pkg.getModule().getVersion();
+        return key;
     }
 
     protected LazyValue makeToplevelAttribute(ClassMirror classMirror, boolean isNativeHeader) {
