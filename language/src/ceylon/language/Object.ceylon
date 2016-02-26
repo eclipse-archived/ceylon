@@ -69,10 +69,11 @@ shared abstract class Object()
      Therefore, a class which refines [[equals]] must also
      refine `hash`.
      
-     Because the [[Integer]] type is platform-dependent 
-     a compiler for a given platform is permitted to
-     further manipulate the calculated hash for an object,
-     and the resulting hash may differ between platforms."
+     Note that when executing on a Java Virtual Machine, the 
+     64-bit [[Integer]] value returned by an implementation 
+     of `hash` is truncated to a 32-bit integer value by 
+     removal of the 32 highest order bits, before returning
+     the value to the caller."
     shared formal Integer hash;
     
     "A developer-friendly string representing the instance. 
