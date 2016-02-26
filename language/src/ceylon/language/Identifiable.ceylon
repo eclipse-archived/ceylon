@@ -21,10 +21,10 @@ shared interface Identifiable {
                     then this===that
                     else false;
     
-    "The system-defined identity hash value of the instance. 
-     Subtypes which refine `equals()` must also refine 
-     `hash`, according to the general contract defined by 
-     [[Object]]."
+    "The system-defined [[identity hash value|identityHash]] 
+     of this instance. Subtypes which refine [[equals]] must 
+     also refine `hash`, according to the general contract 
+     defined by [[Object.equals]]."
     see (`function identityHash`)
     shared default actual Integer hash => identityHash(this);
     
