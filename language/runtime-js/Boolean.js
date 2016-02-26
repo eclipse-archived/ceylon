@@ -18,7 +18,7 @@ Boolean.prototype.getT$all = function() {
     return (this.valueOf()?$_true:$_false).$$.T$all;
 }
 Boolean.prototype.equals = function(other) {return other.constructor===Boolean && other==this;}
-atr$(Boolean.prototype, 'hash', function(){ return this.valueOf()?1:0; },
+atr$(Boolean.prototype, 'hash', function(){ return this.valueOf()?1231:1237; },
   undefined,{$t:{t:Integer},pa:3,mod:$CCMM$,d:['$','Object','$at','hash']});
 atr$(Boolean.prototype, 'string', function(){ return this.valueOf()?"true":"false"; },
   undefined,{$t:{t:$_String},pa:3,mod:$CCMM$,d:['$','Object','$at','string']});
