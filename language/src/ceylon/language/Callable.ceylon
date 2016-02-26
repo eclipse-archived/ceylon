@@ -1,8 +1,8 @@
 "A reference to a function. The type arguments encode the 
  [[return type|Return]] of the function along with its 
  [[parameter types|Arguments]]. The parameter types are 
- represented by a tuple type. Functions declared `void`
- are considered to have the return type `Anything`.
+ represented by a tuple type. Functions declared `void` are 
+ considered to have the return type `Anything`.
  
  For example, the type of the anonymous function
  `(Float x, Integer y) => x^y+1` is:
@@ -49,7 +49,14 @@
  The type of the tuple must be assignable to the type 
  argument of `Arguments`.
  
- This interface may not be implemented by user code."
+ There is no reasonable and computationally decidable 
+ definition of [[value equality|Object.equals]] for a 
+ function reference. Therefore, the `equals()` method of an
+ instance of `Callable` always returns `false`, and `x==y`
+ always evaluates to `false` for any two function references
+ `x` and `y`.
+ 
+ This interface may not be implemented by user-written code."
 see (`class Tuple`)
 tagged("Functions")
 shared native interface Callable<out Return, in Arguments> 
