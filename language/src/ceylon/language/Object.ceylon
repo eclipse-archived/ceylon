@@ -69,11 +69,15 @@ shared abstract class Object()
      Therefore, a class which refines [[equals]] must also
      refine `hash`.
      
+     In general, `hash` values vary between platforms and
+     between executions of the same program.
+     
      Note that when executing on a Java Virtual Machine, the 
      64-bit [[Integer]] value returned by an implementation 
      of `hash` is truncated to a 32-bit integer value by 
      removal of the 32 highest order bits, before returning
      the value to the caller."
+    see (`function identityHash`)
     shared formal Integer hash;
     
     "A developer-friendly string representing the instance. 
