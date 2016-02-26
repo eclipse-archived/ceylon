@@ -34,6 +34,9 @@
  
  which we usually abbreviate `Anything(String=)`.
  
+ Finally, any type of form `Callable<X,Y>` may be 
+ abbreviated to `X(*Y)`.
+ 
  Any instance of `Callable` may be _invoked_ by supplying a 
  positional argument list:
  
