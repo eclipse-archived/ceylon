@@ -493,7 +493,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 ContentStore service = root.getService(ContentStore.class);
                 if(service == null)
                     continue;
-                ContentHandle content = service.getContent(root);
+                ContentHandle content = service.peekContent(root);
                 // again skip binaries
                 if(content == null || content.hasBinaries())
                     continue;
