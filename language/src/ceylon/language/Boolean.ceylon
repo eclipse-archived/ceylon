@@ -11,6 +11,7 @@ tagged("Basic types")
 shared native object true
         extends Boolean() {
     string => "true";
+    hash => 1231;
 }
 
 "A value representing falsity in Boolean logic."
@@ -18,4 +19,5 @@ tagged("Basic types")
 shared native object false
         extends Boolean() {
     string => "false";
+    hash => 1237;
 }
