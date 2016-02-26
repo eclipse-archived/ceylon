@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test.issues;
 
 import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -45,5 +46,14 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     			Arrays.asList("--flat-classpath"));
     	runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.issues.bug60xx.bug6005/1", 
     			Arrays.asList("--overrides", getPackagePath()+"/bug60xx/bug6005/overrides.xml"));
+    }
+    
+    @Test
+    public void testBug6037() throws Throwable {
+        ProcessBuilder pb = new ProcessBuilder("ceylon", "compile", "--src=test/src", "com.redhat.ceylon.compiler.java.test.issues.bug60xx.bug6037");
+        pb.inheritIO();
+        Process p = pb.start();
+        //compile("bug60xx/bug6037/run.ceylon");
+        Assert.assertEquals(0, p.waitFor());
     }
 }
