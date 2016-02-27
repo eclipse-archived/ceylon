@@ -51,7 +51,7 @@ public class JsIdentifierNames {
                 "final", "float", "goto", "implements", "instanceof", "int", "long",
                 "native", "new", "null", "private", "protected", "public", "short", "static",
                 "synchronized", "throws", "transient", "true", "typeof", "var", "volatile",
-                "with", "abstract", "process", "require"));
+                "with", "abstract", "process", "require", "class"));
         //Types
         reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number", "RegExp"));
         //JS Object
