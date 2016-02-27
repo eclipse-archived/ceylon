@@ -89,7 +89,12 @@ shared native final class Integer(Integer integer)
        2<sup>53</sup> (exclusive)."
     shared actual native Boolean equals(Object that);
     
-    shared actual native Integer hash;
+    "The hash code of this `Integer`, which is just the
+     `Integer` itself, except on the JVM platform where, as 
+     with all `hash` codes, this 64-bit `Integer` value is 
+     truncated to 32 bits by removal of the 32 higher-order
+     bits."
+    shared actual native Integer hash => this;
     
     shared actual native Comparison compare(Integer other);
     

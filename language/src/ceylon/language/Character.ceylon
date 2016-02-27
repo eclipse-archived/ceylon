@@ -149,8 +149,9 @@ shared final native class Character(Character character)
      same code point as this character."
     shared actual native Boolean equals(Object that);
     
-    "The code point of the character."
-    shared actual native Integer hash;
+    "The hash code for this `Character`, which is always its 
+     32-bit [[Unicode code point|integer]]."
+    shared actual native Integer hash => integer;
     
     "The character with the unicode code point that is the
      predecessor of the unicode code point this character."

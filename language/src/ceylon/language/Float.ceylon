@@ -127,6 +127,7 @@ shared native final class Float(Float float)
        2<sup>53</sup> (exclusive)."
     shared actual native Boolean equals(Object that);
     
+    "A platform-dependent hash code for this `Float`."
     shared actual native Integer hash;
     
     shared actual native Comparison compare(Float other);

@@ -478,6 +478,8 @@ shared native final class String(characters)
         return true;
     }
     
+    "A hash code for this `String`, computed from its
+     UTF-16 code units."
     shared actual native Integer hash;
     
     "This string."
