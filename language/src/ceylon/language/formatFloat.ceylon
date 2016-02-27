@@ -58,7 +58,8 @@ shared String formatFloat(
     variable Integer i = maxDecimalPlaces;
     Float m = float.magnitude;
     while (true) {
-        Float f = m * 10.0.powerOfInteger(--i); //really slow for large i
+        Integer p = 10^i.magnitude;
+        Float f = i<0 then m / p else m * p;
         Float d = (f.fractionalPart * 10).wholePart;
         Character c = (d.integer+zeroInt).character;
         digits = digits.follow(c);
