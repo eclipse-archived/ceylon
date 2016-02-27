@@ -143,11 +143,15 @@ shared final native class Character(Character character)
     
     "Compare this character with the given string character, 
      according to the Unicode code points of the characters."
-    shared actual native Comparison compare(Character other);
+    shared actual native Comparison compare(Character other)
+            => this.integer <=> other.integer;
     
     "Determines if the given object is a character with the
      same code point as this character."
-    shared actual native Boolean equals(Object that);
+    shared actual native Boolean equals(Object that)
+            => if (is Character that)
+                then that.integer == this.integer
+                else false;
     
     "The hash code for this `Character`, which is always its 
      32-bit [[Unicode code point|integer]]."
