@@ -141,7 +141,7 @@ shared final native class Character(Character character)
     aliased("codePoint")
     shared native Integer integer;
     
-    "Compare this character with the given string character, 
+    "Compare this character with the given character, 
      according to the Unicode code points of the characters."
     shared actual native Comparison compare(Character other)
             => this.integer <=> other.integer;
