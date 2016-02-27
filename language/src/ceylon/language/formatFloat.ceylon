@@ -58,6 +58,7 @@ shared String formatFloat(
     variable Integer i = maxDecimalPlaces;
     Float m = float.magnitude;
     while (true) {
+        i--;
         Integer p = 10^i.magnitude;
         Float f = i<0 then m / p else m * p;
         Float d = (f.fractionalPart * 10).wholePart;
