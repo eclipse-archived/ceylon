@@ -149,7 +149,7 @@ $addnm$('timesInteger');
 $specialiseForNumber$(Integer, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','timesInteger']};})
 $specialiseForNumber$(Float, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','timesInteger']};})
 
-JSNum$proto.divided = function(other) {
+JSNum$proto.divided=function(other) {
   if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
   if (this.fmz$) {
     if (other == 0 || other.$_undefined) {
@@ -161,11 +161,12 @@ JSNum$proto.divided = function(other) {
   if (nflt$(this)||otherFloat) { 
     var ret = Float(this/other);
     // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
-    if((!this.negative && other.fmz$ && !ret.negative)||(!otherFloat&&ret==-Infinity)){ ret = ret.negated; }
-        return ret;
+    if((!this.negative && other.fmz$ && !ret.negative)
+        ||(!otherFloat&&ret==-Infinity&&!this.negative)){ ret = ret.negated; }
+      return ret;
     }
     if (other == 0) {
-        throw Exception("Division by Zero");
+      throw Exception("Division by Zero");
     }
     return toInt(this/other);
 }
