@@ -59,7 +59,6 @@ shared String formatFloat(
     variable Boolean previousZero = false;
     Float m = float.magnitude;
     while (true) {
-        i--;
         Integer p = 10^i.magnitude;
         Float f = i<0 then m / p else m * p;
         Float fp = f.fractionalPart;
@@ -79,11 +78,12 @@ shared String formatFloat(
         previousZero = digit==0;
         Character c = (digit+'0'.integer).character;
         digits = digits.follow(c);
-        if (f.integer==0) {
+        if (f.wholePart==0.0) {
             break;
         }
+        i--;
     }
-    String string = String(digits);
+    String string = String(digits.exceptLast);
     Integer point = string.size - maxDecimalPlaces;
     String wholePart;
     String fractionalPart;
