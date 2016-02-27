@@ -56,15 +56,30 @@ shared String formatFloat(
     }
     variable {Character*} digits = {};
     variable Integer i = maxDecimalPlaces;
+    variable Boolean previousZero = false;
     Float m = float.magnitude;
     while (true) {
         i--;
         Integer p = 10^i.magnitude;
         Float f = i<0 then m / p else m * p;
-        Float d = (f.fractionalPart * 10).wholePart;
-        Character c = (d.integer+zeroInt).character;
+        Float fp = f.fractionalPart;
+        Integer d = (fp * 10).integer;
+        Integer digit;
+        if (previousZero) {
+            digit = 
+                    //detect rounding error in 
+                    //multiplication m * p above
+                    (fp * 100).integer > d * 10
+                        then d + 1 
+                        else d;
+        }
+        else {
+            digit = d;
+        }
+        previousZero = digit==0;
+        Character c = (digit+'0'.integer).character;
         digits = digits.follow(c);
-        if (f.wholePart==0.0) {
+        if (f.integer==0) {
             break;
         }
     }
