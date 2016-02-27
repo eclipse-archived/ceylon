@@ -1,6 +1,3 @@
-import hello {
-    formatFloat
-}
 @test
 shared void numbers() {
     Object ob(Object x) { return x; }
@@ -952,6 +949,7 @@ void checkWholePart(){
     check(1 / +0.6.wholePart > 0.0, "preserve positive 0.f");
     check(1.0/-0 == infinity, "1.0/-0 should be Infinity");
     check(1.0/-0.0 == -infinity, "1.0/-0.0 should be -Infinity");
+    check(-1.0/0 == -infinity, "-1.0/0 should be -infinity");
     
     check((-infinity).wholePart == -infinity);
     check(infinity.wholePart == infinity);
