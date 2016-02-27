@@ -59,7 +59,11 @@ shared String formatFloat(
     variable Boolean previousZero = false;
     Float m = float.magnitude;
     while (true) {
-        Integer p = 10^i.magnitude;
+        Integer im = i.magnitude;
+        Float p = 
+                im<=15 //see runtime.maxExactIntegralFloat
+                    then (10^im).nearestFloat //fast
+                    else 10.0.powerOfInteger(im); //slow
         Float f = i<0 then m / p else m * p;
         Float fp = f.fractionalPart;
         Integer d = (fp * 10).integer;

@@ -1,6 +1,3 @@
-import hello {
-    formatFloat
-}
 @test
 shared void numbers() {
     Object ob(Object x) { return x; }
@@ -991,4 +988,8 @@ void checkFormatFloat() {
     check(formatFloat(3000000000.0)=="3000000000.0", "formatFloat(3000000000.0)");
     check(formatFloat(9000000000.0)=="9000000000.0", "formatFloat(9000000000.0)");
     check(formatFloat(9999999999.999)=="9999999999.999", "formatFloat(9999999999.999)");
+    check(formatFloat(-1.234567e+10)=="-12345670000.0", "formatFloat(-1.234567e+10)");
+    check(formatFloat(-1.234567e+15)=="-1234567000000000.0", "formatFloat(-1.234567e+15)");
+    check(formatFloat(-1.234567e+20)=="-123456700000000000000.0", "formatFloat(-1.234567e+20)");
+    check(formatFloat(-1.234e+20)=="-123400000000000000000.0", "formatFloat(-1.234e+20)");
 }
