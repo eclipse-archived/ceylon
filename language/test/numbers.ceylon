@@ -962,11 +962,15 @@ void checkWholePart(){
 
 void checkFormatFloat() {
     check(formatFloat(1234.5678)=="1234.5678", "formatFloat(1234.5678)");
+    check(formatFloat(1234.5678,4,4)=="1234.5678", "formatFloat(1234.5678,4,4)");
     check(formatFloat(5678.1234)=="5678.1234", "formatFloat(5678.1234)");
+    check(formatFloat(5678.1234,4,4)=="5678.1234", "formatFloat(5678.1234,4,4)");
     check(formatFloat(1234.5678,2,2)=="1234.56", "formatFloat(1234.5678,2,2)");
     check(formatFloat(5678.1234,3,3)=="5678.123", "formatFloat(5678.1234,3,3)");
     check(formatFloat(1234.1234)=="1234.1234", "formatFloat(1234.1234)");
+    check(formatFloat(1234.1234,4,4)=="1234.1234", "formatFloat(1234.1234,4,4)");
     check(formatFloat(0.1234)=="0.1234", "formatFloat(0.1234)");
+    check(formatFloat(0.1234,4,4)=="0.1234", "formatFloat(0.1234,4,4)");
     check(formatFloat(1234.0)=="1234.0", "formatFloat(1234.0)");
     check(formatFloat(1234.0,0)=="1234", "formatFloat(1234.0,0)");
     check(formatFloat(1234.1234,6)=="1234.123400", "formatFloat(1234.1234,6)");
