@@ -1,3 +1,6 @@
+import hello {
+    formatFloat
+}
 @test
 shared void numbers() {
     Object ob(Object x) { return x; }
@@ -411,6 +414,7 @@ shared void numbers() {
     checkParseInteger();
     checkFormatInteger();
     checkParseFloat();
+    checkFormatFloat();
 
     //type safety
     check(obj(1+1)    is Integer, "int+int Integer");
@@ -954,4 +958,33 @@ void checkWholePart(){
     value nan = 0.0/0.0;
     check(nan.wholePart.undefined);
 
+}
+
+void checkFormatFloat() {
+    check(formatFloat(1234.5678)=="1234.5678", "formatFloat(1234.5678)");
+    check(formatFloat(5678.1234)=="5678.1234", "formatFloat(5678.1234)");
+    check(formatFloat(1234.5678,2,2)=="1234.56", "formatFloat(1234.5678,2,2)");
+    check(formatFloat(5678.1234,3,3)=="5678.123", "formatFloat(5678.1234,3,3)");
+    check(formatFloat(1234.1234)=="1234.1234", "formatFloat(1234.1234)");
+    check(formatFloat(0.1234)=="0.1234", "formatFloat(0.1234)");
+    check(formatFloat(1234.0)=="1234.0", "formatFloat(1234.0)");
+    check(formatFloat(1234.0,0)=="1234", "formatFloat(1234.0,0)");
+    check(formatFloat(1234.1234,6)=="1234.123400", "formatFloat(1234.1234,6)");
+    check(formatFloat(1234.1234,0,2)=="1234.12", "formatFloat(1234.1234,0,2)");
+    check(formatFloat(0.0001,2,2)=="0.00", "formatFloat(0.0001,2,2)");
+    check(formatFloat(0.0001,0,2)=="0", "formatFloat(0.0001,0,2)");
+    check(formatFloat(-0.0)=="0.0", "formatFloat(-0.0)");
+    check(formatFloat(0.0/0)=="NaN", "formatFloat(0.0/0)");
+    check(formatFloat(1.0/0)=="Infinity", "formatFloat(1.0/0)");
+    check(formatFloat(-1.0/0)=="-Infinity", "formatFloat(-1.0/0)");
+    check(formatFloat(100000.0)=="100000.0", "formatFloat(100000.0)");
+    check(formatFloat(200000.0)=="200000.0", "formatFloat(200000.0)");
+    check(formatFloat(300000.0)=="300000.0", "formatFloat(300000.0)");
+    check(formatFloat(900000.0)=="900000.0", "formatFloat(900000.0)");
+    check(formatFloat(999999.999)=="999999.999", "formatFloat(999999.999)");
+    check(formatFloat(1000000000.0)=="1000000000.0", "formatFloat(1000000000.0)");
+    check(formatFloat(2000000000.0)=="2000000000.0", "formatFloat(2000000000.0)");
+    check(formatFloat(3000000000.0)=="3000000000.0", "formatFloat(3000000000.0)");
+    check(formatFloat(9000000000.0)=="9000000000.0", "formatFloat(9000000000.0)");
+    check(formatFloat(9999999999.999)=="9999999999.999", "formatFloat(9999999999.999)");
 }
