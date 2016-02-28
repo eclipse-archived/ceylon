@@ -18,7 +18,7 @@ Integer identityHash(Identifiable identifiable) {
             return hash;
         }
         else {
-            hash = \iBasicID++;
+            Integer hash = \iBasicID++;
             x.\iBasicID = hash;
             return hash;
         }
