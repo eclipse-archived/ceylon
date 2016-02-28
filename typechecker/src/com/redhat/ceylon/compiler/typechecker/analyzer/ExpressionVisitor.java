@@ -6766,8 +6766,7 @@ public class ExpressionVisitor extends Visitor {
         if (isGeneric(type) && type instanceof Class) {
             Generic generic = (Generic) type;
             Scope scope = that.getScope();
-            Type outerType = 
-                    scope.getDeclaringType(type);
+            Type outerType = scope.getDeclaringType(type);
             Type target = 
                     type.appliedType(outerType, 
                             typeParametersAsArgList(generic));
@@ -7318,7 +7317,7 @@ public class ExpressionVisitor extends Visitor {
                 acceptsTypeArguments(type, null, typeArgs, 
                         tal, that);
             }
-            if (pt.isTypeConstructor()) {
+            if (pt.isTypeConstructor() && !that.getMetamodel()) {
                 checkTypeConstructor(that);
             }
         }
@@ -8945,7 +8944,7 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration d;
         Tree.StaticType type = that.getType();
         Node errorNode;
-		if (type != null) {
+		if (type!=null) {
         	t = type.getTypeModel();
         	d = t.getDeclaration();
         	errorNode = type;
@@ -9391,7 +9390,7 @@ public class ExpressionVisitor extends Visitor {
                 unit.getPackage()
                     .getModule()
                     .getImports();
-        for (ModuleImport imp : imports) {
+        for (ModuleImport imp: imports) {
             if (imp.getModule().equals(decModule)) {
                 if (!imp.getNativeBackends().none()) {
                     bs = bs.none() ? 
