@@ -271,6 +271,7 @@ shared void issues() {
     issue604();
     issue5952();
     issue5959();
+    issue6057();
 }
 
 void issue5952() {
@@ -329,4 +330,10 @@ void issue5959() {
     check((d of Object) is D5959<Integer>, "#5959 targs 2");
     check((d of Object) is C5959<String>, "#5959 targs3");
   }
+}
+
+void issue6057() {
+  dynamic DefaultObject {}
+  dynamic { DefaultObject o = eval("this"); }
+  check(identityHash(object extends Basic() {}) > 0, "#6057 1");
 }
