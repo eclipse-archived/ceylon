@@ -5824,7 +5824,9 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration type = that.getDeclarationModel();
         if (type!=null) {
-            type = (TypeDeclaration)handleNativeHeader(type, that, true);
+            type = 
+                    (TypeDeclaration)
+                        handleNativeHeader(type, that, true);
             if (!type.isVisible(that.getScope())) {
                 that.addError("type is not visible: " + 
                         baseDescription(that), 400);
@@ -5846,7 +5848,9 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         TypeDeclaration type = that.getDeclarationModel();
         if (type!=null) {
-            type = (TypeDeclaration)handleNativeHeader(type, that, true);
+            type = 
+                    (TypeDeclaration)
+                        handleNativeHeader(type, that, true);
             if (!type.isVisible(that.getScope())) {
                 if (type instanceof Constructor) {
                     that.addError("constructor is not visible: " + 
@@ -9224,21 +9228,16 @@ public class ExpressionVisitor extends Visitor {
                         that.getTypeArgumentList();
                 if (explicitTypeArguments(method, tal)) {
                     List<Type> typeArgs = 
-                            getTypeArguments(tal, 
-                                    outerType, 
+                            getTypeArguments(tal, outerType, 
                                     getTypeParameters(method));
-                    if (tal != null) {
+                    if (tal!=null) {
                         tal.setTypeModels(typeArgs);
                     }
                     if (acceptsTypeArguments(method,
                             outerType, typeArgs, tal, that)) {
-                        TypedReference pr;
-                        if (outerType==null) {
-                            pr = method.appliedTypedReference(null, typeArgs);
-                        }
-                        else {
-                            pr = outerType.getTypedMember(method, typeArgs);
-                        }
+                        TypedReference pr = outerType==null ? 
+                                method.appliedTypedReference(null, typeArgs) : 
+                                outerType.getTypedMember(method, typeArgs);
                         that.setTarget(pr);
                         Type metatype = constructor ?
                                 unit.getConstructorMetatype(pr) :
@@ -9366,8 +9365,7 @@ public class ExpressionVisitor extends Visitor {
                                 impl.getNativeBackends(), 
                                 inBackends)
                     || !decModuleBackends.none()
-                        && !isForBackend(
-                                decModuleBackends, 
+                        && !isForBackend(decModuleBackends, 
                                 inBackends))) {
             Declaration d = (Declaration) that.getScope();
             if (!inBackends.none()) {
@@ -9389,15 +9387,16 @@ public class ExpressionVisitor extends Visitor {
     
     private Backends getModuleBackends(Module decModule, Unit unit) {
         Backends bs = decModule.getNativeBackends();
-        List<ModuleImport> imports = unit.getPackage().getModule().getImports();
+        List<ModuleImport> imports = 
+                unit.getPackage()
+                    .getModule()
+                    .getImports();
         for (ModuleImport imp : imports) {
             if (imp.getModule().equals(decModule)) {
                 if (!imp.getNativeBackends().none()) {
-                    if (bs.none()) {
-                        bs = imp.getNativeBackends();
-                    } else {
-                        bs = bs.supported(imp.getNativeBackends());
-                    }
+                    bs = bs.none() ? 
+                            imp.getNativeBackends() : 
+                            bs.supported(imp.getNativeBackends());
                 }
                 break;
             }
