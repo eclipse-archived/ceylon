@@ -10,16 +10,19 @@ shared native("jvm")
 Integer identityHash(Identifiable identifiable)
         => System.identityHashCode(identifiable);
 
+native("js")
+variable Integer _BasicId = 0;
+
 shared native("js") 
 Integer identityHash(Identifiable identifiable) {
     dynamic {
         dynamic x = identifiable;
-        if (exists hash = x.\iBasicID) {
+        if (exists hash = x._BasicId) {
             return hash;
         }
         else {
-            Integer hash = \iBasicID++;
-            x.\iBasicID = hash;
+            Integer hash = _BasicId++;
+            x._BasicId = hash;
             return hash;
         }
     }

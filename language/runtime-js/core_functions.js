@@ -1,5 +1,3 @@
-var BasicID=1;//used by identityHash
-
 function getT$name() {return this.constructor.T$name;}
 function getT$all() {return this.constructor.T$all;}
 function initType(type, typeName) {
