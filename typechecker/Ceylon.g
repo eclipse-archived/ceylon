@@ -2552,9 +2552,11 @@ switchExpression returns [SwitchExpression term]
           }
         }
         if (id!=null) {
+          boolean found = false;
           for (CaseClause cc: $caseExpressions.switchCaseList.getCaseClauses()) {
             CaseItem item = cc.getCaseItem();
             if (item instanceof IsCase) {
+              found = true;
               IsCase ic = (IsCase) item;
               Variable v = new Variable(null);
               v.setType(new SyntheticVariable(null));
@@ -2569,9 +2571,21 @@ switchExpression returns [SwitchExpression term]
               v.setSpecifierExpression(se);
               ic.setVariable(v);
             }
+            if (item instanceof MatchCase) {
+              MatchCase mc = (MatchCase) item;
+              ExpressionList el = mc.getExpressionList();
+              if (el!=null) {
+                for (Expression e: el.getExpressions()) {
+                  if (!(e.getTerm() instanceof Literal)) {
+                    found = true;
+                    break;
+                  }
+                }
+              }
+            }
           } 
           ElseClause ec = $caseExpressions.switchCaseList.getElseClause();
-          if (ec!=null) {
+          if (ec!=null && found) {
             Variable ev = new Variable(null);
             ev.setType(new SyntheticVariable(null));
             SpecifierExpression ese = new SpecifierExpression(null);
@@ -3887,9 +3901,11 @@ switchCaseElse returns [SwitchStatement statement]
           }
         }
         if (id!=null) {
+          boolean found = false;
           for (CaseClause cc: $cases.switchCaseList.getCaseClauses()) {
             CaseItem item = cc.getCaseItem();
             if (item instanceof IsCase) {
+              found = true;
               IsCase ic = (IsCase) item;
               Variable v = new Variable(null);
               v.setType(new SyntheticVariable(null));
@@ -3904,9 +3920,21 @@ switchCaseElse returns [SwitchStatement statement]
               bme.setIdentifier(id);
               v.setIdentifier(id);
             }
+            if (item instanceof MatchCase) {
+              MatchCase mc = (MatchCase) item;
+              ExpressionList el = mc.getExpressionList();
+              if (el!=null) {
+                for (Expression e: el.getExpressions()) {
+                  if (!(e.getTerm() instanceof Literal)) {
+                    found = true;
+                    break;
+                  }
+                }
+              }
+            }
           }
           ElseClause ec = $cases.switchCaseList.getElseClause();
-          if (ec!=null) {
+          if (ec!=null && found) {
             Variable ev = new Variable(null);
             ev.setType(new SyntheticVariable(null));
             SpecifierExpression ese = new SpecifierExpression(null);
