@@ -1,5 +1,5 @@
 function className(obj) {
-    if (obj===null) return 'ceylon.language::Null';
+    if (obj===null) return 'ceylon.language::null';
     if (obj===undefined) return "JavaScript UNDEFINED";
     if (obj===true) return 'ceylon.language::true';
     if (obj===false) return 'ceylon.language::false';

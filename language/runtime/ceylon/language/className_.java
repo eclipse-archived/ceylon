@@ -12,9 +12,11 @@ public final class className_ {
     private className_() {}
     
     public static java.lang.String className(@Name("obj")
-    @TypeInfo("ceylon.language::Object")
+    @TypeInfo("ceylon.language::Anything")
     final java.lang.Object object) {
-        return object.getClass().getName();
+        return object==null ? 
+                "ceylon.language.null_" : 
+                object.getClass().getName();
     }
     
 }
