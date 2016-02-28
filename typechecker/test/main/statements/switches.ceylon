@@ -105,3 +105,13 @@ void fun2<X>(X x) {
     }
 }
 
+shared void switchOnvariable() {
+    variable value int = 1;
+    switch (int)
+    case (1) {
+        int = 2;
+    }
+    else {
+        int = 3;
+    }
+}
