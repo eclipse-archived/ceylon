@@ -52,7 +52,9 @@ public class JsIdentifierNames {
                 "native", "new", "null", "private", "protected", "public", "short", "static",
                 "synchronized", "throws", "transient", "true", "typeof", "var", "volatile",
                 "with", "abstract", "process", "require", "class", "extends", "import",
-                "super", "interface", "let", "package", "yield"));
+                //These are only in strict mode and supposedly break something in the SDK or something
+                //"interface", "let", "package", "yield",
+                "super"));
         //Types
         reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number", "RegExp"));
         //JS Object
