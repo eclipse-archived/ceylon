@@ -508,8 +508,11 @@ public class ExpressionVisitor extends Visitor {
             Tree.KeyValuePattern keyValuePattern) {
         Tree.Pattern key = keyValuePattern.getKey();
         Tree.Pattern value = keyValuePattern.getValue();
-        if (!unit.isEntryType(entryType)) {
-            se.addError("assigned expression is not an entry type: '"
+        if (entryType.isExactlyNothing()) {
+            se.addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+        }
+        else if (!unit.isEntryType(entryType)) {
+            se.addError("assigned expression is not an entry type, so may not be destructured: '"
                     + entryType.asString(unit) + 
                     "' is not an entry type");
         }
@@ -527,6 +530,9 @@ public class ExpressionVisitor extends Visitor {
         int length = patterns.size();
         if (length==0) {
             tuplePattern.addError("tuple pattern must have at least one variable");
+        }
+        else if (sequenceType.isExactlyNothing()) {
+            se.addError("assigned expression has bottom type 'Nothing', so may not be destructured");
         }
         else {
             for (int i=0; i<length-1; i++) {

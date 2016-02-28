@@ -145,3 +145,15 @@ shared void tupleLengths(){
     @error value x1->y1 = [1,2];
     @error value [x2,y2] = 1->2;
 }
+
+shared void nothings() {
+    @error for (k->v in {}) {
+        //value kk = k;
+    }
+    @error for (k->[v] in {}) {
+        //value vv = v;
+    }
+    @error for ([x,y] in {}) {
+        //value xx = x;
+    }
+}
