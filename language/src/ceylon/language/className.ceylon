@@ -14,7 +14,10 @@ import ceylon.language.meta {
    [[ceylon.language.meta::type]] function to obtain a
    metamodel object, for example:
    
-       type(1).declaration.qualifiedName"""
+       type(1).declaration.qualifiedName
+   
+   evaluates to `"ceylon.language::Integer"` on every 
+   platform."""
 tagged("Metamodel")
 see (`function type`)
 shared native String className(Anything obj);
