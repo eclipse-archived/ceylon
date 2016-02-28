@@ -53,6 +53,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeParamet
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isCompletelyVisible;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
@@ -7904,10 +7905,12 @@ public class ExpressionVisitor extends Visitor {
                     complementType =
                             unit.denotableType(
                                     complementType);
-                    var.getType()
-                        .setTypeModel(complementType);
-                    var.getDeclarationModel()
-                        .setType(complementType);
+                    Value dec = var.getDeclarationModel();
+                    if (!isCompletelyVisible(dec, complementType)) {
+                        complementType = switchExpressionType;
+                    }
+                    var.getType().setTypeModel(complementType);
+                    dec.setType(complementType);
                 }
             }
         }
@@ -7934,12 +7937,17 @@ public class ExpressionVisitor extends Visitor {
             Tree.IsCondition ic = 
                     (Tree.IsCondition) c;
             Tree.Expression e = se.getExpression();
-            Type t = 
+            Type expressionType = e.getTypeModel();
+            Type complementType = 
                     narrow(ic.getType().getTypeModel(), 
-                            e.getTypeModel(),
+                            expressionType,
                             !ic.getNot());
-            var.getType().setTypeModel(t);
-            var.getDeclarationModel().setType(t);
+            Value dec = var.getDeclarationModel();
+            if (!isCompletelyVisible(dec, complementType)) {
+                complementType = expressionType;
+            }
+            var.getType().setTypeModel(complementType);
+            dec.setType(complementType);
         }
     }
     
