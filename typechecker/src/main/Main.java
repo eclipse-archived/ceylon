@@ -1,7 +1,10 @@
 package main;
 import java.io.File;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
 
 /**
  * Entry point for the type checker. Pass the source directory 
@@ -24,13 +27,21 @@ public class Main {
             return;
         }
         
+        RepositoryManager repositoryManager = 
+                CeylonUtils.repoManager()
+                    .systemRepo("../dist/dist/repo")
+                    .logger(new LeakingLogger())
+                    .buildManager();
+        
         String verbose = 
                 System.getProperties().getProperty("verbose");
         //ClosableVirtualFile latestZippedLanguageSourceFile = 
         //        MainHelper.getLatestZippedLanguageSourceFile();
-        TypeCheckerBuilder tcb = new TypeCheckerBuilder()
-                .verbose("true".equals(verbose))
-                .statistics(true);
+        TypeCheckerBuilder tcb = 
+                new TypeCheckerBuilder()
+                    .setRepositoryManager(repositoryManager)
+                    .verbose("true".equals(verbose))
+                    .statistics(true);
                 //.addSrcDirectory(latestZippedLanguageSourceFile);
         for (String path: args) {
             tcb.addSrcDirectory(new File(path));
