@@ -8360,7 +8360,7 @@ public class ExpressionVisitor extends Visitor {
                         else {
                             argNode = parent;
                         }
-                        checkNotJvmParam(param, 
+                        checkTypeConstructorParam(param, 
                                 argType, argNode);
                     }
                 }
@@ -8619,7 +8619,7 @@ public class ExpressionVisitor extends Visitor {
         return true;
     }
 
-    private void checkNotJvmParam(TypeParameter param, 
+    private void checkTypeConstructorParam(TypeParameter param, 
             Type argType, Node argNode) {
         
         if (!argType.isTypeConstructor()) {
@@ -8630,13 +8630,13 @@ public class ExpressionVisitor extends Visitor {
             argType = unwrapAliasedTypeConstructor(argType);
             if (argType.isUnion()) {
                 for (Type ct: argType.getCaseTypes()) {
-                    checkNotJvmParam(param, 
+                    checkTypeConstructorParam(param, 
                             ct, argNode);
                 }
             }
             else if (argType.isIntersection()) {
                 for (Type st: argType.getSatisfiedTypes()) {
-                    checkNotJvmParam(param, 
+                    checkTypeConstructorParam(param, 
                             st, argNode);
                 }
             }
