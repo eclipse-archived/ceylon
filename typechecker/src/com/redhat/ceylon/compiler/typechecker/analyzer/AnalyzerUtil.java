@@ -186,7 +186,7 @@ public class AnalyzerUtil {
             return null;
         }
         final boolean ucase = isUpperCase(name.charAt(0));
-        return Collections.max(
+        String best = Collections.max(
                 names, 
                 new Comparator<String>() {
             @Override
@@ -204,15 +204,16 @@ public class AnalyzerUtil {
                         distance.similarity(name, y));
             }
         });
+        return distance.similarity(name, best)>0.6 ? best : null;
     }
     
-    static String correct(Scope scope, Unit unit, String name) {
+    public static String correct(Scope scope, Unit unit, String name) {
         return best(name, 
                 scope.getMatchingDeclarations(unit, "", 0, null)
                     .keySet());
     }
     
-    static String correct(TypeDeclaration type, Scope scope, Unit unit, String name) {
+    public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name) {
         return best(name, 
                 type.getMatchingMemberDeclarations(unit, scope, "", 0)
                     .keySet());
