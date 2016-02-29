@@ -465,6 +465,8 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Literal((float)0.0);
             }  else if (isCeylonInteger(type) && type.getUnderlyingType() == null) {
                 return makeLong(0);
+            } else if ("long".equals(type.getUnderlyingType())) {
+                return makeLong(0);
             } else if ("int".equals(type.getUnderlyingType())) {
                 return make().Literal(0);
             } else if ("short".equals(type.getUnderlyingType())) {
