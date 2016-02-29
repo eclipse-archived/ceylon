@@ -528,6 +528,11 @@ public class StatementTests extends CompilerTests {
         compareWithJavaSource("swtch/SwitchExpression");
         run("com.redhat.ceylon.compiler.java.test.statement.swtch.switchExpressionTest");
     }
+    
+    @Test
+    public void testSwitchBug6064(){
+        compareWithJavaSource("swtch/SwitchBug6064");
+    }
 
     @Test
     public void testSwitchMatch(){

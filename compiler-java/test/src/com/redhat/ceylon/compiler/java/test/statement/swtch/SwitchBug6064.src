@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    static long foo(final .java.lang.Object a) {
+        return (
+            let
+            {
+                long $ceylontmp$ifResult$0;
+                {
+                    .java.lang.Object sel$1 = a;
+                    if (sel$1 instanceof .ceylon.language.String) {
+                        final .java.lang.String a$3 = ((.ceylon.language.String)sel$1).toString();
+                        $ceylontmp$ifResult$0 = .ceylon.language.String.hashCode(a$3);
+                    } else if (sel$1 instanceof .ceylon.language.Integer) {
+                        final long a$2 = ((.ceylon.language.Integer)sel$1).longValue();
+                        $ceylontmp$ifResult$0 = a$2;
+                    } else {
+                        .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                        $ceylontmp$ifResult$0 = 0L;
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+    }
+}
