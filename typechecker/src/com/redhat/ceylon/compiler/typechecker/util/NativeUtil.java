@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -129,5 +130,20 @@ public class NativeUtil {
             }
         }
         return false;
+    }
+
+    public static void checkNotJvm(Node that, String message) {
+        Backends scopedBackends = 
+                that.getScope()
+                    .getScopedBackends();
+        Backends backends =
+                scopedBackends.none() ?
+                        that.getUnit().getSupportedBackends() :
+                        scopedBackends;
+        if (backends.supports(Backend.Java)) {
+            that.addUnsupportedError(
+                    message, 
+                    Backend.Java);
+        }
     }
 }

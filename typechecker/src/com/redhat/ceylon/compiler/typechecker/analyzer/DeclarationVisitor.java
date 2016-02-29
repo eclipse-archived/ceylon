@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
@@ -38,6 +39,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -689,40 +691,28 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visitAny(that);
     }
     
-    private static void checkDynamic(Node that) {
-        Backends scopedBackends = 
-                that.getScope()
-                    .getScopedBackends();
-        Backends backends =
-                scopedBackends.none() ?
-                        that.getUnit().getSupportedBackends() :
-                        scopedBackends;
-        if (backends.supports(Backend.Java)) {
-            that.addUnsupportedError(
-                    "dynamic is not supported on the JVM", 
-                    Backend.Java);
-        }
-    }
-    
     @Override
     public void visit(Tree.DynamicStatement that) {
         boolean od = dynamic;
         dynamic = true;
         super.visit(that);
         dynamic = od;
-        checkDynamic(that);
+        checkNotJvm(that, 
+                "dynamic is not supported on the JVM");
     }
 
     @Override
     public void visit(Tree.Dynamic that) {
         super.visit(that);
-        checkDynamic(that);
+        checkNotJvm(that, 
+                "dynamic is not supported on the JVM");
     }
     
     @Override
     public void visit(Tree.DynamicModifier that) {
         super.visit(that);
-        checkDynamic(that);
+        checkNotJvm(that, 
+                "dynamic is not supported on the JVM");
     }
     
     @Override

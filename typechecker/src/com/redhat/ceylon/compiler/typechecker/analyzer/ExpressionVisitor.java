@@ -35,6 +35,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectively
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isInstantiationExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
+import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -84,6 +85,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -288,7 +290,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.TypeParameterList tpl = 
                 that.getTypeParameterList();
         if (tpl!=null) {
-            checkTypeConstructor(tpl);
+            checkNotJvm(tpl, 
+                    "type functions are not supported on the JVM");
         }
     }
     
@@ -1710,7 +1713,8 @@ public class ExpressionVisitor extends Visitor {
         		        that.getSpecifierExpression());
         	}
             if (isGeneric(model)) {
-                checkTypeConstructor(that);
+                checkNotJvm(that, 
+                        "type functions are not supported on the JVM");
             }
         }
         else {
@@ -6146,7 +6150,8 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             member, target, unit);
             that.setTypeModel(functionType);
-            checkTypeConstructor(that);
+            checkNotJvm(that, 
+                    "type functions are not supported on the JVM");
         }
     }
 
@@ -6282,7 +6287,8 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             member, target, unit);
             that.setTypeModel(functionType);
-            checkTypeConstructor(that);
+            checkNotJvm(that, 
+                    "type functions are not supported on the JVM");
         }
     }
     
@@ -6782,7 +6788,8 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             type, target, unit);
             that.setTypeModel(functionType);
-            checkTypeConstructor(that);
+            checkNotJvm(that, 
+                    "type functions are not supported on the JVM");
         }
     }
 
@@ -7108,7 +7115,8 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             type, target, unit);
             that.setTypeModel(functionType);
-            checkTypeConstructor(that);
+            checkNotJvm(that, 
+                    "type functions are not supported on the JVM");
         }
     }
 
@@ -7325,7 +7333,8 @@ public class ExpressionVisitor extends Visitor {
                         tal, that);
             }
             if (pt.isTypeConstructor() && !that.getMetamodel()) {
-                checkTypeConstructor(that);
+                checkNotJvm(that, 
+                        "type functions are not supported on the JVM");
             }
         }
     }
@@ -8351,7 +8360,7 @@ public class ExpressionVisitor extends Visitor {
                         else {
                             argNode = parent;
                         }
-                        checkTypeConstructorParam(param, 
+                        checkNotJvmParam(param, 
                                 argType, argNode);
                     }
                 }
@@ -8610,7 +8619,7 @@ public class ExpressionVisitor extends Visitor {
         return true;
     }
 
-    private void checkTypeConstructorParam(TypeParameter param, 
+    private void checkNotJvmParam(TypeParameter param, 
             Type argType, Node argNode) {
         
         if (!argType.isTypeConstructor()) {
@@ -8621,13 +8630,13 @@ public class ExpressionVisitor extends Visitor {
             argType = unwrapAliasedTypeConstructor(argType);
             if (argType.isUnion()) {
                 for (Type ct: argType.getCaseTypes()) {
-                    checkTypeConstructorParam(param, 
+                    checkNotJvmParam(param, 
                             ct, argNode);
                 }
             }
             else if (argType.isIntersection()) {
                 for (Type st: argType.getSatisfiedTypes()) {
-                    checkTypeConstructorParam(param, 
+                    checkNotJvmParam(param, 
                             st, argNode);
                 }
             }
@@ -8847,7 +8856,8 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeConstructor that) {
         super.visit(that);
-        checkTypeConstructor(that);
+        checkNotJvm(that, 
+                "type functions are not supported on the JVM");
     }
     
     @Override public void visit(Tree.TypeConstraint that) {
@@ -8855,7 +8865,8 @@ public class ExpressionVisitor extends Visitor {
         TypeParameterList typeParams = 
                 that.getTypeParameterList();
         if (typeParams!=null) {
-            checkTypeConstructor(typeParams);
+            checkNotJvm(typeParams, 
+                    "type functions are not supported on the JVM");
         }
     }
     
@@ -8868,18 +8879,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.TypeParameterList tpl = 
                 md.getTypeParameterList();
         if (tpl!=null) {
-            checkTypeConstructor(tpl);
-        }
-    }
-    
-    private static void checkTypeConstructor(Node that) {
-        Backends scopedBackends = 
-                that.getScope()
-                    .getScopedBackends();
-        if (scopedBackends.supports(Backend.Java)) {
-            that.addUnsupportedError(
-                    "type functions are not supported on the JVM", 
-                    Backend.Java);
+            checkNotJvm(tpl, 
+                    "type functions are not supported on the JVM");
         }
     }
     
