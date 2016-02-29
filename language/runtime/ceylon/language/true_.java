@@ -39,6 +39,17 @@ public final class true_ extends Boolean {
     public boolean booleanValue() {
         return true;
     }
+
+    @Override
+    @Transient
+    public final int hashCode() {
+        return hashCode(booleanValue());
+    }
+
+    @Ignore
+    public static int hashCode(boolean value) {
+        return 1231;
+    }
     
     @Override
     @Transient

@@ -47,7 +47,7 @@ public abstract class Boolean
 
     @Override
     @Ignore
-    public final int hashCode() {
+    public int hashCode() {
         return hashCode(booleanValue());
     }
 

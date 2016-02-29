@@ -545,7 +545,7 @@ public final class Integer
         }
     }
 
-    @Override
+    @Override @Transient
     public int hashCode() {
         return (int)(value ^ (value >>> 32));
     }
