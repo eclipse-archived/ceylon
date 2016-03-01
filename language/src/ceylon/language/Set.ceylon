@@ -90,8 +90,8 @@ shared interface Set<out Element=Object>
          set { 1 } | set { 1.0 }
      
      produces the set `{ 1 }`."
-    shared default Set<Element|Other> 
-            union<Other>(Set<Other> set)
+    shared default 
+    Set<Element|Other> union<Other>(Set<Other> set)
             given Other satisfies Object 
             => package.set(chain(set));
     
@@ -113,8 +113,8 @@ shared interface Set<out Element=Object>
          set { 1 } & set { 1.0 }
      
      produces the empty set `{}`."
-    shared default Set<Element&Other> 
-            intersection<Other>(Set<Other> set)
+    shared default 
+    Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object
             => package.set(filter((e) => e in set)
         .narrow<Other>());
@@ -127,16 +127,16 @@ shared interface Set<out Element=Object>
          set { \"hello\", \"world\" } ~ set { 1, 2, \"hello\" }
      
      Produces the set `{ \"world\" }` of type `Set<String>`."
-    shared default Set<Element> 
-            complement<Other>(Set<Other> set)
+    shared default 
+    Set<Element> complement<Other>(Set<Other> set)
             given Other satisfies Object 
             => package.set(filter((e) => !e in set));
     
     "Returns a new `Set` containing only the elements 
      contained in either this set or the given `Set`, but no 
      element contained in both sets."
-    shared default Set<Element|Other> 
-            exclusiveUnion<Other>(Set<Other> set)
+    shared default 
+    Set<Element|Other> exclusiveUnion<Other>(Set<Other> set)
             given Other satisfies Object 
             => package.set(filter((e) => !e in set)
                     .chain(set.filter((e) => !e in this)));

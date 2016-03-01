@@ -101,8 +101,8 @@ shared sealed interface Sequence<out Element=Anything>
      partial order upon the elements."
     shared default actual 
     [Element+] sort(
-            "The function comparing pairs of elements."
-            Comparison comparing(Element x, Element y)) {
+        "The function comparing pairs of elements."
+        Comparison comparing(Element x, Element y)) {
         value array = Array(this);
         array.sortInPlace(comparing);
         return ArraySequence(array);
@@ -112,8 +112,8 @@ shared sealed interface Sequence<out Element=Anything>
      the given mapping to the elements of this sequence."
     shared default actual 
     [Result+] collect<Result>(
-            "The transformation applied to the elements."
-            Result collecting(Element element)) {
+        "The transformation applied to the elements."
+        Result collecting(Element element)) {
         object list
                 extends Object() 
                 satisfies List<Result> {

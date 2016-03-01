@@ -389,9 +389,9 @@ shared interface List<out Element=Anything>
     see (`function locations`)
     shared default 
     {Integer*} indexesWhere(
-            "The predicate function the indexed elements 
-             must satisfy"
-            Boolean selecting(Element&Object element)) 
+        "The predicate function the indexed elements must 
+         satisfy."
+        Boolean selecting(Element&Object element)) 
             => { for (index in 0:size) 
                     if (exists element=getFromFirst(index), 
                             selecting(element)) 
@@ -403,9 +403,9 @@ shared interface List<out Element=Anything>
     see (`function locate`)
     shared default 
     Integer? firstIndexWhere(
-            "The predicate function the indexed elements 
-             must satisfy"
-            Boolean selecting(Element&Object element)) {
+        "The predicate function the indexed elements must 
+         satisfy."
+        Boolean selecting(Element&Object element)) {
         variable value index = 0;
         while (index<size) {
             if (exists element=getFromFirst(index), 
@@ -423,9 +423,9 @@ shared interface List<out Element=Anything>
     see (`function locateLast`)
     shared default 
     Integer? lastIndexWhere(
-            "The predicate function the indexed elements 
-             must satisfy."
-            Boolean selecting(Element&Object element)) {
+        "The predicate function the indexed elements must 
+         satisfy."
+        Boolean selecting(Element&Object element)) {
         variable value index = size;
         while (index>0) {
             index--;
@@ -445,9 +445,9 @@ shared interface List<out Element=Anything>
      This is an eager operation."
     shared default 
     List<Element> trim(
-            "The predicate function that the trimmed 
-             elements satisfy."
-            Boolean trimming(Element&Object elem)) {
+        "The predicate function that the trimmed elements 
+         satisfy."
+        Boolean trimming(Element&Object elem)) {
         if (size>0) {
             value end = size-1;
             variable Integer from=-1;
@@ -487,9 +487,9 @@ shared interface List<out Element=Anything>
      This is an eager operation."
     shared default 
     List<Element> trimLeading(
-            "The predicate function that the trimmed 
-             elements satisfy."
-            Boolean trimming(Element&Object elem)) {
+        "The predicate function that the trimmed elements 
+         satisfy."
+        Boolean trimming(Element&Object elem)) {
         if (size>0) {
             value end = size-1;
             for (index in 0..end) {
@@ -510,9 +510,9 @@ shared interface List<out Element=Anything>
      This is an eager operation."
     shared default 
     List<Element> trimTrailing(
-            "The predicate function that the trimmed 
-             elements satisfy."
-            Boolean trimming(Element&Object elem)) {
+        "The predicate function that the trimmed elements 
+         satisfy."
+        Boolean trimming(Element&Object elem)) {
         if (size>0) {
             value end = size-1;
             for (index in end..0) {
