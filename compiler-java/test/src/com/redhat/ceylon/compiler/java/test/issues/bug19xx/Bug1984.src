@@ -42,8 +42,7 @@ class Bug1984 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                                         } else if (sel$2.toString().equals("foo")) {
                                             $ceylontmp$ifResult$1 = e;
                                         } else {
-                                            final .java.lang.String e$3 = ((.ceylon.language.String)sel$2).toString();
-                                            $ceylontmp$ifResult$1 = .ceylon.language.String.instance(.ceylon.language.String.pad(e$3, 2L));
+                                            $ceylontmp$ifResult$1 = .ceylon.language.String.instance(e.pad(2L));
                                         }
                                     }
                                 }
