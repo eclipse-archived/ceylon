@@ -336,6 +336,25 @@ public class NativeTests extends CompilerTests {
         );
     }
     
+    // Interfaces
+    
+    @Test
+    public void testNativeInterfacePrivate() {
+        testNative("NativeInterfacePrivate");
+    }
+    
+    @Test
+    public void testNativeInterfaceShared() {
+        testNative("NativeInterfaceShared");
+    }
+    
+    @Test
+    public void testNativeInterfaceSharedInvalid() {
+        testNativeErrors("NativeInterfaceSharedInvalid",
+                new CompilerError(20, "shared native implementation must have a header: 'NativeInterfaceSharedInvalid'"),
+                new CompilerError(22, "shared native implementation must have a header: 'NativeInterfaceSharedInvalid'"));
+    }
+    
     // Objects
     
     @Test
