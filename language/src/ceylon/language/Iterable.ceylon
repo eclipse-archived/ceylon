@@ -1687,8 +1687,7 @@ shared interface Iterable<out Element=Anything,
         "The accumulating function that accepts an
          intermediate result for a key, and the next element 
          with that key."
-        Result accumulating(Result? partial, 
-                            Element element))
+        Result accumulating(Result? partial, Element element))
             given Group satisfies Object
             => object extends Object() 
                       satisfies Map<Group,Result> {
