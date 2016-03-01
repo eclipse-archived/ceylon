@@ -29,6 +29,8 @@ public class NativeUtil {
         List<Tree.Statement> hdrstmts;
         if (header instanceof Tree.ClassDefinition) {
             hdrstmts = ((Tree.ClassDefinition)header).getClassBody().getStatements();
+        } else if (header instanceof Tree.InterfaceDefinition) {
+            hdrstmts = ((Tree.InterfaceDefinition)header).getInterfaceBody().getStatements();
         } else if (header instanceof Tree.ObjectDefinition) {
             hdrstmts = ((Tree.ObjectDefinition)header).getClassBody().getStatements();
         } else {

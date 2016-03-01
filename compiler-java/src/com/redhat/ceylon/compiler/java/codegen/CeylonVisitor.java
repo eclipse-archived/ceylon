@@ -242,7 +242,7 @@ public class CeylonVisitor extends Visitor {
         }
     }
 
-    private java.util.List<Statement> getBodyStatements(Tree.ClassBody that) {
+    private java.util.List<Statement> getBodyStatements(Tree.Body that) {
         java.util.List<Statement> stmts = that.getStatements();
         if (classBuilder.getForDefinition().isNative()) {
             // In case of a native implementation we look for its header
@@ -486,7 +486,8 @@ public class CeylonVisitor extends Visitor {
         
     }
     public void visit(Tree.InterfaceBody that) {
-        for (Tree.Statement stmt : that.getStatements()) {
+        java.util.List<Statement> stmts = getBodyStatements(that);
+        for (Tree.Statement stmt : stmts) {
             if (stmt instanceof Tree.Declaration
                     || stmt instanceof Tree.SpecifierStatement) {
                 stmt.visit(this);

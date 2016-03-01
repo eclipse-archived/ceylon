@@ -12,6 +12,7 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
     private List<TypeParameter> typeParameters = emptyList();
+    private List<Declaration> overloads;
     
     @Override
     public List<Annotation> getAnnotations() {
@@ -66,6 +67,24 @@ public abstract class ClassOrInterface extends TypeDeclaration {
 
     public void setTypeParameters(List<TypeParameter> typeParameters) {
         this.typeParameters = typeParameters;
+    }
+    
+    @Override
+    public List<Declaration> getOverloads() {
+        return overloads;
+    }
+
+    public void setOverloads(List<Declaration> overloads) {
+        this.overloads = overloads;
+    }
+
+    public void initOverloads(ClassOrInterface... initial) {
+        overloads = 
+                new ArrayList<Declaration>
+                    (initial.length+1);
+        for (Declaration d: initial) {
+            overloads.add(d);
+        }
     }
     
     @Override

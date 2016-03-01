@@ -48,6 +48,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -318,6 +319,13 @@ public class RefinementVisitor extends Visitor {
                     (Class) dec, 
                     (Class) header);
         }
+        else if (dec instanceof Interface &&
+                (header == null ||
+                header instanceof Interface)) {
+            checkNativeInterface(that, 
+                    (Interface) dec, 
+                    (Interface) header);
+        }
         else if (header != null) {
             that.addError("native declarations not of same type: " + 
                     message(dec));
@@ -485,6 +493,75 @@ public class RefinementVisitor extends Visitor {
         }
         Collections.sort(nats, declarationCmp);
         return nats;
+    }
+    
+    private void checkNativeInterface(Tree.Declaration that, 
+            Interface dec, Interface header) {
+        if (header == null) {
+            return;
+        }
+        if (dec.isShared() && !header.isShared()) {
+            that.addError("native header is not shared: " +
+                    message(dec));
+        }
+        if (!dec.isShared() && header.isShared()) {
+            that.addError("native header is shared: " +
+                    message(dec));
+        }
+        if (dec.isAbstract() && !header.isAbstract()) {
+            that.addError("native header is not abstract: " +
+                    message(dec));
+        }
+        if (!dec.isAbstract() && header.isAbstract()) {
+            that.addError("native header is abstract: " +
+                    message(dec));
+        }
+        if (dec.isFinal() && !header.isFinal()) {
+            that.addError("native header is not final: " +
+                    message(dec));
+        }
+        if (!dec.isFinal() && header.isFinal()) {
+            that.addError("native header is final: " +
+                    message(dec));
+        }
+        if (dec.isSealed() && !header.isSealed()) {
+            that.addError("native header is not sealed: " +
+                    message(dec));
+        }
+        if (!dec.isSealed() && header.isSealed()) {
+            that.addError("native header is sealed: " +
+                    message(dec));
+        }
+        if (dec.isAnnotation() && !header.isAnnotation()) {
+            that.addError("native header is not an annotation type: " +
+                    message(dec));
+        }
+        if (!dec.isAnnotation() && header.isAnnotation()) {
+            that.addError("native header is an annotation type: " +
+                    message(dec));
+        }
+        Type dext = dec.getExtendedType();
+        Type aext = header.getExtendedType();
+        if ((dext != null && aext == null)
+                || (dext == null && aext != null)
+                || !dext.isExactly(aext)) {
+            that.addError("native classes do not extend the same type: " +
+                    message(dec));
+        }
+        List<Type> dst = 
+                dec.getSatisfiedTypes();
+        List<Type> ast = 
+                header.getSatisfiedTypes();
+        if (dst.size() != ast.size() || 
+                !dst.containsAll(ast)) {
+            that.addError("native classes do not satisfy the same interfaces: " +
+                    message(dec));
+        }
+        // FIXME probably not the right tests
+        checkNativeTypeParameters(that,
+                dec, header,
+                dec.getTypeParameters(),
+                header.getTypeParameters());
     }
 
     private void checkNativeMethod(Tree.Declaration that, 

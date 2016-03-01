@@ -21,6 +21,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeade
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
@@ -29,6 +30,7 @@ import static java.util.Collections.singletonMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -88,7 +89,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public abstract class DeclarationVisitor extends Visitor {
     
-    private static final Class[] NO_CLASSES = new Class[0];
+    private static final ClassOrInterface[] NO_CLASSES = new ClassOrInterface[0];
     private static final FunctionOrValue[] NO_FUNCTIONS_OR_VALUES = new FunctionOrValue[0];
     private static final Constructor[] NO_CONSTRUCTORS = new Constructor[0];
     
@@ -375,6 +376,12 @@ public abstract class DeclarationVisitor extends Visitor {
             || that instanceof Tree.ObjectDefinition;
     }
     
+    protected static boolean canBeNative(Declaration member) {
+        return member instanceof Function || 
+                member instanceof Value || 
+                member instanceof ClassOrInterface;
+    }
+
     private static boolean mustHaveHeader(Declaration model) {
         if (model.isShared()) {
             if (model.isToplevel()) {
@@ -394,7 +401,7 @@ public abstract class DeclarationVisitor extends Visitor {
     private void handleNativeHeader(Declaration model, String name) {
         // Deal with implementations from the ModelLoader
         ArrayList<FunctionOrValue> loadedFunctionsOrValues = null;
-        ArrayList<Class> loadedClasses = null;
+        ArrayList<ClassOrInterface> loadedClasses = null;
         ArrayList<Constructor> loadedConstructors = null;
         for (Backend backendToSearch: Backend.getRegisteredBackends()) {
             Declaration overloadFromModelLoader = 
@@ -412,11 +419,11 @@ public abstract class DeclarationVisitor extends Visitor {
                             overloadFromModelLoader;
                 loadedFunctionsOrValues.add(fov);
             }
-            else if (overloadFromModelLoader instanceof Class) {
+            else if (overloadFromModelLoader instanceof ClassOrInterface) {
                 if (loadedClasses == null) {
-                    loadedClasses = new ArrayList<Class>();
+                    loadedClasses = new ArrayList<ClassOrInterface>();
                 }
-                Class c = (Class) overloadFromModelLoader;
+                ClassOrInterface c = (ClassOrInterface) overloadFromModelLoader;
                 loadedClasses.add(c);
             }
             else if (overloadFromModelLoader instanceof Constructor) {
@@ -439,8 +446,8 @@ public abstract class DeclarationVisitor extends Visitor {
                 m.initOverloads();
             }
         }
-        else if (model instanceof Class) {
-            Class c = (Class) model;
+        else if (model instanceof ClassOrInterface) {
+            ClassOrInterface c = (ClassOrInterface) model;
             if (loadedClasses != null) {
                 c.initOverloads(
                         loadedClasses.toArray(NO_CLASSES));
@@ -561,12 +568,6 @@ public abstract class DeclarationVisitor extends Visitor {
                 while (isControl);
             }
         }
-    }
-
-    protected static boolean canBeNative(Declaration member) {
-        return member instanceof Function || 
-                member instanceof Value || 
-                member instanceof Class;
     }
 
     private static void checkGetterForSetter(Tree.Declaration that,
@@ -875,6 +876,9 @@ public abstract class DeclarationVisitor extends Visitor {
                         1801);
             }
         }
+        if (c.isNativeImplementation()) {
+            addMissingHeaderMembers(c);
+        }
     }
     
     @Override
@@ -1046,12 +1050,40 @@ public abstract class DeclarationVisitor extends Visitor {
         defaultExtendedToObject(i);
         that.setDeclarationModel(i);
         super.visit(that);
+        if (i.isNativeImplementation()) {
+            addMissingHeaderMembers(i);
+        }
         // Required by IDE to be omitted: https://github.com/ceylon/ceylon-compiler/issues/2326
 //        if (that.getDynamic()) {
 //            checkDynamic(that);
 //        }
     }
     
+    // Given a native implementation this adds all the members from
+    // its native header (if it has one) that it doesn't already have
+    // as members itself
+    private void addMissingHeaderMembers(ClassOrInterface coi) {
+        Declaration hdr = getNativeHeader(coi);
+        if (hdr != null) {
+            HashSet<String> names = new HashSet<String>();
+            for (Declaration im : coi.getMembers()) {
+                if (!im.isMember()) {
+                    continue;
+                }
+                names.add(im.getQualifiedNameString());
+            }
+            for (Declaration hm : hdr.getMembers()) {
+                if (!hm.isMember()) {
+                    continue;
+                }
+                if (!names.contains(hm.getQualifiedNameString())
+                        && (coi instanceof Interface || isImplemented(hm))) {
+                    coi.addMember(hm);
+                }
+            }
+        }
+    }
+
     @Override
     public void visit(Tree.InterfaceDeclaration that) {
         InterfaceAlias i = new InterfaceAlias();
@@ -1239,6 +1271,9 @@ public abstract class DeclarationVisitor extends Visitor {
         exitScope(o);
         if (c.isInterfaceMember()) {
             that.addError("object declaration may not occur directly in interface body");
+        }
+        if (c.isNativeImplementation()) {
+            addMissingHeaderMembers(c);
         }
     }
 

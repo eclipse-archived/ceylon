@@ -3,7 +3,6 @@ package com.redhat.ceylon.model.typechecker.model;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +23,6 @@ public class Class extends ClassOrInterface implements Functional {
     private static final int NO_NAME = 1<<24;
     
     private ParameterList parameterList;
-    private List<Declaration> overloads;
     private List<Reference> unimplementedFormals = 
             Collections.<Reference>emptyList();
 
@@ -287,24 +285,6 @@ public class Class extends ClassOrInterface implements Functional {
 		}
 	}
 
-    @Override
-    public List<Declaration> getOverloads() {
-        return overloads;
-    }
-
-    public void setOverloads(List<Declaration> overloads) {
-        this.overloads = overloads;
-    }
-
-    public void initOverloads(Class... initial) {
-        overloads = 
-                new ArrayList<Declaration>
-                    (initial.length+1);
-        for (Declaration d: initial) {
-            overloads.add(d);
-        }
-    }
-    
     @Override
     public boolean isDeclaredVoid() {
         return false;
