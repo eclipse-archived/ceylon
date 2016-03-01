@@ -463,7 +463,8 @@ shared interface Iterable<out Element=Anything,
     shared default 
     Result fold<Result>(Result initial)(
         "The accumulating function that accepts an
-         intermediate result, and the next element."
+         [[intermediate result|partial]], and the 
+         [[next element|element]]."
         Result accumulating(Result partial, 
                             Element element)) {
         variable value partial = initial;
@@ -501,7 +502,8 @@ shared interface Iterable<out Element=Anything,
     shared default 
     Result|Element|Absent reduce<Result>(
         "The accumulating function that accepts an
-         intermediate result, and the next element."
+         [[intermediate result|partial]], and the 
+         [[next element|element]]."
         Result accumulating(Result|Element partial, 
                             Element element)) {
         value it = iterator();
@@ -553,8 +555,9 @@ shared interface Iterable<out Element=Anything,
     see (`function fold`)
     shared default 
     {Result+} scan<Result>(Result initial)(
-        "The accumulating function that accepts the running 
-         total and the next element."
+        "The accumulating function that accepts the 
+         [[running total|partial]] and the 
+         [[next element|element]]."
         Result accumulating(Result partial, 
                             Element element))
             => object satisfies {Result+} {
@@ -1685,8 +1688,8 @@ shared interface Iterable<out Element=Anything,
          should be aggregated by calling [[accumulating]]."
         Group grouping(Element element),
         "The accumulating function that accepts an
-         intermediate result for a key, and the next element 
-         with that key."
+         [[intermediate result|partial]] for a key, and the 
+         [[next element]] with that key."
         Result accumulating(Result? partial, Element element))
             given Group satisfies Object
             => object extends Object() 
