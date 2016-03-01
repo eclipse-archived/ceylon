@@ -4023,8 +4023,9 @@ public class StatementTransformer extends AbstractTransformer {
         protected java.util.List<CaseClause> getCaseClauses(Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList) {
             return caseList.getCaseClauses();
         }
-        protected JCStatement transformElse(Naming.SyntheticName selectorAlias, Tree.SwitchCaseList caseList, String tmpVar, 
+        protected JCStatement transformElse(Tree.SwitchClause switchClause, Naming.SyntheticName selectorAlias, Tree.SwitchCaseList caseList, String tmpVar, 
                 Tree.Term outerExpression, Type expectedType, boolean primitiveSelector) {
+            JCStatement result;
             Tree.ElseClause elseClause = caseList.getElseClause();
             if (elseClause != null) {
                 if (elseClause.getVariable() != null && selectorAlias != null) {
@@ -4073,14 +4074,22 @@ public class StatementTransformer extends AbstractTransformer {
                     Substitution prevSubst = naming.addVariableSubst(varDecl, substVarName.toString());
     
                     stats = stats.appendList(transformElseClause(elseClause, tmpVar, outerExpression, expectedType));
-                    JCBlock block = at(elseClause).Block(0, stats);
+                    result = at(elseClause).Block(0, stats);
     
                     // Deactivate the above variable substitution
                     prevSubst.close();
-    
-                    return block;
                 } else {
-                    return transformElseClauseBlock(elseClause, tmpVar, outerExpression, expectedType);
+                    Substitution prevSubst1;
+                    if (switchClause.getSwitched().getVariable() != null && selectorAlias != null) {
+                        // Prepare for variable substitution in the following code block
+                        prevSubst1 = naming.addVariableSubst(switchClause.getSwitched().getVariable().getDeclarationModel(), selectorAlias.toString());
+                    } else {
+                        prevSubst1 = null;
+                    }
+                    result = transformElseClauseBlock(elseClause, tmpVar, outerExpression, expectedType);
+                    if (prevSubst1 != null) {
+                        prevSubst1.close();
+                    }
                 }
             } else {
                 // To avoid possible javac warnings about uninitialized vars we
@@ -4101,11 +4110,12 @@ public class StatementTransformer extends AbstractTransformer {
                                     CodegenUtil.getBoxingStrategy(outerExpression),
                                     expectedType))));
                     stmts = stmts.prepend(make().Exec(utilInvocation().rethrow(makeNewEnumeratedTypeError(exhasutedExhaustiveSwitch))));
-                    return make().Block(0L, stmts);
+                    result = make().Block(0L, stmts);
                 }else{
-                    return makeThrowEnumeratedTypeError();
+                    result = makeThrowEnumeratedTypeError();
                 }
             }
+            return result;
         }
         protected JCStatement makeThrowEnumeratedTypeError() {
             return make().Throw(makeNewEnumeratedTypeError(exhasutedExhaustiveSwitch));
@@ -4199,7 +4209,7 @@ public class StatementTransformer extends AbstractTransformer {
                     elseSelectorAlias = naming.synthetic(elseVar);
                 }
             }
-            cases.add(make().Case(null, List.of(transformElse(elseSelectorAlias, caseList, tmpVar, outerExpression, expectedType, false))));
+            cases.add(make().Case(null, List.of(transformElse(switchClause, elseSelectorAlias, caseList, tmpVar, outerExpression, expectedType, false))));
             
             
             JCStatement last = make().Switch(switchExpr, cases.toList());
@@ -4354,10 +4364,11 @@ public class StatementTransformer extends AbstractTransformer {
                 bs = BoxingStrategy.BOXED;
                 selectorType = makeJavaType(switchExpressionType, JT_NO_PRIMITIVES|JT_RAW);
             }
-            last = transformElse(selectorAlias, caseList, tmpVar, outerExpression, expectedType, primitiveSelector);
             JCExpression selectorExpr = expressionGen().transformExpression(getSwitchExpression(switchClause), bs, switchExpressionType);
             
             JCVariableDecl selector = makeVar(selectorAlias, selectorType, selectorExpr);
+            
+            last = transformElse(switchClause, selectorAlias, caseList, tmpVar, outerExpression, expectedType, primitiveSelector);
             
             java.util.List<Tree.CaseClause> caseClauses = getCaseClauses(switchClause, caseList);
             for (int ii = caseClauses.size() - 1; ii >= 0; ii--) {// reverse order
