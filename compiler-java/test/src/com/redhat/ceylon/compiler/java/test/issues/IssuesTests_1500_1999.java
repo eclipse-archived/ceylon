@@ -737,7 +737,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 null,
                 new CompilerError(22, "could not determine type of function or value reference: 'd'"),
                 new CompilerError(24, "does not definitely return: 'd' has branches which do not end in a 'return' statement"),
-                new CompilerError(24, "type declaration does not exist: 'Id' (did you mean 'Bug1789'?)"));
+                new CompilerError(24, "type declaration does not exist: 'Id'"));
 
     }
     
@@ -852,7 +852,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1857() {
         assertErrors("bug18xx/Bug1857",
-                new CompilerError(Kind.ERROR, "", 22, "function or value does not exist: 'ß' (did you mean 'bug1857'?)"));
+                new CompilerError(Kind.ERROR, "", 22, "function or value does not exist: 'ß'"));
     }
 
     @Test

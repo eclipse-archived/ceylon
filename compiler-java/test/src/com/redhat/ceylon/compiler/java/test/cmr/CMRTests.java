@@ -1054,7 +1054,7 @@ public class CMRTests extends CompilerTests {
     public void testMdlUsesJavaWithoutImportingIt() throws IOException{
         assertErrors("modules/jdk/usesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (add module import to module descriptor of 'com.redhat.ceylon.compiler.java.test.cmr.modules.jdk.usesJavaWithoutImportingIt')"),
-                new CompilerError(23, "function or value does not exist: 'nanoTime' (did you mean 'ceylon.language::times'?)"));
+                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
     }
 
     @Test
@@ -1066,7 +1066,7 @@ public class CMRTests extends CompilerTests {
         
         assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (define a module and add module import to its module descriptor)"),
-                new CompilerError(23, "function or value does not exist: 'nanoTime' (did you mean 'ceylon.language::times'?)"));
+                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
     }
 
     @Test
