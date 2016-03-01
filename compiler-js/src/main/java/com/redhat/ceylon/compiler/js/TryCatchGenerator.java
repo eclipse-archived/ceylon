@@ -42,8 +42,6 @@ public class TryCatchGenerator {
             }
             tvar = gen.getNames().createTempVariable();
             gen.out(",", tvar, "=null");
-            if (tvar != null) {
-            }
             gen.endLine(true);
         }
         gen.out("try");
@@ -149,6 +147,7 @@ public class TryCatchGenerator {
                 var = gen.getNames().name(r.getVariable().getDeclarationModel());
                 captured = r.getVariable().getDeclarationModel().isCaptured() ?
                         r.getVariable().getDeclarationModel() : null;
+                directAccess.add(r.getVariable().getDeclarationModel());
             } else {
                 destroy = r.getExpression().getTypeModel().isSubtypeOf(
                         r.getUnit().getDestroyableType());
