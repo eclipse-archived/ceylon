@@ -5466,11 +5466,14 @@ public class ExpressionVisitor extends Visitor {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            Type ct = 
-                    checkSupertype(rhst,
-                            unit.getCategoryDeclaration(),
-                            that.getRightTerm(), 
-                            "operand expression must be a category");
+            Type ct = rhst.getSupertype(
+            		unit.getJavaCollectionDeclaration());
+            if (ct==null) {
+	            ct = checkSupertype(rhst,
+	            		unit.getCategoryDeclaration(),
+	            		that.getRightTerm(), 
+	            		"operand expression must be a category");
+            }
             if (ct!=null) {
                 Type at = 
                         ct.getTypeArguments().isEmpty() ? null : 

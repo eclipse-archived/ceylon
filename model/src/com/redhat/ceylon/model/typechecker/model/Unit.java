@@ -441,6 +441,16 @@ public class Unit {
         }
     }
 
+    public Interface getJavaCollectionDeclaration() {
+        Package lang = getJavaUtilPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Interface) lang.getMember("Collection", null, false);
+        }
+    }
+
     public Interface getJavaAutoCloseableDeclaration() {
         Package lang = getJavaLangPackage();
         if (lang==null) {
@@ -453,6 +463,10 @@ public class Unit {
     
     protected Package getJavaLangPackage() {
         return getPackage().getModule().getPackage("java.lang");
+    }
+    
+    protected Package getJavaUtilPackage() {
+        return getPackage().getModule().getPackage("java.util");
     }
     
     public Interface getSequentialDeclaration() {
