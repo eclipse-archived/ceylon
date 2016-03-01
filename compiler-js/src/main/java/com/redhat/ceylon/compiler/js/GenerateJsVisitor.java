@@ -1816,7 +1816,7 @@ public class GenerateJsVisitor extends Visitor {
     /** Tells whether a declaration can be accessed directly (using its name) or
      * through its getter. */
     boolean accessDirectly(Declaration d) {
-        return !accessThroughGetter(d) || directAccess.contains(d) || d.isParameter();
+        return directAccess.contains(d) || !accessThroughGetter(d) || d.isParameter();
     }
 
     private boolean accessThroughGetter(Declaration d) {
