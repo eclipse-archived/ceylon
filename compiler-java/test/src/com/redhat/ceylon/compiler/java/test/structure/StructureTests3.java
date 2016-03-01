@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.structure;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -128,6 +129,7 @@ public class StructureTests3 extends CompilerTests {
     }
     
     @Test
+    @Ignore
     public void testTypefnTypeFn1(){
         compareWithJavaSource("typefn/TypeFn1");
         run("com.redhat.ceylon.compiler.java.test.structure.typefn.genericFunctionReference");
@@ -136,6 +138,7 @@ public class StructureTests3 extends CompilerTests {
     }
     
     @Test
+    @Ignore
     public void testTypefnTypeConstructorsInDeclarations(){
         compareWithJavaSource("typefn/TypeConstructorsInDeclarations");
     }
