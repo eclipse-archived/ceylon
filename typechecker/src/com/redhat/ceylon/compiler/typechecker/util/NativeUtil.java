@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 
 /** Certain convenience methods related to native types.
  * 
@@ -145,5 +146,15 @@ public class NativeUtil {
                     message, 
                     Backend.Java);
         }
+    }
+    
+    public static Declaration declarationScope(Scope that) {
+        if (that == null) {
+            return null;
+        }
+        if (that instanceof Declaration) {
+            return (Declaration)that;
+        }
+        return declarationScope(that.getScope());
     }
 }

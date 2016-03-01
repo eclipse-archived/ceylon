@@ -36,6 +36,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isInstantiati
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
+import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.declarationScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -73,7 +74,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
@@ -85,7 +85,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -9366,7 +9365,7 @@ public class ExpressionVisitor extends Visitor {
         if (error
                 && impl != null
                 && (dec.isToplevel() || dec.isMember())
-                && that.getScope() instanceof Declaration
+                && declarationScope(that.getScope()) != null
                 && (hdr == null || !isImplemented(hdr))
                 && (ctxModule != decModule
                         && !decModuleBackends.none()
@@ -9381,7 +9380,7 @@ public class ExpressionVisitor extends Visitor {
                     || !decModuleBackends.none()
                         && !isForBackend(decModuleBackends, 
                                 inBackends))) {
-            Declaration d = (Declaration) that.getScope();
+            Declaration d = declarationScope(that.getScope());
             if (!inBackends.none()) {
                 that.addError("illlegal reference to native declaration '" + 
                         dec.getName(unit) + "': native declaration '" +
@@ -9398,7 +9397,7 @@ public class ExpressionVisitor extends Visitor {
         }
         return dec;
     }
-    
+
     private Backends getModuleBackends(Module decModule, Unit unit) {
         Backends bs = decModule.getNativeBackends();
         List<ModuleImport> imports = 
