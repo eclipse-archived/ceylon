@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native shared class NativeClassShared() {
+native shared interface NativeInterfaceShared {
     native shared Integer test(Integer i);
     native shared Integer foo;
     native shared Integer bar;
@@ -25,7 +25,6 @@ native shared class NativeClassShared() {
     shared void access() {
         test(foo + bar);
     }
-    native shared object obj {}
     native shared class Inner() {
         native shared Integer baz();
     }
@@ -40,14 +39,13 @@ native shared class NativeClassShared() {
     }
 }
 
-native("jvm") shared class NativeClassShared() {
+native("jvm") shared interface NativeInterfaceShared {
     native("jvm") shared Integer test(Integer i) {
-        throw Exception("NativeClassShared-JVM");
+        throw Exception("NativeInterfaceShared-JVM");
     }
     native("jvm") shared Integer foo => 0;
     native("jvm") shared Integer bar => 0;
     native("jvm") assign bar { test(0); }
-    native("jvm") shared object obj {}
     native("jvm") shared class Inner() {
         native("jvm") shared Integer baz() => 1;
     }
@@ -56,14 +54,13 @@ native("jvm") shared class NativeClassShared() {
     }
 }
 
-native("js") shared class NativeClassShared() {
+native("js") shared interface NativeInterfaceShared {
     native("js") shared Integer test(Integer i) {
-        throw Exception("NativeClassShared-JS");
+        throw Exception("NativeInterfaceShared-JS");
     }
     native("js") shared Integer foo => 0;
     native("js") shared Integer bar => 0;
     native("js") assign bar {test(0); }
-    native("js") shared object obj {}
     native("js") shared class Inner() {
         native("js") shared Integer baz() => 1;
     }
@@ -72,13 +69,15 @@ native("js") shared class NativeClassShared() {
     }
 }
 
-void testNativeClassShared() {
-    value x = NativeClassShared();
+class NativeInterfaceSharedImpl() satisfies NativeInterfaceShared {
+}
+
+void testNativeInterfaceShared() {
+    value x = NativeInterfaceSharedImpl();
     value a = x.foo;
     value b = x.bar;
     x.bar = b;
     x.access();
-    value c = x.obj;
     value y = x.Inner();
     value d = y.baz();
     value z = x.Inner2();

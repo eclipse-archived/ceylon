@@ -6,7 +6,7 @@
  * modify, copy, or redistribute it subject to the terms and conditions
  * of the GNU General Public License version 2.
  * 
- * This particular file is subject to the "Classpath" exception as provided in the 
+ * This particular file is subject to the "Interfacepath" exception as provided in the 
  * LICENSE file that accompanied this code.
  * 
  * This program is distributed in the hope that it will be useful, but WITHOUT A
@@ -17,13 +17,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm")
-class JVMClass() {
-}
+@error native("jvm") shared class NativeInterfaceSharedInvalid() {}
 
-void testBug5979(Object o) {
-    /*@error*/ if (o is JVMClass) {
-    }
-    /*@error*/ if (is JVMClass o) {
-    }
-}
+@error native("js") shared class NativeInterfaceSharedInvalid() {}
