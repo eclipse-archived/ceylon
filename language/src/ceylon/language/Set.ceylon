@@ -10,7 +10,9 @@
      
      value words = set { \"hello\", \"world\" };
      value greetings = set { \"hello\", \"goodbye\", \"hola\", \"adios\" };
-     
+ 
+ The [[emptySet]] is a `Set` with no elements.
+ 
  Sets may be the subject of the binary union, intersection, 
  and complement operators `|`, `&`, and `~`.
  
@@ -20,7 +22,7 @@
  An implementation of `Set` may compare elements for 
  equality using [[Object.equals]] or [[Comparable.compare]]."
 tagged("Collections")
-see (`function package.set`)
+see (`function package.set`, `value emptySet`)
 shared interface Set<out Element=Object>
         satisfies Collection<Element>
         given Element satisfies Object {
@@ -180,22 +182,20 @@ shared interface Set<out Element=Object>
  
  produces the set `{ 0, 1, 2, 3 }`.
  
- This is an eager operation and the resulting set does
- not reflect changes to the given [[stream]]."
+ This is an eager operation and the resulting set does not 
+ reflect changes to the given [[stream]]."
 see(`value Iterable.distinct`)
 shared Set<Element> set<Element>(
-        "The stream of elements."
-        {Element*} stream,
-        "A function that chooses between duplicate elements. 
-         By default, the element that occurs _earlier_ in 
-         the stream is chosen."
-        Element choosing(Element earlier, Element later) 
-                => earlier)
+    "The stream of elements."
+    {Element*} stream,
+    "A function that chooses between duplicate elements. By 
+     default, the element that occurs _earlier_ in the 
+     stream is chosen."
+    Element choosing(Element earlier, Element later) 
+            => earlier)
         given Element satisfies Object
-        => if (is Set<Element> stream) 
-        then stream
-        else object extends Object() 
-                    satisfies Set<Element&Object> {
+        => object extends Object() 
+        satisfies Set<Element&Object> {
     
     value elements =
             stream.summarize(identity,

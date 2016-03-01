@@ -14,6 +14,8 @@
    
        value settings = map { "lang"->"en_AU", "loc"->"ES" };
    
+   The [[emptyMap]] is a `Map` with no entries.
+   
    The presence of an entry in a map may be tested using the 
    `in` operator:
    
@@ -32,7 +34,8 @@
    using [[Object.equals]] or [[Comparable.compare]]."""
 see (`class Entry`, `function package.map`,
      `function forKey`, `function forItem`, 
-     `function byItem`, `function byKey`)
+     `function byItem`, `function byKey`,
+      `value emptyMap`)
 tagged("Collections")
 shared interface Map<out Key=Object, out Item=Anything>
         satisfies Collection<Key->Item> &
@@ -422,16 +425,15 @@ shared interface Map<out Key=Object, out Item=Anything>
  
  produces the map `{ 1->\"hello\", 2->\"goodbye\" }`.
  
- This is an eager operation and the resulting map does
- not reflect changes to the given [[stream]]."
+ This is an eager operation and the resulting map does not 
+ reflect changes to the given [[stream]]."
 shared Map<Key,Item> map<Key,Item>(
-            "The stream of entries."
-            {<Key->Item>*} stream,
-            "A function that chooses between items with 
-             duplicate keys. By default, the item that
-             occurs _earlier_ in the stream is chosen."
-            Item choosing(Item earlier, Item later) 
-                    => earlier)
+    "The stream of entries."
+    {<Key->Item>*} stream,
+    "A function that chooses between items with duplicate 
+     keys. By default, the item that occurs _earlier_ in the 
+     stream is chosen."
+    Item choosing(Item earlier, Item later) => earlier)
         given Key satisfies Object
         => stream.summarize(Entry.key, 
                 (Item? item, entry) 
