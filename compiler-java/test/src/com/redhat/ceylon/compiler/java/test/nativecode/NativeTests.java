@@ -569,4 +569,12 @@ public class NativeTests extends CompilerTests {
         testNative("Bug2369");
     }
     
+    @Test
+    public void testBug5979() {
+        testNativeErrors("Bug5979",
+                new CompilerError(25, "illlegal reference to native declaration 'JVMClass': declaration 'testBug5979' is not native (mark it or the module native)"),
+                new CompilerError(27, "illlegal reference to native declaration 'JVMClass': declaration 'testBug5979' is not native (mark it or the module native)")
+        );
+    }
+    
 }
