@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class javaCollectionWithInOp_ {
+    
+    private javaCollectionWithInOp_() {
+    }
+    
+    static void javaCollectionWithInOp(final .java.util.Collection<.java.lang.Object> col) {
+        boolean b = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$0 = .ceylon.language.Integer.instance(1L);
+            }
+            returning col.contains($ceylontmp$0);
+        );
+    }
+}

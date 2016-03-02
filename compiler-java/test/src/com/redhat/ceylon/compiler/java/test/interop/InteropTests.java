@@ -666,4 +666,9 @@ public class InteropTests extends CompilerTests {
         compareWithJavaSource(opts, "bug4389/b/b.src", "bug4389/b/b.ceylon");
         //
     }
+    
+    @Test
+    public void testIopJavaCollectionWithInOp(){
+        compareWithJavaSource("JavaCollectionWithInOp");
+    }
 }
