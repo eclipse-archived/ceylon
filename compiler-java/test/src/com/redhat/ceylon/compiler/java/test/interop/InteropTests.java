@@ -691,4 +691,9 @@ public class InteropTests extends CompilerTests {
     public void testIopJavaCollectionWithInOp(){
         compareWithJavaSource("JavaCollectionWithInOp");
     }
+    
+    @Test
+    public void testIopJavaArrayTypeConstraint(){
+        compile("JavaArrayTypeConstraint.ceylon");
+    }
 }
