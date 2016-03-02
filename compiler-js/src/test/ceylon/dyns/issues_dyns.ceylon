@@ -335,5 +335,6 @@ void issue5959() {
 void issue6057() {
   dynamic DefaultObject {}
   dynamic { DefaultObject o = eval("this"); }
-  check(identityHash(object extends Basic() {}) > 0, "#6057 1");
+  check(identityHash(object extends Basic() {}) >= 0, "#6057 1");
+  check(identityHash(object extends Basic() {}) > 0, "#6057 2");
 }
