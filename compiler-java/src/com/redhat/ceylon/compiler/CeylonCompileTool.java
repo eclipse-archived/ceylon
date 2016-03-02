@@ -179,12 +179,22 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath;
     private boolean autoExportMavenDependencies;
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
-
+    private ModuleSpec jdkProvider;
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
     }
 
+    @OptionArgument(longName="jdk-provider", argumentName="module")
+    @Description("Specifies the name of the module providing the JDK (default: the underlying JDK).")
+    public void setJdkProvider(String jdkProvider) {
+        setJdkProviderSpec(ModuleSpec.parse(jdkProvider));
+    }
+    
+    public void setJdkProviderSpec(ModuleSpec jdkProvider) {
+        this.jdkProvider = jdkProvider;
+    }
+    
     @Option(longName="flat-classpath")
     @Description("Launches the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
@@ -366,6 +376,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (cwd != null) {
             arguments.add("-cwd");
             arguments.add(cwd.getPath());
+        }
+        
+        if(jdkProvider != null){
+            arguments.add("-jdk-provider");
+            arguments.add(jdkProvider.toString());
         }
         
         for (File source : applyCwd(this.sources)) {
