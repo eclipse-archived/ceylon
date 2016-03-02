@@ -47,13 +47,14 @@ public class SpecificationVisitor extends Visitor {
     private SpecificationState specified = 
             new SpecificationState(false, false);
     private boolean withinDeclaration = false;
-    private boolean inLoop = false;
+    private int loopDepth = 0;
     private boolean declared = false;
     private boolean hasParameter = false;
     private Tree.Statement lastExecutableStatement;
     private Tree.Declaration lastConstructor;
     private boolean declarationSection = false;
-    private boolean endsInBreakReturnThrow = false;
+    private boolean endsInReturnThrow = false;
+    private boolean endsInBreak = false;
     private boolean inExtends = false;
     private boolean inAnonFunctionOrComprehension = false;
     private Parameter parameter = null;
@@ -502,7 +503,8 @@ public class SpecificationVisitor extends Visitor {
             delegatedConstructor = null;
         }
         
-        boolean oe = endsInBreakReturnThrow;
+        boolean of = endsInBreak;
+        boolean oe = endsInReturnThrow;
         Tree.Continue olc = lastContinue;
         Tree.Statement olcs = lastContinueStatement;
         //rather nasty way of detecting that the continue
@@ -512,10 +514,14 @@ public class SpecificationVisitor extends Visitor {
         boolean continueInSomeBranchOfCurrentConditional = 
                 lastContinue!=null && 
                 lastContinueStatement==null;
-        boolean blockEndsInBreakReturnThrow = 
-                blockEndsInBreakReturnThrow(that);
-        endsInBreakReturnThrow = endsInBreakReturnThrow || 
-                blockEndsInBreakReturnThrow;
+        boolean blockEndsInReturnThrow = 
+                blockEndsInReturnThrow(that);
+        boolean blockEndsInBreak = 
+                blockEndsInBreak(that);
+        endsInBreak = endsInBreak || 
+                blockEndsInBreak;
+        endsInReturnThrow = endsInReturnThrow || 
+                blockEndsInReturnThrow;
         Tree.Continue last = null;
         Tree.Statement lastStatement = null;
         for (Tree.Statement st: that.getStatements()) {
@@ -530,13 +536,14 @@ public class SpecificationVisitor extends Visitor {
                 olcs = null;
             }
         }
-        if (blockEndsInBreakReturnThrow || 
+        if (blockEndsInReturnThrow || blockEndsInBreak ||
                 continueInSomeBranchOfCurrentConditional) {
             lastContinue = last;
             lastContinueStatement = lastStatement;
         }
         super.visit(that);
-        endsInBreakReturnThrow = oe;
+        endsInBreak = of;
+        endsInReturnThrow = oe;
         lastContinue = olc;
         lastContinueStatement = olcs;
         
@@ -582,13 +589,24 @@ public class SpecificationVisitor extends Visitor {
     
     private boolean initedByEveryConstructor = true;
 
-    private boolean blockEndsInBreakReturnThrow(Tree.Block that) {
+    private boolean blockEndsInBreak(Tree.Block that) {
         int size = that.getStatements().size();
         if (size>0) {
             Tree.Statement s = 
                     that.getStatements().get(size-1);
-            return s instanceof Tree.Break ||
-                    s instanceof Tree.Return ||
+            return s instanceof Tree.Break;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    private boolean blockEndsInReturnThrow(Tree.Block that) {
+        int size = that.getStatements().size();
+        if (size>0) {
+            Tree.Statement s = 
+                    that.getStatements().get(size-1);
+            return s instanceof Tree.Return ||
                     s instanceof Tree.Throw;
         }
         else {
@@ -598,23 +616,29 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ForClause that) {
-        boolean oe = endsInBreakReturnThrow;
+        boolean of = endsInBreak;
+        boolean oe = endsInReturnThrow;
         Tree.Continue olc = lastContinue;
         lastContinue = null;
-        endsInBreakReturnThrow = false;
+        endsInBreak = false;
+        endsInReturnThrow = false;
         super.visit(that);
-        endsInBreakReturnThrow = oe;
+        endsInBreak = of;
+        endsInReturnThrow = oe;
         lastContinue = olc;
     }
     
     @Override
     public void visit(Tree.WhileClause that) {
-        boolean oe = endsInBreakReturnThrow;
+        boolean of = endsInBreak;
+        boolean oe = endsInReturnThrow;
         Tree.Continue olc = lastContinue;
         lastContinue = null;
-        endsInBreakReturnThrow = false;
+        endsInBreak = false;
+        endsInReturnThrow = false;
         super.visit(that);
-        endsInBreakReturnThrow = oe;
+        endsInBreak = of;
+        endsInReturnThrow = oe;
         lastContinue = olc;
     }
     
@@ -731,9 +755,11 @@ public class SpecificationVisitor extends Visitor {
                             " is not yet declared: '" + 
                             member.getName() + "'");
                 }
-                else if (inLoop && constant && 
-                        !(endsInBreakReturnThrow && 
-                                lastContinue==null)) {
+                else if (loopDepth>0 && constant && 
+                        !(endsInReturnThrow && 
+                                lastContinue==null ||
+                          endsInBreak && loopDepth==1 &&
+                          		lastContinue==null)) {
                     if (specified.definitely) {
                         bme.addError(longdesc() + 
                                 " is aready definitely specified: '" + 
@@ -745,6 +771,7 @@ public class SpecificationVisitor extends Visitor {
                                 " is not definitely unspecified in loop: '" + 
                                 member.getName() + "'", 
                                 803);
+                        specify(); //to eliminate dupe error
                     }
                 }
                 else if (withinDeclaration && constant && 
@@ -777,6 +804,7 @@ public class SpecificationVisitor extends Visitor {
                                 " is not definitely unspecified: '" + 
                                 member.getName() + "'", 
                                 803);
+                        specify(); //to eliminate dupe error
                     }
                 }
                 else {
@@ -799,21 +827,23 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Declaration that) {
-        boolean oe = endsInBreakReturnThrow;
+        boolean oe = endsInReturnThrow;
+        boolean of = endsInBreak;
         Tree.Continue olc = lastContinue;
         lastContinue = null;
-        endsInBreakReturnThrow = false;
+        endsInReturnThrow = false;
+        endsInBreak = false;
         if (that.getDeclarationModel()==declaration) {
-            inLoop = false;
+            loopDepth = 0;
             beginDisabledSpecificationScope();
             declare();
             super.visit(that);
             endDisabledSpecificationScope(false);
-            inLoop = false;
+            loopDepth = 0;
         }
         else {
-            boolean l = inLoop;
-            inLoop = false;
+            int l = loopDepth;
+            loopDepth = 0;
             Scope scope = that.getScope();
             boolean constructor = 
                     scope instanceof Constructor;
@@ -840,9 +870,10 @@ public class SpecificationVisitor extends Visitor {
             if (!valueWithInitializer) {
                 endSpecificationScope(as);
             }
-            inLoop = l;
+            loopDepth = l;
         }
-        endsInBreakReturnThrow = oe;
+        endsInReturnThrow = oe;
+        endsInBreak = of;
         lastContinue = olc;
     }
     
@@ -881,16 +912,16 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypedArgument that) {
         if (that.getDeclarationModel()==declaration) {
-            inLoop = false;
+        	loopDepth = 0;
             beginDisabledSpecificationScope();
             super.visit(that);
             declare();
             endDisabledSpecificationScope(false);
-            inLoop = false;
+            loopDepth = 0;
         }
         else {
-            boolean l = inLoop;
-            inLoop = false;
+            int l = loopDepth;
+            loopDepth = 0;
             boolean c = beginDisabledSpecificationScope();
             boolean d = beginDeclarationScope();
             SpecificationState as = 
@@ -899,7 +930,7 @@ public class SpecificationVisitor extends Visitor {
             endDisabledSpecificationScope(c);
             endDeclarationScope(d);
             endSpecificationScope(as);
-            inLoop = l;
+            loopDepth = l;
         }
     }
     
@@ -1537,10 +1568,9 @@ public class SpecificationVisitor extends Visitor {
                 block.visit(this);
             }
             else {
-                boolean c = inLoop;
-                inLoop = true;
+                loopDepth++;
                 block.visit(this);
-                inLoop = c;
+                loopDepth--;
             }
         }
         
@@ -1584,10 +1614,9 @@ public class SpecificationVisitor extends Visitor {
                 forClause.visit(this);
             }
             else {
-                boolean c = inLoop;
-                inLoop = true;
+                loopDepth++;
                 forClause.visit(this);
-                inLoop = c;
+                loopDepth--;
             }
             atLeastOneIteration = isAtLeastOne(forClause);
         }

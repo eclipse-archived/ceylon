@@ -484,7 +484,7 @@ interface DefiniteSpecification {
         catch (Exception e) {
             @error x = X();
         }
-        @error use(x);
+        use(x);
     }
 
     void tryCatch2() {
@@ -518,7 +518,7 @@ interface DefiniteSpecification {
         catch (Exception e) {
             @error x = X();
         }
-        @error use(x);
+        use(x);
     }
 
     void tryCatchCatch2() {
@@ -588,7 +588,7 @@ interface DefiniteSpecification {
         finally {
             @error x = X();
         }
-        @error use(x);
+        use(x);
     }
     
     void switchCase0() {
@@ -789,3 +789,76 @@ shared void run5() {
     }
     print(s);
 }
+
+
+shared void run10() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            @error x = i*10 + j;
+            print(x);
+            break;
+        }
+    } 
+}
+
+shared void run11() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            x = i*10 + j;
+            print(x);
+            return;
+        }
+    } 
+}
+
+void run12() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                @error x = i*10 + j;
+                break;
+            }
+        }
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+void run13() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                @error x = i*10 + j;
+                break;
+            }
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    @error print(x);
+}
+
+//SEE #5948
+//void run14() {
+//    Integer x;
+//    for (i in 0:3) {
+//        for (j in 0:3) {
+//            if (true || false) {
+//                x = i*10 + j;
+//                break;
+//            }
+//        } else {
+//            continue;
+//        }
+//        break;
+//    } else {
+//        x = -1;
+//    }
+//    print(x);
+//}
