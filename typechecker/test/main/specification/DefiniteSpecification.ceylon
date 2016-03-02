@@ -833,7 +833,7 @@ void run13() {
     for (i in 0:3) {
         for (j in 0:3) {
             if (true || false) {
-                @error x = i*10 + j; //NOTE: this error is spurious!
+                x = i*10 + j;
                 break;
             }
         }
@@ -850,7 +850,7 @@ void run14() {
     for (i in 0:3) {
         for (j in 0:3) {
             if (true || false) {
-                @error x = i*10 + j; //NOTE: this error is spurious!
+                x = i*10 + j;
                 break;
             }
         } else {
@@ -868,7 +868,7 @@ void run15() {
     for (i in 0:3) {
         for (j in 0:3) {
             if (true || false) {
-                @error x = i*10 + j; //NOTE: this error is spurious!
+                x = i*10 + j;
                 break;
             }
         } else {
@@ -879,4 +879,104 @@ void run15() {
         x = -1;
     }
     @error print(x);
+}
+
+shared void run20() {
+    Integer x;
+    for (j in 0:3) {
+        x = 10 + j;
+        print(x);
+        //if (1==1) {
+        break;
+        //}
+        //else {
+        //    return;
+        //}
+    }
+    else {
+        x = 0;
+    }
+    print(x);
+}
+
+shared void run21() {
+    Integer x;
+    for (i in 0:3) {
+        for (k in 0:3) {
+            for (j in 0:3) {
+                if (true || false) {
+                    x = i*10 + j;
+                    break;
+                }
+            } else {
+                continue;
+            }
+            break;
+        }
+        else {
+            continue;
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+shared void run22() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                x = i*10 + j;
+                break;
+            }
+        } else {
+            continue;
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+shared void run23() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                @error x = i*10 + j;
+                break;
+            }
+        } else {
+            continue;
+        }
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+shared void run24() {
+    Integer x;
+    for (i in 0:3) {
+        for (k in 0:3) {
+            for (j in 0:3) {
+                if (true || false) {
+                    @error x = i*10 + j;
+                    break;
+                }
+            } else {
+                continue;
+            }
+            break;
+        }
+        else {
+            continue;
+        }
+    } else {
+        x = -1;
+    }
+    print(x);
 }

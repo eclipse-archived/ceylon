@@ -48,6 +48,8 @@ public class SpecificationVisitor extends Visitor {
             new SpecificationState(false, false);
     private boolean withinDeclaration = false;
     private int loopDepth = 0;
+    private int brokenLoopDepth = 0;
+    private boolean allOuterLoopsBreak = true;
     private boolean declared = false;
     private boolean hasParameter = false;
     private Tree.Statement lastExecutableStatement;
@@ -758,8 +760,8 @@ public class SpecificationVisitor extends Visitor {
                 else if (loopDepth>0 && constant && 
                         !(endsInReturnThrow && 
                                 lastContinue==null ||
-                          endsInBreak && loopDepth==1 &&
-                          		lastContinue==null)) {
+                          endsInBreak && allOuterLoopsBreak &&
+                                  lastContinue==null)) {
                     if (specified.definitely) {
                         bme.addError(longdesc() + 
                                 " is aready definitely specified: '" + 
@@ -835,15 +837,19 @@ public class SpecificationVisitor extends Visitor {
         endsInBreak = false;
         if (that.getDeclarationModel()==declaration) {
             loopDepth = 0;
+            brokenLoopDepth = 0;
             beginDisabledSpecificationScope();
             declare();
             super.visit(that);
             endDisabledSpecificationScope(false);
             loopDepth = 0;
+            brokenLoopDepth = 0;
         }
         else {
             int l = loopDepth;
+            int bl = brokenLoopDepth;
             loopDepth = 0;
+            brokenLoopDepth = 0;
             Scope scope = that.getScope();
             boolean constructor = 
                     scope instanceof Constructor;
@@ -871,6 +877,7 @@ public class SpecificationVisitor extends Visitor {
                 endSpecificationScope(as);
             }
             loopDepth = l;
+            brokenLoopDepth = bl;
         }
         endsInReturnThrow = oe;
         endsInBreak = of;
@@ -912,16 +919,20 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypedArgument that) {
         if (that.getDeclarationModel()==declaration) {
-        	loopDepth = 0;
+            loopDepth = 0;
+            brokenLoopDepth = 0;
             beginDisabledSpecificationScope();
             super.visit(that);
             declare();
             endDisabledSpecificationScope(false);
             loopDepth = 0;
+            brokenLoopDepth = 0;
         }
         else {
             int l = loopDepth;
+            int bl = brokenLoopDepth;
             loopDepth = 0;
+            brokenLoopDepth = 0;
             boolean c = beginDisabledSpecificationScope();
             boolean d = beginDeclarationScope();
             SpecificationState as = 
@@ -931,6 +942,7 @@ public class SpecificationVisitor extends Visitor {
             endDeclarationScope(d);
             endSpecificationScope(as);
             loopDepth = l;
+            brokenLoopDepth = bl;
         }
     }
     
@@ -1568,9 +1580,20 @@ public class SpecificationVisitor extends Visitor {
                 block.visit(this);
             }
             else {
+                boolean aolb = allOuterLoopsBreak;
+                allOuterLoopsBreak = 
+                        loopDepth==brokenLoopDepth;
+                boolean broken = blockEndsInBreak(block);
+                if (broken) {
+                    brokenLoopDepth++;
+                }
                 loopDepth++;
                 block.visit(this);
+                if (broken) {
+                    brokenLoopDepth--;
+                }
                 loopDepth--;
+                allOuterLoopsBreak = aolb;
             }
         }
         
@@ -1610,13 +1633,25 @@ public class SpecificationVisitor extends Visitor {
         boolean atLeastOneIteration = false;
         Tree.ForClause forClause = that.getForClause();
         if (forClause!=null) {
-            if (isVariable() || isLate()) {
+            Tree.Block block = forClause.getBlock();
+           if (isVariable() || isLate()) {
                 forClause.visit(this);
             }
             else {
+                boolean aolb = allOuterLoopsBreak;
+                allOuterLoopsBreak = 
+                        loopDepth==brokenLoopDepth;
+                boolean broken = blockEndsInBreak(block);
+                if (broken) {
+                    brokenLoopDepth++;
+                }
                 loopDepth++;
                 forClause.visit(this);
+                if (broken) {
+                    brokenLoopDepth--;
+                }
                 loopDepth--;
+                allOuterLoopsBreak = aolb;
             }
             atLeastOneIteration = isAtLeastOne(forClause);
         }
