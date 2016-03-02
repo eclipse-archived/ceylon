@@ -5925,8 +5925,19 @@ public class ExpressionTransformer extends AbstractTransformer {
             final Tree.ForComprehensionClause fcl = clause;
             Tree.SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
             Type iterType = specexpr.getExpression().getTypeModel();
-            JCExpression iterTypeExpr = makeJavaType(typeFact().getIteratorType(
+            boolean javaIterable = false;
+            JCExpression iterTypeExpr;
+            if (typeFact().getIteratedType(iterType) != null) {
+                iterTypeExpr = makeJavaType(typeFact().getIteratorType(
                     typeFact().getIteratedType(iterType)));
+                javaIterable = false;
+            } else if (typeFact().getJavaIteratedType(iterType) != null) {
+                iterTypeExpr = makeJavaType(typeFact().getJavaIteratorType(
+                        typeFact().getJavaIteratedType(iterType)));
+                javaIterable = true;
+            } else {
+                iterTypeExpr = null;
+            }
             Type iterableType = iterType.getSupertype(typeFact().getIterableDeclaration());
             JCExpression iterableExpr = transformExpression(specexpr.getExpression(), BoxingStrategy.BOXED, iterableType);
             if (clause == comp.getInitialComprehensionClause()) {
@@ -5995,26 +6006,48 @@ public class ExpressionTransformer extends AbstractTransformer {
             //Now the context for this iterator
             ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
     
-            //Assign the next item to an Object variable
-            contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
-                    makeJavaType(typeFact().getObjectType()),
-                    make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
-                            List.<JCExpression>nil())));
-            //Then we check if it's exhausted
-            contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
-                    make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
-            ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
-            if (idx>0) {
-                //Subsequent contexts run once for every iteration of the previous loop
-                //This will reset our previous context by getting a new iterator if the previous loop isn't done
-                innerBody.add(make().Exec(make().Assign(iterVar.makeIdent(), makeNull())));
-            }else{
-                innerBody.add(make().Return(makeBoolean(false)));
+            if (javaIterable) {
+                // Check whether the iterator it exhausted
+                contextBody.add(
+                        make().If(
+                                make().Apply(null,
+                                        naming.makeQualIdent(iterVar.makeIdent(), "hasNext"),
+                                                List.<JCExpression>nil()), 
+                                make().Block(0,
+                                        List.<JCStatement>of(
+                                            make().Exec(make().Assign(itemVar.makeIdent(),
+                                                make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
+                                                        List.<JCExpression>nil()))),
+                                            make().Return(makeBoolean(true)))),
+                                make().Block(0,
+                                        List.<JCStatement>of(
+                                            make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), makeBoolean(true))),
+                                            make().Return(makeBoolean(false))
+                                        ))));
+            } else {
+                //Assign the next item to an Object variable
+                contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
+                        makeJavaType(typeFact().getObjectType()),
+                        make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
+                                List.<JCExpression>nil())));
+                //Then we check if it's exhausted
+                contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
+                        make().Binary(JCTree.EQ, tmpItem.makeIdent(), makeFinished()))));
+                ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
+                if (idx>0) {
+                    //Subsequent contexts run once for every iteration of the previous loop
+                    //This will reset our previous context by getting a new iterator if the previous loop isn't done
+                    innerBody.add(make().Exec(make().Assign(iterVar.makeIdent(), makeNull())));
+                }else{
+                    innerBody.add(make().Return(makeBoolean(false)));
+                }
+                //Assign the next item to the corresponding variables if not exhausted yet
+                contextBody.add(make().If(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
+                    make().Block(0, innerBody.toList()),
+                    make().Block(0, elseBody.toList())));
             }
-            //Assign the next item to the corresponding variables if not exhausted yet
-            contextBody.add(make().If(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
-                make().Block(0, innerBody.toList()),
-                make().Block(0, elseBody.toList())));
+            
+            
             
             List<JCTree.JCStatement> methodBody;
             if (idx>0) {

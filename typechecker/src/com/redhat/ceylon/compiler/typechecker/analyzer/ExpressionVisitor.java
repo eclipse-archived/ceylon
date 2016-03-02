@@ -415,7 +415,7 @@ public class ExpressionVisitor extends Visitor {
                         Type it = e.getTypeModel();
                         if (it!=null) {
                             if (!unit.isIterableType(it) &&
-                                    unit.isJavaIterableType(it)) {
+                                    !unit.isJavaIterableType(it)) {
                                 se.addError("expression is not iterable: '" + 
                                         it.asString(unit) + 
                                         "' is not a subtype of 'Iterable'");

@@ -262,6 +262,24 @@ public class TypeFactory extends Unit {
             return null;
         }
     }
+
+    protected Package getJavaUtilPackage() {
+        return getPackage().getModule().getPackage("java.util");
+    }
+    
+    public Interface getJavaIteratorDeclaration() {
+        Package lang = getJavaUtilPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Interface) lang.getMember("Iterator", null, false);
+        }
+    }
+    
+    public Type getJavaIteratorType(Type iteratedType) {
+        return getJavaIteratorDeclaration().appliedType(null, Collections.singletonList(iteratedType));
+    }
     
     public Interface getJavaIteratorDeclaration() {
         Package lang = getJavaUtilPackage();
