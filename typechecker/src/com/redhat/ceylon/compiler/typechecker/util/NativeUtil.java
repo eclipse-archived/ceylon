@@ -93,11 +93,7 @@ public class NativeUtil {
     }
     
     public static Backends getNative(Tree.Declaration decl) {
-        return getNative(decl.getDeclarationModel());
-    }
-    
-    public static Backends getNative(Declaration decl) {
-        return decl.getNativeBackends();
+        return decl.getDeclarationModel().getNativeBackends();
     }
     
     /**
@@ -113,7 +109,7 @@ public class NativeUtil {
      * meant for the specified backend
      */
     public static boolean isForBackend(Declaration decl, Backend backend) {
-        Backends bs = getNative(decl);
+        Backends bs = decl.getNativeBackends();
         return bs.none() || bs.supports(backend);
     }
     
