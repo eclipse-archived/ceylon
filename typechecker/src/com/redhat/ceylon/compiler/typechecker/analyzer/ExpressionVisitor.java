@@ -4806,9 +4806,39 @@ public class ExpressionVisitor extends Visitor {
             else if (!isTypeUnknown(pt) && 
                      !involvesUnknownTypes(eor)) {
                 if (eor instanceof Tree.Element) {
+                    Type kt = null;
+                    Type vt = null;
                     Interface cd = 
                             unit.getCorrespondenceDeclaration();
                     Type cst = pt.getSupertype(cd);
+                    if (cst != null) {
+                        List<Type> args = 
+                                cst.getTypeArgumentList();
+						kt = args.get(0);
+						vt = args.get(1);
+                    }
+                    if (cst==null) {
+                        Interface ld = 
+                                unit.getJavaListDeclaration();
+                        cst = pt.getSupertype(ld);
+                        if (cst != null) {
+                            List<Type> args = 
+                                    cst.getTypeArgumentList();
+    						kt = unit.getIntegerType();
+    						vt = unit.getOptionalType(args.get(1));
+                        }
+                    }
+                    if (cst==null) {
+                        Interface md = 
+                                unit.getJavaMapDeclaration();
+                        cst = pt.getSupertype(md);
+                        if (cst != null) {
+                            List<Type> args =
+                                    cst.getTypeArgumentList();
+    						kt = args.get(0);
+    						vt = args.get(1);
+                        }
+                    }
                     if (cst==null) {
                         that.getPrimary()
                             .addError("illegal receiving type for index expression: '" +
@@ -4816,10 +4846,6 @@ public class ExpressionVisitor extends Visitor {
                                     "' is not a subtype of 'Correspondence'");
                     }
                     else {
-                        List<Type> args = 
-                                cst.getTypeArgumentList();
-                        Type kt = args.get(0);
-                        Type vt = args.get(1);
                         Tree.Element e = (Tree.Element) eor;
                         Tree.Expression ee = 
                                 e.getExpression();
