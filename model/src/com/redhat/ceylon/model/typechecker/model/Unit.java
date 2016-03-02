@@ -440,14 +440,34 @@ public class Unit {
             return (Interface) lang.getMember("Iterable", null, false);
         }
     }
-
+    
     public Interface getJavaCollectionDeclaration() {
+        Package util = getJavaUtilPackage();
+        if (util==null) {
+            return null;
+        }
+        else {
+            return (Interface) util.getMember("Collection", null, false);
+        }
+    }
+    
+    public Interface getJavaListDeclaration() {
         Package lang = getJavaUtilPackage();
         if (lang==null) {
             return null;
         }
         else {
-            return (Interface) lang.getMember("Collection", null, false);
+            return (Interface) lang.getMember("List", null, false);
+        }
+    }
+    
+    public Interface getJavaMapDeclaration() {
+        Package lang = getJavaUtilPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Interface) lang.getMember("Map", null, false);
         }
     }
 

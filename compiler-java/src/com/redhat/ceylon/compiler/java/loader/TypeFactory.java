@@ -34,6 +34,7 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Package;
 
 public class TypeFactory extends Unit {
     private Context context;
@@ -262,5 +263,17 @@ public class TypeFactory extends Unit {
         }
     }
     
-
+    public Interface getJavaIteratorDeclaration() {
+        Package lang = getJavaUtilPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Interface) lang.getMember("Iterator", null, false);
+        }
+    }
+    
+    public Type getJavaIteratorType(Type iteratedType) {
+        return getJavaIteratorDeclaration().appliedType(null, Collections.singletonList(iteratedType));
+    }
 }

@@ -5126,85 +5126,196 @@ public class ExpressionTransformer extends AbstractTransformer {
         return scope instanceof Interface;
     }
 
-    public JCTree transform(Tree.IndexExpression access) {
-        // depends on the operator
-        Tree.ElementOrRange elementOrRange = access.getElementOrRange();
-        boolean isElement = elementOrRange instanceof Tree.Element;
+    /** 
+     * Abstract method pattern for transforming 
+     * indexed expressions: {@code foo[index]}
+     */
+    abstract class AbstractIndexTransformer {
+        final Type primaryType;
+        final Type rightType;
+        final Type leftType;
+        final Type elementType;
         
-        // let's see what types there are
-        Type leftType = access.getPrimary().getTypeModel();
-        // find the corresponding supertype
-        Interface leftSuperTypeDeclaration;
-        if(isElement)
-            leftSuperTypeDeclaration = typeFact().getCorrespondenceDeclaration();
-        else
-            leftSuperTypeDeclaration = typeFact().getRangedDeclaration();
-        Type leftCorrespondenceOrRangeType = leftType.getSupertype(leftSuperTypeDeclaration);
-        Type rightType = getTypeArgument(leftCorrespondenceOrRangeType, 0);
-        
-        // now find the access code
-        JCExpression safeAccess;
-        
-        if(isElement){
-            // can we use getFromFirst() to avoid boxing the index?
-            boolean listOptim =  
-                    leftType.isSubtypeOf(typeFact().getListDeclaration().appliedType(
-                            null, Collections.singletonList(typeFact().getAnythingType())));
-            
-            Type leftTypeForGetCall = listOptim ? leftType.getSupertype(typeFact().getListDeclaration()) : leftCorrespondenceOrRangeType;
-            
-            Tree.Primary primary = access.getPrimary();
-            JCExpression lhs;
-            boolean isSuper = isSuper(primary);
-            if(isSuper || isSuperOf(primary)){
-                TypeDeclaration leftDeclaration = null;
-                // this is super special: if we use the optim and call super we need to make sure that "getFromFirst" already
-                // has a concrete super implementation
-                if(listOptim){
-                    Declaration member = leftType.getDeclaration().getMember("getFromFirst", null, false);
-                    if(member == null || member.isFormal()){
-                        listOptim = false;
-                    }else{
-                        leftDeclaration = (TypeDeclaration) member.getContainer();
-                    }
-                }
-                // if we did not already find the right supertype, try with "get"
-                if (leftDeclaration == null){
-                    Declaration member = leftType.getDeclaration().getMember("get", null, false);
-                    leftDeclaration = (TypeDeclaration) member.getContainer();
-                }
-                if(isSuper)
-                    lhs = transformSuper(access, leftDeclaration);
-                else
-                    lhs = transformSuperOf(access, access.getPrimary(), listOptim ? "getFromFirst" : "get");
-            }else{
-                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftTypeForGetCall);
+        AbstractIndexTransformer(Tree.IndexExpression access, 
+                Type leftType, 
+                Type rightType, 
+                Type elementType) {
+            this.primaryType = access.getPrimary().getTypeModel();
+            this.leftType = leftType;
+            this.rightType = rightType;
+            this.elementType = elementType;
+        }
+        protected abstract String getGetterName();
+        protected abstract BoxingStrategy getIndexBoxing();
+        protected abstract Type leftTypeForGetCall();
+        protected JCExpression transformPrimary(Tree.IndexExpression indexExpr) {
+            final JCExpression lhs;
+            final String getter = getGetterName();
+            if(isSuper(indexExpr.getPrimary())) {
+                Declaration member = primaryType.getDeclaration().getMember(getter, null, false);
+                TypeDeclaration leftDeclaration = (TypeDeclaration) member.getContainer();
+                lhs = transformSuper(indexExpr, leftDeclaration);
+            } else if (isSuperOf(indexExpr.getPrimary())) {
+                lhs = transformSuperOf(indexExpr, indexExpr.getPrimary(), getter);
+            } else{
+                Type leftTypeForGetCall = leftTypeForGetCall();
+                lhs = transformExpression(indexExpr.getPrimary(), BoxingStrategy.BOXED, leftTypeForGetCall);
             }
-            
-            Tree.Element element = (Tree.Element) elementOrRange;
-            
-            // do the index
-            JCExpression index = transformExpression(element.getExpression(), listOptim ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED, rightType);
-
-            // tmpVar.item(index)
-            safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
-                                          makeSelect(lhs, listOptim ? "getFromFirst" : "get"), List.of(index));
+            return lhs;
+        }
+        
+        public JCTree transform(Tree.IndexExpression indexExpr) {
+            Tree.Element element = (Tree.Element)indexExpr.getElementOrRange();
+            JCExpression primaryExpr = makeSelect(transformPrimary(indexExpr), getGetterName());
+            JCExpression index = transformIndex(element);
+            JCExpression result = at(indexExpr).Apply(List.<JCTree.JCExpression>nil(), 
+                                          primaryExpr, List.of(index));
             // Because tuple index access has the type of the indexed element
             // (not the union of types in the sequential) a typecast may be required.
-            Type sequentialElementType = getTypeArgument(leftCorrespondenceOrRangeType, 1);
-            Type expectedType = access.getTypeModel();
+            Type expectedType = indexExpr.getTypeModel();
             int flags = 0;
-            if(!expectedType.isExactly(sequentialElementType)
+            if(!expectedType.isExactly(elementType)
                     // could be optional too, for regular Correspondence item access
-                    && !expectedType.isExactly(typeFact().getOptionalType(sequentialElementType)))
+                    && !expectedType.isExactly(typeFact().getOptionalType(elementType)))
                 flags |= EXPR_DOWN_CAST;
-            safeAccess = applyErasureAndBoxing(safeAccess, 
-                                               sequentialElementType, 
-                                               CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
+            result = applyErasureAndBoxing(result, 
+                                               elementType, 
+                                               CodegenUtil.hasTypeErased(indexExpr), true, BoxingStrategy.BOXED, 
                                                expectedType, flags);
-        }else{
+            return result;
+        }
+        
+        protected JCExpression transformIndex(Tree.Element element) {
+            // do the index
+            BoxingStrategy indexBs = getIndexBoxing();
+            JCExpression index = transformExpression(element.getExpression(), indexBs, rightType);
+            return index;
+        }
+    }
+
+    class CorrespondenceIndexTransformer extends AbstractIndexTransformer {
+
+        private boolean useGetFromFirst;
+
+        CorrespondenceIndexTransformer(Tree.IndexExpression indexExpr, Type leftType, Type rightType, Type sequentialElementType) {
+            super(indexExpr, leftType, rightType, sequentialElementType);
+            boolean isOnList = primaryType.isSubtypeOf(typeFact().getListDeclaration().appliedType(
+                    null, Collections.singletonList(typeFact().getAnythingType())));
+            Tree.Primary primary = indexExpr.getPrimary();
+            boolean isSuper = isSuper(primary);
+            boolean isOnSuper = isSuper || isSuperOf(primary);
+            if (isOnList) {
+                // can we use getFromFirst() to avoid boxing the index?
+                useGetFromFirst = true;
+                if (isOnSuper) {
+                    // this is super special: if we use the optim and call super we need to make sure that "getFromFirst" already
+                    // has a concrete super implementation
+                    Declaration member = primaryType.getDeclaration().getMember("getFromFirst", null, false);
+                    if(member == null || member.isFormal()){
+                        useGetFromFirst = false;
+                    }
+                }
+            } else {
+                useGetFromFirst = false;
+            }
+        }
+
+        @Override
+        protected String getGetterName() {
+            return useGetFromFirst ? "getFromFirst": "get";
+        }
+
+        @Override
+        protected BoxingStrategy getIndexBoxing() {
+            return useGetFromFirst ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+        }
+
+        @Override
+        protected Type leftTypeForGetCall() {
+            return useGetFromFirst ? primaryType.getSupertype(typeFact().getListDeclaration()) : leftType;
+        }
+    }
+    
+    class JavaListIndexTransformer extends AbstractIndexTransformer {
+
+        JavaListIndexTransformer(Tree.IndexExpression indexExpr, Type leftType, Type rightType, Type sequentialElementType) {
+            super(indexExpr, leftType, rightType, sequentialElementType);
+        }
+
+        @Override
+        protected String getGetterName() {
+            return "get";
+        }
+
+        @Override
+        protected BoxingStrategy getIndexBoxing() {
+            return BoxingStrategy.UNBOXED;
+        }
+
+        @Override
+        protected Type leftTypeForGetCall() {
+            return leftType;
+        }
+    }
+    
+    class JavaMapIndexTransformer extends AbstractIndexTransformer {
+
+        JavaMapIndexTransformer(Tree.IndexExpression indexExpr, Type leftType, Type rightType, Type elementType) {
+            super(indexExpr, leftType, rightType, elementType);
+        }
+
+        @Override
+        protected String getGetterName() {
+            return "get";
+        }
+
+        @Override
+        protected BoxingStrategy getIndexBoxing() {
+            return BoxingStrategy.BOXED;
+        }
+
+        @Override
+        protected Type leftTypeForGetCall() {
+            return leftType;
+        }
+    }
+    
+    public JCTree transform(Tree.IndexExpression indexedExpr) {
+        // depends on the operator
+        Tree.ElementOrRange elementOrRange = indexedExpr.getElementOrRange();
+        if (elementOrRange instanceof Tree.Element) {
+            // foo[index] -- foo could be a Correspondence, Java List or Java Map
+            final AbstractIndexTransformer transformer;
+            final Type primaryType = indexedExpr.getPrimary().getTypeModel();
+            Type leftType = primaryType.getSupertype(typeFact().getCorrespondenceDeclaration());
+            if (leftType != null) {
+                Type rightType = getTypeArgument(leftType, 0);
+                transformer = new CorrespondenceIndexTransformer(indexedExpr, leftType, rightType, getTypeArgument(leftType, 1));
+            } else {
+                leftType = primaryType.getSupertype(typeFact().getJavaListDeclaration());
+                if (leftType != null) {
+                    Type rightType = typeFact().getIntegerType();
+                    rightType.setUnderlyingType("int");
+                    transformer = new JavaListIndexTransformer(indexedExpr, leftType, rightType, getTypeArgument(leftType, 0));
+                } else {
+                    leftType = primaryType.getSupertype(typeFact().getJavaMapDeclaration());
+                    if (leftType != null) {
+                        Type rightType = getTypeArgument(leftType, 0);
+                        transformer = new JavaMapIndexTransformer(indexedExpr, leftType, rightType, getTypeArgument(leftType, 1));
+                    } else {
+                        return makeErroneous(indexedExpr, "Unsupported primary for indexed expression");
+                    }
+                }
+            }
+            return transformer.transform(indexedExpr);
+        } else {
+            // foo[start:end] or foo[start:length]
+            Type primaryType = indexedExpr.getPrimary().getTypeModel();
+            Type leftType = primaryType.getSupertype(typeFact().getRangedDeclaration());
+            Type rightType = getTypeArgument(leftType, 0);
+            Tree.ElementRange range = (Tree.ElementRange) indexedExpr.getElementOrRange();
+            
             // do the indices
-            Tree.ElementRange range = (Tree.ElementRange) elementOrRange;
             JCExpression start = transformExpression(range.getLowerBound(), BoxingStrategy.BOXED, rightType);
 
             // is this a span or segment?
@@ -5234,46 +5345,46 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             JCExpression lhs;
 
-            Tree.Primary primary = access.getPrimary();
+            Tree.Primary primary = indexedExpr.getPrimary();
             boolean isSuper = isSuper(primary);
             if(isSuper || isSuperOf(primary)){
-                Declaration member = leftType.getDeclaration().getMember(method, null, false);
+                Declaration member = primaryType.getDeclaration().getMember(method, null, false);
                 TypeDeclaration leftDeclaration = (TypeDeclaration) member.getContainer();
                 if(isSuper)
-                    lhs = transformSuper(access, leftDeclaration);
+                    lhs = transformSuper(indexedExpr, leftDeclaration);
                 else
-                    lhs = transformSuperOf(access, access.getPrimary(), method);
+                    lhs = transformSuperOf(indexedExpr, indexedExpr.getPrimary(), method);
             }else{
-                lhs = transformExpression(access.getPrimary(), BoxingStrategy.BOXED, leftCorrespondenceOrRangeType);
+                lhs = transformExpression(indexedExpr.getPrimary(), BoxingStrategy.BOXED, leftType);
             }
             
+            JCExpression result;
             // Because tuple open span access has the type of the indexed element
             // (not a sequential of the union of types in the ranged) a typecast may be required.
-            Type rangedSpanType = getTypeArgument(leftCorrespondenceOrRangeType, 2);
-            Type expectedType = access.getTypeModel();
+            Type rangedSpanType = getTypeArgument(leftType, 2);
+            Type expectedType = indexedExpr.getTypeModel();
             int flags = 0;
             if(!expectedType.isExactly(rangedSpanType)){
                 flags |= EXPR_DOWN_CAST;
                 // make sure we barf properly if we missed a heuristics
                 if(method.equals("spanFrom")){
                     // make a "Util.<method>(lhs, start, end)" call
-                    at(access);
-                    safeAccess = utilInvocation().tuple_spanFrom(args.prepend(lhs));
+                    at(indexedExpr);
+                    result = utilInvocation().tuple_spanFrom(args.prepend(lhs));
                 }else{
-                    safeAccess = makeErroneous(access, "compiler bug: only the spanFrom method should be specialised for Tuples");
+                    result = makeErroneous(indexedExpr, "compiler bug: only the spanFrom method should be specialised for Tuples");
                 }
             }else{
                 // make a "lhs.<method>(start, end)" call
-                safeAccess = at(access).Apply(List.<JCTree.JCExpression>nil(), 
+                result = at(indexedExpr).Apply(List.<JCTree.JCExpression>nil(), 
                         makeSelect(lhs, method), args);
             }
-            safeAccess = applyErasureAndBoxing(safeAccess, 
+            result = applyErasureAndBoxing(result, 
                                                rangedSpanType, 
-                                               CodegenUtil.hasTypeErased(access), true, BoxingStrategy.BOXED, 
+                                               CodegenUtil.hasTypeErased(indexedExpr), true, BoxingStrategy.BOXED, 
                                                expectedType, flags);
+            return result;
         }
-
-        return safeAccess;
     }
 
     //
