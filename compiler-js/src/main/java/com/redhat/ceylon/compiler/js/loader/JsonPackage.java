@@ -763,19 +763,21 @@ public class JsonPackage extends com.redhat.ceylon.model.typechecker.model.Packa
                 throw new IllegalStateException(maybe + " should be an TypeAlias");
             }
         }
-        //All interfaces extend Object, except aliases
-        if (alias.getExtendedType() == null) {
-            alias.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"),
-                    parent instanceof Declaration ? (Declaration)parent : null, existing));
-        }
+        //Gather available type parameters
         List<Map<String,Object>> listOfMaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         final List<TypeParameter> tparms;
         if (listOfMaps != null && alias.getTypeParameters().size()<listOfMaps.size()) {
             tparms = parseTypeParameters(listOfMaps, alias, existing);
+            alias.setTypeParameters(tparms);
         } else {
             tparms = alias.getTypeParameters();
         }
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
+        //All interfaces extend Object, except aliases
+        if (alias.getExtendedType() == null) {
+            alias.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"),
+                    parent instanceof Declaration ? (Declaration)parent : null, allparms));
+        }
         if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
             for (TypeParameter _tp : tparms) {
                 if (_tp.getName().equals(m.get(MetamodelGenerator.KEY_SELF_TYPE))) {
