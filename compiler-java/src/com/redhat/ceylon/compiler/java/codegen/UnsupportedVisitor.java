@@ -8,6 +8,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 
 public class UnsupportedVisitor extends Visitor {
@@ -125,6 +126,19 @@ public class UnsupportedVisitor extends Visitor {
             AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true);
         }
         AnnotationUtil.duplicateInteropAnnotation(outputs, annotations);
+    }
+    
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        if (that.getSatisfiedTypes() != null) {
+            for (Tree.StaticType t : that.getSatisfiedTypes().getTypes()) {
+                if (t.getTypeModel() != null 
+                        && JvmBackendUtil.isJavaArray(t.getTypeModel().getDeclaration())) {
+                    t.addError("Type parameter cannot be bounded by a Java array", Backend.Java);
+                }
+            }
+        }
+        super.visit(that);
     }
     
 
