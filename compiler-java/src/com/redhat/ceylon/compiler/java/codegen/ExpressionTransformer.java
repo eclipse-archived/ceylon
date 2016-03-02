@@ -5165,11 +5165,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         public JCTree transform(Tree.IndexExpression indexExpr) {
-            Tree.Element element = (Tree.Element)indexExpr.getElementOrRange();
-            JCExpression primaryExpr = makeSelect(transformPrimary(indexExpr), getGetterName());
-            JCExpression index = transformIndex(element);
-            JCExpression result = at(indexExpr).Apply(List.<JCTree.JCExpression>nil(), 
-                                          primaryExpr, List.of(index));
+            JCExpression result = transformIndexed(indexExpr);
             // Because tuple index access has the type of the indexed element
             // (not the union of types in the sequential) a typecast may be required.
             Type expectedType = indexExpr.getTypeModel();
@@ -5182,6 +5178,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                                                elementType, 
                                                CodegenUtil.hasTypeErased(indexExpr), true, BoxingStrategy.BOXED, 
                                                expectedType, flags);
+            return result;
+        }
+        protected JCExpression transformIndexed(Tree.IndexExpression indexExpr) {
+            JCExpression primaryExpr = makeSelect(transformPrimary(indexExpr), getGetterName());
+            JCExpression index = transformIndex((Tree.Element)indexExpr.getElementOrRange());
+            JCExpression result = at(indexExpr).Apply(List.<JCTree.JCExpression>nil(), 
+                                          primaryExpr, List.of(index));
             return result;
         }
         
@@ -5255,6 +5258,31 @@ public class ExpressionTransformer extends AbstractTransformer {
         @Override
         protected Type leftTypeForGetCall() {
             return leftType;
+        }
+        
+        protected JCExpression transformIndexed(Tree.IndexExpression indexExpr) {
+            
+            JCExpression listExpr = transformPrimary(indexExpr);
+            JCExpression index = transformIndex((Tree.Element)indexExpr.getElementOrRange());
+            
+            SyntheticName listName = naming.temp("list");
+            SyntheticName indexName = naming.temp("index");
+            return at(indexExpr).LetExpr(
+                    List.<JCStatement>of(
+                            makeVar(listName, makeJavaType(leftType), listExpr),
+                            makeVar(indexName, make().Type(syms().intType), index)
+                    ), 
+                    make().Conditional(
+                        make().Binary(JCTree.AND, 
+                                make().Binary(JCTree.GE, indexName.makeIdent(), make().Literal(0)),
+                                make().Binary(JCTree.LT, indexName.makeIdent(), make().Apply(null,  
+                                        naming.makeQualIdent(listName.makeIdent(), "size"),
+                                        List.<JCExpression>nil()))), 
+                        at(indexExpr).Apply(List.<JCTree.JCExpression>nil(), 
+                                makeSelect(listName.makeIdent(), getGetterName()), 
+                                List.<JCExpression>of(indexName.makeIdent())), 
+                        makeNull()));
+            
         }
     }
     

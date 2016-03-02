@@ -7,6 +7,13 @@ final class javaListIndex_ {
     
     static void javaListIndex() {
         final .java.util.List<.ceylon.language.String> l = (.java.util.List<.ceylon.language.String>).ceylon.language.nothing_.get_();
-        final .ceylon.language.String l0 = l.get(.com.redhat.ceylon.compiler.java.Util.toInt(0L));
+        final .ceylon.language.String l0 = (
+            let
+            {
+                .java.util.List<.ceylon.language.String> $ceylontmp$list$0 = l;
+                int $ceylontmp$index$1 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
+            }
+            returning $ceylontmp$index$1 >= 0 && $ceylontmp$index$1 < $ceylontmp$list$0.size() ? $ceylontmp$list$0.get($ceylontmp$index$1) : null;
+        );
     }
 }
