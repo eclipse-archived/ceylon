@@ -672,4 +672,23 @@ interface DefiniteAssignment {
             j = 0;
         }
     }
+    
+    void nestedLoops() {
+        Integer x;
+        for (i in 0:3) {
+            for (j in 0:3) {
+                if (true || false) {
+                    x = i*10 + j;
+                    break;
+                }
+            } else {
+                continue;
+            }
+            break;
+        } else {
+            x = -1;
+        }
+        print(x);
+    }
+
 }
