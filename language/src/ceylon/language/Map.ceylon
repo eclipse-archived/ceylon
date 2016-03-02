@@ -118,13 +118,14 @@ shared interface Map<out Key=Object, out Item=Anything>
      entries in this map change."
     shared actual formal Map<Key,Item> clone();
     
-    "A [[Collection]] containing the keys of this map."
-    shared actual default Collection<Key> keys
-            => object satisfies Collection<Key> {
+    "A [[Set]] containing the keys of this map."
+    shared actual default Set<Key> keys
+            => object extends Object() satisfies Set<Key> {
         contains(Object key) => outer.defines(key);
         iterator() => outer.map(Entry.key).iterator();
-        clone() => [*this];
         size => outer.size;
+        empty => outer.empty;
+        clone() => set(this);
     };
     
     "A [[Collection]] containing the items stored in this 
