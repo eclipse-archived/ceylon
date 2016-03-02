@@ -56,6 +56,21 @@ shared native("js") object baseNativeObject extends NativeBase(4) {
   native("js") Integer natv => 6;
 }
 
+shared native interface NativeInterface {
+  shared native String nat;
+  shared native String nm();
+  shared native String gat => "Global Attribute";
+  shared native String gm() => "Global Method";
+}
+shared native("js") interface NativeInterface {
+  shared native("js") String nat => "JS";
+  shared native("js") String nm() => "JS";
+}
+shared native("jvm") interface NativeInterface {
+  shared native("jvm") String nat => "JVM";
+  shared native("jvm") String nm() => "JVM";
+}
+
 @test
 shared void testNativeClassesAndObjects() {
     try {
@@ -90,4 +105,18 @@ shared void testNativeClassesAndObjects() {
         fail("Something is wrong with native header/implementation (objects)");
         ex.printStackTrace();
     }
+}
+
+@test
+shared void testNativeInterfaces() {
+  value ni = object satisfies NativeInterface{};
+  check(ni.gat=="Global Attribute", "#5820.1");
+  check(ni.gm()=="Global Method", "#5820.2");
+  if (runtime.name=="jvm") {
+    check(ni.nat=="JVM", "#5820.3");
+    check(ni.nm()=="JVM", "#5820.4");
+  } else {
+    check(ni.nat=="JS", "#5820.3");
+    check(ni.nm()=="JS", "#5820.4");
+  }
 }

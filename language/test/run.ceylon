@@ -78,6 +78,7 @@ shared void run() {
     testMetamodelInDefaultModule();
     print("Native extensions");
     testNativeClassesAndObjects();
+    testNativeInterfaces();
     print("Contextual");
     testContextual();
     
