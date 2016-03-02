@@ -288,6 +288,9 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                 case DEP_CHECK_FAILED:
                     msg("error.checkFailed");
                     break;
+                case DEP_TRANSITIVE_ERROR:
+                    msg("error.transitiveError");
+                    break;
                 case DEP_JDK:
                     append("    ").append(dep.getName());
                     if(dep.isExport())
