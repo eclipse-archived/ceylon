@@ -724,7 +724,7 @@ public class ClassFileScanner {
 
 	public void scan(ModuleInfo moduleInfo) throws IOException {
         PathFilter pathFilter = null;
-    	if(moduleInfo.getFilter() != null){
+    	if(moduleInfo != null && moduleInfo.getFilter() != null){
             pathFilter = PathFilterParser.parse(moduleInfo.getFilter());
     	}
 
