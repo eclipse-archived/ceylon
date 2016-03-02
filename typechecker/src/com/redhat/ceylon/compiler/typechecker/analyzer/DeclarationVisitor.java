@@ -237,6 +237,11 @@ public abstract class DeclarationVisitor extends Visitor {
                     that.addError("native header must be defined before its implementations: '" +
                             name + "'");
                 }
+                if (model instanceof Interface
+                        && ((Interface)model).isAlias()) {
+                    that.addError("interface alias can not be native: '" +
+                            name + "' (add a body if a native interface was intended)");
+                }
                 model.setNativeBackends(mbackends);
                 Declaration member = getNativeHeader(model);
                 

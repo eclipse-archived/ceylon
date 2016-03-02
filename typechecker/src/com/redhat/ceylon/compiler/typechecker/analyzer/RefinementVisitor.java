@@ -337,6 +337,9 @@ public class RefinementVisitor extends Visitor {
         if (header == null) {
             return;
         }
+        if (dec.isAlias() || header.isAlias()) {
+            return;
+        }
         if (dec.isShared() && !header.isShared()) {
             that.addError("native header is not shared: " +
                     message(dec));
@@ -500,20 +503,15 @@ public class RefinementVisitor extends Visitor {
         if (header == null) {
             return;
         }
+        if (dec.isAlias() || header.isAlias()) {
+            return;
+        }
         if (dec.isShared() && !header.isShared()) {
             that.addError("native header is not shared: " +
                     message(dec));
         }
         if (!dec.isShared() && header.isShared()) {
             that.addError("native header is shared: " +
-                    message(dec));
-        }
-        if (dec.isAbstract() && !header.isAbstract()) {
-            that.addError("native header is not abstract: " +
-                    message(dec));
-        }
-        if (!dec.isAbstract() && header.isAbstract()) {
-            that.addError("native header is abstract: " +
                     message(dec));
         }
         if (dec.isFinal() && !header.isFinal()) {
