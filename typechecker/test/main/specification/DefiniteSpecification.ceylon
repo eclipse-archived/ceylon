@@ -833,7 +833,7 @@ void run13() {
     for (i in 0:3) {
         for (j in 0:3) {
             if (true || false) {
-                @error x = i*10 + j;
+                @error x = i*10 + j; //NOTE: this error is spurious!
                 break;
             }
         }
@@ -845,20 +845,38 @@ void run13() {
 }
 
 //SEE #5948
-//void run14() {
-//    Integer x;
-//    for (i in 0:3) {
-//        for (j in 0:3) {
-//            if (true || false) {
-//                x = i*10 + j;
-//                break;
-//            }
-//        } else {
-//            continue;
-//        }
-//        break;
-//    } else {
-//        x = -1;
-//    }
-//    print(x);
-//}
+void run14() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                @error x = i*10 + j; //NOTE: this error is spurious!
+                break;
+            }
+        } else {
+            continue;
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+void run15() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                @error x = i*10 + j; //NOTE: this error is spurious!
+                break;
+            }
+        } else {
+            //noop
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    @error print(x);
+}
