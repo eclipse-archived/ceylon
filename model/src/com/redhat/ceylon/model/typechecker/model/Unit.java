@@ -470,6 +470,96 @@ public class Unit {
             return (Interface) lang.getMember("Map", null, false);
         }
     }
+    
+    public Class getJavaObjectArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("ObjectArray", null, false);
+        }
+    }
+    
+    public Class getJavaBooleanArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("BooleanArray", null, false);
+        }
+    }
+    
+    public Class getJavaByteArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("ByteArray", null, false);
+        }
+    }
+    
+    public Class getJavaShortArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("ShortArray", null, false);
+        }
+    }
+    
+    public Class getJavaIntArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("IntArray", null, false);
+        }
+    }
+    
+    public Class getJavaLongArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("LongArray", null, false);
+        }
+    }
+    
+    public Class getJavaFloatArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("FloatArray", null, false);
+        }
+    }
+    
+    public Class getJavaDoubleArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("DoubleArray", null, false);
+        }
+    }
+    
+    public Class getJavaCharArrayDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("CharArray", null, false);
+        }
+    }
 
     public Interface getJavaAutoCloseableDeclaration() {
         Package lang = getJavaLangPackage();

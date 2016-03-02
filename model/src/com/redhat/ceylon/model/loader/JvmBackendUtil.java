@@ -311,19 +311,54 @@ public class JvmBackendUtil {
                         || attr.isSelfCaptured());
     }
 
-    public static boolean isJavaArray(TypeDeclaration decl) {
+    private static String getArrayName(TypeDeclaration decl) {
         if(decl instanceof Class == false)
-            return false;
-        Class c = (Class) decl;
-        String name = c.getQualifiedNameString();
-        return name.equals("java.lang::ObjectArray")
-                || name.equals("java.lang::ByteArray")
-                || name.equals("java.lang::ShortArray")
-                || name.equals("java.lang::IntArray")
-                || name.equals("java.lang::LongArray")
-                || name.equals("java.lang::FloatArray")
-                || name.equals("java.lang::DoubleArray")
-                || name.equals("java.lang::BooleanArray")
-                || name.equals("java.lang::CharArray");
+            return null;
+        return decl.getQualifiedNameString();
+    }
+    
+    public static boolean isJavaArray(TypeDeclaration decl) {
+        String name = getArrayName(decl);
+        return "java.lang::ObjectArray".equals(name)
+                || "java.lang::ByteArray".equals(name)
+                || "java.lang::ShortArray".equals(name)
+                || "java.lang::IntArray".equals(name)
+                || "java.lang::LongArray".equals(name)
+                || "java.lang::FloatArray".equals(name)
+                || "java.lang::DoubleArray".equals(name)
+                || "java.lang::BooleanArray".equals(name)
+                || "java.lang::CharArray".equals(name);
+    }
+    
+    public static boolean isJavaBooleanArray(TypeDeclaration decl) {
+        return "java.lang::BooleanArray".equals(getArrayName(decl));
+    }
+    
+    public static boolean isJavaByteArray(TypeDeclaration decl) {
+        return "java.lang::ByteArray".equals(getArrayName(decl));
+    }
+    
+    public static boolean isJavaShortArray(TypeDeclaration decl) {
+        return "java.lang::ShortArray".equals(getArrayName(decl));
+    }
+    
+    public static boolean isJavaIntArray(TypeDeclaration decl) {
+        return "java.lang::IntArray".equals(getArrayName(decl));
+    }
+    
+    public static boolean isJavaLongArray(TypeDeclaration decl) {
+        return "java.lang::LongArray".equals(getArrayName(decl));
+    }
+    
+    public static boolean isJavaFloatArray(TypeDeclaration decl) {
+        return "java.lang::FloatArray".equals(getArrayName(decl));
+    }
+    
+    public static boolean isJavaDoubleArray(TypeDeclaration decl) {
+        return "java.lang::DoubleArray".equals(getArrayName(decl));
+    }
+    
+    public static boolean isJavaCharArray(TypeDeclaration decl) {
+        return "java.lang::CharArray".equals(getArrayName(decl));
     }
 }

@@ -5308,6 +5308,35 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
+    class JavaArrayIndexTransformer extends AbstractIndexTransformer {
+
+        JavaArrayIndexTransformer(Tree.IndexExpression indexExpr, Type leftType, Type rightType, Type elementType) {
+            super(indexExpr, leftType, rightType, elementType);
+        }
+
+        @Override
+        protected JCExpression transformIndexed(Tree.IndexExpression indexExpr) {
+            JCExpression index = transformIndex((Tree.Element)indexExpr.getElementOrRange());
+            JCExpression result = make().Indexed(transformPrimary(indexExpr), index);
+            return result;
+        }
+        
+        @Override
+        protected String getGetterName() {
+            return null;
+        }
+
+        @Override
+        protected BoxingStrategy getIndexBoxing() {
+            return BoxingStrategy.UNBOXED;
+        }
+
+        @Override
+        protected Type leftTypeForGetCall() {
+            return leftType;
+        }
+    }
+    
     public JCTree transform(Tree.IndexExpression indexedExpr) {
         // depends on the operator
         Tree.ElementOrRange elementOrRange = indexedExpr.getElementOrRange();
@@ -5330,6 +5359,41 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if (leftType != null) {
                         Type rightType = getTypeArgument(leftType, 0);
                         transformer = new JavaMapIndexTransformer(indexedExpr, leftType, rightType, getTypeArgument(leftType, 1));
+                    } else if (isJavaArray(primaryType)) {
+                        Type rightType = typeFact().getIntegerType();
+                        rightType.setUnderlyingType("int");
+                        Type elementType;
+                        if (isJavaObjectArray(primaryType)) {
+                            leftType = primaryType.getSupertype(typeFact().getJavaObjectArrayDeclaration());
+                            elementType = getTypeArgument(leftType, 0);
+                        } else if (JvmBackendUtil.isJavaBooleanArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaBooleanArrayDeclaration().getType();
+                            elementType = typeFact().getBooleanType();
+                        } else if (JvmBackendUtil.isJavaByteArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaByteArrayDeclaration().getType();
+                            elementType = typeFact().getByteType();
+                        } else if (JvmBackendUtil.isJavaShortArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaShortArrayDeclaration().getType();
+                            elementType = typeFact().getIntegerType();
+                        } else if (JvmBackendUtil.isJavaIntArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaIntArrayDeclaration().getType();
+                            elementType = typeFact().getIntegerType();
+                        } else if (JvmBackendUtil.isJavaLongArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaLongArrayDeclaration().getType();
+                            elementType = typeFact().getIntegerType();
+                        } else if (JvmBackendUtil.isJavaFloatArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaFloatArrayDeclaration().getType();
+                            elementType = typeFact().getFloatType();
+                        } else if (JvmBackendUtil.isJavaDoubleArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaDoubleArrayDeclaration().getType();
+                            elementType = typeFact().getFloatType();
+                        } else if (JvmBackendUtil.isJavaCharArray(primaryType.getDeclaration())) {
+                            leftType = typeFact().getJavaCharArrayDeclaration().getType();
+                            elementType = typeFact().getCharacterType();
+                        } else {
+                            return makeErroneous(indexedExpr, "Unsupported primary for indexed expression");
+                        }
+                        transformer = new JavaArrayIndexTransformer(indexedExpr, leftType, rightType, elementType);
                     } else {
                         return makeErroneous(indexedExpr, "Unsupported primary for indexed expression");
                     }
