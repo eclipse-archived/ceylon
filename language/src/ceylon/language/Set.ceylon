@@ -117,7 +117,7 @@ shared interface Set<out Element=Object>
     Set<Element&Other> intersection<Other>(Set<Other> set)
             given Other satisfies Object
             => package.set(filter((e) => e in set)
-        .narrow<Other>());
+                    .narrow<Other>());
     
     "Returns a new `Set` containing all the elements in this 
      set that are not contained in the given `Set`.
