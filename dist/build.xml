@@ -820,7 +820,7 @@ Use this when NOT doing a release!">
     </target>
 
     <target name="git-update">
-        <echo>Updating ceylon-dist:</echo>
+        <echo>Updating ceylon:</echo>
         <exec executable="git" failonerror="no">
             <arg value="pull"/>
             <arg value="--rebase"/>
