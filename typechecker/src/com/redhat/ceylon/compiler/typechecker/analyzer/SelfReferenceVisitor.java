@@ -458,8 +458,8 @@ public class SelfReferenceVisitor extends Visitor {
         	}
         }
         if (typeDeclaration.isObjectClass() && 
-                mayNotLeakAnonymousClass() && t 
-        		instanceof Tree.QualifiedMemberExpression) {
+                mayNotLeakAnonymousClass() && 
+                t instanceof Tree.QualifiedMemberExpression) {
         	Tree.QualifiedMemberExpression qme = 
         	        (Tree.QualifiedMemberExpression) t;
         	if (qme.getPrimary() instanceof Tree.Outer) {
@@ -597,6 +597,35 @@ public class SelfReferenceVisitor extends Visitor {
         if ( inBody() && !(that instanceof Tree.OfOp) ) {
             checkSelfReference(that, that.getTerm());
         }
+    }
+    
+    @Override
+    public void visit(Tree.IndexExpression that) {
+    	super.visit(that);
+    	if ( inBody() ) {
+    		checkSelfReference(that, that.getPrimary());
+    	}
+    	
+    }
+
+    @Override
+    public void visit(Tree.Element that) {
+    	super.visit(that);
+    	if ( inBody() ) {
+    		checkSelfReference(that, that.getExpression());
+    	}
+    	
+    }
+
+    @Override
+    public void visit(Tree.ElementRange that) {
+    	super.visit(that);
+    	if ( inBody() ) {
+    		checkSelfReference(that, that.getLowerBound());
+    		checkSelfReference(that, that.getUpperBound());
+    		checkSelfReference(that, that.getLength());
+    	}
+    	
     }
 
     @Override
