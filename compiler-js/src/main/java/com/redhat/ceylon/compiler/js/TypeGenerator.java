@@ -56,7 +56,12 @@ public class TypeGenerator {
         } else if (type instanceof Tree.InterfaceDefinition) {
             satisfiedTypes = ((Tree.InterfaceDefinition) type).getSatisfiedTypes();
             decl = ((Tree.InterfaceDefinition) type).getDeclarationModel();
-            stmts = ((Tree.InterfaceDefinition) type).getInterfaceBody().getStatements();
+            final Tree.InterfaceDefinition idef = (Tree.InterfaceDefinition)type;
+            Tree.Declaration nh = gen.getNativeHeader(decl);
+            if (nh == null && NativeUtil.hasNativeMembers(decl)) {
+                nh = idef;
+            }
+            stmts = NativeUtil.mergeStatements(idef.getInterfaceBody(), nh, Backend.JavaScript);
         } else if (type instanceof Tree.ObjectDefinition) {
             Tree.ObjectDefinition objectDef = (Tree.ObjectDefinition) type;
             extendedType = objectDef.getExtendedType();
@@ -293,6 +298,16 @@ public class TypeGenerator {
         final Interface d = that.getDeclarationModel();
         //If it's inside a dynamic interface, don't generate anything
         if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
+        final Interface natd = (Interface)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
+        final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
+        if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {
+            // It's a native header, remember it for later when we deal with its implementation
+            gen.saveNativeHeader(that);
+            return;
+        }
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || headerWithoutBackend)) {
+            return;
+        }
         gen.comment(that);
 
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
@@ -316,7 +331,17 @@ public class TypeGenerator {
                     gen.getNames().name(d), ")");
             gen.endLine(true);
         }
-        that.getInterfaceBody().visit(gen);
+        final List<Tree.Statement> stmts;
+        if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
+            Tree.Declaration nh = gen.getNativeHeader(d);
+            if (nh == null && NativeUtil.hasNativeMembers(d)) {
+                nh = that;
+            }
+            stmts = NativeUtil.mergeStatements(that.getInterfaceBody(), nh, Backend.JavaScript);
+        } else {
+            stmts = that.getInterfaceBody().getStatements();
+        }
+        gen.visitStatements(stmts);
         //returnSelf(d);
         gen.endBlockNewLine();
         if (d.isDynamic()) {
