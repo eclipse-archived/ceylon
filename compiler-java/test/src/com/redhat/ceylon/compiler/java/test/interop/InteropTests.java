@@ -683,6 +683,11 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopJavaArrayIndex(){
+        compareWithJavaSource("JavaArrayIndex");
+    }
+    
+    @Test
     public void testIopJavaCollectionWithInOp(){
         compareWithJavaSource("JavaCollectionWithInOp");
     }

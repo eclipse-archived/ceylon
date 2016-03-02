@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class javaArrayIndex_ {
+    
+    private javaArrayIndex_() {
+    }
+    
+    static void javaArrayIndex() {
+        final .ceylon.language.String r0 = ((.ceylon.language.String[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final .ceylon.language.String r1 = ((.ceylon.language.String[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final boolean b0 = ((boolean[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final byte o0 = ((byte[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final long s0 = ((short[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final long i0 = ((int[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final long l0 = ((long[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final double f0 = ((float[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final double d0 = ((double[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final int c0 = ((char[]).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+    }
+}
