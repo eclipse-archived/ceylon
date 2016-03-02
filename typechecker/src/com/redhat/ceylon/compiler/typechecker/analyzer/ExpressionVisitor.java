@@ -4825,7 +4825,7 @@ public class ExpressionVisitor extends Visitor {
                             List<Type> args = 
                                     cst.getTypeArgumentList();
     						kt = unit.getIntegerType();
-    						vt = unit.getOptionalType(args.get(1));
+    						vt = unit.getOptionalType(args.get(0));
                         }
                     }
                     if (cst==null) {
