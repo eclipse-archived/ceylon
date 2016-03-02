@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class javaListIndex_ {
+    
+    private javaListIndex_() {
+    }
+    
+    static void javaListIndex() {
+        final .java.util.List<.ceylon.language.String> l = (.java.util.List<.ceylon.language.String>).ceylon.language.nothing_.get_();
+        final .ceylon.language.String l0 = l.get(.com.redhat.ceylon.compiler.java.Util.toInt(0L));
+    }
+}

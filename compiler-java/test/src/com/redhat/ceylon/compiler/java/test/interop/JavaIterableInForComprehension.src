@@ -1,0 +1,246 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class javaIterableInForComprehension_ {
+    
+    private javaIterableInForComprehension_() {
+    }
+    
+    static void javaIterableInForComprehension() {
+        final .java.lang.Iterable<.ceylon.language.String> strings = (.java.lang.Iterable<.ceylon.language.String>).ceylon.language.nothing_.get_();
+        final .java.lang.Iterable<.ceylon.language.Integer> ints = (.java.lang.Iterable<.ceylon.language.Integer>).ceylon.language.nothing_.get_();
+        final .java.lang.Iterable<.java.lang.String> jstrings = (.java.lang.Iterable<.java.lang.String>).ceylon.language.nothing_.get_();
+        final .java.lang.Iterable<.java.lang.Integer> jints = (.java.lang.Iterable<.java.lang.Integer>).ceylon.language.nothing_.get_();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> c1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = strings.iterator();
+                    }
+                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String s;
+                    private boolean s$exhausted$;
+                    
+                    private final boolean s() {
+                        if ($iterator$0.hasNext()) {
+                            s = $iterator$0.next();
+                            return true;
+                        } else {
+                            s$exhausted$ = true;
+                            return false;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.s()) {
+                            final .ceylon.language.String s = this.s;
+                            return .ceylon.language.Integer.instance(s.hashCode());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = strings.iterator();
+                    }
+                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String s;
+                    private boolean s$exhausted$;
+                    
+                    private final boolean s() {
+                        if ($iterator$0.hasNext()) {
+                            s = $iterator$0.next();
+                            return true;
+                        } else {
+                            s$exhausted$ = true;
+                            return false;
+                        }
+                    }
+                    private .java.util.Iterator<.ceylon.language.Integer> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if (s$exhausted$) return false;
+                        if ($iterator$1 != null) return true;
+                        if (!this.s()) return false;
+                        final .ceylon.language.String s = this.s;
+                        $iterator$1 = ints.iterator();
+                        return true;
+                    }
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        while (this.$iterator$1()) {
+                            if ($iterator$1.hasNext()) {
+                                i = $iterator$1.next();
+                                return true;
+                            } else {
+                                i$exhausted$ = true;
+                                return false;
+                            }
+                        }
+                        if (s$exhausted$) i$exhausted$ = true;
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            final .ceylon.language.String s = this.s;
+                            return .ceylon.language.Integer.instance(s.hashCode() + i.longValue());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> c3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = strings.iterator();
+                    }
+                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String s;
+                    private boolean s$exhausted$;
+                    
+                    private final boolean s() {
+                        if ($iterator$0.hasNext()) {
+                            s = $iterator$0.next();
+                            return true;
+                        } else {
+                            s$exhausted$ = true;
+                            return false;
+                        }
+                    }
+                    private .ceylon.language.Iterator<? extends .ceylon.language.Character> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if (s$exhausted$) return false;
+                        if ($iterator$1 != null) return true;
+                        if (!this.s()) return false;
+                        final .ceylon.language.String s = this.s;
+                        $iterator$1 = s.iterator();
+                        return true;
+                    }
+                    private .ceylon.language.Character c;
+                    private boolean c$exhausted$;
+                    
+                    private final boolean c() {
+                        while (this.$iterator$1()) {
+                            final .java.lang.Object $ceylontmp$item$4 = $iterator$1.next();
+                            c$exhausted$ = $ceylontmp$item$4 == .ceylon.language.finished_.get_();
+                            if (c$exhausted$) {
+                                $iterator$1 = null;
+                            } else {
+                                c = (.ceylon.language.Character)$ceylontmp$item$4;
+                                return true;
+                            }
+                        }
+                        if (s$exhausted$) c$exhausted$ = true;
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.c()) {
+                            final .ceylon.language.Character c = this.c;
+                            final .ceylon.language.String s = this.s;
+                            return .ceylon.language.Integer.instance(s.hashCode() + c.hashCode());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> c4 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = jstrings.iterator();
+                    }
+                    private final .java.util.Iterator<.java.lang.String> $iterator$0;
+                    private .java.lang.String s;
+                    private boolean s$exhausted$;
+                    
+                    private final boolean s() {
+                        if ($iterator$0.hasNext()) {
+                            s = $iterator$0.next();
+                            return true;
+                        } else {
+                            s$exhausted$ = true;
+                            return false;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.s()) {
+                            final .java.lang.String s = this.s;
+                            return .ceylon.language.Integer.instance(s.hashCode());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> c5 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = jstrings.iterator();
+                    }
+                    private final .java.util.Iterator<.java.lang.String> $iterator$0;
+                    private .java.lang.String s;
+                    private boolean s$exhausted$;
+                    
+                    private final boolean s() {
+                        if ($iterator$0.hasNext()) {
+                            s = $iterator$0.next();
+                            return true;
+                        } else {
+                            s$exhausted$ = true;
+                            return false;
+                        }
+                    }
+                    private .java.util.Iterator<.java.lang.Integer> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if (s$exhausted$) return false;
+                        if ($iterator$1 != null) return true;
+                        if (!this.s()) return false;
+                        final .java.lang.String s = this.s;
+                        $iterator$1 = jints.iterator();
+                        return true;
+                    }
+                    private .java.lang.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        while (this.$iterator$1()) {
+                            if ($iterator$1.hasNext()) {
+                                i = $iterator$1.next();
+                                return true;
+                            } else {
+                                i$exhausted$ = true;
+                                return false;
+                            }
+                        }
+                        if (s$exhausted$) i$exhausted$ = true;
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .java.lang.Integer i = this.i;
+                            final .java.lang.String s = this.s;
+                            return .ceylon.language.Integer.instance(s.hashCode() + (long)i.intValue());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+}

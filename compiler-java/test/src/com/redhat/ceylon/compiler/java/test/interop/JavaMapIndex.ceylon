@@ -21,7 +21,7 @@ import java.util{
     JMap=Map}
 
 @noanno
-void javaCollectionWithInOp() {
+void javaMapIndex() {
     JMap<Integer,String> m = nothing;
     String? m0 = m[0];
 }
