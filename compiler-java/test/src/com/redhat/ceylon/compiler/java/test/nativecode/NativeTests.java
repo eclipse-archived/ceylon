@@ -596,4 +596,12 @@ public class NativeTests extends CompilerTests {
         );
     }
     
+    @Test
+    public void testNativeAliasError() {
+        testNativeErrors("NativeAliasError",
+                new CompilerError(20, "interface alias can not be native: 'NativeAliasError1' (add a body if a native interface was intended)"),
+                new CompilerError(25, "interface alias can not be native: 'NativeAliasError2' (add a body if a native interface was intended)")
+        );
+    }
+    
 }
