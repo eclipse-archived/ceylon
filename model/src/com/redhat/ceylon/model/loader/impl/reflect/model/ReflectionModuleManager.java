@@ -55,11 +55,15 @@ public abstract class ReflectionModuleManager extends LazyModuleManager {
     @Override
     public void prepareForTypeChecking() {
         // make sure we don't load ceylon.language from its class files if we're documenting it
-        if(!isModuleLoadedFromSource(AbstractModelLoader.CEYLON_LANGUAGE))
+        if(!isModuleLoadedFromSource(AbstractModelLoader.CEYLON_LANGUAGE)){
+            loadStaticMetamodel();
             getModelLoader().loadStandardModules();
+        }
         getModelLoader().loadPackageDescriptors();
     }
     
+    protected void loadStaticMetamodel() {}
+
     @Override
     public void modulesVisited() {
         // if we're documenting ceylon.language, we didn't call loadStandardModules() so we need

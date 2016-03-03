@@ -3,15 +3,12 @@ package com.redhat.ceylon.tools.jigsaw;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
-import java.util.zip.ZipException;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.common.Messages;
@@ -23,8 +20,8 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
-import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Tools to interop with Java 9 (Jigsaw) modules")
@@ -40,6 +37,7 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
 
     private String moduleNameOptVersion;
     private boolean force;
+    private boolean staticMetamodel;
     private Mode mode;
 	private File out = new File("mlib");
     private final List<String> excludedModules = new ArrayList<>();
@@ -95,6 +93,12 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
         this.force = force;
     }
 
+    @Option(longName="static-metamodel")
+    @Description("Generate a static metamodel descriptor (default: `false`).")
+    public void setStaticMetamodel(boolean staticMetamodel) {
+        this.staticMetamodel = staticMetamodel;
+    }
+
     @Override
     public void run() throws Exception {
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
@@ -119,6 +123,7 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
     	        throw new ToolUsageError(Messages.msg(bundle, "jigsaw.folder.error", out));
         	}
         }
+        List<ArtifactResult> staticMetamodelEntries = new ArrayList<>(this.loadedModules.size());
         for(ArtifactResult entry : this.loadedModules.values()){
             // since we even add missing modules there to avoid seeing them twice, let's skip them now
             if(entry == null)
@@ -132,14 +137,19 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
                 continue;
             append(file.getAbsolutePath());
             newline();
+            staticMetamodelEntries.add(entry);
             
             String name = file.getName();
             if(name.endsWith(".car"))
             	name = name.substring(0, name.length()-4) + ".jar";
 			Files.copy(file.toPath(), new File(out, name).toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
+        if(staticMetamodel){
+        	JvmBackendUtil.writeStaticMetamodel(out, staticMetamodelEntries, jdkProvider);
+        }
         flush();
     }
+
 
     @Override
     protected boolean shouldExclude(String moduleName, String version) {

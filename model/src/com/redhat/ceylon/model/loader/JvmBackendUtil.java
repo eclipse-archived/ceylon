@@ -2,18 +2,35 @@ package com.redhat.ceylon.model.loader;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.cmr.Repository;
+import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.cmr.VisibilityType;
 import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
@@ -378,5 +395,274 @@ public class JvmBackendUtil {
         return path.toLowerCase().endsWith(".class")
                 // skip Java 9 module descriptors
                 && !path.equals("module-info.class");
+    }
+
+    public static void writeStaticMetamodel(File outputFolder, List<ArtifactResult> entries, JdkProvider jdkProvider) throws IOException {
+        File meta = new File(outputFolder, "META-INF/ceylon");
+        meta.mkdirs();
+        File metamodel = new File(meta, "metamodel");
+        try(FileWriter ret = new FileWriter(metamodel)){
+        
+            if(jdkProvider.isAlternateJdk()){
+                for (String jdkModule : jdkProvider.getJDKModuleNames()) {
+                    ret.write("="+jdkModule+"/"+jdkProvider.getJDKVersion()+"\n");
+                    for (String pkg : jdkProvider.getJDKPackages(jdkModule)) {
+                        ret.write("@"+pkg+"\n");
+                    }
+                }
+            }
+            
+            for(ArtifactResult entry : entries){
+                writeStaticMetamodel(ret, entry, jdkProvider);
+            }
+            ret.flush();
+        }
+    }
+
+    private static void writeStaticMetamodel(FileWriter metamodelOs, ArtifactResult entry, JdkProvider jdkProvider) throws IOException {
+        metamodelOs.write("="+entry.name()+"/"+entry.version()+"\n");
+        for (ArtifactResult dep : entry.dependencies()) {
+            switch(dep.importType()){
+            case EXPORT:
+                metamodelOs.write("+");
+                break;
+            case OPTIONAL:
+                metamodelOs.write("?");
+                break;
+            }
+            metamodelOs.write(dep.name()+"/"+dep.version()+"\n");
+        }
+        listPackages(metamodelOs, entry.name(), entry.artifact(), jdkProvider);
+    }
+
+    private static void listPackages(FileWriter metamodelOs, String name, File artifact, JdkProvider jdkProvider) throws ZipException, IOException {
+        List<String> jdkPackageList = null;
+        if(name.equals(jdkProvider.getJdkContainerModuleName())){
+            jdkPackageList = jdkProvider.getJDKPackageList();
+        }
+        Set<String> packages = JvmBackendUtil.listPackages(artifact, null);
+        for (String pkg : packages) {
+            if(jdkPackageList != null && jdkPackageList.contains(pkg))
+                continue;
+            metamodelOs.write("@"+pkg+"\n");
+        }
+    }
+
+    public static void loadStaticMetamodel(InputStream is, List<String> dexEntries, StaticMetamodelLoader staticMetamodelLoader) {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+            String line;
+            ModuleSpec module = null;
+            SortedSet<String> packages = new TreeSet<>();
+            List<ArtifactResult> imports = new LinkedList<ArtifactResult>();
+            while((line = reader.readLine()) != null){
+                if(line.startsWith("=")){
+                    if(module != null)
+                        finishLoadingModule(module, packages, imports, dexEntries, staticMetamodelLoader);
+                    module = ModuleSpec.parse(line.substring(1));
+                    packages.clear();
+                    imports.clear();
+                    continue;
+                }
+                boolean _optional = false;
+                boolean _shared = false;
+                if(line.startsWith("?")){
+                    _optional = true;
+                    line = line.substring(1);
+                }
+                if(line.startsWith("+")){
+                    _shared = true;
+                    line = line.substring(1);
+                }
+                // SERIOUSLY!!
+                final boolean optional = _optional;
+                final boolean shared = _shared;
+                if(line.startsWith("@")){
+                    packages.add(line.substring(1));
+                    continue;
+                }
+                // it's an import
+                final ModuleSpec importSpec = ModuleSpec.parse(line);
+                imports.add(new ArtifactResult(){
+                    @Override
+                    public String name() {
+                        return importSpec.getName();
+                    }
+
+                    @Override
+                    public String version() {
+                        return importSpec.getVersion();
+                    }
+
+                    @Override
+                    public ImportType importType() {
+                        return shared ? ImportType.EXPORT : (optional ? ImportType.OPTIONAL : ImportType.UNDEFINED);
+                    }
+
+                    @Override
+                    public ArtifactResultType type() {
+                        // Is this important?
+                        return ArtifactResultType.OTHER;
+                    }
+
+                    @Override
+                    public VisibilityType visibilityType() {
+                        return VisibilityType.STRICT;
+                    }
+
+                    @Override
+                    public File artifact() throws RepositoryException {
+                        return null;
+                    }
+
+                    @Override
+                    public PathFilter filter() {
+                        return null;
+                    }
+
+                    @Override
+                    public List<ArtifactResult> dependencies() throws RepositoryException {
+                        return null;
+                    }
+
+                    @Override
+                    public String repositoryDisplayString() {
+                        return "Android dependency";
+                    }
+
+                    @Override
+                    public Repository repository() {
+                        return null;
+                    }
+                    
+                });
+            }
+            if(module != null)
+                finishLoadingModule(module, packages, imports, dexEntries, staticMetamodelLoader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void finishLoadingModule(final ModuleSpec module, 
+            final SortedSet<String> packages, 
+            final List<ArtifactResult> dependencies, 
+            final List<String> dexEntries, 
+            StaticMetamodelLoader staticMetamodelLoader) {
+        
+        ArtifactResult artifact = new ContentAwareArtifactResult() {
+            
+            @Override
+            public VisibilityType visibilityType() {
+                return VisibilityType.STRICT;
+            }
+            
+            @Override
+            public String version() {
+                return module.getVersion();
+            }
+            
+            @Override
+            public ArtifactResultType type() {
+                return ArtifactResultType.OTHER;
+            }
+            
+            @Override
+            public String repositoryDisplayString() {
+                return "Android repo";
+            }
+            
+            @Override
+            public Repository repository() {
+                return null;
+            }
+            
+            @Override
+            public String name() {
+                return module.getName();
+            }
+            
+            @Override
+            public ImportType importType() {
+                return ImportType.UNDEFINED;
+            }
+            
+            @Override
+            public PathFilter filter() {
+                return null;
+            }
+            
+            @Override
+            public List<ArtifactResult> dependencies() throws RepositoryException {
+                return dependencies;
+            }
+            
+            @Override
+            public File artifact() throws RepositoryException {
+                return null;
+            }
+            
+            @Override
+            public Collection<String> getPackages() {
+                return packages;
+            }
+            
+            @Override
+            public List<String> getFileNames(String path) {
+                return getAndroidFileNames(path);
+            }
+            
+            private List<String> getAndroidFileNames(String path) {
+                path = path+"/";
+                List<String> ret = new LinkedList<>();
+                for(String entry : dexEntries){
+                    if(entry.startsWith(path)){
+                        String part = entry.substring(path.length());
+                        // no folders and no subfolders
+                        if(!part.isEmpty() && part.indexOf('/') == -1)
+                            ret.add(entry);
+                    }
+                }
+                return ret;
+            }
+
+            @Override
+            public Collection<String> getEntries() {
+                return getAndroidEntries();
+            }
+            
+            private Collection<String> getAndroidEntries() {
+                List<String> ret = new LinkedList<>();
+                for(String entry : dexEntries){
+                    for (String pkg : packages) {
+                        String path = pkg.replace('.', '/')+"/";
+                        if(entry.startsWith(path)){
+                            ret.add(entry);
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+
+            @Override
+            public byte[] getContents(String path) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public URI getContentUri(String path) {
+                try {
+                    return getClass().getClassLoader().getResource(path).toURI();
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        staticMetamodelLoader.loadModule(module.getName(), module.getVersion(), artifact);
+    }
+
+    public static InputStream getStaticMetamodelInputStream(java.lang.Class<?> fromClass) {
+        return fromClass.getResourceAsStream("/META-INF/ceylon/metamodel");
     }
 }
