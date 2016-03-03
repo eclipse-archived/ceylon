@@ -6679,8 +6679,8 @@ public class ExpressionVisitor extends Visitor {
                                 primary;
                     Tree.Primary pp = qmte.getPrimary();
                     if (!(pp instanceof Tree.BaseTypeExpression) &&
-                            !(pp instanceof Tree.QualifiedTypeExpression) &&
-                            !(pp instanceof Tree.Package)) {
+                        !(pp instanceof Tree.QualifiedTypeExpression) &&
+                        !(pp instanceof Tree.Package)) {
                         pp.addError("non-static type expression qualifies static member reference");   
                     }
                 }
@@ -6740,8 +6740,7 @@ public class ExpressionVisitor extends Visitor {
         if (acceptsTypeArguments(member, null, typeArgs, 
                 tal, that)) {
             Scope scope = that.getScope();
-            Type outerType = 
-                    scope.getDeclaringType(member);
+            Type outerType = scope.getDeclaringType(member);
             if (outerType==null) {
                 outerType = receivingType;
             }
