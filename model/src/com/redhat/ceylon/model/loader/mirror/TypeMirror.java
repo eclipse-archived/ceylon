@@ -2,8 +2,6 @@ package com.redhat.ceylon.model.loader.mirror;
 
 import java.util.List;
 
-import javax.lang.model.type.TypeKind;
-
 /**
  * Represents a generic type.
  *

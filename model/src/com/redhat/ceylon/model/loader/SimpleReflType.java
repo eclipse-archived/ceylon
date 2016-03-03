@@ -3,9 +3,8 @@ package com.redhat.ceylon.model.loader;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.lang.model.type.TypeKind;
-
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeKind;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 
