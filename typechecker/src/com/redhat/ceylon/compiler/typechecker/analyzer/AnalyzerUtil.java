@@ -389,13 +389,21 @@ public class AnalyzerUtil {
     static String typingMessage(Type type, 
             String problem, Type otherType, 
             Unit unit) {
+        Set<TypeDeclaration> declarations = 
+                new HashSet<TypeDeclaration>();
+        type.collectDeclarations(declarations);
+        otherType.collectDeclarations(declarations);
+        Set<String> names = new HashSet<String>();
+        for (TypeDeclaration td: declarations) {
+            names.add(td.getName(unit));
+        }
         String unknownTypeError = 
                 type.getFirstUnknownTypeError(true);
-        String typeName = type.asString(unit);
-        String otherTypeName = otherType.asString(unit);
+        String typeName;
+        String otherTypeName;
         String expandedTypeName;
         String expandedOtherTypeName;
-        if (otherTypeName.equals(typeName)) {
+        if (names.size()<declarations.size()) {
             typeName = type.asQualifiedString();
             otherTypeName = otherType.asQualifiedString();
             expandedTypeName = 
@@ -406,6 +414,8 @@ public class AnalyzerUtil {
                         .asQualifiedString();
         }
         else {
+            typeName = type.asString(unit);
+            otherTypeName = otherType.asString(unit);
             expandedTypeName = 
                     type.resolveAliases()
                         .asString(unit);

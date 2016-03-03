@@ -4414,5 +4414,28 @@ public class Type extends Reference {
             return super.getFullType(wrappedType);
 //        }
     }
+    
+    public void collectDeclarations(Collection<TypeDeclaration> results) {
+        TypeDeclaration d = getDeclaration();
+        if (d instanceof UnknownType) {
+            //noop
+        }
+        else if (d instanceof UnionType) {
+            for (Type t: d.getCaseTypes()) { 
+                t.collectDeclarations(results);
+            }
+        }
+        else if (d instanceof IntersectionType) {
+            for (Type t: d.getSatisfiedTypes()) { 
+                t.collectDeclarations(results);
+            }
+        }
+        else {
+            results.add(d);
+            for (Type t: getTypeArgumentList()) {
+                t.collectDeclarations(results);
+            }
+        }
+    }
 
 }
