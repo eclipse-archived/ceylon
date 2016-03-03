@@ -12,7 +12,7 @@ public abstract class EnumUtil {
         } catch (IllegalArgumentException e) {
             StringBuffer sb = new StringBuffer();
             for (String n : possibilities(enumClass)) {
-                sb.append("'").append(n).append("', ");
+                sb.append("'").append(n.replace('_', '-')).append("', ");
             }
             sb.setLength(sb.length() - 2);
             throw new IllegalArgumentException(ToolMessages.msg(
