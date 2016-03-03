@@ -1,9 +1,17 @@
 package com.redhat.ceylon.tools.jigsaw;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.zip.ZipException;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.common.Messages;
@@ -34,6 +42,7 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
     private boolean force;
     private Mode mode;
 	private File out = new File("mlib");
+    private final List<String> excludedModules = new ArrayList<>();
 
     public static enum Mode {
         create_mlib;
@@ -53,6 +62,31 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
     @OptionArgument(shortName = 'o', argumentName="dir")
     public void setOut(File out) {
         this.out = out;
+    }
+
+    @OptionArgument(argumentName="moduleOrFile", shortName='x')
+    @Description("Excludes modules from the resulting folder. Can be a module name or " + 
+            "a file containing module names. Can be specified multiple times. Note that "+
+            "this excludes the module from the resulting folder, but if your modules require that "+
+            "module to be present at runtime it will still be required and may cause your "+
+            "application to fail to start if it is not provided at runtime.")
+    public void setExcludeModule(List<String> exclusions) {
+        for (String each : exclusions) {
+            File xFile = new File(each);
+            if (xFile.exists() && xFile.isFile()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(xFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        this.excludedModules.add(line);
+                    }
+                } catch (IOException e) {
+                    throw new ToolUsageError(CeylonJigsawMessages.msg("exclude.file.failure", each), 
+                            e);
+                }
+            } else {
+                this.excludedModules.add(each);
+            }
+        }
     }
 
     @Option(longName="force")
@@ -108,6 +142,8 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) throws Exception {
+    protected boolean shouldExclude(String moduleName, String version) {
+        return super.shouldExclude(moduleName, version) ||
+                this.excludedModules.contains(moduleName);
     }
 }
