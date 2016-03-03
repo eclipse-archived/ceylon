@@ -8886,7 +8886,7 @@ public class ExpressionVisitor extends Visitor {
             pack = unit.getPackage();
         }
         else {
-            pack = importedPackage(path);
+            pack = importedPackage(path, unit.getModuleSourceMapper());
         }
         path.setModel(pack);
         that.setTypeModel(unit.getPackageDeclarationType());

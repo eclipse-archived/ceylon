@@ -20,6 +20,7 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class CachedTOCJars {
@@ -65,7 +66,7 @@ public class CachedTOCJars {
                                     if(entry.isDirectory()){
                                         folders.add(name);
                                     }else{
-                                        if(definesPackage(name))
+                                        if(JvmBackendUtil.definesPackage(name))
                                             packages.add(getPackageName(name));
                                         contents.add(name);
                                     }
@@ -212,12 +213,6 @@ public class CachedTOCJars {
         addJar(artifact, module, false);
     }
     
-    private static boolean definesPackage(String path) {
-        return path.toLowerCase().endsWith(".class")
-                // skip Java 9 module descriptors
-                && !path.equals("module-info.class");
-    }
-
     public void addJar(ArtifactResult artifact, Module module, boolean skipContents) {
         // skip duplicates
         if(jars.containsKey(module))

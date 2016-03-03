@@ -11,7 +11,6 @@ import java.util.jar.Manifest;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -74,16 +73,18 @@ public class OsgiUtil {
         private final Module module;
 
         private Logger log;
+        private JdkProvider jdkProvider;
 
-        public OsgiManifest(Module module, String osgiProvidedBundles) {
-            this(module, null, osgiProvidedBundles, null);
+        public OsgiManifest(Module module, JdkProvider jdkProvider, String osgiProvidedBundles) {
+            this(module, jdkProvider, osgiProvidedBundles, null, null);
         }
 
-        public OsgiManifest(Module module, Manifest originalManifest, String osgiProvidedBundles, Logger log) {
+        public OsgiManifest(Module module, JdkProvider jdkProvider, String osgiProvidedBundles, Manifest originalManifest, Logger log) {
             this.module = module;
             this.originalManifest = originalManifest;
             this.osgiProvidedBundles = osgiProvidedBundles;
             this.log = log;
+            this.jdkProvider = jdkProvider;
         }
 
         private String toOSGIBundleVersion(String ceylonVersion) {
@@ -164,7 +165,7 @@ public class OsgiUtil {
 
             for (ModuleImport moduleImport : module.getImports()) {
                 Module importedModule = moduleImport.getModule();
-                if (JDKUtils.isJDKModule(importedModule.getNameAsString())) {
+                if (jdkProvider.isJDKModule(importedModule.getNameAsString())) {
                     // FIXME Hard-coding version 7 for now because we don't officially
                     // support Java 8 yet and compiling with that compiler generates
                     // the wrong requirements
@@ -236,8 +237,7 @@ public class OsgiUtil {
                 if ("com.redhat.ceylon.dist".equals(moduleName)) {
                     distImportAlreadyFound = true;
                 }
-                if (!JDKUtils.isJDKModule(moduleName)
-                        && !JDKUtils.isOracleJDKModule(moduleName)
+                if (!jdkProvider.isJDKModule(moduleName)
                         && !m.equals(module)) {
                     if (requires.length() > 0) {
                         requires.append(",");

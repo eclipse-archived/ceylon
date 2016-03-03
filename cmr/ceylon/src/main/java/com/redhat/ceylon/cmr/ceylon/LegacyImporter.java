@@ -32,7 +32,7 @@ import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 
 
 /**
@@ -48,6 +48,7 @@ public class LegacyImporter {
     private final RepositoryManager lookupRepoman;
     private final ImporterFeedback feedback;
     private final Logger log;
+    private final JdkProvider jdkProvider;
     
     private File descriptorFile;
     
@@ -236,6 +237,8 @@ public class LegacyImporter {
         this.lookupRepoman = lookupRepository;
         this.log = log;
         this.feedback = feedback;
+        // FIXME: this probably needs to be an option
+        this.jdkProvider = new JdkProvider();
     }
     
     /**
@@ -335,7 +338,7 @@ public class LegacyImporter {
                 if (!jdkModules.isEmpty()) {
                     feedback.beforeJdkModules();
                     for (String mod : jdkModules) {
-                        ModuleDependencyInfo dep = new ModuleDependencyInfo(mod, JDKUtils.jdk.version, 
+                        ModuleDependencyInfo dep = new ModuleDependencyInfo(mod, jdkProvider.getJDKVersion(), 
                         		false, publicApiJdkModules.contains(mod));
                         feedback.dependency(DependencyResults.DEP_JDK, dep);
                         expectedDependencies.add(dep);
@@ -462,7 +465,7 @@ public class LegacyImporter {
                 if(version == null || version.isEmpty())
                     feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_VERSION, dep);
                 Usage usage = null;
-                if (JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)) {
+                if (jdkProvider.isJDKModule(name)) {
                 	usage = scanner.removeMatchingJdkClasses(name);
                 } else {
                     ArtifactContext context = new ArtifactContext(name, dep.getVersion(), ArtifactContext.CAR, ArtifactContext.JAR);
@@ -563,12 +566,11 @@ public class LegacyImporter {
             if (!jarFile.isFile()) {
                 throw new FileNotFoundException("Could not find " + jarFile);
             }
-            scanner = new ClassFileScanner(jarFile, ignoreAnnotations);
+            scanner = new ClassFileScanner(jarFile, ignoreAnnotations, jdkProvider);
             expectedDependencies = new HashSet<>();
             scanner.scan(moduleInfo);
         }
     }
-
 
     private void outputSuggestions(String pkg) throws Exception {
         ModuleDependencyInfo dep = null;

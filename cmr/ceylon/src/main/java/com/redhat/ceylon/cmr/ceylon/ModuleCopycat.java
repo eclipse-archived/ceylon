@@ -20,7 +20,7 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 
 /**
  * Class that can be used to copy modules from one repository to another.
@@ -40,6 +40,7 @@ public class ModuleCopycat {
     private RepositoryManager dstRepoman;
     private CopycatFeedback feedback;
     private Logger log;
+    private JdkProvider jdkProvider;
     
     private Set<String> copiedModules;
     private int count;
@@ -99,6 +100,8 @@ public class ModuleCopycat {
         this.feedback = feedback;
         this.log = log;
         this.copiedModules = new HashSet<>();
+        // FIXME: probably needs to be an option
+        this.jdkProvider = new JdkProvider();
     }
     
     /**
@@ -132,7 +135,7 @@ public class ModuleCopycat {
     
     private void copyModuleInternal(ArtifactContext context) throws Exception {
         assert(context != null);
-        if (!JDKUtils.isJDKModule(context.getName()) && !JDKUtils.isOracleJDKModule(context.getName())) {
+        if (!jdkProvider.isJDKModule(context.getName())) {
             String module = ModuleUtil.makeModuleName(context.getName(), context.getVersion());
             if (!copiedModules.add(module)) {
                 // Faking a copy here for feedback because it was already done and we never copy twice
@@ -193,7 +196,7 @@ public class ModuleCopycat {
     private int countNonJdkDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
         int cnt = 0;
         for (ModuleDependencyInfo dep : dependencies) {
-            if (!JDKUtils.isJDKModule(dep.getName()) && !JDKUtils.isOracleJDKModule(dep.getName())) {
+            if (!jdkProvider.isJDKModule(dep.getName())) {
                 cnt++;
             }
         }

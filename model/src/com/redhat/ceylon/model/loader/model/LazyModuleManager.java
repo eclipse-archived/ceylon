@@ -30,7 +30,9 @@ public abstract class LazyModuleManager extends ModuleManager {
         String nameAsString = module.getNameAsString();
         String version = module.getVersion();
         if(version != null
-                && AbstractModelLoader.isJDKModule(nameAsString)){
+                // We can't use the model loader at this point since it has not been initialised yet,
+                // and it doesn't matter which JdkProvider we use as JDK modules still need that fix
+                && (JDKUtils.isJDKModule(nameAsString) || JDKUtils.isOracleJDKModule(nameAsString))){
             if(JDKUtils.jdk.providesVersion(version)){
                 module.setAvailable(true);
                 module.setJava(true);
@@ -92,6 +94,8 @@ public abstract class LazyModuleManager extends ModuleManager {
     @Override
     protected boolean compareVersions(Module current, String version, String currentVersion) {
         String name = current.getNameAsString();
+        // We can't use the jdk provider at this point since it has not been initialised yet,
+        // and it doesn't matter which JdkProvider we use as JDK modules still need that fix
         if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)){
             // if we're running JDK8, pretend that it provides JDK7 modules
             if(JDKUtils.jdk.providesVersion(version)

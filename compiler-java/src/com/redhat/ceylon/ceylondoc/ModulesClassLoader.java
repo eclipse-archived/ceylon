@@ -30,7 +30,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.impl.reflect.CachedTOCJars;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
@@ -40,9 +40,11 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 class ModulesClassLoader extends ClassLoader {
 
     private CachedTOCJars jars = new CachedTOCJars();
+	private JdkProvider jdkProvider;
     
-    public ModulesClassLoader(ClassLoader parent) {
+    public ModulesClassLoader(ClassLoader parent, JdkProvider jdkProvider) {
         super(parent);
+        this.jdkProvider = jdkProvider;
     }
 
     @Override

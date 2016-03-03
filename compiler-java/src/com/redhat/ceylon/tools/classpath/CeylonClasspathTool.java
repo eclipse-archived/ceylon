@@ -74,8 +74,4 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
         }
         flush();
     }
-
-    @Override
-    public void initialize(CeylonTool mainTool) throws Exception {
-    }
 }

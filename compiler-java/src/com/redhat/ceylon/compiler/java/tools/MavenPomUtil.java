@@ -34,7 +34,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -58,7 +58,8 @@ public class MavenPomUtil {
         return new String[]{groupId, artifactId};
     }
     
-    public static void writeMavenManifest2(JarOutputStream jarOutputStream, Module module, Set<String> foldersAlreadyAdded) {
+    public static void writeMavenManifest2(JarOutputStream jarOutputStream, Module module, Set<String> foldersAlreadyAdded, 
+    		JdkProvider jdkProvider) {
         String moduleName = module.getNameAsString();
         String[] mavenCoordinates = getMavenCoordinates(moduleName);
         String groupId = mavenCoordinates[0];
@@ -69,14 +70,15 @@ public class MavenPomUtil {
             JarUtils.makeFolder(foldersAlreadyAdded, jarOutputStream, "META-INF/maven/"+groupId+"/");
             String path = "META-INF/maven/"+groupId+"/"+artifactId+"/";
             JarUtils.makeFolder(foldersAlreadyAdded, jarOutputStream, path);
-            writePomXml(jarOutputStream, path, groupId, artifactId, module);
+            writePomXml(jarOutputStream, path, groupId, artifactId, module, jdkProvider);
             writePomProperties(jarOutputStream, path, groupId, artifactId, module.getVersion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void writePomXml(JarOutputStream jarOutputStream, String path, String groupId, String artifactId, Module module) {
+    private static void writePomXml(JarOutputStream jarOutputStream, String path, String groupId, String artifactId, 
+    		Module module, JdkProvider jdkProvider) {
         try {
             jarOutputStream.putNextEntry(new ZipEntry(path+"pom.xml"));
         } catch (IOException e) {
@@ -136,8 +138,7 @@ public class MavenPomUtil {
                     
                     // skip c.l and jdk
                     if(dependencyName.equals(Module.LANGUAGE_MODULE_NAME)
-                            || JDKUtils.isJDKModule(dependencyName)
-                            || JDKUtils.isOracleJDKModule(dependencyName))
+                            || jdkProvider.isJDKModule(dependencyName))
                         continue;
                     
                     String[] mavenCoordinates = getMavenCoordinates(moduleDependency.getNameAsString());

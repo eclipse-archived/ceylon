@@ -48,7 +48,7 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 
 @Summary("Generates p2 repository metadata suitable for Eclipse")
 @Description("This is EXPERIMENTAL" +
@@ -64,6 +64,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
     private File categories;
     private String categoryPrefix;
     private String repositoryName = "P2 repository";
+    private JdkProvider jdkProvider = new JdkProvider();
     
     public CeylonP2Tool() {
         super(CeylonP2Messages.RESOURCE_BUNDLE);
@@ -889,7 +890,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
 
     private void collectModules(RepositoryManager repoManager, String name, String version, Map<String, ModuleInfo> allModules) throws IOException {
         // ignore JDK dependencies
-        if(CeylonP2Tool.skipModule(name))
+        if(skipModule(name))
             return;
         String key = name+"/"+version;
         if(allModules.containsKey(key))
@@ -905,7 +906,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
         }else{
             artifactJar = artifact.artifact();
         }
-        allModules.put(key, artifactJar != null ? new ModuleInfo(name, version, artifactJar) : null);
+        allModules.put(key, artifactJar != null ? new ModuleInfo(this, name, version, artifactJar) : null);
         if(artifact == null){
             errorMsg("module.not.found", name+"/"+version, out+"/plugins");
         }else{
@@ -919,8 +920,8 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
         }
     }
 
-    public static boolean skipModule(String name) {
-        return JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)
+    public boolean skipModule(String name) {
+        return jdkProvider.isJDKModule(name)
                 // this one is "provided"
                 || "org.osgi.core".equals(name);
     }

@@ -37,6 +37,7 @@ import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.javax.lang.model.element.Modifier;
 import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.OsgiUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
@@ -47,12 +48,16 @@ public class JarEntryManifestFileObject implements JavaFileObject {
     private Module module;
     private String osgiProvidedBundles;
     private ByteArrayOutputStream baos;
-    public JarEntryManifestFileObject(String jarFileName, String fileName, Module module, String osgiProvidedBundles) {
+	private JdkProvider jdkProvider;
+	
+    public JarEntryManifestFileObject(String jarFileName, String fileName, Module module, String osgiProvidedBundles,
+    		JdkProvider jdkProvider) {
         super();
         this.jarFileName = jarFileName;
         this.fileName = fileName;
         this.module = module;
         this.osgiProvidedBundles = osgiProvidedBundles;
+        this.jdkProvider = jdkProvider;
     }
 
     @Override
@@ -81,7 +86,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         if (module.isDefault()) {
             manifest = new OsgiUtil.DefaultModuleManifest().build();
         } else {
-            manifest = new OsgiUtil.OsgiManifest(module, originalManifest, osgiProvidedBundles, log).build();
+            manifest = new OsgiUtil.OsgiManifest(module, jdkProvider, osgiProvidedBundles, originalManifest, log).build();
         }
         jarFile.putNextEntry(new ZipEntry(fileName));
         manifest.write(jarFile);

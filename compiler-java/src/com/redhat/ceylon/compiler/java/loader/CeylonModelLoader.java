@@ -47,19 +47,19 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
 import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Scope;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
-import com.redhat.ceylon.langtools.tools.javac.code.Type;
-import com.redhat.ceylon.langtools.tools.javac.code.Types;
-import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
 import com.redhat.ceylon.langtools.tools.javac.code.Scope.Entry;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Types;
 import com.redhat.ceylon.langtools.tools.javac.jvm.ClassReader;
 import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
@@ -70,7 +70,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Names;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
@@ -97,6 +96,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     protected final Map<String,Boolean> packageExistence = new HashMap<String,Boolean>();
     private AnnotationLoader annotationLoader;
     private ModuleSourceMapper moduleSourceMapper;
+	private String jdkProviderSpec;
     
     public static AbstractModelLoader instance(Context context) {
         AbstractModelLoader instance = context.get(AbstractModelLoader.class);
@@ -131,6 +131,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
         fileManager = context.get(JavaFileManager.class);
         annotationLoader = new AnnotationLoader(this, typeFactory);
         moduleSourceMapper = phasedUnits.getModuleSourceMapper();
+        jdkProviderSpec = options.get(OptionName.CEYLONJDKPROVIDER);
     }
 
     @Override
@@ -390,7 +391,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     if(classSymbol.classfile == null){
                         PackageSymbol pkg = classSymbol.packge();
                         // do not log an error for missing oracle jdk stuff
-                        if(pkg == null || !JDKUtils.isOracleJDKAnyPackage(pkg.getQualifiedName().toString())){
+                        if(pkg == null || !jdkProvider.isImplementationSpecificJDKPackage(pkg.getQualifiedName().toString())){
                             // do not log an error because it will be logged elsewhere
                             logVerbose("Unable to find required class file for "+name);
                         }
@@ -659,12 +660,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
             PackageSymbol methodPackage = method.owner.packge();
             if(methodPackage != null){
                 String methodPackageName = methodPackage.getQualifiedName().toString();
-                if(JDKUtils.isJDKAnyPackage(methodPackageName)){
+                if(jdkProvider.isJDKPackage(methodPackageName)){
                     if(x.sym != null && x.sym instanceof ClassSymbol){
                         PackageSymbol pkg = ((ClassSymbol)x.sym).packge();
                         if(pkg != null){
                             String pkgName = pkg.getQualifiedName().toString();
-                            if(JDKUtils.isOracleJDKAnyPackage(pkgName)){
+                            if(jdkProvider.isImplementationSpecificJDKPackage(pkgName)){
                                 // the JDK tried to use some Oracle JDK stuff, just log it
                                 logMissingOracleType(x.getMessage());
                                 return;
@@ -769,5 +770,10 @@ public class CeylonModelLoader extends AbstractModelLoader {
         public void reportError() {
             moduleSourceMapper.attachErrorToOriginalModuleImport(module, getMessage());
         }
+    }
+    
+    @Override
+    protected String getAlternateJdkModuleSpec() {
+    	return jdkProviderSpec;
     }
 }

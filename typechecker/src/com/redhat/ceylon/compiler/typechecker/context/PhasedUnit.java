@@ -186,7 +186,8 @@ public class PhasedUnit {
     }
 
     protected TypecheckerUnit createUnit() {
-        return new TypecheckerUnit(moduleManagerRef.get().getModules().getListOfModules());
+        return new TypecheckerUnit(moduleManagerRef.get().getModules().getListOfModules(),
+        		moduleManagerUtilRef.get());
     }
     
     public void visitRemainingModulePhase() {

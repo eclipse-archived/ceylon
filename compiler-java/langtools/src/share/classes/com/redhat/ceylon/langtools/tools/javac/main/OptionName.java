@@ -63,6 +63,7 @@ public enum OptionName {
     CEYLONOSGIPROVIDEDBUNDLES("-osgi-provided-bundles"),
     CEYLONNOPOM("-nopom"),
     CEYLONPACK200("-pack200"),
+    CEYLONJDKPROVIDER("-jdk-provider"),
     SOURCEPATH("-sourcepath"),
     CEYLONSOURCEPATH("-src"),
     CEYLONRESOURCEPATH("-res"),

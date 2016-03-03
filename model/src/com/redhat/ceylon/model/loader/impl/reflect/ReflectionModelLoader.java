@@ -31,6 +31,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
 	
 	static {
 	    try{
+	        // FIXME: when Android supports JDK9, revisit this
 	        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
 	            Object mod = Java9ModuleUtil.getModule(ReflectionModelLoader.class);
 	            

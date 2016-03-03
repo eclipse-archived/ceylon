@@ -43,7 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyModuleManager;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -71,6 +71,9 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         LazyModuleManager moduleManager = getModuleManager();
         boolean moduleLoadedFromSource = moduleManager.isModuleLoadedFromSource(moduleName);
         boolean isLanguageModule = module == module.getLanguageModule();
+        if(moduleManager.getModelLoader().getJDKBaseModule() == module){
+        	moduleManager.getModelLoader().setupAlternateJdk(module, artifact);
+        }
         
         // if this is for a module we're compiling, or for an indirectly imported module, we need to check because the
         // module in question will be in the classpath
@@ -186,10 +189,11 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error) {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
-        if(AbstractModelLoader.isJDKModule(name)){
+        JdkProvider jdkProvider = getJdkProvider();
+        if(jdkProvider.isJDKModule(name)){
             error = "imported module '" + name + "' depends on JDK version '\"" + 
                     moduleImport.getModule().getVersion() +
-                    "\"' and you're compiling with Java " + JDKUtils.jdk.version;
+                    "\"' and you're compiling with Java " + jdkProvider.getJDKVersion();
         }
         super.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error);
     }
@@ -203,13 +207,24 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         String nameAsString = module.getNameAsString();
         String version = module.getVersion();
         if(version != null
-                && AbstractModelLoader.isJDKModule(nameAsString)){
+                && (JDKUtils.isJDKModule(nameAsString) || JDKUtils.isOracleJDKModule(nameAsString))){
             // Add a warning if we're using a lower JDK than the one we're running on
+        	// FIXME: this does not work for JDK9 or Android
             if(JDKUtils.jdk.isLowerVersion(version)){
                 definition.addUsageWarning(Warning.importsOtherJdk, "You import JDK7, which is provided by the JDK8 you are running on, but"+
                         " we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on"+
                         " JDK8 classes or methods.", Backend.Java);
             }
         }
+    }
+    
+    @Override
+    public Module getJdkModule() {
+    	return getModuleManager().getModelLoader().getJDKBaseModule();
+    }
+    
+    @Override
+    public JdkProvider getJdkProvider() {
+    	return getModuleManager().getModelLoader().getJdkProvider();
     }
 }

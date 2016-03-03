@@ -147,10 +147,6 @@ public class CeylonWarTool extends ModuleLoadingTool {
                 this.excludedModules.contains(moduleName);
     }
 
-    @Override
-    public void initialize(CeylonTool mainTool) throws Exception {
-    }
-    
     protected void addSpec(EntrySpec spec) {
         debug("adding.entry", spec.name);
         this.entrySpecs.add(spec);

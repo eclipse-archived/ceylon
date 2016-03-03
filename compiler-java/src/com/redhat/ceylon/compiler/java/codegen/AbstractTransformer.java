@@ -2945,7 +2945,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private String getImportVersionFromDescriptor(ModuleDescriptor moduleDescriptor, ModuleImport moduleImport, Module importedModule) {
-        if (AbstractModelLoader.isJDKModule(importedModule.getNameAsString())) {
+        if (loader.getJdkProvider().isJDKModule(importedModule.getNameAsString())) {
             for(Tree.ImportModule imported : moduleDescriptor.getImportModuleList().getImportModules()){
                 String name=null;
                 if (imported.getImportPath() != null) {

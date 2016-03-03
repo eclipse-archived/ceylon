@@ -71,7 +71,7 @@ public class ImportVisitor extends Visitor {
     @Override
     public void visit(Tree.Import that) {
         Package importedPackage = 
-                importedPackage(that.getImportPath());
+                importedPackage(that.getImportPath(), unit.getModuleSourceMapper());
         if (importedPackage!=null) {
             that.getImportPath().setModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = 

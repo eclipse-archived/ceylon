@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
@@ -30,6 +31,8 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 public class ModuleSourceMapper {
+	
+	JdkProvider defaultJdkProvider = new JdkProvider();
 
     public static class ModuleDependencyAnalysisError extends AnalysisError {
         
@@ -349,4 +352,12 @@ public class ModuleSourceMapper {
     protected Context getContext(){
         return context;
     }
+
+	public Module getJdkModule() {
+		return null;
+	}
+
+	public JdkProvider getJdkProvider() {
+		return defaultJdkProvider;
+	}
 }

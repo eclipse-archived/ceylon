@@ -2,10 +2,18 @@ package com.redhat.ceylon.model.loader;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
@@ -325,5 +333,50 @@ public class JvmBackendUtil {
                 || name.equals("java.lang::DoubleArray")
                 || name.equals("java.lang::BooleanArray")
                 || name.equals("java.lang::CharArray");
+    }
+    
+    public static SortedSet<String> listPackages(File jar, PathFilter pathFilter) throws IOException {
+        SortedSet<String> packages = new TreeSet<String>();
+        try(ZipFile zf = new ZipFile(jar)){
+            Enumeration<? extends ZipEntry> entries = zf.entries();
+            while(entries.hasMoreElements()){
+                ZipEntry entry = entries.nextElement();
+                if(entry.isDirectory())
+                    continue;
+                String pkg = getPackageForPath(entry.getName(), pathFilter);
+                if(pkg != null)
+                    packages.add(pkg);
+            }
+        }
+        return packages;
+    }
+
+    private static String getPackageForPath(String path, PathFilter pathFilter) {
+        if(definesPackage(path)){
+            int sep = path.lastIndexOf('/');
+            if(sep != -1)
+                path = path.substring(0, sep);
+            else
+                path = "";// default package
+            String pkg = path;
+            // make sure we unquote any package part
+            pkg = pkg.replace("$", "");
+            String pathQuery;
+            if(path.isEmpty())
+                pathQuery = pkg;
+            else
+                pathQuery = pkg+"/";
+            if(pathFilter == null || pathFilter.accept(pathQuery)){
+                pkg = pkg.replace('/', '.');
+                return pkg;
+            }
+        }
+        return null;
+    }
+    
+    public static boolean definesPackage(String path) {
+        return path.toLowerCase().endsWith(".class")
+                // skip Java 9 module descriptors
+                && !path.equals("module-info.class");
     }
 }

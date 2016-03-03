@@ -35,7 +35,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 
 /**
  * Repository that provides ContentFinder implementation for JDK modules
@@ -44,32 +44,24 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
  */
 public class JDKRepository extends AbstractRepository {
 
-    public static final String JDK_VERSION = "7";
 
     public static final String JDK_REPOSITORY_DISPLAY_STRING = "JDK modules repository";
     
     private static final String JAVA_ORIGIN = "Java Runtime";
 
-    private static final SortedSet<String> FixedVersionSet = new TreeSet<String>() {{
-        add(JDK_VERSION);
-    }};
     private static final SortedSet<String> EmptySet = new TreeSet<String>();
     private static final SortedSet<ModuleDependencyInfo> EmptyDependencySet = new TreeSet<ModuleDependencyInfo>();
     private static final SortedSet<String> FixedTypeSet = new TreeSet<String>() {{
         add(ArtifactContext.JAR);
     }};
 
-    public static final Set<String> JDK_MODULES = new TreeSet<String>();
-
-    static {
-        for (String module : JDKUtils.getJDKModuleNames())
-            JDK_MODULES.add(module);
-        for (String module : JDKUtils.getOracleJDKModuleNames())
-            JDK_MODULES.add(module);
-    }
+	private JdkProvider jdkProvider;
 
     public JDKRepository() {
         super(new JDKRoot());
+        // FIXME: probably has to become an option
+        this.jdkProvider = new JdkProvider();
+        ((JDKRoot)getRoot()).finishSetupYouDumbass(jdkProvider);
     }
 
     @Override
@@ -79,11 +71,16 @@ public class JDKRepository extends AbstractRepository {
 
     public static class JDKRoot extends DefaultNode implements ContentFinderDelegate {
 
+    	private JdkProvider jdkProvider;
 
         public JDKRoot() {
             addService(ContentFinderDelegate.class, this);
         }
 
+        private void finishSetupYouDumbass(JdkProvider jdkProvider){
+        	this.jdkProvider = jdkProvider;
+        }
+        
         @Override
         public String getDisplayString() {
             return JDK_REPOSITORY_DISPLAY_STRING;
@@ -106,7 +103,7 @@ public class JDKRepository extends AbstractRepository {
             String name = query.getName();
             if (name == null)
                 name = "";
-            for (String module : JDK_MODULES) {
+            for (String module : jdkProvider.getJDKModuleNames()) {
                 if (module.startsWith(name)) {
                     ModuleVersionDetails mvd = getResult(module, query);
                     if (mvd != null) {
@@ -125,14 +122,15 @@ public class JDKRepository extends AbstractRepository {
             // abort if not JVM
             if (!query.getType().includes(ArtifactContext.JAR))
                 return;
-            if (query.getName() == null || !JDK_MODULES.contains(query.getName()))
+            if (query.getName() == null || !jdkProvider.isJDKModule(query.getName()))
                 return;
-            if (query.getVersion() != null && !query.getVersion().equals(JDK_VERSION))
+            String jdkVersion = jdkProvider.getJDKVersion();
+            if (query.getVersion() != null && !query.getVersion().equals(jdkVersion))
                 return;
-            final ModuleVersionDetails newVersion = result.addVersion(query.getName(), JDK_VERSION);
+            final ModuleVersionDetails newVersion = result.addVersion(query.getName(), jdkVersion);
             newVersion.setDoc(doc(query.getName()));
             newVersion.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
-            newVersion.setVersion(JDK_VERSION);
+            newVersion.setVersion(jdkVersion);
             newVersion.setRemote(false);
             newVersion.setOrigin(JAVA_ORIGIN);
         }
@@ -162,7 +160,7 @@ public class JDKRepository extends AbstractRepository {
             name = name.toLowerCase();
             boolean stopSearching = false;
             int found = 0;
-            for (String module : JDK_MODULES) {
+            for (String module : jdkProvider.getJDKModuleNames()) {
                 // does it match?
                 if (module.contains(name)) {
                     // check if we were already done but were checking for a next results
@@ -192,19 +190,16 @@ public class JDKRepository extends AbstractRepository {
         }
         
         private ModuleVersionDetails getResult(String module, ModuleQuery query) {
-            ModuleVersionDetails mvd = new ModuleVersionDetails(module, JDK_VERSION);
+            ModuleVersionDetails mvd = new ModuleVersionDetails(module, jdkProvider.getJDKVersion());
             mvd.setDoc(doc(module));
             mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
             mvd.setRemote(false);
             mvd.setOrigin(JAVA_ORIGIN);
             if (query.getMemberName() != null) {
-                Set<String> jdkMembers = JDKUtils.getJDKPackagesByModule(module);
+                Set<String> jdkMembers = jdkProvider.getJDKPackages(module);
                 if (jdkMembers == null) {
-                    jdkMembers = JDKUtils.getOracleJDKPackagesByModule(module);
-                    if (jdkMembers == null) {
-                        // Should not happen, but just in case
-                        return null;
-                    }
+                	// Should not happen, but just in case
+                	return null;
                 }
                 Set<String> matchedMembers = matchNames(jdkMembers, query, true);
                 if (matchedMembers.isEmpty()) {
