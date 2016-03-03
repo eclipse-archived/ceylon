@@ -1009,7 +1009,7 @@ public abstract class CompilerTests {
         try{
         	
         	CeylonJigsawTool jigsawTool = new CeylonJigsawTool();
-        	jigsawTool.setOutputFolder(mlib);
+        	jigsawTool.setOut(mlib);
         	jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
         	jigsawTool.setModule(module.getName());
         	jigsawTool.run();

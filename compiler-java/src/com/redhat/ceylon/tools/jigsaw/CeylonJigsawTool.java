@@ -50,8 +50,8 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
     }
 
     @Description("Folder in which to place the resulting jars (defaults to `mlib`).")
-    @OptionArgument(argumentName="out")
-    public void setOutputFolder(File out) {
+    @OptionArgument(shortName = 'o', argumentName="dir")
+    public void setOut(File out) {
         this.out = out;
     }
 
@@ -81,7 +81,7 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
             errorOnConflictingModule(module, version);
         
         if(!out.exists()){
-        	if(!out.mkdir()){
+        	if(!out.mkdirs()){
     	        throw new ToolUsageError(Messages.msg(bundle, "jigsaw.folder.error", out));
         	}
         }
