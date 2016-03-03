@@ -17,14 +17,10 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
-import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -48,12 +44,6 @@ public class JDKRepository extends AbstractRepository {
     public static final String JDK_REPOSITORY_DISPLAY_STRING = "JDK modules repository";
     
     private static final String JAVA_ORIGIN = "Java Runtime";
-
-    private static final SortedSet<String> EmptySet = new TreeSet<String>();
-    private static final SortedSet<ModuleDependencyInfo> EmptyDependencySet = new TreeSet<ModuleDependencyInfo>();
-    private static final SortedSet<String> FixedTypeSet = new TreeSet<String>() {{
-        add(ArtifactContext.JAR);
-    }};
 
 	private JdkProvider jdkProvider;
 
@@ -133,16 +123,6 @@ public class JDKRepository extends AbstractRepository {
             newVersion.setVersion(jdkVersion);
             newVersion.setRemote(false);
             newVersion.setOrigin(JAVA_ORIGIN);
-        }
-
-        private boolean rightQueryType(Type type) {
-            if(type == Type.ALL)
-                return true;
-            for(String suffix : type.getSuffixes()){
-                if(suffix.equals(ArtifactContext.JAR))
-                    return true;
-            }
-            return false;
         }
 
         @Override
