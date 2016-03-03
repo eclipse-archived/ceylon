@@ -100,7 +100,11 @@ public class ModuleValidator {
                 LinkedList<Module> dependencyTree = new LinkedList<Module>();
                 // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
                 Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
+                Module jdkModule = moduleManagerUtil.getJdkModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
+                if(jdkModule != null){
+                	resolveModuleIfRequired(jdkModule, true, null, ImportDepth.First, dependencyTree, searchedArtifacts);
+                }
                 // we must resolve the language module first because it contains definitions that must be in the classpath
                 // before any other JVM class is loaded, including the module descriptor annotations themselves
                 modules.add(context.getModules().getLanguageModule());
@@ -214,57 +218,10 @@ public class ModuleValidator {
                 //circular dependency: stop right here
                 return;
             }
-            Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
             ImportDepth newImportDepth = importDepth.forModuleImport(moduleImport);
             
             boolean forCompiledModule = newImportDepth.isVisibleToCompiledModules();
-            if ( ! module.isAvailable()) {
-                ArtifactResult artifact = null;
-                boolean firstTime;
-                if (alreadySearchedArtifacts.containsKey(module)) {
-                    artifact = alreadySearchedArtifacts.get(module);
-                    firstTime = false;
-                } else {
-                    //try and load the module from the repository
-                    RepositoryManager repositoryManager = context.getRepositoryManager();
-                    Exception exceptionOnGetArtifact = null;
-                    ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
-                    listener.retrievingModuleArtifact(module, artifactContext);
-                    try {
-                        artifact = repositoryManager.getArtifactResult(artifactContext);
-                    } catch (Exception e) {
-                        exceptionOnGetArtifact = catchIfPossible(e);
-                    }
-                    if (artifact == null) {
-                        //not there => error
-                        ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManagerUtil);
-                        listener.retrievingModuleArtifactFailed(module, artifactContext);
-                    }else{
-                        listener.retrievingModuleArtifactSuccess(module, artifact);
-                    }
-                    alreadySearchedArtifacts.put(module, artifact);
-                    firstTime = true;
-                }
-                
-                // Only resolve it if it's the first time, or if it's the second time but really important because
-                // it's for a compiled module. The compiler backend does not load modules that are not directly
-                // visible to the compiled modules, so it will not make them available, not the first time, nor any
-                // subsequent time, no need to keep trying. If it's the second time we see it but the first time for
-                // a compiled module, then it MUST resolve it and make it available, so do try in this case.
-                if (artifact != null && (firstTime || forCompiledModule)) {
-                    //parse module units and build module dependency and carry on
-                    listener.resolvingModuleArtifact(module, artifact);
-                    Module moduleOverride = moduleManager.overridesModule(artifact, module, moduleImport);
-                    if (moduleOverride != null) {
-                        module = moduleOverride;
-                        if (importDepth.equals(ImportDepth.First)) {
-                            moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
-                                    "the module import should not be overridden, since it is explicitly imported by a project source module");
-                        }
-                    }
-                    moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
-                }
-            }
+            resolveModuleIfRequired(module, forCompiledModule, moduleImport, importDepth, dependencyTree, alreadySearchedArtifacts);
             moduleManager.visitedModule(module, forCompiledModule);
             dependencyTree.addLast(module);
             List<Module> subModulePropagatedDependencies = new ArrayList<Module>();
@@ -285,7 +242,58 @@ public class ModuleValidator {
         }
     }
 
-    protected Exception catchIfPossible(Exception e) {
+    private void resolveModuleIfRequired(Module module, boolean forCompiledModule, ModuleImport moduleImport, ImportDepth importDepth, LinkedList<Module> dependencyTree, Map<Module, ArtifactResult> alreadySearchedArtifacts) {
+        if ( ! module.isAvailable()) {
+            ArtifactResult artifact = null;
+            boolean firstTime;
+            if (alreadySearchedArtifacts.containsKey(module)) {
+                artifact = alreadySearchedArtifacts.get(module);
+                firstTime = false;
+            } else {
+                //try and load the module from the repository
+                RepositoryManager repositoryManager = context.getRepositoryManager();
+                Exception exceptionOnGetArtifact = null;
+                Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
+                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
+                listener.retrievingModuleArtifact(module, artifactContext);
+                try {
+                    artifact = repositoryManager.getArtifactResult(artifactContext);
+                } catch (Exception e) {
+                    exceptionOnGetArtifact = catchIfPossible(e);
+                }
+                if (artifact == null) {
+                    //not there => error
+                    ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManagerUtil);
+                    listener.retrievingModuleArtifactFailed(module, artifactContext);
+                }else{
+                    listener.retrievingModuleArtifactSuccess(module, artifact);
+                }
+                alreadySearchedArtifacts.put(module, artifact);
+                firstTime = true;
+            }
+            
+            // Only resolve it if it's the first time, or if it's the second time but really important because
+            // it's for a compiled module. The compiler backend does not load modules that are not directly
+            // visible to the compiled modules, so it will not make them available, not the first time, nor any
+            // subsequent time, no need to keep trying. If it's the second time we see it but the first time for
+            // a compiled module, then it MUST resolve it and make it available, so do try in this case.
+            if (artifact != null && (firstTime || forCompiledModule)) {
+                //parse module units and build module dependency and carry on
+                listener.resolvingModuleArtifact(module, artifact);
+                Module moduleOverride = moduleManager.overridesModule(artifact, module, moduleImport);
+                if (moduleOverride != null) {
+                    module = moduleOverride;
+                    if (importDepth.equals(ImportDepth.First)) {
+                        moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
+                                "the module import should not be overridden, since it is explicitly imported by a project source module");
+                    }
+                }
+                moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
+            }
+        }
+	}
+
+	protected Exception catchIfPossible(Exception e) {
         return e;
     }
 
