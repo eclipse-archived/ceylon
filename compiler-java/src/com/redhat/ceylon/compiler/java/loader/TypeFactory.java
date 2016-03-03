@@ -76,6 +76,10 @@ public class TypeFactory extends Unit {
         return pt.isIntersection() && pt.getSatisfiedTypes().size() > 1;
     }
 
+    public Interface getMapDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Map");
+    }
+    
     public TypeDeclaration getArraySequenceDeclaration() {
         return (Class) getLanguageModuleDeclaration("ArraySequence");
     }
