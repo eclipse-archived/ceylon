@@ -127,6 +127,8 @@ public class Versions {
     public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.4.4.Final";
     public static final String DEPENDENCY_JANDEX_VERSION = "2.0.0.Final";
     public static final String DEPENDENCY_LOGMANAGER_VERSION = "2.0.3.Final";
+
+    public static final String DEPENDENCY_MAVEN_SUPPORT_VERSION = "2.0";
     
     /**
      * Is the given binary version compatible with the current version
