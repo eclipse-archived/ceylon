@@ -6644,6 +6644,15 @@ public class ExpressionVisitor extends Visitor {
                         that.getPrimary();
             if (isConstructor(member)) {
                 //Ceylon named constructor
+                if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
+                    Tree.QualifiedMemberOrTypeExpression qmte = 
+                            (Tree.QualifiedMemberOrTypeExpression) primary;
+                    Tree.MemberOperator mo = qmte.getMemberOperator();
+                    if (!(mo instanceof Tree.MemberOp)) {
+                        mo.addError("illegal operator qualifying constructor reference");
+                        return null;
+                    }
+                }
                 if (primary.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 
@@ -6715,7 +6724,7 @@ public class ExpressionVisitor extends Visitor {
             return type;
         }
     }
-
+    
     private Type getStaticReferenceType(Type type, Type rt) {
         return appliedType(unit.getCallableDeclaration(), type,
                 appliedType(unit.getTupleDeclaration(), rt, rt, 
