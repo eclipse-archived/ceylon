@@ -11,6 +11,7 @@ import org.jboss.modules.ModuleClassLoader;
 import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.LoaderJULLogger;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.impl.reflect.CachedTOCJars;
@@ -48,6 +49,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     public void loadStandardModules() {
         // set up the type factory and that's it: do not try to load the language module package before it's set up
         // by Metamodel.loadModule
+    	jdkProvider = new JdkProvider();
         Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
         addModuleToClassPath(languageModule, (ArtifactResult)null);
         Package languagePackage = findOrCreatePackage(languageModule, CEYLON_LANGUAGE);

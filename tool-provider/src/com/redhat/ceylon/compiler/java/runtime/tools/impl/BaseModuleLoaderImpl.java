@@ -21,11 +21,12 @@ import com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
 import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleGraph.Module;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.loader.JdkProvider;
 
 public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     final RepositoryManager repositoryManager;
     final ClassLoader delegateClassLoader;
+    final JdkProvider jdkProvider;
     
     private Map<String, ModuleLoaderContext> contexts = new HashMap<String, ModuleLoaderContext>();
     protected boolean verbose;
@@ -64,7 +65,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 }
             }
             // skip JDK modules
-            if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name))
+            if(jdkProvider.isJDKModule(name))
                 return;
             ModuleGraph.Module loadedModule = moduleGraph.findModule(name);
             if(loadedModule != null){
@@ -147,7 +148,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
 
         private void registerInMetamodel(ModuleGraph.Module module) {
             // skip JDK modules
-            if(JDKUtils.isJDKModule(module.name) || JDKUtils.isOracleJDKModule(module.name))
+            if(jdkProvider.isJDKModule(module.name))
                 return;
             // use the one we got from the CMR rather than the one for dependencies mapping
             ArtifactResult dependencyArtifact = module.artifact;
@@ -214,6 +215,8 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             this.delegateClassLoader= delegateClassLoader;
         }
         this.verbose = verbose;
+        // FIXME: support alternate JDKs in time
+        this.jdkProvider = new JdkProvider();
     }
     
     @Override

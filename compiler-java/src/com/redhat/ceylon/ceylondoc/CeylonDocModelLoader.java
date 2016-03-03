@@ -27,6 +27,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.LoaderJULLogger;
 import com.redhat.ceylon.model.loader.impl.reflect.ReflectionModelLoader;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
@@ -50,12 +51,15 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 // FIXME: we're still using a flat classpath here
 public class CeylonDocModelLoader extends ReflectionModelLoader {
 
-    ModulesClassLoader classLoader = new ModulesClassLoader(CeylonDocModelLoader.class.getClassLoader());
+	ModulesClassLoader classLoader;
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
     private CeylonDocTool tool;
 
     public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules, CeylonDocTool tool, boolean bootstrapCeylon){
         super(moduleManager, modules, new LoaderJULLogger());
+        // FIXME: this probably needs to support alternate JDKs
+        this.jdkProvider = new JdkProvider();
+        this.classLoader = new ModulesClassLoader(CeylonDocModelLoader.class.getClassLoader(), jdkProvider);
         this.tool = tool;
         this.isBootstrap = bootstrapCeylon;
     }

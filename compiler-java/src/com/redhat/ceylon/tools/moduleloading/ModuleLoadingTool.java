@@ -16,11 +16,15 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
+import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
@@ -28,6 +32,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     protected Map<String, ArtifactResult> loadedModules = new HashMap<>();
     protected Map<String, SortedSet<String>> loadedModuleVersions = new HashMap<>();
     protected boolean upgradeDist = true;
+    // start out with the JDK one and change in initialise()
+    protected JdkProvider jdkProvider = new JdkProvider();
+    protected String jdkProviderModule;
 
 	public ModuleLoadingTool() {
 		super(ModuleLoadingMessages.RESOURCE_BUNDLE);
@@ -45,6 +52,12 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         this.upgradeDist = !downgradeDist;
     }
 	
+    @Description("Alternate JDK provider module (defaults to the current running JDK).")
+    @OptionArgument(argumentName="module")
+    public void setJdkProvider(String jdkProviderModule) {
+        this.jdkProviderModule = jdkProviderModule;
+    }
+
 	protected String moduleVersion(String moduleNameOptVersion) throws IOException {
 		return checkModuleVersionsOrShowSuggestions(
 				getRepositoryManager(),
@@ -77,11 +90,11 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 	}
 
 	protected boolean shouldExclude(String moduleName, String version) {
+		// FIXME: update for Android/JDK9
 		if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
 			moduleName = JDKUtils.getJava9ModuleName(moduleName, version);
 		}
-		return JDKUtils.isJDKModule(moduleName) || 
-				JDKUtils.isOracleJDKModule(moduleName);
+		return jdkProvider.isJDKModule(moduleName);
 	}
 
 	private boolean internalLoadModule(String name, String version, boolean optional) throws IOException {
@@ -146,5 +159,19 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
             err.append(version);
         }
         errorMsg("module.duplicate.error", name, err, versions.last());
+    }
+    
+    @Override
+    public void initialize(CeylonTool mainTool) throws Exception {
+    	super.initialize(mainTool);
+    	if(jdkProviderModule != null){
+    		ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
+			if(!internalLoadModule(moduleSpec.getName(), moduleSpec.getVersion(), false)){
+		        throw new ToolUsageError(Messages.msg(bundle, "jdk.provider.not.found", jdkProviderModule));
+			}
+			ArtifactResult result = loadedModules.get(moduleSpec.getName()+"/"+moduleSpec.getVersion());
+			jdkProvider = new JdkProvider(moduleSpec.getName(), moduleSpec.getVersion(), null, result.artifact());
+    	}
+    	// else keep the JDK one
     }
 }

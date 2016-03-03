@@ -455,6 +455,7 @@ public enum Option {
     CEYLONOSGIPROVIDEDBUNDLES("-osgi-provided-bundles", "opt.arg.value", "opt.ceylonosgiprovidedbundles", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONNOPOM("-nopom", "opt.ceylonnopom", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONPACK200("-pack200", "opt.ceylonpack200", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONJDKPROVIDER("-jdk-provider", "opt.arg.value", "opt.ceylonjdkprovider", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONSOURCEPATH("-src", "opt.arg.directory", "opt.ceylonsourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
         @Override
         public boolean process(OptionHelper options, String option, String arg) {
