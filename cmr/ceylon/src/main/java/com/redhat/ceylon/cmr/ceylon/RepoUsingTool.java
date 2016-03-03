@@ -738,6 +738,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             toolName = "compile";
         } else if (type == ModuleQuery.Type.JS) {
             toolName = "compile-js";
+        } else if (type == ModuleQuery.Type.DART) {
+            toolName = "compile-dart";
         } else {
             throw new IllegalArgumentException("Unknown compile flags passed");
         }
