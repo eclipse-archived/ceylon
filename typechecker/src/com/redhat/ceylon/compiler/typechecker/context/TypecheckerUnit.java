@@ -15,6 +15,8 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
 public class TypecheckerUnit extends Unit implements BackendSupport {
     private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
     private Package javaLangPackage;
+    private Set<Declaration> missingNativeImplementations = new HashSet<Declaration>();
+    private Backends supportedBackends = Backends.ANY;
 	private ModuleSourceMapper moduleSourceMapper;
 
     public TypecheckerUnit() {
@@ -28,19 +30,16 @@ public class TypecheckerUnit extends Unit implements BackendSupport {
                 break;
             }
         }
+    	
     }
-
+    
     public Set<Identifier> getUnresolvedReferences() {
         return unresolvedReferences;
     }
 
-    private Set<Declaration> missingNativeImplementations = new HashSet<Declaration>();
-
     public Set<Declaration> getMissingNativeImplementations() {
         return missingNativeImplementations;
     }
-    
-    private Backends supportedBackends = Backends.ANY;
 
     @Override
     public Backends getSupportedBackends() {
