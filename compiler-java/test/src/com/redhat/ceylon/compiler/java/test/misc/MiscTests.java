@@ -32,16 +32,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.OSUtil;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
-import com.redhat.ceylon.compiler.java.test.CompilerTests.ModuleWithArtifact;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class MiscTests extends CompilerTests {
 
