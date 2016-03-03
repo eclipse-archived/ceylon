@@ -31,16 +31,6 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
         <module name="java.base" slot="7" export="true"/>
-        <module name="java.compiler" slot="7" export="true"/>
         <module name="java.logging" slot="7" export="true"/>
-        <system export="true">
-            <paths>
-                <path name="javax/tools"/>
-                <path name="javax/lang/model"/>
-                <path name="javax/lang/model/element"/>
-                <path name="javax/lang/model/type"/>
-                <path name="javax/lang/model/util"/>
-            </paths>
-        </system>
     </dependencies>
 </module>
