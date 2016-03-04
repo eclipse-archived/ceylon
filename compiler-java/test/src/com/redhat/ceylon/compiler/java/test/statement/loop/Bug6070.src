@@ -1,0 +1,98 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+public final class bug6070_ {
+    
+    private bug6070_() {
+    }
+    
+    public static void bug6070() {
+        final long x;
+        long x$0 = 0L;
+        boolean doforelse$1 = true;
+        final long start$2 = 0L;
+        final long length$3 = 3L;
+        loop_0: for (long i$4 = 0; i$4 < length$3; i$4++) {
+            final long i = i$4 + start$2;
+            boolean doforelse$5 = true;
+            final long start$6 = 0L;
+            final long length$7 = 3L;
+            loop_1: for (long i$8 = 0; i$8 < length$7; i$8++) {
+                final long j = i$8 + start$6;
+                if (true || false) {
+                    x$0 = i * 10L + j;
+                    final long x$10 = x$0;
+                    doforelse$5 = false;
+                    break loop_1;
+                }
+            }
+            if (doforelse$5) {
+                continue loop_0;
+            }
+            doforelse$1 = false;
+            break loop_0;
+        }
+        if (doforelse$1) {
+            x$0 = -1L;
+            final long x$11 = x$0;
+        }
+        x = x$0;
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(x));
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.statement.loop.bug6070_.bug6070();
+    }
+}
+final class bug1227_again_ {
+    
+    private bug1227_again_() {
+    }
+    
+    static long bug1227_again(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
+        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final long from;
+        long from$12 = 0L;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$24 = l;
+        final boolean isArray$25 = iterable$24 instanceof .ceylon.language.Array;
+        final boolean isTuple$26 = iterable$24 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$24).$getArray$() != null;
+        .java.lang.Object elem$13 = null;
+        int i$27 = 0;
+        final int length$28;
+        if (isArray$25 || isTuple$26) {
+            length$28 = (int)iterable$24.getSize();
+        } else {
+            length$28 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$14 = isTuple$26 || isArray$25 ? null : iterable$24.iterator();
+        loop_2: while (isTuple$26 || isArray$25 ? i$27 < length$28 : !((elem$13 = index$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$25 || isTuple$26) elem$13 = iterable$24.getFromFirst(i$27++);
+            final long index = ((.ceylon.language.Integer)elem$13).longValue();
+            final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$19 = l;
+            final boolean isArray$20 = iterable$19 instanceof .ceylon.language.Array;
+            final boolean isTuple$21 = iterable$19 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$19).$getArray$() != null;
+            .java.lang.Object elem$15 = null;
+            int i$22 = 0;
+            final int length$23;
+            if (isArray$20 || isTuple$21) {
+                length$23 = (int)iterable$19.getSize();
+            } else {
+                length$23 = 0;
+            }
+            .ceylon.language.Iterator<? extends .ceylon.language.Integer> index2$iterator$$16 = isTuple$21 || isArray$20 ? null : iterable$19.iterator();
+            loop_3: while (isTuple$21 || isArray$20 ? i$22 < length$23 : !((elem$15 = index2$iterator$$16.next()) instanceof .ceylon.language.Finished)) {
+                if (isArray$20 || isTuple$21) elem$15 = iterable$19.getFromFirst(i$22++);
+                final long index2 = ((.ceylon.language.Integer)elem$15).longValue();
+                if (someBoolean) {
+                    from$12 = index + index2;
+                    final long from$18 = from$12;
+                    return from$12;
+                }
+            }
+        }
+        from$12 = 1L;
+        final long from$29 = from$12;
+        from = from$12;
+        return from;
+    }
+}
