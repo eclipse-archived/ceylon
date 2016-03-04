@@ -608,6 +608,16 @@ public class RecoveryTests extends CompilerTests {
     }
     
     @Test
+    public void testRcvExpressionRecoveryValueRefinementSpecifier(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryValueRefinementSpecifier.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueRefinementSpecifier_main",
+                "function or value does not exist: 'asdfValueRefinementSpecifier'",
+                1, 2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryValueRefinementSpecifier");
+    }
+    
+    @Test
     public void testRcvExpressionRecoveryValueInit(){
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryValueInit.ceylon",
