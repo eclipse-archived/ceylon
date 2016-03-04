@@ -1,15 +1,6 @@
-apply from: '../common.gradle'
 
 dependencies {
-    compile (
-        [name: 'org/tautua/markdownpapers/core/1.2.7/org.tautua.markdownpapers.core-1.2.7']
-    )
-    testCompile (
-        [name: 'junit-4.11.0'],
-    )
-    testRuntime (
-        [name: 'junit-4.11.0'],
-        [name: 'hamcrest-core-1.3.0.v201303031735']
-    )
+    compile 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
+    testCompile 'junit:junit:4.11'
 }
 

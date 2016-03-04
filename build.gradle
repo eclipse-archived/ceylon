@@ -1,0 +1,29 @@
+subprojects {
+    apply plugin: 'java'
+
+    sourceSets {
+        main {
+            java {
+                srcDir 'src'
+            }
+        }
+        test {
+            java {
+                srcDir 'test'
+            }
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs '../dist/dist/repo', '../lib'
+        }
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.11'
+    }
+
+}
+

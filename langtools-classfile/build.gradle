@@ -1,6 +1,5 @@
-apply from: '../common.gradle'
 
 dependencies {
-    compile name: 'com/redhat/ceylon/common/1.2.2/com.redhat.ceylon.common-1.2.2'
+    compile project(':common')
 }
 
