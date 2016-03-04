@@ -654,6 +654,11 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopJavaArrayInFor(){
+        compareWithJavaSource("JavaArrayInFor");
+    }
+    
+    @Test
     public void testIopJavaIterableInForComprehension(){
         compareWithJavaSource("JavaIterableInForComprehension");
     }

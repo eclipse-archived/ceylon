@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class javaArrayInFor_ {
+    
+    private javaArrayInFor_() {
+    }
+    
+    static void javaArrayInFor() {
+        long sum = 0L;
+        final .ceylon.language.String[] array$0 = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
+        loop_0: for (int i$2 = 0; i$2 < array$0.length; i$2++) {
+            final .java.lang.String s = array$0[i$2].toString();
+            sum += .ceylon.language.String.hashCode(s);
+        }
+        final .java.lang.String[] array$3 = (.java.lang.String[]).ceylon.language.nothing_.get_();
+        loop_1: for (int i$5 = 0; i$5 < array$3.length; i$5++) {
+            final .java.lang.String s = array$3[i$5];
+            sum += s.hashCode();
+        }
+        final boolean[] array$6 = (boolean[]).ceylon.language.nothing_.get_();
+        loop_2: for (int i$8 = 0; i$8 < array$6.length; i$8++) {
+            final boolean s = array$6[i$8];
+            sum += .ceylon.language.Boolean.hashCode(s);
+        }
+        final byte[] array$9 = (byte[]).ceylon.language.nothing_.get_();
+        loop_3: for (int i$11 = 0; i$11 < array$9.length; i$11++) {
+            final byte s = array$9[i$11];
+            sum += .ceylon.language.Byte.hashCode(s);
+        }
+        final short[] array$12 = (short[]).ceylon.language.nothing_.get_();
+        loop_4: for (int i$14 = 0; i$14 < array$12.length; i$14++) {
+            final long s = array$12[i$14];
+            sum += .ceylon.language.Integer.hashCode(s);
+        }
+        final int[] array$15 = (int[]).ceylon.language.nothing_.get_();
+        loop_5: for (int i$17 = 0; i$17 < array$15.length; i$17++) {
+            final long s = array$15[i$17];
+            sum += .ceylon.language.Integer.hashCode(s);
+        }
+        final long[] array$18 = (long[]).ceylon.language.nothing_.get_();
+        loop_6: for (int i$20 = 0; i$20 < array$18.length; i$20++) {
+            final long s = array$18[i$20];
+            sum += .ceylon.language.Integer.hashCode(s);
+        }
+        final float[] array$21 = (float[]).ceylon.language.nothing_.get_();
+        loop_7: for (int i$23 = 0; i$23 < array$21.length; i$23++) {
+            final double s = array$21[i$23];
+            sum += .ceylon.language.Float.hashCode(s);
+        }
+        final double[] array$24 = (double[]).ceylon.language.nothing_.get_();
+        loop_8: for (int i$26 = 0; i$26 < array$24.length; i$26++) {
+            final double s = array$24[i$26];
+            sum += .ceylon.language.Float.hashCode(s);
+        }
+        final char[] array$27 = (char[]).ceylon.language.nothing_.get_();
+        loop_9: for (int i$29 = 0; i$29 < array$27.length; i$29++) {
+            final int s = array$27[i$29];
+            sum += .ceylon.language.Character.hashCode(s);
+        }
+    }
+}
