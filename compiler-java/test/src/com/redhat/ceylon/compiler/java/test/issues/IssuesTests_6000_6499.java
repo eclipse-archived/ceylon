@@ -56,4 +56,9 @@ public class IssuesTests_6000_6499 extends CompilerTests {
         //compile("bug60xx/bug6037/run.ceylon");
         Assert.assertEquals(0, p.waitFor());
     }
+    
+    @Test
+    public void testBug6078() {
+        compareWithJavaSource("bug60xx/Bug6078");
+    }
 }
