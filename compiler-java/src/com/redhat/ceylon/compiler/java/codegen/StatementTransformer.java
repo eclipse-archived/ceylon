@@ -2036,13 +2036,17 @@ public class StatementTransformer extends AbstractTransformer {
     class JavaArrayIterationOptimization extends IndexedAccessIterationOptimization {
         
         public static final String OPT_NAME = "JavaArrayIterationStatic";
+        
+        final boolean dotIterable;
+        
         /** this is the IntArray, ObjectArray or whatever */
         private final Type javaArrayType;
         
-        JavaArrayIterationOptimization(Tree.ForStatement stmt,
+        JavaArrayIterationOptimization(boolean dotIterable, Tree.ForStatement stmt,
                 Tree.Term baseIterable, Tree.Term step,
                 Type elementType, Type javaArrayType) {
             super(stmt, baseIterable, step, elementType, "array");
+            this.dotIterable = dotIterable;
             this.javaArrayType = javaArrayType;
         }
         
@@ -2053,9 +2057,11 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexable() {
-            Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)getIterable();
-            
-            return expressionGen().transformExpression(expr.getPrimary());
+            if (dotIterable) {
+                Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)getIterable();
+                return expressionGen().transformExpression(expr.getPrimary());
+            }
+            return expressionGen().transformExpression(getIterable());
         }
         
         protected JCExpression makeCondition() {
@@ -2075,7 +2081,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected boolean isIndexedAccessBoxed() {
-            return isOptional(elementType);
+            return dotIterable ? isOptional(elementType) : 
+                typeFact().getJavaObjectArrayDeclaration().equals(javaArrayType.resolveAliases().getDeclaration());
         }
     }
     
@@ -2084,6 +2091,9 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.Term step) {
         
         Type ceylonArrayType = baseIterable.getTypeModel();
+        if (typeFact().isJavaArrayType(ceylonArrayType)) {
+            return new JavaArrayIterationOptimization(false, stmt, baseIterable, step, typeFact().getJavaArrayElementType(ceylonArrayType), ceylonArrayType);
+        }
         Type elementType = typeFact().getArrayElementType(ceylonArrayType);
         if (elementType == null) {
             // Check for "for (x in javaArray.iterable)" where javaArray is e.g. IntArray
@@ -2096,7 +2106,7 @@ public class StatementTransformer extends AbstractTransformer {
                             return optimizationDisabled(stmt, Optimization.JavaArrayIterationStatic);
                         }
                         elementType = typeFact().getIteratedType(ceylonArrayType);
-                        return new JavaArrayIterationOptimization(stmt, baseIterable, step, elementType, expr.getPrimary().getTypeModel());
+                        return new JavaArrayIterationOptimization(true, stmt, baseIterable, step, elementType, expr.getPrimary().getTypeModel());
                     }
                 }
             }

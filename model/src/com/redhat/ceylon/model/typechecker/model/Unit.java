@@ -1159,6 +1159,10 @@ public class Unit {
                 dec.equals(getJavaDoubleArrayDeclaration());
     }
     
+    public boolean isJavaArrayType(Type pt) {
+        return isJavaObjectArrayType(pt) || isJavaPrimitiveArrayType(pt);
+    }
+    
     public boolean isUsableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getUsableDeclaration());
