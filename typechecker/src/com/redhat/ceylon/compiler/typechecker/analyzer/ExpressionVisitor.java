@@ -4815,7 +4815,7 @@ public class ExpressionVisitor extends Visitor {
                         List<Type> args = 
                                 cst.getTypeArgumentList();
 						kt = args.get(0);
-						vt = args.get(1);
+						vt = unit.getOptionalType(args.get(1));
                     }
                     if (cst==null) {
                         Interface ld = 
@@ -4836,13 +4836,97 @@ public class ExpressionVisitor extends Visitor {
                             List<Type> args =
                                     cst.getTypeArgumentList();
     						kt = args.get(0);
-    						vt = args.get(1);
+    						vt = unit.getOptionalType(args.get(1));
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaObjectArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            List<Type> args = 
+                                    cst.getTypeArgumentList();
+                            kt = unit.getIntegerType();
+                            vt = unit.getOptionalType(args.get(0));
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaDoubleArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getFloatType();
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaFloatArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getFloatType();
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaCharArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getCharacterType();
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaBooleanArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getBooleanType();
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaByteArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getByteType();
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaIntArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getIntegerType();
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaLongArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getIntegerType();
+                        }
+                    }
+                    if (cst==null) {
+                        Class ad = 
+                                unit.getJavaShortArrayDeclaration();
+                        cst = pt.getSupertype(ad);
+                        if (cst != null) {
+                            kt = unit.getIntegerType();
+                            vt = unit.getIntegerType();
                         }
                     }
                     if (cst==null) {
                         that.getPrimary()
                             .addError("illegal receiving type for index expression: '" +
-                                    pt.getDeclaration().getName(unit) + 
+                                    pt.getDeclaration()
+                                        .getName(unit) + 
                                     "' is not a subtype of 'Correspondence'");
                     }
                     else {
@@ -4852,8 +4936,7 @@ public class ExpressionVisitor extends Visitor {
                         checkAssignable(ee.getTypeModel(), 
                                 kt, ee, 
                                 "index must be assignable to key type");
-                        Type rt = unit.getOptionalType(vt);
-                        that.setTypeModel(rt);
+                        that.setTypeModel(vt);
                         Tree.Term t = ee.getTerm();
                         //TODO: in theory we could do a whole lot
                         //      more static-execution of the 
@@ -4882,11 +4965,13 @@ public class ExpressionVisitor extends Visitor {
                         Tree.Expression ub = er.getUpperBound();
                         Expression l = er.getLength();
                         if (lb!=null) {
-                            checkAssignable(lb.getTypeModel(), kt, lb, 
+                            checkAssignable(lb.getTypeModel(), 
+                                    kt, lb, 
                                     "lower bound must be assignable to index type");
                         }
                         if (ub!=null) {
-                            checkAssignable(ub.getTypeModel(), kt, ub, 
+                            checkAssignable(ub.getTypeModel(), 
+                                    kt, ub, 
                                     "upper bound must be assignable to index type");
                         }
                         if (l!=null) {
