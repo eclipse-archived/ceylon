@@ -60,15 +60,20 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.getMemberDeclaration=f
     if(_d) {
       var _$m = getrtmm$$(_d);
       var _mdl=get_model(_$m);
-      if(wantsSetter && _mdl.$set === undefined)
-        _d = undefined; // we have no setter to return
-      var isval=_mdl.mt==='g'||_mdl.mt==='o';
-      if (!wantsSetter && isval && !extendsType({t:ValueDeclaration$meta$declaration}, kind))
-        _d = undefined;
-      if(_d){
-        _m=OpenValue$jsint(this.containingPackage, _d);
-        if(wantsSetter)
-          _m=_m.setter;
+      if (!_mdl) {
+        console.log("ClassOrInterfaceDeclaration.getMemberDeclaration: no model for",_d,"metamodel",_$m);
+      } else {
+        if(wantsSetter && _mdl.$set === undefined) {
+          _d = undefined; // we have no setter to return
+        }
+        var isval=_mdl.mt==='g'||_mdl.mt==='o';
+        if (!wantsSetter && isval && !extendsType({t:ValueDeclaration$meta$declaration}, kind))
+          _d = undefined;
+        if(_d){
+          _m=OpenValue$jsint(this.containingPackage, _d);
+          if(wantsSetter)
+            _m=_m.setter;
+        }
       }
     }
   }
