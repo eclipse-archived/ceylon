@@ -119,12 +119,15 @@ shared interface Map<out Key=Object, out Item=Anything>
     shared actual formal Map<Key,Item> clone();
     
     "A [[Collection]] containing the keys of this map."
+    //TODO: should be a Set
     shared actual default Collection<Key> keys
-            => object satisfies Collection<Key> {
+            => object extends Object() 
+                      satisfies Set<Key> {
         contains(Object key) => outer.defines(key);
         iterator() => outer.map(Entry.key).iterator();
-        clone() => [*this];
         size => outer.size;
+        empty => outer.empty;
+        clone() => set(this);
     };
     
     "A [[Collection]] containing the items stored in this 
@@ -132,7 +135,8 @@ shared interface Map<out Key=Object, out Item=Anything>
      in the map, and so it can occur more than once in the 
      resulting collection."
     shared default Collection<Item> items
-            => object satisfies Collection<Item> {
+            => object extends Object() 
+                      satisfies Collection<Item> {
         shared actual Boolean contains(Object item) {
             for (k->v in outer) {
                 if (exists v, v==item) {
@@ -144,8 +148,9 @@ shared interface Map<out Key=Object, out Item=Anything>
             }
         }
         iterator() => outer.map(Entry.item).iterator();
-        clone() => [*this];
         size => outer.size;
+        empty => outer.empty;
+        clone() => [*this];
     };
     
     "Invert this map, producing a new immutable map where 
