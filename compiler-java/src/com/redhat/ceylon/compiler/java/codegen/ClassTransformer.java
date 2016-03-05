@@ -73,7 +73,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerEx
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
@@ -93,7 +92,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
-import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
@@ -202,12 +200,8 @@ public class ClassTransformer extends AbstractTransformer {
         return trans;
     }
 
-    private boolean isBootstrap;
-
     private ClassTransformer(Context context) {
         super(context);
-        Options options = Options.instance(context);
-        isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
     }
 
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
@@ -2651,15 +2645,6 @@ public class ClassTransformer extends AbstractTransformer {
                                 null,
                                 DelegateType.OTHER);
                         classBuilder.method(getterDelegate);
-                        if (!isBootstrap && satisfiedType.getDeclaration().equals(typeFact().getMapDeclaration())
-                                && member.equals(typeFact().getMapDeclaration().getMember("keys", null, false))) {
-                            MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "getKeys");
-                            mdb.modifiers(Flags.BRIDGE | Flags.PUBLIC);
-                            mdb.isOverride(true);
-                            mdb.resultType(null, makeJavaType(typeFact().getCollectionDeclaration().appliedType(null, Collections.singletonList(satisfiedType.getTypeArgumentList().get(0)))));
-                            mdb.body(make().Return(make().Apply(null, naming.makeUnquotedIdent("getKeys"), List.<JCExpression>nil())));
-                            classBuilder.method(mdb);
-                        }
                     }
                     if (setter != null) {
                         final MethodDefinitionBuilder setterDelegate = makeDelegateToCompanion(iface, 

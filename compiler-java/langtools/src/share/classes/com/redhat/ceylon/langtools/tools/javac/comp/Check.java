@@ -2689,7 +2689,7 @@ public class Check {
                     duplicateErasureError(pos, sym, e.sym);
                     sym.flags_field |= CLASH;
                     return true;
-                } else if (!sourceLanguage.isCeylon() || (sym.flags() & BRIDGE) == (e.sym.flags() & BRIDGE)) {
+                } else {
                     duplicateError(pos, e.sym);
                     return false;
                 }
