@@ -134,24 +134,27 @@ shared interface Map<out Key=Object, out Item=Anything>
      map. An element can be stored under more than one key 
      in the map, and so it can occur more than once in the 
      resulting collection."
-    shared default Collection<Item> items
-            => object extends Object() 
-                      satisfies Collection<Item> {
-        shared actual Boolean contains(Object item) {
-            for (k->v in outer) {
-                if (exists v, v==item) {
-                    return true;
-                }
-            }
-            else {
-                return false;
-            }
-        }
+    shared default Collection<Item> items => Items();
+    
+    "A bag of items."
+    class Items() extends Object() 
+                  satisfies Collection<Item> {
+        contains(Object item) 
+                => outer.any((entry) 
+                    => if (exists it = entry.item) 
+                            then it==item 
+                            else false);
         iterator() => outer.map(Entry.item).iterator();
         size => outer.size;
         empty => outer.empty;
         clone() => [*this];
-    };
+        //implement hash and equals for bag semantics
+        hash => frequencies().hash;
+        equals(Object that) 
+                => if (is Items that) 
+                then frequencies()==that.frequencies() 
+                else false;
+    }
     
     "Invert this map, producing a new immutable map where 
      the keys of the new map are the non-null items of this
