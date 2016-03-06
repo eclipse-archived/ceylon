@@ -836,14 +836,6 @@ public final class Tuple<Element, First extends Element,
         }
     }
     
-    private ArraySequence<Element> toArraySequence() {
-        return new ArraySequence<Element>($reifiedElement, toArray());
-    }
-
-    private Array<Element> toArray() {
-        return new Array<Element>($reifiedElement, this);
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trim(Callable<? extends Boolean> f) {
@@ -964,6 +956,10 @@ public final class Tuple<Element, First extends Element,
         return true;
     }
 
+    private Integer adjustIndex(Integer index) {
+        return Integer.instance(index.longValue()+array.length);
+    }
+
     @Override @Ignore
     public Integer firstIndexWhere(Callable<? extends Boolean> f) {
         for (int i=0; i<array.length; i++) {
@@ -971,13 +967,16 @@ public final class Tuple<Element, First extends Element,
                 return Integer.instance(i);
             }
         }
-        return rest.firstIndexWhere(f);
+        Integer index = rest.firstIndexWhere(f);
+        return index==null ? null : adjustIndex(index);
     }
 
     @Override @Ignore
     public Integer lastIndexWhere(Callable<? extends Boolean> f) {
         Integer index = rest.lastIndexWhere(f);
-        if (index!=null) return index;
+        if (index!=null) {
+            return adjustIndex(index);
+        }
         for (int i=array.length-1; i>=0; i--) {
             if (f.$call$(array[i]).booleanValue()) {
                 return Integer.instance(i);
@@ -1347,6 +1346,15 @@ public final class Tuple<Element, First extends Element,
         return null;
     }
 
+    private Entry<Integer, Element> adjustEntry
+            (Entry<? extends Integer, ?> entry) {
+        return new Entry<Integer,Element>(
+                Integer.$TypeDescriptor$,
+                $reifiedElement,
+                Integer.instance(entry.getKey().longValue()+array.length), 
+                (Element) entry.getItem());
+    }
+
     @Override @Ignore
     public Entry<? extends Integer,? extends Element> 
     locate(Callable<? extends Boolean> f) {
@@ -1359,7 +1367,8 @@ public final class Tuple<Element, First extends Element,
                         (Element) object);
             }
         }
-        return rest.locate(f);
+        Entry<? extends Integer, ?> entry = rest.locate(f);
+        return entry==null ? null : adjustEntry(entry);
     }
 
     @Override @Ignore
@@ -1367,7 +1376,9 @@ public final class Tuple<Element, First extends Element,
     locateLast(Callable<? extends Boolean> f) {
         Entry<? extends Integer,? extends Element> entry = 
                 rest.locateLast(f);
-        if (entry!=null) return entry;
+        if (entry!=null) {
+            return adjustEntry(entry);
+        }
         for (int i=array.length-1; i>=0; i--) {
             java.lang.Object object = array[i];
             if (f.$call$(object).booleanValue()) {
