@@ -1073,7 +1073,7 @@ public final class Tuple<Element, First extends Element,
                 return true;
             }
         }
-        return false;
+        return rest.any(f);
     }
 
     @Override @Ignore
@@ -1083,7 +1083,7 @@ public final class Tuple<Element, First extends Element,
                 return false;
             }
         }
-        return true;
+        return rest.every(f);
     }
 
     @Override @Ignore
@@ -1196,6 +1196,12 @@ public final class Tuple<Element, First extends Element,
         java.lang.Object result = array[0];
         for (int i=1; i<array.length; i++) {
             java.lang.Object object = array[i];
+            if (f.$call$(object, result)==larger_.get_()) {
+                result = object;
+            }
+        }
+        if (!rest.getEmpty()) {
+            java.lang.Object object = rest.max(f);
             if (f.$call$(object, result)==larger_.get_()) {
                 result = object;
             }
