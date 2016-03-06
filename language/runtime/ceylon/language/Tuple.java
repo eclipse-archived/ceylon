@@ -917,12 +917,14 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public List$impl<? extends Element> $ceylon$language$List$impl() {
-        return new List$impl<Element>
-                ($reifiedElement, this);
+        return new List$impl<Element>($reifiedElement, this);
     }
 
     @Override @Ignore
     public boolean endsWith(List<? extends java.lang.Object> list) {
+        if (!rest.getEmpty()) {
+            return $ceylon$language$List$impl().endsWith(list);
+        }
         long size = list.getSize();
         if (size>array.length) return false;
         if (size<=0) return true;
@@ -942,6 +944,9 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public boolean startsWith(List<? extends java.lang.Object> list) {
+        if (!rest.getEmpty()) {
+            return $ceylon$language$List$impl().startsWith(list);
+        }
         long size = list.getSize();
         if (size>array.length) return false;
         if (size<=0) return true;
@@ -966,11 +971,13 @@ public final class Tuple<Element, First extends Element,
                 return Integer.instance(i);
             }
         }
-        return null;
+        return rest.firstIndexWhere(f);
     }
 
     @Override @Ignore
     public Integer lastIndexWhere(Callable<? extends Boolean> f) {
+        Integer index = rest.lastIndexWhere(f);
+        if (index!=null) return index;
         for (int i=array.length-1; i>=0; i--) {
             if (f.$call$(array[i]).booleanValue()) {
                 return Integer.instance(i);
