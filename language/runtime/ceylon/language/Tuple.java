@@ -835,10 +835,18 @@ public final class Tuple<Element, First extends Element,
             return rest.terminal(length);
         }
     }
+    
+    private ArraySequence<Element> toArraySequence() {
+        return new ArraySequence<Element>($reifiedElement, 
+                new Array<Element>($reifiedElement, this));
+    }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trim(Callable<? extends Boolean> f) {
+        if (!rest.getEmpty()) {
+            return toArraySequence().trim(f);
+        }
         int size = array.length;
         int j = 0;
         while (j<size) {
@@ -864,6 +872,9 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public Sequential<? extends Element> trimLeading(
             Callable<? extends Boolean> f) {
+        if (!rest.getEmpty()) {
+            return toArraySequence().trim(f);
+        }
         int size = array.length;
         int i = 0;
         while (i<size) {
@@ -876,13 +887,16 @@ public final class Tuple<Element, First extends Element,
         java.lang.Object[] trimmedArray = 
                 new java.lang.Object[size-i];
         System.arraycopy(array, i, trimmedArray, 0, size-i);
-        return new Tuple($reifiedElement, trimmedArray);
+        return new Tuple($reifiedElement, trimmedArray, rest);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trimTrailing(
             Callable<? extends Boolean> f) {
+        if (!rest.getEmpty()) {
+            return toArraySequence().trim(f);
+        }
         int size = array.length;
         int i = 0;
         while (i<size) {
