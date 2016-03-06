@@ -1331,11 +1331,13 @@ public final class Tuple<Element, First extends Element,
                 return (Element) object;
             }
         }
-        return null;
+        return rest.find(f);
     }
 
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
+        Element element = rest.findLast(f);
+        if (element!=null) return element;
         for (int i=array.length-1; i>=0; i--) {
             java.lang.Object object = array[i];
             if (f.$call$(object).booleanValue()) {
@@ -1353,21 +1355,26 @@ public final class Tuple<Element, First extends Element,
             if (f.$call$(object).booleanValue()) {
                 return new Entry<Integer,Element>
                         (Integer.$TypeDescriptor$, $reifiedElement, 
-                        Integer.instance(i), (Element) object);
+                        Integer.instance(i), 
+                        (Element) object);
             }
         }
-        return null;
+        return rest.locate(f);
     }
 
     @Override @Ignore
     public Entry<? extends Integer,? extends Element> 
     locateLast(Callable<? extends Boolean> f) {
+        Entry<? extends Integer,? extends Element> entry = 
+                rest.locateLast(f);
+        if (entry!=null) return entry;
         for (int i=array.length-1; i>=0; i--) {
             java.lang.Object object = array[i];
             if (f.$call$(object).booleanValue()) {
                 return new Entry<Integer,Element>(
                         Integer.$TypeDescriptor$, $reifiedElement, 
-                        Integer.instance(i), (Element) object);
+                        Integer.instance(i), 
+                        (Element) object);
             }
         }
         return null;
