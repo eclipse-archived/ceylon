@@ -46,7 +46,7 @@ shared interface Sequential<out Element=Anything>
      a sequence no longer than the given length. If this 
      sequence is shorter than the given length, return this 
      sequence. Otherwise return a sequence of the given 
-     length."
+     length. If `length<=0` return an [[Empty]] sequence."
     shared actual default Element[] initial(Integer length)
             => this[...length-1];
     
