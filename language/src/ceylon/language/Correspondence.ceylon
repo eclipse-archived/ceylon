@@ -1,5 +1,7 @@
 "Abstract supertype of objects which associate values with 
- keys.
+ keys. A `Correspondence<Key,Item>` may be a viewed as a 
+ partial function from domain `Key` to range `Item`, where
+ some `Key`s have no `Item`.
  
  `Correspondence` does not satisfy [[Category]], since in 
  some cases&mdash;`List`, for example&mdash;it is convenient 
