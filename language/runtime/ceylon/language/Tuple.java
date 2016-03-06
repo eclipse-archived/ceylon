@@ -797,23 +797,43 @@ public final class Tuple<Element, First extends Element,
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> initial(long length) {
-        if (length<=0) return (Sequential<? extends Element>) empty_.get_();
-        if (length>=array.length) return this;
+        if (length<=0) {
+            return (Sequential<? extends Element>) empty_.get_();
+        }
+        long restSize = rest.getSize();
+        if (length>=array.length+restSize) {
+            return this;
+        }
+        if (length>=array.length) {
+            return new Tuple($reifiedElement, array, 
+                    rest.initial(length-array.length));
+        }
         int len = (int) length;
         java.lang.Object[] initialArray = new java.lang.Object[len];
         System.arraycopy(array, 0, initialArray, 0, len);
-        return new Tuple($reifiedElement, initialArray);
+        return new Tuple($reifiedElement, initialArray, 
+                rest.initial(length-array.length));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> terminal(long length) {
-        if (length<=0) return (Sequential<? extends Element>) empty_.get_();
-        if (length>=array.length) return this;
-        int len = (int) length;
-        java.lang.Object[] initialArray = new java.lang.Object[len];
-        System.arraycopy(array, array.length-len, initialArray, 0, len);
-        return new Tuple($reifiedElement, initialArray);
+        if (length<=0) {
+            return (Sequential<? extends Element>) empty_.get_();
+        }
+        long restSize = rest.getSize();
+        if (length>=array.length+restSize) {
+            return this;
+        }
+        if (length > restSize) {
+            int len = (int) (length - restSize);
+            java.lang.Object[] initialArray = new java.lang.Object[len];
+            System.arraycopy(array, array.length-len, initialArray, 0, len);
+            return new Tuple($reifiedElement, initialArray, rest);
+        }
+        else {
+            return rest.terminal(length);
+        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
