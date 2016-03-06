@@ -837,15 +837,18 @@ public final class Tuple<Element, First extends Element,
     }
     
     private ArraySequence<Element> toArraySequence() {
-        return new ArraySequence<Element>($reifiedElement, 
-                new Array<Element>($reifiedElement, this));
+        return new ArraySequence<Element>($reifiedElement, toArray());
+    }
+
+    private Array<Element> toArray() {
+        return new Array<Element>($reifiedElement, this);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trim(Callable<? extends Boolean> f) {
         if (!rest.getEmpty()) {
-            return toArraySequence().trim(f);
+            return $ceylon$language$Sequential$impl().trim(f);
         }
         int size = array.length;
         int j = 0;
@@ -873,7 +876,7 @@ public final class Tuple<Element, First extends Element,
     public Sequential<? extends Element> trimLeading(
             Callable<? extends Boolean> f) {
         if (!rest.getEmpty()) {
-            return toArraySequence().trim(f);
+            return $ceylon$language$Sequential$impl().trimLeading(f);
         }
         int size = array.length;
         int i = 0;
@@ -895,7 +898,7 @@ public final class Tuple<Element, First extends Element,
     public Sequential<? extends Element> trimTrailing(
             Callable<? extends Boolean> f) {
         if (!rest.getEmpty()) {
-            return toArraySequence().trim(f);
+            return $ceylon$language$Sequential$impl().trimTrailing(f);
         }
         int size = array.length;
         int i = 0;
