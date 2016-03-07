@@ -415,7 +415,8 @@ public class ExpressionVisitor extends Visitor {
                         Type it = e.getTypeModel();
                         if (it!=null) {
                             if (!unit.isIterableType(it) &&
-                                    !unit.isJavaIterableType(it)) {
+                                    !unit.isJavaIterableType(it) && 
+                                    !unit.isJavaArrayType(it)) {
                                 se.addError("expression is not iterable: '" + 
                                         it.asString(unit) + 
                                         "' is not a subtype of 'Iterable'");
@@ -1099,7 +1100,9 @@ public class ExpressionVisitor extends Visitor {
                 Type et = e.getTypeModel();
                 if (!isTypeUnknown(et)) {
                     if (!unit.isIterableType(et) &&
-                        !unit.isJavaIterableType(et)) {
+                        !unit.isJavaIterableType(et) &&
+                        !unit.isJavaObjectArrayType(et) &&
+                        !unit.isJavaPrimitiveArrayType(et)) {
                         se.addError("expression is not iterable: '" + 
                                 et.asString(unit) + 
                                 "' is not a subtype of 'Iterable'");
@@ -1854,12 +1857,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type vt = type.getTypeModel();
-                Type set = e.getTypeModel();
+                Type expressionType = e.getTypeModel();
                 if (!isTypeUnknown(vt) && 
-                        !isTypeUnknown(set)) {
-                    Type it = unit.getIteratedType(set);
+                        !isTypeUnknown(expressionType)) {
+                    Type it = unit.getIteratedType(expressionType);
                     if (it==null) {
-                        it = unit.getJavaIteratedType(set);
+                        it = unit.getJavaIteratedType(expressionType);
+                    }
+                    if (it==null) {
+                        it = unit.getJavaArrayElementType(expressionType);
                     }
                     checkAssignable(it, vt, var, 
                             "iterable element type must be assignable to iterator variable type");
@@ -2492,6 +2498,9 @@ public class ExpressionVisitor extends Visitor {
                 if (elementType==null) {
                     elementType = 
                             unit.getJavaIteratedType(expressionType);
+                }
+                if (elementType==null) {
+                    elementType = unit.getJavaArrayElementType(expressionType);
                 }
                 if (elementType!=null) {
                     local.setTypeModel(elementType);
@@ -4840,88 +4849,18 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     if (cst==null) {
-                        Class ad = 
-                                unit.getJavaObjectArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            List<Type> args = 
-                                    cst.getTypeArgumentList();
+                        boolean objectArray = 
+                                unit.isJavaObjectArrayType(pt);
+                        boolean primitiveArray = 
+                                unit.isJavaPrimitiveArrayType(pt);
+                        if (objectArray || primitiveArray) {
+                            cst = pt;
                             kt = unit.getIntegerType();
-                            vt = unit.getOptionalType(args.get(0));
+                            Type et = unit.getJavaArrayElementType(pt);
+                            vt = primitiveArray ? et : unit.getOptionalType(et);
                         }
                     }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaDoubleArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getFloatType();
-                        }
-                    }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaFloatArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getFloatType();
-                        }
-                    }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaCharArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getCharacterType();
-                        }
-                    }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaBooleanArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getBooleanType();
-                        }
-                    }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaByteArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getByteType();
-                        }
-                    }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaIntArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getIntegerType();
-                        }
-                    }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaLongArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getIntegerType();
-                        }
-                    }
-                    if (cst==null) {
-                        Class ad = 
-                                unit.getJavaShortArrayDeclaration();
-                        cst = pt.getSupertype(ad);
-                        if (cst != null) {
-                            kt = unit.getIntegerType();
-                            vt = unit.getIntegerType();
-                        }
-                    }
+                    
                     if (cst==null) {
                         that.getPrimary()
                             .addError("illegal receiving type for index expression: '" +

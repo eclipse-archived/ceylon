@@ -1,6 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("java.lang::Iterable<ceylon.language::String>")
+final class Strings {
+    
+    private Strings() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("java.lang::Iterable<java.lang::String>")
+final class JStrings {
+    
+    private JStrings() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class javaIterableInFor_ {
     
@@ -47,6 +61,14 @@ final class javaIterableInFor_ {
         }
         if (doforelse$8) {
             sum = 0L;
+        }
+        loop_5: for (.ceylon.language.String s$iterator$$15 : strings) {
+            final .java.lang.String s = ((.ceylon.language.String)s$iterator$$15).toString();
+            sum += .ceylon.language.String.hashCode(s);
+        }
+        loop_6: for (.java.lang.String s$iterator$$17 : jstrings) {
+            final .java.lang.String s = (.java.lang.String)s$iterator$$17;
+            sum += s.hashCode();
         }
     }
 }
