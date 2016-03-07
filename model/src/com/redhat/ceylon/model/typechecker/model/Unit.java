@@ -1142,21 +1142,23 @@ public class Unit {
     }
     
     public boolean isJavaObjectArrayType(Type pt) {
-        return pt.resolveAliases().getDeclaration()
-                .equals(getJavaObjectArrayDeclaration());
+        TypeDeclaration dec = pt.resolveAliases().getDeclaration();
+        return dec instanceof Class &&
+                dec.equals(getJavaObjectArrayDeclaration());
     }
     
     public boolean isJavaPrimitiveArrayType(Type pt) {
         TypeDeclaration dec = 
                 pt.resolveAliases().getDeclaration();
-        return dec.equals(getJavaIntArrayDeclaration()) ||
+        return dec instanceof Class &&
+                (dec.equals(getJavaIntArrayDeclaration()) ||
                 dec.equals(getJavaShortArrayDeclaration()) ||
                 dec.equals(getJavaLongArrayDeclaration()) ||
                 dec.equals(getJavaByteArrayDeclaration()) ||
                 dec.equals(getJavaCharArrayDeclaration()) ||
                 dec.equals(getJavaBooleanArrayDeclaration()) ||
                 dec.equals(getJavaFloatArrayDeclaration()) ||
-                dec.equals(getJavaDoubleArrayDeclaration());
+                dec.equals(getJavaDoubleArrayDeclaration()));
     }
     
     public boolean isJavaArrayType(Type pt) {
