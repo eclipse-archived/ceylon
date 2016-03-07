@@ -1025,11 +1025,11 @@ public class Unit {
     }
     
     public Type getJavaArrayElementType(Type type) {
-        TypeDeclaration dec = 
-                type.resolveAliases().getDeclaration();
+        Type t = type.resolveAliases();
+        TypeDeclaration dec = t.getDeclaration();
         if (dec.equals(getJavaObjectArrayDeclaration())) {
-            if (!type.getTypeArguments().isEmpty()) {
-                return type.getTypeArgumentList().get(0);
+            if (!t.getTypeArguments().isEmpty()) {
+                return t.getTypeArgumentList().get(0);
             }
             else {
                 return null;
