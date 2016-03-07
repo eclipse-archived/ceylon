@@ -208,6 +208,7 @@ public class JsOutput {
 
     public void openWrapper() throws IOException {
         JsCompiler.beginWrapper(getWriter());
+        JsCompiler.requireWrapper(getWriter(), module);
     }
     public void closeWrapper() throws IOException {
         JsCompiler.endWrapper(writer);

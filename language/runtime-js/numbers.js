@@ -87,8 +87,8 @@ atr$(JSNum$proto, 'string', function(){
       s+='.0';
   return s;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
-$specialiseForNumber$(Integer, 'string', function(){return {mod:$CCMM$,$t:{t:$_String},pa:67,$cont:Integer,d:['$','Integer','$m','string']};})
-$specialiseForNumber$(Float, 'string', function(){return {mod:$CCMM$,$t:{t:$_String},pa:67,$cont:Float,d:['$','Float','$m','string']};})
+$specialiseForNumber$(Integer, 'string', function(){return {mod:$CCMM$,$t:{t:$_String},pa:67,$cont:Integer,d:['$','Integer','$at','string']};})
+$specialiseForNumber$(Float, 'string', function(){return {mod:$CCMM$,$t:{t:$_String},pa:67,$cont:Float,d:['$','Float','$at','string']};})
 
 //Add a function to the specified prototype
 function $addnm$(nm,s) {

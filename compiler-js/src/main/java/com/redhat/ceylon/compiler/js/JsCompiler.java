@@ -570,6 +570,11 @@ public class JsCompiler {
         writer.write("(function(define) { define(function(require, ex$, module) {\n");
     }
 
+    /** Writes the require wrapper handling for our wrapper */
+    public static void requireWrapper(Writer writer, Module mod) throws IOException {
+        writer.write("var $$req$ = require; require = (typeof $$ceylon$require == 'undefined') ? $$req$ : function() { return $$ceylon$require('" + JsCompiler.scriptPath(mod) + "', $$req$, Array.prototype.slice.call(arguments)); }\n");
+    }
+
     /** Writes the ending of the wrapper function for a JS module. */
     public static void endWrapper(Writer writer) throws IOException {
         //Finish the wrapper
