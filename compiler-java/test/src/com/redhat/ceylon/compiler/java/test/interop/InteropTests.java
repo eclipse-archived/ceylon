@@ -661,6 +661,14 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testIopJavaIterableInForComprehension(){
         compareWithJavaSource("JavaIterableInForComprehension");
+        run("com.redhat.ceylon.compiler.java.test.interop.javaIterableInForComprehension");
+    }
+    
+    @Test
+    public void testIopJavaArrayInForComprehension(){
+        compile("JavaArrayInForComprehension_util.ceylon");
+        compareWithJavaSource("JavaArrayInForComprehension");
+        run("com.redhat.ceylon.compiler.java.test.interop.javaArrayInForComprehension");
     }
     
     @Test
