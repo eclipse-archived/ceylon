@@ -1025,7 +1025,8 @@ public class Unit {
     }
     
     public Type getJavaArrayElementType(Type type) {
-        TypeDeclaration dec = type.getDeclaration();
+        TypeDeclaration dec = 
+                type.resolveAliases().getDeclaration();
         if (dec.equals(getJavaObjectArrayDeclaration())) {
             if (!type.getTypeArguments().isEmpty()) {
                 return type.getTypeArgumentList().get(0);
@@ -1141,12 +1142,13 @@ public class Unit {
     }
     
     public boolean isJavaObjectArrayType(Type pt) {
-        return pt.getDeclaration()
+        return pt.resolveAliases().getDeclaration()
                 .equals(getJavaObjectArrayDeclaration());
     }
     
     public boolean isJavaPrimitiveArrayType(Type pt) {
-        TypeDeclaration dec = pt.getDeclaration();
+        TypeDeclaration dec = 
+                pt.resolveAliases().getDeclaration();
         return dec.equals(getJavaIntArrayDeclaration()) ||
                 dec.equals(getJavaShortArrayDeclaration()) ||
                 dec.equals(getJavaLongArrayDeclaration()) ||
