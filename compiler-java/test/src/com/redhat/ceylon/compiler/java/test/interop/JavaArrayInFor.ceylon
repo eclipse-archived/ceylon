@@ -16,6 +16,9 @@ import java.lang{
     CharArray
 }
 
+alias JStrings=>ObjectArray<JString>;
+alias Strings=>ObjectArray<String>;
+
 @noanno
 void javaArrayInFor() {
     variable value sum = 0;
@@ -47,6 +50,12 @@ void javaArrayInFor() {
         sum += s.hash;
     }
     for (s in (nothing of CharArray)) {
+        sum += s.hash;
+    }
+    for (s in (nothing of Strings)) {
+        sum += s.hash;
+    }
+    for (s in (nothing of JStrings)) {
         sum += s.hash;
     }
 }

@@ -1,5 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("java.lang::ObjectArray<java.lang::String>")
+final class JStrings {
+    
+    private JStrings() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("java.lang::ObjectArray<ceylon.language::String>")
+final class Strings {
+    
+    private Strings() {
+    }
+}
 final class javaArrayInFor_ {
     
     private javaArrayInFor_() {
@@ -56,6 +70,16 @@ final class javaArrayInFor_ {
         loop_9: for (int i$29 = 0; i$29 < array$27.length; i$29++) {
             final int s = array$27[i$29];
             sum += .ceylon.language.Character.hashCode(s);
+        }
+        final .ceylon.language.String[] array$30 = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
+        loop_10: for (int i$32 = 0; i$32 < array$30.length; i$32++) {
+            final .java.lang.String s = array$30[i$32].toString();
+            sum += .ceylon.language.String.hashCode(s);
+        }
+        final .java.lang.String[] array$33 = (.java.lang.String[]).ceylon.language.nothing_.get_();
+        loop_11: for (int i$35 = 0; i$35 < array$33.length; i$35++) {
+            final .java.lang.String s = array$33[i$35];
+            sum += s.hashCode();
         }
     }
 }

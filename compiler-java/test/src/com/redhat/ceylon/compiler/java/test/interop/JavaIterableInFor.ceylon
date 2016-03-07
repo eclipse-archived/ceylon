@@ -4,6 +4,8 @@ import java.lang{
     JIterable=Iterable
 }
 
+alias Strings=>JIterable<String>;
+alias JStrings=>JIterable<JString>;
 
 void javaIterableInFor() {
     JIterable<String> strings = nothing;
@@ -39,6 +41,13 @@ void javaIterableInFor() {
     } else {
         sum = 0;
     }
+    for (s in (strings of Strings)) {
+        sum += s.hash;
+    }
+    for (s in (jstrings of JStrings)) {
+        sum += s.hash;
+    }
+    
     /* not supported by the typechecker
     // entry and tuple patterns
     
