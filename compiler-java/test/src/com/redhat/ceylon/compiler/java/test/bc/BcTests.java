@@ -34,6 +34,7 @@ import java.util.zip.ZipEntry;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.Versions;
@@ -215,6 +216,7 @@ public class BcTests extends CompilerTests {
     }
     
     @Test
+    @Ignore("Till 1.2.3")
     public void bug6068() {
         compareWithJavaSource("refinedreturn/Bug6068");
         compareWithJavaSource("refinedreturn/Bug6068_client");
