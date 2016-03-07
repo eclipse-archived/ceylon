@@ -35,8 +35,8 @@ shared abstract class SequenceOperators() satisfies List<String> {
         s = this.c1[1];
         s = c1[box(1)];
         s = this[1];
-        s = super[1];
-        s = (super of List<String>)[1];
+        //s = super[1];
+        //s = (super of List<String>)[1];
         s = super.get(1);
 // M5:
 //        if (c1 satisfies OpenCorrespondence<Integer, String>) {
@@ -53,13 +53,13 @@ shared abstract class SequenceOperators() satisfies List<String> {
         subrange = this.sequence[1..2];
         subrange = sequence[box(1)..box(2)];
         subrangeList = this[1..2];
-        subrangeList = super[1..2];
+        //subrangeList = super[1..2];
         
         subrange = sequence[1:2];
         subrange = this.sequence[1:2];
         subrange = sequence[box(1):box(2)];
         subrangeList = this[1:2];
-        subrangeList = super[1:2];
+        //subrangeList = super[1:2];
         
         // make sure the length is cast to Integer and not String
         String stringRangeRet = stringRange[1:integerAndList];
@@ -69,14 +69,14 @@ shared abstract class SequenceOperators() satisfies List<String> {
         upperRange = this.sequence[1...];
         upperRange = sequence[box(1)...];
         subrangeList = this[1...];
-        subrangeList = super[1...];
+        //subrangeList = super[1...];
 
         variable String[] lowerRange;
         lowerRange = sequence[...1];
         lowerRange = this.sequence[...1];
         lowerRange = sequence[...box(1)];
         subrangeList = this[...1];
-        subrangeList = super[...1];
+        //subrangeList = super[...1];
         
         Integer[] spreadMemberWithUnboxedType = sequence*.size;
         Integer[] spreadMemberOnThis = this*.size;
@@ -123,8 +123,8 @@ shared abstract class SequenceOperators2() satisfies List2<String> {
      
      void testSequence() {
          variable String? s;
-         s = super[1];
-         s = (super of List2<String>)[1];
+         //s = super[1];
+         //s = (super of List2<String>)[1];
          s = super.get(1);
      }
 }

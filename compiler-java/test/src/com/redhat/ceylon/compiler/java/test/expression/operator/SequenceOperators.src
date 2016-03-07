@@ -566,8 +566,6 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
         s = c1.get(<.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)));
         s = this.getFromFirst(1L);
         s = $ceylon$language$List$this$.get(.ceylon.language.Integer.instance(1L));
-        s = $ceylon$language$List$this$.get(.ceylon.language.Integer.instance(1L));
-        s = $ceylon$language$List$this$.get(.ceylon.language.Integer.instance(1L));
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequence = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("foo"),
                 .ceylon.language.String.instance("bar")});
@@ -577,25 +575,21 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
         subrange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)this.getSequence$priv$()).span(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
         subrange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).span(<.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)), <.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(2L)));
         subrangeList = this.span(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
-        subrangeList = $ceylon$language$List$this$.span(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
         subrange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).measure(.ceylon.language.Integer.instance(1L), 2L);
         subrange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)this.getSequence$priv$()).measure(.ceylon.language.Integer.instance(1L), 2L);
         subrange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).measure(<.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)), <.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(2L)).longValue());
         subrangeList = this.measure(.ceylon.language.Integer.instance(1L), 2L);
-        subrangeList = $ceylon$language$List$this$.measure(.ceylon.language.Integer.instance(1L), 2L);
         final .java.lang.String stringRangeRet = ((.ceylon.language.String)(.java.lang.Object)(.ceylon.language.String)stringRange.measure(.ceylon.language.Integer.instance(1L), ((.ceylon.language.Integer)integerAndList).longValue())).toString();
         .ceylon.language.Sequential<? extends .ceylon.language.String> upperRange = null;
         upperRange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).spanFrom(.ceylon.language.Integer.instance(1L));
         upperRange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)this.getSequence$priv$()).spanFrom(.ceylon.language.Integer.instance(1L));
         upperRange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).spanFrom(<.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)));
         subrangeList = this.spanFrom(.ceylon.language.Integer.instance(1L));
-        subrangeList = $ceylon$language$List$this$.spanFrom(.ceylon.language.Integer.instance(1L));
         .ceylon.language.Sequential<? extends .ceylon.language.String> lowerRange = null;
         lowerRange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).spanTo(.ceylon.language.Integer.instance(1L));
         lowerRange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)this.getSequence$priv$()).spanTo(.ceylon.language.Integer.instance(1L));
         lowerRange = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Ranged<? super .ceylon.language.Integer, .ceylon.language.String, ? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Ranged)sequence).spanTo(<.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)));
         subrangeList = this.spanTo(.ceylon.language.Integer.instance(1L));
-        subrangeList = $ceylon$language$List$this$.spanTo(.ceylon.language.Integer.instance(1L));
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberWithUnboxedType = (
             let
             {
@@ -1540,8 +1534,6 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     
     private final void testSequence$priv$() {
         .ceylon.language.String s = null;
-        s = $com$redhat$ceylon$compiler$java$test$expression$operator$List2$this$.getFromFirst(1L);
-        s = $com$redhat$ceylon$compiler$java$test$expression$operator$List2$this$.getFromFirst(1L);
         s = $ceylon$language$List$this$.get(.ceylon.language.Integer.instance(1L));
     }
     
