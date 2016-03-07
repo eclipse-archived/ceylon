@@ -5683,6 +5683,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         return isOptional(seqElemType);
     }
     
+    enum IterType {
+        CEYLON_ITERABLE,
+        JAVA_ITERABLE,
+        JAVA_ARRAY,
+    }
+    
     class ComprehensionTransformation {
         private final Tree.Comprehension comp;
         final Type targetIterType;
@@ -6011,58 +6017,94 @@ public class ExpressionTransformer extends AbstractTransformer {
                 .body(body);
             fields.add(mb.build());
         }
-
+        
         private SyntheticName transformForClause(final Tree.ForComprehensionClause clause,
                 final Naming.SyntheticName iterVar) {
             final Tree.ForComprehensionClause fcl = clause;
             Tree.SpecifierExpression specexpr = fcl.getForIterator().getSpecifierExpression();
             Type iterType = specexpr.getExpression().getTypeModel();
-            boolean javaIterable = false;
+            IterType javaIterable = null;
             JCExpression iterTypeExpr;
             if (typeFact().getIteratedType(iterType) != null) {
                 iterTypeExpr = makeJavaType(typeFact().getIteratorType(
                     typeFact().getIteratedType(iterType)));
-                javaIterable = false;
+                javaIterable = IterType.CEYLON_ITERABLE;
             } else if (typeFact().getJavaIteratedType(iterType) != null) {
                 iterTypeExpr = makeJavaType(typeFact().getJavaIteratorType(
                         typeFact().getJavaIteratedType(iterType)));
-                javaIterable = true;
-            } else {
+                javaIterable = IterType.JAVA_ITERABLE;
+            } else if (typeFact().isJavaArrayType(iterType)) {
+                iterTypeExpr = makeJavaType(iterType);
+                javaIterable = IterType.JAVA_ARRAY;
+            }else {
                 iterTypeExpr = null;
             }
             Type iterableType = iterType.getSupertype(typeFact().getIterableDeclaration());
             JCExpression iterableExpr = transformExpression(specexpr.getExpression(), BoxingStrategy.BOXED, iterableType);
+            SyntheticName arrayVar = null;
             if (clause == comp.getInitialComprehensionClause()) {
                 //The first iterator can be initialized as a field
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
-                    null));
-                initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(iterableExpr, "iterator"), 
-                        List.<JCExpression>nil())));
+                if (javaIterable == IterType.JAVA_ARRAY) {
+                    arrayVar = naming.synthetic(Prefix.$array$, idx);
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), make().Type(syms().intType),
+                            null));
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), arrayVar.asName(), iterTypeExpr,
+                            iterableExpr));
+                    initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Literal(0)));
+                } else {
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL), iterVar.asName(), iterTypeExpr,
+                        null));
+                    initIterator = make().Exec(make().Assign(iterVar.makeIdent(), make().Apply(null, makeSelect(iterableExpr, "iterator"), 
+                            List.<JCExpression>nil())));
+                }
+                
             } else {
                 //The subsequent iterators need to be inside a method,
                 //in case they depend on the current element of the previous iterator
-                fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), iterTypeExpr, null));
                 List<JCStatement> block = List.<JCStatement>nil();
                 if (lastIteratorCtxtName != null) {
                     block = block.append(make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted$).makeIdent(),
                             make().Return(makeBoolean(false)),
                             null));
                 }
-                block = block.appendList(List.<JCStatement>of(
-                        make().If(make().Binary(JCTree.NE, iterVar.makeIdent(), makeNull()),
-                                make().Return(makeBoolean(true)),
-                                null),
-                        make().If(make().Unary(JCTree.NOT, make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
-                                make().Return(makeBoolean(false)),
-                                null)));
-                block = block.appendList(capture());
-                block = block.appendList(List.<JCStatement>of(
-                        make().Exec(make().Assign(iterVar.makeIdent(), 
-                                                  make().Apply(null,
-                                                               makeSelect(iterableExpr, "iterator"), 
-                                                               List.<JCExpression>nil()))),
-                        make().Return(makeBoolean(true))
-                ));
+                if (javaIterable == IterType.JAVA_ARRAY) {
+                    arrayVar = naming.synthetic(Prefix.$array$, idx);
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), make().Type(syms().intType),
+                            null));
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), arrayVar.asName(), iterTypeExpr,
+                            null));
+                    
+                    block = block.appendList(List.<JCStatement>of(
+                            make().If(make().Binary(JCTree.NE, arrayVar.makeIdent(), makeNull()),
+                                    make().Return(makeBoolean(true)),
+                                    null),
+                            make().If(make().Unary(JCTree.NOT, make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
+                                    make().Return(makeBoolean(false)),
+                                    null)));
+                    block = block.appendList(capture());
+                    block = block.appendList(List.<JCStatement>of(
+                            make().Exec(make().Assign(arrayVar.makeIdent(), 
+                                    iterableExpr)),
+                            make().Exec(make().Assign(iterVar.makeIdent(), make().Literal(0))),
+                            make().Return(makeBoolean(true))));
+                } else {
+                    fields.add(make().VarDef(make().Modifiers(Flags.PRIVATE), iterVar.asName(), iterTypeExpr, null));
+                    block = block.appendList(List.<JCStatement>of(
+                            make().If(make().Binary(JCTree.NE, iterVar.makeIdent(), makeNull()),
+                                    make().Return(makeBoolean(true)),
+                                    null),
+                            make().If(make().Unary(JCTree.NOT, make().Apply(null, ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
+                                    make().Return(makeBoolean(false)),
+                                    null)));
+                    block = block.appendList(capture());
+                    block = block.appendList(List.<JCStatement>of(
+                            make().Exec(make().Assign(iterVar.makeIdent(), 
+                                                      make().Apply(null,
+                                                                   makeSelect(iterableExpr, "iterator"), 
+                                                                   List.<JCExpression>nil()))),
+                            make().Return(makeBoolean(true))
+                    ));
+                }
                 JCBlock body = make().Block(0l, block);
                 fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
                         iterVar.asName(), makeJavaType(typeFact().getBooleanType()), 
@@ -6098,25 +6140,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             //Now the context for this iterator
             ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
     
-            if (javaIterable) {
-                // Check whether the iterator it exhausted
-                contextBody.add(
-                        make().If(
-                                make().Apply(null,
-                                        naming.makeQualIdent(iterVar.makeIdent(), "hasNext"),
-                                                List.<JCExpression>nil()), 
-                                make().Block(0,
-                                        List.<JCStatement>of(
-                                            make().Exec(make().Assign(itemVar.makeIdent(),
-                                                make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
-                                                        List.<JCExpression>nil()))),
-                                            make().Return(makeBoolean(true)))),
-                                make().Block(0,
-                                        List.<JCStatement>of(
-                                            make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), makeBoolean(true))),
-                                            make().Return(makeBoolean(false))
-                                        ))));
-            } else {
+            if (javaIterable == IterType.CEYLON_ITERABLE){
                 //Assign the next item to an Object variable
                 contextBody.add(make().VarDef(make().Modifiers(Flags.FINAL), tmpItem.asName(),
                         makeJavaType(typeFact().getObjectType()),
@@ -6137,8 +6161,58 @@ public class ExpressionTransformer extends AbstractTransformer {
                 contextBody.add(make().If(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
                     make().Block(0, innerBody.toList()),
                     make().Block(0, elseBody.toList())));
+            } else if (javaIterable == IterType.JAVA_ITERABLE) {
+                // Check whether the iterator it exhausted
+                contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
+                        make().Unary(JCTree.NOT, make().Apply(null, makeSelect(iterVar.makeIdent(), "hasNext"), 
+                                List.<JCExpression>nil())))));
+                
+                ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
+                if (idx > 0) {
+                    innerBody.add(make().Exec(make().Assign(iterVar.makeIdent(), makeNull())));
+                } else {
+                    innerBody.add(make().Return(makeBoolean(false)));
+                }
+                
+                contextBody.add(
+                        make().If(
+                                itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), 
+                                make().Block(0, innerBody.toList()),
+                                make().Block(0,
+                                        List.<JCStatement>of(
+                                            make().Exec(make().Assign(itemVar.makeIdent(),
+                                                make().Apply(null, makeSelect(iterVar.makeIdent(), "next"), 
+                                                        List.<JCExpression>nil()))),
+                                            make().Return(makeBoolean(true))))));
+            } else if (javaIterable == IterType.JAVA_ARRAY) {
+                contextBody.add(make().Exec(make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
+                        make().Binary(JCTree.GE, iterVar.makeIdent(), naming.makeSelect(arrayVar.makeIdent(), "length")))));
+                
+                ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
+                if (idx > 0) {
+                    innerBody.add(make().Exec(make().Assign(arrayVar.makeIdent(), makeNull())));
+                } else {
+                    innerBody.add(make().Return(makeBoolean(false)));
+                }
+                
+                JCExpression indexed = make().Indexed(arrayVar.makeIdent(), 
+                        make().Unary(JCTree.POSTINC, iterVar.makeIdent()));
+                indexed = applyErasureAndBoxing(indexed,
+                        ((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel().getType(),
+                        typeFact().getJavaObjectArrayDeclaration().equals(iterType.resolveAliases().getDeclaration()),
+                        CodegenUtil.getBoxingStrategy(((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel()),
+                        ((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel().getType());
+                
+                contextBody.add(
+                        make().If(
+                                itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), 
+                                make().Block(0, innerBody.toList()),
+                                make().Block(0,
+                                        List.<JCStatement>of(
+                                            make().Exec(make().Assign(itemVar.makeIdent(),
+                                                indexed)),
+                                            make().Return(makeBoolean(true))))));
             }
-            
             
             
             List<JCTree.JCStatement> methodBody;
