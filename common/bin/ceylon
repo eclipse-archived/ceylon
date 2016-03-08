@@ -14,15 +14,21 @@ done
 
 DIR=$(dirname "$PRG")
 
-CEYLON_HOME="$DIR/.."
+if [ -f "$DIR/.ceylon/bootstrap/ceylon-bootstrap.properties" -a -f "$DIR/.ceylon/bootstrap/ceylon-bootstrap.jar" ]; then
+    # Using bootstrap
+    LIB="$DIR/.ceylon/bootstrap"
+else
+    # Normal execution
+    CEYLON_HOME="$DIR/.."
+    LIB="$CEYLON_HOME/lib"
 
-if [ "$1" = "--show-home" ]; then
-    echo "$CEYLON_HOME"
-    exit
+    if [ "$1" = "--show-home" ]; then
+        echo "$CEYLON_HOME"
+        exit
+    fi
 fi
 
-if test -z "$JAVA_HOME"
-then 
+if [ -z "$JAVA_HOME" ]; then
     JAVA="java"
 else
     JAVA="$JAVA_HOME/bin/java"
@@ -36,8 +42,6 @@ else
     echo "Java not found, you must install Java in order to compiler and run Ceylon programs"
     echo "Go to http://www.java.com/getjava/ to download the latest version of Java"
 fi
-
-LIB="$CEYLON_HOME/lib"
 
 #JAVA_DEBUG_OPTS="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
 
@@ -57,6 +61,6 @@ fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
 exec "$JAVA" \
- $JAVA_OPTS \
- -jar "$LIB/ceylon-bootstrap.jar" \
- "$@"
+    $JAVA_OPTS \
+    -jar "$LIB/ceylon-bootstrap.jar" \
+    "$@"

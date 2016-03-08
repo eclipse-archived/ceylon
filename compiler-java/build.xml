@@ -258,7 +258,7 @@
         <mkdir dir="${build.lib}" />
         <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
             <fileset dir="${build.classes}">
-                <include name="com/redhat/ceylon/launcher/Bootstrap.class" />
+                <include name="com/redhat/ceylon/launcher/Bootstrap*.class" />
                 <include name="com/redhat/ceylon/launcher/CeylonClassLoader.class" />
                 <include name="com/redhat/ceylon/launcher/LauncherUtil.class" />
                 <include name="META-INF/MANIFEST.MF" />
