@@ -10,7 +10,7 @@
    the stream may produce the value [[null]] one or more
    times. For every non-null `element` of a given stream
    `it`, the expression `element in it` must evaluate to
-   `true`. Thus, a stream is a category of its non-null
+   `true`. Thus, a stream is a `Category` of its non-null
    elements.
    
    A given stream might not have a well-defined order, and

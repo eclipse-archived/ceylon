@@ -1,9 +1,13 @@
 """Abstract supertype of objects that contain other values, 
    called *elements*, where it is possible to efficiently 
-   determine if a given value is an element.
+   determine if a given value is an element. A `Category`
+   may not be finite, and its elements may not even be
+   countable. Thus, unlike [[streams|Iterable]], the 
+   elements of a generic `Category` are not iterable.
    
    `Category` models a mathematical set, but is distinct 
-   from the [[Set]] collection type.
+   from the [[Set]] collection type which represents finite
+   sets.
    
    The `in` operator may be used to determine if a value
    belongs to a `Category`:
