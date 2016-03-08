@@ -1632,9 +1632,9 @@ public class SpecificationVisitor extends Visitor {
         SpecificationState as = beginSpecificationScope();
         boolean atLeastOneIteration = false;
         Tree.ForClause forClause = that.getForClause();
-        if (forClause!=null) {
-            Tree.Block block = forClause.getBlock();
-           if (isVariable() || isLate()) {
+        Tree.Block block = forClause.getBlock();
+        if (block!=null) {
+            if (isVariable() || isLate()) {
                 forClause.visit(this);
             }
             else {
@@ -1653,8 +1653,8 @@ public class SpecificationVisitor extends Visitor {
                 loopDepth--;
                 allOuterLoopsBreak = aolb;
             }
-            atLeastOneIteration = isAtLeastOne(forClause);
         }
+        atLeastOneIteration = isAtLeastOne(forClause);
         boolean possiblyAssignedByForClause = 
                 specified.possibly;
         boolean definitelyAssignedByForClause = 
