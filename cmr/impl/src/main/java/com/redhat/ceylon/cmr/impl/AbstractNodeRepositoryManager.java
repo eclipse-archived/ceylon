@@ -51,6 +51,7 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  */
 public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryManager {
 
+    protected static final String VALIDATING = ".validating";
     protected static final String SHA1 = ".sha1";
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";

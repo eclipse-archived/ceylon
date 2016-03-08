@@ -170,7 +170,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         return cs != null && cs.isOffline();
     }
 
-    private File putContent(ArtifactContext context, Node node, InputStream stream, long length) throws IOException {
+    private File putContent(ArtifactContext context, final Node node, InputStream stream, long length) throws IOException {
         log.debug("Creating local copy of external node: " + node + " at repo: " + 
                 (fileContentStore != null ? fileContentStore.getDisplayString() : null));
         if(fileContentStore == null)
@@ -180,14 +180,28 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         if (callback == null) {
             callback = ArtifactCallbackStream.getCallback();
         }
+        
+        // Make a temporary node+file
+        final Node parent = NodeUtils.firstParent(node);
+        if (parent == null) {
+            throw new IllegalArgumentException("Parent should not be null: " + node);
+        }
+        File finalFile = fileContentStore.getFile(node);
+        Node tempNode = parent.getChild(node.getLabel() + VALIDATING);
+        final File tempFile = fileContentStore.getFile(tempNode);
+        FileUtil.delete(tempFile);
+        
+        // Write the stream to the temporary file
         final File file;
         try {
             if (callback != null) {
                 callback.start(NodeUtils.getFullPath(node), length != -1 ? length : node.getSize(), node.getStoreDisplayString());
                 stream = new ArtifactCallbackStream(callback, stream);
             }
-            fileContentStore.putContent(node, stream, context); // stream should be closed closer to API call
-            file = fileContentStore.getFile(node); // re-get
+            log.debug("Saving content of " + node + " to " + fileContentStore.getFile(tempNode));
+            fileContentStore.putContent(tempNode, stream, context); // stream should be closed closer to API call
+            file = fileContentStore.getFile(tempNode); // re-get
+            assert(file.getPath().equals(tempFile.getPath()));
             if (callback != null) {
                 callback.done(file);
             }
@@ -203,11 +217,12 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         }
 
         if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
+            // Now validate the temporary file has a sha1 which matches the remote sha1
             final OpenNode on = (OpenNode) node;
             final String sha1 = IOUtils.sha1(new FileInputStream(file));
             if (sha1 != null) {
+                log.debug("sha1 of : "+file + " is " + sha1);
                 ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-                Node parent = NodeUtils.firstParent(node);
                 if (parent == null) {
                     throw new IllegalArgumentException("Parent should not be null: " + node);
                 }
@@ -218,6 +233,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     shaStream.reset(); // reset, for next read
                 } else if (sha.hasBinaries()) {
                     final String existingSha1 = IOUtils.readSha1(sha.getInputStream());
+                    log.debug("sha1 retrieved from " + sha +" is "+ existingSha1);
                     if (sha1.equals(existingSha1) == false) {
                         try {
                             fileContentStore.delete(file, node);
@@ -231,7 +247,18 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 OpenNode sl = ((OpenNode) parent).addNode(on.getLabel() + SHA1 + LOCAL);
                 // put sha to local store as well
                 fileContentStore.putContent(sl, shaStream, context);
+            } else {
+                log.debug("Could not calculate sha1 of : "+file);
             }
+        } else {
+            log.debug("Not validating checksum: "+tempNode);
+        }
+        
+        // Rename the temp file to the final file
+        FileUtil.delete(finalFile);
+        log.debug("Renaming " + file + " to " + finalFile);
+        if (!file.renameTo(finalFile)) {
+            throw new IOException("Renaming "+ file + " to " + finalFile + " failed");
         }
 
         // only check for jars or forced checks
@@ -259,7 +286,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             }
         }
 
-        return file;
+        return finalFile;
     }
 
     @Override
