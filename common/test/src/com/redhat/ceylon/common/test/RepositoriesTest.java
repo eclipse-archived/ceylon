@@ -143,8 +143,9 @@ public class RepositoriesTest {
     @Test
     public void testGetDefaultOtherLookupRepositories() {
         Repository[] lookup = defaultRepos.getOtherLookupRepositories();
-        Assert.assertTrue(lookup.length == 1);
+        Assert.assertTrue(lookup.length == 2);
         assertRepository(lookup[0], "REMOTE", Constants.REPO_URL_CEYLON, null, null);
+        assertRepository(lookup[1], "MAVEN", "aether:", null, null);
     }
     
     @Test
@@ -164,8 +165,9 @@ public class RepositoriesTest {
     @Test
     public void testGetOverriddenOtherLookupRepositories() {
         Repository[] lookup = overriddenRepos.getOtherLookupRepositories();
-        Assert.assertTrue(lookup.length == 1);
+        Assert.assertTrue(lookup.length == 2);
         assertRepository(lookup[0], "REMOTE", "http://remote", null, null);
+        assertRepository(lookup[1], "MAVEN", "aether:", null, null);
     }
     
     @Test
