@@ -772,8 +772,7 @@ public class AnalyzerUtil {
             if (c instanceof Tree.BooleanCondition) {
                 Tree.BooleanCondition bc = 
                         (Tree.BooleanCondition) c;
-                Tree.Expression ex = 
-                        bc.getExpression();
+                Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
                     Tree.Term term = 
                             unwrapExpressionUntilTerm(ex);
@@ -802,10 +801,8 @@ public class AnalyzerUtil {
                 Tree.Expression e = se.getExpression();
                 if (e!=null) {
                     Unit unit = forClause.getUnit();
-                    Type at = 
-                            unit.getAnythingType();
-                    Type neit = 
-                            unit.getNonemptyIterableType(at);
+                    Type at = unit.getAnythingType();
+                    Type neit = unit.getNonemptyIterableType(at);
                     Type t = e.getTypeModel();
                     return t!=null && t.isSubtypeOf(neit);
                 }
