@@ -330,7 +330,7 @@ public class ToolsTest {
         Assert.assertEquals(expectedVersion, compiledVersion[0]);
         if(module.endsWith(".errors")){
             Assert.assertEquals(2, errors.size());
-            Assert.assertTrue(errors.contains("test/modules/errors/run.ceylon at 1:8 -> type declaration does not exist: 'Error' (did you mean 'Nothing'?)"));
+            Assert.assertTrue(errors.contains("test/modules/errors/run.ceylon at 1:8 -> type declaration does not exist: 'Error'"));
             Assert.assertTrue(errors.contains("test/modules/errors/run.ceylon at 1:14 -> does not definitely return: 'run' has branches which do not end in a 'return' statement"));
             Assert.assertFalse(ret);
         }else{

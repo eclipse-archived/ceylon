@@ -66,6 +66,7 @@ import com.redhat.ceylon.compiler.java.test.structure.SerializableTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
+import com.redhat.ceylon.itest.IntegrationTests;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
 @RunWith(ConcurrentSuite.class) 
@@ -112,14 +113,15 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     CompatTests.class,
     ComprehensionTests.class,
     StaticRefTests.class,
-    // FIXME Disabled: it does not run currently in parallel
-    // TopLevelToolTest.class,
     AntToolTests.class,
     TraceTests.class,
     CarGenerationTests.class,
     ReportingTests.class,
     SourcePositionsTests.class,
     NativeTests.class,
+    // FIXME Disabled: it does not run currently in parallel
+    // TopLevelToolTest.class,
+    // IntegrationTests.class,
 })
 public class ConcurrentTests {
 }

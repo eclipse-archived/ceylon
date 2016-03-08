@@ -10,5 +10,5 @@ import com.redhat.ceylon.model.test.loader.impl.reflect.CachedTOCJarsTest;
 @SuiteClasses({
     CachedTOCJarsTest.class
 })
-public class AllTests {
+public class AllModelTests {
 }
