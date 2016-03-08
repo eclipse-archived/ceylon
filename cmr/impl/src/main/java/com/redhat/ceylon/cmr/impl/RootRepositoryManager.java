@@ -342,22 +342,6 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     @Override
-    protected Boolean checkSHA(Node artifact) throws IOException {
-        Boolean result = super.checkSHA(artifact);
-        if (result == null && artifact.isRemote() == false 
-                && getCache() != null && NodeUtils.isAncestor(getCache(), artifact)) {
-            Node sha = artifact.getChild(SHA1 + LOCAL);
-            if (sha != null) {
-                // fileContentStore cannot be null if we have a cache
-                File shaFile = fileContentStore.getFile(sha);
-                if (shaFile.exists())
-                    return checkSHA(artifact, IOUtils.toInputStream(shaFile));
-            }
-        }
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "RootRepositoryManager: " + fileContentStore;
     }
