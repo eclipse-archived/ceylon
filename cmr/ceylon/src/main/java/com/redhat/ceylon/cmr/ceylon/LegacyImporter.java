@@ -438,6 +438,8 @@ public class LegacyImporter {
             }
             descriptorContext.setForceOperation(true);
             outRepoman.putArtifact(descriptorContext, descriptorFile);
+            
+            ShaSigner.signArtifact(outRepoman, descriptorContext, descriptorFile, log);
         }
         
         return this;

@@ -118,8 +118,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // Returns true if the suffix that was passed can have
     // an associated .sha1 suffix
     private static boolean isShaAllowed(String suffix) {
-        if (MODULE_PROPERTIES.equals(suffix) || MODULE_XML.equals(suffix)
-                || suffix.endsWith(SHA1) || isDirectoryName(suffix)) {
+        if (suffix.endsWith(SHA1) || isDirectoryName(suffix)) {
             return false;
         }
         return true;
