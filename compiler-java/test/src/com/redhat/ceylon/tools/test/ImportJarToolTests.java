@@ -331,8 +331,11 @@ public class ImportJarToolTests extends AbstractToolTests {
         File f1 = destFile("importtest/1.0/importtest-1.0.jar");
         File f2 = destFile("importtest/1.0/importtest-1.0.jar.sha1");
         File f3 = destFile("importtest/1.0/module.properties");
-        Assert.assertTrue(f1.exists() && f2.exists());
+        File f4 = destFile("importtest/1.0/module.properties.sha1");
+        Assert.assertTrue(f1.exists());
+        Assert.assertTrue(f2.exists());
         Assert.assertTrue(f3.exists());
+        Assert.assertTrue(f4.exists());
     }
 
     @Test
@@ -354,10 +357,12 @@ public class ImportJarToolTests extends AbstractToolTests {
         File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar");
         File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar.sha1");
         File moduleXml = destFile("source/import/test/1.0/module.xml");
+        File sha1ModuleXml = destFile("source/import/test/1.0/module.xml");
 
         Assert.assertTrue(jarFile.exists() && sha1JarFile.exists());
         Assert.assertTrue(sourceJarFile.exists() && sha1SourceJarFile.exists());
         Assert.assertTrue(moduleXml.exists());
+        Assert.assertTrue(sha1ModuleXml.exists());
     }
     
     @Test
@@ -379,11 +384,14 @@ public class ImportJarToolTests extends AbstractToolTests {
         File sourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar");
         File sha1SourceJarFile = destFile("source/import/test/1.0/source.import.test-1.0-sources.jar.sha1");
         File propertiesFile = destFile("source/import/test/1.0/module.properties");
+        File sha1PropertiesFile = destFile("source/import/test/1.0/module.properties");
         
-        Assert.assertTrue(jarFile.exists() && sha1JarFile.exists());
-        Assert.assertTrue(sourceJarFile.exists() && 
-                          sha1SourceJarFile.exists());
+        Assert.assertTrue(jarFile.exists());
+        Assert.assertTrue(sha1JarFile.exists());
+        Assert.assertTrue(sourceJarFile.exists());
+        Assert.assertTrue(sha1SourceJarFile.exists());
         Assert.assertTrue(propertiesFile.exists());
+        Assert.assertTrue(sha1PropertiesFile.exists());
     }
     
     @Test
@@ -415,8 +423,11 @@ public class ImportJarToolTests extends AbstractToolTests {
         File f1 = destFile("importtest/1.0/importtest-1.0.jar");
         File f2 = destFile("importtest/1.0/importtest-1.0.jar.sha1");
         File f3 = destFile("importtest/1.0/module.properties");
-        Assert.assertTrue(!f1.exists() && !f2.exists());
+        File f4 = destFile("importtest/1.0/module.properties.sha1");
+        Assert.assertTrue(!f1.exists());
+        Assert.assertTrue(!f2.exists());
         Assert.assertTrue(!f3.exists());
+        Assert.assertTrue(!f4.exists());
     }
     
     @Test
