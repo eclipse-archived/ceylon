@@ -272,17 +272,14 @@ public class TopLevelToolTests {
     @Test
     public void testSubtoolMissingArg()  throws Exception {
         try (CapturingStdOut out = new CapturingStdOut()) {
-            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("new", "hello-world")));
+            Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("config", "set")));
             Assert.assertEquals(
-"ceylon new: Argument 'dir' to command 'hello-world' should appear at least 1\n"+
-"time(s)\n"+
-"\n"+
-"Usage:\n"+
-"ceylon new hello-world [--ant=<value>] [--eclipse=<value>] [--eclipse-project-\n"+
-"           name=<value>] [--module-name=<value>] [--module-version=<value>] [--\n"+
-"           ] <dir>\n"+
-"\n"+
-"Run 'ceylon help new' for more help", 
+"ceylon config: Argument 'key' to command 'set' should appear at least 1 time(s)\n" + 
+"\n" + 
+"Usage:\n" + 
+"ceylon set <key> <values...>\n" + 
+"\n" + 
+"Run 'ceylon help config' for more help", 
         out.getErr().trim().replace("\r", ""));
             Assert.assertTrue(out.getOut(), out.getOut().isEmpty());
         }
@@ -297,6 +294,7 @@ public class TopLevelToolTests {
     @Test
     public void testOptionException()  throws Exception {
         try (CapturingStdOut out = new CapturingStdOut()) {
+            System.setProperty("ceylon.home", "../dist/dist");
             Assert.assertEquals(CeylonTool.SC_ARGS, tool.bootstrap(args("doc", "--link=ceylon.math=foobar://baz", "ceylon.math")));
             Assert.assertEquals(
                     "ceylon doc: Invalid value '[ceylon.math=foobar://baz]' given for option 'link'\n"+

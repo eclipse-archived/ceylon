@@ -543,7 +543,8 @@ shared interface List<out Element=Anything>
     "Select the first elements of this list, returning a 
      list no longer than the given length. If this list is 
      shorter than the given length, return this list. 
-     Otherwise return a list of the given length.
+     Otherwise return a list of the given length. If 
+     `length<=0` return an empty list.
      
      For any `list`, and for any integer `length`:
      

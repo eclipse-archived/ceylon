@@ -1023,6 +1023,46 @@ public class Unit {
             return null;
         }
     }
+    
+    public Type getJavaArrayElementType(Type type) {
+        Type t = type.resolveAliases();
+        TypeDeclaration dec = t.getDeclaration();
+        if (dec.equals(getJavaObjectArrayDeclaration())) {
+            if (!t.getTypeArguments().isEmpty()) {
+                return t.getTypeArgumentList().get(0);
+            }
+            else {
+                return null;
+            }
+        }
+        else if (dec.equals(getJavaIntArrayDeclaration())) {
+            return getIntegerType();
+        }
+        else if (dec.equals(getJavaLongArrayDeclaration())) {
+            return getIntegerType();
+        }
+        else if (dec.equals(getJavaShortArrayDeclaration())) {
+            return getIntegerType();
+        }
+        else if (dec.equals(getJavaByteArrayDeclaration())) {
+            return getByteType();
+        }
+        else if (dec.equals(getJavaCharArrayDeclaration())) {
+            return getCharacterType();
+        }
+        else if (dec.equals(getJavaBooleanArrayDeclaration())) {
+            return getBooleanType();
+        }
+        else if (dec.equals(getJavaFloatArrayDeclaration())) {
+            return getFloatType();
+        }
+        else if (dec.equals(getJavaDoubleArrayDeclaration())) {
+            return getFloatType();
+        }
+        else {
+            return null;
+        }
+    }
 
     public Type getAbsentType(Type type) {
         Interface id = getIterableDeclaration();
@@ -1099,6 +1139,30 @@ public class Unit {
     public boolean isJavaIterableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getJavaIterableDeclaration());
+    }
+    
+    public boolean isJavaObjectArrayType(Type pt) {
+        TypeDeclaration dec = pt.resolveAliases().getDeclaration();
+        return dec instanceof Class &&
+                dec.equals(getJavaObjectArrayDeclaration());
+    }
+    
+    public boolean isJavaPrimitiveArrayType(Type pt) {
+        TypeDeclaration dec = 
+                pt.resolveAliases().getDeclaration();
+        return dec instanceof Class &&
+                (dec.equals(getJavaIntArrayDeclaration()) ||
+                dec.equals(getJavaShortArrayDeclaration()) ||
+                dec.equals(getJavaLongArrayDeclaration()) ||
+                dec.equals(getJavaByteArrayDeclaration()) ||
+                dec.equals(getJavaCharArrayDeclaration()) ||
+                dec.equals(getJavaBooleanArrayDeclaration()) ||
+                dec.equals(getJavaFloatArrayDeclaration()) ||
+                dec.equals(getJavaDoubleArrayDeclaration()));
+    }
+    
+    public boolean isJavaArrayType(Type pt) {
+        return isJavaObjectArrayType(pt) || isJavaPrimitiveArrayType(pt);
     }
     
     public boolean isUsableType(Type pt) {

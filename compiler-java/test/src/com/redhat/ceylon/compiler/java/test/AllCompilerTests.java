@@ -63,6 +63,7 @@ import com.redhat.ceylon.compiler.java.test.structure.ConstructorTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
+import com.redhat.ceylon.itest.IntegrationTests;
 import com.redhat.ceylon.tools.TopLevelToolTests;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
@@ -105,13 +106,15 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BcTests.class,
     ComprehensionTests.class,
     StaticRefTests.class,
-    TopLevelToolTests.class,
     AntToolTests.class,
     TraceTests.class,
     CarGenerationTests.class,
     ReportingTests.class,
     SourcePositionsTests.class,
     NativeTests.class,
+    TopLevelToolTests.class,
+    // Unable to run due to OOMs
+    //IntegrationTests.class,
 })
-public class AllTests {
+public class AllCompilerTests {
 }

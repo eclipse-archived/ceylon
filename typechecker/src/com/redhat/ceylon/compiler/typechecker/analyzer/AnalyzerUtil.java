@@ -389,13 +389,21 @@ public class AnalyzerUtil {
     static String typingMessage(Type type, 
             String problem, Type otherType, 
             Unit unit) {
+        Set<TypeDeclaration> declarations = 
+                new HashSet<TypeDeclaration>();
+        type.collectDeclarations(declarations);
+        otherType.collectDeclarations(declarations);
+        Set<String> names = new HashSet<String>();
+        for (TypeDeclaration td: declarations) {
+            names.add(td.getName(unit));
+        }
         String unknownTypeError = 
                 type.getFirstUnknownTypeError(true);
-        String typeName = type.asString(unit);
-        String otherTypeName = otherType.asString(unit);
+        String typeName;
+        String otherTypeName;
         String expandedTypeName;
         String expandedOtherTypeName;
-        if (otherTypeName.equals(typeName)) {
+        if (names.size()<declarations.size()) {
             typeName = type.asQualifiedString();
             otherTypeName = otherType.asQualifiedString();
             expandedTypeName = 
@@ -406,6 +414,8 @@ public class AnalyzerUtil {
                         .asQualifiedString();
         }
         else {
+            typeName = type.asString(unit);
+            otherTypeName = otherType.asString(unit);
             expandedTypeName = 
                     type.resolveAliases()
                         .asString(unit);
@@ -762,8 +772,7 @@ public class AnalyzerUtil {
             if (c instanceof Tree.BooleanCondition) {
                 Tree.BooleanCondition bc = 
                         (Tree.BooleanCondition) c;
-                Tree.Expression ex = 
-                        bc.getExpression();
+                Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
                     Tree.Term term = 
                             unwrapExpressionUntilTerm(ex);
@@ -792,10 +801,8 @@ public class AnalyzerUtil {
                 Tree.Expression e = se.getExpression();
                 if (e!=null) {
                     Unit unit = forClause.getUnit();
-                    Type at = 
-                            unit.getAnythingType();
-                    Type neit = 
-                            unit.getNonemptyIterableType(at);
+                    Type at = unit.getAnythingType();
+                    Type neit = unit.getNonemptyIterableType(at);
                     Type t = e.getTypeModel();
                     return t!=null && t.isSubtypeOf(neit);
                 }

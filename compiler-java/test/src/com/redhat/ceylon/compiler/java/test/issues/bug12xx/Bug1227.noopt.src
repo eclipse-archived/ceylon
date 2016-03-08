@@ -386,10 +386,10 @@ final class bug1227_for2_ifReturn_specifiedElse_ {
                     return from$66;
                 }
             }
-            from = from$66;
         }
-        from = 0L;
-        final long from$73 = from;
+        from$66 = 0L;
+        final long from$73 = from$66;
+        from = from$66;
         return from;
     }
 }

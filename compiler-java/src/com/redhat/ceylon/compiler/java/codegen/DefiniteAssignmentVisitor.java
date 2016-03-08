@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -65,15 +66,19 @@ public class DefiniteAssignmentVisitor extends Visitor {
                     ((Value)decl).setSpecifiedInForElse(true);
                 }
                 ControlBlock assigningBlock = elseBlock != null ? elseBlock : forBlock;
-                Set<Value> assigned = assigningBlock.getSpecifiedValues();
-                if (assigned == null) {
-                    assigned = new HashSet<Value>(1);
-                    assigningBlock.setSpecifiedValues(assigned);
-                }
-                assigned.add((Value)decl);
+                addSpecified(decl, assigningBlock);
             }
         }
         super.visit(stmt);
+    }
+
+    protected void addSpecified(Declaration decl, ControlBlock assigningBlock) {
+        Set<Value> assigned = assigningBlock.getSpecifiedValues();
+        if (assigned == null) {
+            assigned = new HashSet<Value>(1);
+            assigningBlock.setSpecifiedValues(assigned);
+        }
+        assigned.add((Value)decl);
     }
     
     public void visit(Tree.ForStatement that) {
@@ -86,6 +91,18 @@ public class DefiniteAssignmentVisitor extends Visitor {
             elseBlock = that.getElseClause().getControlBlock();
             that.getElseClause().visit(this);
             elseBlock = null;
+        }
+        
+        if (prevControlBlock != null) {
+            Set<Value> specifiedValues = forBlock.getSpecifiedValues();
+            if (specifiedValues != null) {
+                for (Declaration decl : new ArrayList<Value>(specifiedValues)) {
+                    if (!prevControlBlock.equals(tracked.get(decl))) {
+                        addSpecified(decl, prevControlBlock);
+                        specifiedValues.remove(decl);
+                    }
+                }
+            }
         }
         
         forBlock = prevControlBlock;

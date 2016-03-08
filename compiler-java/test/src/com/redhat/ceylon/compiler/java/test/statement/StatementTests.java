@@ -729,4 +729,10 @@ public class StatementTests extends CompilerTests {
                 new CompilerError(25, "dynamic is not supported on the JVM"),
                 new CompilerError(26, "dynamic is not supported on the JVM"));
     }
+    
+    @Test
+    public void testBug6070() {
+        compareWithJavaSource("loop/Bug6070");
+    }
+    
 }

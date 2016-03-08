@@ -98,13 +98,14 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BcTests.class,
     ComprehensionTests.class,
     StaticRefTests.class,
-    // FIXME Disabled: it does not run currently in parallel
-    // TopLevelToolTest.class,
     AntToolTests.class,
     TraceTests.class,
     CarGenerationTests.class,
     SourcePositionsTests.class,
     NativeTests.class,
+    // FIXME Disabled: it does not run currently in parallel
+    // TopLevelToolTest.class,
+    // IntegrationTests.class,
 })
 public class ConcurrentTestsNoRuntime {
 }

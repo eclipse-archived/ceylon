@@ -2036,13 +2036,17 @@ public class StatementTransformer extends AbstractTransformer {
     class JavaArrayIterationOptimization extends IndexedAccessIterationOptimization {
         
         public static final String OPT_NAME = "JavaArrayIterationStatic";
+        
+        final boolean dotIterable;
+        
         /** this is the IntArray, ObjectArray or whatever */
         private final Type javaArrayType;
         
-        JavaArrayIterationOptimization(Tree.ForStatement stmt,
+        JavaArrayIterationOptimization(boolean dotIterable, Tree.ForStatement stmt,
                 Tree.Term baseIterable, Tree.Term step,
                 Type elementType, Type javaArrayType) {
             super(stmt, baseIterable, step, elementType, "array");
+            this.dotIterable = dotIterable;
             this.javaArrayType = javaArrayType;
         }
         
@@ -2053,9 +2057,11 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexable() {
-            Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)getIterable();
-            
-            return expressionGen().transformExpression(expr.getPrimary());
+            if (dotIterable) {
+                Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)getIterable();
+                return expressionGen().transformExpression(expr.getPrimary());
+            }
+            return expressionGen().transformExpression(getIterable());
         }
         
         protected JCExpression makeCondition() {
@@ -2075,7 +2081,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected boolean isIndexedAccessBoxed() {
-            return isOptional(elementType);
+            return dotIterable ? isOptional(elementType) : 
+                typeFact().getJavaObjectArrayDeclaration().equals(javaArrayType.resolveAliases().getDeclaration());
         }
     }
     
@@ -2084,6 +2091,9 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.Term step) {
         
         Type ceylonArrayType = baseIterable.getTypeModel();
+        if (typeFact().isJavaArrayType(ceylonArrayType)) {
+            return new JavaArrayIterationOptimization(false, stmt, baseIterable, step, typeFact().getJavaArrayElementType(ceylonArrayType), ceylonArrayType);
+        }
         Type elementType = typeFact().getArrayElementType(ceylonArrayType);
         if (elementType == null) {
             // Check for "for (x in javaArray.iterable)" where javaArray is e.g. IntArray
@@ -2096,7 +2106,7 @@ public class StatementTransformer extends AbstractTransformer {
                             return optimizationDisabled(stmt, Optimization.JavaArrayIterationStatic);
                         }
                         elementType = typeFact().getIteratedType(ceylonArrayType);
-                        return new JavaArrayIterationOptimization(stmt, baseIterable, step, elementType, expr.getPrimary().getTypeModel());
+                        return new JavaArrayIterationOptimization(true, stmt, baseIterable, step, elementType, expr.getPrimary().getTypeModel());
                     }
                 }
             }
@@ -2496,7 +2506,7 @@ public class StatementTransformer extends AbstractTransformer {
                     // The user-supplied contents of fail block
                     List<JCStatement> failblock = transformBlock(stmt.getElseClause().getBlock());
                     // Close the inner substitutions of the else block
-                    closeInnerSubstituionsForSpecifiedValues(stmt.getElseClause());
+                    closeInnerSubstituionsForSpecifiedValues(stmt.getElseClause(), false);
                     if (needsFailVar()) {
                         // if ($doforelse$X) ...
                         JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
@@ -3383,19 +3393,42 @@ public class StatementTransformer extends AbstractTransformer {
     
     /**
      * Removes the "inner substitutions" for any deferred values specified 
-     * in the given control block
+     * in the given control block.
+     * 
+     * If we're closing the substitutions because of a return or throw then 
+     * all enclosing substitutions need to be closed. 
+     * If it's because of a break/continue then just those for the given 
+     * controlClause need to be closed.
      */
-    private void closeInnerSubstituionsForSpecifiedValues(Tree.ControlClause contolClause) {
+    private void closeInnerSubstituionsForSpecifiedValues(Tree.ControlClause contolClause, boolean enclosing) {
         if (contolClause != null) {
             ControlBlock controlBlock = contolClause.getControlBlock();
-            java.util.Set<Value> assigned = controlBlock.getSpecifiedValues();
-            if (assigned != null) {
-                for (Value value : assigned) {
-                    DeferredSpecification ds = statementGen().getDeferredSpecification(value);
-                    if (ds != null) {
-                        ds.closeInnerSubstitution();
+            outer: while (true) {
+                java.util.Set<Value> assigned = controlBlock.getSpecifiedValues();
+                if (assigned != null) {
+                    for (Value value : assigned) {
+                        DeferredSpecification ds = statementGen().getDeferredSpecification(value);
+                        if (ds != null) {
+                            ds.closeInnerSubstitution();
+                        }
                     }
                 }
+                if (!enclosing) {
+                    break;
+                }
+                Scope s = controlBlock.getContainer();
+                while (s != null) {
+                    if (s instanceof ControlBlock) {
+                        controlBlock = (ControlBlock)s;
+                        continue outer;
+                    } else if (s instanceof Declaration) {
+                     // we need to stop when we reach a control block that 
+                        // encloses the declaration of the value
+                        break outer;
+                    }
+                    s = s.getContainer();
+                }
+                break;
             }
         }
     }
@@ -3468,7 +3501,7 @@ public class StatementTransformer extends AbstractTransformer {
         public List<JCStatement> transform(Break stmt) {
            // Remove the inner substitutions for any deferred values specified 
             // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause);
+            closeInnerSubstituionsForSpecifiedValues(currentForClause, false);
             
             JCStatement brk = at(stmt).Break(getLabel(stmt));
         
@@ -3516,7 +3549,7 @@ public class StatementTransformer extends AbstractTransformer {
         public JCStatement transform(Tree.Return ret) {
             // Remove the inner substitutions for any deferred values specified 
             // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause);
+            closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
             at(ret);
             return at(ret).Break(label);
         }
@@ -3526,7 +3559,7 @@ public class StatementTransformer extends AbstractTransformer {
         public JCStatement transform(Tree.Return ret) {
             // Remove the inner substitutions for any deferred values specified 
             // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause);
+            closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
             Tree.Expression expr = ret.getExpression();
             JCExpression returnExpr = null;
             at(ret);
@@ -3631,7 +3664,7 @@ public class StatementTransformer extends AbstractTransformer {
     public JCStatement transform(Tree.Throw t) {
         // Remove the inner substitutions for any deferred values specified 
         // in the control block
-        closeInnerSubstituionsForSpecifiedValues(currentForClause);
+        closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
         at(t);
         Tree.Expression expr = t.getExpression();
         final JCExpression exception;

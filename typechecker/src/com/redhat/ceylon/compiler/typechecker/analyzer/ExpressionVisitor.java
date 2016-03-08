@@ -415,7 +415,8 @@ public class ExpressionVisitor extends Visitor {
                         Type it = e.getTypeModel();
                         if (it!=null) {
                             if (!unit.isIterableType(it) &&
-                                    !unit.isJavaIterableType(it)) {
+                                    !unit.isJavaIterableType(it) && 
+                                    !unit.isJavaArrayType(it)) {
                                 se.addError("expression is not iterable: '" + 
                                         it.asString(unit) + 
                                         "' is not a subtype of 'Iterable'");
@@ -1099,7 +1100,9 @@ public class ExpressionVisitor extends Visitor {
                 Type et = e.getTypeModel();
                 if (!isTypeUnknown(et)) {
                     if (!unit.isIterableType(et) &&
-                        !unit.isJavaIterableType(et)) {
+                        !unit.isJavaIterableType(et) &&
+                        !unit.isJavaObjectArrayType(et) &&
+                        !unit.isJavaPrimitiveArrayType(et)) {
                         se.addError("expression is not iterable: '" + 
                                 et.asString(unit) + 
                                 "' is not a subtype of 'Iterable'");
@@ -1854,12 +1857,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type vt = type.getTypeModel();
-                Type set = e.getTypeModel();
+                Type expressionType = e.getTypeModel();
                 if (!isTypeUnknown(vt) && 
-                        !isTypeUnknown(set)) {
-                    Type it = unit.getIteratedType(set);
+                        !isTypeUnknown(expressionType)) {
+                    Type it = unit.getIteratedType(expressionType);
                     if (it==null) {
-                        it = unit.getJavaIteratedType(set);
+                        it = unit.getJavaIteratedType(expressionType);
+                    }
+                    if (it==null) {
+                        it = unit.getJavaArrayElementType(expressionType);
                     }
                     checkAssignable(it, vt, var, 
                             "iterable element type must be assignable to iterator variable type");
@@ -2492,6 +2498,9 @@ public class ExpressionVisitor extends Visitor {
                 if (elementType==null) {
                     elementType = 
                             unit.getJavaIteratedType(expressionType);
+                }
+                if (elementType==null) {
+                    elementType = unit.getJavaArrayElementType(expressionType);
                 }
                 if (elementType!=null) {
                     local.setTypeModel(elementType);
@@ -4815,7 +4824,7 @@ public class ExpressionVisitor extends Visitor {
                         List<Type> args = 
                                 cst.getTypeArgumentList();
 						kt = args.get(0);
-						vt = args.get(1);
+						vt = unit.getOptionalType(args.get(1));
                     }
                     if (cst==null) {
                         Interface ld = 
@@ -4836,13 +4845,27 @@ public class ExpressionVisitor extends Visitor {
                             List<Type> args =
                                     cst.getTypeArgumentList();
     						kt = args.get(0);
-    						vt = args.get(1);
+    						vt = unit.getOptionalType(args.get(1));
                         }
                     }
                     if (cst==null) {
+                        boolean objectArray = 
+                                unit.isJavaObjectArrayType(pt);
+                        boolean primitiveArray = 
+                                unit.isJavaPrimitiveArrayType(pt);
+                        if (objectArray || primitiveArray) {
+                            cst = pt;
+                            kt = unit.getIntegerType();
+                            Type et = unit.getJavaArrayElementType(pt);
+                            vt = primitiveArray ? et : unit.getOptionalType(et);
+                        }
+                    }
+                    
+                    if (cst==null) {
                         that.getPrimary()
                             .addError("illegal receiving type for index expression: '" +
-                                    pt.getDeclaration().getName(unit) + 
+                                    pt.getDeclaration()
+                                        .getName(unit) + 
                                     "' is not a subtype of 'Correspondence'");
                     }
                     else {
@@ -4852,8 +4875,7 @@ public class ExpressionVisitor extends Visitor {
                         checkAssignable(ee.getTypeModel(), 
                                 kt, ee, 
                                 "index must be assignable to key type");
-                        Type rt = unit.getOptionalType(vt);
-                        that.setTypeModel(rt);
+                        that.setTypeModel(vt);
                         Tree.Term t = ee.getTerm();
                         //TODO: in theory we could do a whole lot
                         //      more static-execution of the 
@@ -4882,11 +4904,13 @@ public class ExpressionVisitor extends Visitor {
                         Tree.Expression ub = er.getUpperBound();
                         Expression l = er.getLength();
                         if (lb!=null) {
-                            checkAssignable(lb.getTypeModel(), kt, lb, 
+                            checkAssignable(lb.getTypeModel(), 
+                                    kt, lb, 
                                     "lower bound must be assignable to index type");
                         }
                         if (ub!=null) {
-                            checkAssignable(ub.getTypeModel(), kt, ub, 
+                            checkAssignable(ub.getTypeModel(), 
+                                    kt, ub, 
                                     "upper bound must be assignable to index type");
                         }
                         if (l!=null) {
@@ -6644,6 +6668,15 @@ public class ExpressionVisitor extends Visitor {
                         that.getPrimary();
             if (isConstructor(member)) {
                 //Ceylon named constructor
+                if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
+                    Tree.QualifiedMemberOrTypeExpression qmte = 
+                            (Tree.QualifiedMemberOrTypeExpression) primary;
+                    Tree.MemberOperator mo = qmte.getMemberOperator();
+                    if (!(mo instanceof Tree.MemberOp)) {
+                        mo.addError("illegal operator qualifying constructor reference");
+                        return null;
+                    }
+                }
                 if (primary.getStaticMethodReference()) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 
@@ -6670,8 +6703,8 @@ public class ExpressionVisitor extends Visitor {
                                 primary;
                     Tree.Primary pp = qmte.getPrimary();
                     if (!(pp instanceof Tree.BaseTypeExpression) &&
-                            !(pp instanceof Tree.QualifiedTypeExpression) &&
-                            !(pp instanceof Tree.Package)) {
+                        !(pp instanceof Tree.QualifiedTypeExpression) &&
+                        !(pp instanceof Tree.Package)) {
                         pp.addError("non-static type expression qualifies static member reference");   
                     }
                 }
@@ -6715,7 +6748,7 @@ public class ExpressionVisitor extends Visitor {
             return type;
         }
     }
-
+    
     private Type getStaticReferenceType(Type type, Type rt) {
         return appliedType(unit.getCallableDeclaration(), type,
                 appliedType(unit.getTupleDeclaration(), rt, rt, 
@@ -6731,8 +6764,7 @@ public class ExpressionVisitor extends Visitor {
         if (acceptsTypeArguments(member, null, typeArgs, 
                 tal, that)) {
             Scope scope = that.getScope();
-            Type outerType = 
-                    scope.getDeclaringType(member);
+            Type outerType = scope.getDeclaringType(member);
             if (outerType==null) {
                 outerType = receivingType;
             }

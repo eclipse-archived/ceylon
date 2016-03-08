@@ -145,4 +145,30 @@ shared void tuples() {
     [1, 2, 3, 4].each((i) => eachTestCounter += i);
     check(eachTestCounter == 10, "Tuple.each without rest");
 
+    value tuple = [false, *Singleton(true)];
+    
+    check(tuple.initial(1)==[false]);
+    check(tuple.terminal(1)==[true]);
+    
+    check(tuple.trim(identity)==[false]);
+    check(tuple.trimLeading(not(identity<Boolean>))==[true]);
+    check(tuple.trimTrailing(identity)==[false]);
+    
+    check(tuple.endsWith([true])==true);
+    check(tuple.startsWith([false, true])==true);
+    
+    check(if (exists r=tuple.firstIndexWhere(identity)) then r==1 else false);
+    check(if (exists r=tuple.lastIndexWhere(identity)) then r==1 else false);
+    
+    check([0, *Singleton(1)].max(uncurry(Integer.compare))==1);
+    
+    check(tuple.any(identity)==true);
+    check(tuple.every(not(identity<Boolean>))==false);
+    
+    check(if (exists r=tuple.find(identity)) then r==true else false);
+    check(if (exists r=tuple.findLast(identity)) then r==true else false);
+    
+    check(if (exists r=tuple.locate(identity)) then r==1->true else false);
+    check(if (exists r=tuple.locateLast(identity)) then r==1->true else false);
+
 }

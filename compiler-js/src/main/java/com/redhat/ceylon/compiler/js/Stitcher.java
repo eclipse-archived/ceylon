@@ -263,6 +263,7 @@ public class Stitcher {
                         };
                         //CommonJS wrapper
                         JsCompiler.beginWrapper(writer);
+                        JsCompiler.requireWrapper(writer, mod);
                         //Model
                         jsout.out("var _CTM$;function $CCMM$(){if (_CTM$===undefined)_CTM$=require('",
                                 "ceylon/language/", version, "/ceylon.language-", version, "-model",

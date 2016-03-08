@@ -115,7 +115,7 @@ public class NamingBase {
         $reified$,
         $superarg$,
         $pattern$,
-        $instance$
+        $instance$, $array$
     }
 
     public static String suffixName(Suffix suffix, String s) {

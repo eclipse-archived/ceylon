@@ -13,3 +13,15 @@ void stuff() {
     [Character?+] ok2 = seq*.reduce<Character>((x, y)=>(x.integer+y.integer).character);
     @error value broken2 = seq*.fold("");
 }
+
+
+void spreadConstructor() {
+    class C() {
+        shared class D {
+            shared new () {}
+            shared new create() {}
+        }
+    }
+    {C()}*.D();
+    @error {C()}*.D.create();
+}

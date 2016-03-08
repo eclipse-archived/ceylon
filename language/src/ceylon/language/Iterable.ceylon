@@ -10,7 +10,7 @@
    the stream may produce the value [[null]] one or more
    times. For every non-null `element` of a given stream
    `it`, the expression `element in it` must evaluate to
-   `true`. Thus, a stream is a category of its non-null
+   `true`. Thus, a stream is a `Category` of its non-null
    elements.
    
    A given stream might not have a well-defined order, and
@@ -381,8 +381,8 @@ shared interface Iterable<out Element=Anything,
     shared default 
     Iterable<Result,Absent|OtherAbsent>
     flatMap<Result,OtherAbsent>(
-        "The mapping function to apply to the elements 
-         of this stream, that produces a new stream of 
+        "The mapping function to apply to the elements of 
+         this stream, that produces a new stream of 
          [[Result]]s."
         Iterable<Result,OtherAbsent> collecting(Element element)) 
             given OtherAbsent satisfies Null
@@ -416,7 +416,9 @@ shared interface Iterable<out Element=Anything,
     see (`function select`)
     shared default 
     {Element*} filter(
-        "The predicate the elements must satisfy."
+        "The predicate the elements must satisfy. The 
+         elements which satisfy the predicate are included
+         in the resulting stream."
         Boolean selecting(Element element)) 
             => { for (elem in this) if (selecting(elem)) elem };
     
@@ -486,8 +488,8 @@ shared interface Iterable<out Element=Anything,
      
          { first }.reduce(f) == first
      
-     For a given stream `it` with more than one element, 
-     and combining function `f`, the result of `reduce()` is 
+     For a given stream `it` with more than one element, and 
+     combining function `f`, the result of `reduce()` is 
      obtained according to the following recursive 
      definition:
      
@@ -635,9 +637,9 @@ shared interface Iterable<out Element=Anything,
     
     "The first element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, 
-     together with its position in the stream, or `null` 
-     if there is no such element. For an infinite stream, 
-     this method might not terminate.
+     together with its position in the stream, or `null` if 
+     there is no such element. For an infinite stream, this 
+     method might not terminate.
      
      For example, the expression
      
@@ -663,9 +665,9 @@ shared interface Iterable<out Element=Anything,
     
     "The last element of this stream which satisfies the 
      [[given predicate function|selecting]], if any, 
-     together with its position in the stream, or `null` 
-     if there is no such element. For an infinite stream, 
-     this method might not terminate.
+     together with its position in the stream, or `null` if 
+     there is no such element. For an infinite stream, this 
+     method might not terminate.
      
      For example, the expression
      
@@ -863,8 +865,8 @@ shared interface Iterable<out Element=Anything,
     
     "Produce a new [[sequence|Sequential]] containing all 
      elements of this stream that satisfy the given 
-     [[predicate function|selecting]], in the order in 
-     which they occur in this stream.
+     [[predicate function|selecting]], in the order in which 
+     they occur in this stream.
      
      This operation is an eager counterpart to [[filter]]. 
      For any stream `it`, and predicate `p`:
@@ -1227,9 +1229,9 @@ shared interface Iterable<out Element=Anything,
      containing elements of this stream. Each sequence in 
      the stream contains the next [[length]] elements of 
      this sequence that have not yet been assigned to a 
-     previous sequence, in the same order that they occur
-     in this stream. The very last sequence in the stream
-     may be shorter than the given `length`.
+     previous sequence, in the same order that they occur in 
+     this stream. The very last sequence in the stream may 
+     be shorter than the given `length`.
      
      For example, the expression
      
@@ -1244,7 +1246,10 @@ shared interface Iterable<out Element=Anything,
     throws (`class AssertionError`,
             "if `length<=0`")
     shared default 
-    Iterable<[Element+],Absent> partition(Integer length) {
+    Iterable<[Element+],Absent> partition(
+        "The length of the sequences in the resulting stream,
+         which must be strictly positive."
+        Integer length) {
         "length must be strictly positive"
         assert (length>0);
         return object satisfies Iterable<[Element+],Absent> {
@@ -1327,10 +1332,10 @@ shared interface Iterable<out Element=Anything,
     
     "A stream of pairs of elements of this stream and the 
      the given stream, where for each element `x` of this
-     stream, and element `y` of the given stream, the
-     pair `[x,y]` belongs to the resulting stream. The pairs
-     are sorted first by the position of `x` in this stream,
-     and then by the position of `y` in the given stream.
+     stream, and element `y` of the given stream, the pair 
+     `[x,y]` belongs to the resulting stream. The pairs are 
+     sorted first by the position of `x` in this stream, and
+     then by the position of `y` in the given stream.
      
      For example, this expression
      
@@ -1407,7 +1412,7 @@ shared interface Iterable<out Element=Anything,
          stream. The `element` occurs after each block 
          of size `step` of elements of this stream. If 
          `step==1`, the `element` occurs at every second 
-         position."
+         position. The step size must be strictly positive."
         Integer step=1) {
         "step must be strictly positive"
         assert (step>=1);

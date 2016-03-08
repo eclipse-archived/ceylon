@@ -384,7 +384,9 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         // unboxed, but the implementation always boxes them for now, so override it after we visit the comprehension
         ForIterator iter = that.getForIterator();
         if (iter instanceof ValueIterator) {
-            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(false);
+            // The exception to the "always boxed for now" rule is Java arrays
+            Type typeModel = iter.getSpecifierExpression().getExpression().getTypeModel();
+            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(iter.getUnit().isJavaArrayType(typeModel));
         } else if (iter instanceof PatternIterator) {
             boxPattern(((PatternIterator) iter).getPattern());
         }

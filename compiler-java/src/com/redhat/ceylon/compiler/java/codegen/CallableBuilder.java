@@ -398,14 +398,6 @@ public class CallableBuilder {
         }
         @Override
         public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, List<JCExpression> defaultMethodArgs) {
-            if (methodOrClass instanceof Function
-                    && ((Function)methodOrClass).isParameter()) {
-                // We can't generate a call to the dpm because there isn't one!
-                // But since FunctionalParameters cannot currently have 
-                // defaulted parameters this *must* be a variadic parameter
-                // and it's default is always empty.
-                return gen.makeEmptyAsSequential(true);
-            }
             JCExpression fn = gen.naming.makeDefaultedParamMethod(gen.naming.makeUnquotedIdent(Unfix.$instance$), 
                                                                   defaultedParam);
             return gen.make().Apply(null, 

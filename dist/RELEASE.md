@@ -25,8 +25,8 @@ How to do a release of Ceylon.
 
 # Before (packaging)
 
-1. Make sure the RedHat packaging is up-to-date by following the steps in the `dist/redhat/README` file
-2. Do the same for the Debian packaging by reading `dist/debian/README`
+1. Make sure the RedHat packaging is up-to-date by following the steps in the [`ceylon/ceylon-rpm-repo/README`](https://github.com/ceylon/ceylon-rpm-repo/blob/master/README.md) file
+2. Do the same for the Debian packaging by reading [`ceylon/ceylon-debian-repo/README`](https://github.com/ceylon/ceylon-debian-repo/blob/master/README.md)
 
 # The release
 

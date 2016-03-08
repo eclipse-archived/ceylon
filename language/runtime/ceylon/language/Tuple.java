@@ -797,28 +797,51 @@ public final class Tuple<Element, First extends Element,
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> initial(long length) {
-        if (length<=0) return (Sequential<? extends Element>) empty_.get_();
-        if (length>=array.length) return this;
+        if (length<=0) {
+            return (Sequential<? extends Element>) empty_.get_();
+        }
+        long restSize = rest.getSize();
+        if (length>=array.length+restSize) {
+            return this;
+        }
+        if (length>=array.length) {
+            return new Tuple($reifiedElement, array, 
+                    rest.initial(length-array.length));
+        }
         int len = (int) length;
         java.lang.Object[] initialArray = new java.lang.Object[len];
         System.arraycopy(array, 0, initialArray, 0, len);
-        return new Tuple($reifiedElement, initialArray);
+        return new Tuple($reifiedElement, initialArray, 
+                rest.initial(length-array.length));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> terminal(long length) {
-        if (length<=0) return (Sequential<? extends Element>) empty_.get_();
-        if (length>=array.length) return this;
-        int len = (int) length;
-        java.lang.Object[] initialArray = new java.lang.Object[len];
-        System.arraycopy(array, array.length-len, initialArray, 0, len);
-        return new Tuple($reifiedElement, initialArray);
+        if (length<=0) {
+            return (Sequential<? extends Element>) empty_.get_();
+        }
+        long restSize = rest.getSize();
+        if (length>=array.length+restSize) {
+            return this;
+        }
+        if (length > restSize) {
+            int len = (int) (length - restSize);
+            java.lang.Object[] initialArray = new java.lang.Object[len];
+            System.arraycopy(array, array.length-len, initialArray, 0, len);
+            return new Tuple($reifiedElement, initialArray, rest);
+        }
+        else {
+            return rest.terminal(length);
+        }
     }
-
+    
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trim(Callable<? extends Boolean> f) {
+        if (!rest.getEmpty()) {
+            return $ceylon$language$Sequential$impl().trim(f);
+        }
         int size = array.length;
         int j = 0;
         while (j<size) {
@@ -844,6 +867,9 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public Sequential<? extends Element> trimLeading(
             Callable<? extends Boolean> f) {
+        if (!rest.getEmpty()) {
+            return $ceylon$language$Sequential$impl().trimLeading(f);
+        }
         int size = array.length;
         int i = 0;
         while (i<size) {
@@ -856,13 +882,16 @@ public final class Tuple<Element, First extends Element,
         java.lang.Object[] trimmedArray = 
                 new java.lang.Object[size-i];
         System.arraycopy(array, i, trimmedArray, 0, size-i);
-        return new Tuple($reifiedElement, trimmedArray);
+        return new Tuple($reifiedElement, trimmedArray, rest);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override @Ignore
     public Sequential<? extends Element> trimTrailing(
             Callable<? extends Boolean> f) {
+        if (!rest.getEmpty()) {
+            return $ceylon$language$Sequential$impl().trimTrailing(f);
+        }
         int size = array.length;
         int i = 0;
         while (i<size) {
@@ -880,12 +909,14 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public List$impl<? extends Element> $ceylon$language$List$impl() {
-        return new List$impl<Element>
-                ($reifiedElement, this);
+        return new List$impl<Element>($reifiedElement, this);
     }
 
     @Override @Ignore
     public boolean endsWith(List<? extends java.lang.Object> list) {
+        if (!rest.getEmpty()) {
+            return $ceylon$language$List$impl().endsWith(list);
+        }
         long size = list.getSize();
         if (size>array.length) return false;
         if (size<=0) return true;
@@ -905,6 +936,9 @@ public final class Tuple<Element, First extends Element,
 
     @Override @Ignore
     public boolean startsWith(List<? extends java.lang.Object> list) {
+        if (!rest.getEmpty()) {
+            return $ceylon$language$List$impl().startsWith(list);
+        }
         long size = list.getSize();
         if (size>array.length) return false;
         if (size<=0) return true;
@@ -922,6 +956,10 @@ public final class Tuple<Element, First extends Element,
         return true;
     }
 
+    private Integer adjustIndex(Integer index) {
+        return Integer.instance(index.longValue()+array.length);
+    }
+
     @Override @Ignore
     public Integer firstIndexWhere(Callable<? extends Boolean> f) {
         for (int i=0; i<array.length; i++) {
@@ -929,11 +967,16 @@ public final class Tuple<Element, First extends Element,
                 return Integer.instance(i);
             }
         }
-        return null;
+        Integer index = rest.firstIndexWhere(f);
+        return index==null ? null : adjustIndex(index);
     }
 
     @Override @Ignore
     public Integer lastIndexWhere(Callable<? extends Boolean> f) {
+        Integer index = rest.lastIndexWhere(f);
+        if (index!=null) {
+            return adjustIndex(index);
+        }
         for (int i=array.length-1; i>=0; i--) {
             if (f.$call$(array[i]).booleanValue()) {
                 return Integer.instance(i);
@@ -1029,7 +1072,7 @@ public final class Tuple<Element, First extends Element,
                 return true;
             }
         }
-        return false;
+        return rest.any(f);
     }
 
     @Override @Ignore
@@ -1039,7 +1082,7 @@ public final class Tuple<Element, First extends Element,
                 return false;
             }
         }
-        return true;
+        return rest.every(f);
     }
 
     @Override @Ignore
@@ -1152,6 +1195,12 @@ public final class Tuple<Element, First extends Element,
         java.lang.Object result = array[0];
         for (int i=1; i<array.length; i++) {
             java.lang.Object object = array[i];
+            if (f.$call$(object, result)==larger_.get_()) {
+                result = object;
+            }
+        }
+        if (!rest.getEmpty()) {
+            java.lang.Object object = rest.max(f);
             if (f.$call$(object, result)==larger_.get_()) {
                 result = object;
             }
@@ -1281,11 +1330,13 @@ public final class Tuple<Element, First extends Element,
                 return (Element) object;
             }
         }
-        return null;
+        return rest.find(f);
     }
 
     @Override @Ignore
     public Element findLast(Callable<? extends Boolean> f) {
+        Element element = rest.findLast(f);
+        if (element!=null) return element;
         for (int i=array.length-1; i>=0; i--) {
             java.lang.Object object = array[i];
             if (f.$call$(object).booleanValue()) {
@@ -1293,6 +1344,15 @@ public final class Tuple<Element, First extends Element,
             }
         }
         return null;
+    }
+
+    private Entry<Integer, Element> adjustEntry
+            (Entry<? extends Integer, ?> entry) {
+        return new Entry<Integer,Element>(
+                Integer.$TypeDescriptor$,
+                $reifiedElement,
+                Integer.instance(entry.getKey().longValue()+array.length), 
+                (Element) entry.getItem());
     }
 
     @Override @Ignore
@@ -1303,21 +1363,29 @@ public final class Tuple<Element, First extends Element,
             if (f.$call$(object).booleanValue()) {
                 return new Entry<Integer,Element>
                         (Integer.$TypeDescriptor$, $reifiedElement, 
-                        Integer.instance(i), (Element) object);
+                        Integer.instance(i), 
+                        (Element) object);
             }
         }
-        return null;
+        Entry<? extends Integer, ?> entry = rest.locate(f);
+        return entry==null ? null : adjustEntry(entry);
     }
 
     @Override @Ignore
     public Entry<? extends Integer,? extends Element> 
     locateLast(Callable<? extends Boolean> f) {
+        Entry<? extends Integer,? extends Element> entry = 
+                rest.locateLast(f);
+        if (entry!=null) {
+            return adjustEntry(entry);
+        }
         for (int i=array.length-1; i>=0; i--) {
             java.lang.Object object = array[i];
             if (f.$call$(object).booleanValue()) {
                 return new Entry<Integer,Element>(
                         Integer.$TypeDescriptor$, $reifiedElement, 
-                        Integer.instance(i), (Element) object);
+                        Integer.instance(i), 
+                        (Element) object);
             }
         }
         return null;

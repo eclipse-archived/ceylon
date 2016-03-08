@@ -1,0 +1,110 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug60xx;
+
+class Foo6078 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Foo6078() {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.issues.bug60xx.D6078.$TypeDescriptor$), "Anything(String=)(D6078)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug60xx.D6078 $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug60xx.D6078)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$), "Anything(String=)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        final .java.lang.String s = $instance$.a$s();
+                        return $calltyped$(s);
+                    }
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                        return $calltyped$(s);
+                    }
+                    
+                    private .java.lang.Object $calltyped$(final .java.lang.String s) {
+                        return $instance$.a(s);
+                    }
+                };
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug60xx.Foo6078.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug60xx.Foo6078.class);
+}
+interface C6078 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078$impl $com$redhat$ceylon$compiler$java$test$issues$bug60xx$C6078$impl();
+    
+    public abstract .java.lang.Object a();
+    
+    public abstract .java.lang.String a$s();
+    
+    public abstract .java.lang.Object a(final .java.lang.String s);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078.class);
+}
+final class C6078$impl implements .java.io.Serializable {
+    
+    C6078$impl(.com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078 $this;
+    
+    public final .java.lang.String a$s() {
+        return "bar";
+    }
+}
+class D6078 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078, .java.io.Serializable {
+    
+    protected D6078() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug60xx$C6078$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078$impl(this);
+        this.a = null;
+    }
+    
+    D6078(final .ceylon.language.Callable<? extends .java.lang.Object> a) {
+        this.a = a;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug60xx$C6078$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078$impl(this);
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> a;
+    
+    public final .java.lang.Object a() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = a$s();
+            }
+            returning a$canonical$($ceylontmp$s$0);
+        );
+    }
+    
+    private .java.lang.Object a$canonical$(final .java.lang.String s) {
+        return a.$call$(.ceylon.language.String.instance(s));
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object a(final .java.lang.String s) {
+        return a$canonical$(s);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078$impl $com$redhat$ceylon$compiler$java$test$issues$bug60xx$C6078$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug60xx.C6078$impl $com$redhat$ceylon$compiler$java$test$issues$bug60xx$C6078$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug60xx$C6078$this$;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String a$s() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug60xx$C6078$this$.a$s();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug60xx.D6078.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug60xx.D6078.class);
+}

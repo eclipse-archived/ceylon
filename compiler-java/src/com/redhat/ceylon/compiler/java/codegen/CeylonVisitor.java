@@ -209,7 +209,15 @@ public class CeylonVisitor extends Visitor {
                         delegates.put(ctorModel, ctorDelegation(ctorModel, delegatedDecl, broken));
                     }
                 }
+            } else if (stmt instanceof Tree.SpecifierStatement
+                    && ((Tree.SpecifierStatement)stmt).getRefinement()) {
+                HasErrorException error = gen.errors().getFirstErrorBlock(stmt);
+                if (error != null) {
+                    classBuilder.broken();
+                }
+                stmt.visit(this);
             } else {
+                
                 HasErrorException error = gen.errors().getFirstErrorInitializer(stmt);
                 if (error != null) {
                     append(gen.makeThrowUnresolvedCompilationError(error));

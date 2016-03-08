@@ -34,11 +34,13 @@ import java.util.zip.ZipEntry;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.CompilerTests.ModuleWithArtifact;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.javax.tools.JavaCompiler;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
@@ -211,5 +213,15 @@ public class BcTests extends CompilerTests {
                 runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
         return runCompiler.getTask(null, runFileManager, null, 
                 options, null, compilationUnits1);
+    }
+    
+    @Test
+    @Ignore("Till 1.2.3")
+    public void bug6068() {
+        compareWithJavaSource("refinedreturn/Bug6068");
+        compareWithJavaSource("refinedreturn/Bug6068_client");
+        run("com.redhat.ceylon.compiler.java.test.bc.refinedreturn.bug6068", 
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.bc.refinedreturn", "1"),
+                new ModuleWithArtifact("ceylon.collection", "1.2.2", System.getProperty("user.home")+"/.ceylon/repo", "car"));
     }
 }
