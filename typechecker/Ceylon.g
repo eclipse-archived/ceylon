@@ -3701,11 +3701,14 @@ existsCondition returns [ExistsCondition condition]
         ((patternStart) => patternStart | compilerAnnotations (declarationStart|specificationStart)) =>
         letVariable 
         { $condition.setVariable($letVariable.statement); }
-      |
-        (LIDENTIFIER)=> impliedVariable
-        { $condition.setVariable($impliedVariable.variable); }
-      | expression
-        { $condition.setBrokenExpression($expression.expression); }
+      | (LIDENTIFIER (RPAREN|COMMA))=> iv1=impliedVariable
+        { $condition.setVariable($iv1.variable); }
+      | (expression (RPAREN|COMMA))=> e1=expression
+        { $condition.setBrokenExpression($e1.expression); }
+      | (LIDENTIFIER)=> iv2=impliedVariable
+        { $condition.setVariable($iv2.variable); }
+      | e2=expression
+        { $condition.setBrokenExpression($e2.expression); }
       )
     ;
     
@@ -3722,11 +3725,14 @@ nonemptyCondition returns [NonemptyCondition condition]
         ((patternStart) => patternStart | compilerAnnotations (declarationStart|specificationStart)) =>
         letVariable 
         { $condition.setVariable($letVariable.statement); }
-      |
-        (LIDENTIFIER)=> impliedVariable 
-        { $condition.setVariable($impliedVariable.variable); }
-      | expression
-        { $condition.setBrokenExpression($expression.expression); }
+      | (LIDENTIFIER (RPAREN|COMMA))=> iv1=impliedVariable
+        { $condition.setVariable($iv1.variable); }
+      | (expression (RPAREN|COMMA))=> e1=expression
+        { $condition.setBrokenExpression($e1.expression); }
+      | (LIDENTIFIER)=> iv2=impliedVariable
+        { $condition.setVariable($iv2.variable); }
+      | e2=expression
+        { $condition.setBrokenExpression($e2.expression); }
       )
     ;
 
@@ -3745,8 +3751,7 @@ isCondition returns [IsCondition condition]
         (LIDENTIFIER SPECIFY) =>
         v=isConditionVariable
         { $condition.setVariable($v.variable); }
-      |
-        impliedVariable 
+      | impliedVariable 
         { $condition.setVariable($impliedVariable.variable); }
       )
     ;
