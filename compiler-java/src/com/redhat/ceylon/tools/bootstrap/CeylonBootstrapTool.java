@@ -43,7 +43,6 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
     
     private static final String CEYLON_DOWNLOAD_BASE_URL = "https://downloads.ceylon-lang.org/cli/";
     
-    private static final String FILE_BOOTSTRAP_JAR = "ceylon-bootstrap.jar";
     private static final String FILE_CEYLON_SCRIPT = "ceylon";
     private static final String FILE_CEYLONB_SCRIPT = "ceylonb";
     
@@ -97,7 +96,7 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
             File batFile = applyCwd(new File(FILE_CEYLONB_SCRIPT + ".bat"));
             File bootstrapDir = new File(applyCwd(new File(Constants.CEYLON_CONFIG_DIR)), "bootstrap");
             File propsFile = new File(bootstrapDir, Bootstrap.FILE_BOOTSTRAP_PROPERTIES);
-            File jarFile = new File(bootstrapDir, FILE_BOOTSTRAP_JAR);
+            File jarFile = new File(bootstrapDir, Bootstrap.FILE_BOOTSTRAP_JAR);
             if (scriptFile.exists() || batFile.exists() || propsFile.exists() || jarFile.exists()) {
                 throw new IllegalStateException("A bootstrap already exists in this directory, use the `--force` option to overwrite");
             }
@@ -133,8 +132,8 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
         }
         
         // Copy the "ceylon-bootstrap.jar"
-        File srcJar = new File(LauncherUtil.determineLibs(LauncherUtil.determineHome()), FILE_BOOTSTRAP_JAR);
-        File destJar = new File(bootstrapDir, FILE_BOOTSTRAP_JAR);
+        File srcJar = new File(LauncherUtil.determineLibs(LauncherUtil.determineHome()), Bootstrap.FILE_BOOTSTRAP_JAR);
+        File destJar = new File(bootstrapDir, Bootstrap.FILE_BOOTSTRAP_JAR);
         Files.copy(srcJar.toPath(), destJar.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
         
         // Copy the "ceylon" startup script to "./ceylonb"
