@@ -170,8 +170,8 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         return cs != null && cs.isOffline();
     }
 
-    private File putContent(ArtifactContext context, final Node node, InputStream stream, long length) throws IOException {
-        log.debug("Creating local copy of external node: " + node + " at repo: " + 
+    private File putContent(ArtifactContext context, Node node, InputStream stream, long length) throws IOException {
+        log.debug("  Creating local copy of external node: " + node + " at repo: " + 
                 (fileContentStore != null ? fileContentStore.getDisplayString() : null));
         if(fileContentStore == null)
             throw new IOException("No location to place node at: fileContentStore is null");
@@ -181,111 +181,53 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
             callback = ArtifactCallbackStream.getCallback();
         }
         
-        // Make a temporary node+file
-        final Node parent = NodeUtils.firstParent(node);
-        if (parent == null) {
-            throw new IllegalArgumentException("Parent should not be null: " + node);
-        }
-        File finalFile = fileContentStore.getFile(node);
-        Node tempNode = parent.getChild(node.getLabel() + VALIDATING);
-        final File tempFile = fileContentStore.getFile(tempNode);
-        FileUtil.delete(tempFile);
-        
-        // Write the stream to the temporary file
-        final File file;
+        final File finalFile;
+        VerifiedDownload dl = new VerifiedDownload(log, context, fileContentStore, node);
         try {
-            if (callback != null) {
-                callback.start(NodeUtils.getFullPath(node), length != -1 ? length : node.getSize(), node.getStoreDisplayString());
-                stream = new ArtifactCallbackStream(callback, stream);
-            }
-            log.debug("Saving content of " + node + " to " + fileContentStore.getFile(tempNode));
-            fileContentStore.putContent(tempNode, stream, context); // stream should be closed closer to API call
-            file = fileContentStore.getFile(tempNode); // re-get
-            assert(file.getPath().equals(tempFile.getPath()));
-            if (callback != null) {
-                callback.done(file);
-            }
-        } catch (Throwable t) {
-            if (callback != null) {
-                callback.error(fileContentStore.getFile(node), t);
-            }
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw IOUtils.toIOException(t);
-            }
-        }
-
-        if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
-            // Now validate the temporary file has a sha1 which matches the remote sha1
-            final OpenNode on = (OpenNode) node;
-            final String sha1 = IOUtils.sha1(new FileInputStream(file));
-            if (sha1 != null) {
-                log.debug("sha1 of : "+file + " is " + sha1);
-                ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-                if (parent == null) {
-                    throw new IllegalArgumentException("Parent should not be null: " + node);
-                }
-                Node sha = parent.getChild(on.getLabel() + SHA1);
-                if (sha == null) {
-                    // put it to ext node as well, if supported
-                    on.addContent(SHA1, shaStream, context);
-                    shaStream.reset(); // reset, for next read
-                } else if (sha.hasBinaries()) {
-                    final String existingSha1 = IOUtils.readSha1(sha.getInputStream());
-                    log.debug("sha1 retrieved from " + sha +" is "+ existingSha1);
-                    if (sha1.equals(existingSha1) == false) {
-                        try {
-                            fileContentStore.delete(file, node);
-                        } catch (Exception e) {
-                            log.warning("Error removing new content: " + file);
-                        }
-                        throw new IOException("Bad SHA1 - file: " + sha1 + " != " + existingSha1);
+            dl.fetch(callback, stream, length);
+            // don't commit it yet, as something might go wrong getting the descriptor...
+            
+            // only check for jars or forced checks
+            if (ArtifactContext.JAR.equals(context.getSingleSuffix()) || context.forceDescriptorCheck()) {
+                // transfer descriptor as well, if there is one
+                final Node descriptor = Configuration.getResolvers(this).descriptor(node);
+                if (descriptor != null && descriptor.hasBinaries()) {
+                    VerifiedDownload descriptorDl = new VerifiedDownload(log, context, fileContentStore, descriptor);
+                    try {
+                        descriptorDl.fetch(callback, descriptor.getInputStream(), 40);
+                        descriptorDl.commit();
+                    } catch (RuntimeException e) {
+                        dl.rollback(e);
+                        throw e;
+                    } catch (IOException e) {
+                        dl.rollback(e);
+                        throw e;
                     }
                 }
-                // create empty marker node
-                OpenNode sl = ((OpenNode) parent).addNode(on.getLabel() + SHA1 + LOCAL);
-                // put sha to local store as well
-                fileContentStore.putContent(sl, shaStream, context);
-            } else {
-                log.debug("Could not calculate sha1 of : "+file);
             }
-        } else {
-            log.debug("Not validating checksum: "+tempNode);
+            // ... got descriptor OK, so can now commit
+            finalFile = dl.commit();
+        } catch (RuntimeException e) {
+            dl.rollback(e);
+            throw e;
+        } catch (IOException e) {
+            dl.rollback(e);
+            throw e;
         }
         
-        // Rename the temp file to the final file
-        FileUtil.delete(finalFile);
-        log.debug("Renaming " + file + " to " + finalFile);
-        if (!file.renameTo(finalFile)) {
-            throw new IOException("Renaming "+ file + " to " + finalFile + " failed");
-        }
-
-        // only check for jars or forced checks
-        if (ArtifactContext.JAR.equals(context.getSingleSuffix()) || context.forceDescriptorCheck()) {
-            // transfer descriptor as well, if there is one
-            final Node descriptor = Configuration.getResolvers(this).descriptor(node);
-            if (descriptor != null && descriptor.hasBinaries()) {
-                try (InputStream is = descriptor.getInputStream()) {
-                    fileContentStore.putContent(descriptor, is, context);
-                }
-            }
-        }
-
         // refresh markers from root to this newly put node
         if(getCache() != null){
             final List<String> paths = NodeUtils.toLabelPath(node);
             OpenNode current = getCache();
             for (String path : paths) {
-                if (current == null)
+                if (current == null) {
                     break;
-
+                }
                 current.refresh(false);
                 final Node tmp = current.peekChild(path);
                 current = (tmp instanceof OpenNode) ? OpenNode.class.cast(tmp) : null;
             }
         }
-
         return finalFile;
     }
 

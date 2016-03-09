@@ -619,8 +619,8 @@ public class CeylonDocToolTests {
         RepositoryManager repoManager = CeylonUtils.repoManager().systemRepo("../dist/dist/repo").buildManager();
         File jbossModulesModule = repoManager.getArtifact(new ArtifactContext("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
         File runtimeModule = repoManager.getArtifact(new ArtifactContext("ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
-        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
-        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.1.1.Final", ".jar"));
+        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.3.5.Final", ".jar"));
+        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
         File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
