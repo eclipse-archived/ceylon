@@ -181,21 +181,26 @@ public class Bootstrap {
             // Check if the distribution URI refers to a remote or a local file
             File zipFile;
             if (cfg.distribution.getScheme() != null) {
+                // Set up a download progress monitor if we have a console
+                ProgressMonitor monitor = null;
+                if (System.console() != null) {
+                    monitor = new ProgressMonitor() {
+                        @Override
+                        public void update(long read, long size) {
+                            String progress;
+                            if (size == -1) {
+                                progress = String.valueOf(read / 1024L) + "K";
+                            } else {
+                                progress = String.valueOf(read * 100 / size) + "%";
+                            }
+                            System.out.print("Downloading Ceylon... " + progress + "\r");
+                        }
+                    };
+                }
                 // Start download of URL to temp file
                 tmpFile = zipFile = File.createTempFile("ceylon-bootstrap-dist-", ".part");
                 setupProxyAuthentication();
-                download(cfg.distribution, zipFile, new ProgressMonitor() {
-                    @Override
-                    public void update(long read, long size) {
-                        String progress;
-                        if (size == -1) {
-                            progress = String.valueOf(read / 1024L) + "K";
-                        } else {
-                            progress = String.valueOf(read * 100 / size) + "%";
-                        }
-                        System.out.print("Downloading Ceylon... " + progress + "\r");
-                    }
-                });
+                download(cfg.distribution, zipFile, monitor);
             } else {
                 // It's a local file, no need to download
                 zipFile = new File(cfg.properties.getParentFile(), cfg.distribution.getPath()).getAbsoluteFile();
