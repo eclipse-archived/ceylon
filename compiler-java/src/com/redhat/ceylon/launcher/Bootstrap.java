@@ -85,6 +85,10 @@ public class Bootstrap {
                     ceylonVersion = LauncherUtil.determineSystemVersion();
                 }
                 File module = CeylonClassLoader.getRepoJar("ceylon.bootstrap", ceylonVersion);
+                if (!module.exists()) {
+                    File homeLib = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR), "lib");
+                    module = new File(homeLib, FILE_BOOTSTRAP_JAR);
+                }
                 cl = CeylonClassLoader.newInstance(Arrays.asList(module));
                 Class<?> launcherClass = cl.loadClass("com.redhat.ceylon.launcher.Launcher");
                 runMethod = launcherClass.getMethod("run", String[].class);
@@ -202,10 +206,6 @@ public class Bootstrap {
         File bootstrapLibJar = new File(libDir, FILE_BOOTSTRAP_JAR);
         if (!bootstrapLibJar.exists()) {
             throw new RuntimeException("Ceylon distribution archive is too old and not supported: " + cfg.distribution);
-        }
-        File bootstrapRepoDir = determineDistBootstrap(tmpFolder);
-        if (bootstrapRepoDir == null || !bootstrapRepoDir.exists()) {
-            throw new RuntimeException("Only Ceylon distributions versions 1.2.0 and higher are currently supported: " + cfg.distribution);
         }
     }
 
@@ -521,9 +521,9 @@ public class Bootstrap {
         }
     }
 
-    private static File determineDistBootstrap(File distHome) {
+    private static File determineDistLanguage(File distHome) {
         File distRepo = new File(distHome, "repo");
-        File bootstrap = new File(new File(distRepo, "ceylon"), "bootstrap");
+        File bootstrap = new File(new File(distRepo, "ceylon"), "language");
         File[] versions = bootstrap.listFiles(new FileFilter() {
             @Override
             public boolean accept(File f) {
@@ -538,7 +538,7 @@ public class Bootstrap {
 
     private static String determineDistVersion() {
         File distHome = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR));
-        File versionDir = determineDistBootstrap(distHome);
+        File versionDir = determineDistLanguage(distHome);
         if (versionDir == null) {
             throw new RuntimeException("Error in distribution: missing bootstrap in " + distHome.getAbsolutePath());
         }
