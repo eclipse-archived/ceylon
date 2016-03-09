@@ -347,7 +347,6 @@ Use this when NOT doing a release!">
         <mkdir dir="${ceylon.dist.dir}/bin"/>
         <copy todir="${ceylon.dist.dir}/bin">
             <fileset dir="${project-common.dir}/build/bin">
-                <include name="java.bat"/>
                 <include name="ceylon"/>
                 <include name="ceylon.bat"/>
                 <include name="ceylon-completion.bash"/>
