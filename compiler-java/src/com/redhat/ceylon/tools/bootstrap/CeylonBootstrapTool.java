@@ -11,6 +11,7 @@ import java.util.Properties;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -21,17 +22,28 @@ import com.redhat.ceylon.launcher.Bootstrap;
 import com.redhat.ceylon.launcher.LauncherUtil;
 
 @Summary("Generates a Ceylon bootstrap script in the current directory")
-@Description("Generates a WAR file from the `.car` file of the "
-        + "given `module-with-version`, "
-        + "suitable for deploying to a standard Servlet container.\n\n"
-        + "The version number is required since, in general, there "
-        + "can be multiple versions available in the configured repositories.\n\n"
-        + "The given module's `.car` file and those of its "
-        + "transitive dependencies will be copied to the `WEB-INF/lib` of "
-        + "the generated WAR file. Dependencies which are provided by "
-        + "the application container "
-        + "(and thus not required to be in `WEB-INF/lib`) can be "
-        + "excluded using `--exclude-module`.")
+@Description("This tool generates a `ceylonb` bootstrap shell script "
+        + "(and a `ceylonb.bat` batch file for Windows) that functions "
+        + "exactly like the normal `ceylon` command, except that it is "
+        + "not necessary to install Ceylon yourself. On first execution "
+        + "the scripts will check if the required Ceylon distribution is "
+        + "already available locally and if not they will download and "
+        + "install it."
+        + "\n\n"
+        + "A bootstrap script can be used to make it very easy for "
+        + "authors of Ceylon projects to distribute their code to users "
+        + "without them having to install Ceylon. It is also useful for "
+        + "making sure that users use the exact same version of Ceylon "
+        + "the code was tested with without forcing them to install "
+        + "that exact same version themselves."
+        + "\n\n"
+        + "The `distribution` argument determines which distribution "
+        + "the bootstrap script will install. It can either be a version "
+        + "string, which will then be combined with the URL to the official "
+        + "Ceylon download site, or it can be a URL pointing directly to "
+        + "the desired Ceylon distribution download. If this option is not "
+        + "specified the current version will be used "
+        + "(default: " + Versions.CEYLON_VERSION_NUMBER + ")")
 public class CeylonBootstrapTool extends CeylonBaseTool {
     private URI distribution;
     private File installation;
@@ -46,13 +58,7 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
     public CeylonBootstrapTool() {
     }
     
-    @OptionArgument(argumentName="version-or-url")
-    @Description("Determines which distribution the bootstrap script will install. " +
-            "Can either be a version string, which will then be combined with " +
-            "the URL to the official Ceylon download site, or it can be a URL " +
-            "pointing directly to the desired Ceylon distribution download. " +
-            "If this option is not specified the current version will be used " +
-            "(default: " + Versions.CEYLON_VERSION_NUMBER + ")")
+    @Argument(argumentName="distribution", multiplicity="?")
     public void setDistribution(URI distribution) {
         this.distribution = distribution;
     }
