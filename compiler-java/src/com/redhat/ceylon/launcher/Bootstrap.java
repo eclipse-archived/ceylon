@@ -49,6 +49,7 @@ import com.redhat.ceylon.common.Constants;
 public class Bootstrap {
 
     public static final String FILE_BOOTSTRAP_PROPERTIES = "ceylon-bootstrap.properties";
+    public static final String FILE_BOOTSTRAP_JAR = "ceylon-bootstrap.jar";
     
     public static final String KEY_SHA256SUM = "sha256sum";
     public static final String KEY_INSTALLATION = "installation";
@@ -92,7 +93,11 @@ public class Bootstrap {
                 if (e.getCause() != null) {
                     throw e;
                 } else {
-                    System.err.println("   --> " + e.getMessage());
+                    if (!(e instanceof RuntimeException) || e.getMessage() == null) {
+                        System.err.println("   --> " + e.toString());
+                    } else {
+                        System.err.println("   --> " + e.getMessage());
+                    }
                     return -1;
                 }
             }
@@ -170,6 +175,7 @@ public class Bootstrap {
             mkdirs(cfg.resolvedInstallation);
             tmpFolder = Files.createTempDirectory(cfg.resolvedInstallation.toPath(), "ceylon-bootstrap-dist-").toFile();
             extractArchive(zipFile, tmpFolder);
+            validateDistribution(cfg, tmpFolder);
             // Rename temp folder to hash
             tmpFolder.renameTo(cfg.distributionDir);
             // Clearing the download progress text on the console
@@ -185,6 +191,24 @@ public class Bootstrap {
         }
     }
     
+    private static void validateDistribution(Config cfg, File tmpFolder) {
+        File binDir = new File(tmpFolder, Constants.CEYLON_BIN_DIR);
+        File libDir = new File(tmpFolder, "lib");
+        File repoDir = new File(tmpFolder, "repo");
+        boolean valid = binDir.exists() && libDir.exists() && repoDir.exists();
+        if (!valid) {
+            throw new RuntimeException("Not a valid Ceylon distribution archive: " + cfg.distribution);
+        }
+        File bootstrapLibJar = new File(libDir, FILE_BOOTSTRAP_JAR);
+        if (!bootstrapLibJar.exists()) {
+            throw new RuntimeException("Ceylon distribution archive is too old and not supported: " + cfg.distribution);
+        }
+        File bootstrapRepoDir = determineDistBootstrap(tmpFolder);
+        if (bootstrapRepoDir == null || !bootstrapRepoDir.exists()) {
+            throw new RuntimeException("Only Ceylon distributions versions 1.2.0 and higher are currently supported: " + cfg.distribution);
+        }
+    }
+
     private static File getPropertiesFile() throws URISyntaxException {
         String cbp = System.getProperty("ceylon.bootstrap.properties");
         if (cbp != null) {
@@ -497,8 +521,7 @@ public class Bootstrap {
         }
     }
 
-    private static String determineDistVersion() {
-        File distHome = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR));
+    private static File determineDistBootstrap(File distHome) {
         File distRepo = new File(distHome, "repo");
         File bootstrap = new File(new File(distRepo, "ceylon"), "bootstrap");
         File[] versions = bootstrap.listFiles(new FileFilter() {
@@ -508,8 +531,17 @@ public class Bootstrap {
             }
         });
         if (versions == null || versions.length != 1) {
-            throw new RuntimeException("Error in distribution: missing bootstrap in " + bootstrap.getAbsolutePath());
+            return null;
         }
-        return versions[0].getName();
+        return versions[0];
+    }
+
+    private static String determineDistVersion() {
+        File distHome = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR));
+        File versionDir = determineDistBootstrap(distHome);
+        if (versionDir == null) {
+            throw new RuntimeException("Error in distribution: missing bootstrap in " + distHome.getAbsolutePath());
+        }
+        return versionDir.getName();
     }
 }
