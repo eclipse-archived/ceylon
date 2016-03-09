@@ -49,9 +49,7 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
     private File installation;
     private String shaSum;
     private boolean force;
-    
-    private static final String CEYLON_DOWNLOAD_BASE_URL = "https://downloads.ceylon-lang.org/cli/";
-    
+        
     private static final String FILE_CEYLON_SCRIPT = "ceylon";
     private static final String FILE_CEYLONB_SCRIPT = "ceylonb";
     
@@ -157,7 +155,7 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
             } else {
                 version = Versions.CEYLON_VERSION_NUMBER;
             }
-            return new URI(CEYLON_DOWNLOAD_BASE_URL + "ceylon-" + version + ".zip");
+            return new URI(Bootstrap.CEYLON_DOWNLOAD_BASE_URL + "ceylon-" + version + ".zip");
         } else {
             return distribution;
         }

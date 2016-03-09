@@ -138,6 +138,7 @@ public class CeylonTool implements Tool {
     private CeylonConfig oldConfig = null;
     private List<String> defines;
     private Boolean showHome;
+    private boolean showDistributionError;
     
     public CeylonTool() {
     }
@@ -215,6 +216,19 @@ public class CeylonTool implements Tool {
     @Description("Set a system property")
     public void setDefine(List<String> defines) {
         this.defines = defines;
+    }
+    
+    @OptionArgument(argumentName = "version-or-url")
+    @Description("Determines which Ceylon distribution will be used to run the command. "
+            + "Passing any version except the current (" + Versions.CEYLON_VERSION_NUMBER + ") "
+            + "will result in a one-time download of the requested version from the "
+            + "official Ceylon website.")
+    public void setDistribution(String distribution) {
+        // We should actually never come here because this is an option that
+        // is handled by the Bootstrap and removed by it before passing control
+        // over to the Launcher and CeylonTool.
+        // It's just here so it will show up in the help
+        this.showDistributionError = !distribution.isEmpty() && !distribution.equals(Versions.CEYLON_VERSION_NUMBER);
     }
     
     private void setSystemProperties() {
@@ -486,7 +500,9 @@ public class CeylonTool implements Tool {
     
     @Override
     public void run() throws Exception {
-        // do nothing?
+        if (showDistributionError) {
+            throw new IllegalArgumentException("Requested and actual Ceylon distribution versions are not the same");
+        }
     }
 
     private void run(ToolModel<Tool> model, Tool tool) throws Exception {

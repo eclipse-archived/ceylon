@@ -20,6 +20,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -48,6 +49,8 @@ import com.redhat.ceylon.common.Constants;
  */
 public class Bootstrap {
 
+    public static final String CEYLON_DOWNLOAD_BASE_URL = "https://downloads.ceylon-lang.org/cli/";
+    
     public static final String FILE_BOOTSTRAP_PROPERTIES = "ceylon-bootstrap.properties";
     public static final String FILE_BOOTSTRAP_JAR = "ceylon-bootstrap.jar";
     
@@ -79,7 +82,15 @@ public class Bootstrap {
             try {
                 String ceylonVersion;
                 if (isDistBootstrap()) {
-                    setupDistHome();
+                    // Load configuration
+                    Config cfg = loadBootstrapConfig();
+                    setupDistHome(cfg);
+                    ceylonVersion = determineDistVersion();
+                } else if (distArgument(args) != null) {
+                    String dist = distArgument(args);
+                    args = stripDistArgument(args);
+                    Config cfg = createDistributionConfig(dist);
+                    setupDistHome(cfg);
                     ceylonVersion = determineDistVersion();
                 } else {
                     ceylonVersion = LauncherUtil.determineSystemVersion();
@@ -128,9 +139,30 @@ public class Bootstrap {
         return propsFile.exists();
     }
     
-    private static void setupDistHome() throws Exception {
-        // Load properties
-        Config cfg = loadBootstrapConfig();
+    private static String distArgument(String[] args) {
+        for (String arg : args) {
+            if (!arg.startsWith("-")) {
+                break;
+            }
+            if (arg.startsWith("--distribution=") && arg.length() > 15) {
+                return arg.substring(15);
+            }
+        }
+        return null;
+    }
+
+    private static String[] stripDistArgument(String[] args) {
+        ArrayList<String> lst = new ArrayList<String>();
+        for (String arg : args) {
+            if (!arg.startsWith("--distribution=") || arg.length() <= 15) {
+                lst.add(arg);
+            }
+        }
+        String[] buf = new String[lst.size()];
+        return lst.toArray(buf);
+    }
+
+    private static void setupDistHome(Config cfg) throws Exception {
         // If hash doesn't exist in dists folder we must download & install
         if (!cfg.distributionDir.exists()) {
             install(cfg);
@@ -256,9 +288,6 @@ public class Bootstrap {
         }
         cfg.distribution = new URI(properties.getProperty(KEY_DISTRIBUTION));
 
-        // Hash the URI, it will be our distribution's folder name
-        cfg.hash = hash(cfg.distribution.toString());
-        
         // See if the distribution should be installed in some other place than the default
         if (properties.containsKey(KEY_INSTALLATION)) {
             // Get the installation path
@@ -273,13 +302,42 @@ public class Bootstrap {
         } else {
             cfg.resolvedInstallation = new File(getUserDir(), FOLDER_DISTS);
         }
-        
-        // The actual installation directory for the distribution
-        cfg.distributionDir = new File(cfg.resolvedInstallation, cfg.hash);
 
         // If the properties contain a sha256sum store it for later
         cfg.sha256sum = properties.getProperty(KEY_SHA256SUM);
 
+        return updateConfig(cfg);
+    }
+    
+    private static Config createDistributionConfig(String dist) throws URISyntaxException {
+        Config cfg = new Config();
+        cfg.distribution = getDistributionUri(dist);
+        return updateConfig(cfg);
+    }
+
+    private static URI getDistributionUri(String dist) throws URISyntaxException {
+        URI uri = new URI(dist);
+        if (uri.getScheme() != null) {
+            return uri;
+        } else {
+            return new URI(CEYLON_DOWNLOAD_BASE_URL + "ceylon-" + dist + ".zip");
+        }
+    }
+    
+    private static Config updateConfig(Config cfg) {
+        // Hash the URI, it will be our distribution's folder name
+        cfg.hash = hash(cfg.distribution.toString());
+        
+        // Make sure resolvedInstallation points to a proper installation folder
+        if (cfg.installation != null) {
+            cfg.resolvedInstallation = cfg.properties.getParentFile().toPath().resolve(cfg.installation.toPath()).toFile().getAbsoluteFile();
+        } else {
+            cfg.resolvedInstallation = new File(getUserDir(), FOLDER_DISTS);
+        }
+        
+        // The actual installation directory for the distribution
+        cfg.distributionDir = new File(cfg.resolvedInstallation, cfg.hash);
+        
         return cfg;
     }
     
