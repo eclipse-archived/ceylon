@@ -14,6 +14,7 @@ done
 
 DIR=$(dirname "$PRG")
 
+# Check if we should use a distribution bootstrap
 if [ -f "$DIR/.ceylon/bootstrap/ceylon-bootstrap.properties" -a -f "$DIR/.ceylon/bootstrap/ceylon-bootstrap.jar" ]; then
     # Using bootstrap
     LIB="$DIR/.ceylon/bootstrap"
