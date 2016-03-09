@@ -48,6 +48,12 @@ import com.redhat.ceylon.common.Constants;
  */
 public class Bootstrap {
 
+    public static final String FILE_BOOTSTRAP_PROPERTIES = "ceylon-bootstrap.properties";
+    
+    public static final String KEY_SHA256SUM = "sha256sum";
+    public static final String KEY_INSTALLATION = "installation";
+    public static final String KEY_DISTRIBUTION = "distribution";
+
     private static final String FOLDER_DISTS = "dists";
     
     private static final int DOWNLOAD_TIMEOUT_READ = 30000;
@@ -83,7 +89,12 @@ public class Bootstrap {
                 runMethod = launcherClass.getMethod("run", String[].class);
             } catch (Exception e) {
                 System.err.println("Fatal: Ceylon command could not be executed");
-                throw e;
+                if (e.getCause() != null) {
+                    throw e;
+                } else {
+                    System.err.println("   --> " + e.getMessage());
+                    return -1;
+                }
             }
             try {
                 result = (Integer)runMethod.invoke(null, (Object)args);
@@ -122,35 +133,52 @@ public class Bootstrap {
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, cfg.distributionDir.getAbsolutePath());
     }
     
-    private static void install(Config cfg) throws IOException {
-        // Start download of URL to temp file
-        File tmpFile = File.createTempFile("ceylon-bootstrap-dist-", ".part");
+    private static void install(Config cfg) throws Exception {
+        File tmpFile = null;
         File tmpFolder = null;
         try {
-            setupProxyAuthentication();
-            download(cfg.distribution, tmpFile, new ProgressMonitor() {
-                @Override
-                public void update(long read, long size) {
-                    String progress;
-                    if (size == -1) {
-                        progress = String.valueOf(read / 1024L) + "K";
-                    } else {
-                        progress = String.valueOf(read * 100 / size) + "%";
+            // Check if the distribution URI refers to a remote or a local file
+            File zipFile;
+            if (cfg.distribution.getScheme() != null) {
+                // Start download of URL to temp file
+                tmpFile = zipFile = File.createTempFile("ceylon-bootstrap-dist-", ".part");
+                setupProxyAuthentication();
+                download(cfg.distribution, zipFile, new ProgressMonitor() {
+                    @Override
+                    public void update(long read, long size) {
+                        String progress;
+                        if (size == -1) {
+                            progress = String.valueOf(read / 1024L) + "K";
+                        } else {
+                            progress = String.valueOf(read * 100 / size) + "%";
+                        }
+                        System.out.print("Downloading Ceylon... " + progress + "\r");
                     }
-                    System.out.print("Downloading Ceylon... " + progress + "\r");
+                });
+            } else {
+                // It's a local file, no need to download
+                zipFile = new File(cfg.properties.getParentFile(), cfg.distribution.getPath()).getAbsoluteFile();
+            }
+            // Verify zip file if we have a sha sum
+            if (cfg.sha256sum != null) {
+                String sum = calculateSha256Sum(zipFile);
+                if (!sum.equals(cfg.sha256sum)) {
+                    throw new RuntimeException("Error verifying Ceylon distribution archive: SHA sums do not match");
                 }
-            });
+            }
             // Unzip file to temp folder in dists folder
-            mkdirs(cfg.actualInstallation);
-            tmpFolder = Files.createTempDirectory(cfg.actualInstallation.toPath(), "ceylon-bootstrap-dist-").toFile();
-            extractArchive(tmpFile, tmpFolder);
+            mkdirs(cfg.resolvedInstallation);
+            tmpFolder = Files.createTempDirectory(cfg.resolvedInstallation.toPath(), "ceylon-bootstrap-dist-").toFile();
+            extractArchive(zipFile, tmpFolder);
             // Rename temp folder to hash
             tmpFolder.renameTo(cfg.distributionDir);
             // Clearing the download progress text on the console
             System.out.print("                              \r");
         } finally {
             // Delete temp file and folder
-            delete(tmpFile);
+            if (tmpFile != null) {
+                delete(tmpFile);
+            }
             if (tmpFolder != null) {
                 delete(tmpFolder);
             }
@@ -158,8 +186,13 @@ public class Bootstrap {
     }
     
     private static File getPropertiesFile() throws URISyntaxException {
-        File jar = LauncherUtil.determineRuntimeJar();
-        return new File(jar.getParentFile(), "ceylon-bootstrap.properties");
+        String cbp = System.getProperty("ceylon.bootstrap.properties");
+        if (cbp != null) {
+            return new File(cbp);
+        } else {
+            File jar = LauncherUtil.determineRuntimeJar();
+            return new File(jar.getParentFile(), FILE_BOOTSTRAP_PROPERTIES);
+        }
     }
     
     private static Properties loadBootstrapProperties() throws Exception {
@@ -180,11 +213,11 @@ public class Bootstrap {
     private static class Config {
         File properties;
         URI distribution;
-        String hash;
         File installation;
         File resolvedInstallation;
-        File actualInstallation;
         File distributionDir;
+        String hash;
+        String sha256sum;
     }
     
     private static Config loadBootstrapConfig() throws Exception {
@@ -194,25 +227,34 @@ public class Bootstrap {
         cfg.properties = getPropertiesFile();
         
         // Obtain dist download URL
-        if (!properties.containsKey("distribution")) {
+        if (!properties.containsKey(KEY_DISTRIBUTION)) {
             throw new RuntimeException("Error in bootstrap properties file: missing 'distribution'");
         }
-        cfg.distribution = new URI(properties.getProperty("distribution"));
+        cfg.distribution = new URI(properties.getProperty(KEY_DISTRIBUTION));
 
         // Hash the URI, it will be our distribution's folder name
         cfg.hash = hash(cfg.distribution.toString());
         
-        if (properties.containsKey("installation")) {
-            cfg.installation = new File(properties.getProperty("installation"));
-            cfg.resolvedInstallation = cfg.properties.toPath().resolve(cfg.installation.toPath()).toFile();
-        }
-        if (cfg.installation != null) {
-            cfg.actualInstallation = new File(cfg.resolvedInstallation, FOLDER_DISTS);
+        // See if the distribution should be installed in some other place than the default
+        if (properties.containsKey(KEY_INSTALLATION)) {
+            // Get the installation path
+            String installString = properties.getProperty(KEY_INSTALLATION);
+            // Do some simple variable expansion
+            installString = installString
+                    .replaceAll("^~", System.getProperty("user.home"))
+                    .replace("${user.home}", System.getProperty("user.home"))
+                    .replace("${ceylon.user.dir}", getUserDir().getAbsolutePath());
+            cfg.installation = new File(installString);
+            cfg.resolvedInstallation = cfg.properties.getParentFile().toPath().resolve(cfg.installation.toPath()).toFile().getAbsoluteFile();
         } else {
-            cfg.actualInstallation = new File(getUserDir(), FOLDER_DISTS);
+            cfg.resolvedInstallation = new File(getUserDir(), FOLDER_DISTS);
         }
         
-        cfg.distributionDir = new File(cfg.actualInstallation, cfg.hash);
+        // The actual installation directory for the distribution
+        cfg.distributionDir = new File(cfg.resolvedInstallation, cfg.hash);
+
+        // If the properties contain a sha256sum store it for later
+        cfg.sha256sum = properties.getProperty(KEY_SHA256SUM);
 
         return cfg;
     }
@@ -362,6 +404,40 @@ public class Bootstrap {
             return new BigInteger(1, messageDigest.digest()).toString(36);
         } catch (Exception e) {
             throw new RuntimeException("Error creating hash", e);
+        }
+    }
+    
+    /**
+     * This method calculates the SHA256 sum of the provided {@code file}
+     * Copied from Gradle's Install
+     */
+    private static String calculateSha256Sum(File file) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        InputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            int n = 0;
+            byte[] buffer = new byte[4096];
+            while (n != -1) {
+                n = fis.read(buffer);
+                if (n > 0) {
+                    md.update(buffer, 0, n);
+                }
+            }
+            byte byteData[] = md.digest();
+    
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i < byteData.length; i++) {
+                String hex=Integer.toHexString(0xff & byteData[i]);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+    
+            return hexString.toString();
+        } finally {
+            fis.close();
         }
     }
     
