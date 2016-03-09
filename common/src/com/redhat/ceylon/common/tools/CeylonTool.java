@@ -137,6 +137,7 @@ public class CeylonTool implements Tool {
     private File config;
     private CeylonConfig oldConfig = null;
     private List<String> defines;
+    private Boolean showHome;
     
     public CeylonTool() {
     }
@@ -176,6 +177,16 @@ public class CeylonTool implements Tool {
     
     public boolean getNoPager() {
         return paginate != null && !paginate;
+    }
+
+    @Option
+    @Description("Outputs the value for CEYLON_HOME and exits.")
+    public void setShowHome(boolean showHome) {
+        this.showHome = showHome;
+    }
+    
+    public boolean getShowHome() {
+        return showHome != null && showHome;
     }
 
     public File getCwd() {
@@ -483,6 +494,8 @@ public class CeylonTool implements Tool {
             // --version is also handled in main(), so that you can at least do 
             // --version with a Java <7 JVM, but also do it here for consistency
             version(System.out);
+        } else if (getShowHome()) {
+            System.out.println(System.getProperty(Constants.PROP_CEYLON_HOME_DIR));
         } else {
             if(model instanceof ScriptToolModel){
                 runScript((ScriptToolModel<Tool>)model);
