@@ -48,6 +48,8 @@ import com.redhat.ceylon.common.Constants;
  */
 public class Bootstrap {
 
+    private static final String FOLDER_DISTS = "dists";
+    
     private static final int DOWNLOAD_TIMEOUT_READ = 30000;
     private static final int DOWNLOAD_TIMEOUT_CONNECT = 15000;
     private static final int DOWNLOAD_BUFFER_SIZE = 4096;
@@ -108,40 +110,44 @@ public class Bootstrap {
     
     private static void setupDistHome() throws Exception {
         // Load properties
-        Properties properties = loadBootstrapProperties();
-        // Obtain dist download URL
-        if (!properties.containsKey("distribution")) {
-            throw new RuntimeException("Error in bootstrap properties file: missing 'distribution'");
-        }
-        URI distUri = new URI((String)properties.get("distribution"));
-        // Hash the URI, it will be our distribution's folder name
-        String hash = hash(distUri.toString());
+        Config cfg = loadBootstrapConfig();
         // If hash doesn't exist in dists folder we must download & install
-        File distDir = getDistDir(hash);
-        if (!distDir.exists()) {
-            install(distUri, hash);
-            if (!distDir.exists()) {
+        if (!cfg.distributionDir.exists()) {
+            install(cfg);
+            if (!cfg.distributionDir.exists()) {
                 throw new RuntimeException("Unable to install distribution");
             }
         }
         // Set the correct home folder
-        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, distDir.getAbsolutePath());
+        System.setProperty(Constants.PROP_CEYLON_HOME_DIR, cfg.distributionDir.getAbsolutePath());
     }
     
-    private static void install(URI distUri, String hash) throws IOException {
+    private static void install(Config cfg) throws IOException {
         // Start download of URL to temp file
         File tmpFile = File.createTempFile("ceylon-bootstrap-dist-", ".part");
         File tmpFolder = null;
         try {
             setupProxyAuthentication();
-            download(distUri, tmpFile, null);
+            download(cfg.distribution, tmpFile, new ProgressMonitor() {
+                @Override
+                public void update(long read, long size) {
+                    String progress;
+                    if (size == -1) {
+                        progress = String.valueOf(read / 1024L) + "K";
+                    } else {
+                        progress = String.valueOf(read * 100 / size) + "%";
+                    }
+                    System.out.print("Downloading Ceylon... " + progress + "\r");
+                }
+            });
             // Unzip file to temp folder in dists folder
-            mkdirs(getDistsDir());
-            tmpFolder = Files.createTempDirectory(getDistsDir().toPath(), "ceylon-bootstrap-dist-").toFile();
+            mkdirs(cfg.actualInstallation);
+            tmpFolder = Files.createTempDirectory(cfg.actualInstallation.toPath(), "ceylon-bootstrap-dist-").toFile();
             extractArchive(tmpFile, tmpFolder);
             // Rename temp folder to hash
-            File distDir = getDistDir(hash);
-            tmpFolder.renameTo(distDir);
+            tmpFolder.renameTo(cfg.distributionDir);
+            // Clearing the download progress text on the console
+            System.out.print("                              \r");
         } finally {
             // Delete temp file and folder
             delete(tmpFile);
@@ -169,6 +175,46 @@ public class Bootstrap {
                 fileInput.close();
             }
         }
+    }
+    
+    private static class Config {
+        File properties;
+        URI distribution;
+        String hash;
+        File installation;
+        File resolvedInstallation;
+        File actualInstallation;
+        File distributionDir;
+    }
+    
+    private static Config loadBootstrapConfig() throws Exception {
+        Properties properties = loadBootstrapProperties();
+        Config cfg = new Config();
+        
+        cfg.properties = getPropertiesFile();
+        
+        // Obtain dist download URL
+        if (!properties.containsKey("distribution")) {
+            throw new RuntimeException("Error in bootstrap properties file: missing 'distribution'");
+        }
+        cfg.distribution = new URI(properties.getProperty("distribution"));
+
+        // Hash the URI, it will be our distribution's folder name
+        cfg.hash = hash(cfg.distribution.toString());
+        
+        if (properties.containsKey("installation")) {
+            cfg.installation = new File(properties.getProperty("installation"));
+            cfg.resolvedInstallation = cfg.properties.toPath().resolve(cfg.installation.toPath()).toFile();
+        }
+        if (cfg.installation != null) {
+            cfg.actualInstallation = new File(cfg.resolvedInstallation, FOLDER_DISTS);
+        } else {
+            cfg.actualInstallation = new File(getUserDir(), FOLDER_DISTS);
+        }
+        
+        cfg.distributionDir = new File(cfg.actualInstallation, cfg.hash);
+
+        return cfg;
     }
     
     private static File mkdirs(File dir) {
@@ -215,14 +261,6 @@ public class Bootstrap {
         } else {
             return getDefaultUserDir();
         }
-    }
-    
-    private static File getDistsDir() {
-        return new File(getUserDir(), "dists");
-    }
-    
-    private static File getDistDir(String hash) {
-        return new File(getDistsDir(), hash);
     }
     
     private static void extractArchive(File zip, File dir) throws IOException {
