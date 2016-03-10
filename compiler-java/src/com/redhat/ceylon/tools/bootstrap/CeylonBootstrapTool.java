@@ -146,12 +146,12 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
         Files.copy(srcJar.toPath(), destJar.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
         
         // Copy the "ceylon" startup script to "./ceylonb"
-        File srcScript = new File(new File(LauncherUtil.determineHome(), Constants.CEYLON_BIN_DIR), FILE_CEYLON_SCRIPT);
+        File srcScript = new File(srcScripts, FILE_CEYLON_SCRIPT);
         File destScript = new File(targetDir, FILE_CEYLONB_SCRIPT);
         Files.copy(srcScript.toPath(), destScript.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
         
         // Copy the "ceylon.bat" startup script to "./ceylonb.bat"
-        File srcBat = new File(new File(LauncherUtil.determineHome(), Constants.CEYLON_BIN_DIR), FILE_CEYLON_SCRIPT + ".bat");
+        File srcBat = new File(srcScripts, FILE_CEYLON_SCRIPT + ".bat");
         File destBat = new File(targetDir, FILE_CEYLONB_SCRIPT + ".bat");
         Files.copy(srcBat.toPath(), destBat.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
