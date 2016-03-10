@@ -348,7 +348,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 HttpURLConnection con = head(url);
                 return con != null ? con.getLastModified() : -1;
             } catch (IOException e) {
-                a.giveup("connecting to", url, e);
+                a.giveup("last modified of", url, e);
             }
         }
     }
@@ -381,6 +381,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 addCredentials(huc);
                 conn.connect();
                 int code = huc.getResponseCode();
+                log.debug("Connect: " + huc.getHeaderField("Connection"));
                 huc.disconnect();
                 log.debug("Got " + code + " for url: " + url);
                 if (code == 200) {

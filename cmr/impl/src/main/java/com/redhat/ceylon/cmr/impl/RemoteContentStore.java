@@ -81,7 +81,9 @@ public class RemoteContentStore extends URLContentStore {
         /** The number of attempts to download the resource */
         private final Attempts attempts = new Attempts();
         /** The <em>current</em> stream: Gets mutated when {@link ReconnectingInputStream} reconnects */
-        private InputStream stream;
+        
+        private HttpURLConnection connection = null;
+        private InputStream stream = null;
         long bytesRead = 0;
         private final ReconnectingInputStream reconnectingStream;
         private final long contentLength;
@@ -94,25 +96,62 @@ public class RemoteContentStore extends URLContentStore {
             long length = 0;
             connecting: while (true) {
                 try{
-                    HttpURLConnection huc = makeConnection(url, -1);
-                    this.stream = huc.getInputStream();
-                    int code = huc.getResponseCode();
+                    connection = makeConnection(url, -1);
+                    this.stream = connection.getInputStream();
+                    int code = connection.getResponseCode();
                     if (code != -1 && code != 200) {
                         log.info("Got " + code + " for url: " + url);
                         throw new NotGettable();
                     }
-                    String acceptRange = huc.getHeaderField("Accept-Range");
+                    String acceptRange = connection.getHeaderField("Accept-Range");
                     rangeRequests = acceptRange == null || !acceptRange.equalsIgnoreCase("none");
+                    debug("Connection: "+connection.getHeaderField("Connection"));
                     debug("Got " + code + " for url: " + url);
-                    length = huc.getContentLengthLong();
-                    stream = huc.getInputStream();
+                    length = connection.getContentLengthLong();
+                    stream = connection.getInputStream();
                     break connecting;
                 } catch(IOException e) {
-                    attempts.giveup("connecting to", url, e);
+                    maybeRetry(url, e, "connecting to");
                 }
             }
             this.contentLength = length;
             this.reconnectingStream = new ReconnectingInputStream();
+        }
+
+        protected void maybeRetry(URL url, IOException e, String phase) throws IOException {
+            cleanUpStreams(e);
+            attempts.giveup(phase, url, e);
+        }
+
+        /**
+         * According to https://docs.oracle.com/javase/8/docs/technotes/guides/net/http-keepalive.html
+         * we should read the error stream so the connection can be reused.
+         */
+        protected void cleanUpStreams(Exception inflight) throws IOException {
+            if (stream != null) {
+                try {
+                    stream.close();
+                    stream = null;
+                } catch (IOException closeException) {
+                    inflight.addSuppressed(closeException);
+                }
+            }
+            
+            if (connection != null) {
+                byte[] buf = new byte[8*2014];
+                InputStream es = connection.getErrorStream();
+                if (es != null) {
+                    try {
+                        try {
+                            while (es.read(buf) > 0) {}
+                        } finally {
+                            es.close();
+                        }
+                    } catch (IOException errorStreamError) {
+                        inflight.addSuppressed(errorStreamError);
+                    }
+                }
+            }
         }
 
         private void debug(String s) {
@@ -160,6 +199,12 @@ public class RemoteContentStore extends URLContentStore {
          * remainder of the resource, unless {@link #rangeRequests} is false.
          */
         class ReconnectingInputStream extends InputStream {
+            public void close() throws IOException {
+                if (stream != null) {
+                    stream.close();
+                }
+            }
+            
             @Override
             public int read() throws IOException {
                 while (true) {
@@ -170,16 +215,17 @@ public class RemoteContentStore extends URLContentStore {
                         }
                         return result;
                     } catch (IOException readException) {
-                        attempts.giveup("reading from", url, readException);
+                        maybeRetry(url, readException, "reading from");
+                        // if we maybeRetry didn't propage the exception let's retry...
                         reconnect: while (true) {
                             try {
                                 // otherwise open another connection...
                                 // using a range request unless initial request had Accept-Ranges: none
-                                HttpURLConnection conn = makeConnection(url, rangeRequests ? bytesRead : -1);
-                                final int code = conn.getResponseCode();
+                                connection = makeConnection(url, rangeRequests ? bytesRead : -1);
+                                final int code = connection.getResponseCode();
                                 debug("Got " + code + " for reconnection to url: " + url);
                                 if (rangeRequests && code == 206) {
-                                    stream = conn.getInputStream();
+                                    stream = connection.getInputStream();
                                 } else if (code == 200) {
                                     if (rangeRequests) {
                                         debug("Looks like " + url.getHost() + ":" + url.getPort() + " does support range request, to reading first " + bytesRead + " bytes");
@@ -187,7 +233,7 @@ public class RemoteContentStore extends URLContentStore {
                                     // we didn't make a range request
                                     // (or the server didn't understand the Range header)
                                     // so spool the appropriate number of bytes
-                                    stream = conn.getInputStream();
+                                    stream = connection.getInputStream();
                                     for (long ii = 0; ii < bytesRead; ii++) {
                                         stream.read();
                                     }
@@ -195,7 +241,7 @@ public class RemoteContentStore extends URLContentStore {
                                 debug("Reconnected to url: " + url);
                                 break reconnect;
                             } catch (IOException reconnectionException) {
-                                attempts.giveup("reconnecting to", url, reconnectionException);
+                                maybeRetry(url, reconnectionException, "reonnecting to");
                             }
                         }
                     }
@@ -210,7 +256,7 @@ public class RemoteContentStore extends URLContentStore {
             try {
                 return head(url) != null;
             } catch (IOException e) {
-                a.giveup("connecting to", url, e);
+                a.giveup("testing existence of", url, e);
             }
         }
     }
