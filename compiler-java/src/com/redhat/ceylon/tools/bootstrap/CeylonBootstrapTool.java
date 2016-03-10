@@ -85,13 +85,13 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
 
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
-        File sourceDir = applyCwd(new File(Constants.DEFAULT_SOURCE_DIR));
-        File configDir = applyCwd(new File(Constants.CEYLON_CONFIG_DIR));
-        if (!sourceDir.isDirectory() && !configDir.isDirectory()) {
-            throw new IllegalStateException(CeylonBootstrapMessages.msg("error.not.project"));
-        }
-        
         if (!force) {
+            File sourceDir = applyCwd(new File(Constants.DEFAULT_SOURCE_DIR));
+            File configDir = applyCwd(new File(Constants.CEYLON_CONFIG_DIR));
+            if (!sourceDir.isDirectory() && !configDir.isDirectory()) {
+                throw new IllegalStateException(CeylonBootstrapMessages.msg("error.not.project"));
+            }
+            
             File scriptFile = applyCwd(new File(FILE_CEYLONB_SCRIPT));
             File batFile = applyCwd(new File(FILE_CEYLONB_SCRIPT + ".bat"));
             File bootstrapDir = new File(applyCwd(new File(Constants.CEYLON_CONFIG_DIR)), "bootstrap");
