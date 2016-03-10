@@ -38,7 +38,7 @@ How to do a release of Ceylon.
   -  $ docker pull ceylon/ceylon-build
   -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
 3. Copy the zip to downloads.ceylon-lang.org:
-  -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the Debian file
 
@@ -52,13 +52,13 @@ How to do a release of Ceylon.
   - $ docker pull ceylon/ceylon-package-deb
   - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb **1.2.1**
 6. Copy the zip to downloads.ceylon-lang.org:
-  - $ scp /tmp/ceylon/ceylon-**1.2.1_1.2.1**_all.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  - $ scp /tmp/ceylon/ceylon-**1.2.1_1.2.1**_all.deb **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 7. Build the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-debian-repo/blob/master/repo/build.sh) is up to date
   - $ docker pull ceylon/ceylon-repo-deb
   - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb **1.2.1**
 8. Copy the packages to downloads.ceylon-lang.org:
-  - $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
+  - $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon Debian Archive Signing Key" (59935387) imported into their local key ring.
 
@@ -73,13 +73,13 @@ NB: To be able to sign packages the user running the docker command for generati
   - $ docker pull ceylon/ceylon-package-rpm
   - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm **1.2.1**
 6. Copy the rpm to downloads.ceylon-lang.org:
-  - $ scp /tmp/ceylon/ceylon-**1.2.1-1.2.1-0**.noarch.rpm ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  - $ scp /tmp/ceylon/ceylon-**1.2.1-1.2.1-0**.noarch.rpm **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 7. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
   - $ docker pull ceylon/ceylon-repo-rpm
   - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
 8. Copy the packages to downloads.ceylon-lang.org:
-  - $ rsync -rv --dry-run /tmp/ceylon/{*.noarch.rpm,repodata} ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
+  - $ rsync -rv --dry-run /tmp/ceylon/{*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon RPM Archive Signing Key" (E024C8B2) imported into their local key ring.
 
