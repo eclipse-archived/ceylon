@@ -47,37 +47,178 @@ public class RemoteContentStore extends URLContentStore {
         super(root, log, offline, timeout, proxy);
     }
 
+    private static class NotGettable extends RuntimeException {
+    }
+    
     protected SizedInputStream openSizedStream(final URL url) throws IOException {
         if (connectionAllowed()) {
-            final URLConnection conn;
+            try {
+                return new RetryingSizedInputStream(url, proxy, timeout);
+            } catch (NotGettable e) {
+                // fall through
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * A {@link SizedInputStream} that can reconnect some number f times
+     */
+    class RetryingSizedInputStream extends SizedInputStream {
+        
+        private final URL url;
+        private final Proxy proxy;
+        /**
+         * The connection timeout for each request
+         */
+        private final int timeout;
+        /** 
+         * Whether range requests should be made when 
+         * the {@link ReconnectingInputStream} has to reconnect.
+         */
+        private boolean rangeRequests;
+        /** The number of attempts to download the resource */
+        private final int attempts = 3;
+        /** The number of attempts left */
+        private int attemptsLeft = attempts;
+        /** The <em>current</em> stream: Gets mutated when {@link ReconnectingInputStream} reconnects */
+        private InputStream stream;
+        private final ReconnectingInputStream reconnectingStream;
+        private final long contentLength;
+        
+        public RetryingSizedInputStream(URL url, Proxy proxy, int timeout) throws NotGettable, IOException {
+            super(null, 0);
+            this.url = url;
+            this.proxy = proxy;
+            this.timeout = timeout;
+            long length = 0;
+            connecting: while (true) {
+                try{
+                    HttpURLConnection huc = makeConnection(url, -1);
+                    this.stream = huc.getInputStream();
+                    int code = huc.getResponseCode();
+                    if (code != -1 && code != 200) {
+                        log.info("Got " + code + " for url: " + url);
+                        throw new NotGettable();
+                    }
+                    String acceptRange = huc.getHeaderField("Accept-Range");
+                    rangeRequests = acceptRange == null || !acceptRange.equalsIgnoreCase("none");
+                    debug("Got " + code + " for url: " + url);
+                    length = huc.getContentLengthLong();
+                    stream = huc.getInputStream();
+                    break connecting;
+                } catch(IOException e) {
+                    giveup(e);
+                }
+            }
+            this.contentLength = length;
+            this.reconnectingStream = new ReconnectingInputStream();
+        }
+
+        private void debug(String s) {
+            log.debug(s);
+            System.err.println(s);
+        }
+        
+        /**
+         * For selected exceptions returns normally if there are 
+         * attempts left, otherwise rethrows the given exception. 
+         */
+        void giveup(IOException e) throws IOException{
+            if (e instanceof SocketTimeoutException) {
+                if (attemptsLeft-- <= 0) {
+                    debug("Giving up download of " + url + " due to " + e);
+                    SocketTimeoutException newException = new SocketTimeoutException("Timed out during connection to "+url);
+                    newException.initCause(e);
+                    throw newException;
+                } else {
+                    debug("Retry download of "+ url + " after " + e + ", " + attemptsLeft + " attempts left");
+                }
+            } else {
+                debug("Giving up download of " + url + " due to " + e);
+                throw e;
+            }
+        }
+
+        protected HttpURLConnection makeConnection(URL url, long start)
+                throws IOException, SocketTimeoutException, NotGettable {
+            URLConnection conn;
             if (proxy != null) {
                 conn = url.openConnection(proxy);
             } else {
                 conn = url.openConnection();
+            }   
+            if (!(conn instanceof HttpURLConnection)) {
+                throw new NotGettable();
             }
-            if (conn instanceof HttpURLConnection) {
-                HttpURLConnection huc = (HttpURLConnection) conn;
-                huc.setConnectTimeout(timeout);
-                huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
-                addCredentials(huc);
-                try{
-                    InputStream stream = conn.getInputStream();
-                    int code = huc.getResponseCode();
-                    if (code != -1 && code != 200) {
-                        log.info("Got " + code + " for url: " + url);
-                        return null;
+            HttpURLConnection huc = (HttpURLConnection)conn;
+            huc.setConnectTimeout(timeout);
+            huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
+            boolean useRangeRequest = start > 0;
+            if (useRangeRequest) {
+                String range = "bytes "+start+"-";
+                debug("Using Range request for" + range + " of " + url);
+                huc.setRequestProperty("Range", range);
+            }
+            debug("Connecting to " + url);
+            addCredentials(huc);
+            return huc;
+        }
+        
+        public long getSize() {
+            return contentLength;
+        }
+        
+        public InputStream getInputStream() {
+            return reconnectingStream;
+        }
+        
+        /**
+         * An InputStream that can reconnects on SocketTimeoutException.
+         * If it reconnects it makes a {@code Range} request to get just the 
+         * remainder of the resource, unless {@link #rangeRequests} is false.
+         */
+        class ReconnectingInputStream extends InputStream {
+            long bytesRead = 0;
+            @Override
+            public int read() throws IOException {
+                while (true) {
+                    try {
+                        int result = stream.read();
+                        if (result != -1) {
+                            bytesRead++;
+                        }
+                        return result;
+                    } catch (IOException e) {
+                        giveup(e);
+                        reconnect: while (true) {
+                            try {
+                                // otherwise open another connection...
+                                // using a range request unless initial request had Accept-Ranges: none
+                                HttpURLConnection conn = makeConnection(url, rangeRequests ? bytesRead : -1);
+                                final int code = conn.getResponseCode();
+                                debug("Got " + code + " for reconnection to url: " + url);
+                                if (rangeRequests && code == 206) {
+                                    stream = conn.getInputStream();
+                                } else if (code == 200) {
+                                    // we didn't make a range request
+                                    // (or the server didn't understand the Range header)
+                                    // so spool the appropriate number of bytes
+                                    stream = conn.getInputStream();
+                                    for (long ii = 0; ii < bytesRead; ii++) {
+                                        stream.read();
+                                    }
+                                }
+                                debug("Reconnected to url: " + url);
+                                break reconnect;
+                            } catch (IOException e2) {
+                                giveup(e);
+                            }
+                        }
                     }
-                    log.debug("Got " + code + " for url: " + url);
-                    long contentLength = huc.getContentLengthLong();
-                    return new SizedInputStream(stream, contentLength);
-                }catch(SocketTimeoutException timeoutException){
-                    SocketTimeoutException newException = new SocketTimeoutException("Timed out during connection to "+url);
-                    newException.initCause(timeoutException);
-                    throw newException;
                 }
             }
         }
-        return null;
     }
 
     protected boolean exists(final URL url) throws IOException {
