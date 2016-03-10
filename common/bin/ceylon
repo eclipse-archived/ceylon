@@ -47,7 +47,9 @@ fi
 
 if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
     PREPEND_JAVA_OPTS="$JAVA_DEBUG_OPTS"
-    if stty size 2>/dev/null >/dev/null; then
+    if [ -n "$COLUMNS" ]; then
+        CEYL_COLS="$COLUMNS"
+    elif stty size 2>/dev/null >/dev/null; then
         CEYL_COLS="$(stty size 2>/dev/null | cut -d' ' -f2)"
     else
         CEYL_COLS="$(tput 2>/dev/null cols)"
