@@ -126,6 +126,9 @@ public class CeylonModuleLoader extends ModuleLoader
         BOOTSTRAP.add(JANDEX);
         BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
+        BOOTSTRAP.add(ANTLR_RUNTIME);
+        BOOTSTRAP.add(ANTLR_ANTLR);
+        BOOTSTRAP.add(ANTLR_STRINGTEMPLATE);
         
 
         Set<String> jdkPaths = new HashSet<>();
