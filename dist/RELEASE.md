@@ -79,7 +79,7 @@ NB: To be able to sign packages the user running the docker command for generati
   - $ docker pull ceylon/ceylon-repo-rpm
   - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
 8. Copy the packages to downloads.ceylon-lang.org:
-  - $ rsync -rv --dry-run /tmp/ceylon/{*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
+  - $ rsync -rv --dry-run /tmp/ceylon/{\*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon RPM Archive Signing Key" (E024C8B2) imported into their local key ring.
 
