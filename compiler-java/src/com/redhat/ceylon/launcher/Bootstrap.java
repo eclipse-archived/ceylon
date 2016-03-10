@@ -64,6 +64,12 @@ public class Bootstrap {
     private static final int DOWNLOAD_TIMEOUT_CONNECT = 15000;
     private static final int DOWNLOAD_BUFFER_SIZE = 4096;
 
+    private static final String ENV_CEYLON_BOOTSTRAP_DISTS = "CEYLON_BOOTSTRAP_DISTS";
+    private static final String ENV_CEYLON_BOOTSTRAP_PROPS = "CEYLON_BOOTSTRAP_PROPERTIES";
+    
+    private static final String PROP_CEYLON_BOOTSTRAP_DISTS = "ceylon.bootstrap.dists";
+    private static final String PROP_CEYLON_BOOTSTRAP_PROPS = "ceylon.bootstrap.properties";
+
     public static void main(String[] args) throws Throwable {
         // we don't need to clean up the class loader when run from main because the JVM will either exit, or
         // keep running with daemon threads in which case it will keep needing this classloader open 
@@ -247,8 +253,10 @@ public class Bootstrap {
     }
 
     private static File getPropertiesFile() throws URISyntaxException {
-        String cbp = System.getProperty("ceylon.bootstrap.properties");
-        if (cbp != null) {
+        String cbp;
+        if ((cbp  = System.getProperty(PROP_CEYLON_BOOTSTRAP_PROPS)) != null) {
+            return new File(cbp);
+        } else if ((cbp  = System.getenv(ENV_CEYLON_BOOTSTRAP_PROPS)) != null) {
             return new File(cbp);
         } else {
             File jar = LauncherUtil.determineRuntimeJar();
@@ -305,7 +313,16 @@ public class Bootstrap {
             cfg.installation = new File(installString);
             cfg.resolvedInstallation = cfg.properties.getParentFile().toPath().resolve(cfg.installation.toPath()).toFile().getAbsoluteFile();
         } else {
-            cfg.resolvedInstallation = new File(getUserDir(), FOLDER_DISTS);
+            File distsDir;
+            String distsDirStr;
+            if ((distsDirStr = System.getProperty(PROP_CEYLON_BOOTSTRAP_DISTS)) != null) {
+                distsDir = new File(distsDirStr);
+            } else if ((distsDirStr = System.getenv(ENV_CEYLON_BOOTSTRAP_DISTS)) != null) {
+                distsDir = new File(distsDirStr);
+            } else {
+                distsDir = new File(getUserDir(), FOLDER_DISTS);
+            }
+            cfg.resolvedInstallation = distsDir;
         }
 
         // If the properties contain a sha256sum store it for later
