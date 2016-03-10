@@ -43,9 +43,26 @@ class VerifiedDownload {
         }
         this.node = node;
         this.fileContentStore = fileContentStore;
-        tempNode = parent.getChild(node.getLabel() + AbstractNodeRepositoryManager.VALIDATING);
+        // Use a createTempFile() if possible to reduce possibility of
+        // multiple processes racing
+        File f;
+        File parentDir = fileContentStore.getFile(parent);
+        parentDir.mkdirs();
+        try {
+            f = File.createTempFile(node.getLabel()+".", ".tmp", parentDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.debug("IOException while creating temp file: " + e);
+            f = new File(parentDir, node.getLabel()+AbstractNodeRepositoryManager.VALIDATING);
+            // In this case assume any pre-existing file was left over (rather than being written by another CMR)
+            FileUtil.delete(f);
+        }
+        f.deleteOnExit();
+        // Now get a node based on that temp file name
+        tempNode = parent.getChild(f.getName());
+        // For consistency ask the file store for the file
+        // (though it should be == f)
         tempFile = fileContentStore.getFile(tempNode);
-        FileUtil.delete(tempFile);
     }
     
     /** 
