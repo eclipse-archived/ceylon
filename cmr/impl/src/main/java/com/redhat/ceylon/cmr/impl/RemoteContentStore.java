@@ -141,7 +141,7 @@ public class RemoteContentStore extends URLContentStore {
 
         public InputStream getBinariesAsStream() throws IOException {
             SizedInputStream ret = getBinariesAsSizedStream();
-            return ret != null ? ret.inputStream : null;
+            return ret != null ? ret.getInputStream() : null;
         }
 
         public SizedInputStream getBinariesAsSizedStream() throws IOException {

@@ -92,7 +92,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 }
                 try {
                     log.debug(" -> Found it, now caching it");
-                    final File file = putContent(context, node, sizedInputStream.inputStream, sizedInputStream.size);
+                    final File file = putContent(context, node, sizedInputStream.getInputStream(), sizedInputStream.getSize());
                     log.debug("    Caching done: " + file);
                     String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
                     File originalRepoFile = new File(file.getParentFile(), file.getName().concat(ORIGIN));                        
@@ -106,7 +106,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     // we expect the remote nodes to support Ceylon module info
                     return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), file, repositoryDisplayString);
                 } finally {
-                    IOUtils.safeClose(sizedInputStream.inputStream);
+                    IOUtils.safeClose(sizedInputStream.getInputStream());
                 }
             } catch (IOException e) {
                 throw new RepositoryException(e);

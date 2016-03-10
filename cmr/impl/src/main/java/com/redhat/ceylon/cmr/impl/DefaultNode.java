@@ -192,7 +192,7 @@ public class DefaultNode extends AbstractOpenNode {
     @Override
     public InputStream getInputStream() throws IOException {
         SizedInputStream sizedInputStream = getSizedInputStream();
-        return sizedInputStream != null ? sizedInputStream.inputStream : null;
+        return sizedInputStream != null ? sizedInputStream.getInputStream() : null;
     }
     
     @Override

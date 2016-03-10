@@ -7,14 +7,23 @@ import java.io.InputStream;
  */
 public class SizedInputStream {
 
-    public final InputStream inputStream;
-    /**
-     * Can be -1 if we don't know its size
-     */
-    public final long size;
+    private final InputStream inputStream;
+    
+    private final long size;
     
     public SizedInputStream(InputStream inputStream, long size){
         this.inputStream = inputStream;
         this.size = size;
+    }
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    /**
+     * Can be -1 if we don't know its size
+     */
+    public long getSize() {
+        return size;
     }
 }
