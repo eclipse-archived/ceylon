@@ -237,7 +237,7 @@ shared interface Map<out Key=Object, out Item=Anything>
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
         Result mapping(Key key, Item item)) 
-            given Result satisfies Object
+            given Result satisfies Object //TODO: remove this constraint!
             => object
             extends Object()
             satisfies Map<Key,Result> {
@@ -480,7 +480,7 @@ shared object emptyMap
     shared actual 
     Map<Nothing, Nothing> mapItems<Result>
             (Result mapping(Nothing key, Nothing item))
-            given Result satisfies Object 
+            given Result satisfies Object //TODO: remove this constraint!
             => emptyMap;
     
     count(Boolean selecting(Nothing->Nothing element)) => 0;
