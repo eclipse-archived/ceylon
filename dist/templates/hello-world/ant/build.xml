@@ -5,6 +5,13 @@
 <project name="@[module.name]" default="run">
 
     <!-- Try to determine where Ceylon is installed -->
+    <condition property="batExt" value=".bat">
+        <os family="windows" />
+    </condition>
+    <property name="batExt" value=""/>
+    <exec executable="ceylon${batExt}" outputproperty="ceylon.home" failifexecutionfails="false">
+        <arg value="--show-home" />
+    </exec>
     <property environment="env"/>
     <property name="ceylon.home" value="@[ceylon.home]" />
     <property name="env.CEYLON_HOME" value="${ceylon.home}"/>
