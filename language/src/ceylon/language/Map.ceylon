@@ -116,7 +116,8 @@ shared interface Map<out Key=Object, out Item=Anything>
     "A shallow copy of this map, that is, a map with the
      same entries as this map, which do not change if the
      entries in this map change."
-    shared actual formal Map<Key,Item> clone();
+    shared actual default Map<Key,Item> clone() 
+            => package.map(this);
     
     "A [[Collection]] containing the keys of this map."
     //TODO: should be a Set

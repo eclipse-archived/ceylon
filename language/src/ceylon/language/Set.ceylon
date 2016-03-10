@@ -35,7 +35,8 @@ shared interface Set<out Element=Object>
     "A shallow copy of this set, that is, a set with the
      same elements as this set, which do not change if the
      elements of this set change."
-    shared actual formal Set<Element> clone();
+    shared actual default Set<Element> clone() 
+            => package.set(this);
     
     "Determines if this set is a superset of the given 
      `Set`, that is, if this set contains all of the 
