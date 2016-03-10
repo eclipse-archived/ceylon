@@ -160,8 +160,9 @@ public class RemoteContentStore extends URLContentStore {
                 debug("Using Range request for" + range + " of " + url);
                 huc.setRequestProperty("Range", range);
             }
-            debug("Connecting to " + url);
             addCredentials(huc);
+            debug("Connecting to " + url);
+            conn.connect();
             return huc;
         }
         

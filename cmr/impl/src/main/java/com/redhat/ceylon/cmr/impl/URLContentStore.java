@@ -324,6 +324,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
                 huc.setRequestMethod("HEAD");
                 addCredentials(huc);
+                conn.connect();
                 int code = huc.getResponseCode();
                 huc.disconnect();
                 log.debug("Got " + code + " for url: " + url);
@@ -335,12 +336,14 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         return null;
     }
 
+    /**
+     * Adds the {@code Authorization} request header for HTTP basic authentication
+     */
     protected void addCredentials(HttpURLConnection conn) throws IOException {
         if (username != null && password != null) {
             try {
                 String authString = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
                 conn.setRequestProperty("Authorization", "Basic " + authString);
-                conn.connect();
             } catch (Exception e) {
                 throw new IOException("Cannot set basic authorization.", e);
             }
