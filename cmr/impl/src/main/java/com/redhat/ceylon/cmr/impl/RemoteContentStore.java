@@ -296,7 +296,7 @@ public class RemoteContentStore extends URLContentStore {
         try {
             return exists(url);
         } catch (IOException ignored) {
-            return false;
+            throw new RuntimeException(ignored);
         }
     }
 

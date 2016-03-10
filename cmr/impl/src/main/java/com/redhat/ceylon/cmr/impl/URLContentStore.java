@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.SocketException;
@@ -360,7 +361,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 HttpURLConnection con = head(url);
                 return con != null ? con.getContentLength() : -1;
             } catch (IOException e) {
-                a.giveup("connecting to", url, e);
+                a.giveup("size of", url, e);
             }
         }
     }
