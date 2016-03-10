@@ -28,6 +28,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
 
+import com.redhat.ceylon.cmr.impl.URLContentStore.Attempts;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -78,11 +79,10 @@ public class RemoteContentStore extends URLContentStore {
          */
         private boolean rangeRequests;
         /** The number of attempts to download the resource */
-        private final int attempts = 3;
-        /** The number of attempts left */
-        private int attemptsLeft = attempts;
+        private final Attempts attempts = new Attempts();
         /** The <em>current</em> stream: Gets mutated when {@link ReconnectingInputStream} reconnects */
         private InputStream stream;
+        long bytesRead = 0;
         private final ReconnectingInputStream reconnectingStream;
         private final long contentLength;
         
@@ -108,7 +108,7 @@ public class RemoteContentStore extends URLContentStore {
                     stream = huc.getInputStream();
                     break connecting;
                 } catch(IOException e) {
-                    giveup(e);
+                    attempts.giveup("connecting to", url, e);
                 }
             }
             this.contentLength = length;
@@ -116,29 +116,9 @@ public class RemoteContentStore extends URLContentStore {
         }
 
         private void debug(String s) {
-            log.debug(s);
-            System.err.println(s);
+            log.debug("    " + s);
         }
         
-        /**
-         * For selected exceptions returns normally if there are 
-         * attempts left, otherwise rethrows the given exception. 
-         */
-        void giveup(IOException e) throws IOException{
-            if (e instanceof SocketTimeoutException) {
-                if (attemptsLeft-- <= 0) {
-                    debug("Giving up download of " + url + " due to " + e);
-                    SocketTimeoutException newException = new SocketTimeoutException("Timed out during connection to "+url);
-                    newException.initCause(e);
-                    throw newException;
-                } else {
-                    debug("Retry download of "+ url + " after " + e + ", " + attemptsLeft + " attempts left");
-                }
-            } else {
-                debug("Giving up download of " + url + " due to " + e);
-                throw e;
-            }
-        }
 
         protected HttpURLConnection makeConnection(URL url, long start)
                 throws IOException, SocketTimeoutException, NotGettable {
@@ -180,7 +160,6 @@ public class RemoteContentStore extends URLContentStore {
          * remainder of the resource, unless {@link #rangeRequests} is false.
          */
         class ReconnectingInputStream extends InputStream {
-            long bytesRead = 0;
             @Override
             public int read() throws IOException {
                 while (true) {
@@ -190,8 +169,8 @@ public class RemoteContentStore extends URLContentStore {
                             bytesRead++;
                         }
                         return result;
-                    } catch (IOException e) {
-                        giveup(e);
+                    } catch (IOException readException) {
+                        attempts.giveup("reading from", url, readException);
                         reconnect: while (true) {
                             try {
                                 // otherwise open another connection...
@@ -202,6 +181,9 @@ public class RemoteContentStore extends URLContentStore {
                                 if (rangeRequests && code == 206) {
                                     stream = conn.getInputStream();
                                 } else if (code == 200) {
+                                    if (rangeRequests) {
+                                        debug("Looks like " + url.getHost() + ":" + url.getPort() + " does support range request, to reading first " + bytesRead + " bytes");
+                                    }
                                     // we didn't make a range request
                                     // (or the server didn't understand the Range header)
                                     // so spool the appropriate number of bytes
@@ -212,8 +194,8 @@ public class RemoteContentStore extends URLContentStore {
                                 }
                                 debug("Reconnected to url: " + url);
                                 break reconnect;
-                            } catch (IOException e2) {
-                                giveup(e);
+                            } catch (IOException reconnectionException) {
+                                attempts.giveup("reconnecting to", url, reconnectionException);
                             }
                         }
                     }
@@ -222,8 +204,15 @@ public class RemoteContentStore extends URLContentStore {
         }
     }
 
-    protected boolean exists(final URL url) throws IOException {
-        return head(url) != null;
+    protected final boolean exists(final URL url) throws IOException {
+        Attempts a = new Attempts();
+        while (true) {
+            try {
+                return head(url) != null;
+            } catch (IOException e) {
+                a.giveup("connecting to", url, e);
+            }
+        }
     }
 
     public ContentHandle peekContent(Node node) {

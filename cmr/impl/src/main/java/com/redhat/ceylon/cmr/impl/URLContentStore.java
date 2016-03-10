@@ -19,6 +19,8 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -300,17 +302,70 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         return name;
     }
     
-    protected long lastModified(final URL url) throws IOException {
-        HttpURLConnection con = head(url);
-        return con != null ? con.getLastModified() : -1;
+    class Attempts {
+        private final int attempts = 3;
+        private int attemptsLeft = attempts;
+        public boolean reattempt() {
+            return attemptsLeft-- > 0;
+        }
+        public int getAttemptsAllowed() {
+            return attempts;
+        }
+        public int getAttemptsLeft() {
+            return attemptsLeft;
+        }
+        public int getAttemptsMade() {
+            return getAttemptsAllowed()-getAttemptsLeft();
+        }
+        /**
+         * For selected exceptions returns normally if there are 
+         * attempts left, otherwise rethrows the given exception. 
+         */
+        public void giveup(String phase, URL url, IOException e) throws IOException{
+            if (e instanceof SocketTimeoutException
+                    || e instanceof SocketException) {
+                if (reattempt()) {
+                    log.debug("Retry download of "+ url + " after " + e + " (" + getAttemptsLeft() + " attempts left)");
+                    return;
+                }
+            }
+            if (e instanceof SocketTimeoutException) {
+                // Include url in exception message
+                SocketTimeoutException newException = new SocketTimeoutException("Timed out while " +phase+" "+url);
+                newException.initCause(e);
+                e = newException;
+            }
+            log.debug("Giving up request to " + url + " (after "+ getAttemptsMade() + " attempts) due to: " + e );
+            throw e;
+            
+        }
+    }
+    
+    protected final long lastModified(final URL url) throws IOException {
+        Attempts a = new Attempts();
+        while (true) {
+            try {
+                HttpURLConnection con = head(url);
+                return con != null ? con.getLastModified() : -1;
+            } catch (IOException e) {
+                a.giveup("connecting to", url, e);
+            }
+        }
     }
 
-    protected long size(final URL url) throws IOException {
-        HttpURLConnection con = head(url);
-        return con != null ? con.getContentLength() : -1;
+    protected final long size(final URL url) throws IOException {
+        Attempts a = new Attempts();
+        while (true) {
+            try {
+                HttpURLConnection con = head(url);
+                return con != null ? con.getContentLength() : -1;
+            } catch (IOException e) {
+                a.giveup("connecting to", url, e);
+            }
+        }
     }
 
-    protected HttpURLConnection head(final URL url) throws IOException {
+    protected final HttpURLConnection head(final URL url) throws IOException {
         if (connectionAllowed()) {
             final URLConnection conn;
             if (proxy != null) {
