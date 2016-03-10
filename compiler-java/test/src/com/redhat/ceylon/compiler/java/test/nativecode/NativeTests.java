@@ -441,13 +441,13 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeLocalJava() {
         testNativeModuleErrors("localjava", "JavaTest.java",
-                new CompilerError(31, "illlegal reference to native declaration 'JavaTest': native declaration 'x' has a different backend"),
-                new CompilerError(32, "illlegal reference to native declaration 'jvmonly': native declaration 'test' has a different backend"),
-                new CompilerError(36, "illlegal reference to native declaration 'JavaTest': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(37, "illlegal reference to native declaration 'jvmonly': declaration 'testjs' is not native (mark it or the module native)"),
-                new CompilerError(40, "illlegal reference to native declaration 'JavaTest': native declaration 'Test' has a different backend"),
-                new CompilerError(45, "illlegal reference to native declaration 'JavaTest': native declaration 'Test' has a different backend"),
-                new CompilerError(48, "illlegal reference to native declaration 'JavaTest': declaration 'Testjs' is not native (mark it or the module native)")
+                new CompilerError(31, "illegal reference to native declaration 'JavaTest': native declaration 'x' has a different backend"),
+                new CompilerError(32, "illegal reference to native declaration 'jvmonly': native declaration 'test' has a different backend"),
+                new CompilerError(36, "illegal reference to native declaration 'JavaTest': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(37, "illegal reference to native declaration 'jvmonly': declaration 'testjs' is not native (mark it or the module native)"),
+                new CompilerError(40, "illegal reference to native declaration 'JavaTest': native declaration 'Test' has a different backend"),
+                new CompilerError(45, "illegal reference to native declaration 'JavaTest': native declaration 'Test' has a different backend"),
+                new CompilerError(48, "illegal reference to native declaration 'JavaTest': declaration 'Testjs' is not native (mark it or the module native)")
         );
     }
     
@@ -529,22 +529,22 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeRefWrong() {
         assertErrors(new String[] {"nativerefwrong/test.ceylon", "nativerefwrong/module.ceylon", "modsample/test.ceylon", "modsample/package.ceylon", "modsample/module.ceylon", "modok/test.ceylon", "modok/package.ceylon", "modok/module.ceylon"}, defaultOptions, null,
-                new CompilerError(30, "illlegal reference to native declaration 'nativeMethodJvm': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(32, "illlegal reference to native declaration 'nativeMethodJvm': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(37, "illlegal reference to native declaration 'nativeMethodJs': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(39, "illlegal reference to native declaration 'nativeMethodJs': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(44, "illlegal reference to native declaration 'testMethod': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(45, "illlegal reference to native declaration 'TestClass': declaration 'y' is not native (mark it or the module native)"),
-                new CompilerError(47, "illlegal reference to native declaration 'testMethod': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(48, "illlegal reference to native declaration 'TestClass': declaration 'y' is not native (mark it or the module native)"),
-                new CompilerError(53, "illlegal reference to native declaration 'foo': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(54, "illlegal reference to native declaration 'Bar': declaration 'y' is not native (mark it or the module native)"),
-                new CompilerError(56, "illlegal reference to native declaration 'foo': declaration 'x' is not native (mark it or the module native)"),
-                new CompilerError(57, "illlegal reference to native declaration 'Bar': declaration 'y' is not native (mark it or the module native)"),
-                new CompilerError(63, "illlegal reference to native declaration 'nativeMethodJvm': native declaration 'x' has a different backend"),
-                new CompilerError(65, "illlegal reference to native declaration 'nativeMethodJvm': native declaration 'x' has a different backend"),
-                new CompilerError(71, "illlegal reference to native declaration 'nativeMethodJs': native declaration 'x' has a different backend"),
-                new CompilerError(73, "illlegal reference to native declaration 'nativeMethodJs': native declaration 'x' has a different backend")
+                new CompilerError(30, "illegal reference to native declaration 'nativeMethodJvm': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(32, "illegal reference to native declaration 'nativeMethodJvm': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(37, "illegal reference to native declaration 'nativeMethodJs': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(39, "illegal reference to native declaration 'nativeMethodJs': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(44, "illegal reference to native declaration 'testMethod': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(45, "illegal reference to native declaration 'TestClass': declaration 'y' is not native (mark it or the module native)"),
+                new CompilerError(47, "illegal reference to native declaration 'testMethod': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(48, "illegal reference to native declaration 'TestClass': declaration 'y' is not native (mark it or the module native)"),
+                new CompilerError(53, "illegal reference to native declaration 'foo': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(54, "illegal reference to native declaration 'Bar': declaration 'y' is not native (mark it or the module native)"),
+                new CompilerError(56, "illegal reference to native declaration 'foo': declaration 'x' is not native (mark it or the module native)"),
+                new CompilerError(57, "illegal reference to native declaration 'Bar': declaration 'y' is not native (mark it or the module native)"),
+                new CompilerError(63, "illegal reference to native declaration 'nativeMethodJvm': native declaration 'x' has a different backend"),
+                new CompilerError(65, "illegal reference to native declaration 'nativeMethodJvm': native declaration 'x' has a different backend"),
+                new CompilerError(71, "illegal reference to native declaration 'nativeMethodJs': native declaration 'x' has a different backend"),
+                new CompilerError(73, "illegal reference to native declaration 'nativeMethodJs': native declaration 'x' has a different backend")
         );
     }
     
@@ -591,8 +591,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testBug5979() {
         testNativeErrors("Bug5979",
-                new CompilerError(25, "illlegal reference to native declaration 'JVMClass': declaration 'testBug5979' is not native (mark it or the module native)"),
-                new CompilerError(27, "illlegal reference to native declaration 'JVMClass': declaration 'testBug5979' is not native (mark it or the module native)")
+                new CompilerError(25, "illegal reference to native declaration 'JVMClass': declaration 'testBug5979' is not native (mark it or the module native)"),
+                new CompilerError(27, "illegal reference to native declaration 'JVMClass': declaration 'testBug5979' is not native (mark it or the module native)")
         );
     }
     
