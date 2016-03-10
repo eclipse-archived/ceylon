@@ -113,13 +113,23 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
     
     @Override
     public void run() throws Exception {
+        setupBootstrap(validCwd().getAbsoluteFile(), distribution, installation, shaSum);
+    }
+
+    public static void setupBootstrap(File targetDir, URI distribution, File installation, String shaSum) throws Exception {
+        File srcJar = new File(LauncherUtil.determineLibs(LauncherUtil.determineHome()), Bootstrap.FILE_BOOTSTRAP_JAR);
+        File srcScripts = new File(LauncherUtil.determineHome(), Constants.CEYLON_BIN_DIR);
+        setupBootstrap(targetDir, srcJar, srcScripts, distribution, installation, shaSum);
+    }
+
+    public static void setupBootstrap(File targetDir, File srcJar, File srcScripts, URI distribution, File installation, String shaSum) throws Exception {
         // Create the target "bootstrap" directory
-        File bootstrapDir = new File(applyCwd(new File(Constants.CEYLON_CONFIG_DIR)), "bootstrap");
+        File bootstrapDir = new File(new File(targetDir, Constants.CEYLON_CONFIG_DIR), "bootstrap");
         FileUtil.mkdirs(bootstrapDir);
         
         // Create the "ceylon-bootstrap.properties" file
         Properties props = new Properties();
-        props.setProperty(Bootstrap.KEY_DISTRIBUTION, getDistributionUri().toString());
+        props.setProperty(Bootstrap.KEY_DISTRIBUTION, getDistributionUri(distribution).toString());
         if (installation != null) {
             props.setProperty(Bootstrap.KEY_INSTALLATION, installation.getPath());
         }
@@ -132,22 +142,21 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
         }
         
         // Copy the "ceylon-bootstrap.jar"
-        File srcJar = new File(LauncherUtil.determineLibs(LauncherUtil.determineHome()), Bootstrap.FILE_BOOTSTRAP_JAR);
         File destJar = new File(bootstrapDir, Bootstrap.FILE_BOOTSTRAP_JAR);
         Files.copy(srcJar.toPath(), destJar.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
         
         // Copy the "ceylon" startup script to "./ceylonb"
         File srcScript = new File(new File(LauncherUtil.determineHome(), Constants.CEYLON_BIN_DIR), FILE_CEYLON_SCRIPT);
-        File destScript = applyCwd(new File(FILE_CEYLONB_SCRIPT));
+        File destScript = new File(targetDir, FILE_CEYLONB_SCRIPT);
         Files.copy(srcScript.toPath(), destScript.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
         
         // Copy the "ceylon.bat" startup script to "./ceylonb.bat"
         File srcBat = new File(new File(LauncherUtil.determineHome(), Constants.CEYLON_BIN_DIR), FILE_CEYLON_SCRIPT + ".bat");
-        File destBat = applyCwd(new File(FILE_CEYLONB_SCRIPT + ".bat"));
+        File destBat = new File(targetDir, FILE_CEYLONB_SCRIPT + ".bat");
         Files.copy(srcBat.toPath(), destBat.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
     }
-
-    private URI getDistributionUri() throws URISyntaxException {
+    
+    private static URI getDistributionUri(URI distribution) throws URISyntaxException {
         if (distribution == null || distribution.getScheme() == null) {
             String version;
             if (distribution != null) {
