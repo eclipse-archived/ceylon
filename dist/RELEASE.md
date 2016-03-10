@@ -56,7 +56,7 @@ How to do a release of Ceylon.
 7. Build the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-debian-repo/blob/master/repo/build.sh) is up to date
   - $ docker pull ceylon/ceylon-repo-deb
-  - $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb **1.2.1**
+  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb **1.2.1**
 8. Copy the packages to downloads.ceylon-lang.org:
   - $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
 
@@ -77,7 +77,7 @@ NB: To be able to sign packages the user running the docker command for generati
 7. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
   - $ docker pull ceylon/ceylon-repo-rpm
-  - $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
+  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
 8. Copy the packages to downloads.ceylon-lang.org:
   - $ rsync -rv --dry-run /tmp/ceylon/{*.noarch.rpm,repodata} ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
