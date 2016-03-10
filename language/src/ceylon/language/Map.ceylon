@@ -277,6 +277,8 @@ shared interface Map<out Key=Object, out Item=Anything>
         
         size => outer.size;
         
+        keys => outer.keys;
+        
         clone() => outer.clone().mapItems(mapping);
         
     };
