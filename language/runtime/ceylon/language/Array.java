@@ -3103,4 +3103,11 @@ public final class Array<Element>
         return $ceylon$language$Iterable$impl().frequencies();
     }
 
+    @Override @Ignore
+    public <Result> List<? extends Result> mapElements(TypeDescriptor arg0,
+            Callable<? extends Result> arg1) {
+        // TODO Auto-generated method stub
+        return $ceylon$language$List$impl().mapElements(arg0, arg1);
+    }
+
 }

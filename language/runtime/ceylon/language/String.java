@@ -3331,4 +3331,18 @@ public final class String
     frequencies(java.lang.String value) {
         return instance(value).frequencies();
     }
+
+    @Ignore
+    public static <Result> List<? extends Result> 
+    mapElements(@Ignore TypeDescriptor $reifiedResult, java.lang.String value, 
+            Callable<? extends Result> f) {
+        return instance(value).mapElements($reifiedResult, f);
+    }
+    
+    @Override @Ignore
+    public <Result> List<? extends Result> mapElements(TypeDescriptor arg0,
+            Callable<? extends Result> arg1) {
+        return $ceylon$language$List$impl().mapElements(arg0, arg1);
+    }
+
 }

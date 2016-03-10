@@ -12,7 +12,7 @@
    expression `0:list.size`.
    
    A `List` is a [[Collection]] of its elements, and a 
-   [[Correspondence]] from indices to elements.
+   [[Correspondence]] from indexes to elements.
    
    Every list has a well-defined and stable iteration order.
    An [[iterator]] of a nonempty list is required to return 
@@ -40,7 +40,7 @@
        assert (exists char = "hello world"[index]);
        //do something with char
    
-   To iterate the indices of a `List`, use the following
+   To iterate the indexes of a `List`, use the following
    idiom:
    
        for (i->char in "hello world".indexed) { ... }
@@ -528,7 +528,7 @@ shared interface List<out Element=Anything>
     "Return two lists, the first containing the elements
      that occur before the given [[index]], the second with
      the elements that occur after the given `index`. If the
-     given `index` is outside the range of indices of this
+     given `index` is outside the range of indexes of this
      list, one of the returned lists will be empty.
      
      For any `list`, and for any integer `index`:
@@ -904,5 +904,53 @@ shared interface List<out Element=Anything>
             };
         
     }
+    
+    "Produces a list with the same indexes as this list. For 
+     every index, the element is the result of applying the 
+     given [[transformation|List.mapElements.mapping]] 
+     function to its associated element in this list. This 
+     is a lazy operation, returning a view of this list."
+    shared default 
+    List<Result> mapElements<Result>(
+        "The function that transforms an index/item pair of
+         this list, producing the element of the resulting 
+         list."
+        Result mapping(Integer index, Element item)) 
+            => object
+            extends Object()
+            satisfies List<Result> {
+        
+        shared actual Result? getFromFirst(Integer index) {
+            if (0 <= index < size) {
+                if (exists element 
+                        = outer.getFromFirst(index)) {
+                    return mapping(index, element);
+                }
+                else {
+                    assert (is Element null);
+                    return mapping(index, null);
+                }
+            }
+            else {
+                return null;
+            }
+        }
+        
+        iterator() 
+                => let (it = outer.iterator())
+                object satisfies Iterator<Result> {
+                    variable value index = 0;
+                    next() => if (!is Finished element 
+                                    = it.next()) 
+                                then mapping(index++, element)
+                                else finished;
+                };
+        
+        lastIndex => outer.lastIndex;
+        size => outer.size;
+        
+        clone() => outer.clone().mapElements(mapping);
+        
+    };
     
 }
