@@ -2674,12 +2674,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     <itemizedlist>
         <listitem>
-            <para>The type of an expression of form <literal>x[i]</literal> where
+            <para>The type of an expression of form <literal>x[n]</literal> where
             <literal>x</literal> is of the sequence type <literal>X</literal> and 
             <literal>n</literal> is an integer literal is <literal>En</literal>.</para>
         </listitem>
         <listitem>
-            <para>The type of an expression of form <literal>x[i...]</literal> where
+            <para>The type of an expression of form <literal>x[n...]</literal> where
             <literal>x</literal> is of the sequence type <literal>X</literal> and 
             <literal>n</literal> is an integer literal is <literal>Xn</literal> if
             <literal>Xn</literal> is an instantiation of <literal>Tuple</literal>,
