@@ -89,6 +89,7 @@
     <target name="clean">
         <delete failonerror="false" dir="${build}"/>
         <delete failonerror="false" dir="${repoDir}/repo"/>
+        <delete failonerror="false" dir="${repoDir}/bin"/>
         <delete failonerror="false" dir="${base.path}/ceylon-bootstrap.jar"/>
     </target>
 
@@ -127,6 +128,12 @@
         <mkdir dir="${repoDir}/repo" />
         <copy todir="${repoDir}/repo">
             <fileset dir="${ceylon.repo.dir}">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <mkdir dir="${repoDir}/bin" />
+        <copy todir="${repoDir}/bin">
+            <fileset dir="${ceylon.bin.dir}">
                 <include name="**" />
             </fileset>
         </copy>
