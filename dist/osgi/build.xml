@@ -169,6 +169,9 @@
             <zipfileset dir="${repoDir}/repo" prefix="repo">
                 <include name="**" />
             </zipfileset>
+            <zipfileset dir="${repoDir}/bin" prefix="bin">
+                <include name="**" />
+            </zipfileset>
         </jar>
     </target>
 
