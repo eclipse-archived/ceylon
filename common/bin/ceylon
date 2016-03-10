@@ -38,8 +38,9 @@ fi
 # Make sure we have java installed
 if ! hash java 2>&-
 then
-    echo "Java not found, you must install Java in order to compile and run Ceylon programs"
-    echo "Go to http://www.java.com/getjava/ to download the latest version of Java"
+    echo >&2 "Java not found, you must install Java in order to compile and run Ceylon programs"
+    echo >&2 "Go to http://www.java.com/getjava/ to download the latest version of Java"
+    exit 1
 fi
 
 #JAVA_DEBUG_OPTS="-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
