@@ -28,7 +28,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
 
-import com.redhat.ceylon.cmr.impl.URLContentStore.Attempts;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -97,11 +96,12 @@ public class RemoteContentStore extends URLContentStore {
             connecting: while (true) {
                 try{
                     connection = makeConnection(url, -1);
-                    this.stream = connection.getInputStream();
                     int code = connection.getResponseCode();
                     if (code != -1 && code != 200) {
                         log.info("Got " + code + " for url: " + url);
-                        throw new NotGettable();
+                        NotGettable notGettable = new NotGettable();
+                        cleanUpStreams(notGettable);
+                        throw notGettable;
                     }
                     String acceptRange = connection.getHeaderField("Accept-Range");
                     rangeRequests = acceptRange == null || !acceptRange.equalsIgnoreCase("none");
@@ -110,8 +110,8 @@ public class RemoteContentStore extends URLContentStore {
                     length = connection.getContentLengthLong();
                     stream = connection.getInputStream();
                     break connecting;
-                } catch(IOException e) {
-                    maybeRetry(url, e, "connecting to");
+                } catch(IOException connectException) {
+                    maybeRetry(url, connectException, "connecting to");
                 }
             }
             this.contentLength = length;
@@ -127,7 +127,7 @@ public class RemoteContentStore extends URLContentStore {
          * According to https://docs.oracle.com/javase/8/docs/technotes/guides/net/http-keepalive.html
          * we should read the error stream so the connection can be reused.
          */
-        protected void cleanUpStreams(Exception inflight) throws IOException {
+        protected void cleanUpStreams(Exception inflight) {
             if (stream != null) {
                 try {
                     stream.close();
@@ -205,6 +205,24 @@ public class RemoteContentStore extends URLContentStore {
                 }
             }
             
+            public int read(byte[] buf, int offset, int length) throws IOException {
+                /*
+                 * Overridden because {@link InputStream#read(byte[], int, int)}
+                 * behaves badly wrt non-initial {@link #read()}s throwing.
+                 */
+                while (true) {
+                    try {
+                        int result = stream.read(buf, offset, length);
+                        if (result != -1) {
+                            bytesRead+=result;
+                        }
+                        return result;
+                    } catch (IOException readException) {
+                        recover(readException);
+                    }
+                }
+            }
+            
             @Override
             public int read() throws IOException {
                 while (true) {
@@ -215,38 +233,56 @@ public class RemoteContentStore extends URLContentStore {
                         }
                         return result;
                     } catch (IOException readException) {
-                        maybeRetry(url, readException, "reading from");
-                        // if we maybeRetry didn't propage the exception let's retry...
-                        reconnect: while (true) {
-                            try {
-                                // otherwise open another connection...
-                                // using a range request unless initial request had Accept-Ranges: none
-                                connection = makeConnection(url, rangeRequests ? bytesRead : -1);
-                                final int code = connection.getResponseCode();
-                                debug("Got " + code + " for reconnection to url: " + url);
-                                if (rangeRequests && code == 206) {
-                                    stream = connection.getInputStream();
-                                } else if (code == 200) {
-                                    if (rangeRequests) {
-                                        debug("Looks like " + url.getHost() + ":" + url.getPort() + " does support range request, to reading first " + bytesRead + " bytes");
-                                    }
-                                    // we didn't make a range request
-                                    // (or the server didn't understand the Range header)
-                                    // so spool the appropriate number of bytes
-                                    stream = connection.getInputStream();
-                                    for (long ii = 0; ii < bytesRead; ii++) {
-                                        stream.read();
-                                    }
-                                }
-                                debug("Reconnected to url: " + url);
-                                break reconnect;
-                            } catch (IOException reconnectionException) {
-                                maybeRetry(url, reconnectionException, "reonnecting to");
-                            }
-                        }
+                        recover(readException);
                     }
                 }
             }
+            
+            /**
+             * Reconnects, reassigning {@link RetryingSizedInputStream#connection} 
+             * and {@link RetryingSizedInputStream#stream}, or 
+             * throws {@code IOException} if we can't retry.
+             */
+            protected void recover(IOException readException) throws IOException {
+                maybeRetry(url, readException, "reading from");
+                // if we maybeRetry didn't propage the exception let's retry...
+                reconnect: while (true) {
+                    try {
+                        // otherwise open another connection...
+                        // using a range request unless initial request had Accept-Ranges: none
+                        connection = makeConnection(url, rangeRequests ? bytesRead : -1);
+                        final int code = connection.getResponseCode();
+                        debug("Got " + code + " for reconnection to url: " + url);
+                        if (rangeRequests && code == 206) {
+                            stream = connection.getInputStream();
+                        } else if (code == 200) {
+                            if (rangeRequests) {
+                                debug("Looks like " + url.getHost() + ":" + url.getPort() + " does support range request, to reading first " + bytesRead + " bytes");
+                            }
+                            // we didn't make a range request
+                            // (or the server didn't understand the Range header)
+                            // so spool the appropriate number of bytes
+                            stream = connection.getInputStream();
+                            try {
+                                for (long ii = 0; ii < bytesRead; ii++) {
+                                    stream.read();
+                                }
+                            } catch (IOException spoolException) {
+                                maybeRetry(url, spoolException, "spooling");
+                                continue reconnect;
+                            }
+                        } else {
+                            throw new IOException("Got HTTP status code " + code + " on reconnect");
+                        }
+                        debug("Reconnected to url: " + url);
+                        break reconnect;
+                    } catch (IOException reconnectionException) {
+                        maybeRetry(url, reconnectionException, "reconnecting to");
+                    }
+                }
+            }
+            
+
         }
     }
 
