@@ -141,7 +141,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             IOUtils.writeToFile(file, stream);
             success = true;
         }catch(SocketTimeoutException ex){
-            SocketTimeoutException newEx = new SocketTimeoutException("Timed out reading "+node.getDisplayString()+" from "+node.getStoreDisplayString());
+            SocketTimeoutException newEx = new SocketTimeoutException("Timed out reading from "+node.getStoreDisplayString());
             newEx.initCause(ex);
             throw newEx;
         }finally{
