@@ -304,19 +304,23 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
     
     class Attempts {
+        /** The total number of attempts (including the initial one) */
         private final int attempts = 3;
-        private int attemptsLeft = attempts;
+        private int reattemptsLeft = attempts-1;
         public boolean reattempt() {
-            return attemptsLeft-- > 0;
+            return reattemptsLeft-- > 0;
         }
+        /** The total number of attempts to be made (including the initial one) */
         public int getAttemptsAllowed() {
             return attempts;
         }
-        public int getAttemptsLeft() {
-            return attemptsLeft;
+        /** The total number of reattempts not yet made */
+        public int getReattemptsLeft() {
+            return reattemptsLeft;
         }
+        /** The total number of attempts made so far*/
         public int getAttemptsMade() {
-            return getAttemptsAllowed()-getAttemptsLeft();
+            return getAttemptsAllowed()-getReattemptsLeft();
         }
         /**
          * For selected exceptions returns normally if there are 
@@ -326,7 +330,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             if (e instanceof SocketTimeoutException
                     || e instanceof SocketException) {
                 if (reattempt()) {
-                    log.debug("Retry download of "+ url + " after " + e + " (" + getAttemptsLeft() + " attempts left)");
+                    log.debug("Retry download of "+ url + " after " + e + " (" + getReattemptsLeft() + " reattempts left)");
                     return;
                 }
             }
