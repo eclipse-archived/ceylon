@@ -443,17 +443,23 @@ public class Bootstrap {
                             fileOut = new BufferedOutputStream(new FileOutputStream(out));
                             copyStream(zipIn, fileOut, false, false);
                         } finally {
-                            fileOut.close();
+                            if (fileOut != null) {
+                                fileOut.close();
+                            }
                         }
                     } finally {
-                        zipIn.close();
+                        if (zipIn != null) {
+                            zipIn.close();
+                        }
                     }
                 } catch (IOException e) {
                     throw new RuntimeException("Error extracting archive", e);
                 }
             }
         } finally {
-            zf.close();
+            if (zf != null) {
+                zf.close();
+            }
         }
     }
     
@@ -541,7 +547,9 @@ public class Bootstrap {
     
             return hexString.toString();
         } finally {
-            fis.close();
+            if (fis != null) {
+                fis.close();
+            }
         }
     }
     
