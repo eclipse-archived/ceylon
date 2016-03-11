@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.Authenticator;
+import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -566,6 +567,13 @@ public class Bootstrap {
             connection = url.openConnection();
             connection.setConnectTimeout(DOWNLOAD_TIMEOUT_CONNECT);
             connection.setReadTimeout(DOWNLOAD_TIMEOUT_READ);
+            int status = 200; // Should we even try to pretend we support anything but HTTP?
+            if (connection instanceof HttpURLConnection) {
+                status = ((HttpURLConnection)connection).getResponseCode();
+            }
+            if (status != 200) {
+                throw new RuntimeException("Connection error: " + status);
+            }
             input = connection.getInputStream();
             output = new FileOutputStream(file);
             int n;
