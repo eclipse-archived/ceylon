@@ -110,6 +110,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
+    public <Result>.ceylon.language.List<? extends Result> mapElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> mapping) {
+        return $ceylon$language$List$this$.mapElements($reified$Result, mapping);
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.List measure(final .ceylon.language.Integer from, final long length) {
         return $ceylon$language$List$this$.measure(from, length);
     }
@@ -1093,6 +1098,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public boolean longerThan(final long length) {
         return $ceylon$language$List$this$.longerThan(length);
+    }
+    
+    @.java.lang.Override
+    public <Result>.ceylon.language.List<? extends Result> mapElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> mapping) {
+        return $ceylon$language$List$this$.mapElements($reified$Result, mapping);
     }
     
     @.java.lang.Override
