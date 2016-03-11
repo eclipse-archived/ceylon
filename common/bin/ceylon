@@ -4,10 +4,12 @@
 PRG="$0"
 while [ -h "$PRG" ]; do
     ls="$(ls -ld "$PRG")"
-    link="$(expr "$ls" : '.*-> \(.*\)$')"
-    if expr "$link" : '/.*' > /dev/null; then
+    link="${ls##*-> }" # remove largest prefix: yields link target (behind ->)
+    if [ "$link" != "${link#/}" ]; then # remove prefix / if present
+        # path was absolute
         PRG="$link"
     else
+        # was not
         PRG="$(dirname "$PRG")/$link"
     fi
 done
