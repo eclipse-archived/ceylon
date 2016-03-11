@@ -654,7 +654,13 @@ Use this when NOT doing a release!">
                                 </then>
                             </if>
                             <if>
-                                <equals arg1="@{moduleOptional}" arg2="true"/>
+                            	<or>
+                                    <equals arg1="@{moduleOptional}" arg2="true"/>
+                                    <and>
+                                        <equals arg1="${Bundle-SymbolicName}" arg2="ceylon.bootstrap"/>
+                                        <equals arg1="@{moduleName}" arg2="ceylon.runtime"/>
+                                    </and>
+                        		</or>
                                 <then>
                                     <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
                                 </then>
