@@ -14,7 +14,6 @@ Import-Package: org.osgi.framework;version="1.6",
  org.osgi.framework.wiring;version="1.0"
 Require-Bundle: ceylon.bootstrap;bundle-version="1.2.3",
  ceylon.language;bundle-version="1.2.3",
- ceylon.runtime;bundle-version="1.2.3",
  com.github.lookfirst.sardine;bundle-version="5.1",
  com.redhat.ceylon.common;bundle-version="1.2.3",
  com.redhat.ceylon.model;bundle-version="1.2.3",
