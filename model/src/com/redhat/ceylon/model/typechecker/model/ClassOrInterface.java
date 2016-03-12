@@ -3,7 +3,9 @@ package com.redhat.ceylon.model.typechecker.model;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -69,6 +71,58 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         this.typeParameters = typeParameters;
     }
     
+    @Override
+    public List<VirtualType> getVirtualTypes() {
+        //TODO: caching!!!!
+        ArrayList<VirtualType> list = 
+                new ArrayList<VirtualType>();
+        for (Declaration d : getMembers()) {
+            if (d.isFormal() && d instanceof TypeAlias) {
+                TypeAlias ta = (TypeAlias) d;
+                Type et = ta.getExtendedType();
+                if (et!=null) {
+                    TypeDeclaration etd = 
+                            et.getDeclaration();
+                    if (etd instanceof VirtualType) {
+                        VirtualType vt = 
+                                (VirtualType) etd;
+                        list.add(vt);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+    
+    @Override
+    public Map<VirtualType,Type> getActualTypes() {
+        //TODO: caching!!!!
+        Map<VirtualType,Type> map = 
+                new HashMap<VirtualType,Type>();
+        for (Declaration d : getMembers()) {
+            if (d.isActual() && d instanceof TypeAlias) {
+                TypeAlias ta = (TypeAlias) d;
+                TypeDeclaration rd = 
+                        (TypeDeclaration) 
+                            d.getRefinedDeclaration();
+                if (rd!=d) {
+                    Type et = rd.getExtendedType();
+                    if (et!=null) {
+                        TypeDeclaration etd = 
+                                et.getDeclaration();
+                        if (etd instanceof VirtualType) {
+                            VirtualType vt = 
+                                    (VirtualType) etd;
+                            map.put(vt, ta.getExtendedType());
+                        }
+                    }
+                }
+            }
+        }
+        return map;
+    }
+    
+        
     @Override
     public List<Declaration> getOverloads() {
         return overloads;

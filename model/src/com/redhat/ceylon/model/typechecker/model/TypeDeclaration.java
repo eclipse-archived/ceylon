@@ -9,6 +9,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVe
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.strictlyBetterMatch;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,6 +109,15 @@ public abstract class TypeDeclaration extends Declaration
     @Override
     public List<TypeParameter> getTypeParameters() {
         return emptyList();
+    }
+    
+    @Override
+    public List<VirtualType> getVirtualTypes() {
+        return emptyList();
+    }
+    
+    public Map<VirtualType,Type> getActualTypes() {
+        return emptyMap();
     }
     
     @Override

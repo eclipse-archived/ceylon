@@ -936,7 +936,8 @@ public class ModelUtil {
     private static int countTypeParameters(
             Declaration declaration, Type receivingType) {
         int count = 0;
-        boolean containsFunctionOrValueInterface = containsFunctionOrValueInterface(receivingType);
+        boolean containsFunctionOrValueInterface = 
+                containsFunctionOrValueInterface(receivingType);
         while (true) {
             if (declaration instanceof Generic) {
                 Generic g = (Generic) declaration;
@@ -947,11 +948,13 @@ public class ModelUtil {
                         (Declaration) 
                             declaration.getContainer();
             }
-            else if(containsFunctionOrValueInterface){
+            else if (containsFunctionOrValueInterface) {
                 // we are at runtime and we care about local types' generic ancestors
-                declaration = getFirstGenericContainer(declaration);
-                if(declaration == null)
+                declaration = 
+                        getFirstGenericContainer(declaration);
+                if (declaration == null) {
                     break;
+                }
             }
             else {
                 break;
@@ -962,16 +965,19 @@ public class ModelUtil {
 
     private static Declaration getFirstGenericContainer(Declaration declaration) {
         Scope container = declaration.getContainer();
-        while(container != null && container instanceof Generic == false)
+        while (container != null && 
+                !(container instanceof Generic)) {
             container = container.getContainer();
+        }
         // must be Generic or null, and every Generic is a Declaration
-        return (Declaration)container;
+        return (Declaration) container;
     }
 
     private static boolean containsFunctionOrValueInterface(Type receivingType) {
-        while(receivingType != null){
-            if(receivingType.isFunctionOrValueInterface())
+        while (receivingType != null) {
+            if (receivingType.isFunctionOrValueInterface()) {
                 return true;
+            }
             receivingType = receivingType.getQualifyingType();
         }
         return false;
@@ -1003,14 +1009,15 @@ public class ModelUtil {
     getTypeArgumentMap(Declaration declaration, 
             Type receivingType, 
             List<Type> typeArguments) {        
-        int count = countTypeParameters(declaration, receivingType);
-        if (count==0) {
-            return EMPTY_TYPE_ARG_MAP;
-        }
-        else {
+        int count = 
+                countTypeParameters(declaration, receivingType);
+//        if (count==0) {
+//            return EMPTY_TYPE_ARG_MAP;
+//        }
+//        else {
             return aggregateTypeArguments(receivingType, 
                     typeArguments, declaration, count);
-        }
+//        }
     }
 
     private static Map<TypeParameter, Type> 
@@ -1055,9 +1062,9 @@ public class ModelUtil {
     private static void aggregateTypeArguments(
             Map<TypeParameter, Type> map, 
             Type dt, Declaration d) {
-        while (dt!=null){
+        while (dt!=null) {
             Type aqt;
-            if(d.isClassOrInterfaceMember()) {
+            if (d.isClassOrInterfaceMember()) {
                 TypeDeclaration declaringType = 
                         (TypeDeclaration) 
                             d.getContainer();
@@ -1065,10 +1072,12 @@ public class ModelUtil {
                 if (aqt==null) {
                     break;
                 }
-            }else if(dt.isFunctionOrValueInterface()){
+            }
+            else if (dt.isFunctionOrValueInterface()) {
                 // just take it as-is
                 aqt = dt;
-            }else{
+            }
+            else {
                 break;
             }
             map.putAll(aqt.getTypeArguments());

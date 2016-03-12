@@ -54,6 +54,7 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
+import com.redhat.ceylon.model.typechecker.model.VirtualType;
 
 /**
  * Second phase of type analysis.
@@ -1023,9 +1024,28 @@ public class TypeVisitor extends Visitor {
         TypeSpecifier typeSpecifier = 
                 that.getTypeSpecifier();
         if (typeSpecifier==null) {
-            that.addError("missing aliased type");
+            if (!ta.isFormal()) {
+                that.addError("missing aliased type");
+            }
+            else if (ta.isClassOrInterfaceMember()) {
+                ClassOrInterface ci = 
+                        (ClassOrInterface) 
+                            ta.getContainer();
+                VirtualType vt = new VirtualType();
+                vt.setDeclaration(ci);
+                vt.setName(ta.getName());
+                vt.setScope(ci);
+                vt.setContainer(ci);
+                vt.setUnit(unit);
+                vt.setExtendedType(unit.getAnythingType());
+                vt.setVisibleScope(ci);
+                ta.setExtendedType(vt.getType());
+            }
         }
         else {
+            if (ta.isFormal()) {
+                that.addError("formal alias specifies aliased type");
+            }
             Tree.StaticType et = typeSpecifier.getType();
             if (et==null) {
                 that.addError("malformed aliased type");

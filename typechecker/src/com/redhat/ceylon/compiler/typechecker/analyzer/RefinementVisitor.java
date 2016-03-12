@@ -59,6 +59,7 @@ import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -140,9 +141,15 @@ public class RefinementVisitor extends Visitor {
             boolean mayBeRefined =
                     dec instanceof Value || 
                     dec instanceof Function ||
-                    dec instanceof Class;
+                    dec instanceof Class ||
+                    dec instanceof TypeAlias;
             if (!mayBeRefined) {
                 checkNonrefinableDeclaration(that, dec);
+            }
+            else if (dec instanceof TypeAlias) {
+                if (dec.isDefault()) {
+                    that.addError("default declaration is not a method, getter, reference attribute, or class");
+                }
             }
             
             boolean member = 
@@ -830,6 +837,14 @@ public class RefinementVisitor extends Visitor {
                                 " refines " + message(refined));
                     }
                 }
+                else if (member instanceof TypeAlias) {
+                    if (!(refined instanceof TypeAlias)) {
+                        that.addError(
+                                "refined declaration is not a type alias: " + 
+                                message(member) + 
+                                " refines " + message(refined));
+                    }
+                }
                 else if (member instanceof TypedDeclaration) {
                     if (refined instanceof Class || 
                         refined instanceof Function) {
@@ -952,11 +967,9 @@ public class RefinementVisitor extends Visitor {
         
         Type cit = ci.getType();
         Reference refinedMember = 
-                cit.getTypedReference(refined, 
-                        typeArgs);
+                cit.getTypedReference(refined, typeArgs);
         Reference refiningMember = 
-                cit.getTypedReference(refining, 
-                        typeArgs);
+                cit.getTypedReference(refining, typeArgs);
         Declaration refinedMemberDec = 
                 refinedMember.getDeclaration();
 		Declaration refiningMemberDec = 

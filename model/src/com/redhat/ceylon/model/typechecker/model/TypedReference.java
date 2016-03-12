@@ -38,7 +38,19 @@ public class TypedReference extends Reference {
         }
         else {
             Type type = declaration.getType();
-            return type==null ? null : type.substitute(this);
+            if (type==null) {
+                return null;
+            }
+            else {
+                for (TypeParameter tp: getTypeArguments().keySet()) {
+                    if (tp instanceof VirtualType) {
+                        type = type.resolveAliases();
+                        break;
+                    }
+                }
+                Type result = type.substitute(this);
+                return result;
+            }
         }
     }
     

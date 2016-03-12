@@ -40,6 +40,11 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
         return typeParameters;
     }
 
+    @Override
+    public List<VirtualType> getVirtualTypes() {
+        return emptyList();
+    }
+    
     public void setTypeParameters(List<TypeParameter> typeParameters) {
         this.typeParameters = typeParameters;
     }

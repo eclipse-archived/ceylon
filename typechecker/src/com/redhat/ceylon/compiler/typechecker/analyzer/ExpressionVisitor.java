@@ -6768,6 +6768,11 @@ public class ExpressionVisitor extends Visitor {
             if (outerType==null) {
                 outerType = receivingType;
             }
+            TypeDeclaration id = 
+                    scope.getInheritingDeclaration(member);
+            if (id!=null) {
+                outerType = id.getType();
+            }
             TypedReference pr = 
                     member.appliedTypedReference(outerType, 
                             typeArgs, that.getAssigned());

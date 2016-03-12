@@ -1,12 +1,13 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static com.redhat.ceylon.model.typechecker.model.Type.checkDepth;
 import static com.redhat.ceylon.model.typechecker.model.Type.decDepth;
 import static com.redhat.ceylon.model.typechecker.model.Type.incDepth;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +83,7 @@ public abstract class Reference {
             Map<TypeParameter, Type> typeArguments) {
         Map<TypeParameter, Type> typeArgs = typeArguments;
         Generic g = (Generic) declaration;
+        
         List<TypeParameter> typeParameters = 
                 g.getTypeParameters();
         for (int i=0, l=typeParameters.size(); 
@@ -103,6 +105,24 @@ public abstract class Reference {
                                 EMPTY_VARIANCE_MAP));
             }
         }
+        
+//        List<VirtualType> virtualTypes = g.getVirtualTypes();
+//        for (VirtualType vt: virtualTypes) {
+//            if (!typeArgs.containsKey(vt)) {
+//                if (typeArguments == typeArgs) {
+//                    // make a copy big enough to fit every type parameter
+//                    typeArgs = 
+//                            new HashMap<TypeParameter,Type>
+//                                (typeParameters.size() +
+//                                 virtualTypes.size());
+//                    typeArgs.putAll(typeArguments);
+//                }
+//                Unit unit = declaration.getUnit();
+//                Type bound = unit.getAnythingType();
+//                bound.setVariance(vt, OUT);
+//                typeArgs.put(vt, bound);
+//            }
+//        }
         return typeArgs;
     }
     

@@ -1259,11 +1259,15 @@ public class Type extends Reference {
             List<Type> typeArguments) {
         if (member instanceof TypeDeclaration) {
             TypeDeclaration td = (TypeDeclaration) member;
-            return getTypeMember(td, typeArguments);
+            Type t = getTypeMember(td, typeArguments);
+            t.getTypeArguments().putAll(getDeclaration().getActualTypes());
+            return t;
         }
         else {
             TypedDeclaration td = (TypedDeclaration) member;
-            return getTypedMember(td, typeArguments);
+            TypedReference m = getTypedMember(td, typeArguments);
+            m.getTypeArguments().putAll(getDeclaration().getActualTypes());
+            return m;
         }
     }
     
@@ -1299,6 +1303,7 @@ public class Type extends Reference {
         Map<TypeParameter, Type> map = 
                 getTypeArgumentMap(member, declaringType, 
                         typeArguments);
+        map.putAll(getDeclaration().getActualTypes());
         ptr.setTypeArguments(map);
         return ptr;
     }
@@ -1319,8 +1324,9 @@ public class Type extends Reference {
                 (TypeDeclaration) 
                     member.getContainer();
         Type declaringType = getSupertype(type);
-        return member.appliedType(declaringType, 
-                typeArguments);
+        Type t = member.appliedType(declaringType, typeArguments);
+        t.getTypeArguments().putAll(getDeclaration().getActualTypes());
+        return t;
     }
 
     /**

@@ -89,6 +89,9 @@ public abstract class TypedDeclaration extends Declaration {
         ptr.setQualifyingType(qualifyingType);
         ptr.setTypeArguments(getTypeArgumentMap(this, 
                 qualifyingType, typeArguments));
+        if (qualifyingType!=null) {
+            ptr.getTypeArguments().putAll(qualifyingType.getDeclaration().getActualTypes());
+        }
         return ptr;
     }
     
