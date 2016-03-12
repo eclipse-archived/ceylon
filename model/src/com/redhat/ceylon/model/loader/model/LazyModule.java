@@ -15,7 +15,6 @@ import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.model.loader.model.LazyModule.PackagePathsProvider;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
