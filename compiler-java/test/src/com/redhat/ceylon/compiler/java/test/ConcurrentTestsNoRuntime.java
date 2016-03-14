@@ -57,6 +57,7 @@ import com.redhat.ceylon.compiler.java.test.statement.TryCatchTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
+import com.redhat.ceylon.launcher.test.BootstrapTests;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
 /**
@@ -103,6 +104,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     CarGenerationTests.class,
     SourcePositionsTests.class,
     NativeTests.class,
+    BootstrapTests.class,
     // FIXME Disabled: it does not run currently in parallel
     // TopLevelToolTest.class,
     // IntegrationTests.class,

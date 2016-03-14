@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
 import com.redhat.ceylon.itest.IntegrationTests;
+import com.redhat.ceylon.launcher.test.BootstrapTests;
 import com.redhat.ceylon.tools.TopLevelToolTests;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
@@ -112,6 +113,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     ReportingTests.class,
     SourcePositionsTests.class,
     NativeTests.class,
+    BootstrapTests.class,
     TopLevelToolTests.class,
     // Unable to run due to OOMs
     //IntegrationTests.class,
