@@ -130,7 +130,7 @@ This is done via simple `curl` commands, but requires a key and token that will 
 
 ## ceylon-docker/source-runner
 
- - Check out [ceylon-docker/ceylon](https://github.com/ceylon-docker/source-runner)
+ - Check out [ceylon-docker/source-runner](https://github.com/ceylon-docker/source-runner)
  - Make sure you're in the `master` branch
  - Make sure we have all the latest tags: `git fetch --tags`
  - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
