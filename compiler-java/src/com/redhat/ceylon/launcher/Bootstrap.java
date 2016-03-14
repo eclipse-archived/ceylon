@@ -2,6 +2,7 @@ package com.redhat.ceylon.launcher;
 
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -84,6 +85,10 @@ public class Bootstrap {
     }
 
     public static int run(String... args) throws Throwable {
+        return new Bootstrap().runInternal(args);
+    }
+    
+    public int runInternal(String... args) throws Throwable {
         CeylonClassLoader cl = null;
         try {
             Integer result = -1;
@@ -143,7 +148,7 @@ public class Bootstrap {
         }
     }
     
-    private static boolean isDistBootstrap() throws URISyntaxException {
+    protected boolean isDistBootstrap() throws URISyntaxException {
         File propsFile = getPropertiesFile();
         return propsFile.exists();
     }
@@ -171,7 +176,7 @@ public class Bootstrap {
         return lst.toArray(buf);
     }
 
-    private static void setupDistHome(Config cfg) throws Exception {
+    private void setupDistHome(Config cfg) throws Exception {
         // If hash doesn't exist in dists folder we must download & install
         if (!cfg.distributionDir.exists()) {
             install(cfg);
@@ -183,7 +188,7 @@ public class Bootstrap {
         System.setProperty(Constants.PROP_CEYLON_HOME_DIR, cfg.distributionDir.getAbsolutePath());
     }
     
-    private static void install(Config cfg) throws Exception {
+    private void install(Config cfg) throws Exception {
         File tmpFile = null;
         File tmpFolder = null;
         try {
@@ -282,17 +287,18 @@ public class Bootstrap {
         }
     }
     
-    private static class Config {
-        File properties;
-        URI distribution;
-        File installation;
-        File resolvedInstallation;
-        File distributionDir;
-        String hash;
-        String sha256sum;
+    protected static class Config {
+        public Config () {}
+        public File properties;
+        public URI distribution;
+        public File installation;
+        public File resolvedInstallation;
+        public File distributionDir;
+        public String hash;
+        public String sha256sum;
     }
     
-    private static Config loadBootstrapConfig() throws Exception {
+    protected Config loadBootstrapConfig() throws Exception {
         Properties properties = loadBootstrapProperties();
         Config cfg = new Config();
         
@@ -334,13 +340,13 @@ public class Bootstrap {
         return updateConfig(cfg);
     }
     
-    private static Config createDistributionConfig(String dist) throws URISyntaxException {
+    protected Config createDistributionConfig(String dist) throws URISyntaxException {
         Config cfg = new Config();
         cfg.distribution = getDistributionUri(dist);
         return updateConfig(cfg);
     }
 
-    private static URI getDistributionUri(String dist) throws URISyntaxException {
+    protected URI getDistributionUri(String dist) throws URISyntaxException {
         URI uri = new URI(dist);
         if (uri.getScheme() != null) {
             return uri;
@@ -560,10 +566,17 @@ public class Bootstrap {
         void update(long read, long size);
     }
     
+    protected int getReadTimeout() {
+        return DOWNLOAD_TIMEOUT_READ;
+    }
+
+    protected int getConnectTimeout() {
+        return DOWNLOAD_TIMEOUT_CONNECT;
+    }
     /**
      * A {@link SizedInputStream} that can reconnect some number f times
      */
-    static class RetryingSizedInputStream {
+    class RetryingSizedInputStream {
         
         private final URL url;
         /** 
@@ -581,7 +594,8 @@ public class Bootstrap {
          */
         private void giveup(URL url, IOException e) throws IOException{
             if (e instanceof SocketTimeoutException
-                    || e instanceof SocketException) {
+                    || e instanceof SocketException
+                    || e instanceof EOFException) {
                 if (reattemptsLeft-- > 0) {
                     //log.debug("Retry download of "+ url + " after " + e + " (" + getReattemptsLeft() + " reattempts left)");
                     return;
@@ -677,8 +691,8 @@ public class Bootstrap {
                 throw new RuntimeException();
             }
             HttpURLConnection huc = (HttpURLConnection)conn;
-            huc.setConnectTimeout(DOWNLOAD_TIMEOUT_CONNECT);
-            huc.setReadTimeout(DOWNLOAD_TIMEOUT_READ);
+            huc.setConnectTimeout(getConnectTimeout());
+            huc.setReadTimeout(getReadTimeout());
             boolean useRangeRequest = start > 0;
             if (useRangeRequest) {
                 String range = "bytes "+start+"-";
@@ -720,6 +734,13 @@ public class Bootstrap {
                         int result = stream.read(buf, offset, length);
                         if (result != -1) {
                             bytesRead+=result;
+                        } else {
+                            // did we get all the stream?
+                            if (bytesRead == getSize()) {
+                                return result;
+                            } else {
+                                throw new EOFException();
+                            }
                         }
                         return result;
                     } catch (IOException readException) {
@@ -789,7 +810,7 @@ public class Bootstrap {
         }
     }
     
-    private static void download(URI uri, File file, ProgressMonitor progress) throws IOException {
+    private void download(URI uri, File file, ProgressMonitor progress) throws IOException {
         InputStream input = null;
         OutputStream output = null;
         try {
