@@ -233,8 +233,10 @@ public class Bootstrap {
             validateDistribution(cfg, tmpFolder);
             // Rename temp folder to hash
             tmpFolder.renameTo(cfg.distributionDir);
-            // Clearing the download progress text on the console
-            System.out.print("                              \r");
+            if (System.console() != null) {
+                // Clearing the download progress text on the console
+                System.out.print("                              \r");
+            }
         } finally {
             // Delete temp file and folder
             if (tmpFile != null) {
