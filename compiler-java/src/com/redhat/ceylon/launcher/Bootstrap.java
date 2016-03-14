@@ -274,8 +274,14 @@ public class Bootstrap {
     }
     
     private void writeFile(File file, String contents) throws IOException {
-        try (FileOutputStream output = new FileOutputStream(file)) {
+        FileOutputStream output = null;
+        try {
+            output = new FileOutputStream(file);
             output.write(contents.getBytes());
+        } finally {
+            if (output != null) {
+                output.close();
+            }
         }
     }
 
