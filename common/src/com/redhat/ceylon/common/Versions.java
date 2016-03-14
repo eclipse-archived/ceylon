@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.2.2 "Charming But Irrational"
+    // The current version is Ceylon 1.2.3 "Total Internal Reflection"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -50,7 +50,7 @@ public class Versions {
      * <em>Beware</em> javac will inline this at compile time at use-sites,
      * use {@link #getCeylonVersionRelease()} to avoid that.
      */
-    public static final int CEYLON_VERSION_RELEASE = 2;
+    public static final int CEYLON_VERSION_RELEASE = 3;
     
     // SHA1 of current HEAD at moment of compilation
     public static final String CURRENT_COMMIT_ID = "@commit@";
@@ -63,7 +63,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "Charming But Irrational";
+    public static final String CEYLON_VERSION_NAME = "Total Internal Reflection";
     
     /**
      * The version number + code name description string.
@@ -80,7 +80,7 @@ public class Versions {
      * 1.0 is 6.0
      * 1.1 is 7.0
      * 1.2.0 is 8.0
-     * 1.2.1, 1.2.2 is 8.0 for JVM, 9.0 for JS
+     * 1.2.1, 1.2.2, 1.2.3 is 8.0 for JVM, 9.0 for JS
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 0;
@@ -122,6 +122,18 @@ public class Versions {
 
     public static final int V1_2_1_JS_BINARY_MAJOR_VERSION = 9;
     public static final int V1_2_1_JS_BINARY_MINOR_VERSION = 0;
+
+    public static final int V1_2_2_JVM_BINARY_MAJOR_VERSION = 8;
+    public static final int V1_2_2_JVM_BINARY_MINOR_VERSION = 0;
+
+    public static final int V1_2_2_JS_BINARY_MAJOR_VERSION = 9;
+    public static final int V1_2_2_JS_BINARY_MINOR_VERSION = 0;
+
+    public static final int V1_2_3_JVM_BINARY_MAJOR_VERSION = 8;
+    public static final int V1_2_3_JVM_BINARY_MINOR_VERSION = 0;
+
+    public static final int V1_2_3_JS_BINARY_MAJOR_VERSION = 9;
+    public static final int V1_2_3_JS_BINARY_MINOR_VERSION = 0;
 
     // Dependencies that end up in code
     public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.4.4.Final";
