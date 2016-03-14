@@ -33,6 +33,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.Versions;
 
 /**
  * This is the earliest bootstrap class for the Ceylon tool chain.
@@ -59,7 +60,6 @@ public class Bootstrap {
     public static final String FILE_BOOTSTRAP_PROPERTIES = "ceylon-bootstrap.properties";
     public static final String FILE_BOOTSTRAP_JAR = "ceylon-bootstrap.jar";
     public static final String FILE_BS_ORIGIN = "BS_ORIGIN";
-    public static final String FILE_BS_VERSION = "BS_VERSION";
     
     public static final String KEY_SHA256SUM = "sha256sum";
     public static final String KEY_INSTALLATION = "installation";
@@ -76,6 +76,9 @@ public class Bootstrap {
     
     private static final String PROP_CEYLON_BOOTSTRAP_DISTS = "ceylon.bootstrap.dists";
     private static final String PROP_CEYLON_BOOTSTRAP_PROPS = "ceylon.bootstrap.properties";
+
+    private static final String VERSION_BOOTSTRAP_NAME = "CeylonBootstrap";
+    private static final String VERSION_BOOTSTRAP_NUMBER = Versions.CEYLON_VERSION;
 
     public static void main(String[] args) throws Throwable {
         // we don't need to clean up the class loader when run from main because the JVM will either exit, or
@@ -707,6 +710,7 @@ public class Bootstrap {
                 throw new RuntimeException();
             }
             HttpURLConnection huc = (HttpURLConnection)conn;
+            huc.setRequestProperty("User-Agent", getUserAgent());
             huc.setConnectTimeout(getConnectTimeout());
             huc.setReadTimeout(getReadTimeout());
             boolean useRangeRequest = start > 0;
@@ -875,6 +879,20 @@ public class Bootstrap {
         }
     }
 
+    /**
+     * Sets up a User Agent string to be able to unique identify this tool in all the web traffic
+     * Copied from Gradle's Download
+     */
+    private String getUserAgent() {
+        String javaVendor = System.getProperty("java.vendor");
+        String javaVersion = System.getProperty("java.version");
+        String javaVendorVersion = System.getProperty("java.vm.version");
+        String osName = System.getProperty("os.name");
+        String osVersion = System.getProperty("os.version");
+        String osArch = System.getProperty("os.arch");
+        return String.format("%s/%s (%s;%s;%s) (%s;%s;%s)", VERSION_BOOTSTRAP_NAME, VERSION_BOOTSTRAP_NUMBER, osName, osVersion, osArch, javaVendor, javaVersion, javaVendorVersion);
+    }
+    
     private static File determineDistLanguage(File distHome) {
         File distRepo = new File(distHome, "repo");
         File bootstrap = new File(new File(distRepo, "ceylon"), "language");
