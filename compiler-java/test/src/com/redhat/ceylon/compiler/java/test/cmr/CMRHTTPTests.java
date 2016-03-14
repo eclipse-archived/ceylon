@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
@@ -92,7 +93,7 @@ public class CMRHTTPTests extends CompilerTests {
     }
 
     private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq, ExpectedError error) throws IOException{
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), 1);
+        HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), port), 1);
         server.createContext("/repo", new RepoFileHandler(repo.getPath(), herd, rq, error));
         // make sure we serve at least two concurrent connections, as each one might take a few ms to close
         ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(2);
