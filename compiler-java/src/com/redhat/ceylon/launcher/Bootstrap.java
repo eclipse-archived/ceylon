@@ -15,6 +15,8 @@ import java.math.BigInteger;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -558,27 +560,246 @@ public class Bootstrap {
         void update(long read, long size);
     }
     
+    /**
+     * A {@link SizedInputStream} that can reconnect some number f times
+     */
+    static class RetryingSizedInputStream {
+        
+        private final URL url;
+        /** 
+         * Whether range requests should be made when 
+         * the {@link ReconnectingInputStream} has to reconnect.
+         */
+        private boolean rangeRequests;
+        /** The number of attempts to download the resource */
+        /** The total number of attempts (including the initial one) */
+        private final int attempts = 3;
+        private int reattemptsLeft = attempts-1;
+        /**
+         * For selected exceptions returns normally if there are 
+         * attempts left, otherwise rethrows the given exception. 
+         */
+        private void giveup(URL url, IOException e) throws IOException{
+            if (e instanceof SocketTimeoutException
+                    || e instanceof SocketException) {
+                if (reattemptsLeft-- > 0) {
+                    //log.debug("Retry download of "+ url + " after " + e + " (" + getReattemptsLeft() + " reattempts left)");
+                    return;
+                }
+            }
+            if (e instanceof SocketTimeoutException) {
+                // Include url in exception message
+                SocketTimeoutException newException = new SocketTimeoutException("Timed out downloading "+url);
+                newException.initCause(e);
+                e = newException;
+            }
+            //log.debug("Giving up request to " + url + " (after "+ getAttemptsMade() + " attempts) due to: " + e );
+            throw e;
+            
+        }
+        /** The <em>current</em> stream: Gets mutated when {@link ReconnectingInputStream} reconnects */
+        
+        private HttpURLConnection connection = null;
+        private InputStream stream = null;
+        long bytesRead = 0;
+        private final ReconnectingInputStream reconnectingStream;
+        private final long contentLength;
+        
+        public RetryingSizedInputStream(URL url) throws IOException {
+            this.url = url;
+            long length = 0;
+            connecting: while (true) {
+                try{
+                    connection = makeConnection(url, -1);
+                    int code = connection.getResponseCode();
+                    if (code != -1 && code != 200) {
+                        //log.info("Got " + code + " for url: " + url);
+                        RuntimeException notGettable = new RuntimeException("Connection error: " + code);
+                        cleanUpStreams(notGettable);
+                        throw notGettable;
+                    }
+                    String acceptRange = connection.getHeaderField("Accept-Range");
+                    rangeRequests = acceptRange == null || !acceptRange.equalsIgnoreCase("none");
+                    //debug("Connection: "+connection.getHeaderField("Connection"));
+                    //debug("Got " + code + " for url: " + url);
+                    length = connection.getContentLengthLong();
+                    stream = connection.getInputStream();
+                    break connecting;
+                } catch(IOException connectException) {
+                    maybeRetry(url, connectException);
+                }
+            }
+            this.contentLength = length;
+            this.reconnectingStream = new ReconnectingInputStream();
+        }
+
+        private void maybeRetry(URL url, IOException e) throws IOException {
+            cleanUpStreams(e);
+            giveup(url, e);
+        }
+
+        /**
+         * According to https://docs.oracle.com/javase/8/docs/technotes/guides/net/http-keepalive.html
+         * we should read the error stream so the connection can be reused.
+         */
+        private void cleanUpStreams(Exception inflight) {
+            if (stream != null) {
+                try {
+                    stream.close();
+                    stream = null;
+                } catch (IOException closeException) {
+                    inflight.addSuppressed(closeException);
+                }
+            }
+            
+            if (connection != null) {
+                byte[] buf = new byte[8*2014];
+                InputStream es = connection.getErrorStream();
+                if (es != null) {
+                    try {
+                        try {
+                            while (es.read(buf) > 0) {}
+                        } finally {
+                            es.close();
+                        }
+                    } catch (IOException errorStreamError) {
+                        inflight.addSuppressed(errorStreamError);
+                    }
+                }
+            }
+        }
+        
+        private HttpURLConnection makeConnection(URL url, long start)
+                throws IOException, SocketTimeoutException {
+            URLConnection conn;
+            conn = url.openConnection();
+            if (!(conn instanceof HttpURLConnection)) {
+                throw new RuntimeException();
+            }
+            HttpURLConnection huc = (HttpURLConnection)conn;
+            huc.setConnectTimeout(DOWNLOAD_TIMEOUT_CONNECT);
+            huc.setReadTimeout(DOWNLOAD_TIMEOUT_READ);
+            boolean useRangeRequest = start > 0;
+            if (useRangeRequest) {
+                String range = "bytes "+start+"-";
+                //debug("Using Range request for" + range + " of " + url);
+                huc.setRequestProperty("Range", range);
+            }
+            //debug("Connecting to " + url);
+            conn.connect();
+            return huc;
+        }
+        
+        public long getSize() {
+            return contentLength;
+        }
+        
+        public InputStream getInputStream() {
+            return reconnectingStream;
+        }
+        
+        /**
+         * An InputStream that can reconnects on SocketTimeoutException.
+         * If it reconnects it makes a {@code Range} request to get just the 
+         * remainder of the resource, unless {@link #rangeRequests} is false.
+         */
+        class ReconnectingInputStream extends InputStream {
+            public void close() throws IOException {
+                if (stream != null) {
+                    stream.close();
+                }
+            }
+            
+            public int read(byte[] buf, int offset, int length) throws IOException {
+                /*
+                 * Overridden because {@link InputStream#read(byte[], int, int)}
+                 * behaves badly wrt non-initial {@link #read()}s throwing.
+                 */
+                while (true) {
+                    try {
+                        int result = stream.read(buf, offset, length);
+                        if (result != -1) {
+                            bytesRead+=result;
+                        }
+                        return result;
+                    } catch (IOException readException) {
+                        recover(readException);
+                    }
+                }
+            }
+            
+            @Override
+            public int read() throws IOException {
+                while (true) {
+                    try {
+                        int result = stream.read();
+                        if (result != -1) {
+                            bytesRead++;
+                        }
+                        return result;
+                    } catch (IOException readException) {
+                        recover(readException);
+                    }
+                }
+            }
+            
+            /**
+             * Reconnects, reassigning {@link RetryingSizedInputStream#connection} 
+             * and {@link RetryingSizedInputStream#stream}, or 
+             * throws {@code IOException} if we can't retry.
+             */
+            protected void recover(IOException readException) throws IOException {
+                maybeRetry(url, readException);
+                // if we maybeRetry didn't propage the exception let's retry...
+                reconnect: while (true) {
+                    try {
+                        // otherwise open another connection...
+                        // using a range request unless initial request had Accept-Ranges: none
+                        connection = makeConnection(url, rangeRequests ? bytesRead : -1);
+                        final int code = connection.getResponseCode();
+                        //debug("Got " + code + " for reconnection to url: " + url);
+                        if (rangeRequests && code == 206) {
+                            stream = connection.getInputStream();
+                        } else if (code == 200) {
+                            if (rangeRequests) {
+                                //debug("Looks like " + url.getHost() + ":" + url.getPort() + " does support range request, to reading first " + bytesRead + " bytes");
+                            }
+                            // we didn't make a range request
+                            // (or the server didn't understand the Range header)
+                            // so spool the appropriate number of bytes
+                            stream = connection.getInputStream();
+                            try {
+                                for (long ii = 0; ii < bytesRead; ii++) {
+                                    stream.read();
+                                }
+                            } catch (IOException spoolException) {
+                                maybeRetry(url, spoolException);
+                                continue reconnect;
+                            }
+                        } else {
+                            throw new RuntimeException("Connection error: " + code + " on reconnect");
+                        }
+                        //debug("Reconnected to url: " + url);
+                        break reconnect;
+                    } catch (IOException reconnectionException) {
+                        maybeRetry(url, reconnectionException);
+                    }
+                }
+            }
+        }
+    }
+    
     private static void download(URI uri, File file, ProgressMonitor progress) throws IOException {
-        URLConnection connection = null;
         InputStream input = null;
         OutputStream output = null;
         try {
             URL url = uri.toURL();
-            connection = url.openConnection();
-            connection.setConnectTimeout(DOWNLOAD_TIMEOUT_CONNECT);
-            connection.setReadTimeout(DOWNLOAD_TIMEOUT_READ);
-            int status = 200; // Should we even try to pretend we support anything but HTTP?
-            if (connection instanceof HttpURLConnection) {
-                status = ((HttpURLConnection)connection).getResponseCode();
-            }
-            if (status != 200) {
-                throw new RuntimeException("Connection error: " + status);
-            }
-            input = connection.getInputStream();
+            RetryingSizedInputStream r = new RetryingSizedInputStream(url);
+            input = r.getInputStream();
             output = new FileOutputStream(file);
             int n;
             long read = 0;
-            long size = connection.getContentLength();
+            long size = r.getSize();
             byte[] buffer = new byte[DOWNLOAD_BUFFER_SIZE];
             while ((n = input.read(buffer)) != -1) {
                 output.write(buffer, 0, n);
