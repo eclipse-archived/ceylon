@@ -10,7 +10,6 @@ How to do a release of Ceylon.
 2. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
 3. If required, bump all the `@Ceylon(major = X)` annotations in `ceylon.language` and the compiler tests' `.src` files
   - Note that most likely you'll need a new Herd as well (good luck)
-4. Check that external sample code (in particular https://github.com/ceylon/ceylon-examples) complies and runs OK.
 
 # Before (requirements & testing)
 
@@ -26,6 +25,7 @@ How to do a release of Ceylon.
 5. Run the language tests
   -  $ cd ceylon.language
   -  ceylon.language$ ant test-quick
+6. Check that external sample code (in particular https://github.com/ceylon/ceylon-examples) compiles and runs OK.
 
 # Before (packaging)
 
@@ -122,3 +122,11 @@ This is done via simple `curl` commands, but requires a key and token that will 
 1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://sdkman-vendor.herokuapp.com/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
 2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://sdkman-vendor.herokuapp.com/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
 3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://sdkman-vendor.herokuapp.com/announce/struct`
+
+# After
+
+1. Find every occurence of the previous version `1.2.0` and turn it into `1.2.1`, take special care with `Versions.java`
+2. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
+3. If required, bump all the `@Ceylon(major = X)` annotations in `ceylon.language` and the compiler tests' `.src` files
+  - Note that most likely you'll need a new Herd as well (good luck)
+
