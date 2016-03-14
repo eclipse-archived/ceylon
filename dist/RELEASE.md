@@ -4,13 +4,6 @@ How to do a release of Ceylon.
 
 1. **Create an issue using the contents of the [Release-Progress-Template](https://github.com/ceylon/ceylon/wiki/Release-Progress-Template) so you can publicly share the progress while going through the rest of this document**
 
-# Before (the code)
-
-1. Find every occurence of the previous version `1.2.0` and turn it into `1.2.1`, take special care with `Versions.java`
-2. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
-3. If required, bump all the `@Ceylon(major = X)` annotations in `ceylon.language` and the compiler tests' `.src` files
-  - Note that most likely you'll need a new Herd as well (good luck)
-
 # Before (requirements & testing)
 
 1. Make sure the `ceylon` project is up-to-date or at the proper version
