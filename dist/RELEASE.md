@@ -107,6 +107,25 @@ This is done via simple `curl` commands, but requires a key and token that will 
 2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://sdkman-vendor.herokuapp.com/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
 3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://sdkman-vendor.herokuapp.com/announce/struct`
 
+# Update Docker
+
+ - Check out [ceylon-docker/ceylon](https://github.com/ceylon-docker/ceylon)
+ - Make sure you're in the `master` branch
+ - Make sure we have all the latest tags: `git fetch --tags`
+ - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
+ - Commit the change
+ - Create a new branch for the new version using the latest version available as a template, for example: `git checkout -b 1.2.2-jre7 1.2.1-jre7`
+ - Edit the `Dockerfile` and update the `CEYLON_VERSION`
+ - Commit the change
+ - Tag the branch with the version name only: `git tag 1.2.2`
+ - Push to remote: `git push --tags --set-upstream origin 1.2.2-jre7`
+ - Force tag the branch with "latest": `git tag latest`
+ - Push to remote: `git push -f --tags`
+ - Switch back to `master`
+ - Push to remote: `git push`
+ - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/ceylon/builds/)
+ - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/ceylon/) to be the same as the `README.md` listed above
+
 # Update OpenShift
 
  - [openshift-cartridge](https://github.com/ceylon/openshift-cartridge)
