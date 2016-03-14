@@ -34,10 +34,10 @@ import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
 public class Activator implements BundleActivator {
 
     private static class BundleArtifactResult implements ContentAwareArtifactResult {
-        BundleWiring wiring;
+        Bundle bundle;
         
-        public BundleArtifactResult(BundleWiring bundle) {
-            this.wiring = bundle;
+        public BundleArtifactResult(Bundle bundle) {
+            this.bundle = bundle;
         }
         
         @Override
@@ -52,7 +52,7 @@ public class Activator implements BundleActivator {
         
         @Override
         public String version() {
-            return wiring.getBundle().getVersion().toString();
+            return bundle.getVersion().toString();
         }
         @Override
         public ArtifactResultType type() {
@@ -64,7 +64,7 @@ public class Activator implements BundleActivator {
         }
         @Override
         public String name() {
-            return wiring.getBundle().getSymbolicName();
+            return bundle.getSymbolicName();
         }
         @Override
         public ImportType importType() {
@@ -73,9 +73,10 @@ public class Activator implements BundleActivator {
         @Override
         public List<ArtifactResult> dependencies() throws RepositoryException {
             List<ArtifactResult> results = new ArrayList<>();
+            BundleWiring wiring = bundle.adapt(BundleWiring.class);
             for (BundleWire dep : wiring.getRequiredWires(null)) {
                 if (! "com.redhat.ceylon.dist".equals(dep.getProviderWiring().getBundle().getSymbolicName())) {
-                    results.add(new BundleArtifactResult(dep.getProviderWiring()));
+                    results.add(new BundleArtifactResult(dep.getProviderWiring().getBundle()));
                 }
             }
             return results;
@@ -101,6 +102,7 @@ public class Activator implements BundleActivator {
         @Override
         public Collection<String> getPackages() {
             Set<String> packages = new HashSet<>();
+            BundleWiring wiring = bundle.adapt(BundleWiring.class);
             for (String resource : wiring.listResources("/", "*", 
                     BundleWiring.LISTRESOURCES_RECURSE | BundleWiring.LISTRESOURCES_LOCAL)) {
                 if (! resource.endsWith("/")) {
@@ -113,6 +115,7 @@ public class Activator implements BundleActivator {
         @Override
         public Collection<String> getEntries() {
             Set<String> entries = new HashSet<>();
+            BundleWiring wiring = bundle.adapt(BundleWiring.class);
             for (String resource : wiring.listResources("/", "*", 
                     BundleWiring.LISTRESOURCES_RECURSE | BundleWiring.LISTRESOURCES_LOCAL)) {
                 if (! resource.endsWith("/")) {
@@ -124,7 +127,7 @@ public class Activator implements BundleActivator {
 
         @Override
         public byte[] getContents(String path) {
-            URL url = wiring.getBundle().getResource(path);
+            URL url = bundle.getResource(path);
             if (url != null) {
                 InputStream is;
                 try {
@@ -157,7 +160,7 @@ public class Activator implements BundleActivator {
         @Override
         public URI getContentUri(String path) {
             try {
-                URL url = wiring.getBundle().getResource(path);
+                URL url = bundle.getResource(path);
                 return url.toURI();
             } catch (URISyntaxException ex) {
                 throw new RuntimeException(ex);
@@ -166,6 +169,7 @@ public class Activator implements BundleActivator {
 
         @Override
         public List<String> getFileNames(String path) {
+            BundleWiring wiring = bundle.adapt(BundleWiring.class);
             path += "/";
             return Arrays.asList(wiring.listResources(path, "*", BundleWiring.LISTRESOURCES_LOCAL).toArray(new String[]{}));
         }
@@ -202,12 +206,12 @@ public class Activator implements BundleActivator {
         } catch(ClassCastException e) {
             // to solve a problem in Kepler with system bundles throwing a CCE
         }
-        BundleArtifactResult artifactResult = new BundleArtifactResult(wiring);
+        BundleArtifactResult artifactResult = new BundleArtifactResult(bundle);
         if (Metamodel.loadModule(symbolicName, versionString, 
                 artifactResult, bundleClassLoader)) {
             for (ArtifactResult dependency : artifactResult.dependencies()) {
                 if (dependency instanceof BundleArtifactResult) {
-                    Bundle childBundle = ((BundleArtifactResult) dependency).wiring.getBundle();
+                    Bundle childBundle = ((BundleArtifactResult) dependency).bundle;
                     if (childBundle != null) {
                         loadBundleAsModule(childBundle);
                     }
