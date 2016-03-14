@@ -6,6 +6,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +58,8 @@ public class Bootstrap {
     
     public static final String FILE_BOOTSTRAP_PROPERTIES = "ceylon-bootstrap.properties";
     public static final String FILE_BOOTSTRAP_JAR = "ceylon-bootstrap.jar";
+    public static final String FILE_BS_ORIGIN = "BS_ORIGIN";
+    public static final String FILE_BS_VERSION = "BS_VERSION";
     
     public static final String KEY_SHA256SUM = "sha256sum";
     public static final String KEY_INSTALLATION = "installation";
@@ -231,6 +234,7 @@ public class Bootstrap {
             tmpFolder = Files.createTempDirectory(cfg.resolvedInstallation.toPath(), "ceylon-bootstrap-dist-").toFile();
             extractArchive(zipFile, tmpFolder);
             validateDistribution(cfg, tmpFolder);
+            writeDistributionInfo(cfg, tmpFolder);
             // Rename temp folder to hash
             tmpFolder.renameTo(cfg.distributionDir);
             if (System.console() != null) {
@@ -259,6 +263,16 @@ public class Bootstrap {
         File bootstrapLibJar = new File(libDir, FILE_BOOTSTRAP_JAR);
         if (!bootstrapLibJar.exists()) {
             throw new RuntimeException("Ceylon distribution archive is too old and not supported: " + cfg.distribution);
+        }
+    }
+
+    private void writeDistributionInfo(Config cfg, File tmpFolder) throws IOException {
+        writeFile(new File(tmpFolder, FILE_BS_ORIGIN), cfg.distribution.toString() + "\n");
+    }
+    
+    private void writeFile(File file, String contents) throws IOException {
+        try (FileOutputStream output = new FileOutputStream(file)) {
+            output.write(contents.getBytes());
         }
     }
 
