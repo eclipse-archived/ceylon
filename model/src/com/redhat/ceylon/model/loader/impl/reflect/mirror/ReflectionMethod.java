@@ -21,6 +21,23 @@ import com.redhat.ceylon.model.loader.mirror.VariableMirror;
 
 public class ReflectionMethod implements MethodMirror {
 
+    /** 
+     * {@link java.lang.reflect.Method#isDefault()} appeared in 
+     * Java 1.8. If we're running in a 1.7 JVM we can't possibly 
+     * have loaded a Java 1.8 .class file, so {@link #isDefaultMethod()}
+     * can only return false.
+     */
+    private static final java.lang.reflect.Method IS_DEFAULT;
+    static {
+        java.lang.reflect.Method m;
+        try {
+            m = java.lang.reflect.Method.class.getMethod("isDefault");
+        } catch (NoSuchMethodException e) {
+            m = null;
+        }
+        IS_DEFAULT = m;
+    }
+    
     public final Member method;
     private ArrayList<VariableMirror> parameters;
     private List<TypeParameterMirror> typeParameters;
@@ -166,7 +183,15 @@ public class ReflectionMethod implements MethodMirror {
     
     @Override
     public boolean isDefaultMethod() {
-        return method instanceof java.lang.reflect.Method && ((java.lang.reflect.Method)method).isDefault();
+        try {
+            return method instanceof java.lang.reflect.Method
+                    && IS_DEFAULT != null
+                    && (Boolean)IS_DEFAULT.invoke(((java.lang.reflect.Method)method));
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
     @Override
