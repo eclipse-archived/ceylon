@@ -214,6 +214,54 @@ public class Versions {
         return CEYLON_VERSION;
     }
     
+    public static class VersionDetails {
+        public final String version;
+        public final String oldestCompatibleVersion;
+        public final int binaryMajor;
+        public final int binaryMinor;
+        
+        public VersionDetails(String version,
+                String oldestCompatibleVersion,
+                int binaryMajor, int binaryMinor) {
+            this.version = version;
+            this.oldestCompatibleVersion = oldestCompatibleVersion;
+            this.binaryMajor = binaryMajor;
+            this.binaryMinor = binaryMinor;
+        }
+    }
+    
+    public static final VersionDetails[] jvmVersions = {
+            new VersionDetails("0.1", "0.1",        M1_BINARY_MAJOR_VERSION, M1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.2", "0.2",        M2_BINARY_MAJOR_VERSION, M2_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3", "0.3",        M3_BINARY_MAJOR_VERSION, M3_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3.1", "0.3.1",    M3_1_BINARY_MAJOR_VERSION, M3_1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.4", "0.4",        M4_BINARY_MAJOR_VERSION, M4_BINARY_MINOR_VERSION),
+            new VersionDetails("0.5", "0.5",        M5_BINARY_MAJOR_VERSION, M5_BINARY_MINOR_VERSION),
+            new VersionDetails("0.6", "0.6",        M6_BINARY_MAJOR_VERSION, M6_BINARY_MINOR_VERSION),
+            new VersionDetails("1.0.0", "1.0.0",    V1_0_BINARY_MAJOR_VERSION, V1_0_BINARY_MINOR_VERSION),
+            new VersionDetails("1.1.0", "1.1.0",    V1_1_BINARY_MAJOR_VERSION, V1_1_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.0", "1.2.0",    V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.1", "1.2.0",    V1_2_1_JVM_BINARY_MAJOR_VERSION, V1_2_1_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.2", "1.2.0",    V1_2_2_JVM_BINARY_MAJOR_VERSION, V1_2_2_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails(CEYLON_VERSION_NAME, "1.2.0", JVM_BINARY_MAJOR_VERSION, JVM_BINARY_MINOR_VERSION),
+    };
+    
+    public static final VersionDetails[] jsVersions = {
+            new VersionDetails("0.1", "0.1",        M1_BINARY_MAJOR_VERSION, M1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.2", "0.2",        M2_BINARY_MAJOR_VERSION, M2_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3", "0.3",        M3_BINARY_MAJOR_VERSION, M3_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3.1", "0.3.1",    M3_1_BINARY_MAJOR_VERSION, M3_1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.4", "0.4",        M4_BINARY_MAJOR_VERSION, M4_BINARY_MINOR_VERSION),
+            new VersionDetails("0.5", "0.5",        M5_BINARY_MAJOR_VERSION, M5_BINARY_MINOR_VERSION),
+            new VersionDetails("0.6", "0.6",        M6_BINARY_MAJOR_VERSION, M6_BINARY_MINOR_VERSION),
+            new VersionDetails("1.0.0", "1.0.0",    V1_0_BINARY_MAJOR_VERSION, V1_0_BINARY_MINOR_VERSION),
+            new VersionDetails("1.1.0", "1.1.0",    V1_1_BINARY_MAJOR_VERSION, V1_1_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.0", "1.2.0",    V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.1", "1.2.1",    V1_2_1_JS_BINARY_MAJOR_VERSION, V1_2_1_JS_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.2", "1.2.2",    V1_2_2_JS_BINARY_MAJOR_VERSION, V1_2_2_JS_BINARY_MINOR_VERSION),
+            new VersionDetails(CEYLON_VERSION_NAME, "1.2.2", JS_BINARY_MAJOR_VERSION, JS_BINARY_MINOR_VERSION),
+    };
+    
     /**
      * Returns the language module version associated with the given
      * binary major and minor numbers. If more than one version exists
@@ -222,24 +270,15 @@ public class Versions {
      * For unknown or illegal binary versions it will return null.
      */
     public static String getJvmLanguageModuleVersion(int binaryMajor, int binaryMinor) {
-        if (binaryMajor == 0 && binaryMinor == 0) {
-            return "0.5"; // should be "0.2" but "0.5" is the lowest version available on the Herd
-        } else if (binaryMajor == 1 && binaryMinor == 0) {
-            return "0.5"; // should be "0.3"
-        } else if (binaryMajor == 2 && binaryMinor == 0) {
-            return "0.5"; // should be "0.3.1"
-        } else if (binaryMajor == 3 && binaryMinor == 0) {
-            return "0.5"; // should be "0.4"
-        } else if (binaryMajor == 4 && binaryMinor == 0) {
+        if (binaryMajor < 4 && binaryMinor == 0) {
+            // For very old versions we return "0.5" because
+            // it is the lowest version available on the Herd
             return "0.5";
-        } else if (binaryMajor == 5 && binaryMinor == 0) {
-            return "0.6";
-        } else if (binaryMajor == 6 && binaryMinor == 0) {
-            return "1.0.0";
-        } else if (binaryMajor == 7 && binaryMinor == 0) {
-            return "1.1.0";
-        } else if (binaryMajor == 8 && binaryMinor == 0) {
-            return "1.2.0";
+        }
+        for (VersionDetails vd : jvmVersions) {
+            if (vd.binaryMajor == binaryMajor && vd.binaryMinor == binaryMinor) {
+                return vd.version;
+            }
         }
         return null;
     }
