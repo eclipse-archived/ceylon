@@ -131,6 +131,12 @@
                 <include name="**" />
             </fileset>
         </copy>
+        <mkdir dir="${repoDir}/lib" />
+        <copy todir="${repoDir}/lib">
+            <fileset dir="${ceylon.dist.dir}/lib">
+                <include name="**" />
+            </fileset>
+        </copy>
         <mkdir dir="${repoDir}/bin" />
         <copy todir="${repoDir}/bin">
             <fileset dir="${ceylon.bin.dir}">
