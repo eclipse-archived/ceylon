@@ -247,8 +247,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
         // any user defined repos
         List<String> userRepos = new LinkedList<String>();
-        if (options.get(Option.CEYLONREPO) != null) {
-            userRepos.addAll(Arrays.asList(options.get(Option.CEYLONREPO).split(":")));
+        if (options.getMulti(Option.CEYLONREPO) != null) {
+            userRepos.addAll(options.getMulti(Option.CEYLONREPO));
         }
         String systemRepo = getSystemRepoOption();
         String cacheRepo = getCacheRepoOption();

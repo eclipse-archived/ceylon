@@ -28,6 +28,7 @@ package com.redhat.ceylon.langtools.tools.javac.main;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.PrefixKind;
 import java.io.File;
+import java.util.List;
 
 /**
  * Helper object to be used by {@link Option#process}, providing access to
@@ -43,9 +44,14 @@ public abstract class OptionHelper {
 
     /** Get the current value of an option. */
     public abstract String get(Option option);
+    
+    /** Get the current value of an option. */
+    public abstract List<String> getMulti(Option option);
 
     /** Set the value of an option. */
     public abstract void put(String name, String value);
+    
+    public abstract void addMulti(String name, String value);
 
     /** Remove any prior value for an option. */
     public abstract void remove(String name);
@@ -111,6 +117,16 @@ public abstract class OptionHelper {
         @Override
         public void addClassName(String s) {
             throw new IllegalArgumentException(s);
+        }
+
+        @Override
+        public List<String> getMulti(Option option) {
+            throw new IllegalArgumentException();
+        }
+
+        @Override
+        public void addMulti(String name, String value) {
+            throw new IllegalArgumentException();
         }
     }
 

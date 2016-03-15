@@ -122,6 +122,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private static final class Helper extends com.redhat.ceylon.langtools.tools.javac.main.OptionHelper {
         String lastError = null;
         private final HashMap<String,String> options = new HashMap<String,String>();
+        private final HashMap<String,List<String>> multiOptions = new HashMap<String,List<String>>();
         @Override
         public String get(com.redhat.ceylon.langtools.tools.javac.main.Option option) {
             return options.get(option.text);
@@ -160,6 +161,21 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         @Override
         protected void addClassName(String s) {
             
+        }
+
+        @Override
+        public List<String> getMulti(com.redhat.ceylon.langtools.tools.javac.main.Option option) {
+            return multiOptions.get(option.text);
+        }
+
+        @Override
+        public void addMulti(String name, String value) {
+            List<String> list = multiOptions.get(name);
+            if (list == null) {
+                list = new ArrayList<String>(2);
+                multiOptions.put(name, list);
+            }
+            list.add(value);
         }
     }
     

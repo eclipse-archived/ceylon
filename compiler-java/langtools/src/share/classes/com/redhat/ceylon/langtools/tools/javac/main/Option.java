@@ -441,11 +441,7 @@ public enum Option {
     CEYLONREPO("-rep", "opt.arg.url", "javac.opt.ceylonrepo", OptionKind.STANDARD, OptionGroup.CEYLON) {
         @Override
         public boolean process(OptionHelper helper, String option, String arg) {
-            if (helper.get(this) == null) {
-                helper.put(option, arg);
-            } else {
-                helper.put(option, helper.get(this) + ":" + arg);
-            }
+            helper.addMulti(option, arg);
             return false;
         }
     },

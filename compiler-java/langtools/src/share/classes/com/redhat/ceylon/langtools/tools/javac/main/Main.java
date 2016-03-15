@@ -113,10 +113,20 @@ public class Main {
         public String get(Option option) {
             return options.get(option);
         }
+        
+        @Override
+        public java.util.List<String> getMulti(Option option) {
+            return options.getMulti(option);
+        }
 
         @Override
         public void put(String name, String value) {
             options.put(name, value);
+        }
+        
+        @Override
+        public void addMulti(String name, String value) {
+            options.addMulti(name, value);
         }
 
         @Override

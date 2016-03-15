@@ -178,10 +178,20 @@ public class JavacTool implements JavaCompiler {
             public String get(Option option) {
                 return optionTable.get(option.getText());
             }
+            
+            @Override
+            public java.util.List<String> getMulti(Option option) {
+                return optionTable.getMulti(option);
+            }
 
             @Override
             public void put(String name, String value) {
                 optionTable.put(name, value);
+            }
+            
+            @Override
+            public void addMulti(String name, String value) {
+                optionTable.addMulti(name, value);
             }
 
             @Override

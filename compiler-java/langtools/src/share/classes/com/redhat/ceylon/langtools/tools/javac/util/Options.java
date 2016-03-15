@@ -76,6 +76,10 @@ public class Options {
     public String get(Option option) {
         return values.get(option.text);
     }
+    
+    public java.util.List<String> getMulti(Option option) {
+        return multiValues.get(option.text);
+    }
 
     /**
      * Get the boolean value for an option, patterned after Boolean.getBoolean,
@@ -137,6 +141,15 @@ public class Options {
 
     public void put(String name, String value) {
         values.put(name, value);
+    }
+    
+    public void addMulti(String name, String value) {
+        java.util.List<String> list = multiValues.get(name);
+        if (list == null) {
+            list = new ArrayList<String>(2);
+            multiValues.put(name, list);
+        }
+        list.add(value);
     }
 
     public void put(Option option, String value) {
