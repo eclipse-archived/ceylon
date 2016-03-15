@@ -1,7 +1,7 @@
 <dist-overrides>
     <dist-downgrade>
         <!-- used for explicit downgrading at runtime -->
-        <define name="dv" value="1.2.2" />
+        <define name="dv" value="1.2.3" />
         <set module="ceylon.language" version="${dv}" />
         <set module="ceylon.runtime" version="${dv}" />
         <set module="ceylon.bootstrap" version="${dv}" />
@@ -14,7 +14,7 @@
     </dist-downgrade>
 
     <dist-upgrade>
-        <define name="uv" value="1.2.2" />
+        <define name="uv" value="1.2.3" />
         <!-- used for auto-upgrading at runtime for 1.2.0 -->
         <replace module="ceylon.language" version="1.2.0">
             <with module="ceylon.language" version="${uv}" />
