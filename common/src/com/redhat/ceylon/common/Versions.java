@@ -245,7 +245,7 @@ public class Versions {
             new VersionDetails("1.2.0", "1.2.0",    V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
             new VersionDetails("1.2.1", "1.2.0",    V1_2_1_JVM_BINARY_MAJOR_VERSION, V1_2_1_JVM_BINARY_MINOR_VERSION),
             new VersionDetails("1.2.2", "1.2.0",    V1_2_2_JVM_BINARY_MAJOR_VERSION, V1_2_2_JVM_BINARY_MINOR_VERSION),
-            new VersionDetails(CEYLON_VERSION_NAME, "1.2.0", JVM_BINARY_MAJOR_VERSION, JVM_BINARY_MINOR_VERSION),
+            new VersionDetails(CEYLON_VERSION_NUMBER, "1.2.0", JVM_BINARY_MAJOR_VERSION, JVM_BINARY_MINOR_VERSION),
     };
     
     public static final VersionDetails[] jsVersions = {
@@ -261,7 +261,7 @@ public class Versions {
             new VersionDetails("1.2.0", "1.2.0",    V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
             new VersionDetails("1.2.1", "1.2.1",    V1_2_1_JS_BINARY_MAJOR_VERSION, V1_2_1_JS_BINARY_MINOR_VERSION),
             new VersionDetails("1.2.2", "1.2.2",    V1_2_2_JS_BINARY_MAJOR_VERSION, V1_2_2_JS_BINARY_MINOR_VERSION),
-            new VersionDetails(CEYLON_VERSION_NAME, "1.2.2", JS_BINARY_MAJOR_VERSION, JS_BINARY_MINOR_VERSION),
+            new VersionDetails(CEYLON_VERSION_NUMBER, "1.2.2", JS_BINARY_MAJOR_VERSION, JS_BINARY_MINOR_VERSION),
     };
     
     /**
