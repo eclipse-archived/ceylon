@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.typechecker.model;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.contains;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.erase;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static java.util.Collections.emptyList;
 
@@ -131,16 +132,20 @@ public abstract class Declaration
     @Override
     public String getQualifiedNameString() {
         if (qualifiedNameAsStringCache == null) {
-            String qualifier = getContainer().getQualifiedNameString();
+            Scope container = getContainer();
+            String qualifier = 
+                    container.getQualifiedNameString();
             String name = getName();
             if (qualifier==null || qualifier.isEmpty()) {
                 qualifiedNameAsStringCache = name; 
             }
-            else if (getContainer() instanceof Package) {
-                qualifiedNameAsStringCache = qualifier + "::" + name;
+            else if (container instanceof Package) {
+                qualifiedNameAsStringCache = 
+                        qualifier + "::" + name;
             }
             else {
-                qualifiedNameAsStringCache = qualifier + "." + name;
+                qualifiedNameAsStringCache = 
+                        qualifier + "." + name;
             }
         }
         return qualifiedNameAsStringCache;
@@ -248,10 +253,9 @@ public abstract class Declaration
 	}
     
     /**
-     * Determine if this declaration is visible
-     * in the given scope, by considering if it
-     * is shared or directly defined in a
-     * containing scope.
+     * Determine if this declaration is visible in the 
+     * given scope, by considering if it is shared or 
+     * directly defined in a containing scope.
      */
     public boolean isVisible(Scope scope) {
         Scope vs = getVisibleScope();
@@ -278,9 +282,8 @@ public abstract class Declaration
     }
 
     /**
-     * Determine if this declaration is directly
-     * defined in a containing scope of the given
-     * scope.
+     * Determine if this declaration is directly defined in 
+     * a containing scope of the given scope.
      */
     public boolean isDefinedInScope(Scope scope) {
         while (scope!=null) {
@@ -291,7 +294,7 @@ public abstract class Declaration
         }
         return false;
     }
-
+    
     public boolean isCaptured() {
         return false;
     }
@@ -310,9 +313,9 @@ public abstract class Declaration
 
     /**
      * Is this declaration nested inside a class or 
-     * interface body. It might not be enough to make it
-     * a "member" in the strict language spec sense of
-     * the word.
+     * interface body. It might not be enough to make it a 
+     * "member" in the strict language spec sense of the 
+     * word.
      *  
      * @see Declaration#isMember()
      */
@@ -516,15 +519,19 @@ public abstract class Declaration
                         Parameter thisParam = thisParams.get(j);
                         Parameter thatParam = thatParams.get(j);
                         if (thisParam!=thatParam) {
-                            if (thisParam!=null && thatParam!=null) {
+                            if (thisParam!=null && 
+                                thatParam!=null) {
                                 Type thisParamType = 
                                         thisParam.getType();
                                 Type thatParamType = 
                                         thatParam.getType();
                                 if (thisParamType!=null && 
-                                        thatParamType!=null) {
-                                    if (!erase(thisParamType, unit)
-                                            .equals(erase(thatParamType, unit))) {
+                                    thatParamType!=null) {
+                                    TypeDeclaration thisErasedType = 
+                                            erase(thisParamType, unit);
+                                    TypeDeclaration thatErasedType = 
+                                            erase(thatParamType, unit);
+                                    if (!thisErasedType.equals(thatErasedType)) {
                                         return false;
                                     }
                                 }
@@ -734,7 +741,8 @@ public abstract class Declaration
     }
 
     public List<String> getAliases(){
-        return aliases != null ? aliases : Collections.<String>emptyList();
+        return aliases != null ? aliases : 
+            Collections.<String>emptyList();
     }
     
     public void setAliases(List<String> aliases){
