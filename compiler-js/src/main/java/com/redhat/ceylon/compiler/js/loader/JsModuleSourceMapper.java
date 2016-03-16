@@ -62,7 +62,6 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                     }
                     //TODO Remove this hack after next bin compat breaks
                     if (Module.LANGUAGE_MODULE_NAME.equals(depname)) {
-                        System.out.println("FUCK");
                         if ("1.1.0".equals(depv)) {
                             depv = "1.2.0";
                         } else if ("1.2.1".equals(depv)) {
