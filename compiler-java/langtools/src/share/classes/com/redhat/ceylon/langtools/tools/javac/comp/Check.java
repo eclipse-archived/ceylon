@@ -3185,7 +3185,7 @@ public class Check {
     // Ceylon
     void checkStaticInterfaceMethodCall(JCFieldAccess select) {
         if (!allowStaticInterfaceCalls) {
-            log.error(select.pos(), "static.interface.method.call");
+            log.error(select.pos(), "ceylon.static.interface.method.call");
         }
     }
 
