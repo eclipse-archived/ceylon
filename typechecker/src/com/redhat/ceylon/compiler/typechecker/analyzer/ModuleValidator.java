@@ -42,6 +42,7 @@ public class ModuleValidator {
     private final ModuleManager moduleManager;
     private final ModuleSourceMapper moduleManagerUtil;
     private Map<Module, ArtifactResult> searchedArtifacts = new HashMap<Module, ArtifactResult>();
+    private Map<Module, List<Module>> moduleToImportPath = new HashMap<>();
 
     public static interface ProgressListener {
         void retrievingModuleArtifact(Module module, ArtifactContext artifactContext);
@@ -311,34 +312,70 @@ public class ModuleValidator {
         if(dupe == null)
             dupe = moduleManager.findSimilarModule(module, dependencies);
         if (dupe != null && !isSameVersion(module, dupe)) {
-            //TODO improve by giving the dependency string leading to these two conflicting modules
             if(isDupe){
                 StringBuilder error = new StringBuilder("module (transitively) imports conflicting versions of dependency '");
                 error.append(module.getNameAsString()).append("': ");
-                String[] versions = VersionComparator.orderVersions(module.getVersion(), dupe.getVersion());
-                error.append("version '").append(versions[0]).append("' and version '").append(versions[1]).append("'");
+                String importPathA;
+                String importPathB;
+                String versionA;
+                String versionB;
+                if(VersionComparator.compareVersions(module.getVersion(), dupe.getVersion()) < 0){
+                    versionA = module.getVersion();
+                    importPathA = importPathToString(dependencyTree);
+                    versionB = dupe.getVersion();
+                    importPathB = importPathToString(moduleToImportPath.get(dupe));
+                }else{
+                    versionA = dupe.getVersion();
+                    importPathA = importPathToString(moduleToImportPath.get(dupe));
+                    versionB = module.getVersion();
+                    importPathB = importPathToString(dependencyTree);
+                }
+                error.append("version '").append(versionA)
+                .append("' (via import path '").append(importPathA)
+                .append("') and version '").append(versionB)
+                .append("' (via import path '").append(importPathB).append("')");
                 moduleManagerUtil.addErrorToModule(dependencyTree.getFirst(), error.toString());
             }else {
                 // just possibly a dupe
                 String moduleA;
                 String moduleB;
+                String importPathA;
+                String importPathB;
                 String moduleName = module.getNameAsString();
                 String duplicateModuleName = dupe.getNameAsString();
                 if(duplicateModuleName.compareTo(moduleName) < 0){
                     moduleA = ModuleUtil.makeModuleName(duplicateModuleName, dupe.getVersion());
+                    importPathA = importPathToString(moduleToImportPath.get(dupe));
                     moduleB = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                    importPathB = importPathToString(dependencyTree);
                 }else{
                     moduleA = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                    importPathA = importPathToString(dependencyTree);
                     moduleB = ModuleUtil.makeModuleName(duplicateModuleName, dupe.getVersion());
+                    importPathB = importPathToString(moduleToImportPath.get(dupe));
                 }
                 String error = "module (transitively) imports conflicting versions of similar dependencies '" + 
-                        moduleA + "' and '"+ moduleB + "'";
+                        moduleA + "' (via import path '"+importPathA+"') and '"+ moduleB + 
+                        "' (via import path '"+importPathB+"')";
                 moduleManagerUtil.addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
             }
         }
         else {
             dependencies.add(module);
+            List<Module> importPath = new ArrayList<>(dependencyTree.size());
+            importPath.addAll(dependencyTree);
+            moduleToImportPath.put(module, importPath);
         }
+    }
+
+    private String importPathToString(List<Module> dependencyTree) {
+        StringBuffer b = new StringBuffer();
+        for(Module mod : dependencyTree){
+            if(b.length() != 0)
+                b.append(" -> ");
+            b.append(mod.getNameAsString());
+        }
+        return b.toString();
     }
 
     private boolean isSameVersion(Module module, Module dupe) {
