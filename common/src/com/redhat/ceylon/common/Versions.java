@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.2.3 "Total Internal Reflection"
+    // The current version is Ceylon 1.2.3.SNAPSHOT "Total Internal Reflection"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -46,9 +46,9 @@ public class Versions {
      */
     public static final int CEYLON_VERSION_RELEASE = 3;
     
-    public static final String CEYLON_VERSION_QUALIFIER = "";
-    private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
-    // private static final String _CEYLON_VERSION_QUALIFIER = "." + CEYLON_VERSION_QUALIFIER; // Otherwise use this one
+    public static final String CEYLON_VERSION_QUALIFIER = "SNAPSHOT";
+    // private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
+    private static final String _CEYLON_VERSION_QUALIFIER = "." + CEYLON_VERSION_QUALIFIER; // Otherwise use this one
     
     // SHA1 of current HEAD at moment of compilation
     public static final String CURRENT_COMMIT_ID = "@commit@";

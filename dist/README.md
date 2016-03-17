@@ -102,7 +102,7 @@ the `bin` directory.
 The API documentation for the language module `ceylon.language` may 
 be found here:
 
-- `repo/ceylon/language/1.2.3/module-doc/api`
+- `repo/ceylon/language/1.2.3.SNAPSHOT/module-doc/api`
 
 ## Running the sample programs
 

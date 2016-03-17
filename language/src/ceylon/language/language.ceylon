@@ -6,7 +6,7 @@ tagged("Environment")
 shared native object language {
     
     "The Ceylon language version."
-    shared String version => "1.2.3";
+    shared String version => "1.2.3.SNAPSHOT";
     
     "The Ceylon language major version."
     shared Integer majorVersion => 1;
@@ -18,7 +18,7 @@ shared native object language {
     shared Integer releaseVersion => 3;
     
     "The Ceylon language version qualifier."
-    shared String versionQualifier => "";
+    shared String versionQualifier => "SNAPSHOT";
     
     "The Ceylon language release name."
     shared String versionName => "Total Internal Reflection";
