@@ -352,15 +352,6 @@ public class AttributeDefinitionBuilder {
         }
     }
 
-    private JCExpression attrTypeRaw(){
-        // make sure we generate int getters for hash
-        if(this.isHash){
-            return owner.make().Type(owner.syms().intType);
-        }else{
-            return owner.makeJavaType(attrType, AbstractTransformer.JT_RAW);
-        }
-    }
-
     private long getGetSetModifiers() {
         long mods = modifiers;
         if (javaClassName != null) {
