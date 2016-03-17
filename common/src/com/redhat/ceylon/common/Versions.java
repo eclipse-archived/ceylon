@@ -10,12 +10,6 @@ public class Versions {
     * - language/src/ceylon/language/module.ceylon
     * - language/src/ceylon/language/language.ceylon
     * - language/test/process.ceylon (versions, name, binary version)
-    * - runtime/dist/dist-overrides.xml
-    * - cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml
-    * - dist/build.properties (versions)
-    * - dist/osgi/module.properties (versions)
-    * - dist/osgi/META-INF/MANIFEST.MF (versions)
-    * - dist/osgi/embeddedRepository/META-INF/MANIFEST.MF (versions)
     * - README.md and dist/README.MD (versions, name, doc links)
     * - common-build.properties (version)
     * - ceylon-ide-eclipse/plugins/com.redhat.ceylon.eclipse.ui/about.ini (version, name)
@@ -52,13 +46,17 @@ public class Versions {
      */
     public static final int CEYLON_VERSION_RELEASE = 3;
     
+    public static final String CEYLON_VERSION_QUALIFIER = "";
+    private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
+    // private static final String _CEYLON_VERSION_QUALIFIER = "." + CEYLON_VERSION_QUALIFIER; // Otherwise use this one
+    
     // SHA1 of current HEAD at moment of compilation
     public static final String CURRENT_COMMIT_ID = "@commit@";
     
     /**
      * The MAJOR.MINOR.RELEASE version.
      */
-    public static final String CEYLON_VERSION_NUMBER = CEYLON_VERSION_MAJOR + "." + CEYLON_VERSION_MINOR + "." + CEYLON_VERSION_RELEASE;
+    public static final String CEYLON_VERSION_NUMBER = CEYLON_VERSION_MAJOR + "." + CEYLON_VERSION_MINOR + "." + CEYLON_VERSION_RELEASE + _CEYLON_VERSION_QUALIFIER;
     
     /**
      * The release code name.

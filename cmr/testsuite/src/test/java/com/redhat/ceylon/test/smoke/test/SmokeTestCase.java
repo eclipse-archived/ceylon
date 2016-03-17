@@ -337,6 +337,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testInterpolation() {
         Map<String,String> interpolation = new HashMap<>();
+        Assert.assertEquals(Versions.CEYLON_VERSION_NUMBER, Overrides.interpolate("${CEYLON_VERSION}", interpolation));
         interpolation.put("foo", "bar");
         Assert.assertEquals("", Overrides.interpolate("", interpolation));
         Assert.assertEquals(null, Overrides.interpolate(null, interpolation));

@@ -48,6 +48,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
+import com.redhat.ceylon.common.Versions;
 
 /**
  * FIXME: we still need to define how add/remove/set works with replace or recursive replacements.
@@ -429,7 +430,9 @@ public class Overrides {
                 String name = strbufName.toString();
                 // we are done: now return
                 end[0] = i;
-                if(interpolation.containsKey((name))){
+                if ("CEYLON_VERSION".equals(name)) {
+                    return Versions.CEYLON_VERSION_NUMBER;
+                } else if(interpolation.containsKey((name))){
                     String value = interpolation.get(name);
                     // do not forget to interpolate values too
                     return interpolate(value, interpolation);

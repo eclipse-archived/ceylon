@@ -95,7 +95,7 @@
             <fileset dir="${basedir}/bin">
             </fileset>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
         </copy>
     </target>

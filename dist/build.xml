@@ -324,10 +324,10 @@ Use this when NOT doing a release!">
                 <include name="**/*.xml"/>
             </fileset>
             <filtermapper>
-                <replacestring from="_version_" to="${ceylon.base.version}"/>
+                <replacestring from="_version_" to="${ceylon.version}"/>
             </filtermapper>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
         </copy>
         <!-- Now copy the JARs -->
@@ -699,7 +699,7 @@ Use this when NOT doing a release!">
         <if>
             <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
             <then>
-                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${ceylon.base.version},com.redhat.ceylon.compiler.java.*;bundle-version=${ceylon.base.version}${line.separator}</echo>
+                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${ceylon.version},com.redhat.ceylon.compiler.java.*;bundle-version=${ceylon.version}${line.separator}</echo>
             </then>
         	
         </if>

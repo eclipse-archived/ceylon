@@ -106,6 +106,9 @@
             <fileset dir="${basedir}">
                 <include name="META-INF/**" />
             </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
+            </filterset>
         </copy>
         <replaceregexp file="${build.classes}/META-INF/MANIFEST.MF"
             match="(Bundle-Version: .*\.)qualifier"
@@ -115,6 +118,9 @@
             <fileset dir="${repoDir}">
                 <include name="META-INF/**" />
             </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
+            </filterset>
         </copy>
         <replaceregexp file="${build.repo}/META-INF/MANIFEST.MF"
             match="(Bundle-Version: .*\.)qualifier"
@@ -163,10 +169,18 @@
             force="true"
             fork="true">
         </ceylon-import-jar>
+        <copy todir="${build}">
+            <fileset dir="${basedir}">
+                <include name="module.properties" />
+            </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
+            </filterset>
+        </copy>
         <ceylon-import-jar 
             module="com.redhat.ceylon.dist/${module.com.redhat.ceylon.dist.osgi.version}" 
             jar="${build}/${ceylon.dist.osgi.jar}" 
-            descriptor="${basedir}/module.properties"
+            descriptor="${build}/module.properties"
             out="${repoDir}/repo"
             fork="true">
         </ceylon-import-jar>

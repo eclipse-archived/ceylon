@@ -52,6 +52,7 @@ public class JigsawToolTests extends AbstractToolTests {
         CeylonJigsawTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList(
                 		"create-mlib",
+                        "--rep", "../dist/dist/repo",
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
                         "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
@@ -73,6 +74,7 @@ public class JigsawToolTests extends AbstractToolTests {
         CeylonJigsawTool tool = pluginFactory.bindArguments(model, getMainTool(), 
                 Arrays.asList(
                 		"create-mlib",
+                        "--rep", "../dist/dist/repo",
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
                         "--exclude-module", "com.redhat.ceylon.maven-support",
