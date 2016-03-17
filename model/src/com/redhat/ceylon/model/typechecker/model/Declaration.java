@@ -286,8 +286,9 @@ public abstract class Declaration
      * a containing scope of the given scope.
      */
     public boolean isDefinedInScope(Scope scope) {
+        Scope container = getRealScope(getContainer());
         while (scope!=null) {
-            if (getContainer()==scope) {
+            if (container==scope) {
                 return true;
             }
             scope = scope.getContainer();
