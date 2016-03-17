@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.js.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -42,11 +41,9 @@ public class NpmDescriptorGenerator {
                 desc.put("description", args.get(0));
             } else if ("license".equals(ann.getName())) {
                 desc.put("license", args.get(0));
-            } else if ("by".equals(ann.getName())) {
+            } else if ("by".equals(ann.getName()) && !args.isEmpty()) {
                 desc.put("author", args.get(0));
-                if (args.size() > 1) {
-                    desc.put("contributors", args);
-                }
+                desc.put("contributors", args);
             }
         }
         if (!mod.getImports().isEmpty()) {
