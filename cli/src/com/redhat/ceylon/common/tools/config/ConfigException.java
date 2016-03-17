@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.common.config;
+package com.redhat.ceylon.common.tools.config;
 
 import com.redhat.ceylon.common.tool.ToolError;
 import com.redhat.ceylon.common.tool.WordWrap;

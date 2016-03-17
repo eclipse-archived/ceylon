@@ -53,7 +53,7 @@ import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main;

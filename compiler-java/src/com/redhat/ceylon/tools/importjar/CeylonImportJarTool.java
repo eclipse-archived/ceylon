@@ -44,7 +44,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 
 @Summary("Imports a jar file into a Ceylon module repository")

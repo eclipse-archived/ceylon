@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.common.tools;
+package com.redhat.ceylon.common;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -50,7 +50,7 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
     public ModuleSpec(String name, String version) {
         this.name = name.trim();
         if (name.isEmpty()) {
-            throw new IllegalArgumentException(CeylonToolMessages.msg("modspec.name.missing"));
+            throw new IllegalArgumentException(CommonMessages.msg("modspec.name.missing"));
         }
         this.version = version.trim();
     }
@@ -182,22 +182,22 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
         version = version.trim();
         if (name.equals(DEFAULT_MODULE.name)) {
             if (contains(options, Option.DEFAULT_MODULE_PROHIBITED)) {
-                throw new IllegalArgumentException(CeylonToolMessages.msg(
+                throw new IllegalArgumentException(CommonMessages.msg(
                         "modspec.default.prohibited"));
             }
             if (version.equals(DEFAULT_MODULE.version)) {
                 return DEFAULT_MODULE;
             }
-            throw new IllegalArgumentException(CeylonToolMessages.msg(
+            throw new IllegalArgumentException(CommonMessages.msg(
                     "modspec.default.no.version"));
         }
         if (version.isEmpty() 
                 && contains(options, Option.VERSION_REQUIRED)) {
-            throw new IllegalArgumentException(CeylonToolMessages.msg(
+            throw new IllegalArgumentException(CommonMessages.msg(
                     "modspec.version.required", moduleSpec));
         } else if ((!version.isEmpty()  || sep != -1)
                 && contains(options, Option.VERSION_PROHIBITED)) {
-            throw new IllegalArgumentException(CeylonToolMessages.msg(
+            throw new IllegalArgumentException(CommonMessages.msg(
                     "modspec.version.prohibited", moduleSpec));
         }
         ModuleSpec spec = new ModuleSpec(name, version);

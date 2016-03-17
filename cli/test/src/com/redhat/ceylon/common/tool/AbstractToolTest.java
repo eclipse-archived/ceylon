@@ -1,5 +1,7 @@
 package com.redhat.ceylon.common.tool;
 
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tools.CeylonTool;
 
 public class AbstractToolTest {

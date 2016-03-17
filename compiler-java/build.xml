@@ -34,6 +34,7 @@
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.classfile.lib}" />
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />

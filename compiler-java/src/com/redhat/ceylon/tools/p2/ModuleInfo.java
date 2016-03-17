@@ -30,7 +30,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 
 class ModuleInfo {
         private static final String[] PropertyNames = new String[]{

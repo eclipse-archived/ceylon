@@ -1,5 +1,6 @@
 package com.redhat.ceylon.common.tool;
 
+import com.redhat.ceylon.common.tool.ServiceToolLoader;
 import com.redhat.ceylon.common.tool.example.Workaround;
 
 public class TestingToolLoader extends ServiceToolLoader {

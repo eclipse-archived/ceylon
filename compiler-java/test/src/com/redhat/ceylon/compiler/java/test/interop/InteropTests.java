@@ -34,7 +34,7 @@ import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;

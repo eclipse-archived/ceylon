@@ -23,7 +23,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.common.BooleanUtil;
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;

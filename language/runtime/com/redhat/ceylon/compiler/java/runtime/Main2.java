@@ -3,8 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime;
 import java.util.Arrays;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
-import com.redhat.ceylon.common.tools.ModuleSpec;
-import com.redhat.ceylon.common.tools.ModuleSpec.Option;
+import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec.Option;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**

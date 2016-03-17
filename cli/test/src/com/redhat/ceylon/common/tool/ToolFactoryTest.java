@@ -7,6 +7,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tool.OptionArgumentException;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidArgumentValueException;
 import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidOptionValueException;
 import com.redhat.ceylon.common.tool.example.TestExampleTool;

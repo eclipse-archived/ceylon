@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 
 class Feature {
     final String name, version;

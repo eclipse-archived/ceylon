@@ -10,6 +10,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.ModuleSpec;
 
 /**
  * Class with helper methods for expanding a list of module names/specs

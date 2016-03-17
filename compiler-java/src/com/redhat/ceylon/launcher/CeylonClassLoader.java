@@ -106,6 +106,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.js", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.typechecker", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.common", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.cli", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.model", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.langtools.classfile", version));

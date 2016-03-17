@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 
-import static com.redhat.ceylon.common.tools.ModuleSpec.Option.*;
+import static com.redhat.ceylon.common.ModuleSpec.Option.*;
 
 public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
     private final String pluginPath;

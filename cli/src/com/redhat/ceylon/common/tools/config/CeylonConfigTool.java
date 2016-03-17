@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.CeylonConfigFinder;
-import com.redhat.ceylon.common.config.ConfigException;
 import com.redhat.ceylon.common.config.ConfigFinder;
 import com.redhat.ceylon.common.config.ConfigWriter;
 import com.redhat.ceylon.common.tool.Argument;

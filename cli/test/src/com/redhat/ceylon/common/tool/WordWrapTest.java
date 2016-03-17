@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tool.WordWrap;
+
 public class WordWrapTest {
 
     private class Helper {

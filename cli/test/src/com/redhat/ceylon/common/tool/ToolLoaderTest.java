@@ -4,6 +4,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.common.tool.ArgumentModel;
+import com.redhat.ceylon.common.tool.OptionModel;
+import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 import com.redhat.ceylon.common.tool.example.TestExampleTool;
 

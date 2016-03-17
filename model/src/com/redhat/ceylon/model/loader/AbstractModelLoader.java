@@ -24,7 +24,7 @@ import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.mirror.AccessibleMirror;
