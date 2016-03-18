@@ -22,12 +22,6 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.AnnotationValue;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.Indexer;
-
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactOverrides;
 import com.redhat.ceylon.cmr.api.DependencyOverride;
@@ -42,17 +36,23 @@ import com.redhat.ceylon.cmr.impl.OSGiDependencyResolver;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.Java9ModuleUtil;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleSpec.Option;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
+import com.redhat.ceylon.langtools.classfile.Annotation;
+import com.redhat.ceylon.langtools.classfile.Attribute;
+import com.redhat.ceylon.langtools.classfile.ClassFile;
+import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
+import com.redhat.ceylon.langtools.classfile.RuntimeAnnotations_attribute;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.loader.ClassFileUtil;
 import com.redhat.ceylon.model.loader.Java9ModuleReader;
 import com.redhat.ceylon.model.loader.Java9ModuleReader.Java9Module;
 import com.redhat.ceylon.model.loader.NamingBase;
@@ -637,49 +637,45 @@ public class Main {
         private Module loadCeylonModuleCar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-                Indexer indexer = new Indexer();
-                ClassInfo classInfo = indexer.index(inputStream);
-                if(classInfo == null)
-                    throw new IOException("Failed to read class info");
-                
-                Map<DotName, List<AnnotationInstance>> annotations = classInfo.annotations();
-                DotName moduleAnnotationName = DotName.createSimple(com.redhat.ceylon.compiler.java.metadata.Module.class.getName());
-                List<AnnotationInstance> moduleAnnotations = annotations.get(moduleAnnotationName);
-                if(moduleAnnotations == null || moduleAnnotations.size() != 1)
-                    throw new IOException("Missing module annotation: "+annotations);
-                AnnotationInstance moduleAnnotation = moduleAnnotations.get(0);
-                
-                AnnotationValue moduleName = moduleAnnotation.value("name");
-                AnnotationValue moduleVersion = moduleAnnotation.value("version");
-                if(moduleName == null || moduleVersion == null)
+            	ClassFile classFile = ClassFile.read(inputStream);
+            	RuntimeAnnotations_attribute annotationsAttribute = (RuntimeAnnotations_attribute) classFile.getAttribute(Attribute.RuntimeVisibleAnnotations);
+            	Annotation moduleAnnotation = ClassFileUtil.findAnnotation(classFile, annotationsAttribute, com.redhat.ceylon.compiler.java.metadata.Module.class);
+                if(moduleAnnotation == null)
+                    throw new IOException("Missing module annotation");
+
+                Object moduleName = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "name");
+                Object moduleVersion = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "version");
+                if(moduleName instanceof String == false 
+                		|| moduleVersion instanceof String == false)
                     throw new IOException("Invalid module annotation");
                 
-                if(name != null && !moduleName.asString().equals(name))
+                if(name != null && !((String)moduleName).equals(name))
                     throw new IOException("Module name does not match module descriptor");
-                if(version != null && !moduleVersion.asString().equals(version))
+                if(version != null && !((String)moduleVersion).equals(version))
                     throw new IOException("Module version does not match module descriptor");
-                name = moduleName.asString();
-                version = moduleVersion.asString();
+                name = (String)moduleName;
+                version = (String)moduleVersion;
                 
                 Module module = new Module(name, version, Type.CEYLON, file);
-                AnnotationValue moduleDependencies = moduleAnnotation.value("dependencies");
+                Object moduleDependencies = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "dependencies");
                 ArtifactOverrides ao = null;
                 if(overrides != null){
                     ao = overrides.getArtifactOverrides(new ArtifactContext(name, version));
                 }
-                if(moduleDependencies != null){
-                    for(AnnotationInstance dependency : moduleDependencies.asNestedArray()){
-                        AnnotationValue importName = dependency.value("name");
-                        AnnotationValue importVersion = dependency.value("version");
-                        AnnotationValue importOptional = dependency.value("optional");
-                        AnnotationValue importExport = dependency.value("export");
-                        if(importName == null || importVersion == null)
+                if(moduleDependencies instanceof Object[]){
+                    for(Object dependency : (Object[])moduleDependencies){
+                    	Annotation dependencyAnnotation = (Annotation) dependency;
+                        String depName = (String)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "name");
+                        String depVersion = (String)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "version");
+                        Boolean optional = (Boolean)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "optional");
+                        if(optional == null)
+                        	optional = false;
+                        Boolean export = (Boolean)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "export");
+                        if(export == null)
+                        	export = false;
+                        if(depName == null || depVersion == null)
                             throw new IOException("Invalid module import");
                         
-                        String depName = importName.asString();
-                        String depVersion = importVersion.asString();
-                        boolean export = importExport != null ? importExport.asBoolean() : false;
-                        boolean optional = importOptional != null ? importOptional.asBoolean() : false;
                         if(overrides != null){
                             ArtifactContext depCtx = new ArtifactContext(depName, depVersion);
                             ArtifactContext replacement = overrides.replace(depCtx);
@@ -714,12 +710,14 @@ public class Main {
                     }
                 }
                 return module;
-            }finally{
+            } catch (ConstantPoolException e) {
+            	throw new IOException(e);
+			}finally{
                 inputStream.close();
             }
         }
 
-        private Module loadJBossModulePropertiesJar(File file, ZipFile zipFile, ZipEntry moduleProperties, String name, String version) throws IOException {
+		private Module loadJBossModulePropertiesJar(File file, ZipFile zipFile, ZipEntry moduleProperties, String name, String version) throws IOException {
             return loadJBossModuleJar(file, zipFile, moduleProperties, PropertiesDependencyResolver.INSTANCE, name, version);
         }
 
@@ -754,7 +752,6 @@ public class Main {
 				String name, String version, Type moduleType) throws IOException {
     		ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
     		if (moduleDependencies != null) {
-        		System.err.println("Load from resolver: "+name+"/"+version);
     			Module module = new Module(name, version, moduleType, file);
     			for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
     				module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());

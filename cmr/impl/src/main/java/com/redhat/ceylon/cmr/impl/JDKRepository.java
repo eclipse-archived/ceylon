@@ -17,6 +17,8 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
@@ -62,6 +64,7 @@ public class JDKRepository extends AbstractRepository {
     public static class JDKRoot extends DefaultNode implements ContentFinderDelegate {
 
     	private JdkProvider jdkProvider;
+		private SortedSet<String> sortedModuleNames;
 
         public JDKRoot() {
             addService(ContentFinderDelegate.class, this);
@@ -69,6 +72,8 @@ public class JDKRepository extends AbstractRepository {
 
         private void finishSetupYouDumbass(JdkProvider jdkProvider){
         	this.jdkProvider = jdkProvider;
+        	sortedModuleNames = new TreeSet<>();
+        	sortedModuleNames.addAll(jdkProvider.getJDKModuleNames());
         }
         
         @Override
@@ -93,7 +98,7 @@ public class JDKRepository extends AbstractRepository {
             String name = query.getName();
             if (name == null)
                 name = "";
-            for (String module : jdkProvider.getJDKModuleNames()) {
+            for (String module : sortedModuleNames) {
                 if (module.startsWith(name)) {
                     ModuleVersionDetails mvd = getResult(module, query);
                     if (mvd != null) {
@@ -140,7 +145,7 @@ public class JDKRepository extends AbstractRepository {
             name = name.toLowerCase();
             boolean stopSearching = false;
             int found = 0;
-            for (String module : jdkProvider.getJDKModuleNames()) {
+            for (String module : sortedModuleNames) {
                 // does it match?
                 if (module.contains(name)) {
                     // check if we were already done but were checking for a next results

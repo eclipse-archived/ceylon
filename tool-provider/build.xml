@@ -49,7 +49,6 @@
         <pathelement path="${build.test}"/>
         <pathelement path="${ceylon.typechecker.lib}"/>
         <pathelement path="${ceylon.compiler.lib}"/>
-        <pathelement path="${jandex.lib}"/>
     </path>
 
     <!-- ################################################################## -->

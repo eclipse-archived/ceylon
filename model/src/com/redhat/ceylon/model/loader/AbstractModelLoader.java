@@ -513,8 +513,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.langtools.classfile", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION), false, false, Backend.Java));
         
         return languageModule;
     }

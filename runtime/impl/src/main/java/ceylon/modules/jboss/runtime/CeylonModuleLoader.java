@@ -76,7 +76,6 @@ public class CeylonModuleLoader extends ModuleLoader
     private static final ModuleIdentifier TOOL_PROVIDER;
     private static final ModuleIdentifier MAVEN;
     private static final ModuleIdentifier MODULES;
-    private static final ModuleIdentifier JANDEX;
     private static final ModuleIdentifier LOGMANAGER;
     private static final ModuleIdentifier RUNTIME;
     private static final ModuleIdentifier ANTLR_ANTLR;
@@ -103,7 +102,6 @@ public class CeylonModuleLoader extends ModuleLoader
         TOOL_PROVIDER = ModuleIdentifier.create("com.redhat.ceylon.tool.provider", defaultVersion);
         MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support", "2.0");
         MODULES = ModuleIdentifier.create("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION);
-        JANDEX = ModuleIdentifier.create("org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION);
         LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION);
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
         ANTLR_ANTLR = ModuleIdentifier.create("org.antlr.antlr", "2.7.7");
@@ -123,7 +121,6 @@ public class CeylonModuleLoader extends ModuleLoader
         BOOTSTRAP.add(TOOL_PROVIDER);
         BOOTSTRAP.add(MAVEN);
         BOOTSTRAP.add(MODULES);
-        BOOTSTRAP.add(JANDEX);
         BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
         BOOTSTRAP.add(ANTLR_RUNTIME);
@@ -178,7 +175,7 @@ public class CeylonModuleLoader extends ModuleLoader
         ModuleLoader bootModuleLoader = org.jboss.modules.Module.getBootModuleLoader();
         for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, MODEL, TYPECHECKER, COMPILER, CMR,
         	LANGTOOLS_CLASSFILE, TOOL_PROVIDER,
-            ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE, JANDEX, LOGMANAGER, RUNTIME, MAVEN)) {
+            ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE, LOGMANAGER, RUNTIME, MAVEN)) {
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
             UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module), false);

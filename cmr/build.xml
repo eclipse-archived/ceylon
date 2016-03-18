@@ -40,7 +40,6 @@
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.model.lib}"/>
-        <pathelement path="${jandex.lib}"/>
         <pathelement path="${jboss-modules.lib}"/>
         <pathelement path="${sardine.lib}"/>
         <pathelement path="${httpclient.lib}"/>
