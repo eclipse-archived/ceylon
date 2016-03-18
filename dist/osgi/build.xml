@@ -102,25 +102,37 @@
 
     <!-- Rule to build osgi bundle jar -->
     <target name="updateManifest" >
-        <copy todir="${build.classes}" >
-            <fileset dir="${basedir}">
-                <include name="META-INF/**" />
+        <copy todir="${basedir}/META-INF" overwrite="true">
+            <fileset dir="${basedir}/meta-inf-templates">
+                <include name="**" />
             </fileset>
             <filterset>
                 <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
         </copy>
+
+    	<copy todir="${build.classes}" >
+            <fileset dir="${basedir}">
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
         <replaceregexp file="${build.classes}/META-INF/MANIFEST.MF"
             match="(Bundle-Version: .*\.)qualifier"
             replace="\1${qualifier}"
             byline="true"/>
-        <copy todir="${build.repo}" >
-            <fileset dir="${repoDir}">
-                <include name="META-INF/**" />
+
+        <copy todir="${repoDir}/META-INF" overwrite="true">
+            <fileset dir="${repoDir}/meta-inf-templates">
+                <include name="**" />
             </fileset>
             <filterset>
                 <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
+        </copy>
+    	<copy todir="${build.repo}" >
+            <fileset dir="${repoDir}">
+                <include name="META-INF/**" />
+            </fileset>
         </copy>
         <replaceregexp file="${build.repo}/META-INF/MANIFEST.MF"
             match="(Bundle-Version: .*\.)qualifier"
