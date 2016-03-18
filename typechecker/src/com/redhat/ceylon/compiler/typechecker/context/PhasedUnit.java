@@ -185,6 +185,10 @@ public class PhasedUnit {
         return null;
     }
 
+    protected ModuleSourceMapper getModuleSourceMapper() {
+        return moduleManagerUtilRef.get();
+    }
+    
     protected TypecheckerUnit createUnit() {
         return new TypecheckerUnit(moduleManagerRef.get().getModules().getListOfModules(),
         		moduleManagerUtilRef.get());
