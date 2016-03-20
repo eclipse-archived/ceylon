@@ -1587,7 +1587,7 @@ expressionOrSpecificationStatement returns [Statement statement]
                     ((QualifiedMemberExpression) lt).getMemberOperator() instanceof MemberOp) {
                 Expression e = new Expression(null);
                 e.setTerm(a.getRightTerm());
-                SpecifierExpression se = new SpecifierExpression(null);
+                SpecifierExpression se = new SpecifierExpression(a.getMainToken());
                 se.setExpression(e);
                 ss.setSpecifierExpression(se);
                 ss.setBaseMemberExpression(a.getLeftTerm());
