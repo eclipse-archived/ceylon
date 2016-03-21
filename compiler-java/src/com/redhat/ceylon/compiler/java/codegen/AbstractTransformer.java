@@ -5482,9 +5482,17 @@ public abstract class AbstractTransformer implements Transformation {
         if (unboxed && isCeylonBoolean(nonWideningType)) {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterBooleanType);
         } else if (unboxed && isCeylonInteger(nonWideningType)) {
-            type = javacCeylonTypeToProducedType(syms().ceylonGetterLongType);
+            if (Decl.isSmall(attrTypedDecl)) {
+                type = javacCeylonTypeToProducedType(syms().ceylonGetterIntType);
+            } else {
+                type = javacCeylonTypeToProducedType(syms().ceylonGetterLongType);
+            }
         } else if (unboxed && isCeylonFloat(nonWideningType)) {
-            type = javacCeylonTypeToProducedType(syms().ceylonGetterDoubleType);
+            if (Decl.isSmall(attrTypedDecl)) {
+                type = javacCeylonTypeToProducedType(syms().ceylonGetterFloatType);
+            } else {
+                type = javacCeylonTypeToProducedType(syms().ceylonGetterDoubleType);
+            }
         } else if (unboxed && isCeylonCharacter(nonWideningType)) {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterIntType);
         } else if (unboxed && isCeylonByte(nonWideningType)) {
