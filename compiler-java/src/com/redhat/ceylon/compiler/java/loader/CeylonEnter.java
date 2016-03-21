@@ -48,6 +48,8 @@ import com.redhat.ceylon.compiler.java.codegen.DeferredVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DefiniteAssignmentVisitor;
 import com.redhat.ceylon.compiler.java.codegen.InterfaceVisitor;
 import com.redhat.ceylon.compiler.java.codegen.JvmMissingNativeVisitor;
+import com.redhat.ceylon.compiler.java.codegen.SmallDeclarationVisitor;
+import com.redhat.ceylon.compiler.java.codegen.SmallVisitor;
 import com.redhat.ceylon.compiler.java.codegen.TypeParameterCaptureVisitor;
 import com.redhat.ceylon.compiler.java.codegen.UnsupportedVisitor;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
@@ -522,6 +524,8 @@ public class CeylonEnter extends Enter {
         JvmMissingNativeVisitor mnv = new JvmMissingNativeVisitor(modelLoader);
         BoxingDeclarationVisitor boxingDeclarationVisitor = new CompilerBoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new CompilerBoxingVisitor(gen);
+        SmallDeclarationVisitor smallDeclarationVisitor = new SmallDeclarationVisitor();
+        SmallVisitor smallVisitor = new SmallVisitor();
         DeferredVisitor deferredVisitor = new DeferredVisitor();
         AnnotationModelVisitor amv = new AnnotationModelVisitor(gen);
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
@@ -541,6 +545,7 @@ public class CeylonEnter extends Enter {
             if(sp != null)
                 progressPreparation(3, i++, size, pu);
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
+            pu.getCompilationUnit().visit(smallDeclarationVisitor);
         }
         i=1;
         // the others can run at the same time
@@ -550,6 +555,7 @@ public class CeylonEnter extends Enter {
             CompilationUnit compilationUnit = pu.getCompilationUnit();
             compilationUnit.visit(mnv);
             compilationUnit.visit(boxingVisitor);
+            compilationUnit.visit(smallVisitor);
             compilationUnit.visit(deferredVisitor);
             compilationUnit.visit(amv);
             compilationUnit.visit(dav);

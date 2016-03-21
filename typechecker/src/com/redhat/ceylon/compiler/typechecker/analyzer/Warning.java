@@ -18,5 +18,6 @@ public enum Warning {
     similarModule,
     importsOtherJdk,
     javaAnnotationElement,
-    syntaxDeprecation
+    syntaxDeprecation,
+    notSmall
 }

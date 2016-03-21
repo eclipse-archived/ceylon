@@ -568,7 +568,8 @@
     Type typeModel;
     boolean unboxed;
     boolean typeErased;
-    boolean untrustedType;)
+    boolean untrustedType;
+    boolean small;)
 ^(abstract OPERATOR_EXPRESSION:TERM)
 
 ^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION
