@@ -285,6 +285,14 @@ public class Decl {
         return decl.isShared();
     }
     
+    public static boolean isSmall(Tree.Declaration decl) {
+        return isSmall(decl.getDeclarationModel());
+    }
+    
+    public static boolean isSmall(Declaration decl) {
+        return (decl instanceof FunctionOrValue) && ((FunctionOrValue)decl).isSmall();
+    }
+    
     public static boolean isCaptured(Tree.Declaration decl) {
         return isCaptured(decl.getDeclarationModel());
     }
