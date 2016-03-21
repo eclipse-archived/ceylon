@@ -313,7 +313,7 @@ public abstract class CompilerTests {
             break;
         case ERROR:
             if (!expectedToFail) {
-                Assert.fail("Compilation successful (it should have failed!)");
+                Assert.fail("Compilation failed (it should have been successful!)");
             }
             break;
         case SYS:
