@@ -332,10 +332,11 @@ class Strategy {
      * ({@code x*x*...*x}) instead of calling {@code x.power(n)}.
      */
     public static boolean inlinePowerAsMultiplication(Tree.PowerOp op) {
-        java.lang.Long power;
+        java.lang.Number power_;
         try {
-            power = ExpressionTransformer.getIntegerLiteralPower(op);
-            if (power != null) {
+            power_ = ExpressionTransformer.getIntegerLiteralPower(op);
+            if (power_ != null) {
+                long power = power_.longValue();
                 Unit unit = op.getUnit();
                 Type baseType = op.getLeftTerm().getTypeModel();
                 // Although the optimisation still works for powers > 64, it ends 
