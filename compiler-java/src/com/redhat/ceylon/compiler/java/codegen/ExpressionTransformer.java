@@ -417,7 +417,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean exprBoxed = !CodegenUtil.isUnBoxed(expr);
         boolean exprErased = CodegenUtil.hasTypeErased(expr);
         boolean exprUntrustedType = CodegenUtil.hasUntrustedType(expr);
-        return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, exprUntrustedType, boxingStrategy, expectedType, flags);
+        boolean exprSmall = CodegenUtil.isSmall(expr);
+        return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, exprUntrustedType, exprSmall, boxingStrategy, expectedType, flags);
     }
     
     JCExpression applyErasureAndBoxing(JCExpression result, Type exprType,
@@ -435,6 +436,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     JCExpression applyErasureAndBoxing(JCExpression result, Type exprType,
             boolean exprErased, boolean exprBoxed, boolean exprUntrustedType,
+            BoxingStrategy boxingStrategy, Type expectedType, 
+            int flags) {
+        return applyErasureAndBoxing(result, exprType, exprErased, exprBoxed, exprUntrustedType, false,
+                boxingStrategy, expectedType, flags);
+    }
+    
+    JCExpression applyErasureAndBoxing(JCExpression result, Type exprType,
+            boolean exprErased, boolean exprBoxed, boolean exprUntrustedType,
+            boolean exprSmall,
             BoxingStrategy boxingStrategy, Type expectedType, 
             int flags) {
         
@@ -569,7 +579,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ret = applyVarianceCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType, flags);
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
-        ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, flags);
+        ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, exprSmall, flags);
         return ret;
     }
 
@@ -790,7 +800,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression applyJavaTypeConversions(JCExpression ret, Type exprType, Type expectedType, 
-            BoxingStrategy boxingStrategy, boolean exprBoxed, int flags) {
+            BoxingStrategy boxingStrategy, boolean exprBoxed, boolean exprSmall, int flags) {
         if(exprType == null || boxingStrategy != BoxingStrategy.UNBOXED)
             return ret;
         Type definiteExprType = simplifyType(exprType);
@@ -805,6 +815,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expectedType != null) {
             definiteExpectedType = simplifyType(expectedType);
             convertTo = definiteExpectedType.getUnderlyingType();
+        }
+        if (convertTo == null && exprSmall && definiteExpectedType != null) {
+            if (definiteExpectedType.isInteger()) {
+                convertTo = "int";
+            } else if (definiteExpectedType.isFloat()) {
+                convertTo = "float";
+            }
         }
         // check for identity conversion
         if (convertFrom != null && convertFrom.equals(convertTo)) {
@@ -1859,7 +1876,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(operator == OperatorTranslation.UNARY_POSITIVE)
                 return expr;
             ret = make().Unary(operator.javacOperator, expr);
-            ret = unAutoPromote(ret, op.getTypeModel());
+            ret = unAutoPromote(ret, op.getTypeModel(), op.getSmall());
         } else {
             if(operator == OperatorTranslation.UNARY_POSITIVE) {
                 // +x is essentiall a NOOP, but in this case the expected type
@@ -2415,7 +2432,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(optimisationStrategy.useJavaOperator()){
             result = make().Binary(originalOperator.javacOperator, left, right);
             if (rightTerm != null) {
-                result = unAutoPromote(result, expectedType);
+                result = unAutoPromote(result, expectedType, opExpr.getSmall());
             }
             return result;
         }
@@ -2638,7 +2655,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // use +1/-1 if we can optimise a bit
                 successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.Tag.PLUS : JCTree.Tag.MINUS, 
                         make().Ident(varName), makeInteger(1));
-                successor = unAutoPromote(successor, returnType);
+                successor = unAutoPromote(successor, returnType, expr.getSmall());
             }else{
                 successor = make().Apply(null, 
                                          makeSelect(make().Ident(varName), operator.ceylonMethod), 
@@ -2694,7 +2711,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // use +1/-1 if we can optimise a bit
                 successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.Tag.PLUS : JCTree.Tag.MINUS, 
                         make().Ident(varVName), makeInteger(1));
-                successor = unAutoPromote(successor, returnType);
+                successor = unAutoPromote(successor, returnType, expr.getSmall());
             }else{
                 successor = make().Apply(null, 
                                          makeSelect(make().Ident(varVName), operator.ceylonMethod), 
@@ -2751,7 +2768,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(canOptimise){
                     JCExpression ret = make().Binary(operator == OperatorTranslation.UNARY_PREFIX_INCREMENT ? JCTree.Tag.PLUS : JCTree.Tag.MINUS, 
                             previousValue, makeInteger(1));
-                    ret = unAutoPromote(ret, returnType);
+                    ret = unAutoPromote(ret, returnType, expr.getSmall());
                     return ret;
                 }
                 // make this call: previousValue.getSuccessor() or previousValue.getPredecessor()
@@ -6350,10 +6367,17 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
-    private JCExpression unAutoPromote(JCExpression ret, Type returnType) {
+    private JCExpression unAutoPromote(JCExpression ret, Type returnType, boolean small) {
         // +/- auto-promotes to int, so if we're using java types we'll need a cast
-        return applyJavaTypeConversions(ret, typeFact().getIntegerType(), 
-                returnType, BoxingStrategy.UNBOXED, false, 0);
+        Type exprType;
+        if (small && returnType.isInteger()) {
+            exprType = typeFact().getIntegerType();
+            exprType.setUnderlyingType("int");
+        } else {
+            exprType = typeFact().getIntegerType();
+        }
+        return applyJavaTypeConversions(ret, exprType, 
+                returnType, BoxingStrategy.UNBOXED, false, small, 0);
     }
 
     private Type getMostPreciseType(Tree.Term term, Type defaultType) {
