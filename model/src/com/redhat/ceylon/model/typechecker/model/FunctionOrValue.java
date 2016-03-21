@@ -10,6 +10,7 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     private static final int OVERLOADED = 1<<19;
     private static final int ABSTRACTION = 1<<20;
     private static final int IMPLEMENTED = 1<<21;
+    private static final int SMALL = 1<<25;
     
     private Parameter initializerParameter;
     private List<Declaration> members = new ArrayList<Declaration>(3);
@@ -136,6 +137,19 @@ public abstract class FunctionOrValue extends TypedDeclaration {
         else {
             flags&=(~IMPLEMENTED);
         }
+    }
+
+    public void setSmall(boolean small) {
+        if (small) {
+            flags|=SMALL;
+        }
+        else {
+            flags&=(~SMALL);
+        }
+    }
+    
+    public boolean isSmall() {
+        return (flags&SMALL)!=0;
     }
 
 }

@@ -2059,6 +2059,18 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
     }
     
+    @Override public void visit(Tree.TypedDeclaration that) {
+        super.visit(that);
+        TypedDeclaration d = that.getDeclarationModel();
+        Type t = d.getType();
+        if (((FunctionOrValue)d).isSmall()
+                && t != null
+                && !t.isInteger()
+                && !t.isFloat()) {
+            that.addError("type cannot be annotated small: " + t.asString(that.getUnit()));
+        }
+    }
+    
     private static VoidModifier fakeVoid(Node that) {
         return new Tree.VoidModifier(that.getToken());
     }

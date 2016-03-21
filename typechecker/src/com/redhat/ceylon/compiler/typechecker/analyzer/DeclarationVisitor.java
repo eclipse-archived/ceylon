@@ -2099,6 +2099,11 @@ public abstract class DeclarationVisitor extends Visitor {
                 model.setShared(true);
             }
         }
+        if (hasAnnotation(al, "small", unit)) {
+            if (model instanceof FunctionOrValue) {
+                ((FunctionOrValue)model).setSmall(true);
+            }
+        }
         if (hasAnnotation(al, "default", unit)) {
             if (that instanceof Tree.ObjectDefinition) {
                 that.addError("object declaration may not be annotated default", 
