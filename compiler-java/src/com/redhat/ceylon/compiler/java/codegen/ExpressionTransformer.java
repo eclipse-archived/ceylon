@@ -1877,13 +1877,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCExpression transform(Tree.NotEqualOp op) {
         OperatorTranslation operator = Operators.OperatorTranslation.BINARY_EQUAL;
-        OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, op.getLeftTerm(), op.getRightTerm(), this);
+        //OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, op.getLeftTerm(), op.getRightTerm(), this);
         
         // we want it unboxed only if the operator is optimised
         // we don't care about the left erased type, since equals() is on Object
-        JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null, EXPR_WIDEN_PRIM);
+        //JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null, EXPR_WIDEN_PRIM);
         // we don't care about the right erased type, since equals() is on Object
-        JCExpression expr = transformOverridableBinaryOperator(op, op.getLeftTerm(), op.getRightTerm(), null, operator, optimisationStrategy, left, op.getTypeModel());
+        JCExpression expr = transformOverridableBinaryOperator(op, operator, op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
         return at(op).Unary(JCTree.Tag.NOT, expr);
     }
 
@@ -2372,6 +2372,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (operator == null) {
             return makeErroneous(op, "compiler bug: " + op.getClass() +" is an unhandled operator");
         }
+        return transformOverridableBinaryOperator(op, operator, leftType, rightType);
+    }
+
+    protected JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op,
+            OperatorTranslation operator, Type leftType, Type rightType) {
         OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, 
                 op.getLeftTerm(), leftType, op.getRightTerm(), rightType, this);
 
@@ -2381,7 +2386,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformOverridableBinaryOperator(op, operator, optimisationStrategy, left, right, op.getLeftTerm(), op.getRightTerm(), op.getTypeModel());
     }
 
-    private JCExpression transformOverridableBinaryOperator(Node opExpr,
+    private JCExpression transformOverridableBinaryOperator(Tree.Term opExpr,
             Tree.Term leftTerm, Tree.Term rightTerm, Type rightType,
             OperatorTranslation operator, OptimisationStrategy optimisationStrategy, 
             JCExpression left, Type expectedType) {
@@ -2390,7 +2395,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformOverridableBinaryOperator(
-            Node opExpr,
+            Tree.Term opExpr,
             OperatorTranslation originalOperator,
             OptimisationStrategy optimisationStrategy, 
             JCExpression left, JCExpression right,
@@ -2399,7 +2404,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformOverridableBinaryOperator(
-            Node opExpr,
+            Tree.Term opExpr,
             OperatorTranslation originalOperator,
             OptimisationStrategy optimisationStrategy, 
             JCExpression left, JCExpression right,
