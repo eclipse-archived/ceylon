@@ -75,7 +75,8 @@ shared abstract class Object()
      Note that when executing on a Java Virtual Machine, the 
      64-bit [[Integer]] value returned by an implementation 
      of `hash` is truncated to a 32-bit integer value by 
-     removal of the 32 highest order bits, before returning
+     taking the exclusive disjunction of the 32 lowest-order
+     bits with the 32 highest-order bits, before returning
      the value to the caller."
     see (`function identityHash`)
     shared formal Integer hash;

@@ -92,8 +92,11 @@ shared native final class Integer(Integer integer)
     "The hash code of this `Integer`, which is just the
      `Integer` itself, except on the JVM platform where, as 
      with all `hash` codes, this 64-bit `Integer` value is 
-     truncated to 32 bits by removal of the 32 higher-order
-     bits."
+     truncated to 32 bits by taking the exclusive 
+     disjunction of the 32 lowest-order bits with the 32 
+     highest-order bits, that is:
+     
+         int.hash == int.rightArithmeticShift(32).exclusiveOr(int)"
     shared actual native Integer hash => this;
     
     shared actual native Comparison compare(Integer other);
