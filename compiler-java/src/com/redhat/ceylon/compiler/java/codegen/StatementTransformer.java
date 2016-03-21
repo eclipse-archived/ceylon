@@ -2335,7 +2335,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected JCExpression makeIndexType() {
-            return make().Type(syms().longType);
+            return make().Type(baseIterable.getSmall() ? syms().intType : syms().longType);
         }
         
         protected JCExpression makeIndexInit() {
