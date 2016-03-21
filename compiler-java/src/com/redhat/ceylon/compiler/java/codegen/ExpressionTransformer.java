@@ -1047,35 +1047,51 @@ public class ExpressionTransformer extends AbstractTransformer {
         return value;
     }
     
-    static long literalValue(Tree.NaturalLiteral literal) throws ErroneousException {
+    static Number literalValue(Tree.NaturalLiteral literal) throws ErroneousException {
         return literalValue(literal, literal.getText());
     }
     
-    static private long literalValue(Tree.NaturalLiteral literal, String text) throws ErroneousException {
+    static private Number literalValue(Tree.NaturalLiteral literal, String text) throws ErroneousException {
+        long l;
         if(text.startsWith("#")){
-            return literalValue(literal, 16, "invalid hexadecimal literal: '" + text + "' has more than 64 bits");
+            l = literalValue(literal, 16, "invalid hexadecimal literal: '" + text + "' has more than 64 bits");
+        } else if(text.startsWith("$")){
+            l = literalValue(literal, 2, "invalid binary literal: '" + text + "' has more than 64 bits");
+        } else {
+            try {
+                l = Long.parseLong(text);
+            } catch (NumberFormatException e) {
+                throw new ErroneousException(literal, "literal outside representable range: '" + text + "' is too large to be represented as an 'Integer'");
+            }
         }
-        if(text.startsWith("$")){
-            return literalValue(literal, 2, "invalid binary literal: '" + text + "' has more than 64 bits");
-        }
-        try {
-            return Long.parseLong(text);
-        } catch (NumberFormatException e) {
-            throw new ErroneousException(literal, "literal outside representable range: '" + text + "' is too large to be represented as an 'Integer'");
+        if (Integer.MIN_VALUE <= l && l <= Integer.MAX_VALUE) {
+            return Integer.valueOf((int)l);
+        } else {
+            return l;
         }
         
     }
     
+    /**
+     * Returns the literal value of the given literal in the given radix, 
+     * or throws an ErroneousException with the given error message 
+     * if the literal cannot be represented.
+     * 
+     * @return An Integer (if the literal can be represented as an Integer)
+     * or Long (if the literal cannot be represented as an Integer, but can be 
+     * represented as a Long)
+     * @throws ErroneousException If the literal cannot be represented as a long
+     */
     private static long literalValue(Tree.NaturalLiteral literal, int radix, String error) throws ErroneousException{
         String value = literal.getText().substring(1);
         try{
             return Convert.string2long(value, radix);
-        }catch(NumberFormatException x){
+        }catch(NumberFormatException x2){
             throw new ErroneousException(literal, error);
         }
     }
     
-    static Long literalValue(Tree.NegativeOp op) throws ErroneousException {
+    static Number literalValue(Tree.NegativeOp op) throws ErroneousException {
         if (op.getTerm() instanceof Tree.NaturalLiteral) {
             // To cope with -9223372036854775808 we can't just parse the 
             // number separately from the sign
@@ -1115,7 +1131,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.NaturalLiteral lit) {
         try {
             at(lit);
-            return make().Literal(literalValue(lit));
+            if (lit.getSmall()) {
+                return make().Literal((Integer)literalValue(lit));
+            } else {
+                return make().Literal(literalValue(lit).longValue());
+            }
         } catch (ErroneousException e) {
             // We should never get here since the error should have been 
             // reported by the UnsupportedVisitor and the containing statement
@@ -1831,9 +1851,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(op);
         if (op.getTerm() instanceof Tree.NaturalLiteral) {
             try {
-                Long l = literalValue(op);
+                Number l = literalValue(op);
                 if (l != null) {
-                    return make().Literal(l);
+                    if (op.getSmall()) {
+                        return make().Literal((Integer)l);
+                    } else {
+                        return make().Literal(l.longValue());
+                    }
                 }
             } catch (ErroneousException e) {
                 // We should never get here since the error should have been 
@@ -2298,7 +2322,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.PowerOp op) {
         if (Strategy.inlinePowerAsMultiplication(op)) {
             try {
-                Long power = getIntegerLiteralPower(op);
+                Number power = getIntegerLiteralPower(op);
                 if(power != null)
                     return transformOptimizedIntegerPower(op.getLeftTerm(), power);
             } catch (ErroneousException e) {
@@ -2314,9 +2338,9 @@ public class ExpressionTransformer extends AbstractTransformer {
      * integer literal)
      * @throws ErroneousException
      */
-    static java.lang.Long getIntegerLiteralPower(Tree.PowerOp op)
+    static java.lang.Number getIntegerLiteralPower(Tree.PowerOp op)
             throws ErroneousException {
-        java.lang.Long power;
+        java.lang.Number power;
         Tree.Term term = unwrapExpressionUntilTerm(op.getRightTerm());
         if (term instanceof Tree.NaturalLiteral) {
             power = literalValue((Tree.NaturalLiteral)term);
@@ -2330,8 +2354,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformOptimizedIntegerPower(Tree.Term base,
-            Long power) {
+            Number power_) {
         JCExpression baseExpr = transformExpression(base, BoxingStrategy.UNBOXED, base.getTypeModel());
+        long power = power_.longValue();
         if (power == 1) {
             return baseExpr;
         }
@@ -6536,7 +6561,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // all good
         at(expr);
         try{
-            long value = literalValue((Tree.NaturalLiteral) left);
+            long value = literalValue((Tree.NaturalLiteral) left).longValue();
             // in the case of -128 to 127 we don't need to cast to byte by using an int literal, but only for
             // assignment, not for method calls, so it's simpler to always cast
             return make().TypeCast(syms().byteType, make().Literal(value));
@@ -6570,7 +6595,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             if(name.equals("ceylon.language::Byte")){
                                 at(ce);
                                 try{
-                                    long value = literalValue((Tree.NaturalLiteral) term);
+                                    long value = literalValue((Tree.NaturalLiteral) term).longValue();
                                     if(negative)
                                         value = -value;
                                     // in the case of -128 to 127 we don't need to cast to byte by using an int literal, but only for
