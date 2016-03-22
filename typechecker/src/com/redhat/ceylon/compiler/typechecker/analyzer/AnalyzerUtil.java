@@ -468,6 +468,9 @@ public class AnalyzerUtil {
     
     static boolean checkCallable(Type type, Node node, String message) {
         Unit unit = node.getUnit();
+        if (type!=null) {
+            type = type.resolveAliases();
+        }
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return false;
@@ -514,7 +517,6 @@ public class AnalyzerUtil {
     
     static Type checkSupertype(Type type, boolean unary, 
             TypeDeclaration td, Node node, String message) {
-
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return null;
