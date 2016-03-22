@@ -21,7 +21,9 @@ package com.redhat.ceylon.compiler.java.test.structure;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.javax.tools.Diagnostic;
 
 public class StructureTests extends CompilerTests {
     
@@ -108,6 +110,31 @@ public class StructureTests extends CompilerTests {
     @Test
     public void testAtrParametersAndMembers(){
         compareWithJavaSource("attribute/ParametersAndMembers");
+    }
+    @Test
+    public void testAtrSmallInteger(){
+        compareWithJavaSource("attribute/SmallInteger");
+    }
+    @Test
+    public void testAtrSmallFloat(){
+        compareWithJavaSource("attribute/SmallFloat");
+    }
+    @Test
+    public void testAtrSmallErrors(){
+        assertErrors("attribute/SmallErrors", true, 
+                CompilerError.warning(8, "literal value is not small but is assignable to small declaration 'smallFunction'"),
+                CompilerError.warning(10, "literal value is not small but is assignable to small declaration 'smallFunction2'"),
+                CompilerError.warning(12, "literal value is not small but is assignable to small declaration 'smallValue'"),
+                CompilerError.warning(14, "literal value is not small but is assignable to small declaration 'smallValue2'"),
+                CompilerError.warning(18, "literal value is not small but is assignable to small declaration 'c'"),
+                CompilerError.warning(19, "literal value is not small but is assignable to small declaration 'd'"),
+                CompilerError.warning(21, "literal value is not small but is assignable to small declaration 'toobig'"),
+                CompilerError.warning(22, "literal value is not small but is assignable to small declaration 'toosmall'"),
+                CompilerError.warning(25, "literal value is not small but is assignable to small declaration 'toobig2'"),
+                CompilerError.warning(26, "literal value is not small but is assignable to small declaration 'toosmall2'"),
+                CompilerError.warning(29, "literal value is not small but is assignable to small declaration 's'"),
+                CompilerError.warning(30, "literal value is not small but is assignable to small declaration 's'"),
+                CompilerError.warning(32, "literal value is not small but is assignable to small declaration 'smallFunction3'"));
     }
     
     //
