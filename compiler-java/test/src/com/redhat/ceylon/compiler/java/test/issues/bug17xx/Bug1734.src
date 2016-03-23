@@ -41,11 +41,17 @@ final class bug1734_ {
                 $ceylontmp$ex$0 = $ceylontmp$ex$1;
                 throw $ceylontmp$ex$1;
             } finally {
-                if ($ceylontmp$ex$0 != null) try {
+                if ($ceylontmp$ex$0 != null) {
+                    try {
+                        foo.destroy($ceylontmp$ex$0);
+                    } catch (final .java.lang.Throwable $ceylontmp$closex$2) {
+                        if ($ceylontmp$ex$0 != $ceylontmp$closex$2) {
+                            $ceylontmp$ex$0.addSuppressed($ceylontmp$closex$2);
+                        }
+                    }
+                } else {
                     foo.destroy($ceylontmp$ex$0);
-                } catch (final .java.lang.Throwable $ceylontmp$closex$2) {
-                    $ceylontmp$ex$0.addSuppressed($ceylontmp$closex$2);
-                } else foo.destroy($ceylontmp$ex$0);
+                }
             }
         }
     }
