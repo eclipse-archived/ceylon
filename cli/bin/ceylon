@@ -57,9 +57,10 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
         CEYL_COLS="$(tput 2>/dev/null cols)"
     fi
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$CEYL_COLS"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=$(tput 2>/dev/null setaf 1)"
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.green=$(tput 2>/dev/null setaf 2)"
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.yellow=$(tput 2>/dev/null setaf 3)"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=$(tput 2>/dev/null setaf 1)"
+    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.blue=$(tput 2>/dev/null setaf 4)"
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.reset=$(tput 2>/dev/null sgr0)"
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename "$PRG")"
 fi

@@ -3,7 +3,7 @@ package com.redhat.ceylon.common;
 public class OSUtil {
 
     public static enum Color {
-        green, yellow, red;
+        green, yellow, red, blue;
     }
     
     private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
@@ -24,7 +24,7 @@ public class OSUtil {
     public static String color(String txt, Color color) {
         String col = System.getProperty("com.redhat.ceylon.common.tool.terminal.color." + color.name());
         String res = System.getProperty("com.redhat.ceylon.common.tool.terminal.color.reset");
-        if (col != null && res != null) {
+        if (col != null && !col.isEmpty() && res != null && !res.isEmpty()) {
             txt = col + txt + res;
         }
         return txt;

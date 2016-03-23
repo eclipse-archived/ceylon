@@ -141,12 +141,14 @@ public abstract class AbstractDiagnosticFormatter implements DiagnosticFormatter
         JavaFileObject fo = d.getSource();
         if (fo == null)
             throw new IllegalArgumentException(); // d should have source set
+        String name;
         if (fullname)
-            return fo.getName();
+            name = fo.getName();
         else if (fo instanceof BaseFileObject)
-            return ((BaseFileObject) fo).getShortName();
+            name = ((BaseFileObject) fo).getShortName();
         else
-            return BaseFileObject.getSimpleName(fo);
+            name = BaseFileObject.getSimpleName(fo);
+        return OSUtil.color(name, OSUtil.Color.blue);
     }
 
     /**

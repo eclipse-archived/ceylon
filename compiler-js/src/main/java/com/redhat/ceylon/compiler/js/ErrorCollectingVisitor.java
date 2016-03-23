@@ -146,7 +146,7 @@ public class ErrorCollectingVisitor extends Visitor {
                 position = ((RecognitionError) err).getCharacterInLine();
             }
             String fileName = (node.getUnit() != null) ? node.getUnit().getFullPath() : "unknown";
-            out.write(fileName);
+            out.write(OSUtil.color(fileName, OSUtil.Color.blue));
             out.write(":");
             out.write(String.format("%d", line));
             out.write(": ");
