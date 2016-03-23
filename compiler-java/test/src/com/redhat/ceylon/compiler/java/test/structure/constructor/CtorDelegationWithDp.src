@@ -27,7 +27,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
     
     private static final class $delegation$ {
         
-        private $delegation$() {
+        $delegation$() {
         }
     }
     
@@ -44,7 +44,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
     
     private static final class foo_ {
         
-        private foo_() {
+        foo_() {
         }
     }
     
@@ -62,7 +62,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
     
     private static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     
@@ -81,7 +81,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
     
     public static final class baz_ {
         
-        private baz_() {
+        baz_() {
         }
     }
     
@@ -92,7 +92,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
     
     public static final class qux_ {
         
-        private qux_() {
+        qux_() {
         }
     }
     

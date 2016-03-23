@@ -7,7 +7,7 @@ class SingletonCtorsInMemberClasses implements .com.redhat.ceylon.compiler.java.
     
     static final class Bar$bar {
         
-        private Bar$bar() {
+        Bar$bar() {
         }
     }
     private transient Bar $instance$Bar$bar = null;
@@ -57,7 +57,7 @@ public final class singletonCtorsInMemberClasses_ {
             
             final class Bar$bar {
                 
-                private Bar$bar() {
+                Bar$bar() {
                 }
             }
             private transient Bar $instance$Bar$bar = null;

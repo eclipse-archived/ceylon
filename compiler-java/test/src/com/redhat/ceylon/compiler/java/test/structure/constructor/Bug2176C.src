@@ -12,7 +12,7 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("instance")
     static final class Inner$instance {
         
-        private Inner$instance() {
+        Inner$instance() {
         }
     }
     private transient Inner $instance$Inner$instance = null;

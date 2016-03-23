@@ -40,7 +40,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
             value = "a")
     private static final class ConcreteDelegating$a$delegation$ {
         
-        private ConcreteDelegating$a$delegation$() {
+        ConcreteDelegating$a$delegation$() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -51,7 +51,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("a")
     public static final class ConcreteDelegating$a {
         
-        private ConcreteDelegating$a() {
+        ConcreteDelegating$a() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -62,7 +62,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("b")
     public static final class ConcreteDelegating$b {
         
-        private ConcreteDelegating$b() {
+        ConcreteDelegating$b() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -118,7 +118,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("a")
     private static final class AbstractDelegating$a {
         
-        private AbstractDelegating$a() {
+        AbstractDelegating$a() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -129,7 +129,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("b")
     public static final class AbstractDelegating$b {
         
-        private AbstractDelegating$b() {
+        AbstractDelegating$b() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -192,7 +192,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
             value = "a")
     private static final class SharedConcreteDelegating$a$delegation$ {
         
-        private SharedConcreteDelegating$a$delegation$() {
+        SharedConcreteDelegating$a$delegation$() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -209,7 +209,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("a")
     public static final class SharedConcreteDelegating$a {
         
-        private SharedConcreteDelegating$a() {
+        SharedConcreteDelegating$a() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -226,7 +226,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("b")
     public static final class SharedConcreteDelegating$b {
         
-        private SharedConcreteDelegating$b() {
+        SharedConcreteDelegating$b() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -282,7 +282,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("a")
     private static final class SharedAbstractDelegating$a {
         
-        private SharedAbstractDelegating$a() {
+        SharedAbstractDelegating$a() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -299,7 +299,7 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("b")
     public static final class SharedAbstractDelegating$b {
         
-        private SharedAbstractDelegating$b() {
+        SharedAbstractDelegating$b() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

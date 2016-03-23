@@ -44,7 +44,7 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("constructor2") // line 12
     public static final class constructor2_ {
          // line 12
-        private constructor2_() { // line 12
+        constructor2_() { // line 12
         }
     }
      // line 12
@@ -106,7 +106,7 @@ public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.l
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("constructor2") // line 29
     public static final class constructor2_ {
          // line 29
-        private constructor2_() { // line 29
+        constructor2_() { // line 29
         }
     }
      // line 29

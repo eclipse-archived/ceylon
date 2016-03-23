@@ -19,7 +19,7 @@ class Bug2299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             value = "")
     private static final class $delegation$ {
         
-        private $delegation$() {
+        $delegation$() {
         }
     }
     
@@ -43,7 +43,7 @@ class Bug2299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("_ROOT")
     private static final class _ROOT_ {
         
-        private _ROOT_() {
+        _ROOT_() {
         }
     }
     

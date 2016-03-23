@@ -9,7 +9,7 @@ public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private static final class $delegation$ {
         
-        private $delegation$() {
+        $delegation$() {
         }
     }
     
@@ -28,7 +28,7 @@ public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private static final class init$delegation$_ {
         
-        private init$delegation$_() {
+        init$delegation$_() {
         }
     }
     
@@ -41,7 +41,7 @@ public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     public static final class init_ {
         
-        private init_() {
+        init_() {
         }
     }
     
@@ -58,7 +58,7 @@ public class Bug2256 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     public static final class init2_ {
         
-        private init2_() {
+        init2_() {
         }
     }
     

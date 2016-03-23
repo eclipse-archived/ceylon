@@ -4,7 +4,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     
     private static final class fieldAnnotated_ {
         
-        private fieldAnnotated_() {
+        fieldAnnotated_() {
         }
     }
     
@@ -23,7 +23,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     
     private static final class methodAnnotated_ {
         
-        private methodAnnotated_() {
+        methodAnnotated_() {
         }
     }
     
@@ -42,7 +42,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     
     private static final class constructorAnnotated_ {
         
-        private constructorAnnotated_() {
+        constructorAnnotated_() {
         }
     }
     

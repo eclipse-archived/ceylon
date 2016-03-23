@@ -5,7 +5,7 @@ class DelegatingToDefault implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     private static final class $delegation$ {
         
-        private $delegation$() {
+        $delegation$() {
         }
     }
     
@@ -21,7 +21,7 @@ class DelegatingToDefault implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     public static final class baz_ {
         
-        private baz_() {
+        baz_() {
         }
     }
     

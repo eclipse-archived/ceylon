@@ -447,7 +447,7 @@ class MajikNullaryCtorValueCtor implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("val")
     private static final class val_ {
         
-        private val_() {
+        val_() {
         }
     }
     
@@ -500,7 +500,7 @@ class MajikNullaryCtorValueCtorAndDefault implements .com.redhat.ceylon.compiler
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("val")
     private static final class val_ {
         
-        private val_() {
+        val_() {
         }
     }
     
@@ -557,7 +557,7 @@ class MajikNullaryCtorValueCtorAndCallable implements .com.redhat.ceylon.compile
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("callable")
     public static final class callable_ {
         
-        private callable_() {
+        callable_() {
         }
     }
     
@@ -572,7 +572,7 @@ class MajikNullaryCtorValueCtorAndCallable implements .com.redhat.ceylon.compile
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("val")
     private static final class val_ {
         
-        private val_() {
+        val_() {
         }
     }
     

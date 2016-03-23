@@ -31,7 +31,7 @@ class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private static final class bar$delegation$_ {
         
-        private bar$delegation$_() {
+        bar$delegation$_() {
         }
     }
     
@@ -41,7 +41,7 @@ class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     public static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     
@@ -52,7 +52,7 @@ class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     public static final class baz_ {
         
-        private baz_() {
+        baz_() {
         }
     }
     

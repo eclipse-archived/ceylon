@@ -25,7 +25,7 @@ class CtorOfObjectSubclass extends .java.lang.Object implements .com.redhat.ceyl
     
     private static final class default$delegation$_ {
         
-        private default$delegation$_() {
+        default$delegation$_() {
         }
     }
     
@@ -36,7 +36,7 @@ class CtorOfObjectSubclass extends .java.lang.Object implements .com.redhat.ceyl
     
     public static final class default_ {
         
-        private default_() {
+        default_() {
         }
     }
     
@@ -47,7 +47,7 @@ class CtorOfObjectSubclass extends .java.lang.Object implements .com.redhat.ceyl
     
     public static final class nnew_ {
         
-        private nnew_() {
+        nnew_() {
         }
     }
     

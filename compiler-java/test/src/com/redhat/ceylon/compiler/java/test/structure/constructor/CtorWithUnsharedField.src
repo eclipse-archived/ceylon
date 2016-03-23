@@ -16,7 +16,7 @@ class CtorUnsharedField implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private static final class for_$delegation$_ {
         
-        private for_$delegation$_() {
+        for_$delegation$_() {
         }
     }
     
@@ -27,7 +27,7 @@ class CtorUnsharedField implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     public static final class for__ {
         
-        private for__() {
+        for__() {
         }
     }
     
@@ -39,7 +39,7 @@ class CtorUnsharedField implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     public static final class world_ {
         
-        private world_() {
+        world_() {
         }
     }
     

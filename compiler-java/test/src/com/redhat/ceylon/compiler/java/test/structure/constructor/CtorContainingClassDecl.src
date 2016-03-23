@@ -9,7 +9,7 @@ class CtorContainingClassDecl implements .com.redhat.ceylon.compiler.java.runtim
     
     public static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     

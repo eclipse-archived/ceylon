@@ -16,7 +16,7 @@ class SingletonCtorExtendingGenericClass_Sub extends .com.redhat.ceylon.compiler
     
     private static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     

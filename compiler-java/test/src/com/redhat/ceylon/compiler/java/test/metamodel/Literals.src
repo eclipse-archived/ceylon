@@ -376,7 +376,7 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class Member$other {
         
-        private Member$other() {
+        Member$other() {
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -422,7 +422,7 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class other_ {
         
-        private other_() {
+        other_() {
         }
     }
     
@@ -479,7 +479,7 @@ class LitParameterisedClassWithConstructors<T> extends .com.redhat.ceylon.compil
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class other_ {
         
-        private other_() {
+        other_() {
         }
     }
     

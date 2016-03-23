@@ -23,7 +23,7 @@ class ClassAliasCtor implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class other_ {
         
-        private other_() {
+        other_() {
         }
     }
     

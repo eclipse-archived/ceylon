@@ -9,7 +9,7 @@ class CtorAbstractCtorSuper implements .com.redhat.ceylon.compiler.java.runtime.
     
     public static final class foo_ {
         
-        private foo_() {
+        foo_() {
         }
     }
     
@@ -46,7 +46,7 @@ class CtorAbstractCtorPartial extends .com.redhat.ceylon.compiler.java.test.stru
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -60,7 +60,7 @@ class CtorAbstractCtorPartial extends .com.redhat.ceylon.compiler.java.test.stru
     
     public static final class rest_ {
         
-        private rest_() {
+        rest_() {
         }
     }
     
@@ -105,7 +105,7 @@ class CtorAbstractCtorPartialShared extends .com.redhat.ceylon.compiler.java.tes
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -119,7 +119,7 @@ class CtorAbstractCtorPartialShared extends .com.redhat.ceylon.compiler.java.tes
     
     public static final class rest_ {
         
-        private rest_() {
+        rest_() {
         }
     }
     
@@ -166,7 +166,7 @@ class CtorAbstractCtorPartialCaptured extends .com.redhat.ceylon.compiler.java.t
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -180,7 +180,7 @@ class CtorAbstractCtorPartialCaptured extends .com.redhat.ceylon.compiler.java.t
     
     public static final class rest_ {
         
-        private rest_() {
+        rest_() {
         }
     }
     
@@ -277,7 +277,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -316,7 +316,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
     
     public static final class rest_ {
         
-        private rest_() {
+        rest_() {
         }
     }
     
@@ -469,7 +469,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -508,7 +508,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
     
     public static final class rest_ {
         
-        private rest_() {
+        rest_() {
         }
     }
     
@@ -665,7 +665,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -704,7 +704,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
     
     public static final class rest_ {
         
-        private rest_() {
+        rest_() {
         }
     }
     
@@ -831,7 +831,7 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -850,7 +850,7 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
     
     public static final class rest_ {
         
-        private rest_() {
+        rest_() {
         }
     }
     

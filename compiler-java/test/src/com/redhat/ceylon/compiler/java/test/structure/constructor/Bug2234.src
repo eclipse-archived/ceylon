@@ -4,7 +4,7 @@ class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     private static final class foo_ {
         
-        private foo_() {
+        foo_() {
         }
     }
     
@@ -41,7 +41,7 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     static final class Inner$foo {
         
-        private Inner$foo() {
+        Inner$foo() {
         }
     }
     private transient Inner $instance$Inner$foo = null;

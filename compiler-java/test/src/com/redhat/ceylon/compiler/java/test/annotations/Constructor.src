@@ -136,7 +136,7 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class other_ {
         
-        private other_() {
+        other_() {
         }
     }
     
@@ -157,7 +157,7 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("val")
     private static final class val_ {
         
-        private val_() {
+        val_() {
         }
     }
     

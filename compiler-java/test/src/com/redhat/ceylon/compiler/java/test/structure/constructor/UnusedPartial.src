@@ -16,7 +16,7 @@ class UnusedPartial implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     private static final class partial_ {
         
-        private partial_() {
+        partial_() {
         }
     }
     
@@ -28,7 +28,7 @@ class UnusedPartial implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     public static final class forName_ {
         
-        private forName_() {
+        forName_() {
         }
     }
     

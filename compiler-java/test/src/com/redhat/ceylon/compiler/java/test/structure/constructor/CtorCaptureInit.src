@@ -87,7 +87,7 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     private static final class withAttributes_ {
         
-        private withAttributes_() {
+        withAttributes_() {
         }
     }
     
