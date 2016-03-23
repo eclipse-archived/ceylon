@@ -24,7 +24,7 @@
  */
 package com.redhat.ceylon.langtools.tools.javac.util;
 
-import static com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticType.*;
+import static com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticType.FRAGMENT;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,12 +34,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter;
 import com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter.Configuration.DiagnosticPart;
 import com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter.Configuration.MultilineLimit;
-import com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter.PositionKind;
 import com.redhat.ceylon.langtools.tools.javac.api.Formattable;
 import com.redhat.ceylon.langtools.tools.javac.code.Lint.LintCategory;
 import com.redhat.ceylon.langtools.tools.javac.code.Printer;
@@ -48,9 +47,9 @@ import com.redhat.ceylon.langtools.tools.javac.code.Type;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.CapturedType;
 import com.redhat.ceylon.langtools.tools.javac.file.BaseFileObject;
 import com.redhat.ceylon.langtools.tools.javac.jvm.Profile;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCParens;
 import com.redhat.ceylon.langtools.tools.javac.tree.Pretty;
-import static com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticType.*;
 
 /**
  * This abstract class provides a basic implementation of the functionalities that should be provided
@@ -106,13 +105,13 @@ public abstract class AbstractDiagnosticFormatter implements DiagnosticFormatter
         switch (d.getType()) {
             case FRAGMENT: return "";
             case NOTE:     return localize(l, "compiler.note.note");
-            case WARNING:  return localize(l, "compiler.warn.warning");
-            case ERROR:    return localize(l, "compiler.err.error");
+            case WARNING:  return OSUtil.color(localize(l, "compiler.warn.warning"), OSUtil.Color.yellow);
+            case ERROR:    return OSUtil.color(localize(l, "compiler.err.error"), OSUtil.Color.red);
             default:
                 throw new AssertionError("Unknown diagnostic type: " + d.getType());
         }
     }
-
+    
     @Override
     public String format(JCDiagnostic d, Locale locale) {
         allCaptured = List.nil();
