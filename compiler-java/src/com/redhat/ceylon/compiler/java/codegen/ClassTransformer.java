@@ -5558,6 +5558,9 @@ public class ClassTransformer extends AbstractTransformer {
         return false;
     }
     
+    /**
+     * Make the constructor name class, and a constant
+     */
     protected void transformConstructorName(
             ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
             Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
@@ -5600,7 +5603,6 @@ public class ClassTransformer extends AbstractTransformer {
         constructorNameClass.modifiers(classMods);
         constructorNameClass.annotations(makeAtIgnore());
         constructorNameClass.annotations(makeAtConstructorName(ctor.getName(), contains(declFlags, DeclNameFlag.DELEGATION)));
-        constructorNameClass.getInitBuilder().modifiers(PRIVATE);
         
         List<JCTree> ctorNameClassDecl = constructorNameClass.build();
         if (clz.isToplevel()) {
