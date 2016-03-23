@@ -13,7 +13,9 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.ModuleCopycat;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
@@ -198,7 +200,13 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             @Override
             public void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws IOException {
                 if (!logArtifacts) {
-                    append(") ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
+                    String msg;
+                    if (copied) {
+                        msg = OSUtil.color(Messages.msg(bundle, "copying.ok"), OSUtil.Color.green);
+                    } else {
+                        msg = OSUtil.color(Messages.msg(bundle, "copying.skipped"), OSUtil.Color.yellow);
+                    }
+                    append(") ").append(msg).newline().flush();
                 }
             }
             @Override
