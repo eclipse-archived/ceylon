@@ -3701,7 +3701,7 @@ public class StatementTransformer extends AbstractTransformer {
                 } else {
                     throw new BugException(res, "missing resource expression");
                 }
-                TryResourceTransformation resourceTx;
+                final TryResourceTransformation resourceTx;
                 if (typeFact().getDestroyableType().isSupertypeOf(resExpr.getTypeModel())) {
                     resourceTx = destroyableResource;
                 } else if (typeFact().getObtainableType().isSupertypeOf(resExpr.getTypeModel())) {
@@ -3758,7 +3758,21 @@ public class StatementTransformer extends AbstractTransformer {
                 JCVariableDecl closeCatchVar = make().VarDef(make().Modifiers(Flags.FINAL), closeCatchVarName, closeCatchExType, null);
                 JCExpression addarg = make().Ident(closeCatchVarName);
                 JCMethodInvocation addSuppressedCall = make().Apply(null, makeQualIdent(makeUnquotedIdent(innerExTmpVarName), "addSuppressed"), List.<JCExpression>of(addarg));
-                JCCatch closeCatch = make().Catch(closeCatchVar, make().Block(0, List.<JCStatement>of(make().Exec(addSuppressedCall))));
+                JCStatement catchForClose;
+                if (resourceTx != javaAutoCloseableResource) {
+                    // Obtainable.release() and Destroyable.close() could 
+                    // rethrow the originating exception, so guard against
+                    // self-supression (which causes addSuppressed() to throw
+                    catchForClose = make().If(make().Binary(JCTree.Tag.NE, makeUnquotedIdent(innerExTmpVarName), make().Ident(closeCatchVarName)), 
+                            make().Block(0, List.<JCStatement>of(make().Exec(addSuppressedCall))), 
+                            null);
+                } else {
+                    // AutoClosable can't rethrow the originating exception, 
+                    // so no need to worry about self suppression
+                    catchForClose = make().Exec(addSuppressedCall);
+                }
+                JCCatch closeCatch = make().Catch(closeCatchVar, make().Block(0, List.<JCStatement>of(
+                        catchForClose)));
                 JCTry closeTry = at(res).Try(closeTryBlock, List.<JCCatch>of(closeCatch), null);
                 
                 // $var.close() /// ((Closeable)$var).close()
@@ -3768,7 +3782,9 @@ public class StatementTransformer extends AbstractTransformer {
                 
                 // if ($tmpex != null) { ... } else { ... }
                 JCBinary closeCatchCond = make().Binary(JCTree.Tag.NE, makeUnquotedIdent(innerExTmpVarName), makeNull());
-                JCIf closeCatchIf = make().If(closeCatchCond, closeTry, make().Exec(closeCall2));
+                JCIf closeCatchIf = make().If(closeCatchCond, 
+                        make().Block(0, List.<JCStatement>of(closeTry)), 
+                        make().Block(0, List.<JCStatement>of(make().Exec(closeCall2))));
     
                 // try { .... } catch (Exception ex) { $tmpex=ex; throw ex; }
                 // finally { try { $var.close() } catch (Exception closex) { } }
