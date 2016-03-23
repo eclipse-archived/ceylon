@@ -50,6 +50,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
@@ -63,7 +64,6 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.compiler.java.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -185,6 +185,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private final Map<Parameter, Node> parameterNodeMap = new IdentityHashMap<Parameter, Node>();
     private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
     private RepositoryManager outputRepositoryManager;
+    protected Logger richLog;
 
     public CeylonDocTool() {
         super(CeylondMessages.RESOURCE_BUNDLE);
@@ -205,9 +206,13 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             setLinks(Arrays.asList(linkValues));
         }
         
-        log = new CeylondLogger();
+        this.richLog = new CeylondLogger(true);
     }
 
+    protected Logger createLogger() {
+        return new CeylondLogger(false);
+    }
+    
     @OptionArgument(argumentName="encoding")
     @Description("Sets the encoding used for reading source files (default: platform-specific)")
     public void setEncoding(String encoding) {
@@ -1284,18 +1289,18 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
     protected void warningMissingDoc(String name, Referenceable scope) {
         if (!ignoreMissingDoc) {
-            log.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(getNode(scope))));
+            richLog.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(getNode(scope))));
         }
     }
 
     protected void warningBrokenLink(String docLinkText, Tree.DocLink docLink, Referenceable scope) {
         if (!ignoreBrokenLink) {
-            log.warning(CeylondMessages.msg("warn.brokenLink", docLinkText, getWhere(scope), getPosition(docLink)));
+            richLog.warning(CeylondMessages.msg("warn.brokenLink", docLinkText, getWhere(scope), getPosition(docLink)));
         }
     }
     
     protected void warningSetterDoc(String name, Declaration scope) {
-        log.warning(CeylondMessages.msg("warn.setterDoc", name, getPosition(getNode(scope))));
+        richLog.warning(CeylondMessages.msg("warn.setterDoc", name, getPosition(getNode(scope))));
     }
 
     protected void warningMissingThrows(Declaration d) {
@@ -1347,7 +1352,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 }
             }
             if (!isDocumented) {
-                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.asString(), getWhere(d), getPosition(getNode(d))));
+                richLog.warning(CeylondMessages.msg("warn.missingThrows", thrownException.asString(), getWhere(d), getPosition(getNode(d))));
             }
         }
     }
