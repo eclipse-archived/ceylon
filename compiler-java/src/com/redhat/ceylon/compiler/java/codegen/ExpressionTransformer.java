@@ -6818,12 +6818,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return target == OutputElement.TYPE;
             } else if (useSite instanceof Value) {
                 Value value = (Value)useSite;
-                TypeDeclaration decltype = typeFact().getValueDeclarationType().getDeclaration();
-                if (value.isParameter()
-                        && !value.isShared()
-                        && !(value.isCaptured() && value.isMember())) {
-                    return target ==  OutputElement.PARAMETER;
-                } else if (annotationCtorDecl instanceof AnnotationProxyMethod) {
+                boolean p = value.isParameter()
+                        && target == OutputElement.PARAMETER;
+                if (annotationCtorDecl instanceof AnnotationProxyMethod) {
                     if (value.isLate() || value.isVariable()) {
                         return target == OutputElement.SETTER;
                     } else if (!value.isTransient()) {
@@ -6832,7 +6829,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         return target == OutputElement.GETTER;
                     }
                 } else {
-                    return target == OutputElement.GETTER;
+                    return p || target == OutputElement.GETTER;
                 }
             } else if (useSite instanceof Setter) {
                 return target == OutputElement.SETTER;

@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import ceylon.language.Anything;
@@ -236,24 +237,25 @@ public class ValueDeclarationImpl
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         Class<?> javaClass = Metamodel.getJavaClass(declaration);
         ArrayList<java.lang.annotation.Annotation> result = new ArrayList<>();
+        HashSet<Class<? extends java.lang.annotation.Annotation>> cls = new HashSet<>();
         if(javaClass != null){
             // FIXME: pretty sure this doesn't work with interop and fields
             Method declaredGetter = Reflection.getDeclaredGetter(javaClass, NamingBase.getGetterName(declaration));
             if (declaredGetter != null) {
-                result.addAll(Arrays.asList(declaredGetter.getAnnotations()));
+                addToList(result, cls, declaredGetter.getAnnotations());
             }
             if (!((Value)declaration).isTransient()) {
                 // TODO only include those which are java annotations 
                 Field field  = Reflection.getDeclaredField(javaClass, declaration.getName());
                 if (field != null) {
                     Annotation[] fieldAnnos = field.getAnnotations();
-                    result.addAll(Arrays.asList(fieldAnnos));
+                    addToList(result, cls, fieldAnnos);
                 }
                 
                 Method setter = Reflection.getDeclaredSetter(javaClass, NamingBase.getSetterName(declaration.getName()));
                 if (setter != null) { 
                     Annotation[] setterAnnos = setter.getAnnotations();
-                    result.addAll(Arrays.asList(setterAnnos));
+                    addToList(result, cls, setterAnnos);
                 }
             }
         
@@ -286,10 +288,27 @@ public class ValueDeclarationImpl
                 throw Metamodel.newModelError("Parameter "+parameter+" not found in container "+parameter.getModel().getContainer());
             if(index >= parameterAnnotations.length)
                 throw Metamodel.newModelError("Parameter "+parameter+" index is greater than JVM parameters for "+parameter.getModel().getContainer());
-            result.addAll(Arrays.asList(parameterAnnotations[index]));
+            addToList(result, cls, parameterAnnotations[index]);
         }
         // nope
         return result.toArray(new java.lang.annotation.Annotation[result.size()]);
+    }
+
+    /**
+     * Since Ceylon 1.2.3 annotations might be multiply transformed to both
+     * a getter and a parameter. To avoid adding both the Java annotations 
+     * to the list, only add the annotation if we've not already added an 
+     * annotation of the same type.
+     */
+    protected void addToList(ArrayList<java.lang.annotation.Annotation> result,
+            HashSet<Class<? extends java.lang.annotation.Annotation>> cls, Annotation[] annotations) {
+        for (java.lang.annotation.Annotation a : annotations) {
+            Class<? extends Annotation> at = a.annotationType();
+            if (!cls.contains(at)) {
+                cls.add(at);
+                result.add(a);
+            }
+        }
     }
     
     @Override
