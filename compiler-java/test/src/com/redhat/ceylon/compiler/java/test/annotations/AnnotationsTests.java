@@ -328,4 +328,9 @@ public class AnnotationsTests extends CompilerTests {
     public void testBug6085(){
         compareWithJavaSource("bug6085/Bug6085");
     }
+    
+    @Test
+    public void testBug5779(){
+        compareWithJavaSource("Bug5779");
+    }
  }
