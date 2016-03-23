@@ -403,14 +403,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         for (File source : applyCwd(this.sources)) {
             arguments.add("-src");
             arguments.add(source.getPath());
-            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEPATH, "-sourcepath", source.getPath());
-            //options.addMulti(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEPATH, source.getPath());
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.CEYLONSOURCEPATH, "-sourcepath", source.getPath());
         }
         
         for (File resource : applyCwd(this.resources)) {
             arguments.add("-res");
             arguments.add(resource.getPath());
-            //options.addMulti(OptionName.RESOURCEPATH, resource.getPath());
         }
         
         if (resourceRoot != null) {
