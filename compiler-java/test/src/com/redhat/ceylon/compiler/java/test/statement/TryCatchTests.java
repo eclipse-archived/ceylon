@@ -133,5 +133,11 @@ public class TryCatchTests extends CompilerTests {
         compile("trycatch/JavaThrower.java");
         compareWithJavaSource("trycatch/WrapExceptionAtJavaCallSite");
     }
+    
+    @Test
+    public void testTryTrySelfSuppression(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.trycatch.trySelfSuppression", 
+                "trycatch/TrySelfSuppression.ceylon");
+    }
 
 }
