@@ -51,12 +51,18 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     Quoting(@.com.redhat.ceylon.compiler.java.metadata.Name("string")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     final .java.lang.String string, @.com.redhat.ceylon.compiler.java.metadata.Name("toString")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String toString, @.com.redhat.ceylon.compiler.java.metadata.Name("hash")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
     final long hash, @.com.redhat.ceylon.compiler.java.metadata.Name("hashCode")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.ceylon.language.SharedAnnotation$annotation$
     final long hashCode) {
         this.string = string;
         this.toString = toString;

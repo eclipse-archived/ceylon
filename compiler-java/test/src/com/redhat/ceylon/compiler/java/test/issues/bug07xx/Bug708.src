@@ -76,6 +76,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.Object param2) {
         this.$reified$T = $reified$T;
         this.param = param;

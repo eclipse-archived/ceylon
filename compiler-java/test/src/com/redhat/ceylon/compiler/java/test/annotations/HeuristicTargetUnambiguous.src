@@ -32,9 +32,11 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     HeuristicTarget2(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterTarget
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterTarget
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s2) {
         this.s = s;
         this.s2 = s2;

@@ -19,6 +19,7 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     final .java.lang.String s2, @.com.redhat.ceylon.compiler.java.metadata.Name("s3")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterOrFieldOrMethodTarget
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s3) {
         this.s2 = s2;
         this.s3 = s3;
