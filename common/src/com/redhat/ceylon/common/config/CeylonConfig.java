@@ -515,7 +515,7 @@ public class CeylonConfig {
     public String toString() {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ConfigWriter.write(this, out);
+            ConfigWriter.instance().write(this, out);
             return out.toString("UTF-8");
         } catch (IOException e) {
             return super.toString();

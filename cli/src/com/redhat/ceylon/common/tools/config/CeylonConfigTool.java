@@ -140,7 +140,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
                 throw new IllegalStateException("A configuration must be specified");
             }
         }
-        ConfigWriter.write(config, cfgFile);
+        ConfigWriter.instance().write(config, cfgFile);
     }
     
     private void initSubtool() {
