@@ -186,7 +186,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
     private List<String> modulesOrFiles = Arrays.asList("*");
     private boolean continueOnErrors;
-    private boolean progress;
+    private boolean progress = DefaultToolOptions.getCompilerProgress();
     private List<String> javac = Collections.emptyList();
     private String encoding;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
