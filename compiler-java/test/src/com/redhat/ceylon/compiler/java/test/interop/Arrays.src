@@ -126,7 +126,7 @@ final class test_booleans_ {
             returning null;
         );
         final boolean[][] matrix = new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(10L)][];
-        final long start$14 = 0L;
+        final int start$14 = 0;
         final long length$15 = matrix.length;
         loop_1: for (long i$16 = 0; i$16 < length$15; i$16++) {
             final long x = i$16 + start$14;
