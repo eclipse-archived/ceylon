@@ -535,6 +535,27 @@ shared native final class String(characters)
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
     
+    "A string containing the characters of this string 
+     beginning at the given [[start index|from]], up to, but
+     not including, the given [[end index|end]]. If the 
+     given end index is greater than the last index of this
+     string, return the portion of the string from the 
+     given start index until the end of the string. If the 
+     start index is larger than the last index of the string, 
+     or if the end index is less than one or less than the 
+     start index, return the empty string.
+     
+     Note: this operation is provided to ease porting of
+     code written in other languages. New Ceylon code is
+     encouraged to use [[measure]] or [[span]]."
+    see (`function measure`, `function span`)
+    shared String substring(
+        "The inclusive start index"
+        Integer from = 0,
+        "The exclusive end index" 
+        Integer end = size)
+            => measure(from, end-from);
+    
     shared actual native List<Character> sublistFrom(Integer from);
     shared actual native List<Character> sublistTo(Integer to);
     
