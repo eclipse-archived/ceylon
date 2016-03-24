@@ -18,6 +18,7 @@ import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -127,15 +128,10 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
 
     protected String runtimeVersion(String moduleName, String version) {
         RuntimeResolver runtimeResolver = this.runtimeResolver;
-        if (runtimeResolver == null && Thread.currentThread().getContextClassLoader() instanceof org.jboss.modules.ConcurrentClassLoader) {
-            Object contextModuleLoader;
-            try {
-                contextModuleLoader= org.jboss.modules.Module.getContextModuleLoader();
-            } catch (NullPointerException e) {
-                contextModuleLoader = null;
-            }
-            if (contextModuleLoader instanceof RuntimeResolver) {
-                runtimeResolver = (RuntimeResolver)contextModuleLoader;
+        if (runtimeResolver == null){
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            if(contextClassLoader instanceof CeylonModuleClassLoader) {
+                runtimeResolver = ((CeylonModuleClassLoader) contextClassLoader).getRuntimeResolver();
             }
         }
         if (runtimeResolver != null) {
