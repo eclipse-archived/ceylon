@@ -195,8 +195,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
     private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
-    private boolean flatClasspath;
-    private boolean autoExportMavenDependencies;
+    private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
+    private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
     private ModuleSpec jdkProvider;
 

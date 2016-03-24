@@ -6,6 +6,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.AbstractTestTool;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.RemainingSections;
@@ -29,8 +30,8 @@ import com.redhat.ceylon.common.tool.Summary;
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends AbstractTestTool {
 
-    private boolean flatClasspath;
-    private boolean autoExportMavenDependencies;
+    private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
+    private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean linkWithCurrentDistribution;
 
     public CeylonTestTool() {

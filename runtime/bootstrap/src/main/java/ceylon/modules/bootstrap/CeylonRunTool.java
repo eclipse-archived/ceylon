@@ -93,10 +93,9 @@ public class CeylonRunTool extends RepoUsingTool {
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
     private String compileFlags;
-    private boolean flatClasspath;
     private List<String> args = Collections.emptyList();
-
-    private boolean autoExportMavenDependencies;
+    private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
+    private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean upgradeDist = true;
 
     public CeylonRunTool() {
