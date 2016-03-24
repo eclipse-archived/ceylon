@@ -36,7 +36,8 @@
     <exports>
         <!-- Uses Guice -->
         <exclude path="org/eclipse/aether/impl/guice/AetherModule*"/>
-	<!-- Uses javax.inject -->
+        <exclude path="org/eclipse/aether/impl/AetherModule*"/>
+        <!-- Uses javax.inject -->
         <exclude path="org/eclipse/aether/internal/impl/LoggerFactoryProvider*"/>
     </exports>
 </module>
