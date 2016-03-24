@@ -262,7 +262,7 @@ class AetherUtils {
         this.log = log;
         this.timeout = timeout;
         this.offline = offline;
-        settingsXml = getDefaultMavenSettings();
+        settingsXml = MavenUtils.getDefaultMavenSettings();
     }
 
     private DependencyNode getDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) 
@@ -777,31 +777,6 @@ class AetherUtils {
 
     static String toCanonicalForm(String groupId, String artifactId) {
         return groupId + ":" + artifactId;
-    }
-
-    public static String getDefaultMavenSettings() {
-        String path = System.getProperty("maven.repo.local");
-        if (path != null) {
-            File file = new File(path, "settings.xml");
-            if (file.exists())
-                return file.getAbsolutePath();
-        }
-
-        path = System.getProperty("user.home");
-        if (path != null) {
-            File file = new File(path, ".m2/settings.xml");
-            if (file.exists())
-                return file.getAbsolutePath();
-        }
-
-        path = System.getenv("M2_HOME");
-        if (path != null) {
-            File file = new File(path, "conf/settings.xml");
-            if (file.exists())
-                return file.getAbsolutePath();
-        }
-
-        return "classpath:settings.xml";
     }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {
