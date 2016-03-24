@@ -154,7 +154,6 @@ Some super-charged ant tasks:
                 <module name="ceylon.bootstrap" version="${ceylon.version}"/>
                 <module name="ceylon.runtime" version="${ceylon.version}"/>
                 <module name="ceylon.language" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.maven-support" version="2.0"/>
             </moduleset>
         </ceylon-copy>
     </target>

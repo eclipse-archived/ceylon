@@ -23,14 +23,19 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ImportType;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -133,9 +138,12 @@ public class AetherTestCase extends AbstractAetherTest {
             Assert.assertTrue(artifact.exists());
             exists = true;
             List<ArtifactResult> deps = result.dependencies();
-            Assert.assertEquals(deps.size(), 1);
+            Assert.assertEquals(deps.size(), 2);
             Assert.assertEquals("org.slf4j:slf4j-api", deps.get(0).name());
             Assert.assertEquals("1.6.1", deps.get(0).version());
+            Assert.assertEquals("org.osgi:org.osgi.core", deps.get(1).name());
+            Assert.assertEquals("4.2.0", deps.get(1).version());
+            Assert.assertTrue(deps.get(1).importType() == ImportType.OPTIONAL);
             log.debug("deps = " + deps);
         } finally {
             if (exists) {
@@ -240,6 +248,40 @@ public class AetherTestCase extends AbstractAetherTest {
                 Assert.assertTrue(artifact.delete()); // delete this one
             }
         }
+    }
+
+    @Test
+    public void testListVersionsAether() throws Exception {
+        CmrRepository repository = createAetherRepository();
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+
+        ModuleVersionQuery lookup = new ModuleVersionQuery("com.sparkjava:spark-core", "1.", Type.JAR);
+        ModuleVersionResult result = manager.completeVersions(lookup);
+        Assert.assertEquals(3, result.getVersions().size());
+        Assert.assertNotNull(result.getVersions().get("1.0"));
+        Assert.assertNotNull(result.getVersions().get("1.1"));
+        Assert.assertNotNull(result.getVersions().get("1.1.1"));
+        for(ModuleVersionDetails res : result.getVersions().values()){
+        	Assert.assertEquals("Spark\nA Sinatra inspired java web framework\nhttp://www.sparkjava.com", res.getDoc());
+        	Assert.assertEquals("The Apache Software License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0.txt", res.getLicense());
+        	Assert.assertEquals(4, res.getDependencies().size());
+        }
+        lookup = new ModuleVersionQuery("com.sparkjava:spark-core", null, Type.JAR);
+        result = manager.completeVersions(lookup);
+        Assert.assertEquals(7, result.getVersions().size());
+        
+        // now check that we only downloaded the POMs for that, and not the jars
+        File repo = new File("build/test-classes/maven-settings/repository");
+        File folder = new File(repo, "com/sparkjava/spark-core/1.0");
+        Assert.assertTrue(new File(folder, "spark-core-1.0.pom").exists());
+        Assert.assertFalse(new File(folder, "spark-core-1.0.jar").exists());
+
+        Assert.assertFalse(new File(repo, "org/eclipse/jetty/jetty-server/9.0.2.v20130417/jetty-server-9.0.2.v20130417.jar").exists());
+
+        // this one has a conflict if we do resolve it non-lazily
+        lookup = new ModuleVersionQuery("org.hibernate:hibernate-validator", "3.", Type.JAR);
+        result = manager.completeVersions(lookup);
+        Assert.assertEquals(4, result.getVersions().size());
     }
 
 /*

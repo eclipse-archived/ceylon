@@ -116,7 +116,6 @@
         <copy file="${ceylon.compiler.java.lib}" tofile="${build.dist.repo}/${ceylon.compiler.java.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
-        <copy file="${ceylon.maven-support.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
         <copy todir="${build.dist}">
             <fileset dir="./testsuite/src/test/resources/"/>
         </copy>

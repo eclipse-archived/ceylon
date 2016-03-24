@@ -63,6 +63,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
@@ -1732,7 +1733,10 @@ public class CMRTests extends CompilerTests {
             Assert.assertNotNull(entry);
             try(InputStream is = zf.getInputStream(entry)){
                 DependencyResolver resolver = new MavenDependencyResolver();
-                resolver.resolveFromInputStream(is, coord, version, null);
+                ModuleInfo info = resolver.resolveFromInputStream(is, coord, version, null);
+                Assert.assertNotNull(info);
+                // FIXME: find one with dependencies
+                System.err.println(info.getDependencies());
             }
         }
     }

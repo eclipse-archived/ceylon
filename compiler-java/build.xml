@@ -58,7 +58,7 @@
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${ceylon-tests.car}" />
-        <pathelement path="${ceylon.maven-support.lib}" />
+        <pathelement path="${maven-support.lib}" />
         <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
         <pathelement path="${jboss-logmanager.lib}" />
         <pathelement path="${slf4j-simple.lib}" />

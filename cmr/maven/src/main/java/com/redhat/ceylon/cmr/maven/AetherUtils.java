@@ -18,11 +18,9 @@ package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -33,21 +31,54 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jboss.shrinkwrap.resolver.api.ResolutionException;
-import org.jboss.shrinkwrap.resolver.api.Resolvers;
-import org.jboss.shrinkwrap.resolver.api.VersionResolutionException;
-import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenVersionRangeResult;
-import org.jboss.shrinkwrap.resolver.api.maven.PackagingType;
-import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
-import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
+import org.apache.maven.settings.Mirror;
+import org.apache.maven.settings.Profile;
+import org.apache.maven.settings.Proxy;
+import org.apache.maven.settings.Repository;
+import org.apache.maven.settings.Server;
+import org.apache.maven.settings.Settings;
+import org.apache.maven.settings.building.DefaultSettingsBuilder;
+import org.apache.maven.settings.building.DefaultSettingsBuilderFactory;
+import org.apache.maven.settings.building.DefaultSettingsBuildingRequest;
+import org.apache.maven.settings.building.SettingsBuildingException;
+import org.apache.maven.settings.building.SettingsBuildingRequest;
+import org.apache.maven.settings.building.SettingsBuildingResult;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.eclipse.aether.ConfigurationProperties;
+import org.eclipse.aether.DefaultRepositorySystemSession;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.collection.CollectRequest;
+import org.eclipse.aether.collection.DependencyCollectionContext;
+import org.eclipse.aether.collection.DependencySelector;
+import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
+import org.eclipse.aether.graph.DefaultDependencyNode;
+import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.graph.DependencyFilter;
+import org.eclipse.aether.graph.DependencyNode;
+import org.eclipse.aether.impl.DefaultServiceLocator;
+import org.eclipse.aether.repository.LocalRepository;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.repository.RepositoryPolicy;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.DependencyRequest;
+import org.eclipse.aether.resolution.VersionRangeRequest;
+import org.eclipse.aether.resolution.VersionRangeResult;
+import org.eclipse.aether.resolution.VersionResolutionException;
+import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
+import org.eclipse.aether.spi.connector.transport.TransporterFactory;
+import org.eclipse.aether.transport.file.FileTransporterFactory;
+import org.eclipse.aether.transport.http.HttpTransporterFactory;
+import org.eclipse.aether.util.artifact.JavaScopes;
+import org.eclipse.aether.util.repository.AuthenticationBuilder;
+import org.eclipse.aether.util.repository.DefaultAuthenticationSelector;
+import org.eclipse.aether.util.repository.DefaultMirrorSelector;
+import org.eclipse.aether.util.repository.DefaultProxySelector;
+import org.eclipse.aether.version.Version;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -66,7 +97,6 @@ import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
-import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.LazyArtifactResult;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -84,14 +114,149 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class AetherUtils {
-    private static final ScopeType[] SCOPES = new ScopeType[]{ScopeType.COMPILE, ScopeType.PROVIDED, ScopeType.RUNTIME};
-    private static final SingleScopedStrategy SCOPED_STRATEGY = new SingleScopedStrategy(SCOPES);
+class AetherUtils {
 
     private Logger log;
     private int timeout;
     private boolean offline;
     private String settingsXml;
+
+    private static RepositorySystem newRepositorySystem() {
+        DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
+        locator.addService( RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class );
+        locator.addService( TransporterFactory.class, FileTransporterFactory.class );
+        locator.addService( TransporterFactory.class, HttpTransporterFactory.class );
+        
+        return locator.getService( RepositorySystem.class );
+    }
+
+    private DefaultRepositorySystemSession newSession( RepositorySystem system ) {
+        return MavenRepositorySystemUtils.newSession();
+    }
+    
+    private List<RemoteRepository> configureSession(RepositorySystem system, DefaultRepositorySystemSession session){
+        DefaultSettingsBuilderFactory factory = new DefaultSettingsBuilderFactory();
+        DefaultSettingsBuilder builder = factory.newInstance();
+
+        SettingsBuildingRequest settingsBuilderRequest = new DefaultSettingsBuildingRequest();
+        settingsBuilderRequest.setSystemProperties(System.getProperties());
+        
+        // find the settings
+        String settingsFile = settingsXml;
+        if(settingsFile == null){
+        	File userSettings = new File(System.getProperty("user.home"), ".m2/settings.xml");
+        	if(userSettings.exists())
+        		settingsFile = userSettings.getAbsolutePath();
+        }
+        if(settingsFile != null){
+        	settingsBuilderRequest.setUserSettingsFile(new File(settingsXml));
+        }
+        
+        // read it
+        SettingsBuildingResult settingsBuildingResult;
+		try {
+			settingsBuildingResult = builder.build(settingsBuilderRequest);
+		} catch (SettingsBuildingException e) {
+			throw new RuntimeException(e);
+		}
+        Settings set = settingsBuildingResult.getEffectiveSettings();
+        
+        // configure the local repo
+        String localRepository = set.getLocalRepository();
+        if(localRepository == null)
+        	localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
+
+        // set up authentication
+        DefaultAuthenticationSelector authenticationSelector = new DefaultAuthenticationSelector();
+        for(Server server : set.getServers()){
+    		AuthenticationBuilder auth = new AuthenticationBuilder();
+    		if(server.getUsername() != null)
+    			auth.addUsername(server.getUsername());
+    		if(server.getPassword() != null)
+    			auth.addPassword(server.getPassword());
+    		if(server.getPrivateKey() != null)
+    			auth.addPrivateKey(server.getPrivateKey(), server.getPassphrase());
+        	authenticationSelector.add(server.getId(), auth.build());
+        }
+		session.setAuthenticationSelector(authenticationSelector );
+        
+        // set up mirrors
+        DefaultMirrorSelector mirrorSelector = new DefaultMirrorSelector();
+        for(Mirror mirror : set.getMirrors()){
+        	mirrorSelector.add(mirror.getId(), mirror.getUrl(), mirror.getLayout(), false, mirror.getMirrorOf(), mirror.getMirrorOfLayouts());
+        }
+        session.setMirrorSelector(mirrorSelector);
+
+        // set up proxies
+        DefaultProxySelector proxySelector = new DefaultProxySelector();
+        for(Proxy proxy : set.getProxies()){
+        	if(proxy.isActive()){
+        		AuthenticationBuilder auth = new AuthenticationBuilder();
+        		if(proxy.getUsername() != null)
+        			auth.addUsername(proxy.getUsername());
+        		if(proxy.getPassword() != null)
+        			auth.addPassword(proxy.getPassword());
+				org.eclipse.aether.repository.Proxy p = new org.eclipse.aether.repository.Proxy(proxy.getProtocol(), proxy.getHost(), 
+						proxy.getPort(), auth.build() );
+				proxySelector.add(p , proxy.getNonProxyHosts());
+        	}
+        }
+		session.setProxySelector(proxySelector);
+        
+        // set up remote repos
+        List<RemoteRepository> repos = new ArrayList<>();
+        RemoteRepository central = new RemoteRepository.Builder( "central", "default", "http://repo1.maven.org/maven2/" ).build();
+        repos.add(central);
+        for(String profileId : set.getActiveProfiles()){
+        	Profile profile = set.getProfilesAsMap().get(profileId);
+        	if(profile != null){
+        		for(Repository repo : profile.getRepositories()){
+        	        RemoteRepository.Builder remoteRepo = new RemoteRepository.Builder( repo.getId(), repo.getLayout(), repo.getUrl() );
+
+        	        // policies
+        	        org.apache.maven.settings.RepositoryPolicy repoReleasePolicy = repo.getReleases();
+        	        if(repoReleasePolicy != null){
+        	        	RepositoryPolicy releasePolicy = new RepositoryPolicy(repoReleasePolicy.isEnabled(), repoReleasePolicy.getUpdatePolicy(), 
+        	        			repoReleasePolicy.getChecksumPolicy());
+        	        	remoteRepo.setReleasePolicy(releasePolicy );
+        	        }
+        	        
+        	        org.apache.maven.settings.RepositoryPolicy repoSnapshotPolicy = repo.getSnapshots();
+        	        if(repoSnapshotPolicy != null){
+        	        	RepositoryPolicy snapshotPolicy = new RepositoryPolicy(repoSnapshotPolicy.isEnabled(), repoSnapshotPolicy.getUpdatePolicy(), 
+        	        			repoSnapshotPolicy.getChecksumPolicy());
+        	        	remoteRepo.setSnapshotPolicy(snapshotPolicy);
+        	        }
+					
+					// auth, proxy and mirrors are done in the session
+        			repos.add(remoteRepo.build());
+        		}
+        	}
+        }
+        
+        // connection settings
+        session.setConfigProperty(ConfigurationProperties.CONNECT_TIMEOUT, timeout);
+        session.setOffline(offline || set.isOffline());
+        
+        LocalRepository localRepo = new LocalRepository( localRepository );
+        session.setLocalRepositoryManager( system.newLocalRepositoryManager( session, localRepo ) );
+
+        return repos;
+    }
+    
+    private static final DependencySelector NoChildSelector = new DependencySelector(){
+
+		@Override
+		public DependencySelector deriveChildSelector(DependencyCollectionContext arg0) {
+			return this;
+		}
+
+		@Override
+		public boolean selectDependency(Dependency arg0) {
+			return false;
+		}
+    };
+    
 
     AetherUtils(Logger log, boolean offline, int timeout) {
         this.log = log;
@@ -100,32 +265,101 @@ public class AetherUtils {
         settingsXml = getDefaultMavenSettings();
     }
 
-    MavenArtifactInfo[] getDependencies(File pomXml, String name, String version) {
-        MavenResolverSystem system = getResolver();
-        PomEquippedResolveStage resolverStage = system.loadPomFromFile(pomXml);
-        String coordinates = toCanonicalForm(name, version);
-        MavenStrategyStage strategyStage = resolverStage.resolve(coordinates);
-        MavenFormatStage formatStage = strategyStage.using(SCOPED_STRATEGY);
-        return formatStage.asSingleResolvedArtifact().getDependencies();
+    private DependencyNode getDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) 
+    		throws org.eclipse.aether.RepositoryException{
+    	return getDependencies(groupId, artifactId, version, null, "jar", fetchSingleArtifact);
     }
+    
+    private DependencyNode getDependencies(String groupId, String artifactId, String version, 
+    		String classifier, String extension, boolean fetchSingleArtifact) 
+    				throws org.eclipse.aether.RepositoryException{
+    	
+        RepositorySystem repoSystem = newRepositorySystem();
+        DefaultRepositorySystemSession session = newSession( repoSystem );
+        List<RemoteRepository> repos = configureSession(repoSystem, session);
 
-    MavenArtifactInfo[] getDependencies(InputStream pomXml, String name, String version) {
-        File tempFile = null;
-        try {
-            tempFile = IOUtils.toTempFile(pomXml);
-            return getDependencies(tempFile, name, version);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        } finally {
-            if (tempFile != null) {
-                //noinspection ResultOfMethodCallIgnored
-                tempFile.delete();
-            }
+        DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, classifier, extension, version);
+        final Dependency dependency = new Dependency( artifact, JavaScopes.COMPILE );
+
+        if(!fetchSingleArtifact){
+        	CollectRequest collectRequest = new CollectRequest();
+        	collectRequest.setRepositories(repos);
+        	collectRequest.setRoot( dependency );
+
+        	DependencyRequest dependencyRequest = new DependencyRequest();
+        	dependencyRequest.setCollectRequest(collectRequest);
+        	dependencyRequest.setFilter(new DependencyFilter(){
+        		@Override
+        		public boolean accept(DependencyNode dep, List<DependencyNode> parents) {
+        			return parents.size() == 0;
+        		}
+        	});
+
+        	// only get first-level dependencies, of both scopes
+        	session.setDependencySelector(new DependencySelector(){
+
+        		@Override
+        		public DependencySelector deriveChildSelector(DependencyCollectionContext ctx) {
+        			if(ctx.getDependency().equals(dependency))
+        				return this;
+        			return NoChildSelector;
+        		}
+
+        		@Override
+        		public boolean selectDependency(Dependency dep) {
+        			return !dep.isOptional()
+        					&& (JavaScopes.COMPILE.equals(dep.getScope())
+        					    || JavaScopes.PROVIDED.equals(dep.getScope()));
+        		}
+        	});
+
+        	return repoSystem.resolveDependencies( session, dependencyRequest ).getRoot();
+        }else{
+            ArtifactRequest artifactRequest = new ArtifactRequest();
+            artifactRequest.setArtifact(artifact);
+        	artifactRequest.setRepositories(repos);
+
+        	Artifact resultArtifact = repoSystem.resolveArtifact(session, artifactRequest).getArtifact();
+        	return new DefaultDependencyNode(resultArtifact);
         }
     }
 
-    static boolean isOptional(MavenArtifactInfo info) {
-        return info.isOptional() || !(info.getScope() == ScopeType.COMPILE || info.getScope() == ScopeType.RUNTIME);
+    private List<Version> resolveVersionRange(String groupId, String artifactId, String versionRange) throws org.eclipse.aether.RepositoryException{
+        RepositorySystem repoSystem = newRepositorySystem();
+        DefaultRepositorySystemSession session = newSession( repoSystem );
+        List<RemoteRepository> repos = configureSession(repoSystem, session);
+
+        Artifact artifact = new DefaultArtifact( groupId, artifactId, "jar", versionRange );
+
+        VersionRangeRequest rangeRequest = new VersionRangeRequest();
+        rangeRequest.setArtifact( artifact );
+        rangeRequest.setRepositories(repos);
+
+        VersionRangeResult rangeResult = repoSystem.resolveVersionRange( session, rangeRequest );
+
+        return rangeResult.getVersions();
+    }
+
+    List<org.apache.maven.model.Dependency> getDependencies(File pomXml, String name, String version) throws IOException {
+    	MavenXpp3Reader reader = new MavenXpp3Reader();
+    	Model model;
+    	try(FileReader fileReader = new FileReader(pomXml)){
+    		model = reader.read(fileReader);
+    	} catch (XmlPullParserException e) {
+    		throw new IOException(e);
+		}
+    	return model.getDependencies();
+    }
+
+    List<org.apache.maven.model.Dependency> getDependencies(InputStream pomXml, String name, String version) throws IOException {
+    	MavenXpp3Reader reader = new MavenXpp3Reader();
+    	Model model;
+		try {
+			model = reader.read(pomXml);
+		} catch (XmlPullParserException e) {
+			throw new IOException(e);
+		}
+    	return model.getDependencies();
     }
 
     void overrideSettingsXml(String settingsXml) {
@@ -177,15 +411,17 @@ public class AetherUtils {
         return fetchDependencies(manager, repository, groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), repositoryDisplayString);
     }
 
-    private ArtifactResult fetchDependencies(RepositoryManager manager, CmrRepository repository, String groupId, String artifactId, String version, boolean fetchSingleArtifact, String repositoryDisplayString) {
-        MavenCoordinate mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
+    private ArtifactResult fetchDependencies(RepositoryManager manager, CmrRepository repository, 
+    		String groupId, String artifactId, String version, 
+    		boolean fetchSingleArtifact, String repositoryDisplayString) {
+    	
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
         log.debug("Overrides: "+overrides);
-        ArtifactContext context = getArtifactContext(mc);
+        ArtifactContext context = getArtifactContext(groupId, artifactId, version, null, null);
         if(overrides != null){
             ao = overrides.getArtifactOverrides(context);
-            log.debug(" ["+mc+"] => "+ao);
+            log.debug(" ["+context+"] => "+ao);
         }
         // entire replacement
         ArtifactContext replacementContext = null;
@@ -195,7 +431,7 @@ public class AetherUtils {
             replacementContext = overrides.replace(context);
         }
         if(replacementContext != null){
-            log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", mc, replacementContext));
+            log.debug(String.format("[Maven-Overrides] Replacing %s with %s.", context, replacementContext));
             // replace fetched dependency
             String[] nameToGroupArtifactIds = nameToGroupArtifactIds(replacementContext.getName());
             if(nameToGroupArtifactIds != null){
@@ -203,8 +439,7 @@ public class AetherUtils {
                 artifactId = nameToGroupArtifactIds[1];
                 version = replacementContext.getVersion();
                 // new AO
-                mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
-                context = getArtifactContext(mc);
+                context = getArtifactContext(groupId, artifactId, version, null, null);
                 ao = overrides.getArtifactOverrides(context);
             }
         }
@@ -212,15 +447,12 @@ public class AetherUtils {
         if(overrides != null && overrides.isVersionOverridden(context)){
             version = overrides.getVersionOverride(context);
             context.setVersion(version);
-            mc = MavenCoordinates.createCoordinate(groupId, artifactId, version, PackagingType.JAR, null);
         }
 
         final String name = toCanonicalForm(groupId, artifactId);
         final String coordinates = toCanonicalForm(name, version);
         try {
-            final MavenStrategyStage mss = getResolver().resolve(coordinates);
-            final MavenFormatStage mfs = mss.using(SCOPED_STRATEGY);
-            final MavenResolvedArtifact info = mfs.asSingleResolvedArtifact();
+        	DependencyNode info = getDependencies(groupId, artifactId, version, fetchSingleArtifact);
             if (info == null) {
                 log.debug("No artifact found: " + coordinates);
                 return null;
@@ -228,49 +460,30 @@ public class AetherUtils {
 
             final SingleArtifactResult result;
             if (fetchSingleArtifact) {
-                result = new SingleArtifactResult(repository, name, version, info.asFile(), repositoryDisplayString);
+                result = new SingleArtifactResult(repository, name, version, info.getArtifact().getFile(), repositoryDisplayString);
             } else {
                 final List<ArtifactResult> dependencies = new ArrayList<>();
 
-                final MavenArtifactInfo[] infos = info.getDependencies();
-                for (MavenArtifactInfo dep : infos) {
-                    final MavenCoordinate dCo = dep.getCoordinate();
+                for (DependencyNode dep : info.getChildren()) {
+                    final Artifact dCo = dep.getArtifact();
                     String dGroupId = dCo.getGroupId();
                     String dArtifactId = dCo.getArtifactId();
                     String dVersion = dCo.getVersion();
                     boolean export = false;
-                    boolean optional = false;
-                    try {
-                        optional = dep.isOptional();
-                    } catch (NoSuchMethodError e) {
-                        e.printStackTrace();
-                        String locationMessage = "";
-                        Class clazz = dep.getClass();
-                        ProtectionDomain d = clazz.getProtectionDomain();
-                        if (d != null) {
-                            CodeSource cs = d.getCodeSource();
-                            if (cs != null) {
-                                URL locationURL = cs.getLocation();
-                                if (locationURL != null) {
-                                    locationMessage = " loaded from : " + locationURL.toString();
-                                }
-                            }
-                        }
-                        System.err.println("MavenArtifactInfo class : " + clazz.getName() + locationMessage);
-                    }
+                    boolean optional = dep.getDependency().isOptional();
                     boolean isCeylon = false;
                     ArtifactContext dContext = null;
                     if(overrides != null)
-                        dContext = getArtifactContext(dCo);
+                        dContext = getArtifactContext(dGroupId, dArtifactId, dVersion, null, null);
 
                     if (overrides != null) {
                         if (overrides.isRemoved(dContext) 
                                 || (ao != null && ao.isRemoved(dContext))) {
-                            log.debug(String.format("[Maven-Overrides] Removing %s from %s.", dCo, mc));
+                            log.debug(String.format("[Maven-Overrides] Removing %s from %s.", dCo, context));
                             continue; // skip dependency
                         }
                         if (ao != null && ao.isAddedOrUpdated(dContext)) {
-                            log.debug(String.format("[Maven-Overrides] Replacing %s from %s.", dCo, mc));
+                            log.debug(String.format("[Maven-Overrides] Replacing %s from %s.", dCo, context));
                             continue; // skip dependency
                         }
                         ArtifactContext replace = overrides.replace(dContext);
@@ -312,11 +525,11 @@ public class AetherUtils {
                         String dVersion = overrides.getVersionOverride(dContext);
                         dependencies.add(createArtifactResult(manager, repository, dContext, dVersion, 
                                 addon.isShared(), addon.isOptional(), repositoryDisplayString));
-                        log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getArtifactContext(), mc));
+                        log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getArtifactContext(), context));
                     }
                 }
 
-                result = new AetherArtifactResult(repository, name, version, info.asFile(), dependencies, repositoryDisplayString);
+                result = new AetherArtifactResult(repository, name, version, info.getArtifact().getFile(), dependencies, repositoryDisplayString);
             }
 
             if (ao != null && ao.getFilter() != null) {
@@ -326,38 +539,43 @@ public class AetherUtils {
             return result;
         } catch (IOException e) {
             throw new IllegalStateException(e);
-        } catch (ResolutionException e) {
-            log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
-            return null;
-        }
+        } catch (org.eclipse.aether.RepositoryException e) {
+          log.debug("Could not resolve artifact [" + coordinates + "] : " + e);
+          return null;
+		}
     }
 
-    public void search(String groupId, String artifactId, String version, ModuleVersionResult result, Overrides overrides, String repositoryDisplayString){
-        MavenResolverSystem resolver = getResolver();
+    public void search(String groupId, String artifactId, String version, ModuleVersionResult result, 
+    		Overrides overrides, String repositoryDisplayString){
+
+    	try{
         if(version == null || version.isEmpty()){
-            MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":(,)");
-            List<MavenCoordinate> versions = resolveVersionRange.getVersions();
-            for(MavenCoordinate co : versions){
-                if(co.getVersion() != null && !co.getVersion().isEmpty())
-                    addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, overrides, repositoryDisplayString);
+        	List<Version> versions = resolveVersionRange(groupId, artifactId, "(,)");
+            for(Version co : versions){
+            	String resolvedVersion = co.toString();
+                if(resolvedVersion != null && !resolvedVersion.isEmpty())
+                    addSearchResult(groupId, artifactId, resolvedVersion, result, overrides, repositoryDisplayString);
             }
         }else{
             try{
-                MavenVersionRangeResult resolveVersionRange = resolver.resolveVersionRange(groupId+":"+artifactId+":["+version+",]");
-                List<MavenCoordinate> versions = resolveVersionRange.getVersions();
-                for(MavenCoordinate co : versions){
+            	List<Version> versions = resolveVersionRange(groupId, artifactId, "["+version+",]");
+                for(Version co : versions){
+                	String resolvedVersion = co.toString();
                     // make sure the version matches because with maven if we ask for [1,] we also get 2.x
-                    if(co.getVersion() != null && co.getVersion().startsWith(version))
-                        addSearchResult(co.getGroupId(), co.getArtifactId(), co.getVersion(), result, overrides, repositoryDisplayString);
+                    if(resolvedVersion != null && resolvedVersion.startsWith(version))
+                        addSearchResult(groupId, artifactId, resolvedVersion, result, overrides, repositoryDisplayString);
                 }
             }catch(VersionResolutionException x){
                 // if we got a checksum error (like for jetty) we retry with a fixed version query
                 addSearchResult(groupId, artifactId, version, result, overrides, repositoryDisplayString);
             }
         }
+        } catch (org.eclipse.aether.RepositoryException e) {
+            log.debug("Could not search for artifact versions [" + groupId+":"+artifactId+":"+version + "] : " + e);
+  		}
     }
 
-    private void addSearchResult(String groupId, String artifactId, String version, ModuleVersionResult result, Overrides overrides, String repositoryDisplayString) {
+    private void addSearchResult(String groupId, String artifactId, String version, ModuleVersionResult result, Overrides overrides, String repositoryDisplayString) throws org.eclipse.aether.RepositoryException {
         ArtifactOverrides artifactOverrides = null;
         if(overrides != null){
             ArtifactContext ctx = new ArtifactContext(groupId+":"+artifactId, version);
@@ -378,10 +596,7 @@ public class AetherUtils {
             }
             artifactOverrides = overrides.getArtifactOverrides(ctx);
         }
-        MavenResolverSystem resolver = getResolver();
-        final MavenStrategyStage mss = resolver.resolve(groupId+":"+artifactId+":"+version);
-        final MavenFormatStage mfs = mss.using(SCOPED_STRATEGY);
-        final MavenResolvedArtifact info = mfs.asSingleResolvedArtifact();
+    	DependencyNode info = getDependencies(groupId, artifactId, version, null, "pom", false);
         if(info != null){
             StringBuilder description = new StringBuilder();
             StringBuilder licenseBuilder = new StringBuilder();
@@ -390,12 +605,12 @@ public class AetherUtils {
             Set<ModuleVersionArtifact> artifactTypes = new HashSet<>();
             artifactTypes.add(new ModuleVersionArtifact(".jar", null, null));
             Set<String> authors = new HashSet<>();
-            for(MavenArtifactInfo dep : info.getDependencies()){
-                MavenCoordinate depCo = dep.getCoordinate();
+            for(DependencyNode dep : info.getChildren()){
+                Artifact depCo = dep.getArtifact();
                 String depName = depCo.getGroupId()+":"+depCo.getArtifactId();
                 String depVersion = depCo.getVersion();
                 boolean export = false;
-                boolean optional = dep.isOptional();
+                boolean optional = dep.getDependency().isOptional();
                 if(overrides != null){
                     ArtifactContext depCtx = new ArtifactContext(depName, depCo.getVersion());
                     if(overrides.isRemoved(depCtx)
@@ -435,37 +650,34 @@ public class AetherUtils {
         }
     }
 
-    private void collectInfo(MavenResolvedArtifact info, StringBuilder description, StringBuilder licenseBuilder) {
-        File jarFile = info.asFile();
-        if(jarFile != null && jarFile.getName().endsWith(".jar")){
-            File pomFile = new File(jarFile.getParentFile(), jarFile.getName().substring(0, jarFile.getName().length()-4)+".pom");
-            if(pomFile.exists()){
-                try(InputStream is = new FileInputStream(pomFile)) {
-                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                    Document doc = dBuilder.parse(is);
-                    doc.getDocumentElement().normalize();
-                    Element root = doc.getDocumentElement();
-                    collectText(root, description, "name", "description", "url");
-                    Element licenses = getFirstElement(root, "licenses");
-                    if(licenses != null){
-                        Element license = getFirstElement(licenses, "license");
-                        if(license != null){
-                            collectText(license, licenseBuilder, "name", "url");
-                        }
-                    }
-                } catch (IOException e) {
-                    // ignore, no info
-                    e.printStackTrace();
-                } catch (ParserConfigurationException e) {
-                    // ignore, no info
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    // ignore, no info
-                    e.printStackTrace();
-                }
-            };
-        }
+    private void collectInfo(DependencyNode info, StringBuilder description, StringBuilder licenseBuilder) {
+        File pomFile = info.getArtifact().getFile();
+        if(pomFile != null && pomFile.exists()){
+        	try(InputStream is = new FileInputStream(pomFile)) {
+        		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        		Document doc = dBuilder.parse(is);
+        		doc.getDocumentElement().normalize();
+        		Element root = doc.getDocumentElement();
+        		collectText(root, description, "name", "description", "url");
+        		Element licenses = getFirstElement(root, "licenses");
+        		if(licenses != null){
+        			Element license = getFirstElement(licenses, "license");
+        			if(license != null){
+        				collectText(license, licenseBuilder, "name", "url");
+        			}
+        		}
+        	} catch (IOException e) {
+        		// ignore, no info
+        		e.printStackTrace();
+        	} catch (ParserConfigurationException e) {
+        		// ignore, no info
+        		e.printStackTrace();
+        	} catch (SAXException e) {
+        		// ignore, no info
+        		e.printStackTrace();
+        	}
+        };
     }
 
     private String getText(Element element, String childName){
@@ -495,17 +707,10 @@ public class AetherUtils {
         }
     }
     
-    private ArtifactContext getArtifactContext(MavenCoordinate mc){
-        String packaging;
-        if(mc.getPackaging() == PackagingType.JAR)
-            packaging = null; // that's the default for us
-        else
-            // FIXME: is this extension?
-            packaging = mc.getPackaging().getExtension();
-        String classifier = mc.getClassifier();
+    private ArtifactContext getArtifactContext(String groupId, String artifactId, String version, String packaging, String classifier){
         if(classifier != null && classifier.isEmpty())
             classifier = null;
-        return Overrides.createMavenArtifactContext(mc.getGroupId(), mc.getArtifactId(), mc.getVersion(),
+        return Overrides.createMavenArtifactContext(groupId, artifactId, version,
                 packaging, classifier);
     }
 
@@ -558,15 +763,13 @@ public class AetherUtils {
         final String name = toCanonicalForm(groupId, artifactId);
         final String coordinates = toCanonicalForm(toCanonicalForm(toCanonicalForm(name, "jar"), classifier), version);
         try {
-            final MavenStrategyStage source_mss = getResolver().resolve(coordinates);
-            final MavenFormatStage source_mfs = source_mss.using(SCOPED_STRATEGY);
-            final MavenResolvedArtifact info = source_mfs.asSingleResolvedArtifact();
+        	DependencyNode info = getDependencies(groupId, artifactId, version, classifier, "jar", true);
             if (info != null) {
-                return new SingleArtifactResult(repository, name, version, info.asFile(), repositoryDisplayString);
+                return new SingleArtifactResult(repository, name, version, info.getArtifact().getFile(), repositoryDisplayString);
             }
-        } catch (ResolutionException e) {
-            log.debug("Could not resolve " + classifier + " for artifact [" + coordinates + "] : " + e);
-        }
+        } catch (org.eclipse.aether.RepositoryException e) {
+        	log.debug("Could not resolve " + classifier + " for artifact [" + coordinates + "] : " + e);
+		}
 
         log.debug("No artifact found: " + coordinates);
         return null;
@@ -599,19 +802,6 @@ public class AetherUtils {
         }
 
         return "classpath:settings.xml";
-    }
-
-    private MavenResolverSystem getResolver() {
-        ClassLoader classLoader = AetherUtils.class.getClassLoader();
-        if (classLoader == null)
-            classLoader = ClassLoader.getSystemClassLoader();
-
-        ConfigurableMavenResolverSystem factory = Resolvers.use(ConfigurableMavenResolverSystem.class, classLoader).workOffline(offline);
-        if (settingsXml.startsWith("classpath:")) {
-            return factory.fromClassloaderResource(settingsXml.substring(10), classLoader);
-        } else {
-            return factory.fromFile(settingsXml);
-        }
     }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {

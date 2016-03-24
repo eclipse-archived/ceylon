@@ -19,7 +19,6 @@ package ceylon.modules.jboss.runtime;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -74,13 +73,32 @@ public class CeylonModuleLoader extends ModuleLoader
     private static final ModuleIdentifier COMPILER;
     private static final ModuleIdentifier LANGTOOLS_CLASSFILE;
     private static final ModuleIdentifier TOOL_PROVIDER;
-    private static final ModuleIdentifier MAVEN;
     private static final ModuleIdentifier MODULES;
     private static final ModuleIdentifier LOGMANAGER;
     private static final ModuleIdentifier RUNTIME;
     private static final ModuleIdentifier ANTLR_ANTLR;
     private static final ModuleIdentifier ANTLR_STRINGTEMPLATE;
     private static final ModuleIdentifier ANTLR_RUNTIME;
+    // Maven support
+    private static final ModuleIdentifier AETHER_API;
+    private static final ModuleIdentifier AETHER_SPI;
+    private static final ModuleIdentifier AETHER_UTIL;
+    private static final ModuleIdentifier AETHER_IMPL;
+    private static final ModuleIdentifier AETHER_CONNECTOR_BASIC;
+    private static final ModuleIdentifier AETHER_TRANSPORT_FILE;
+    private static final ModuleIdentifier AETHER_TRANSPORT_HTTP;
+    private static final ModuleIdentifier GUAVA;
+    private static final ModuleIdentifier COMMONS_LANG3;
+    private static final ModuleIdentifier MAVEN_ARTIFACT;
+    private static final ModuleIdentifier MAVEN_MODEL;
+    private static final ModuleIdentifier MAVEN_MODEL_BUILDER;
+    private static final ModuleIdentifier MAVEN_REPOSITORY_METADATA;
+    private static final ModuleIdentifier MAVEN_BUILDER_SUPPORT;
+    private static final ModuleIdentifier MAVEN_SETTINGS;
+    private static final ModuleIdentifier MAVEN_SETTINGS_BUILDER;
+    private static final ModuleIdentifier MAVEN_AETHER_PROVIDER;
+    private static final ModuleIdentifier PLEXUS_INTERPOLATION;
+    private static final ModuleIdentifier PLEXUS_UTILS;
 
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
@@ -100,7 +118,28 @@ public class CeylonModuleLoader extends ModuleLoader
         COMPILER = ModuleIdentifier.create("com.redhat.ceylon.compiler.java", defaultVersion);
         LANGTOOLS_CLASSFILE = ModuleIdentifier.create("com.redhat.ceylon.langtools.classfile", defaultVersion);
         TOOL_PROVIDER = ModuleIdentifier.create("com.redhat.ceylon.tool.provider", defaultVersion);
-        MAVEN = ModuleIdentifier.create("com.redhat.ceylon.maven-support", "2.0");
+        
+        // Maven support
+        AETHER_API = ModuleIdentifier.create("org.eclipse.aether.aether-api", "1.1.0");
+        AETHER_SPI = ModuleIdentifier.create("org.eclipse.aether.aether-spi", "1.1.0");
+        AETHER_UTIL = ModuleIdentifier.create("org.eclipse.aether.aether-util", "1.1.0");
+        AETHER_IMPL = ModuleIdentifier.create("org.eclipse.aether.aether-impl", "1.1.0");
+        AETHER_CONNECTOR_BASIC = ModuleIdentifier.create("org.eclipse.aether.aether-connector-basic", "1.1.0");
+        AETHER_TRANSPORT_FILE = ModuleIdentifier.create("org.eclipse.aether.aether-transport-file", "1.1.0");
+        AETHER_TRANSPORT_HTTP = ModuleIdentifier.create("org.eclipse.aether.aether-transport-http", "1.1.0");
+        GUAVA = ModuleIdentifier.create("com.google.guava.guava", "18.0");
+        COMMONS_LANG3 = ModuleIdentifier.create("org.apache.commons.lang3", "3.4");
+        MAVEN_ARTIFACT = ModuleIdentifier.create("org.apache.maven.maven-artifact", "3.3.9");
+        MAVEN_MODEL = ModuleIdentifier.create("org.apache.maven.maven-model", "3.3.9");
+        MAVEN_MODEL_BUILDER = ModuleIdentifier.create("org.apache.maven.maven-model-builder", "3.3.9");
+        MAVEN_REPOSITORY_METADATA = ModuleIdentifier.create("org.apache.maven.maven-repository-metadata", "3.3.9");
+        MAVEN_BUILDER_SUPPORT = ModuleIdentifier.create("org.apache.maven.maven-builder-support", "3.3.9");
+        MAVEN_SETTINGS = ModuleIdentifier.create("org.apache.maven.maven-settings", "3.3.9");
+        MAVEN_SETTINGS_BUILDER = ModuleIdentifier.create("org.apache.maven.maven-settings-builder", "3.3.9");
+        MAVEN_AETHER_PROVIDER = ModuleIdentifier.create("org.apache.maven.maven-aether-provider", "3.3.9");
+        PLEXUS_INTERPOLATION = ModuleIdentifier.create("org.codehaus.plexus.plexus-interpolation", "1.22");
+        PLEXUS_UTILS = ModuleIdentifier.create("org.codehaus.plexus.plexus-utils", "3.0.22");
+        
         MODULES = ModuleIdentifier.create("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION);
         LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION);
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
@@ -119,13 +158,32 @@ public class CeylonModuleLoader extends ModuleLoader
         BOOTSTRAP.add(COMPILER);
         BOOTSTRAP.add(LANGTOOLS_CLASSFILE);
         BOOTSTRAP.add(TOOL_PROVIDER);
-        BOOTSTRAP.add(MAVEN);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
         BOOTSTRAP.add(ANTLR_RUNTIME);
         BOOTSTRAP.add(ANTLR_ANTLR);
         BOOTSTRAP.add(ANTLR_STRINGTEMPLATE);
+        // Maven support
+        BOOTSTRAP.add(AETHER_API);
+        BOOTSTRAP.add(AETHER_SPI);
+        BOOTSTRAP.add(AETHER_UTIL);
+        BOOTSTRAP.add(AETHER_IMPL);
+        BOOTSTRAP.add(AETHER_CONNECTOR_BASIC);
+        BOOTSTRAP.add(AETHER_TRANSPORT_FILE);
+        BOOTSTRAP.add(AETHER_TRANSPORT_HTTP);
+        BOOTSTRAP.add(GUAVA);
+        BOOTSTRAP.add(COMMONS_LANG3);
+        BOOTSTRAP.add(MAVEN_ARTIFACT);
+        BOOTSTRAP.add(MAVEN_MODEL);
+        BOOTSTRAP.add(MAVEN_MODEL_BUILDER);
+        BOOTSTRAP.add(MAVEN_REPOSITORY_METADATA);
+        BOOTSTRAP.add(MAVEN_BUILDER_SUPPORT);
+        BOOTSTRAP.add(MAVEN_SETTINGS);
+        BOOTSTRAP.add(MAVEN_SETTINGS_BUILDER);
+        BOOTSTRAP.add(MAVEN_AETHER_PROVIDER);
+        BOOTSTRAP.add(PLEXUS_INTERPOLATION);
+        BOOTSTRAP.add(PLEXUS_UTILS);
         
 
         Set<String> jdkPaths = new HashSet<>();
@@ -173,9 +231,7 @@ public class CeylonModuleLoader extends ModuleLoader
         // The runtime model needs knowledge of these modules existing at runtime, since the language module
         // implementation contains types from these modules
         ModuleLoader bootModuleLoader = org.jboss.modules.Module.getBootModuleLoader();
-        for (ModuleIdentifier initialModule : Arrays.asList(LANGUAGE, COMMON, MODEL, TYPECHECKER, COMPILER, CMR,
-        	LANGTOOLS_CLASSFILE, TOOL_PROVIDER,
-            ANTLR_ANTLR, ANTLR_RUNTIME, ANTLR_STRINGTEMPLATE, LOGMANAGER, RUNTIME, MAVEN)) {
+        for (ModuleIdentifier initialModule : BOOTSTRAP) {
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
             UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module), false);
