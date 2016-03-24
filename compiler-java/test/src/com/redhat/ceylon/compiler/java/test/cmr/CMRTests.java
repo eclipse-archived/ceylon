@@ -795,7 +795,8 @@ public class CMRTests extends CompilerTests {
         assertEquals(Boolean.TRUE, ceylonTask.call());
         compareErrors(collector.get(Diagnostic.Kind.WARNING), 
                 new CompilerError(Diagnostic.Kind.WARNING, null, 21, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
-                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2 -> ceylon.language -> com.redhat.ceylon.module-resolver') and 'org.apache.httpcomponents:httpclient/4.3.3' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2')")
+                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> org.apache.httpcomponents.httpclient') and 'org.apache.httpcomponents:httpclient/4.3.3' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2')")
+
         );
     }
 
