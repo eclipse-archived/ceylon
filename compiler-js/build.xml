@@ -128,6 +128,7 @@
             <classpath>
                 <pathelement location="${ceylon.common.lib}" />
                 <pathelement location="${ceylon.model.lib}" />
+                <pathelement location="${ceylon.cli.lib}" />
                 <pathelement location="${ceylon.typechecker.lib}" />
                 <pathelement location="${ceylon.module-resolver.lib}" />
                 <pathelement location="${ceylon.compiler.lib}" />
