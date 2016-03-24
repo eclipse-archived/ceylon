@@ -78,12 +78,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 	protected boolean loadModule(String moduleName, String moduleVersion, boolean optional) throws IOException {
 		boolean success = false;
 		if (moduleVersion != null) {
-			success = true;
-			success &= internalLoadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
-            success &= internalLoadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule(moduleName, moduleVersion, false);
+			success = internalLoadModule(moduleName, moduleVersion, false);
 		}
 		
 		return success;
