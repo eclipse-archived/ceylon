@@ -104,7 +104,7 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.langtools.classfile.java"/>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.langtools.classfile"/>
                 <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.langtools.classfile.version}.${qualifier}"/>
             </manifest>
         </jar>
