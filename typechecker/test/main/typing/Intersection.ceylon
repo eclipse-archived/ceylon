@@ -131,10 +131,14 @@ class Intersection() {
     @type:"Nothing" intersect(1, "hello");
     @type:"Nothing" intersect(null, {"hello"});
     @type:"Integer" intersect(1, 3);
-    String[] onestring = [String("hello")];
-    @type:"Intersection.Float&Sequential<Intersection.String>" intersect(Float(), onestring);
-    S[] ones = ["hello"];
-    @type:"Intersection.Float&Sequential<String>" intersect(Float(), ones);
+    String[] onestring1 = [String("hello")];
+    @type:"Nothing" intersect(Float(), onestring1);
+    S[] ones1 = ["hello"];
+    @type:"Nothing" intersect(Float(), ones1);
+    {String*} onestring2 = [String("hello")];
+    @type:"Intersection.Float&Iterable<Intersection.String,Null>" intersect(Float(), onestring2);
+    {S*} ones2 = ["hello"];
+    @type:"Intersection.Float&Iterable<String,Null>" intersect(Float(), ones2);
     @type:"Nothing" intersect(Float(), ["hello"]);
     @type:"Nothing" intersect(I({"hello"}), I({}));
     
@@ -201,3 +205,23 @@ class Wrapper() {
         }
     }
 }
+
+shared void intersectAlias() {
+    // #5981
+    alias A => String?|String?();
+    A a = "a";
+    if(exists a) {
+        String | String?() aa = a;
+    }
+    if(is A & Object a) {
+        String | String?() aa = a;
+    }
+
+    alias ISN1 => Integer | String | Null;
+    alias ISN2 => Integer | <String | Null>;
+    ISN1 isn1 = "a";
+    ISN2 isn2 = "a";
+    value v1 = isn1 is ISN1 & Object; // ok
+    value v2 = isn2 is ISN2 & Object; // throws
+}
+

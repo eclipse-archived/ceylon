@@ -1,0 +1,191 @@
+.tool-header {
+    float: left;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 4px 0 0 -16px;
+}
+
+.tool-header:HOVER {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tool-header:HOVER .tool-name {
+    color: rgb(242, 223, 183);
+}
+
+.tool-name {
+    color: rgb(250, 250, 250);
+    font-size: 20px;
+    font-weight: normal;
+    margin: 6px 5px 10px 5px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.tool-label,
+.tool-version {
+    color: rgb(160, 160, 160);
+    margin: 6px 6px 0 6px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.tool-logo {
+    display: inline-block;
+    background-image: url("ceylondoc-logo.png");
+    background-repeat: no-repeat;
+    height: 28px;
+    width: 28px;
+    margin-top: 3px;
+    margin-left: 3px;
+}
+
+.sub-navbar {
+    background-color: #EEE;
+    border-top: 1px solid rgb(190, 190, 190);
+    border-bottom: 1px solid rgb(190, 190, 190);
+    margin-bottom: 20px;
+}
+
+.sub-navbar-inner {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 14px 6px 0 20px;
+}
+
+.sub-navbar-tool {
+    color: #333;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.sub-navbar-summary {
+    color: #333;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.sub-navbar-menu {
+    margin-top: 1em;
+    text-align: center;
+    line-height: 15px;
+    position: relative;
+    top: -4px;
+}
+
+.sub-navbar-menu a {
+    color: rgb(80, 80, 80);
+    padding: 0 20px;
+}
+
+.sub-navbar-menu .accesskey {
+    color: #0088cc;
+}
+
+
+.section {
+    padding: 4px 0;
+}
+
+.table-header {
+    font-weight: bold;
+    background-color: #EEE;
+    color: #333;
+    cursor: pointer;
+}
+
+.table-header h2 {
+    font-size: 16px;
+    line-height: 0px;
+    display: inline;
+}
+
+.table-header code {
+    font-size: 13px;
+}
+
+code {
+    padding: 0px;
+    border: 0px;
+    color: #333; /* default bootstrap color is red */
+    background-color: inherit;
+}
+
+h3 code {
+	font-size: 12px;
+}
+
+table h3 {
+    font-size: 14px;
+}
+
+.table-header:HOVER {
+    background-color: rgb(232, 232, 232);
+}
+
+a code {
+    color: inherit;
+}
+
+.highlight {
+    background-color: rgb(191, 223, 255);
+}
+
+td>p:FIRST-CHILD {
+    margin: 0; /* HACK for markdown first paragraph */
+}
+
+[class^='icon-'] {
+    display: inline-block;
+    background-image: url("ceylondoc-icons.png");
+    background-repeat: no-repeat;
+    height: 16px;
+    width: 16px;
+    vertical-align: baseline;
+    margin-right: 4px;
+}
+
+td [class^='icon-'] {
+    vertical-align: text-top;
+}
+
+thead .icon-expand,
+thead .icon-collapse {
+    float: right;
+}
+
+.icon-none {
+    background-image: none;
+}
+
+.icon-info {
+    vertical-align: text-bottom;
+    background-position: -256px 0px;
+}
+
+.icon-expand {
+    background-position: -272px 0px;
+}
+
+.icon-collapse {
+    background-position: -288px 0px;
+}
+
+#info-dropdown-panel {
+    min-width: 300px;
+    padding: 16px;
+}
+
+#info-dropdown-panel .key {
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+    min-width: 10px;
+}
+
+#info-dropdown-panel .info {
+    position: relative;
+    top: -2px;
+}

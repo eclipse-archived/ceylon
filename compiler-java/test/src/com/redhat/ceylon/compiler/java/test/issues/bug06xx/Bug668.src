@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+public interface Bug668_X<Element, Nada> {
+    
+    public abstract .java.lang.Object getFirst();
+}
+public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<Element, .java.lang.Object> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$impl();
+    
+    @.java.lang.Override
+    public Element getFirst();
+}
+public final class Bug668_Y$impl<Element> implements .java.io.Serializable {
+    
+    public Bug668_Y$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public final Element getFirst() {
+        return null;
+    }
+}
+final class bug668_method_ {
+    
+    private bug668_method_() {
+    }
+    
+    static <Nada>void bug668_method(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, final Nada n) {
+        
+        final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y<.java.lang.Object>, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_X<.java.lang.Object, .java.lang.Object> {
+            
+            private obj_() {
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
+            }
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y$impl<? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object getFirst() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$this$.getFirst();
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug668_method_.class, $reified$Nada), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(obj_.class));
+            }
+        }
+        final obj_ obj = new obj_();
+    }
+}

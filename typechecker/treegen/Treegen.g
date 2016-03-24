@@ -83,9 +83,9 @@ subnode :
         ;
 
 field : t=TYPE_NAME f=FIELD_NAME
-          { println("        private com.redhat.ceylon.compiler.typechecker.model." + $t.text + " " + $f.text+ ";"); }
-          { println("        public com.redhat.ceylon.compiler.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
-          { println("        public void set" + initialUpper($f.text) + "(com.redhat.ceylon.compiler.typechecker.model." + $t.text + " value) { " + $f.text + " = value; }\n"); }
+          { println("        private com.redhat.ceylon.model.typechecker.model." + $t.text + " " + $f.text+ ";"); }
+          { println("        public com.redhat.ceylon.model.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + initialUpper($f.text) + "(com.redhat.ceylon.model.typechecker.model." + $t.text + " value) { " + $f.text + " = value; }\n"); }
         ';'
       | 'boolean' f=FIELD_NAME
           { println("        private boolean " + $f.text+ ";"); }
@@ -93,12 +93,12 @@ field : t=TYPE_NAME f=FIELD_NAME
           { println("        public void set" + initialUpper($f.text) + "(boolean value) { " + $f.text + " = value; }\n"); }
         ';'
       | l=TYPE_NAME '<' t=TYPE_NAME '>' f=FIELD_NAME
-          { println("        private " + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> " + $f.text+ ";"); }
-          { println("        public " + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
-          { println("        public void set" + initialUpper($f.text) + "(" + $l.text + "<com.redhat.ceylon.compiler.typechecker.model." + $t.text + "> value) { " + $f.text + " = value; }\n"); }
+          { println("        private " + $l.text + "<com.redhat.ceylon.model.typechecker.model." + $t.text + "> " + $f.text+ ";"); }
+          { println("        public " + $l.text + "<com.redhat.ceylon.model.typechecker.model." + $t.text + "> get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + initialUpper($f.text) + "(" + $l.text + "<com.redhat.ceylon.model.typechecker.model." + $t.text + "> value) { " + $f.text + " = value; }\n"); }
         ';'
       | 'abstract' t=TYPE_NAME f=FIELD_NAME
-          { println("        public abstract com.redhat.ceylon.compiler.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "();\n"); }
+          { println("        public abstract com.redhat.ceylon.model.typechecker.model." + $t.text + " get" + initialUpper($f.text) + "();\n"); }
         ';'
       ;
 

@@ -25,8 +25,15 @@ class LanguageModule() {
     @type:"Null|Integer" min(ints1);
     @type:"Null|Integer" min(ints2);
     
-    @type:"Empty|Tuple<Integer,Integer,Empty>" emptyOrSingleton(1);
-    @type:"Empty|Tuple<Nothing,Nothing,Empty>" emptyOrSingleton(null);
-    @type:"Empty|Tuple<Integer,Integer,Empty>" emptyOrSingleton(1==1 then 1);
+    @type:"[]" emptyOrSingleton(null);
+    @type:"[]|[Integer]" emptyOrSingleton(1);
+    @type:"[]|[Integer]" emptyOrSingleton(1==1 then 1);
+    
+    Nothing nt1 = [nothing];
+    Nothing nt2 = [nothing, nothing];
+    Nothing nt3 = [ for (i in 0..10) nothing ];
 
 }
+
+@error class Dumbthing() extends Anything() {}
+@error class Numbthing() extends Null() {}

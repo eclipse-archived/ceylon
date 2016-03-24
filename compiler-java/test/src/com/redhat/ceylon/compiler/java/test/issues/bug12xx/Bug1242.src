@@ -1,0 +1,73 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+class Bug1242<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1242(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    
+    Bug1242(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public <S>.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<T>.Y<S> Y$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+        return new Y<S>($reified$S, s);
+    }
+    
+    public class Y<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Y(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+            this.$reified$S = $reified$S;
+        }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.class, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.Y.class, $reified$S));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242.class, $reified$T);
+    }
+}
+final class testBug1242_ {
+    
+    private testBug1242_() {
+    }
+    
+    static void testBug1242() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Sequence<? extends .ceylon.language.Integer>> yi = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello")).<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>Y$new$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
+    }
+}
+final class bug1242_yi_ {
+    
+    private bug1242_yi_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Sequence<? extends .ceylon.language.Integer>> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello")).<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>Y$new$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>.Y<.ceylon.language.Sequence<? extends .ceylon.language.Integer>> get_() {
+        if (bug1242_yi_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1242_yi\' before it was set");
+        }
+    }
+}

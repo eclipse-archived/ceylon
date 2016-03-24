@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues;
+
+class Bug730 {
+    
+    Bug730() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Singleton<? extends .java.lang.Object>> $ceylontmp$values$1 = .com.redhat.ceylon.compiler.java.test.issues.Bug730.$init$values();
+                this($ceylontmp$values$1);
+            }
+            returning null;
+        );
+    }
+    
+    Bug730(.ceylon.language.Iterable<? extends .ceylon.language.Singleton<? extends .java.lang.Object>> values) {
+    }
+    
+    static .ceylon.language.Iterable<? extends .ceylon.language.Singleton<? extends .java.lang.Object>> $init$values() {
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    private final void m() {
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.Singleton<? extends .java.lang.Object>> $ceylontmp$values$3 = m$values();
+                m($ceylontmp$values$3);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.Iterable<? extends .ceylon.language.Singleton<? extends .java.lang.Object>> m$values() {
+        return (.ceylon.language.Iterable).ceylon.language.empty_.getEmpty();
+    }
+    
+    private final void m(final .ceylon.language.Iterable<? extends .ceylon.language.Singleton<? extends .java.lang.Object>> values) {
+    }
+}

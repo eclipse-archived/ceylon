@@ -22,3 +22,27 @@ void functionRefInference() {
         collecting = emptyOrSingleton; 
     };
 }
+
+void inf() {
+    void foo1<Bar>(void func(Bar b)){} 
+    @error foo1(void(b){});
+    void foo2<Bar>(Anything(Bar) b){}
+    @error foo2(void(b){});
+    
+    void fun<X>(X x) {}
+    Y accept1<Y>(void f(Y y)) { throw; }
+    Y accept2<Y>(Anything(Y) f) { throw; }
+    @type:"Nothing" accept1(fun);
+    @type:"Nothing" accept2(fun);
+}
+
+void g() {
+    value pl = plus;
+    [1,2,3].fold(0)(pl);
+    f("");
+    { "" }.each((a) => f(a));
+    { "" }.each(f);
+}
+
+void f<Absent>(Absent|String a)
+        given Absent satisfies Null => noop();

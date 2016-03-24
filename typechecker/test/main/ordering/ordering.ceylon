@@ -86,3 +86,14 @@ class S<T>() {
         shared T nawt=>nothing;
     }
 }
+
+class PolylineElement(model) satisfies Element<Polyline> {
+    shared actual Polyline model;
+}
+
+shared interface Element<ElementModel>{
+    shared formal ElementModel model;
+}
+
+alias Polyline => [Float[2]+];
+

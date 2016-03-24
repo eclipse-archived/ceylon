@@ -1,0 +1,44 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189;
+
+public final class runme_ {
+    
+    private runme_() {
+    }
+    
+    public static void runme() {
+        .ceylon.language.print_.print(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.get_());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.runme_.runme();
+    }
+}
+final class null_ {
+    
+    private null_() {
+    }
+    private static final .ceylon.language.Sequential<? extends .java.lang.Object> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Sequential<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Sequential<? extends .java.lang.Object> get_() {
+        if (null_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'null\' before it was set");
+        }
+    }
+}

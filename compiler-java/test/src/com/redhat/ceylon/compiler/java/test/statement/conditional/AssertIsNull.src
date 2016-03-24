@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertIsNull() {
+    }
+    
+    private final long owt$priv$(final .ceylon.language.Integer n) {
+        return 0L;
+    }
+    
+    private final long nowt$priv$(final .java.lang.Object n) {
+        return 0L;
+    }
+    
+    private final long m1$priv$(final .ceylon.language.Integer x) {
+        final long x$2;
+        .java.lang.Object x$1 = null;
+        if ((x$1 = x) != null) {
+            x$2 = ((.ceylon.language.Integer)x$1).longValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x"));
+        }
+        return x$2;
+    }
+    
+    private final long m2$priv$(final .ceylon.language.Integer x) {
+        final long y$5;
+        .java.lang.Object y$4 = null;
+        if ((y$4 = x) != null) {
+            y$5 = ((.ceylon.language.Integer)y$4).longValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x"));
+        }
+        return y$5;
+    }
+    
+    private final long m3$priv$(final .ceylon.language.Integer x) {
+        if (x == null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x"));
+        }
+        return nowt$priv$(x);
+    }
+    
+    private final long m4$priv$(final .ceylon.language.Integer x) {
+        final .java.lang.Object y$10;
+        .java.lang.Object y$9 = null;
+        if ((y$9 = x) == null) {
+            y$10 = y$9;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y=x"));
+        }
+        return nowt$priv$(y$10);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNull.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNull.class);
+}

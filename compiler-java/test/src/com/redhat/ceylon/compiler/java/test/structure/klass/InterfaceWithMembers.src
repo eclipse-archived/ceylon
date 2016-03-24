@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface InterfaceWithMembers {
+    
+    public abstract boolean getB();
+    
+    public abstract boolean getB2();
+    
+    public abstract void setB2(final boolean b2);
+    
+    public abstract .java.lang.Object m();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithMembers.class);
+}

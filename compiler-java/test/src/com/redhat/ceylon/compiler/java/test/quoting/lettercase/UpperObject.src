@@ -1,0 +1,90 @@
+package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Object
+public final class Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private Object() {
+        this.InnerObject = null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.get_();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class);
+    private transient .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject InnerObject;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Object
+    public final class InnerObject implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private InnerObject() {
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getInnerObject";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.this, .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.class, $name$);
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+        public final void m() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject.class));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object.InnerObject")
+    public final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject getInnerObject() {
+        if (InnerObject == null) InnerObject = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.InnerObject();
+        return InnerObject;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void m() {
+        getInnerObject().m();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
+    public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object get_() {
+        if (Object.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'Object\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.$TypeDescriptor$;
+    }
+}

@@ -1,7 +1,5 @@
 class Generics() {
     
-    @error String<> stringWith0Args;
-    
     class Holder<X>(X x) {
         shared X held = x;
         shared X add(X x, X y) {
@@ -227,19 +225,21 @@ class Generics() {
         shared actual formal String string;
     }
     
-    interface WithCovariant<out X> {}
+    interface WithCovariant<out X=Anything> {}
     class Good1<T>() satisfies WithCovariant<T> {}
     class Good2<out T>() satisfies WithCovariant<Producer<T>> {}
     class Good3<in T>() satisfies WithCovariant<Consumer<T>> {}
     @error class Bad1<in T>() satisfies WithCovariant<T> {}
     @error class Bad2<out T>() satisfies WithCovariant<Consumer<T>> {}
     
-    interface WithContravariant<in X> {}
+    interface WithContravariant<in X=Nothing> {}
     class Good4<T>() satisfies WithContravariant<T> {}
     class Good5<in T>() satisfies WithContravariant<Producer<T>> {}
     @error class Bad6<out T>() satisfies WithContravariant<Consumer<T>> {}
     @error class Bad3<out T>() satisfies WithContravariant<T> {}
     @error class Bad4<in T>() satisfies WithContravariant<Consumer<T>> {}
+    
+    interface WithInvariant<X> {}
     
     @error: "sealed interface"
     interface SequenceSequence<out T, out X> 
@@ -336,10 +336,20 @@ class Generics() {
     @error Generics.Producer<Holder> ghp = Generics.Producer<Holder>();
     @error Generics.Producer<Holder>? gohp = null;
     
-    @error object wc satisfies WithCovariant {}
-    @error object wch satisfies WithCovariant<Holder> {}
-    @error object gwc satisfies Generics.WithCovariant {}
-    @error object gwch satisfies Generics.WithCovariant<Holder> {}
+    @error object wc satisfies WithInvariant {}
+    @error object wch satisfies WithInvariant<Holder> {}
+    @error object gwc satisfies Generics.WithInvariant {}
+    @error object gwch satisfies Generics.WithInvariant<Holder> {}
+    
+    object wco satisfies WithCovariant {}
+    @error object wcho satisfies WithCovariant<Holder> {}
+    object gwco satisfies Generics.WithCovariant {}
+    @error object gwcho satisfies Generics.WithCovariant<Holder> {}
+    
+    object wci satisfies WithContravariant {}
+    @error object wchi satisfies WithContravariant<Holder> {}
+    object gwci satisfies Generics.WithContravariant {}
+    @error object gwchi satisfies Generics.WithContravariant<Holder> {}
     
     @error method<Holder>();
     @error this.method<Holder>();
@@ -700,3 +710,50 @@ class Covariant<out T>(T t) {
     }
 }
 
+U foome<U>(U u, U v) 
+        given U satisfies Summable<U>{
+    @type:"Integer" foome(1,2);
+    @type:"String" foome("x", "y");
+    @error foome(1.0,"");
+    return u;
+}
+
+U barme<V,U>(U u, U v, V w) 
+        given U
+        given V satisfies List<U> {
+    @type:"Integer" barme(1,2, [1,2]);
+    @type:"String" barme("x", "y", []);
+    @type:"Float|Integer" barme(1.0,2.0, [1]);
+    @type:"Float|Character" barme(1.0,2.0, "");
+    @error barme(1.0,2.0, 7);
+    return u;
+}
+
+void upperBoundSubstitution() {
+    abstract class C<W,V,I,J>() {}
+    
+    interface A<T,Q> {
+        shared formal void fun<R, S>()
+                given R satisfies C<S,T,R,Q>;
+    }
+    
+    class B<P>() 
+            satisfies A<String,P> {
+        shared actual void fun<X, Y>()
+                given X satisfies C<Y,String,X,P> {}
+    }
+}
+
+class WithUpperBoundConstraint<out T>() 
+        given T satisfies String {}
+
+void testWithUpperBoundConstraint() {
+    class Test1() extends WithUpperBoundConstraint<String>() {}
+    @error
+    class Test2() extends WithUpperBoundConstraint<Object>() {}
+    WithUpperBoundConstraint<Anything> test1 = 
+            WithUpperBoundConstraint<String>();
+    @error
+    WithUpperBoundConstraint<Anything> test2 = 
+            WithUpperBoundConstraint<Anything>();
+}

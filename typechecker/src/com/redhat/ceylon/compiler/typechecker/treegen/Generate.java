@@ -43,7 +43,7 @@ public class Generate {
         BuildergenParser parser = new BuildergenParser(tokens);
         File out = new File( GENERATED_PACKAGE_DIR + "Builder.java" );
         out.createNewFile();
-        Util.out=new PrintStream(out);
+        AnalyzerUtil.out=new PrintStream(out);
         parser.nodeList();
     }*/
     

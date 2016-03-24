@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("Zero")
+public final class Zero {
+    
+    private Zero() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public static long get_() {
+        if (Zero.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'Zero\' before it was set");
+        }
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("Zero")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long Zero) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = Zero;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("One")
+public final class One {
+    
+    private One() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static long get_() {
+        return 1L;
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("One")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long One) {
+    }
+}

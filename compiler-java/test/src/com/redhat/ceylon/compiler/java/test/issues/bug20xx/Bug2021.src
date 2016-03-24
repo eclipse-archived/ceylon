@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+public final class bug2021_ {
+    
+    private bug2021_() {
+    }
+    
+    public static void bug2021() {
+        {
+            .ceylon.language.Sequential sel$0 = .ceylon.language.process_.get_().getArguments();
+            if (sel$0 instanceof .ceylon.language.Empty) {
+                final .ceylon.language.Empty args$2 = (.ceylon.language.Empty)sel$0;
+            } else {
+                final .ceylon.language.Sequence<? extends .ceylon.language.String> args$1 = (.ceylon.language.Sequence)sel$0;
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2021_.bug2021();
+    }
+}

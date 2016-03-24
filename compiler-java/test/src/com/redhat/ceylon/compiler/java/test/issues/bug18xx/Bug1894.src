@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+final class feature_ {
+    
+    private feature_() {
+    }
+    
+    static <R>.ceylon.language.Callable<? extends .java.lang.Object> feature(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return null;
+            }
+        };
+    }
+}
+public final class fun_ {
+    
+    private fun_() {
+    }
+    
+    public static void fun() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+            }
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug18xx.feature_.<.java.lang.Object>feature(arg$0$reified$0);
+        ).$call$();
+        final .ceylon.language.Callable<? extends .java.lang.Object> callable = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+            }
+            returning .com.redhat.ceylon.compiler.java.test.issues.bug18xx.feature_.<.java.lang.Object>feature(arg$1$reified$0);
+        );
+        callable.$call$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.fun_.fun();
+    }
+}

@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 
@@ -28,20 +30,29 @@ public class TypeCheckerBuilder {
     private boolean statistics = false;
     private String encoding;
     private List<VirtualFile> srcDirectories = new ArrayList<VirtualFile>();
-    private final VFS vfs = new VFS();
+    private List<VirtualFile> srcFiles = null;
+    private final VFS vfs;
     private boolean verifyDependencies = true;
-    private AssertionVisitor assertionVisitor = new AssertionVisitor() { 
-        @Override protected boolean includeUnsupportedErrors() {
-            return false;
+    private AssertionVisitor assertionVisitor = new AssertionVisitor() {
+        @Override
+        protected boolean includeError(Message err, int phase) {
+            return !(phase == 3 && err instanceof UnsupportedError);
         }
+        
     };
     private ModuleManagerFactory moduleManagerFactory;
     private RepositoryManager repositoryManager;
     private List<String> moduleFilters = new ArrayList<String>();
 
-    public TypeCheckerBuilder() {}
+    public TypeCheckerBuilder(VFS vfs) {
+        this.vfs = vfs != null ? vfs : new VFS();
+    }
 
-	/**
+    public TypeCheckerBuilder() {
+        vfs = new VFS();
+    }
+
+    /**
 	 * Let's you add a directory or a file.
 	 * Directories are better as the type checker can extract the context like module name, package etc
 	 */
@@ -58,13 +69,26 @@ public class TypeCheckerBuilder {
         return this;
     }
 
-    public void setRepositoryManager(RepositoryManager repositoryManager) {
+    public TypeCheckerBuilder setRepositoryManager(RepositoryManager repositoryManager) {
         this.repositoryManager = repositoryManager;
+        return this;
     }
 
     public TypeCheckerBuilder setModuleFilters(List<String> moduleFilters){
         this.moduleFilters.clear();
         this.moduleFilters.addAll(moduleFilters);
+        return this;
+    }
+
+    public TypeCheckerBuilder setSourceFiles(List<File> srcFiles){
+        if (srcFiles != null) {
+            this.srcFiles = new ArrayList<VirtualFile>();
+            for (File src : srcFiles) {
+                this.srcFiles.add(vfs.getFromFile(src));
+            }
+        } else {
+            this.srcFiles = null;
+        }
         return this;
     }
     
@@ -133,7 +157,7 @@ public class TypeCheckerBuilder {
                     .buildManager();
         }
         return new TypeChecker(vfs, srcDirectories, repositoryManager, verifyDependencies, assertionVisitor,
-                moduleManagerFactory, verbose, statistics, moduleFilters, encoding);
+                moduleManagerFactory, verbose, statistics, moduleFilters, srcFiles, encoding);
     }
 
 }

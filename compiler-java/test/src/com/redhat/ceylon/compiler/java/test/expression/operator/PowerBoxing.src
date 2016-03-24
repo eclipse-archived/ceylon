@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class powerBoxing_ {
+    
+    private powerBoxing_() {
+    }
+    
+    static <T extends .ceylon.language.Exponentiable<T, .ceylon.language.Integer>>void powerBoxing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Exponentiable<.ceylon.language.Integer, .ceylon.language.Integer> intSelf, final .ceylon.language.Exponentiable<.ceylon.language.Float, .ceylon.language.Float> floatSelf, final T exponentiable) {
+        final long exp = 2L;
+        final long result2 = .ceylon.language.Integer.power(2L, exp);
+        final double result3 = .ceylon.language.Float.power(2.0, exp);
+        final double result4 = .ceylon.language.Float.power(2.0, 2.0);
+        final long result5 = .ceylon.language.Integer.power(((.ceylon.language.Integer)intSelf).longValue(), exp);
+        final double result6 = .ceylon.language.Float.power(((.ceylon.language.Float)floatSelf).doubleValue(), 2.0);
+        final T result7 = ((T)exponentiable).power(.ceylon.language.Integer.instance(exp));
+    }
+}

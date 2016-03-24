@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+final class bug586_ {
+    
+    private bug586_() {
+    }
+    
+    static void bug586() {
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> seq = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        final .ceylon.language.String s = (.ceylon.language.String)(.java.lang.Object)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$0$iterable$ = seq;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$0$iterator$ = spread$0$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$0$element$;
+                            if (!((spread$0$element$ = spread$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$0$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$0$element$).toString());
+                            }
+                            return spread$0$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        ).getFirst();
+    }
+}

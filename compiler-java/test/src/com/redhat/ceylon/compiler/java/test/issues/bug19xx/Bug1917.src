@@ -1,0 +1,126 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1917_ {
+    
+    private bug1917_() {
+    }
+    
+    static void bug1917() {
+        .java.lang.Object a = null;
+        final long b = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$op$0 = .ceylon.language.Integer.instance(2L);
+                a = $ceylontmp$op$0;
+            }
+            returning $ceylontmp$op$0;
+        ).longValue();
+        a = .ceylon.language.Integer.instance(2L);
+        .ceylon.language.String head = null;
+        .ceylon.language.String tail = null;
+        head = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$op$1 = null;
+                tail = $ceylontmp$op$1;
+            }
+            returning $ceylontmp$op$1;
+        );
+        head = (.ceylon.language.String)(
+            let
+            {
+                .java.lang.Object $ceylontmp$op$2 = .ceylon.language.nothing_.get_();
+                tail = (.ceylon.language.String)$ceylontmp$op$2;
+            }
+            returning $ceylontmp$op$2;
+        );
+    }
+}
+final class bug1917fails_ {
+    
+    private bug1917fails_() {
+    }
+    
+    static <Result>void bug1917fails(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> f) {
+        .java.lang.Object memo = null;
+        final Result x = (
+            let
+            {
+                Result $ceylontmp$op$3 = f.$call$();
+                memo = $ceylontmp$op$3;
+            }
+            returning $ceylontmp$op$3;
+        );
+    }
+}
+final class bug1917works_ {
+    
+    private bug1917works_() {
+    }
+    
+    static <Result>void bug1917works(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> f) {
+        .java.lang.Object memo = null;
+        final Result x = (Result)(
+            let
+            {
+                Result $ceylontmp$op$4 = f.$call$();
+                memo = $ceylontmp$op$4;
+            }
+            returning $ceylontmp$op$4;
+        );
+    }
+}
+class Bug1917Interop extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected Bug1917Interop() {
+        super();
+        this.dataSource = null;
+    }
+    
+    Bug1917Interop(final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java dataSource) {
+        super();
+        this.dataSource = dataSource;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java dataSource;
+    
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java getDataSource$priv$() {
+        return dataSource;
+    }
+    
+    public final long getLoginTimeout1() {
+        return getLoginTimeout();
+    }
+    
+    public final void setLoginTimeout1(final long loginTimeout1) {
+        (
+            let
+            {
+                long $ceylontmp$op$5 = loginTimeout1;
+                setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$5));
+            }
+            returning $ceylontmp$op$5;
+        );
+    }
+    
+    public final long getLoginTimeout2() {
+        return getDataSource$priv$().getLoginTimeout();
+    }
+    
+    public final void setLoginTimeout2(final long loginTimeout2) {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java $ceylontmp$opE$6 = getDataSource$priv$();
+                long $ceylontmp$opV$7 = loginTimeout2;
+                $ceylontmp$opE$6.setLoginTimeout(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$7));
+            }
+            returning $ceylontmp$opV$7;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Interop.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Interop.class);
+}

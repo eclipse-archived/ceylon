@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class MethodInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodInvocation() {
+    }
+    
+    public final void m() {
+        n$priv$();
+        o$priv$(1L);
+        p();
+    }
+    
+    private final void n$priv$() {
+        return;
+    }
+    
+    private final long o$priv$(final long oarg) {
+        return oarg;
+    }
+    
+    public final void p() {
+        return;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodInvocation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.MethodInvocation.class);
+}

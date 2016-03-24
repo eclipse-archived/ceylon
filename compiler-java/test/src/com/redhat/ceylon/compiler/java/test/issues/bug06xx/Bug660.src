@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+public final class bug660_ {
+    
+    private bug660_() {
+    }
+    
+    public static void bug660() {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.null_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return null;
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug660_.bug660();
+    }
+}

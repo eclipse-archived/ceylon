@@ -147,6 +147,9 @@ void test() {
     @type:"Float" value ptx = pt[0];
     @type:"Float" value pty = pt[1];
     @type:"Null" value ptz = pt[2];
+    
+    @type:"<String|Integer>[2]" value seq1 = [1,2] of <String|Integer>[2];
+    @type:"<String|Integer>[2]&Integer[]" value seq2 = [1,2] of <String|Integer>[2] & Integer[];
 }
 
 void testRanges() {
@@ -192,3 +195,9 @@ void badTupleTypeExpressions(
     @error [String=,String] yy, 
     @error Anything(String=,String) zz, 
     @error Anything(String,String=,String+) uu) {}
+
+void tupleOfIntegers([Integer, Integer, Integer] seq) {
+    for (element in seq) {
+        print(element + 5);
+    }
+}

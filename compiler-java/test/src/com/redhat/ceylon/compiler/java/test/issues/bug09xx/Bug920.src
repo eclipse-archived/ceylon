@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug920_Tuple<Element, First extends Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug920_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.first = null;
+    }
+    
+    Bug920_Tuple(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final First first) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.first = first;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First;
+    private final First first;
+    
+    public final First getFirst() {
+        return first;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple.class, $reified$Element, $reified$First);
+    }
+}
+final class bug920_ {
+    
+    private bug920_() {
+    }
+    
+    static void bug920(final .ceylon.language.Sequence p) {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple t = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug920_Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final long s = ((.ceylon.language.Integer)(.java.lang.Object)t.getFirst()).longValue();
+        final .java.lang.String s1 = ((.ceylon.language.String)(.java.lang.Object)p.getFirst()).toString();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Character> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)((.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.Character>>)p.getRest()).getFirst();
+    }
+}

@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.compiler.typechecker.exceptions.LanguageModuleNotFoundException;
-import com.redhat.ceylon.compiler.typechecker.model.Module;
-import com.redhat.ceylon.compiler.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
@@ -20,7 +20,7 @@ public class ModuleHelper {
             ModuleImport moduleImport,
             LinkedList<Module> dependencyTree,
             Exception exceptionOnGetArtifact,
-            ModuleManager moduleManager) {
+            ModuleSourceMapper moduleManagerUtil) {
         StringBuilder error = new StringBuilder("cannot find module ");
         if (CeylonUtils.arrayContains(artifactContext.getSuffixes(), ArtifactContext.SRC)) {
             error.append("source ");
@@ -44,14 +44,14 @@ public class ModuleHelper {
 //                    }
         error.append("\n\t- dependency tree: ");
         buildDependencyString(dependencyTree, module, error);
-        if ( module.getLanguageModule() == module ) {
+        if ( moduleManagerUtil.getContext().getModules().getLanguageModule() == module) {
             error.append("\n\tget ceylon.language and run 'ant publish' (more information at http://ceylon-lang.org/code/source/#ceylonlanguage_module)");
             //ceylon.language is essential to the type checker
             throw new LanguageModuleNotFoundException(error.toString());
         }
         else {
             //today we attach that to the module dependency
-            moduleManager.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString());
+            moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString());
         }
     }
 

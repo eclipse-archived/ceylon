@@ -1,13 +1,15 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.message;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isOverloadedVersion;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isResolvable;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -15,33 +17,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.MethodOrValue;
-import com.redhat.ceylon.compiler.typechecker.model.Parameter;
-import com.redhat.ceylon.compiler.typechecker.model.ParameterList;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedReference;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.Reference;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Checks associated to the traversal of the hierarchy:
+ * 
  * - detect circularity in inheritance
- * - All formal must be implemented as actual by concrete classes
- * - may not inherit two declarations with the same name that do not share a common supertype
- * - may not inherit two declarations with the same name unless redefined in subclass
+ * - lll formal must be implemented as actual by concrete 
+ *   classes
+ * - may not inherit two declarations with the same name 
+ *   that do not share a common supertype
+ * - may not inherit two declarations with the same name 
+ *   unless redefined in subclass
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
 public class TypeHierarchyVisitor extends Visitor {
 
-    private final Map<TypeDeclaration,Type> types = new HashMap<TypeDeclaration, Type>();
+    private final Map<TypeDeclKey,Type> types = new HashMap<TypeDeclKey, Type>();
 
     private static final class Type {
         public Map<String,Members> membersByName = new HashMap<String, Members>();
@@ -60,6 +66,33 @@ public class TypeHierarchyVisitor extends Visitor {
         @Override
         public String toString() {
             return declaration.getName();
+        }
+    }
+    
+    // Special wrapper class for TypeDeclarations that takes into
+    // account the native backend property when determining equality
+    private static final class TypeDeclKey {
+        public final TypeDeclaration decl;
+        public TypeDeclKey(TypeDeclaration decl) {
+            this.decl = decl;
+        }
+        @Override
+        public int hashCode() {
+            return decl.hashCode();
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            TypeDeclKey other = (TypeDeclKey) obj;
+            return decl.equals(other.decl) && 
+                    (!decl.isNative() ||
+                            decl.getNativeBackends()
+                                .supports(other.decl.getNativeBackends()));
         }
     }
     
@@ -82,7 +115,6 @@ public class TypeHierarchyVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ObjectArgument that) {
-        Value value = that.getDeclarationModel();
         Class anonymousClass = that.getAnonymousClass();
         validateMemberRefinement(that, anonymousClass);
         super.visit(that);
@@ -154,8 +186,8 @@ public class TypeHierarchyVisitor extends Visitor {
     public void visit(Tree.BaseMemberExpression that) {
         super.visit(that);
         Declaration dec = that.getDeclaration();
-        if (dec instanceof MethodOrValue && 
-                ((MethodOrValue) dec).isShortcutRefinement()) {
+        if (dec instanceof FunctionOrValue && 
+                ((FunctionOrValue) dec).isShortcutRefinement()) {
             checkForShortcutRefinement(that, dec);
         }
     }
@@ -165,8 +197,8 @@ public class TypeHierarchyVisitor extends Visitor {
                 (ClassOrInterface) dec.getContainer();
         for (Declaration im: 
                 classOrInterface.getInheritedMembers(dec.getName())) {
-            if (im instanceof MethodOrValue && 
-                    ((MethodOrValue) im).isShortcutRefinement()) {
+            if (im instanceof FunctionOrValue && 
+                    ((FunctionOrValue) im).isShortcutRefinement()) {
                 that.addError("refines a non-formal, non-default member: " + 
                         message(im));
             }
@@ -287,18 +319,23 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private boolean mixedInBySupertype(TypeDeclaration currentType, 
             TypeDeclaration otherType, ClassOrInterface classOrInterface) {
-        TypeDeclaration et = classOrInterface.getExtendedTypeDeclaration();
-        if (et!=null && 
-                et.inherits(currentType) && 
-                et.inherits(otherType)) {
-            return true;
-        }
-        for (TypeDeclaration st: 
-                classOrInterface.getSatisfiedTypeDeclarations()) {
-            if (st!=null && 
-                    st.inherits(currentType) && 
-                    st.inherits(otherType)) {
+        com.redhat.ceylon.model.typechecker.model.Type et = 
+                classOrInterface.getExtendedType();
+        if (et!=null) {
+            TypeDeclaration etd = et.getDeclaration();
+            if (etd.inherits(currentType) && 
+                etd.inherits(otherType)) {
                 return true;
+            }
+        }
+        for (com.redhat.ceylon.model.typechecker.model.Type st: 
+                classOrInterface.getSatisfiedTypes()) {
+            if (st!=null) {
+                TypeDeclaration std = st.getDeclaration();
+                if (std.inherits(currentType) && 
+                    std.inherits(otherType)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -356,7 +393,8 @@ public class TypeHierarchyVisitor extends Visitor {
             if (!members.formals.isEmpty()) {
                 if (members.actualsNonFormals.isEmpty()) {
                     Declaration example = members.formals.iterator().next();
-                    Declaration declaringType = (Declaration) example.getContainer();
+                    Declaration declaringType = 
+                            (Declaration) example.getContainer();
                     if (!clazz.equals(declaringType)) {
                         addUnimplementedFormal(clazz, example);
                         that.addError("formal member '" + example.getName() + 
@@ -369,7 +407,8 @@ public class TypeHierarchyVisitor extends Visitor {
                     if (isOverloadedVersion(f)) {
                         boolean found = false;
                         for (Declaration a: members.actualsNonFormals) {
-                            if (a.getRefinedDeclaration().equals(f.getRefinedDeclaration())) {
+                            if (a.getRefinedDeclaration()
+                                    .equals(f.getRefinedDeclaration())) {
                                 found = true;
                                 break;
                             }
@@ -384,11 +423,12 @@ public class TypeHierarchyVisitor extends Visitor {
                                         paramTypes.append(", ");
                                     }
                                     if (!isTypeUnknown(p.getType())) {
-                                        paramTypes.append(p.getType().getProducedTypeName());
+                                        paramTypes.append(p.getType().asString());
                                     }
                                 }
                             }
-                            Declaration declaringType = (Declaration) f.getContainer();
+                            Declaration declaringType = 
+                                    (Declaration) f.getContainer();
                             addUnimplementedFormal(clazz, f);
                             that.addError("overloaded formal member '" + f.getName() + 
                                     "(" + paramTypes + ")' of '" + declaringType.getName() +
@@ -407,13 +447,13 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private void addUnimplementedFormal(Class clazz, Declaration member) {
-        ProducedReference unimplemented = 
-                member.getProducedReference(clazz.getType(), 
-                        Collections.<ProducedType>emptyList());
-        List<ProducedReference> list = 
+        Reference unimplemented = 
+                member.appliedReference(clazz.getType(), 
+                        NO_TYPE_ARGS);
+        List<Reference> list = 
                 clazz.getUnimplementedFormals();
         if (list.isEmpty()) {
-            list = new ArrayList<ProducedReference>();
+            list = new ArrayList<Reference>();
             clazz.setUnimplementedFormals(list);
         }
         list.add(unimplemented);
@@ -489,16 +529,23 @@ public class TypeHierarchyVisitor extends Visitor {
         Type type = getOrBuildType(declaration);
 
         stackOfProcessedType.add(declaration);
-        visitDAGNode(declaration.getExtendedTypeDeclaration(), 
-                sortedDag, visited, stackOfProcessedType, 
-                errorReporter);
-        for (TypeDeclaration superSatisfiedType: 
-                declaration.getSatisfiedTypeDeclarations()) {
-            visitDAGNode(superSatisfiedType, sortedDag, visited, 
-                    stackOfProcessedType, errorReporter);
+        com.redhat.ceylon.model.typechecker.model.Type 
+        extendedType = declaration.getExtendedType();
+        if (extendedType!=null) {
+            visitDAGNode(extendedType.getDeclaration(), 
+                    sortedDag, visited, stackOfProcessedType, 
+                    errorReporter);
         }
-        for (ProducedType superSatisfiedType: 
-                declaration.getBrokenSupertypes()) {
+        for (com.redhat.ceylon.model.typechecker.model.Type 
+                superSatisfiedType: declaration.getSatisfiedTypes()) {
+            if (superSatisfiedType!=null) {
+                visitDAGNode(superSatisfiedType.getDeclaration(), 
+                        sortedDag, visited, 
+                        stackOfProcessedType, errorReporter);
+            }
+        }
+        for (com.redhat.ceylon.model.typechecker.model.Type 
+                superSatisfiedType: declaration.getBrokenSupertypes()) {
             visitDAGNode(superSatisfiedType.getDeclaration(), 
                     sortedDag, visited, stackOfProcessedType, 
                     errorReporter);
@@ -531,16 +578,25 @@ public class TypeHierarchyVisitor extends Visitor {
     }*/
 
     private Type getOrBuildType(TypeDeclaration declaration) {
-        Type type = types.get(declaration);
+        Type type = types.get(new TypeDeclKey(declaration));
         if (type == null) {
             type = new Type();
             type.declaration = declaration;
             for (Declaration member: declaration.getMembers()) {
-                if (!(member instanceof MethodOrValue || 
+                if (!(member instanceof FunctionOrValue ||
                       member instanceof Class) || 
-                        member.isStaticallyImportable() ||
-                        isAbstraction(member)) {
+                    isConstructor(member) ||
+                    member.isStaticallyImportable() ||
+                    isAbstraction(member)) {
                     continue;
+                }
+                if (declaration.isNative() && member.isNative()) {
+                    // Make sure we get the right member declaration (the one for the same backend as its container)
+                    Backends backends = declaration.getNativeBackends();
+                    member = getNativeDeclaration(member, backends);
+                    if (member == null) {
+                        continue;
+                    }
                 }
                 final String name = member.getName();
                 Type.Members members = type.membersByName.get(name);
@@ -564,14 +620,14 @@ public class TypeHierarchyVisitor extends Visitor {
                 if (member.isDefault()) {
                     members.defaults.add(member);
                 }
-                if (!member.isFormal() && !member.isDefault()) {
+                if (!member.isFormal() && !member.isDefault() && member.isShared()) {
                     members.nonFormalsNonDefaults.add(member);
                 }
                 if (member.isShared()) {
                     members.shared.add(member);
                 }
             }
-            types.put(declaration,type);
+            types.put(new TypeDeclKey(declaration),type);
         }
         return type;
     }
@@ -580,10 +636,10 @@ public class TypeHierarchyVisitor extends Visitor {
             TypeDeclaration td) {
         if (!td.isInconsistentType()) {
             Set<String> errors = new HashSet<String>();
-            for (TypeDeclaration std: td.getSupertypeDeclarations()) {
+            for (TypeDeclaration std: 
+                    td.getSupertypeDeclarations()) {
                 if (td instanceof ClassOrInterface && 
-                        !((ClassOrInterface) td).isAbstract() &&
-                        !((ClassOrInterface) td).isAlias()) {
+                        !td.isAbstract() && !td.isAlias()) {
                     for (Declaration d: std.getMembers()) {
                         if (d.isShared() && 
                                 !isOverloadedVersion(d) && 
@@ -627,14 +683,14 @@ public class TypeHierarchyVisitor extends Visitor {
                             /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
                                 //TODO: I think this case never occurs, because getMember() always
                                 //      returns null in the case of an ambiguity
-                                List<ProducedType> typeArgs = new ArrayList<ProducedType>();
+                                List<Type> typeArgs = new ArrayList<Type>();
                                 if (d instanceof Generic) {
                                     for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
                                         typeArgs.add(refinedTypeParam.getType());
                                     }
                                 }
-                                ProducedType t = td.getType().getTypedReference(r, typeArgs).getType();
-                                ProducedType it = st.getTypedReference(d, typeArgs).getType();
+                                Type t = td.getType().getTypedReference(r, typeArgs).getType();
+                                Type it = st.getTypedReference(d, typeArgs).getType();
                                 checkAssignable(t, it, that, "type of member " + d.getName() + 
                                         " must be assignable to all types inherited from instantiations of " +
                                         st.getDeclaration().getName());

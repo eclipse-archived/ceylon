@@ -417,8 +417,7 @@ void testHardCase(J4 i) {
     
     J5 ni = nothing;
     
-    //this is an error after #595
-    @error switch(ni)
+    switch(ni)
     case (is N|J2|J3) {}
 }
 
@@ -535,3 +534,13 @@ class OuterEnum() {
     EnumToo z = nothing;
     EnumToo w = nothing;
 }
+
+@error interface BrokeEnum<T> of BrokeCase<T, T> {}
+class BrokeCase<T,U>() satisfies BrokeEnum<T> {}
+
+shared void caseTypes() {
+    BrokeEnum<String> x = BrokeCase<String, Integer>();
+    switch (x)
+    case (is BrokeCase<String,String>) {}
+}
+

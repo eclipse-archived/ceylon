@@ -203,7 +203,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A character <emphasis>string template</emphasis> contains interpolated 
         expressions, surrounded by character string fragments.</para>
         
-        <synopsis>StringTemplate: StringStart (ValueExpression StringMid)* ValueExpression StringEnd</synopsis>
+        <synopsis>StringTemplate: StringStart Expression (StringMid Expression)* StringEnd</synopsis>
         
         <para>Each interpolated expression contained in the string template must have 
         a type assignable to <literal>Object</literal> defined in 
@@ -218,12 +218,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </section>
     
     <section id="selfreferences">
-        <title>Self references and the current package reference</title>
+        <title>Self references</title>
         
         <para>The type of the following expressions depends upon the context in which 
         they appear.</para>
         
-        <synopsis>SelfReference: "this" | "super" | "outer" | "package"</synopsis>
+        <synopsis>SelfReference: "this" | "super" | "outer"</synopsis>
         
         <para>A self reference expression may not occur outside of a class or 
         interface body.</para>
@@ -239,6 +239,16 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         class or interface. An <literal>outer</literal> self reference must have
         an immediately containing class or interface for its immediately containing 
         class or interface.</para>
+        
+        <comment>
+        <para>Note: the keyword <literal>package</literal> is not an expression, and 
+        thus does not have a well-defined type. However, it may be used to qualify 
+        and disambiguate a value reference or callable reference. A value reference or 
+        callable reference qualified by the keyword <literal>package</literal> always 
+        refers to a toplevel member of the containing package, never to an imported 
+        declaration or nested declaration, as defined by 
+        <xref linkend="unqualifiedreferenceresolution"/>.</para>
+        </comment>
         
         <section id="this">
             <title><literal>this</literal></title>
@@ -270,11 +280,20 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             of the immediately containing class or interface. Its type is the 
             intersection of the principal instantiation of the immediate superclass 
             for the immediately containing class or interface, as defined in
-            <xref linkend="principalinstantiationofasupertype"/>, and all principal 
+            <xref linkend="principalinstantiationofasupertype"/>, with all principal 
             instantiations of immediate superinterfaces of the immediately containing 
             class or interface. A member reference such as <literal>super.x</literal> 
             may not resolve to a <literal>formal</literal> declaration, nor to any 
             member inherited from more than one supertype of the intersection type.</para>
+            
+            <para>As an exception to this, when the keyword <literal>super</literal> 
+            occurs in an <literal>extends</literal> clause, as specified in 
+            <xref linkend="extendedclass"/>, it refers to the current instance of
+            the class or interface which immediately contains the declaration to which
+            the <literal>extends</literal> clause belongs. Its type is the 
+            intersection of the principal instantiation of the immediate superclass 
+            of this containing class or interface, with all principal instantiations 
+            of immediate superinterfaces of this containing class or interface.</para>
             
             <para>The keyword <literal>super</literal> may occur as the first operand
             of an <literal>of</literal> operator, in which case the second operand is
@@ -287,20 +306,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             that is refined by the class or any intermediate supertype of the class.</para> 
             
         </section>
-        
-        <section id="thispackage">
-            <title><literal>package</literal></title>
             
-            <para>The keyword <literal>package</literal> is not an expression, and
-            does not have a well-defined type. However, it may be used to qualify 
-            and disambiguate a value reference or callable reference. A value
-            reference or callable reference qualified by the keyword 
-            <literal>package</literal> always refers to a toplevel member of the
-            containing package, never to an imported declaration or nested 
-            declaration.</para>
-            
-        </section>
-    
     </section>
     
     <section id="anonymousfunctions">
@@ -314,11 +320,30 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <synopsis>FunctionExpression: ("function" | "void")? Parameters+ (LazySpecifier | Block)</synopsis>
         
         <para>The parameters are the parameters of the function. The lazy 
-        specifier or block of code is the implementation of the function. 
-        If the <literal>void</literal> keyword is specified, the function 
-        is a <literal>void</literal> function. Otherwise, it is a 
-        non-<literal>void</literal> function, and its return type is 
-        inferred.</para>
+        specifier or block of code is the implementation of the function.</para>
+        
+        <para>An anonymous function may be considered <literal>void</literal>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>if the <literal>void</literal> keyword is specified, 
+                the function is a <literal>void</literal> function, or</para>
+            </listitem>
+            <listitem>
+                <para>if the <literal>function</literal> keyword is specified,
+                the function is not a <literal>void</literal> function, or,
+                </para>
+            </listitem>
+            <listitem>
+                <para>otherwise, the function is <literal>void</literal> if 
+                and only if it is defined using a block in which no 
+                <literal>return</literal> statement with an expression occurs 
+                sequentially, as defined in <xref linkend="blockstructure"/>.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>If the function is not considered <literal>void</literal>, 
+        then its return type is inferred.</para>
         
         <para>The type of an anonymous function expression is the callable 
         type of the function, as specified in 
@@ -495,10 +520,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="baseexpressions">
             <title>Base expressions</title>
             
-            <para>A <emphasis>base expression</emphasis> is an unqualified 
-            identifier, with an optional list of type arguments:</para>
+            <para>A <emphasis>base expression</emphasis> is an identifier,
+            optionally qualified by the keyword <literal>package</literal>, 
+            with an optional list of type arguments:</para>
             
-            <synopsis>BaseExpression: (MemberName | TypeName) TypeArguments?</synopsis>
+            <synopsis>BaseExpression: PackageQualifier? (MemberName | TypeName) TypeArguments?</synopsis>
             
             <para>A base expression is either:</para>
             
@@ -570,7 +596,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             expression that references a class with constructors, followed by an
             identifier, with an optional list of type arguments.</para>
             
-            <synopsis>ConstructorExpression: (BaseExpression | MemberExpression) "." TypeName TypeArguments?</synopsis>
+            <synopsis>ConstructorExpression: (BaseExpression | MemberExpression) "." MemberName TypeArguments?</synopsis>
             
             <para>A constructor expression is a reference to a constructor of a 
             class.</para>
@@ -585,8 +611,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             of the qualified realization.</para>
             
             <para>If the constructor expression is qualified by a member expression,
-            the member expression produces the instance upon which the constructor
-            is invoked. When a constructor expression is executed, the member 
+            its receiver expression produces the instance upon which the constructor
+            is invoked. When a constructor expression is executed, the receiver 
             expression is evaluated to produce the receiving instance which is held 
             until the constructor is invoked or evaluated, as defined in 
             <xref linkend="evaluationinvocationandassignment"/>.</para>
@@ -597,13 +623,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <title>Value references</title>
             
             <para>A <emphasis>value reference</emphasis> is a base expression or 
-            member expression that references a value declaration.</para>
+            member expression that references a value declaration or value constructor
+            declaration.</para>
             
             <para>The type of a value reference expression is the type of the 
-            realization of the referenced value.</para>
+            realization of the referenced value or value constructor.</para>
             
-            <para>A value declaration is never generic, so a value reference never
-            has a type argument list.</para>
+            <para>A value or value constructor declaration is never generic, so a value 
+            reference never has a type argument list.</para>
             
             <para>A value reference that does not occur within any <literal>dynamic</literal>
             block may not refer to a value declaration or value parameter with no type.</para>
@@ -624,8 +651,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>A <emphasis>callable reference</emphasis> is a base expression,
             member expression, or constructor expression that references something&mdash;a 
-            function, class, or constructor&mdash;that can be <emphasis>invoked</emphasis> 
+            function, class, or callable constructor&mdash;that can be <emphasis>invoked</emphasis> 
             or <emphasis>instantiated</emphasis> by specifying a list of arguments.</para>
+            
+            <para>If a callable reference refers to a class with a default constructor,
+            the callable reference is considered a reference to the default constructor.</para>
             
             <para>A callable reference may be invoked immediately, or it may be passed 
             to other code which may invoke the reference. A callable reference captures 
@@ -634,7 +664,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             reference is invoked.</para>
             
             <para>The type of a callable reference expression is the callable type of
-            the realization of the referenced function, class, or constructor.</para>
+            the realization of the referenced function, class, or callable constructor.</para>
             
             <para>If a callable reference expression refers to a generic declaration, 
             it must either:</para>
@@ -646,6 +676,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>be immediately followed by an argument list, allowing the 
                     compiler to infer the type arguments, as defined in
+                    <xref linkend="typeargumentinference"/>, or,</para>
+                </listitem>
+                <listitem>
+                    <para>be the immediate child of a constructor expression that is 
+                    immediately followed by an argument list, allowing the compiler to 
+                    infer the type arguments, as defined in
                     <xref linkend="typeargumentinference"/>, or</para>
                 </listitem>
                 <listitem>
@@ -658,8 +694,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
-            <para>A callable reference may not appear as the receiver expression of
-            a member expression.</para>
+            <para>A callable reference may not occur as the receiver expression of a 
+            member expression.</para>
             
             <comment><para>Note: this restriction exists to eliminate an ambiguity in
             the interpretation of static expressions such as <literal>Person.string</literal>
@@ -704,13 +740,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <section id="staticexpressions">
             <title>Static expressions</title>
             
-            <para>A <emphasis>static expression</emphasis> is a type, followed by an identifier, 
-            with an optional list of type arguments.</para>
+            <para>A <emphasis>static expression</emphasis> is a type, optionally qualifier by 
+            the keyword <literal>package</literal>, followed by an identifier, with an optional 
+            list of type arguments.</para>
             
-            <synopsis>StaticExpression: (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
+            <synopsis>StaticExpression: PackageQualifier? (TypeName TypeArguments? ".")+ (MemberName | TypeName) TypeArguments?</synopsis>
             
             <para>A static expression is a reference to a member of a type: an attribute, method, 
-            or member class.</para>
+            or member class, or to a constructor of a member class of the type.</para>
             
             <para>The referenced member is determined by resolving the qualified reference as defined 
             by <xref linkend="qualifiedreferenceresolution"/>. The qualified realization for the 
@@ -748,50 +785,73 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>If a static expression <literal>T.m</literal> for a generic type <literal>T</literal> 
             with no explicit type argument list occurs as the argument to a parameter <literal>p</literal>
-            of type <literal>Return(*Arg)</literal> in a direct or indirect invocation 
-            expression, then the type arguments of <literal>T</literal> are inferred according to the 
-            rules defined in <xref linkend="typeargumentinference"/> as if <literal>Arg</literal> 
-            were the type of a positional argument list, and <literal>[T]</literal> were the type of 
-            a parameter list, unless the invocation is a direct invocation expression, and the invoked 
-            function or class is generic, and <literal>Arg</literal> involves type parameters of the
-            invoked function or class.</para>
+            of type <literal>Return(*Arg)</literal> in a direct or indirect invocation expression, 
+            then the type arguments of <literal>T</literal> are inferred according to the rules defined 
+            in <xref linkend="typeargumentinference"/> as if <literal>Arg</literal> were the type of a 
+            positional argument list, and <literal>[T]</literal> were the type of a parameter list, 
+            unless the invocation is a direct invocation expression, and the invoked function or class 
+            is generic, and <literal>Arg</literal> involves type parameters of the invoked function or 
+            class.</para>
             
         </section>
         
         <section id="staticvaluereferences">
             <title>Static value references</title>
             
-            <para>A <emphasis>static value reference</emphasis> is a static 
-            expression that references an attribute declaration.</para>
+            <para>A <emphasis>static value reference</emphasis> is a static expression that 
+            references an attribute declaration or member class value constructor declaration.
+            </para>
             
             <programlisting>List&lt;Anything&gt;.size</programlisting>
             
-            <para>The type of a static value reference expression for an attribute 
-            whose realization is of type <literal>X</literal>, and with qualifying 
-            type <literal>T</literal>, is <literal>X(T)</literal>.</para>
+            <para>The type of a static value reference expression is:</para>
             
-            <para>A value declaration is never generic, so a static value reference 
-            never ends in a type argument list.</para>
+            <itemizedlist>
+                <listitem>
+		            <para><literal>X(T)</literal> for an attribute whose realization is of 
+		            type <literal>X</literal>, and with qualifying type <literal>T</literal>,
+		            or</para>
+                </listitem>
+                <listitem>
+		            <para><literal>T.X(T)</literal> for a member class value constructor whose 
+		            realization is of type <literal>T.X</literal>, and with qualifying type 
+		            <literal>T.X</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>A value or value constructor declaration is never generic, so a static value 
+            reference never ends in a type argument list.</para>
             
         </section>
         
         <section id="staticcallablereferences">
             <title>Static callable references</title>
             
-            <para>A <emphasis>static callable reference</emphasis> is a static 
-            expression that references something&mdash;a method or member 
-            class&mdash;that can be <emphasis>invoked</emphasis> or 
+            <para>A <emphasis>static callable reference</emphasis> is a static expression that 
+            references something&mdash;a method or member class, or a callable constructor of
+            a member class&mdash;that can be <emphasis>invoked</emphasis> or 
             <emphasis>instantiated</emphasis>.</para>
             
             <programlisting>List&lt;String&gt;.filter</programlisting>
             <programlisting>Iterable&lt;Integer&gt;.map&lt;String&gt;</programlisting>
             
-            <para>The type of a static callable reference expression for a method
-            or member class whose realization has callable type <literal>C</literal>, 
-            and with qualifying type <literal>T</literal>, is <literal>C(T)</literal>.</para>
+            <para>The type of a static callable reference expression is:</para>
             
-            <para>If a callable reference expression refers to a generic declaration, 
-            it must end in an explicit type argument list.</para>
+            <itemizedlist>
+                <listitem>
+                    <para><literal>R(*A)(T)</literal> for a method, member class, or member class 
+                    constructor whose realization has callable type <literal>R(*A)</literal>, and 
+                    with qualifying type <literal>T</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>T.X(*A)(T)</literal> for a member class constructor whose 
+                    realization has callable type <literal>T.X(*A)</literal>, and with qualifying 
+                    type <literal>T.X</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>If a callable reference expression refers to a generic declaration, it must 
+            end in an explicit type argument list.</para>
             
         </section>
     
@@ -832,7 +892,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Any invocation expression where the invoked expression is a callable 
             reference expression is called a <emphasis>direct invocation expression</emphasis> 
-            of the function, class, or constructor to which the callable reference refers.</para> 
+            of the function, class, or callable constructor to which the callable reference 
+            refers.</para> 
             
             <comment><para>TODO: Should we consider <literal>x{y=1;}{z=2;}</literal> a legal
             direct invocation if <literal>x</literal> has multiple parameter lists?</para></comment>
@@ -843,13 +904,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 <listitem>
                     <para>the compiler has one item of additional information about the schema 
                     of the method or class that is not reified by the <literal>Callable</literal> 
-                    interface: the names of the parameters of the function or class, and
-                    therefore named arguments may be used, and</para>
+                    interface: the names of the parameters of the function, class, or callable
+                    constructor, and therefore named arguments may be used, and</para>
                 </listitem>
                 <listitem>
                     <para>type argument inference is possible, as defined in 
                     <xref linkend="typeargumentinference"/>, since the compiler has access to 
-                    the type parameters and constraints of the function, class, or constructor.</para>
+                    the type parameters and constraints of the function or class, or of the class
+                    to which the callable constructor belongs.</para>
                 </listitem>
             </itemizedlist>
             
@@ -863,10 +925,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>If the function has no return type, and occurs within a <literal>dynamic</literal> 
             block, then the whole direct invocation expression has no type.</para>
             
-            <para>In a direct invocation expression of a function, class, or constructor, the 
-            restriction above on the argument list type is equivalent to the following 
-            requirements. Given the parameter list of the realization of the function or class, 
-            and the arguments of the direct invocation:</para>
+            <para>In a direct invocation expression of a function, class, or callable 
+            constructor, the restriction above on the argument list type is equivalent to the 
+            following requirements. Given the parameter list of the realization of the function, 
+            class, or callable constructor, and the arguments of the direct invocation:</para>
             
             <itemizedlist>
                 <listitem>
@@ -902,8 +964,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>Furthermore, if type argument are inferred, then the inferred type 
             arguments must conform, as defined by <xref linkend="typeargumentsandconstraints"/>, 
-            to the type parameter list of the realization of the function, class, or
-            constructor.</para>
+            to the type parameter list of the realization of the function or class, or
+            class to which the callable constructor belongs.</para>
             
             <para>If an argument expression has no type, or if its parameter has no type, 
             and the invocation occurs within a <literal>dynamic</literal> block, then the 
@@ -920,9 +982,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>When no argument is assigned to a defaulted parameter by the caller, 
             the default argument defined by the parameter declaration of the realization,
             as defined by <xref linkend="typeargumentsandconstraints"/>, of the function, 
-            class, or constructor is used. The default argument expression is evaluated 
-            every time the method is invoked with no argument specified for the defaulted 
-            parameter.</para>
+            class, or callable constructor is used. The default argument expression is 
+            evaluated every time the method is invoked with no argument specified for the 
+            defaulted parameter.</para>
             
             <para>This class:</para>
             
@@ -1067,8 +1129,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             comprehension is considered a child of the clause that immediately precedes 
             it.</para>
             
-            <synopsis>Comprehension: InitialComprehensionClause</synopsis>
-            <synopsis>InitialComprehensionClause: ForComprehensionClause | IfComprehensionClause</synopsis>
+            <synopsis>Comprehension: ForComprehensionClause | IfComprehensionClause</synopsis>
             <synopsis>ForComprehensionClause: "for" ForIterator ComprehensionClause</synopsis>
             <synopsis>IfComprehensionClause: "if" ConditionList ComprehensionClause</synopsis>
             <synopsis>ComprehensionClause: ForComprehensionClause | IfComprehensionClause | Expression</synopsis>
@@ -2038,27 +2099,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>All other operators are defined below in terms of other operators 
         and/or invocations.</para>
         
-        <para>In the tables, the following pseudo-code is used, which is not legal
-        Ceylon syntax:</para>
-        
-        <para>First,</para>
-        
-        <programlisting>if (b) then x else y   //pseudocode</programlisting>
-        
-        <para>means the value of <literal>result</literal> after execution of the
-        following:</para>
-        
-        <programlisting>X result; if (b) { result=x; } else { result=y; }</programlisting>
-        
-        <para>Second,</para>
-        
-        <programlisting>let t=x in y   //pseudocode</programlisting>
-        
-        <para>means the value of <literal>result</literal> after execution of the
-        following:</para>
-        
-        <programlisting>X t = x; Y result=y;</programlisting>
-    
     </section>
     
     <section id="basic">
@@ -2240,7 +2280,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs in rhs</literal></entry>
             <entry>in</entry>
-            <entry><literal>let x=lhs in rhs.contains(x)</literal></entry>
+            <entry><literal>let (x=lhs) rhs.contains(x)</literal></entry>
             <entry><literal>Object</literal></entry>
             <entry><literal>Category</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2295,19 +2335,19 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <itemizedlist>
             <listitem>
                 <para><literal>l&lt;x&lt;u</literal> means 
-                <literal>let t=x in l&lt;t &amp;&amp; t&lt;u</literal>,</para>
+                <literal>let (t=x) l&lt;t &amp;&amp; t&lt;u</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;=x&lt;u</literal> means 
-                <literal>let t=x in l&lt;=t &amp;&amp; t&lt;u</literal>,</para>
+                <literal>let (t=x) l&lt;=t &amp;&amp; t&lt;u</literal>,</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;x&lt;=u</literal> means 
-                <literal>let t=x in l&lt;t &amp;&amp; t&lt;=u</literal>, and</para>
+                <literal>let (t=x) l&lt;t &amp;&amp; t&lt;=u</literal>, and</para>
             </listitem>
             <listitem>
                 <para><literal>l&lt;=x&lt;=u</literal> means 
-                <literal>let t=x in l&lt;=t &amp;&amp; t&lt;=u</literal></para>
+                <literal>let (t=x) l&lt;=t &amp;&amp; t&lt;=u</literal></para>
             </listitem>
         </itemizedlist>
         
@@ -2350,7 +2390,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>!rhs</literal></entry>
             <entry>not</entry>
-            <entry><literal>if (rhs) false else true</literal></entry>
+            <entry><literal>if (rhs) then false else true</literal></entry>
             <entry></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2358,7 +2398,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs || rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else rhs</literal></entry>
+            <entry><literal>if (lhs) then true else rhs</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2366,7 +2406,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs &amp;&amp; rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) rhs else false</literal></entry>
+            <entry><literal>if (lhs) then rhs else false</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2377,7 +2417,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs ||= rhs</literal></entry>
             <entry>conditional or</entry>
-            <entry><literal>if (lhs) true else lhs=rhs</literal></entry>
+            <entry><literal>if (lhs) then true else lhs=rhs</literal></entry>
             <entry>variable of type <literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2386,7 +2426,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs &amp;&amp;= rhs</literal></entry>
             <entry>conditional and</entry>
-            <entry><literal>if (lhs) lhs=rhs else false</literal></entry>
+            <entry><literal>if (lhs) then lhs=rhs else false</literal></entry>
             <entry>variable of type <literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
             <entry><literal>Boolean</literal></entry>
@@ -2428,7 +2468,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs exists</literal></entry>
             <entry>exists</entry>
-            <entry><literal>if (exists lhs) true else false</literal></entry>
+            <entry><literal>if (exists lhs) then true else false</literal></entry>
             <entry>any type whose intersections with <literal>Object</literal>
             and <literal>Null</literal> are not <literal>Nothing</literal></entry>
             <entry></entry>
@@ -2437,7 +2477,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs nonempty</literal></entry>
             <entry>nonempty</entry>
-            <entry><literal>if (nonempty lhs) true else false</literal></entry>
+            <entry><literal>if (nonempty lhs) then true else false</literal></entry>
             <entry>any subtype of <literal>Anything[]?</literal>
             whose intersections with <literal>[]</literal> and 
             <literal>[Nothing+]</literal> are not <literal>Nothing</literal></entry>
@@ -2450,7 +2490,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <row>
             <entry><literal>lhs?.member</literal></entry>
             <entry>nullsafe attribute</entry>
-            <entry><literal>if (exists lhs) lhs.member else null</literal></entry>
+            <entry><literal>if (exists lhs) then lhs.member else null</literal></entry>
             <entry><literal>X?</literal></entry>
             <entry>an attribute of type <literal>T</literal>
             of <literal>X</literal></entry>
@@ -2592,20 +2632,24 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     is a <emphasis>sequence type</emphasis> if <literal>X</literal> is a subtype of 
     <literal>Sequential&lt;Anything&gt;</literal>.</para>
     
-    <para>For any sequence type <literal>X</literal> and integer <literal>n</literal>, 
-    we can form the <emphasis><literal>n</literal>th tail type, <literal>Xn</literal>, 
-    of <literal>X</literal></emphasis> as follows:</para>
+    <para>For any sequence type <literal>X</literal> with principal instantiation
+    <literal>[E*]</literal> and integer <literal>n</literal>, we can form the 
+    <emphasis><literal>n</literal>th tail type, <literal>Xn</literal>, of 
+    <literal>X</literal></emphasis> as follows:</para>
     
     <itemizedlist>
         <listitem>
             <para>for every <literal>i&lt;=0</literal>, <literal>Xi</literal> 
-            is <literal>X</literal>, and</para>
+            is <literal>X</literal>,</para>
         </listitem>
         <listitem>
             <para>for every <literal>i&gt;0</literal>, if <literal>Xi</literal> 
-            has the principal instantiation <literal>Tuple&lt;Ui,Fi,Yi&gt;</literal> 
-            then <literal>X(i+1)</literal> is <literal>Yi</literal>, or, 
-            otherwise, <literal>X(i+1)</literal> is <literal>Xi</literal>.</para>
+            has the principal instantiation <literal>Tuple&lt;Ui,Fi,Ti&gt;</literal> 
+            then <literal>X(i+1)</literal> is <literal>Ti</literal>, or, if 
+            <literal>Xi</literal> has principal instantiation <literal>[Fi*]</literal>
+            then <literal>X(i+1)</literal> is <literal>[Fi*]</literal>, or, otherwise,
+            if <literal>Xi</literal> is <literal>[]</literal>, then <literal>X(i+1)</literal> 
+            is also <literal>[]</literal>.</para>
         </listitem>
     </itemizedlist>
     
@@ -2614,12 +2658,15 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     of <literal>X</literal></emphasis> as follows:</para>
         
     <itemizedlist>
-        <listitem>
-            <para>if <literal>Xn</literal> has the principal instantiation
-            <literal>Tuple&lt;Un,Fn,Yn&gt;</literal> then <literal>En</literal> 
-            is <literal>Fn</literal>, or, otherwise, <literal>Xn</literal>
-            has the principal instantiation <literal>Sequential&lt;Fn&gt;</literal> 
-            and <literal>En</literal> is <literal>Fn?</literal>.</para>
+       <listitem>
+            <para>if <literal>n&gt;=0</literal> and <literal>Xn</literal> 
+            has the principal instantiation <literal>[Fn+]</literal> then 
+            <literal>En</literal> is <literal>Fn</literal>, or,</para>
+       </listitem>
+       <listitem>
+            <para>otherwise, <literal>Xn</literal> has the principal 
+            instantiation <literal>[Fn*]</literal> and <literal>En</literal> 
+            is <literal>Fn?</literal>.</para>
         </listitem>
     </itemizedlist>
     
@@ -2627,14 +2674,19 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     
     <itemizedlist>
         <listitem>
-    <para>The type of an expression of form <literal>x[i...]</literal> where
-    <literal>x</literal> is of tuple type <literal>X</literal> and 
-    <literal>n</literal> is an integer literal is <literal>Xn</literal>.</para>
+            <para>The type of an expression of form <literal>x[n]</literal> where
+            <literal>x</literal> is of the sequence type <literal>X</literal> and 
+            <literal>n</literal> is an integer literal is <literal>En</literal>.</para>
         </listitem>
         <listitem>
-    <para>The type of an expression of form <literal>x[i]</literal> where
-    <literal>x</literal> is of tuple type <literal>X</literal> and 
-    <literal>n</literal> is an integer literal is <literal>En</literal>.</para>
+            <para>The type of an expression of form <literal>x[n...]</literal> where
+            <literal>x</literal> is of the sequence type <literal>X</literal> and 
+            <literal>n</literal> is an integer literal is <literal>Xn</literal> if
+            <literal>Xn</literal> is an instantiation of <literal>Tuple</literal>,
+            <literal>[Fn+]</literal> if <literal>Xn</literal> has the principal 
+            instantiation <literal>[Fn+]</literal>, or <literal>[Fn*]</literal>
+            if <literal>Xn</literal> has the principal instantiation 
+            <literal>[Fn*]</literal>.</para>
         </listitem>
     </itemizedlist>
     
@@ -3135,8 +3187,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <listitem><para>the type itself,</para></listitem>
             <listitem><para>the callable type of the class,</para></listitem>
             <listitem><para>the callable type of the function,</para></listitem>
-            <listitem><para>the type of the value, or</para></listitem>
-            <listitem><para>the callable type of the constructor.</para></listitem>
+            <listitem><para>the type of the value,</para></listitem>
+            <listitem><para>the type of the value constructor, or</para></listitem>
+            <listitem><para>the callable type of the callable constructor.</para></listitem>
         </itemizedlist>
         
         <synopsis>Meta: TypeMeta | BaseMeta | MemberMeta | ConstructorMeta</synopsis>
@@ -3156,7 +3209,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <para>A <emphasis>base metamodel expression</emphasis> is a member name, 
         with an optional list of type arguments, surrounded by backticks.</para>
         
-        <synopsis>BaseMeta: "`" MemberName TypeArguments? "`"</synopsis>
+        <synopsis>BaseMeta: "`" PackageQualifier? MemberName TypeArguments? "`"</synopsis>
         
         <para>A base metamodel expression is a reference to a value or function. 
         The referenced declaration is determined according to
@@ -3166,14 +3219,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         followed by a member name, with an optional list of type arguments, 
         surrounded by backticks.</para>
         
-        <synopsis>MemberMeta: "`" MetaQualifier "." MemberName TypeArguments? "`"</synopsis>
+        <synopsis>MemberMeta: "`" PrimaryType "." MemberName TypeArguments? "`"</synopsis>
         
-        <para>The member metamodel expression qualifier is a type, as defined by 
-        <xref linkend="type"/>, or a base expression referring to an anonymous 
-        class declaration.</para>
-        
-        <synopsis>MetaQualifier: QualifiedType | GroupedType | MemberName</synopsis>
-        
+        <para>The member metamodel expression is qualified by a type, as defined 
+        by <xref linkend="type"/>.</para>
+                
         <para>A member metamodel expression is a reference to an attribute or 
         method of the type identified by the qualifier. The member is resolved 
         as a member of the type according to 
@@ -3182,13 +3232,13 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         <programlisting>Function&lt;Float,[{Float+}]&gt; sumFunction = `sum&lt;Float&gt;`;</programlisting>
         <programlisting>Attribute&lt;Person,String&gt; personNameAttribute = `Person.name`;</programlisting>
         <programlisting>Method&lt;Person,Anything,[String]&gt; personSayMethod = `Person.say`;</programlisting>
-        <programlisting>Value&lt;Integer&gt; systemMillis = `system.milliseconds`;</programlisting>
+        <programlisting>Attribute&lt;\Isystem,Integer&gt; systemMillis = `\Isystem.milliseconds`;</programlisting>
         
         <para>A <emphasis>constructor metamodel expression</emphasis> is a qualifier, 
         followed by a constructor name, with an optional list of type arguments, 
         surrounded by backticks.</para>
         
-        <synopsis>ConstructorMeta: "`" MetaQualifier "." TypeName TypeArguments? "`"</synopsis>
+        <synopsis>ConstructorMeta: "`" PrimaryType "." ()MemberName | TypeName) TypeArguments? "`"</synopsis>
         
         <para>The constructor metamodel expression qualifier is a type that is an
         instantiation of a class.</para>
@@ -3224,9 +3274,14 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <literal>Class&lt;R,P&gt;</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a constructor of a toplevel class of callable 
-                    type <literal>R(*P)</literal>, the type is 
-                    <literal>Constructor&lt;R,P&gt;</literal>,</para>
+                    <para>for a callable constructor of a toplevel class of 
+                    callable type <literal>R(*P)</literal>, the type is 
+                    <literal>CallableConstructor&lt;R,P&gt;</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a value constructor of a toplevel class of 
+                    type <literal>R</literal>, the type is 
+                    <literal>ValueConstructor&lt;R&gt;</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a class nested in a block of callable type 
@@ -3261,9 +3316,21 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                     <literal>MemberClass&lt;T,R,P&gt;</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>for a constructor of a member class of callable 
-                    type <literal>R(*P)</literal>, the type is 
-                    <literal>MemberClassConstructor&lt;T,R,P&gt;</literal>, 
+                    <para>for a callable constructor of a member class of 
+                    callable type <literal>R(*P)</literal>, the type is 
+                    <literal>MemberClassCallableConstructor&lt;T,R,P&gt;</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>for a value constructor of a member class of 
+                    type <literal>R</literal>, the type is 
+                    <literal>MemberClassValueConstructor&lt;T,R&gt;</literal>, 
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>for a value of a member class of type 
+                    <literal>R</literal>, the type is 
+                    <literal>Attribute&lt;T,R&gt;</literal>, 
                     and</para>
                 </listitem>
                 <listitem>
@@ -3336,7 +3403,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             of identifiers identifying a class or interface declaration or 
             an anonymous class declaration:</para>
             
-            <synopsis>MemberDecQualifier: (TypeName ".")+ | MemberName "."</synopsis>
+            <synopsis>MemberDecQualifier: ( (TypeName | MemberName) "." )+</synopsis>
             
             <para>Each identifier in the member declaration qualifier is 
             the name of a class, interface, or anonymous class.</para>
@@ -3353,7 +3420,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <synopsis>TypeKeyword: "class" | "interface" | "alias" | "given"</synopsis>
             
-            <synopsis>TypeDec: "`" TypeKeyword ( MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
+            <synopsis>TypeDec: "`" TypeKeyword ( PackageQualifier? MemberDecQualifier? (TypeName | MemberName) )? "`"</synopsis>
             
             <para>For a class or interface reference expression, the name of 
             the class or interface is optional. In this case, the class or
@@ -3368,24 +3435,27 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <programlisting>InterfaceDeclaration stringListInterface = `interface List`;</programlisting>
             <programlisting>AliasDeclaration numberAlias = `alias Number`;</programlisting>
             <programlisting>TypeParameter elementTypeParameter = `given Element`;</programlisting>
+            <programlisting>CallableConstructorDeclaration arrayOfSizeConstructor = `new Array.ofSize`;</programlisting>
 
             <para>A <emphasis>value reference expression</emphasis> or
             <emphasis>function reference expression</emphasis> is an optional 
             member declaration qualifier, followed by the name of a function,
-            value, or anonymous class, with the keyword <literal>value</literal> 
-            or <literal>function</literal>, surrounded by backticks.</para>
+            value, value constructor, or anonymous class, with the keyword 
+            <literal>value</literal> or <literal>function</literal>, surrounded 
+            by backticks.</para>
             
             <synopsis>MemberKeyword: "value" | "function"</synopsis>
             
-            <synopsis>MemberDec: "`" MemberKeyword MemberDecQualifier? MemberName "`"</synopsis>
+            <synopsis>MemberDec: "`" MemberKeyword PackageQualifier? MemberDecQualifier? MemberName "`"</synopsis>
             
             <para>A <emphasis>constructor reference expression</emphasis> is a 
-            member declaration qualifier, followed by the name of a constructor,
-            with the keyword <literal>new</literal>, surrounded by backticks.</para>
+            member declaration qualifier, followed by the name of a callable 
+            constructor, with the keyword <literal>new</literal>, surrounded by 
+            backticks.</para>
             
             <synopsis>ConstructorKeyword: "new"</synopsis>
             
-            <synopsis>ConstructorDec: "`" ConstructorKeyword MemberDecQualifier TypeName "`"</synopsis>
+            <synopsis>ConstructorDec: "`" ConstructorKeyword PackageQualifier? MemberDecQualifier TypeName "`"</synopsis>
             
             <para>A reference expression is a reference to a declaration. The 
             referenced declaration is determined according to
@@ -3455,7 +3525,11 @@ Module languageModule = `module ceylon.language`;</programlisting>
                     <literal>Package</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a value, the type is 
+                    <para>for a reference, the type is 
+                    <literal>ReferenceDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for any other value, the type is 
                     <literal>ValueDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
@@ -3463,8 +3537,12 @@ Module languageModule = `module ceylon.language`;</programlisting>
                     <literal>FunctionDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a constructor, the type is 
-                    <literal>ConstructorDeclaration</literal>,</para>
+                    <para>for a callable constructor, the type is 
+                    <literal>CallableConstructorDeclaration</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para>for a value constructor, the type is 
+                    <literal>ValueConstructorDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>for a type parameter, the type is 
@@ -3476,8 +3554,15 @@ Module languageModule = `module ceylon.language`;</programlisting>
                     <literal>AliasDeclaration</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>for a class or class alias, the type is 
-                    <literal>ClassDeclaration</literal>, and</para>
+                    <para>for a class with an initializer parameter list,
+                    or for any class alias, the type is 
+                    <literal>ClassWithInitializerDeclaration</literal>,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>for a class with constructors, the type is 
+                    <literal>ClassWithConstructorsDeclaration</literal>, 
+                    and</para>
                 </listitem>
                 <listitem>
                     <para>for an interface or interface alias, the type 

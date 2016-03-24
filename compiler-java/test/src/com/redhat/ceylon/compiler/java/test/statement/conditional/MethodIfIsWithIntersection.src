@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfIsIntersection() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x).common();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x).foo();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)x).bar();
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        .java.lang.Object x$3;
+        if ((x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
+            final .java.lang.Object x$4 = x$3;
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4).common();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4).foo();
+            ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)x$4).bar();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsIntersection.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsIntersection.class);
+}

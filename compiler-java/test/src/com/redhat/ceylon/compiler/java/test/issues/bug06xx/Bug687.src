@@ -1,0 +1,113 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+class Bug687 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug687() {
+    }
+    
+    private final <T>void method$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+    
+    public final <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends T> $ceylontmp$elements$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                sort$canonical$($reified$T, $ceylontmp$elements$0);
+            }
+            returning null;
+        );
+    }
+    
+    private <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> elements) {
+    }
+    
+    public final <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> elements) {
+        (
+            let
+            {
+                sort$canonical$($reified$T, elements);
+            }
+            returning null;
+        );
+    }
+    
+    public final <T extends .ceylon.language.Number<.ceylon.language.Integer>>void sort3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> elements) {
+    }
+    
+    public final void sort2() {
+        (
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$elements$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                sort2$canonical$($ceylontmp$elements$1);
+            }
+            returning null;
+        );
+    }
+    
+    private void sort2$canonical$(final .ceylon.language.Sequential elements) {
+    }
+    
+    public final void sort2(final .ceylon.language.Sequential elements) {
+        (
+            let
+            {
+                sort2$canonical$(elements);
+            }
+            returning null;
+        );
+    }
+    
+    private final void foo$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> p) {
+        <.ceylon.language.Number<.ceylon.language.Integer>>sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        (
+            let
+            {
+                .ceylon.language.Sequential arg$2$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                <.ceylon.language.Number<.ceylon.language.Integer>>sort(arg$2$reified$0, arg$2$0);
+            }
+            returning null;
+        );
+        sort2(.ceylon.language.empty_.get_());
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .java.lang.Object> arg$3$0 = .ceylon.language.empty_.get_();
+                sort2(arg$3$0);
+            }
+            returning null;
+        );
+        p.$callvariadic$(.ceylon.language.empty_.get_());
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .java.lang.Object> arg$4$0 = .ceylon.language.empty_.get_();
+                p.$callvariadic$(arg$4$0);
+            }
+            returning null;
+        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$)), "Anything({Nothing*})", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Iterable $ceylontmp$elements = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0;
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.this.<.ceylon.language.Number<.ceylon.language.Integer>>sort3(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmp$elements);
+                    }
+                    returning null;
+                );
+            }
+        };
+        f.$call$((.java.lang.Object).ceylon.language.empty_.get_());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug687.class);
+}

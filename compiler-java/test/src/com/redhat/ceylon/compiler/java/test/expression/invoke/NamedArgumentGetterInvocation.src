@@ -1,0 +1,50 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class NamedArgumentGetterInvocation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    NamedArgumentGetterInvocation() {
+    }
+    
+    private final boolean m$priv$() {
+        return (
+            let
+            {
+                
+                final class s$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private s$getter$_() {
+                    }
+                    
+                    public .java.lang.String get_() {
+                        return "foo";
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> s$getter$_ = new s$getter$_();
+                final .java.lang.String arg$0$1 = s$getter$_.get_();
+                
+                final class n$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+                    
+                    private n$getter$_() {
+                    }
+                    
+                    public long get_() {
+                        return 2L;
+                    }
+                }
+                final .com.redhat.ceylon.compiler.java.language.GetterLong n$getter$_ = new n$getter$_();
+                final long arg$0$0 = n$getter$_.get_();
+            }
+            returning f$priv$(arg$0$0, arg$0$1);
+        );
+    }
+    
+    private final boolean f$priv$(final long n, final .java.lang.String s) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentGetterInvocation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentGetterInvocation.class);
+}

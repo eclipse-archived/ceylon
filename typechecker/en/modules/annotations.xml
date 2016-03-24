@@ -150,7 +150,8 @@ shared deprecated</programlisting>
                     annotation constructor parameter type,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <para><literal>{T*}</literal>, <literal>{T+}</literal>,
+                    <literal>[T*]</literal>, or <literal>[T+]</literal> where 
                     <literal>T</literal> is a legal annotation constructor parameter 
                     type, or</para>
                 </listitem>
@@ -227,7 +228,8 @@ shared deprecated</programlisting>
                     annotation parameter type,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>{T*}</literal> or <literal>[T*]</literal> where 
+                    <para><literal>{T*}</literal>, <literal>{T+}</literal>,
+                    <literal>[T*]</literal>, or <literal>[T+]</literal> where 
                     <literal>T</literal> is a legal annotation parameter type, or</para>
                 </listitem>
                 <listitem>
@@ -269,12 +271,20 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para>If <literal>A</literal> is a subtype of 
-                    <literal>OptionalAnnotation&lt;A,P&gt;</literal>,
-                    or <literal>SequencedAnnotation&lt;A,P&gt;</literal> then an annotation 
-                    of annotation type <literal>A</literal> may not occur at a program 
-                    element whose reference expression type, as defined in
+                    <literal>ConstrainedAnnotation&lt;A,B,P,T&gt;</literal>, then an 
+                    annotation of annotation type <literal>A</literal> may not occur 
+                    at a program element whose reference expression type, as defined in
                     <xref linkend="typeofareferenceexpression"/>, is not assignable to 
                     <literal>P</literal>.</para>
+                </listitem>
+                <listitem>
+                    <para>If <literal>A</literal> is a subtype of 
+                    <literal>ConstrainedAnnotation&lt;A,B,P,T&gt;</literal> where
+                    <literal>T</literal> is not exactly <literal>Anything</literal>, 
+                    then an annotation of annotation type <literal>A</literal> may not 
+                    occur at a program element whose metamodel type, as defined in
+                    <xref linkend="typeofametamodelexpression"/>, is not assignable to 
+                    <literal>T</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -303,10 +313,12 @@ shared deprecated</programlisting>
         
         <para>An <emphasis>annotation value</emphasis> is the value returned when an
         annotation constructor is invoked. We may obtain the annotation values of all 
-        annotations of a given annotation type that occur at a given program element by 
-        passing the annotation type and program element metamodel reference to the method
+        annotations of a given annotation type that occur at a given program element 
+        by passing the annotation type metamodel, as defined in 
+        <xref linkend="metamodelexpressions"/>, and program element reference, as 
+        defined in <xref linkend="referenceexpressions"/>, to the method
         <literal>annotations()</literal> defined in the package
-        <literal>ceylon.language.model</literal>.</para>
+        <literal>ceylon.language.meta.model</literal>.</para>
         
         <programlisting>Scope scope = annotations(`Scope`, `class Person`) else Scope(request);</programlisting>
         <programlisting>Todo[] todos = annotations(`Todo`, `function method`);</programlisting>
@@ -334,7 +346,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>abstract</literal> specifies that a class
-                    cannot be instantiated.</para>
+                    cannot be instantiated, or that a constructor is a 
+                    partial constructor.</para>
                 </listitem>
                  <listitem>
                     <para><literal>formal</literal> specifies that a member 
@@ -362,9 +375,14 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>native</literal> specifies that a program
-                    element is actually implemented in a different language, 
-                    and that the program element should be ignored by the
-                    Ceylon compiler backend.</para>
+                    element implementation is specific to a certain platform,
+                    and should be ignored by the compiler backend when compiling 
+                    for any other platform, or that it is actually implemented 
+                    in a different language, and that the program element should 
+                    be completely ignored by the Ceylon compiler backend, or that
+                    a module or module <literal>import</literal> statement, as 
+                    defined in <xref linkend="moduledescriptors"/>, is specific 
+                    to a certain platform.</para>
                 </listitem>
                 <listitem>
                     <para><literal>deprecated</literal> indicates that a value, 
@@ -381,13 +399,19 @@ shared deprecated</programlisting>
                 <listitem>
                     <para><literal>sealed</literal> specifies that a class may not 
                     be extended or instantiated outside the module in which it is
-                    defined, or that an interface may not be satisfied by a class
-                    or interface outside the module in which it is defined.</para>
+                    defined, that an interface may not be satisfied by a class or 
+                    interface outside the module in which it is defined, or that
+                    a constructor may not be invoked outside the module in which 
+                    it is defined.</para>
                 </listitem>
                 <listitem>
                     <para><literal>annotation</literal> specifies that a class is
                     an annotation type, or that a toplevel function is an annotation
                     constructor.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>suppressWarnings</literal> hides compilation
+                    warnings occurring at the annotated program element.</para>
                 </listitem>
             </itemizedlist>
             

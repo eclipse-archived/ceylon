@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1982_ {
+    
+    private bug1982_() {
+    }
+    
+    static void bug1982() {
+        
+        final class f_ {
+            
+            private f_() {
+            }
+            
+            long f() {
+                return 1L;
+            }
+        }
+        final f_ f = new f_();
+        long var1 = 42L;
+        final long foo1 = (
+            let
+            {
+                final long bar1 = (
+                    let
+                    {
+                        long $ceylontmp$op$0 = f.f();
+                        var1 = $ceylontmp$op$0;
+                    }
+                    returning $ceylontmp$op$0;
+                );
+            }
+            returning 2L;
+        );
+        if (var1 == 1L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "var1 == 1"));
+        }
+        long var2 = 42L;
+        final long foo2 = (
+            let
+            {
+                final long bar2 = (
+                    let
+                    {
+                        long $ceylontmp$op$2 = f.f();
+                        var2 = $ceylontmp$op$2;
+                    }
+                    returning $ceylontmp$op$2;
+                );
+            }
+            returning var2;
+        );
+        if (var2 == 1L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "var2 == 1"));
+        }
+    }
+}

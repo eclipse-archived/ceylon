@@ -3,22 +3,22 @@ package com.redhat.ceylon.compiler.typechecker.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 
-public class AssertionVisitor extends Visitor implements NaturalVisitor {
+public class AssertionVisitor extends Visitor {
     
     private boolean expectingError = false;
 	private String errMessage;
@@ -41,7 +41,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         super.visit(that);
     }
     
-    protected void checkType(Tree.Statement that, ProducedType type, Node typedNode) {
+    protected void checkType(Tree.Statement that, Type type, Node typedNode) {
         for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
             if (c.getIdentifier().getText().equals("type")) {
                 Tree.StringLiteral sl = c.getStringLiteral();
@@ -55,10 +55,18 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                 		out(that, "type not known");
                 	}
                 	else {
-                		String actualType = type.getProducedTypeName(false);
-                		if ( !actualType.equals(expectedType) )
-                			out(that, "type " + actualType + 
-                					" not of expected type " + expectedType);
+                	    String actualType = type.asString(false);
+                	    String abbreviatedActualType = type.asString();
+                	    if (!actualType.equals(expectedType) &&
+                	            !abbreviatedActualType.equals(expectedType)) {
+                	        String desc = "'" + abbreviatedActualType + "'";
+                	        if (!actualType.equals(abbreviatedActualType)) {
+                	            desc += " ('"+ actualType + "')";
+                	        }
+                	        out(that, "type " + desc +
+                	                " not of expected type '" + 
+                	                expectedType + "'");
+                	    }
                 	}
                 }
             }
@@ -145,53 +153,67 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
 //        }
 //    }
 
+    protected void out(String level, String message, String at, String of) {
+        StringBuffer buf = new StringBuffer();
+        if (level != null) {
+            if (level.contains("error")) {
+                buf.append(
+                        OSUtil.color(level, OSUtil.Color.red));
+            } else if (level.contains("warning")) {
+                buf.append(
+                        OSUtil.color(level, OSUtil.Color.yellow));
+            } else {
+                buf.append(level);
+            }
+            buf.append(" [");
+            buf.append(message);
+            buf.append("]");
+        } else {
+            buf.append(message);
+        }
+        if (at != null) {
+            buf.append(" at ");
+            buf.append(at);
+        }
+        if (of != null) {
+            buf.append(" of ");
+            buf.append(OSUtil.color(of, OSUtil.Color.blue));
+        }
+        System.out.println(buf.toString());
+    }
+
+    protected void out(String level, AnalysisMessage err) {
+        out(level, err.getMessage(),
+                err.getTreeNode().getLocation(), file(err.getTreeNode()));
+    }
+
     protected void out(Node that, String message) {
-        System.err.println(
-            message + " at " + 
-            that.getLocation() + " of " +
-            file(that));
+        out(null, message, that.getLocation(), file(that));
     }
 
     protected void out(Node that, LexError err) {
         errors++;
-        System.err.println(
-            "lex error [" +
-            err.getMessage() + "] at " + 
-            err.getHeader() + " of " + 
-            file(that));
+        out("lex error", err.getMessage(), err.getHeader(), file(that));
     }
 
     protected void out(Node that, ParseError err) {
         errors++;
-        System.err.println(
-            "parse error [" +
-            err.getMessage() + "] at " + 
-            err.getHeader() + " of " + 
-            file(that));
+        out("parse error", err.getMessage(), err.getHeader(), file(that));
     }
 
     protected void out(UnexpectedError err) {
         errors++;
-        System.err.println(
-            "unexpected error [" +
-            err.getMessage() + "] at " + 
-            loc(err));
+        out("unexpected error", err);
     }
 
     protected void out(AnalysisError err) {
         errors++;
-        System.err.println(
-            "error [" +
-            err.getMessage() + "] at " + 
-            loc(err));
+        out("error", err);
     }
 
     protected void out(UnsupportedError err) {
         warnings++;
-        System.out.println(
-            "warning [" + 
-            err.getMessage() + "] at " + 
-            loc(err));
+        out("warning", err);
     }
 
     /**
@@ -200,28 +222,28 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
      * @param err error message
      */
     protected void out(UsageWarning err) {
-        System.out.println(
-            "warning [" +
-            err.getMessage() + "] at " +
-            loc(err));
+        out("warning", err);
     }
-
-	private String loc(AnalysisMessage err) {
-		return err.getTreeNode().getLocation() + " of " +
-		            file(err.getTreeNode());
-	}
 
 	private String file(Node that) {
 		Unit unit = that.getUnit();
-		String relativePath = unit.getRelativePath();
-        return !relativePath.isEmpty() ?
-				relativePath : 
-				unit.getFilename();
+		if (unit==null) {
+		    return null;
+		}
+		else {
+		    String relativePath = unit.getRelativePath();
+		    return !relativePath.isEmpty() ?
+		            relativePath : 
+		            unit.getFilename();
+		}
 	}
 
     private void checkErrors(Node that) {
         try {
             for (Message err: foundErrors) {
+                if (!includeError(err, 1)) {
+                    continue;
+                }
                 if (err instanceof UnexpectedError) {
                     out( (UnexpectedError) err );
                 }
@@ -229,6 +251,9 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             if (expectingError) {
             	boolean found = false;
                 for (Message err: foundErrors) {
+                    if (!includeError(err, 2)) {
+                        continue;
+                    }
                     if (err instanceof AnalysisError ||
                             err instanceof LexError ||
                             err instanceof ParseError) {
@@ -252,6 +277,9 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
             }
 //            else {
                 for (Message err: foundErrors) {
+                    if (!includeError(err, 3)) {
+                        continue;
+                    }
                     if (err instanceof LexError) {
                         out( that, (LexError) err );
                     }
@@ -259,9 +287,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
                         out( that, (ParseError) err );
                     }
                     else if (err instanceof UnsupportedError) {
-                        if (includeUnsupportedErrors()) {
-                            out( (UnsupportedError) err );
-                        }
+                        out( (UnsupportedError) err );
                     } 
                     else if (err instanceof AnalysisError) {
                         out( (AnalysisError) err );
@@ -291,7 +317,7 @@ public class AssertionVisitor extends Visitor implements NaturalVisitor {
         }
     }
     
-    protected boolean includeUnsupportedErrors() {
+    protected boolean includeError(Message err, int phase) {
         return true;
     }
     

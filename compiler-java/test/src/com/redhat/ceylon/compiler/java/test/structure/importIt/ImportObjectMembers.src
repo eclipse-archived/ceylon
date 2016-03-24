@@ -1,0 +1,81 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+final class importObjectMembers_ {
+    
+    private importObjectMembers_() {
+    }
+    
+    static void importObjectMembers() {
+        .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().fn();
+        final .ceylon.language.Callable<? extends .java.lang.Object> fnRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$), "Anything(String=)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().fn();
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$0).toString();
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().fn($ceylontmp$s);
+                    }
+                    returning null;
+                );
+            }
+        };
+        .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal(.com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal());
+        (
+            let
+            {
+                long $ceylontmp$op$0 = .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal();
+                .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal($ceylontmp$op$0 + 1);
+            }
+            returning $ceylontmp$op$0;
+        );
+        (
+            let
+            {
+                long $ceylontmp$op$1 = .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal() + 1;
+                .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal($ceylontmp$op$1);
+            }
+            returning $ceylontmp$op$1;
+        );
+        (
+            let
+            {
+                long $ceylontmp$op$2 = .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().getVal() + 1L;
+                .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().setVal($ceylontmp$op$2);
+            }
+            returning $ceylontmp$op$2;
+        );
+        final .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class c = .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().Class$new$();
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class> classRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class.class)), .ceylon.language.Empty.$TypeDescriptor$, "toplevel.Class()", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class $call$() {
+                return .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.get_().Class$new$();
+            }
+        };
+        final .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel$Interface_ i = c;
+        
+        final class f_ {
+            
+            private f_() {
+            }
+            
+            .java.lang.Object f(final .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel_.Class c, final .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel$Interface_ i) {
+                return .ceylon.language.nothing_.get_();
+            }
+        }
+        final f_ f = new f_();
+    }
+}

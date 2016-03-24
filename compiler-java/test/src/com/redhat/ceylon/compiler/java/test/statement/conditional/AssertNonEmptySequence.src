@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertNonEmptySequence() {
+    }
+    
+    public final long m(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> x$2;
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> x$1 = null;
+        if ((x$1 = x) instanceof .ceylon.language.Sequence) {
+            x$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)x$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty x"));
+        }
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = x$2;
+        return ((.ceylon.language.Integer)(.java.lang.Object)x$2.getFirst()).longValue();
+    }
+    
+    public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s$5;
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> s$4 = null;
+        if ((s$4 = x) instanceof .ceylon.language.Sequence) {
+            s$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)s$4;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty s=x"));
+        }
+        return ((.ceylon.language.Integer)(.java.lang.Object)s$5.getFirst()).longValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertNonEmptySequence.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertNonEmptySequence.class);
+}

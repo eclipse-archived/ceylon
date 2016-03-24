@@ -37,4 +37,10 @@ void assignability() {
     @error Co<in Float> coin;
     @error Contra<out Float> contraout;
     @error Contra<in Float> contrain;
+    
+    Co<in Float> coinf = nothing;
+    @error Co<in Object> coino = coinf;
+    Co<in Nothing> coinn = coinf;
+    @error Co<Object> coo = coinf; 
+    Co<Anything> coa = coinf;
 }

@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+final class bug2236_ {
+    
+    private bug2236_() {
+    }
+    
+    static void bug2236() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> f = (
+            let
+            {
+                final .java.lang.String $instance$ = "";
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Character.$TypeDescriptor$))), "{Integer*}(Integer(Character))", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                    final .ceylon.language.Callable $ceylontmp$collecting = (.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)$param$0;
+                    return .ceylon.language.String.<.ceylon.language.Integer>map(.ceylon.language.Integer.$TypeDescriptor$, $instance$, $ceylontmp$collecting);
+                }
+            };
+        );
+    }
+}

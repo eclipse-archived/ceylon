@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+public final class strictfp_ {
+    
+    private strictfp_() {
+    }
+    
+    public static long get_() {
+        return 0L;
+    }
+    
+    public static void set_(final long $strictfp) {
+    }
+}
+public final class module_ {
+    
+    private module_() {
+    }
+    
+    public static long get_() {
+        return 0L;
+    }
+    
+    public static void set_(final long module) {
+    }
+}
+public final class package_ {
+    
+    private package_() {
+    }
+    
+    public static long get_() {
+        return 0L;
+    }
+    
+    public static void set_(final long $package) {
+    }
+}

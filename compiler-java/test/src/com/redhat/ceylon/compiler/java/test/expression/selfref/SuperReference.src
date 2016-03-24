@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+class SuperReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SuperReference() {
+        this.a = 0L;
+    }
+    private long a;
+    
+    public final long getA() {
+        return a;
+    }
+    
+    public final void setA(final long a) {
+        this.a = a;
+    }
+    
+    public .java.lang.Object m(final .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild x) {
+        x.test();
+        return null;
+    }
+    
+    public .java.lang.Object test() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference.class);
+}
+class SuperReferenceChild extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReference {
+    
+    SuperReferenceChild() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object test() {
+        (
+            let
+            {
+                long $ceylontmp$opV$1 = super.getA();
+                super.setA($ceylontmp$opV$1 + 1);
+            }
+            returning $ceylontmp$opV$1;
+        );
+        super.test();
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperReferenceChild.class);
+}

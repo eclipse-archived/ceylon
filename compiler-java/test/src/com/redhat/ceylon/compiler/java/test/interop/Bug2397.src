@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class bug2397_ {
+    
+    private bug2397_() {
+    }
+    
+    static void bug2397() {
+        final .ceylon.language.String[] strings = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
+        final .ceylon.language.String[] array$0 = strings;
+        loop_0: for (int i$2 = 0; i$2 < array$0.length; i$2++) {
+            final .ceylon.language.String string = array$0[i$2];
+            final .ceylon.language.String s = string;
+        }
+        final .ceylon.language.String[] optStrings = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
+        final .ceylon.language.String[] array$3 = optStrings;
+        loop_1: for (int i$5 = 0; i$5 < array$3.length; i$5++) {
+            final .ceylon.language.String string = array$3[i$5];
+            final .ceylon.language.String s = string;
+        }
+    }
+}

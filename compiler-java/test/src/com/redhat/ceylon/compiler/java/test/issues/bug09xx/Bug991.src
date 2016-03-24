@@ -1,0 +1,122 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug991Iterable {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$impl();
+    
+    public .java.lang.Object f();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable.class);
+}
+final class Bug991Iterable$impl implements .java.io.Serializable {
+    
+    Bug991Iterable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable $this;
+    
+    public .java.lang.Object f() {
+        return null;
+    }
+}
+interface Bug991List extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$impl();
+    
+    @.java.lang.Override
+    public .java.lang.Object f();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List.class);
+}
+final class Bug991List$impl implements .java.io.Serializable {
+    
+    Bug991List$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List $this;
+    
+    public .java.lang.Object f() {
+        return null;
+    }
+}
+interface Bug991Sequence extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Sequence$impl();
+    
+    @.java.lang.Override
+    public .java.lang.Object f();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence.class);
+}
+final class Bug991Sequence$impl implements .java.io.Serializable {
+    
+    Bug991Sequence$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Sequence $this;
+    
+    public .java.lang.Object f() {
+        return $this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$impl().f();
+    }
+}
+class Bug991SequenceClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List, .java.io.Serializable {
+    
+    Bug991SequenceClass() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991List$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this$;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991Iterable$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991Iterable$this$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object f() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug991List$this$.f();
+    }
+    
+    private final void m$priv$() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991SequenceClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug991SequenceClass.class);
+}

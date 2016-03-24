@@ -33,4 +33,49 @@ class DefaultTypeArgs() {
     
     class G1<X,@error N=G1<Y>>() {}
     class G2<@error N=G2<>>() {}
+
+    class Wraps<T=Anything>(T t) {}
+    
+    @error String<> stringWith0Args;
+    @type:"Category<Object>" Category<> categoryWith0Args;
+    @type:"DefaultTypeArgs.Wraps<Anything>" Wraps<> wrapsWith0Args;
+    
+    class Singleton<T>(T t) {}
+    
+    @error String<>("");
+    @error Singleton<>(1);
+    @type:"DefaultTypeArgs.Wraps<Anything>" Wraps<>(1.0);
+    
+    @type:"Category<Object>" Category<> cat1 = [1,2];
+    @type:"Category<Object>" Category cat2 = ["",""];
+    @type:"List<Anything>" List<> list1 = [1,2];
+    @type:"List<Anything>" List list2 = ["",""];
+    @error @type:"Comparable<unknown>" Comparable<> comp1 = 1;
+    @error @type:"Comparable<unknown>" Comparable comp2 = 1;
+    @type:"Set<Object>" Set<> set1 = nothing;
+    @type:"Set<Object>" Set set2 = nothing;
+    
+    shared void run() { // keep this method
+        class FooBar<Bar=String>() { 
+            shared object b {
+                shared variable Bar? c = null;
+            }
+        }
+        @error FooBar<Float>().b.c = "aaa";
+    }
+    
+    class FooBar<Bar=String>() { 
+        shared object b {
+            shared variable Bar? c = null;
+        }
+    }
+    
+    @error void x() => FooBar<Float>().b.c = "aaa";
+    
+}
+
+interface Circularity {
+    class Foo<F>(){}
+    class Bar<B=Baz<>>() => Foo<B>();
+    class Baz<@error B=Baz<>>() => Foo<B>();
 }

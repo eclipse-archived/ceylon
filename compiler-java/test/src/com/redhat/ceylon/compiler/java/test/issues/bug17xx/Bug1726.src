@@ -1,0 +1,67 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+final class bug1726_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private bug1726_() {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> s1 = (
+            let
+            {
+                final .java.lang.String $instance$ = "";
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.String $call$() {
+                    return .ceylon.language.String.instance(.ceylon.language.String.$clone($instance$));
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.String> s2;
+        s2 = (
+            let
+            {
+                final .java.lang.String $instance$ = "";
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.String $call$() {
+                    return .ceylon.language.String.instance(.ceylon.language.String.$clone($instance$));
+                }
+            };
+        );
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.class);
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_ get_() {
+        if (bug1726_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1726\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_.$TypeDescriptor$;
+    }
+}

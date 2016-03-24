@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertIsNullUnion() {
+    }
+    
+    public final void m() {
+        final .java.lang.Object nothing = null;
+        final .ceylon.language.Character nothing$2;
+        .java.lang.Object nothing$1 = null;
+        if ((nothing$1 = nothing) == null || nothing$1 instanceof .ceylon.language.Character) {
+            nothing$2 = (.ceylon.language.Character)nothing$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Character? nothing"));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNullUnion.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertIsNullUnion.class);
+}

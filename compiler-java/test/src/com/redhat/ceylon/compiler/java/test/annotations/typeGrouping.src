@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+interface TypeGroupA {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupA.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+interface TypeGroupB {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupB.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+interface TypeGroupC {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupC.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+interface TypeGroupD {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TypeGroupD.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("typeGroupAttribute")
+final class typeGroupAttribute_ {
+    
+    private typeGroupAttribute_() {
+    }
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .ceylon.language.nothing_.get_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupB&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD|com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupC&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD",
+            erased = true)
+    public static .java.lang.Object get_() {
+        if (typeGroupAttribute_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'typeGroupAttribute\' before it was set");
+        }
+    }
+}

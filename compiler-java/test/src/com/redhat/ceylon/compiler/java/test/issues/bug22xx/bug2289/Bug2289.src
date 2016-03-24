@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289;
+
+interface Top2289 {
+    
+    public abstract .java.lang.Object top();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289.Top2289.class);
+}
+interface Left2289 extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289.Top2289 {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289.Left2289.class);
+}
+interface Right2289 extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289.Top2289 {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289.Right2289.class);
+}
+final class bug2289_ {
+    
+    private bug2289_() {
+    }
+    
+    static void bug2289() {
+        final .ceylon.collection.MutableMap<.java.lang.Object, .ceylon.language.Usable> mm = (.ceylon.collection.MutableMap<.java.lang.Object, .ceylon.language.Usable>).ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines1 = (
+            let
+            {
+                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable> $instance$ = (.ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable>)(.ceylon.language.Map)mm;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$key = $param$0;
+                    return .ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines2 = (
+            let
+            {
+                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable> $instance$ = (.ceylon.language.Map<? extends .java.lang.Object, ? extends .ceylon.language.Usable>)(.ceylon.language.Map)mm;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$key = $param$0;
+                    return .ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines3 = (
+            let
+            {
+                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = mm;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$key = $param$0;
+                    return .ceylon.language.Boolean.instance($instance$.defines($ceylontmp$key));
+                }
+            };
+        );
+        final .java.lang.Object middle = .ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> t = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289.Top2289 $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2289.Top2289)middle;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.top();
+                }
+            };
+        );
+    }
+}

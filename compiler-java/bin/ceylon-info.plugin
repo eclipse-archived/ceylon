@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon info" tool
+summary=Prints information about modules in repositories
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.tools.info.CeylonInfoTool
+

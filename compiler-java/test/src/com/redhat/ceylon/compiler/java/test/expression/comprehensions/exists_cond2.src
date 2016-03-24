@@ -1,0 +1,67 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+final class existsCond_ {
+    
+    private existsCond_() {
+    }
+    
+    static void existsCond() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> seq = new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, .ceylon.language.null_, .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.null_, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.null_, ? extends .ceylon.language.null_, ? extends .ceylon.language.Empty>>>>>(null, new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.null_, ? extends .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.null_, ? extends .ceylon.language.null_, ? extends .ceylon.language.Empty>>>>(.ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, .ceylon.language.null_, .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, ? extends .ceylon.language.String, ? extends .ceylon.language.Tuple<.ceylon.language.null_, ? extends .ceylon.language.null_, ? extends .ceylon.language.Empty>>>(null, new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.Character>, .ceylon.language.String, .ceylon.language.Tuple<.ceylon.language.null_, ? extends .ceylon.language.null_, ? extends .ceylon.language.Empty>>(.ceylon.language.String.instance("b"), new .ceylon.language.Tuple<.ceylon.language.null_, .ceylon.language.null_, .ceylon.language.Empty>(null, .ceylon.language.empty_.getEmpty$())))));
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character>(){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Character> getIterator() {
+                return new .ceylon.language.Iterator<.ceylon.language.Character>(){
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.String> iter$0 = seq.getIterator();
+                    private .ceylon.language.String x;
+                    private boolean x$exhausted;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmpitem0 = iter$0.next();
+                        x$exhausted = $ceylontmpitem0 == .ceylon.language.finished_.getFinished$();
+                        if (x$exhausted) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.String)$ceylontmpitem0;
+                            return true;
+                        }
+                    }
+                    private .java.lang.String $x$2;
+                    
+                    private final boolean next1() {
+                        while (true) {
+                            if (!this.x()) break;
+                            .ceylon.language.String $x$1 = null;
+                            if (($x$1 = x) != null) {
+                                $x$2 = $x$1.toString();
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    private int $c$4;
+                    
+                    private final boolean next2() {
+                        while (true) {
+                            if (!this.next1()) break;
+                            .ceylon.language.Character $c$3 = null;
+                            if (($c$3 = .ceylon.language.String.instance(.ceylon.language.String.initial($x$2, 1L)).item(.ceylon.language.Integer.instance(0L))) != null) {
+                                $c$4 = $c$3.intValue();
+                                break;
+                            }
+                        }
+                        return !x$exhausted;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        return this.next2() ? .ceylon.language.Character.instance(.ceylon.language.Character.getUppercased($c$4)) : .ceylon.language.finished_.getFinished$();
+                    }
+                };
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.comprehensions.existsCond_.existsCond();
+    }
+}

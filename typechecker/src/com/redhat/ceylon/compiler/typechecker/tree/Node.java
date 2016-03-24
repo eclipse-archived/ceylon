@@ -8,14 +8,15 @@ import java.util.List;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.model.Scope;
-import com.redhat.ceylon.compiler.typechecker.model.Unit;
+import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 
 public abstract class Node {
     
@@ -25,7 +26,7 @@ public abstract class Node {
     private Token firstChildToken;
     private Token lastChildToken;
     private Scope scope;
-    private Unit unit;
+    private TypecheckerUnit unit;
     private List<Message> errors = null;
     
     protected Node(Token token) {
@@ -47,11 +48,11 @@ public abstract class Node {
      * The compilation unit in which the node
      * occurs.
      */
-    public Unit getUnit() {
+    public TypecheckerUnit getUnit() {
         return unit;
     }
     
-    public void setUnit(Unit unit) {
+    public void setUnit(TypecheckerUnit unit) {
         this.unit = unit;
     }
     
@@ -69,7 +70,8 @@ public abstract class Node {
     		return token.getText();
     	}
     	else {
-    		return token.getText() + endToken.getText();
+    		return token.getText() + 
+    		        endToken.getText();
     	}
     }
     
@@ -108,16 +110,26 @@ public abstract class Node {
     	}
     }
     
+    /**
+     * The index of the first character belonging to this node.
+     */
     public Integer getStartIndex() {
     	Token token = getToken();
     	if (token==null) {
     		return null;
     	}
     	else {
-    		return ((CommonToken) token).getStartIndex();
+    		CommonToken ct = (CommonToken) token;
+            return ct.getStartIndex();
     	}
     }
-
+    
+    /**
+     * The index of the last character belonging to this node.
+     * @see #getEndIndex()
+     * @deprecated
+     */
+    @Deprecated
     public Integer getStopIndex() {
     	Token token = getEndToken();
     	if (token==null) {
@@ -127,8 +139,41 @@ public abstract class Node {
     		return null;
     	}
     	else {
-    		return ((CommonToken) token).getStopIndex();
+    		CommonToken ct = (CommonToken) token;
+            return ct.getStopIndex();
     	}
+    }
+    
+    /**
+     * The index of the first character after this node.
+     */
+    public Integer getEndIndex() {
+        Token token = getEndToken();
+        if (token==null) {
+            token = getToken();
+        }
+        if (token==null) {
+            return null;
+        }
+        else {
+            CommonToken ct = (CommonToken) token;
+            return ct.getStopIndex()+1;
+        }
+    }
+    
+    /**
+     * The distance between {@link #getStartIndex()} and {@link #getEndIndex()},
+     * that is, loosely speaking, the length of this node.
+     */
+    public Integer getDistance() {
+        Integer start = getStartIndex();
+        Integer end = getEndIndex();
+        if (start!=null && end!=null) {
+            return end - start;
+        }
+        else {
+            return null;
+        }
     }
 
 	private static String toLocation(Token token) {
@@ -182,6 +227,10 @@ public abstract class Node {
     	return getLastChildToken();
 	}
     
+    public void setToken(Token token) {
+        this.token = token;
+    }
+    
     public void setEndToken(Token endToken) {
         //the tokens ANTLR inserts to represent missing tokens
         //don't come with useful offset information
@@ -194,12 +243,14 @@ public abstract class Node {
      * The compilation errors belonging to this node.
      */
     public List<Message> getErrors() {
-        return errors != null ? errors : Collections.<Message>emptyList();
+        return errors != null ? 
+                errors : Collections.<Message>emptyList();
     }
     
     public void addError(Message error){
-        if(errors == null)
+        if (errors == null) {
             errors = new ArrayList<Message>(2);
+        }
         errors.add(error);
     }
     
@@ -207,22 +258,46 @@ public abstract class Node {
         addError( new AnalysisError(this, message) );
     }
     
+    public void addError(String message, Backend backend) {
+        addError( new AnalysisError(this, message, backend) );
+    }
+    
     public void addError(String message, int code) {
         addError( new AnalysisError(this, message, code) );
+    }
+    
+    public void addError(String message, int code, Backend backend) {
+        addError( new AnalysisError(this, message, code, backend) );
     }
     
     public void addUnexpectedError(String message) {
         addError( new UnexpectedError(this, message) );
     }
     
+    public void addUnexpectedError(String message, Backend backend) {
+        addError( new UnexpectedError(this, message, backend) );
+    }
+    
     public void addUnsupportedError(String message) {
         addError( new UnsupportedError(this, message) );
     }
     
-    public <E extends Enum<E>> void addUsageWarning(E warningName, String message) {
-        addError( new UsageWarning(this, message, warningName.toString()) );
+    public void addUnsupportedError(String message, Backend backend) {
+        addError( new UnsupportedError(this, message, backend) );
     }
     
+    public <E extends Enum<E>> void addUsageWarning
+            (E warningName, String message) {
+        addError( new UsageWarning(this, message, 
+                warningName.toString()) );
+    }
+    
+    public <E extends Enum<E>> void addUsageWarning
+            (E warningName, String message, Backend backend) {
+        addError( new UsageWarning(this, message, 
+                warningName.toString(), backend) );
+    }
+
     public void addParseError(ParseError error) {
         addError(error);
     }
@@ -249,18 +324,19 @@ public abstract class Node {
     }
     
     public void handleException(Exception e, Visitor visitor) {
-	    addError(getMessage(e, visitor));
+        addUnexpectedError(getMessage(e, visitor));
     }
 
     public String getMessage(Exception e, Visitor visitor) {
-		return visitor.getClass().getSimpleName() +
-	            " caused an exception visiting " + getNodeType() + 
-	            " node: " + e + " at " + getLocationInfo(e);
+		return "the '" + visitor.getClass().getSimpleName() +
+		        "' caused an exception visiting a '" + 
+		        getNodeType() + "' node: '\"" + e + "\"'" + 
+		        getLocationInfo(e);
 	}
 
 	private String getLocationInfo(Exception e) {
-		return e.getStackTrace().length>0 ? 
-				e.getStackTrace()[0].toString() : "unknown";
+		return e.getStackTrace().length==0 ? "" : 
+		    " at '" + e.getStackTrace()[0].toString() + "'";
 	}
 	
 	public void connect(Node child) {

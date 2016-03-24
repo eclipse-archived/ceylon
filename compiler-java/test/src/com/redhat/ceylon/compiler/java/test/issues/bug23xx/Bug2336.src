@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+interface Bug2336$I2 extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl.I2$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$impl$I2$impl();
+}
+interface Bug2336 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336.class);
+}
+final class Bug2336$impl implements .java.io.Serializable {
+    
+    Bug2336$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336 $this;
+    
+    final class I2$impl implements .java.io.Serializable {
+        
+        I2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$I2 $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$I2 $this;
+        
+        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$I2, .java.io.Serializable {
+            
+            C() {
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$I2$this$ = .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl.this.new I2$impl(this);
+                this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl(this);
+            }
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl.I2$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$I2$this$;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl.I2$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$impl$I2$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$I2$this$;
+            }
+            protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$this$;
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$impl() {
+                return $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2336$this$;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$I2.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2336$impl.I2$impl.C.class));
+            }
+        }
+    }
+}

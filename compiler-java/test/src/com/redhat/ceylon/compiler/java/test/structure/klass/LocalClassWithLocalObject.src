@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class LocalClassWithLocalObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LocalClassWithLocalObject() {
+    }
+    
+    private final void m$priv$() {
+        
+        class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Inner() {
+                this.o = null;
+            }
+            private transient Inner.o_ o;
+            
+            final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                
+                private o_() {
+                }
+                
+                private final .java.lang.Object writeReplace() {
+                    final .java.lang.String $name$;
+                    $name$ = "getO";
+                    return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(Inner.this, Inner.class, $name$);
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.o_.class));
+                }
+            }
+            
+            public final Inner.o_ getO() {
+                if (o == null) o = new Inner.o_();
+                return o;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Inner.class));
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.LocalClassWithLocalObject.class);
+}

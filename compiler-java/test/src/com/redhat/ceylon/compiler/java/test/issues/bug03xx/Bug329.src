@@ -1,0 +1,95 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug03xx;
+
+interface Bug329_Something {
+    
+    public abstract .java.lang.Object getSomething();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something.class);
+}
+final class bug329_se_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
+    
+    private bug329_se_() {
+        this.something = .ceylon.language.String.instance("somethingElse");
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.class);
+    private final .ceylon.language.String something;
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getSomething() {
+        return something;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_ get_() {
+        if (bug329_se_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.$TypeDescriptor$;
+    }
+}
+final class bug329_se2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug03xx.Bug329_Something {
+    
+    private bug329_se2_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.class);
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getSomething() {
+        return .ceylon.language.String.instance("somethingElse");
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_ get_() {
+        if (bug329_se2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se2\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.$TypeDescriptor$;
+    }
+}

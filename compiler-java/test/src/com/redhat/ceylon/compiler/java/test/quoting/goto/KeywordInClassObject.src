@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInClassObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KeywordInClassObject() {
+        this.$goto = null;
+    }
+    private transient .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ $goto;
+    
+    final class goto_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private goto_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getGoto$priv$";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.this, .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.class, $name$);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_.class));
+        }
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ getGoto$priv$() {
+        if ($goto == null) $goto = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_();
+        return $goto;
+    }
+    
+    private final void m$priv$() {
+        final .java.lang.String s = getGoto$priv$().toString();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.class);
+}

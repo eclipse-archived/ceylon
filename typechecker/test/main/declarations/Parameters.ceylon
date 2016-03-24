@@ -57,8 +57,8 @@ class Parameters() {
     void withDefaultedCallableParams(Float f() => 0.5, Float g(Float x) => x) {}
     void withDefaultedFunctionParams(Float() f = () => 0.5, Float(Float) g = (Float x) => x) {}
     
-    @error print(String({Character*} chars1));
-    @error value b1 = String({Character*} chars2);
+    //@error print(String({Character*} chars1));
+    //@error value b1 = String({Character*} chars2);
     @error print(print(Any val1));
     @error value b2 = print(Any val2);
     
@@ -81,4 +81,13 @@ class Parameters() {
     
     value anon1 = (@error value arg) => 0;
     value anon2 = (@error function arg()) => 0;
+    
+}
+
+class ClassAlias(String key, String item="") 
+        => Entry<String,String>(key, item);
+
+@error shared Integer counter(first)() {
+    variable Integer first;
+    return first++;
 }

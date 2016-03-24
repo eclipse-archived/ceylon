@@ -1,0 +1,6 @@
+<web-app>
+  <distributable />
+  <listener>
+    <listener-class>com.redhat.ceylon.war.WarInitializer</listener-class>
+  </listener>
+</web-app>

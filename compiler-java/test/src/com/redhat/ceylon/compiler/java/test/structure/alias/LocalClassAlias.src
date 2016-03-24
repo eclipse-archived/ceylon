@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class LocalClassAlias_Toplevel implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LocalClassAlias_Toplevel() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.LocalClassAlias_Toplevel.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.LocalClassAlias_Toplevel.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1ClassAlias_Foo"})
+final class localClassAliasMethod_ {
+    
+    private localClassAliasMethod_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void localClassAliasMethod() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("ClassAlias_Foo")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        class ClassAlias_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            ClassAlias_Foo() {
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.alias.localClassAliasMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(ClassAlias_Foo.class));
+            }
+        }
+        final ClassAlias_Foo foo1 = new ClassAlias_Foo();
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.LocalClassAlias_Toplevel foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.LocalClassAlias_Toplevel();
+    }
+}

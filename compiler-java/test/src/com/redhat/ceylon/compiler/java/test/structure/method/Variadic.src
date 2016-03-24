@@ -1,0 +1,67 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class Variadic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Variadic() {
+    }
+    
+    private final void possiblyEmpty$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                possiblyEmpty$priv$$canonical$($ceylontmp$args$0);
+            }
+            returning null;
+        );
+    }
+    
+    private void possiblyEmpty$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+    }
+    
+    private final void possiblyEmpty$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        (
+            let
+            {
+                possiblyEmpty$priv$$canonical$(args);
+            }
+            returning null;
+        );
+    }
+    
+    private final void notEmpty$priv$(final .ceylon.language.Sequence<? extends .ceylon.language.String> args) {
+    }
+    
+    private final void possiblyEmptyInBody$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                possiblyEmptyInBody$priv$$canonical$($ceylontmp$args$1);
+            }
+            returning null;
+        );
+    }
+    
+    private void possiblyEmptyInBody$priv$$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+    }
+    
+    private final void possiblyEmptyInBody$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        (
+            let
+            {
+                possiblyEmptyInBody$priv$$canonical$(args);
+            }
+            returning null;
+        );
+    }
+    
+    private final void notEmptyInBody$priv$(final .ceylon.language.Sequence<? extends .ceylon.language.String> args) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.Variadic.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.Variadic.class);
+}

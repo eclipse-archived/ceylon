@@ -1,9 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAlwaysSatisfied;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isAtLeastOne;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.isNeverSatisfied;
-import static com.redhat.ceylon.compiler.typechecker.tree.Util.name;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAlwaysSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAtLeastOne;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNeverSatisfied;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
- * Validates that flow of control is well-defined.
- * Checks that control directives occur only where
- * they are allowed, and that every non-void method 
- * always ends via return or throw.
+ * Validates that flow of control is well-defined. Checks 
+ * that control directives occur only where they are 
+ * allowed, and that every non-void method always ends via 
+ * return or throw.
  * 
  * @author Gavin King
  *
@@ -27,6 +27,7 @@ public class ControlFlowVisitor extends Visitor {
     private boolean canReturn = false;
     private boolean canExecute = true;
     private Boolean possiblyBreaks = null;
+    private boolean unreachabilityReported = false;
     
     boolean beginDefiniteReturnScope() {
         boolean dr = definitelyReturns;
@@ -40,6 +41,7 @@ public class ControlFlowVisitor extends Visitor {
     
     void endDefiniteReturnScope(boolean dr) {
         definitelyReturns = dr;
+        unreachabilityReported = false;
     }
     
     void exit() {
@@ -145,8 +147,15 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkDefiniteReturn(Node that, String name) {
         if (!definitelyReturns) {
-            that.addError("does not definitely return: '" + 
-                    name + "' has branches which do not end in a return statement");
+            if (name==null) {
+                name = "anonymous function";
+            }
+            else {
+                name = "'" + name + "'";
+            }
+            that.addError("does not definitely return: " + 
+                    name + " has branches which do not end in a 'return' statement",
+                    12100);
         }
     }
 
@@ -163,7 +172,7 @@ public class ControlFlowVisitor extends Visitor {
         boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
-        if (!(that.getType() instanceof Tree.VoidModifier)) {
+        if (!that.getDeclarationModel().isDeclaredVoid()) {
             checkDefiniteReturn(that, name(that.getIdentifier()));
         }
         endDefiniteReturnScope(d);
@@ -176,7 +185,7 @@ public class ControlFlowVisitor extends Visitor {
         	boolean c = beginReturnScope(true);
         	boolean d = beginDefiniteReturnScope();
         	super.visit(that);
-        	if (!(that.getType() instanceof Tree.VoidModifier)) {
+        	if (!that.getDeclarationModel().isDeclaredVoid()) {
         		checkDefiniteReturn(that, name(that.getIdentifier()));
         	}
         	endDefiniteReturnScope(d);
@@ -195,8 +204,8 @@ public class ControlFlowVisitor extends Visitor {
         	boolean c = beginReturnScope(true);
         	boolean d = beginDefiniteReturnScope();
         	super.visit(that);
-        	if (!(that.getType() instanceof Tree.VoidModifier)) {
-        		checkDefiniteReturn(that, "anonymous function");
+        	if (!(that.getDeclarationModel().isDeclaredVoid())) {
+        		checkDefiniteReturn(that, null);
         	}
         	endDefiniteReturnScope(d);
         	endReturnScope(c);
@@ -223,6 +232,26 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        endReturnScope(c);
+        endDefiniteReturnScope(d);
+    }
+    
+    @Override
+    public void visit(Tree.Constructor that) {
+        checkReachable(that);
+        boolean c = beginReturnScope(true);
+        boolean d = beginDefiniteReturnScope();
+        super.visit(that);
+        endReturnScope(c);
+        endDefiniteReturnScope(d);
+    }
+    
+    @Override
+    public void visit(Tree.Enumerated that) {
+        checkReachable(that);
         boolean c = beginReturnScope(true);
         boolean d = beginDefiniteReturnScope();
         super.visit(that);
@@ -278,6 +307,13 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.Body that) {
         boolean e = beginStatementScope(!(that instanceof Tree.InterfaceBody));
+        super.visit(that);
+        endStatementScope(e);
+    }
+    
+    @Override
+    public void visit(Tree.LazySpecifierExpression that) {
+        boolean e = beginStatementScope(true);
         super.visit(that);
         endStatementScope(e);
     }
@@ -373,7 +409,10 @@ public class ControlFlowVisitor extends Visitor {
 
     private void checkReachable(Tree.Statement that) {
         if (definitelyReturns || definitelyBreaksOrContinues) {
-            that.addError("unreachable code");
+            if (!unreachabilityReported) {
+                that.addError("unreachable code");
+                unreachabilityReported = true;
+            }
         }
     }
     
@@ -410,7 +449,8 @@ public class ControlFlowVisitor extends Visitor {
         Tree.ForClause forClause = that.getForClause();
         if (forClause!=null) {
             forClause.visit(this);
-            atLeastOneIteration = isAtLeastOne(forClause.getForIteratorList());
+            atLeastOneIteration = 
+                    isAtLeastOne(forClause.getForIteratorList());
         }
         boolean definitelyDoesNotBreakFromFor = !possiblyBreaks;
         boolean definitelyReturnsFromFor = definitelyReturns && 

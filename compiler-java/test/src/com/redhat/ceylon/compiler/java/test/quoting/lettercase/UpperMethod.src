@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class UpperMethod {
+    
+    private UpperMethod() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void UpperMethod() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    UpperMethodC() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void UpperMethod() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class LocalUpperMethod {
+            
+            private LocalUpperMethod() {
+            }
+            
+            void LocalUpperMethod() {
+            }
+        }
+        final LocalUpperMethod LocalUpperMethod = new LocalUpperMethod();
+        LocalUpperMethod.LocalUpperMethod();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.lettercase.UpperMethodC.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.UpperMethodC.class);
+}

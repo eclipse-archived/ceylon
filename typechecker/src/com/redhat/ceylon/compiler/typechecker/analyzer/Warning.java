@@ -13,5 +13,10 @@ public enum Warning {
     javaNamespace, 
     suppressedAlready, 
     suppressesNothing, 
-    unknownWarning;
+    unknownWarning, 
+    ambiguousAnnotation,
+    similarModule,
+    importsOtherJdk,
+    javaAnnotationElement,
+    syntaxDeprecation
 }

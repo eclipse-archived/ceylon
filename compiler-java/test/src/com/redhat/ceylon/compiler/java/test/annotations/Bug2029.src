@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.TYPE})
+public @interface A$annotation$ {
+}
+public final class A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation, .java.io.Serializable {
+    
+    public A(.com.redhat.ceylon.compiler.java.test.annotations.A$annotation$ anno) {
+        this();
+    }
+    
+    public A() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.A();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.A.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.A$annotation$.class;
+    }
+}
+final class annos_ {
+    
+    private annos_() {
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.A value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.com.redhat.ceylon.compiler.java.test.annotations.A)(.java.lang.Object).ceylon.language.meta.annotations_.<.java.lang.annotation.Annotation, .com.redhat.ceylon.compiler.java.test.annotations.A, .ceylon.language.Annotated>annotations(.com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$), (.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.annotations.A, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$), (.ceylon.language.Annotated).ceylon.language.nothing_.get_());
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.annotations.A get_() {
+        if (annos_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annos\' before it was set");
+        }
+    }
+}

@@ -1,0 +1,98 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+public final class multipleParameterListsWithVariationParameters_ {
+    
+    private multipleParameterListsWithVariationParameters_() {
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterListsWithVariationParameters(final long a$param$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong a = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(a$param$);
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Float.$TypeDescriptor$), "String(Object)(Float)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                double b$param$ = ((.ceylon.language.Float)$param$0).doubleValue();
+                final .com.redhat.ceylon.compiler.java.language.VariableBoxDouble b = new .com.redhat.ceylon.compiler.java.language.VariableBoxDouble(b$param$);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "String(Object)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                        .java.lang.Object c = $param$0;
+                        (
+                            let
+                            {
+                                long $ceylontmp$op$0 = a.ref;
+                                a.ref = $ceylontmp$op$0 + 1;
+                            }
+                            returning $ceylontmp$op$0;
+                        );
+                        (
+                            let
+                            {
+                                double $ceylontmp$op$1 = b.ref + 1.0;
+                                b.ref = $ceylontmp$op$1;
+                            }
+                            returning $ceylontmp$op$1;
+                        );
+                        c = .ceylon.language.String.instance(c.toString());
+                        return .ceylon.language.String.instance(.ceylon.language.Integer.toString(a.ref) + .ceylon.language.Float.toString(b.ref) + c.toString());
+                    }
+                };
+            }
+        };
+    }
+}
+public final class multipleParameterListsWithVariationParameters2_ {
+    
+    private multipleParameterListsWithVariationParameters2_() {
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterListsWithVariationParameters2(final long a$param$) {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong a = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(a$param$);
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Float.$TypeDescriptor$), "String(Object)(Float)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                double b$param$ = ((.ceylon.language.Float)$param$0).doubleValue();
+                final .com.redhat.ceylon.compiler.java.language.VariableBoxDouble b = new .com.redhat.ceylon.compiler.java.language.VariableBoxDouble(b$param$);
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "String(Object)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                        .java.lang.Object c$param$ = $param$0;
+                        final VariableBox<.java.lang.Object> c = new VariableBox<.java.lang.Object>(c$param$);
+                        
+                        final class fn_ {
+                            
+                            private fn_() {
+                            }
+                            
+                            .java.lang.String fn() {
+                                (
+                                    let
+                                    {
+                                        long $ceylontmp$op$2 = a.ref;
+                                        a.ref = $ceylontmp$op$2 + 1;
+                                    }
+                                    returning $ceylontmp$op$2;
+                                );
+                                (
+                                    let
+                                    {
+                                        double $ceylontmp$op$3 = b.ref + 1.0;
+                                        b.ref = $ceylontmp$op$3;
+                                    }
+                                    returning $ceylontmp$op$3;
+                                );
+                                c.ref = .ceylon.language.String.instance(c.ref.toString());
+                                return .ceylon.language.Integer.toString(a.ref) + .ceylon.language.Float.toString(b.ref) + c.ref.toString();
+                            }
+                        }
+                        final fn_ fn = new fn_();
+                        return .ceylon.language.String.instance(fn.fn());
+                    }
+                };
+            }
+        };
+    }
+}

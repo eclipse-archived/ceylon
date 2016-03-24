@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+class IndexingTuples implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IndexingTuples() {
+    }
+    
+    private final void index$priv$() {
+        final .ceylon.language.Sequence t = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.Character.$TypeDescriptor$)), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.String.instance("2"),
+                new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(51))});
+        final long v1 = ((.ceylon.language.Integer)(.java.lang.Object)t.getFromFirst(0L)).longValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.IndexingTuples.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.IndexingTuples.class);
+}

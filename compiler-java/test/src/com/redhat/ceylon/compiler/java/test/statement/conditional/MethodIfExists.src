@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfExists() {
+    }
+    
+    public final long m(final .ceylon.language.Integer x) {
+        .ceylon.language.Integer x$1;
+        if ((x$1 = x) != null) {
+            final long x$2 = x$1.longValue();
+            return x$2;
+        }
+        final .java.lang.Object x$3 = x;
+        return 0L;
+    }
+    
+    public final long m2(final .ceylon.language.Integer x) {
+        .ceylon.language.Integer y$5;
+        if ((y$5 = x) != null) {
+            final long y$6 = y$5.longValue();
+            return y$6;
+        }
+        return 0L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfExists.class);
+}

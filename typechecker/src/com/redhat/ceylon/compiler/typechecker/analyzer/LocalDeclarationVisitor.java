@@ -22,14 +22,13 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.typechecker.model.Class;
-import com.redhat.ceylon.compiler.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Method;
-import com.redhat.ceylon.compiler.typechecker.model.Value;
-import com.redhat.ceylon.compiler.typechecker.tree.NaturalVisitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Visitor which attributes qualifiers to local types, such that they will have a unique qualifier
@@ -52,7 +51,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
+public class LocalDeclarationVisitor extends Visitor {
 
     private Map<String,Integer> localNames;
     private String prefix;
@@ -61,7 +60,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         visitLocalDeclarationModel(that.getDeclarationModel());
     }
 
-    private void visitLocalDecl(Tree.ObjectArgument that) {
+    private void visitLocalDecl(Tree.TypedArgument that) {
         visitLocalDeclarationModel(that.getDeclarationModel());
     }
 
@@ -72,7 +71,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     public static boolean isTopLevelObjectExpressionType(Declaration model) {
         return model instanceof Class
                 && model.isAnonymous()
-                && model.getContainer() instanceof Package
+                && model.isToplevel()
                 && !model.isNamed();
     }
     
@@ -80,7 +79,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         if (model!=null
                 && (isTopLevelObjectExpressionType(model)
                         || (!model.isToplevel() && !model.isMember())) 
-                && !(model instanceof Method && model.isParameter())
+                && !(model instanceof Function && model.isParameter())
                 && localNames!=null){
             Integer counter = localNames.get(model.getName());
             if (counter == null) {
@@ -128,11 +127,12 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ObjectDefinition that) {
         visitLocalDecl(that);
         // use the same qualifier for the object type
-        if(that.getAnonymousClass() != null
-                && that.getDeclarationModel() != null) {
-            that.getAnonymousClass().setQualifier(that.getDeclarationModel().getQualifier());
+        Class c = that.getAnonymousClass();
+        Value v = that.getDeclarationModel();
+        if (c!=null && v!=null) {
+            c.setQualifier(v.getQualifier());
         }
-
+        
         Map<String,Integer> oldLocalNames = localNames;
         localNames = new HashMap<String,Integer>();
 
@@ -145,10 +145,23 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
     public void visit(Tree.ObjectArgument that) {
         visitLocalDecl(that);
         // use the same qualifier for the object type
-        if (that.getAnonymousClass() != null
-                && that.getDeclarationModel() != null) {
-            that.getAnonymousClass().setQualifier(that.getDeclarationModel().getQualifier());
+        Class c = that.getAnonymousClass();
+        Value v = that.getDeclarationModel();
+        if (c != null && v != null) {
+            c.setQualifier(v.getQualifier());
         }
+        
+        Map<String,Integer> oldLocalNames = localNames;
+        localNames = new HashMap<String,Integer>();
+
+        super.visit(that);
+        
+        localNames = oldLocalNames;
+    }
+
+    @Override
+    public void visit(Tree.MethodArgument that) {
+        visitLocalDecl(that);
 
         Map<String,Integer> oldLocalNames = localNames;
         localNames = new HashMap<String,Integer>();
@@ -158,6 +171,18 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         localNames = oldLocalNames;
     }
 
+    @Override
+    public void visit(Tree.AttributeArgument that) {
+        visitLocalDecl(that);
+
+        Map<String,Integer> oldLocalNames = localNames;
+        localNames = new HashMap<String,Integer>();
+
+        super.visit(that);
+        
+        localNames = oldLocalNames;
+    }
+    
     @Override
     public void visit(Tree.ObjectExpression that) {
         visitLocalDecl(that);
@@ -221,7 +246,7 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
          * starts with a number because there's heuristics in the runtime model that local types
          * must start with a number.
          */
-        if(model != null && model.isToplevel()){
+        if (model != null && model.isToplevel()){
             Map<String,Integer> oldLocalNames = localNames;
             String oldPrefix = prefix;
             localNames = new HashMap<String,Integer>();
@@ -231,7 +256,8 @@ public class LocalDeclarationVisitor extends Visitor implements NaturalVisitor {
         
             localNames = oldLocalNames;
             prefix = oldPrefix;
-        }else{
+        }
+        else {
             super.visit(that);
         }
     }

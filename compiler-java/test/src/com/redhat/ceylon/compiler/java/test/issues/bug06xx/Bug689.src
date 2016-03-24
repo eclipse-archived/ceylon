@@ -1,0 +1,147 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug689(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
+        super();
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+        this.attributeWithUnion = null;
+        this.attributeWithIntersection = null;
+        this.variableWithUnion = null;
+        this.variableWithIntersection = null;
+        this.attributeWithUnionWithinTypeArg = null;
+        this.attributeWithUnionErasedToIterable = null;
+    }
+    
+    Bug689(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x, final Y y, final .java.lang.Object xy) {
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+        this.attributeWithUnion = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+                x,
+                y});
+        this.attributeWithIntersection = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+        this.variableWithUnion = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+                x,
+                y});
+        this.variableWithIntersection = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+        this.attributeWithUnionWithinTypeArg = (.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$X, $reified$Y), new .java.lang.Object[]{(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+                x,
+                y})});
+        this.attributeWithUnionErasedToIterable = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+                x,
+                y});
+        .ceylon.language.Number<.ceylon.language.Integer> sync = null;
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithUnion$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithIntersection$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L))).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).methodWithUnion$priv$(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).methodWithIntersection$priv$(.ceylon.language.Integer.instance(1L))).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnion$priv$()).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithIntersection$priv$()).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getVariableWithUnion$priv$()).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getVariableWithIntersection$priv$()).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmp$opE$0 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmp$opV$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.Integer.instance(2L)});
+                $ceylontmp$opE$0.setVariableWithUnion$priv$((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ceylontmp$opV$1);
+            }
+            returning $ceylontmp$opV$1;
+        )).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmp$opE$2 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmp$opV$3 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+                $ceylontmp$opE$2.setVariableWithIntersection$priv$((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ceylontmp$opV$3);
+            }
+            returning $ceylontmp$opV$3;
+        )).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnionWithinTypeArg$priv$()).getFirst()).getFirst();
+        final .ceylon.language.Number<.ceylon.language.Integer> o = ((.ceylon.language.List<? extends .ceylon.language.Integer>)(.ceylon.language.List)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnionErasedToIterable$priv$()).get(.ceylon.language.Integer.instance(0L));
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).<.ceylon.language.Integer, .ceylon.language.Integer>parameterisedMethodWithUnion(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).methodWithUnion(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L))).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getAttributeWithUnion()).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)).getVariableWithUnion()).getFirst();
+        sync = (.ceylon.language.Number<.ceylon.language.Integer>)(.ceylon.language.Number)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer> $ceylontmp$opE$4 = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689_ModelLoader<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+                .ceylon.language.Sequence<? extends .ceylon.language.Integer> $ceylontmp$opV$5 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.Integer.instance(2L)});
+                $ceylontmp$opE$4.setVariableWithUnion((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ceylontmp$opV$5);
+            }
+            returning $ceylontmp$opV$5;
+        )).getFirst();
+        final int c = ((.ceylon.language.Character)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.sequence("abc").<.ceylon.language.Character>withLeading(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(100))).getFirst()).intValue();
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+    
+    private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithUnion$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final X x, final Y y) {
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+                x,
+                y});
+    }
+    
+    private final <X, Y>.ceylon.language.Sequence parameterisedMethodWithIntersection$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .java.lang.Object xy) {
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+    }
+    
+    private final .ceylon.language.Sequence methodWithUnion$priv$(final X x, final Y y) {
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$X, $reified$Y), new .java.lang.Object[]{
+                x,
+                y});
+    }
+    
+    private final .ceylon.language.Sequence methodWithIntersection$priv$(final .java.lang.Object xy) {
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$X, $reified$Y), new .java.lang.Object[]{xy});
+    }
+    private final .ceylon.language.Sequence attributeWithUnion;
+    
+    private final .ceylon.language.Sequence getAttributeWithUnion$priv$() {
+        return attributeWithUnion;
+    }
+    private final .ceylon.language.Sequence attributeWithIntersection;
+    
+    private final .ceylon.language.Sequence getAttributeWithIntersection$priv$() {
+        return attributeWithIntersection;
+    }
+    private .ceylon.language.Sequence variableWithUnion;
+    
+    private final .ceylon.language.Sequence getVariableWithUnion$priv$() {
+        return variableWithUnion;
+    }
+    
+    private final void setVariableWithUnion$priv$(final .ceylon.language.Sequence variableWithUnion) {
+        this.variableWithUnion = variableWithUnion;
+    }
+    private .ceylon.language.Sequence variableWithIntersection;
+    
+    private final .ceylon.language.Sequence getVariableWithIntersection$priv$() {
+        return variableWithIntersection;
+    }
+    
+    private final void setVariableWithIntersection$priv$(final .ceylon.language.Sequence variableWithIntersection) {
+        this.variableWithIntersection = variableWithIntersection;
+    }
+    private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> attributeWithUnionWithinTypeArg;
+    
+    private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> getAttributeWithUnionWithinTypeArg$priv$() {
+        return attributeWithUnionWithinTypeArg;
+    }
+    private final .java.lang.Object attributeWithUnionErasedToIterable;
+    
+    private final .java.lang.Object getAttributeWithUnionErasedToIterable$priv$() {
+        return attributeWithUnionErasedToIterable;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug689.class, $reified$X, $reified$Y);
+    }
+}

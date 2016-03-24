@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+interface Bug1042<T> {
+}
+final class bug1042_ {
+    
+    private bug1042_() {
+    }
+    
+    static void bug1042(final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042<? super .ceylon.language.String> xx) {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1042 x1 = xx;
+    }
+}

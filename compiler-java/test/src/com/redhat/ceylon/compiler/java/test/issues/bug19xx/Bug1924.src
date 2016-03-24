@@ -1,0 +1,128 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+abstract class Bug1924<RootTerminal> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1924(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$RootTerminal) {
+        this.$reified$RootTerminal = $reified$RootTerminal;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$RootTerminal;
+    
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.this.$reified$RootTerminal), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.Inner.class));
+        }
+    }
+    
+    public final void construct() {
+        
+        class State implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            State() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.this.$reified$RootTerminal), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("construct")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(State.class));
+            }
+        }
+        final .java.lang.Object o = new State();
+        final boolean b = (
+            let
+            {
+                .java.lang.Object $ceylontmp$0 = o;
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$0, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.this.$reified$RootTerminal), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("construct")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(State.class)));
+        );
+        final .java.lang.Object o2 = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924<RootTerminal>.Inner();
+        final boolean b2 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$1 = o2;
+            }
+            returning $ceylontmp$1 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.Inner && .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.class, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.this.$reified$RootTerminal), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.Inner.class)));
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1924.class, $reified$RootTerminal);
+    }
+}
+class JavaEntry<K, V> extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.Map.Entry<K, V>, .java.io.Serializable {
+    
+    protected JavaEntry(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$K, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V) {
+        super();
+        this.$reified$K = $reified$K;
+        this.$reified$V = $reified$V;
+        this.entry = null;
+    }
+    
+    JavaEntry(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$K, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .ceylon.language.Entry<? extends K, ? extends V> entry) {
+        super();
+        this.$reified$K = $reified$K;
+        this.$reified$V = $reified$V;
+        this.entry = entry;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$K;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V;
+    private final .ceylon.language.Entry<? extends K, ? extends V> entry;
+    
+    private final .ceylon.language.Entry<? extends K, ? extends V> getEntry$priv$() {
+        return entry;
+    }
+    
+    @.java.lang.Override
+    public final K getKey() {
+        return getEntry$priv$().getKey();
+    }
+    
+    @.java.lang.Override
+    public final V getValue() {
+        return getEntry$priv$().getItem();
+    }
+    
+    @.java.lang.Override
+    public final V setValue(final V v) {
+        throw new .ceylon.language.Exception(.ceylon.language.String.instance("asd"));
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object that) {
+        .java.lang.Object that$3;
+        if ((that$3 = that) instanceof .java.util.Map.Entry) {
+            final .java.util.Map.Entry<? extends .java.lang.Object, ? extends .java.lang.Object> that$4 = (.java.util.Map.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.util.Map.Entry)that$3;
+        }
+        .java.lang.Object that$6;
+        if ((that$6 = that) instanceof .java.util.Map) {
+            final .java.util.Map<? extends .java.lang.Object, ? extends .java.lang.Object> that$7 = (.java.util.Map<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.util.Map)that$6;
+        }
+        .java.lang.Object that$9;
+        if ((that$9 = that) instanceof .java.util.Map && .com.redhat.ceylon.compiler.java.Util.isReified(that$9, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.util.Map.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{
+                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .java.util.Map<? extends .java.lang.Object, ? extends .ceylon.language.Integer> that$10 = (.java.util.Map<? extends .java.lang.Object, ? extends .ceylon.language.Integer>)(.java.util.Map)that$9;
+        }
+        return false;
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$12 = 31L;
+            }
+            returning $ceylontmp$hash$12 ^ $ceylontmp$hash$12 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.JavaEntry.class, $reified$K, $reified$V);
+    }
+}

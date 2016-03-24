@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("ii")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class)
+public interface i$ii_ {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("mi")
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {
+                "i",
+                "m"},
+        companionClassName = "")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface i$m$mi_ {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$ii_.class)})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"::i$m$mi_"})
+public interface i_ {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$impl_ $com$redhat$ceylon$compiler$java$test$quoting$lettercase$i$impl_();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public void m();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class i$impl_ implements .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public i$impl_(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_ $this) {
+        this.$this = $this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_ $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void m() {
+        final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_ a = (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_).ceylon.language.nothing_.get_();
+    }
+}

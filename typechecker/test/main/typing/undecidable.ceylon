@@ -91,3 +91,8 @@ void moremore() {
     interface T<out P> satisfies S<S<P>> {}
     @error class D() satisfies S<D>&T<D> {}
 }
+
+@error: "satisfied type"
+class SatisfiesUnion<T>() satisfies Identifiable? 
+@error: "upper bound" 
+        given T satisfies Identifiable? {}

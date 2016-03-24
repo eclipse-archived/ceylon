@@ -1,0 +1,22 @@
+# Always enforce LF line-endings for all text files
+* text eol=lf
+
+# Specific Windows text files
+*.bat text eol=crlf
+
+# Binary files
+*.jar binary
+*.car binary
+*.car.idx binary
+*.zip bibary
+*.png binary
+*.jpg binary
+*.gif binary
+
+# Very specific cases for testing purposes!
+test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712CR.ceylon -text
+test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712CRLF.ceylon -text
+test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712LF.ceylon -text
+test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712Mixed.ceylon -text
+
+

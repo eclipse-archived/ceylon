@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+public final class innerMethodInvocation_ {
+    
+    private innerMethodInvocation_() {
+    }
+    
+    public static void innerMethodInvocation() {
+        
+        final class fib_ {
+            
+            private fib_() {
+            }
+            
+            long fib(final long n) {
+                if (n == 0L) {
+                    return 1L;
+                } else {
+                    return n * fib_.this.fib(.ceylon.language.Integer.getPredecessor(n));
+                }
+            }
+        }
+        final fib_ fib = new fib_();
+        final long $ceylontmp$first$2 = 0L;
+        final long $ceylontmp$last$3 = 50L;
+        final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
+        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
+        long n$8 = $ceylontmp$first$2;
+        long $ceylontmp$element$7 = $ceylontmp$first$2;
+        boolean $ceylontmp$f$6 = false;
+        loop_0: do {
+            if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
+            $ceylontmp$f$6 = true;
+            n$8 = $ceylontmp$element$7;
+            final long n = n$8;
+            $ceylontmp$continue$1: do {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
+            }             while (false);
+        }         while ($ceylontmp$increasing$4 ? n$8 - $ceylontmp$last$3 != 0L : n$8 - $ceylontmp$last$3 != 0L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.innerMethodInvocation_.innerMethodInvocation();
+    }
+}

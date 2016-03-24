@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright 2012 Red Hat inc. and third party contributors as noted
+  ~ by the author tags.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.maven-support" slot="2.0">
+    <resources>
+        <resource-root path="com.redhat.ceylon.maven-support-2.0.jar"/>
+    </resources>
+
+    <dependencies>
+    <!-- This one is in annotations, and it's not clear if that's the public API or not
+         For now it's ignored because it'd require us to add it to the dist, because this
+         module is used by our OSGi build and so all deps are required
+        <module name="javax.inject" slot="1" optional="true"/>
+     -->
+        <module name="org.slf4j.api" slot="1.6.1" optional="true" export="true"/>
+        <module name="java.base" slot="7" export="true"/>
+        <module name="java.jdbc" slot="7"/>
+        <module name="java.logging" slot="7" export="true"/>
+        <module name="javax.xml" slot="7"/>
+        <system export="true">
+            <paths>
+                <path name="javax/xml"/>
+                <path name="javax/xml/namespace"/>
+                <path name="javax/xml/parsers"/>
+                <path name="javax/xml/stream"/>
+                <path name="javax/xml/xpath"/>
+                <path name="org/w3c/dom"/>
+            </paths>
+        </system>
+    </dependencies>
+
+    <exports>
+        <!-- Uses Guice -->
+        <exclude path="org/eclipse/aether/impl/AetherModule*"/>
+        <exclude path="org/apache/maven/repository/internal/MavenAetherModule*"/>
+        <!-- Uses Plexus logging -->
+        <exclude path="org/eclipse/aether/internal/impl/PlexusLoggerFactory*"/>
+        <exclude path="org/sonatype/plexus/components/cipher/DefaultPlexusCipher*"/>
+        <exclude path="org/sonatype/plexus/components/sec/dispatcher/DefaultSecDispatcher*"/>
+        <!-- Uses Plexus Container -->
+        <exclude path="org/eclipse/aether/internal/connector/wagon/PlexusWagonConfigurator*"/>
+        <exclude path="org/eclipse/aether/internal/connector/wagon/PlexusWagonProvider*"/>
+    </exports>
+</module>

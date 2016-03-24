@@ -1,0 +1,297 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {
+                "OuterClass",
+                "outerMethod"},
+        companionClassName = "")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Inner",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface OuterClass$outerMethod$InnerInterface<Outer, Inner> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass.class)})
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1InnerClass",
+        "::OuterClass$outerMethod$InnerInterface"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Outer",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public OuterClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Outer) {
+        this.$reified$Outer = $reified$Outer;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Outer;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <Inner>.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass<Outer>.InnerClass<Inner> InnerClass$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
+        return new InnerClass<Inner>($reified$Inner);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Inner",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
+            this.$reified$Inner = $reified$Inner;
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner;
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.this.$reified$Outer), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass.class, $reified$Inner));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void outerMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object o) {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("InnerClass")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Inner",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+        class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
+                this.$reified$Inner = $reified$Inner;
+            }
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner;
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.this.$reified$Outer), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("outerMethod")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, $reified$Inner));
+            }
+        }
+        .java.lang.Object o$1;
+        if ((o$1 = o) instanceof InnerClass && .com.redhat.ceylon.compiler.java.Util.isReified(o$1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.this.$reified$Outer), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("outerMethod")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
+            final InnerClass<.ceylon.language.Integer> o$2 = (InnerClass<.ceylon.language.Integer>)(InnerClass)o$1;
+        }
+        .java.lang.Object o$4;
+        if ((o$4 = o) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$InnerInterface && .com.redhat.ceylon.compiler.java.Util.isReified(o$4, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.this.$reified$Outer), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("outerMethod")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$InnerInterface.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$InnerInterface<Outer, .ceylon.language.Integer> o$5 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$InnerInterface<Outer, .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass$outerMethod$InnerInterface)o$4;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, $reified$Outer);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface.class)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Inner",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface OuterInterface$InnerInterface<Outer, Inner> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$InnerInterface.class)})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Outer",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface OuterInterface<Outer> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface$impl<Outer> $com$redhat$ceylon$compiler$java$test$structure$reified$OuterInterface$impl();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class OuterInterface$impl<Outer> implements .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public OuterInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Outer, .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface<Outer> $this) {
+        this.$reified$Outer = $reified$Outer;
+        this.$this = $this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Outer;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface<Outer> $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Outer) {
+        this.$reified$Outer = $reified$Outer;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
+@.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"outerMethod"},
+        companionClassName = "")
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Inner",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface outerMethod$InnerInterface_<Inner> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1InnerClass",
+        "1InnerClass2",
+        "::outerMethod$InnerInterface_"})
+public final class outerMethod_ {
+    
+    private outerMethod_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void outerMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object o) {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("InnerClass")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Inner",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+        class InnerClass<Inner> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            InnerClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner) {
+                this.$reified$Inner = $reified$Inner;
+            }
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Inner;
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, $reified$Inner));
+            }
+        }
+        .java.lang.Object o$7;
+        if ((o$7 = o) instanceof InnerClass && .com.redhat.ceylon.compiler.java.Util.isReified(o$7, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
+            final InnerClass<.ceylon.language.Integer> o$8 = (InnerClass<.ceylon.language.Integer>)(InnerClass)o$7;
+        }
+        .java.lang.Object o$10;
+        if ((o$10 = o) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$InnerInterface_ && .com.redhat.ceylon.compiler.java.Util.isReified(o$10, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$InnerInterface_.class, .ceylon.language.Integer.$TypeDescriptor$)))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$InnerInterface_<.ceylon.language.Integer> o$11 = (.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$InnerInterface_<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod$InnerInterface_)o$10;
+        }
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("InnerClass2")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        class InnerClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            InnerClass2() {
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.reified.outerMethod_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(InnerClass2.class));
+            }
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.InnerClass.class)})
+public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public OuterClass2() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.InnerClass InnerClass$new$() {
+        return new InnerClass();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.class)
+    public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected InnerClass() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.InnerClass.class));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class testMembers_ {
+    
+    private testMembers_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void testMembers(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object o) {
+        .java.lang.Object o$13;
+        if ((o$13 = o) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass && .com.redhat.ceylon.compiler.java.Util.isReified(o$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass.class, .ceylon.language.String.$TypeDescriptor$)))) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass<.ceylon.language.Integer>.InnerClass<.ceylon.language.String> o$14 = (.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass<.ceylon.language.Integer>.InnerClass<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.InnerClass)o$13;
+        }
+    }
+}

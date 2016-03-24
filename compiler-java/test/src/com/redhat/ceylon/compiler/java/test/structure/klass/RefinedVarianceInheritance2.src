@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+abstract class RefinedVarianceInheritance2Top implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RefinedVarianceInheritance2Top() {
+    }
+    
+    public abstract long m();
+    
+    public abstract .ceylon.language.Integer m2();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Top.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Top.class);
+}
+class RefinedVarianceInheritance2Nothing extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Top {
+    
+    RefinedVarianceInheritance2Nothing() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long m() {
+        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer m2() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Nothing.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinedVarianceInheritance2Nothing.class);
+}

@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class javaMapIndex_ {
+    
+    private javaMapIndex_() {
+    }
+    
+    static void javaMapIndex() {
+        final .java.util.Map<.ceylon.language.Integer, .ceylon.language.String> m = (.java.util.Map<.ceylon.language.Integer, .ceylon.language.String>).ceylon.language.nothing_.get_();
+        final .ceylon.language.String m0 = m.get(.ceylon.language.Integer.instance(0L));
+    }
+}

@@ -1,0 +1,224 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+public abstract class LogicalOperatorsParent<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public LogicalOperatorsParent(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$B = $reified$B;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    
+    public abstract B getBoxedB1();
+    
+    public abstract void setBoxedB1(final B boxedB1);
+    
+    public abstract B getBoxedB2();
+    
+    public abstract void setBoxedB2(final B boxedB2);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsParent.class, $reified$B);
+    }
+}
+public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsParent<.ceylon.language.Boolean> {
+    
+    public LogicalOperators() {
+        super(.ceylon.language.Boolean.$TypeDescriptor$);
+        this.b1 = false;
+        this.b2 = false;
+        this.boxedB1 = .ceylon.language.Boolean.instance(getB1());
+        this.boxedB2 = .ceylon.language.Boolean.instance(getB2());
+    }
+    private boolean b1;
+    
+    public final boolean getB1() {
+        return b1;
+    }
+    
+    public final void setB1(final boolean b1) {
+        this.b1 = b1;
+    }
+    private boolean b2;
+    
+    public final boolean getB2() {
+        return b2;
+    }
+    
+    public final void setB2(final boolean b2) {
+        this.b2 = b2;
+    }
+    private .ceylon.language.Boolean boxedB1;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean getBoxedB1() {
+        return boxedB1;
+    }
+    
+    @.java.lang.Override
+    public final void setBoxedB1(final .ceylon.language.Boolean boxedB1) {
+        this.boxedB1 = boxedB1;
+    }
+    private .ceylon.language.Boolean boxedB2;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Boolean getBoxedB2() {
+        return boxedB2;
+    }
+    
+    @.java.lang.Override
+    public final void setBoxedB2(final .ceylon.language.Boolean boxedB2) {
+        this.boxedB2 = boxedB2;
+    }
+    
+    public .java.lang.Object logical() {
+        setB1(!getB2());
+        setB1(true || getB2());
+        setB1(false && getB2());
+        setB1((
+            let
+            {
+                boolean $ceylontmp$op$0 = getB1() || getB2();
+                setB1($ceylontmp$op$0);
+            }
+            returning $ceylontmp$op$0;
+        ));
+        setB1((
+            let
+            {
+                boolean $ceylontmp$op$1 = getB1() && getB2();
+                setB1($ceylontmp$op$1);
+            }
+            returning $ceylontmp$op$1;
+        ));
+        setB1((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$2 = this;
+                boolean $ceylontmp$opV$3 = $ceylontmp$opE$2.getB1() || this.getB2();
+                $ceylontmp$opE$2.setB1($ceylontmp$opV$3);
+            }
+            returning $ceylontmp$opV$3;
+        ));
+        setB1((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$4 = this;
+                boolean $ceylontmp$opV$5 = $ceylontmp$opE$4.getB1() && this.getB2();
+                $ceylontmp$opE$4.setB1($ceylontmp$opV$5);
+            }
+            returning $ceylontmp$opV$5;
+        ));
+        return null;
+    }
+    
+    public .java.lang.Object logicalBoxed() {
+        setBoxedB1(.ceylon.language.Boolean.instance(!getBoxedB2().booleanValue()));
+        setBoxedB1(.ceylon.language.Boolean.instance(true || getBoxedB2().booleanValue()));
+        setBoxedB1(.ceylon.language.Boolean.instance(false && getBoxedB2().booleanValue()));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                boolean $ceylontmp$op$6 = getBoxedB1().booleanValue() || getBoxedB2().booleanValue();
+                setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$op$6));
+            }
+            returning $ceylontmp$op$6;
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                boolean $ceylontmp$op$7 = getBoxedB1().booleanValue() && getBoxedB2().booleanValue();
+                setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$op$7));
+            }
+            returning $ceylontmp$op$7;
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$8 = this;
+                boolean $ceylontmp$opV$9 = $ceylontmp$opE$8.getBoxedB1().booleanValue() || this.getBoxedB2().booleanValue();
+                $ceylontmp$opE$8.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$opV$9));
+            }
+            returning $ceylontmp$opV$9;
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$10 = this;
+                boolean $ceylontmp$opV$11 = $ceylontmp$opE$10.getBoxedB1().booleanValue() && this.getBoxedB2().booleanValue();
+                $ceylontmp$opE$10.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$opV$11));
+            }
+            returning $ceylontmp$opV$11;
+        )));
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.class);
+}
+public class LogicalOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators {
+    
+    public LogicalOperatorsSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object logical() {
+        setB1((
+            let
+            {
+                boolean $ceylontmp$opV$13 = super.getB1() || super.getB2();
+                super.setB1($ceylontmp$opV$13);
+            }
+            returning $ceylontmp$opV$13;
+        ));
+        setB1((
+            let
+            {
+                boolean $ceylontmp$opV$15 = super.getB1() && super.getB2();
+                super.setB1($ceylontmp$opV$15);
+            }
+            returning $ceylontmp$opV$15;
+        ));
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object logicalBoxed() {
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                boolean $ceylontmp$opV$17 = super.getBoxedB1().booleanValue() || super.getBoxedB2().booleanValue();
+                super.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$opV$17));
+            }
+            returning $ceylontmp$opV$17;
+        )));
+        setBoxedB1(.ceylon.language.Boolean.instance((
+            let
+            {
+                boolean $ceylontmp$opV$19 = super.getBoxedB1().booleanValue() && super.getBoxedB2().booleanValue();
+                super.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$opV$19));
+            }
+            returning $ceylontmp$opV$19;
+        )));
+        return null;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperatorsSub.class);
+}

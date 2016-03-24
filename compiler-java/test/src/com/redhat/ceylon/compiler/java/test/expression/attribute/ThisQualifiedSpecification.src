@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class ThisQualifiedSpecification implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected ThisQualifiedSpecification() {
+        super();
+        this.e = 0L;
+        this.m$priv$ = null;
+        this.n = null;
+    }
+    
+    ThisQualifiedSpecification(long a) {
+        final long b;
+        long c = 0L;
+        final long d;
+        this.m$priv$ = null;
+        this.n = null;
+        a = 1L;
+        b = 2L;
+        c = 3L;
+        d = 4L;
+        this.e = 4L;
+        this.m$priv$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Boolean()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$() {
+                return .ceylon.language.Boolean.instance(true);
+            }
+        };
+        this.n = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Boolean()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$() {
+                return .ceylon.language.Boolean.instance(true);
+            }
+        };
+    }
+    private final long e;
+    
+    public final long getE() {
+        return e;
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.Boolean> m$priv$;
+    
+    private final boolean m$priv$() {
+        if (m$priv$ == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return m$priv$.$call$().booleanValue();
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.Boolean> n;
+    
+    public final boolean n() {
+        if (n == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return n.$call$().booleanValue();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.ThisQualifiedSpecification.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.ThisQualifiedSpecification.class);
+}

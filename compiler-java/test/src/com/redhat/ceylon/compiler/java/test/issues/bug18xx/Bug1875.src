@@ -1,0 +1,245 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+public interface Bug1879_N<P, N extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<P, N>> {
+}
+public interface Bug1879_P<N extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P<N>, N>> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl<N> $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$impl();
+    
+    public abstract .java.lang.Object f0();
+    
+    public abstract .java.lang.Object f0(final .ceylon.language.Sequential<? extends .ceylon.language.String> args);
+    
+    public abstract .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getV();
+    
+    public abstract void setV(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> v);
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl<N>.MemberClass MemberClass$new$(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> g);
+}
+public final class Bug1879_P$impl<N extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P<N>, N>> implements .java.io.Serializable {
+    
+    public Bug1879_P$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P<N> $this) {
+        this.$reified$N = $reified$N;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P<N> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$N) {
+        this.$reified$N = $reified$N;
+    }
+    
+    public abstract class MemberClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected MemberClass(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> g) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P.class, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl.this.$reified$N), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl.MemberClass.class));
+        }
+    }
+}
+public class Bug1879_X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_N<.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X>, .java.io.Serializable {
+    
+    public Bug1879_X() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X.class);
+}
+public class Bug1879_Y implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P, .java.io.Serializable {
+    
+    public Bug1879_Y() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$this$;
+    }
+    
+    public .java.lang.Object f0() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$p$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning f0$canonical$($ceylontmp$p$0);
+        );
+    }
+    
+    private .java.lang.Object f0$canonical$(final .ceylon.language.Sequential p) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object f0(final .ceylon.language.Sequential p) {
+        return f0$canonical$(p);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getV() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    @.java.lang.Override
+    public void setV(final .ceylon.language.Iterable v) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y.MemberClass MemberClass$new$(final .ceylon.language.Iterable g) {
+        return new MemberClass(g);
+    }
+    
+    public class MemberClass extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl.MemberClass {
+        
+        protected MemberClass(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> g) {
+            $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$this$.super(g);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y.MemberClass.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y.class);
+}
+public class Bug1879_Z extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y {
+    
+    public Bug1879_Z() {
+        super();
+    }
+    
+    public .java.lang.Object f0() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$p$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning f0$canonical$($ceylontmp$p$1);
+        );
+    }
+    
+    private .java.lang.Object f0$canonical$(final .ceylon.language.Sequential p) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object f0(final .ceylon.language.Sequential p) {
+        return f0$canonical$(p);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getV() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    @.java.lang.Override
+    public void setV(final .ceylon.language.Iterable v) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Z.MemberClass MemberClass$new$(final .ceylon.language.Iterable g) {
+        return new MemberClass(g);
+    }
+    
+    public class MemberClass extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y.MemberClass {
+        
+        protected MemberClass(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> g) {
+            super(g);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Z.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Z.MemberClass.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Z();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Z.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Z.class);
+}
+public interface Bug1879_Y2 extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_Y2$impl();
+    
+    public .java.lang.Object f0();
+    
+    @.java.lang.Override
+    public .java.lang.Object f0(final .ceylon.language.Sequential p);
+    
+    @.java.lang.Override
+    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getV();
+    
+    @.java.lang.Override
+    public void setV(final .ceylon.language.Iterable v);
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl.MemberClass MemberClass$new$(final .ceylon.language.Iterable g);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2.class);
+}
+public final class Bug1879_Y2$impl implements .java.io.Serializable {
+    
+    public Bug1879_Y2$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2 $this;
+    
+    private .java.lang.Object f0$canonical$(final .ceylon.language.Sequential p) {
+        return null;
+    }
+    
+    public .java.lang.Object f0(final .ceylon.language.Sequential p) {
+        return f0$canonical$(p);
+    }
+    
+    public final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getV() {
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_();
+    }
+    
+    public final void setV(final .ceylon.language.Iterable v) {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl.MemberClass MemberClass$new$(final .ceylon.language.Iterable g) {
+        return new MemberClass(g);
+    }
+    
+    public class MemberClass extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_P$impl.MemberClass {
+        
+        protected MemberClass(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> g) {
+            $this.$com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_P$impl().super(g);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl.MemberClass.class));
+        }
+    }
+}

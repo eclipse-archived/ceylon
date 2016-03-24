@@ -1,0 +1,111 @@
+/*
+ * Copyright 2014 Red Hat inc. and third party contributors as noted
+ * by the author tags.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.redhat.ceylon.cmr.api;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.lang.reflect.Method;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.jboss.modules.filter.MultiplePathFilterBuilder;
+import org.jboss.modules.filter.PathFilters;
+import org.jboss.modules.xml.MXParser;
+import org.jboss.modules.xml.XmlPullParser;
+import org.w3c.dom.Node;
+
+import com.redhat.ceylon.model.cmr.PathFilter;
+
+import static org.jboss.modules.xml.XmlPullParser.FEATURE_PROCESS_NAMESPACES;
+
+/**
+ * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ */
+public final class PathFilterParser {
+    private static final Method parseFilterList;
+
+    static {
+        try {
+            Class<?> mxpClass = PathFilterParser.class.getClassLoader().loadClass("org.jboss.modules.ModuleXmlParser");
+            parseFilterList = mxpClass.getDeclaredMethod("parseFilterList", new Class[]{XmlPullParser.class, MultiplePathFilterBuilder.class});
+            parseFilterList.setAccessible(true);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static PathFilter parse(String filter) throws IOException {
+        if(filter.startsWith("<exports>") || filter.startsWith("<filter>")){
+            // JBoss modules wants a namespace for validation
+            int end = filter.indexOf('>');
+            filter = filter.substring(0, end) + " xmlns=\"urn:jboss:module:1.0\"" + filter.substring(end);
+        }
+        return parse(new ByteArrayInputStream(filter.getBytes()));
+    }
+
+    public static PathFilter parse(InputStream inputStream) throws IOException {
+        try {
+            final MXParser parser = new MXParser();
+            parser.setFeature(FEATURE_PROCESS_NAMESPACES, true);
+            parser.setInput(inputStream, null);
+            return parseFilter(parser);
+        } catch (Exception e) {
+            throw new IOException("Error parsing filter.", e);
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException ignore) {
+            }
+        }
+    }
+
+    private static PathFilter parseFilter(XmlPullParser parser) throws Exception {
+        parser.nextTag(); // just skip <filter> or <exports>
+
+        MultiplePathFilterBuilder builder = PathFilters.multiplePathFilterBuilder(true);
+        parseFilterList.invoke(null, parser, builder);
+
+        return new ModulesPathFilter(builder.create());
+    }
+
+    private static class ModulesPathFilter implements PathFilter {
+        private org.jboss.modules.filter.PathFilter filter;
+
+        private ModulesPathFilter(org.jboss.modules.filter.PathFilter filter) {
+            this.filter = filter;
+        }
+
+        public boolean accept(String path) {
+            return filter.accept(path);
+        }
+    }
+    
+    public static String convertNodeToString(Node node) throws TransformerException {
+        Transformer t = TransformerFactory.newInstance().newTransformer();
+        t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        StringWriter sw = new StringWriter();
+        t.transform(new DOMSource(node), new StreamResult(sw));
+        return sw.toString();
+    }
+}

@@ -1,0 +1,190 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaException")
+class CeylonException extends .com.redhat.ceylon.compiler.java.test.interop.JavaException implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonException() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonException.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonException.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaExceptionMessage")
+class CeylonExceptionMessage extends .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionMessage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonExceptionMessage() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessage.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessage.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaError")
+class CeylonError extends .com.redhat.ceylon.compiler.java.test.interop.JavaError implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonError() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonError.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonError.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaErrorMessage")
+class CeylonErrorMessage extends .com.redhat.ceylon.compiler.java.test.interop.JavaErrorMessage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonErrorMessage() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessage.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessage.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaException")
+class CeylonExceptionOverrides extends .com.redhat.ceylon.compiler.java.test.interop.JavaException implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonExceptionOverrides() {
+        super();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String getMessage() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionOverrides.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionOverrides.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaExceptionMessage")
+class CeylonExceptionMessageOverrides extends .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionMessage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonExceptionMessageOverrides() {
+        super();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String getMessage() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessageOverrides.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessageOverrides.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaError")
+class CeylonErrorOverrides extends .com.redhat.ceylon.compiler.java.test.interop.JavaError implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonErrorOverrides() {
+        super();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String getMessage() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorOverrides.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonErrorOverrides.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::JavaErrorMessage")
+class CeylonErrorMessageOverrides extends .com.redhat.ceylon.compiler.java.test.interop.JavaErrorMessage implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonErrorMessageOverrides() {
+        super();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String getMessage() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessageOverrides.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessageOverrides.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class javaExceptionMessage_ {
+    
+    private javaExceptionMessage_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void javaExceptionMessage() {
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .java.io.IOException());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaException());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaError());
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaExceptionMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.JavaErrorMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonException());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonError());
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessage()));
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionOverrides());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorOverrides());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonExceptionMessageOverrides());
+        s = .com.redhat.ceylon.compiler.java.Util.throwableMessage(new .com.redhat.ceylon.compiler.java.test.interop.CeylonErrorMessageOverrides());
+    }
+}

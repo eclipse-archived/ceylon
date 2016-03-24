@@ -12,7 +12,7 @@ public class MainHelper {
 
     public static final ClosableVirtualFile getLatestZippedLanguageSourceFile() {
         VFS vfs = new VFS();
-        File langDir = new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language");
+        File langDir = new File("../dist/dist/repo/ceylon/language");
         if (!langDir.exists()) {
             System.err.println("Unable to test language module, not found in repository: " + langDir);
             System.exit(-1);

@@ -1,0 +1,84 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface RefinementAndIntersection_G {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_G$impl();
+    
+    public void g();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G.class);
+}
+final class RefinementAndIntersection_G$impl implements .java.io.Serializable {
+    
+    RefinementAndIntersection_G$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G $this;
+    
+    public void g() {
+    }
+}
+interface RefinementAndIntersection_H {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H$impl $com$redhat$ceylon$compiler$java$test$structure$klass$RefinementAndIntersection_H$impl();
+    
+    public void h();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H.class);
+}
+final class RefinementAndIntersection_H$impl implements .java.io.Serializable {
+    
+    RefinementAndIntersection_H$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H $this;
+    
+    public void h() {
+    }
+}
+interface RefinementAndIntersection_Co<T> {
+    
+    public abstract T get();
+}
+class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G>, .java.io.Serializable {
+    
+    RefinementAndIntersection_SuperCoGood() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood.class);
+}
+class RefinementAndIntersection_SubCoGood extends .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_Co<.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H> {
+    
+    RefinementAndIntersection_SubCoGood() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood.class);
+}
+final class refinementAndIntersection_method_ {
+    
+    private refinementAndIntersection_method_() {
+    }
+    
+    static void refinementAndIntersection_method() {
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood sub = new .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_SubCoGood();
+        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G)(.java.lang.Object)sub.get()).g();
+        ((.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_H)(.java.lang.Object)sub.get()).h();
+    }
+}

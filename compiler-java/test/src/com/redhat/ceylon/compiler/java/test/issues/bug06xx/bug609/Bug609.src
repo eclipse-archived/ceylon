@@ -1,0 +1,218 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609;
+
+final class wait_ {
+    
+    private wait_() {
+    }
+    
+    static void $wait() {
+    }
+}
+final class notify_ {
+    
+    private notify_() {
+    }
+    
+    static void $notify() {
+    }
+}
+final class notifyAll_ {
+    
+    private notifyAll_() {
+    }
+    
+    static void $notifyAll() {
+    }
+}
+final class getClass_ {
+    
+    private getClass_() {
+    }
+    
+    static void $getClass() {
+    }
+}
+final class finalize_ {
+    
+    private finalize_() {
+    }
+    
+    static void $finalize() {
+    }
+}
+final class clone_ {
+    
+    private clone_() {
+    }
+    
+    static void $clone() {
+    }
+}
+final class bug609test_ {
+    
+    private bug609test_() {
+    }
+    
+    static void bug609test() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.wait_.$wait();
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.notify_.$notify();
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.notifyAll_.$notifyAll();
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.getClass_.$getClass();
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.finalize_.$finalize();
+        .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.clone_.$clone();
+    }
+}
+final class bug609mth_ {
+    
+    private bug609mth_() {
+    }
+    
+    static void bug609mth() {
+        
+        final class wait_ {
+            
+            private wait_() {
+            }
+            
+            void $wait() {
+            }
+        }
+        final wait_ wait = new wait_();
+        
+        final class notify_ {
+            
+            private notify_() {
+            }
+            
+            void $notify() {
+            }
+        }
+        final notify_ notify = new notify_();
+        
+        final class notifyAll_ {
+            
+            private notifyAll_() {
+            }
+            
+            void $notifyAll() {
+            }
+        }
+        final notifyAll_ notifyAll = new notifyAll_();
+        
+        final class getClass_ {
+            
+            private getClass_() {
+            }
+            
+            void $getClass() {
+            }
+        }
+        final getClass_ getClass = new getClass_();
+        
+        final class finalize_ {
+            
+            private finalize_() {
+            }
+            
+            void $finalize() {
+            }
+        }
+        final finalize_ finalize = new finalize_();
+        
+        final class clone_ {
+            
+            private clone_() {
+            }
+            
+            void $clone() {
+            }
+        }
+        final clone_ clone = new clone_();
+        wait.$wait();
+        notify.$notify();
+        notifyAll.$notifyAll();
+        getClass.$getClass();
+        finalize.$finalize();
+        clone.$clone();
+    }
+}
+class Bug609cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug609cls() {
+    }
+    
+    private final void mth$priv$() {
+        
+        final class wait_ {
+            
+            private wait_() {
+            }
+            
+            void $wait() {
+            }
+        }
+        final wait_ wait = new wait_();
+        
+        final class notify_ {
+            
+            private notify_() {
+            }
+            
+            void $notify() {
+            }
+        }
+        final notify_ notify = new notify_();
+        
+        final class notifyAll_ {
+            
+            private notifyAll_() {
+            }
+            
+            void $notifyAll() {
+            }
+        }
+        final notifyAll_ notifyAll = new notifyAll_();
+        
+        final class getClass_ {
+            
+            private getClass_() {
+            }
+            
+            void $getClass() {
+            }
+        }
+        final getClass_ getClass = new getClass_();
+        
+        final class finalize_ {
+            
+            private finalize_() {
+            }
+            
+            void $finalize() {
+            }
+        }
+        final finalize_ finalize = new finalize_();
+        
+        final class clone_ {
+            
+            private clone_() {
+            }
+            
+            void $clone() {
+            }
+        }
+        final clone_ clone = new clone_();
+        wait.$wait();
+        notify.$notify();
+        notifyAll.$notifyAll();
+        getClass.$getClass();
+        finalize.$finalize();
+        clone.$clone();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.Bug609cls.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug609.Bug609cls.class);
+}

@@ -1,0 +1,116 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ForIfIsWithMethod() {
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo give$priv$() {
+        return new .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub();
+    }
+    
+    private final .java.lang.Object nowt$priv$(final .java.lang.Object n) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public final void m(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> xs) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
+                    {
+                        $iterator$0 = xs.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> $iterator$0;
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub y$2;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
+                            .java.lang.Object y$1 = null;
+                            if ((y$1 = x.give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
+                                y$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)y$1;
+                                break ifcomp_1;
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub y$2 = this.y$2;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
+                            return y$2.foo();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
+                    {
+                        $iterator$0 = xs.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> $iterator$0;
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$3 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod)$ceylontmp$item$3;
+                            return true;
+                        }
+                    }
+                    private .java.lang.Object y$5;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
+                            .java.lang.Object y$4 = null;
+                            if ((y$4 = x.give$priv$()) == null) {
+                                y$5 = y$4;
+                                break ifcomp_1;
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .java.lang.Object y$5 = this.y$5;
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
+                            return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod.this.nowt$priv$(y$5);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod.class);
+}

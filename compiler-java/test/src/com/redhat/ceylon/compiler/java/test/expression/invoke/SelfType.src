@@ -1,0 +1,82 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SelfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public abstract long compareTo(final T other);
+    
+    public final long reverseCompareTo(final T other) {
+        return ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)other).compareTo((T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)this);
+    }
+    
+    public final T self() {
+        final T x = (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)this;
+        return (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType.class, $reified$T);
+    }
+}
+final class selfType_ {
+    
+    private selfType_() {
+    }
+    
+    static <X extends .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>>void selfType(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X> y) {
+        ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<X>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)x).compareTo((X)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)y);
+    }
+}
+abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SelfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public abstract long compareTo(final T other);
+    
+    public final T self() {
+        final T x = (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2)this;
+        return (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2)this;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2.class, $reified$T);
+    }
+}
+final class selfType2_ {
+    
+    private selfType2_() {
+    }
+    
+    static <X>void selfType2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> x, final .com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2<X> y) {
+        x.compareTo((X)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2)y);
+    }
+}
+interface D extends .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.invoke.D> {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.D.class);
+}
+final class selfTypeTest_ {
+    
+    private selfTypeTest_() {
+    }
+    
+    static void selfTypeTest(final .ceylon.language.Comparable<? super .com.redhat.ceylon.compiler.java.test.expression.invoke.D> d) {
+        final .com.redhat.ceylon.compiler.java.test.expression.invoke.D temp = (.com.redhat.ceylon.compiler.java.test.expression.invoke.D)(.ceylon.language.Comparable)d;
+        final .java.lang.Object v = (
+            let
+            {
+                .ceylon.language.print_.print(.ceylon.language.String.instance(""));
+            }
+            returning null;
+        );
+        .ceylon.language.print_.print(v);
+    }
+}

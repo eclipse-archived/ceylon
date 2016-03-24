@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentParameterQualified_f_ {
+    
+    private callableArgumentParameterQualified_f_() {
+    }
+    
+    static void callableArgumentParameterQualified_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+}
+class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CallableArgumentParameterQualified() {
+        super();
+        this.bar = null;
+    }
+    
+    CallableArgumentParameterQualified(final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
+        this.bar = bar;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> bar;
+    
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getBar$priv$() {
+        return bar;
+    }
+    
+    private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified c) {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(c.getBar$priv$());
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterQualified_f_.callableArgumentParameterQualified_f(this.getBar$priv$());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified.class);
+}

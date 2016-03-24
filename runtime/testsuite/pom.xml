@@ -1,0 +1,128 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>ceylon</groupId>
+        <artifactId>modules</artifactId>
+        <version>1.1.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>modules-testuite</artifactId>
+    <packaging>jar</packaging>
+    <name>Ceylon Modules Testsuite</name>
+    <url>http://ceylon-lang.org</url>
+
+    <build>
+        <plugins>
+            <!-- YOU NEED TO RUN ANT ON CMR AND RUNTIME FIRST -->
+
+            <!-- plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>process-test-resources</phase>
+                        <configuration>
+                            <target>
+
+                                <mkdir dir="../build/dist/lib"/>
+                                <copy file="${user.home}/.m2/repository/org/jboss/modules/jboss-modules/${version.org.jboss.modules}/jboss-modules-${version.org.jboss.modules}.jar"
+                                      tofile="../build/dist/lib/jboss-modules.jar"/>
+                                <copy file="../bootstrap/target/modules-bootstrap-${project.version}.jar"
+                                      tofile="../build/dist/lib/ceylon-runtime-bootstrap.jar"/>
+
+                                <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"
+                                      tofile="../build/dist/runtime-repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
+
+                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-spi/${version.com.redhat.ceylon.cmr}/cmr-spi-${version.com.redhat.ceylon.cmr}.jar"
+                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar"/>
+                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-api/${version.com.redhat.ceylon.cmr}/cmr-api-${version.com.redhat.ceylon.cmr}.jar"
+                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar"/>
+                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-impl/${version.com.redhat.ceylon.cmr}/cmr-impl-${version.com.redhat.ceylon.cmr}.jar"
+                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-impl.jar"/>
+
+                                <copy file="../spi/target/modules-spi-${project.version}.jar"
+                                      tofile="../build/dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar"/>
+                                <copy file="../api/target/modules-api-${project.version}.jar"
+                                      tofile="../build/dist/runtime-repo/ceylon/runtime/main/ceylon.modules.api.jar"/>
+                                <copy file="../impl/target/modules-impl-${project.version}.jar"
+                                      tofile="../build/dist/runtime-repo/ceylon/runtime/main/ceylon.modules.jboss.jar"/>
+
+                                <zip destfile="${user.home}/.ceylon/repo/ceylon-runtime-bootstrap/ceylon-runtime-bootstrap.zip"
+                                     basedir="../build/dist/runtime-repo"/>
+
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin -->
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- dependency>
+            <groupId>org.jogamp.gluegen</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jogamp.jogl</groupId>
+            <artifactId>jogl-all</artifactId>
+            <version>2.1.2</version>
+        </dependency -->
+        <dependency>
+            <groupId>ceylon.language</groupId>
+            <artifactId>ceylon-language</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.modules</groupId>
+            <artifactId>jboss-modules</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-spi</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ceylon</groupId>
+            <artifactId>modules-bootstrap</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat.ceylon.cmr</groupId>
+            <artifactId>cmr-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap</groupId>
+            <artifactId>shrinkwrap-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap</groupId>
+            <artifactId>shrinkwrap-spi</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap</groupId>
+            <artifactId>shrinkwrap-impl-base</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
+

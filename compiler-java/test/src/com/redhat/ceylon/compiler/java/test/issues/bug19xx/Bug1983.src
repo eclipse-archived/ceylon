@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+interface bug1983$Setter_<Element> {
+    
+    public abstract .java.lang.Object set(final Element item);
+}
+interface bug1983$Setter2_<Element, T> {
+    
+    public abstract .java.lang.Object set(final Element item);
+}
+final class bug1983_ {
+    
+    private bug1983_() {
+    }
+    
+    static <Element>void bug1983(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$bug1983$Element) {
+        
+        final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983$Setter_<Element> {
+            
+            private o_() {
+            }
+            
+            @.java.lang.Override
+            public final .java.lang.Object set(final Element item) {
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983_.class, $reified$bug1983$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+            }
+        }
+        final o_ o = new o_();
+        
+        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983$Setter_<Element>, .java.io.Serializable {
+            
+            C() {
+            }
+            
+            @.java.lang.Override
+            public final .java.lang.Object set(final Element item) {
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983_.class, $reified$bug1983$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
+            }
+        }
+        
+        final class o2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983$Setter2_<Element, .ceylon.language.String> {
+            
+            private o2_() {
+            }
+            
+            @.java.lang.Override
+            public final .java.lang.Object set(final Element item) {
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983_.class, $reified$bug1983$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o2_.class));
+            }
+        }
+        final o2_ o2 = new o2_();
+        
+        class C2<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983$Setter2_<Element, X>, .java.io.Serializable {
+            
+            C2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+                this.$reified$X = $reified$X;
+            }
+            private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+            
+            @.java.lang.Override
+            public final .java.lang.Object set(final Element item) {
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1983_.class, $reified$bug1983$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.class, $reified$X));
+            }
+        }
+    }
+}

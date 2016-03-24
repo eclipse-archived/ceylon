@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<antlib>
+    <typedef name="moduleset" classname="com.redhat.ceylon.ant.ModuleSet"/>
+    <typedef name="sourcemodules" classname="com.redhat.ceylon.ant.SourceModules"/>
+    <typedef name="reposet" classname="com.redhat.ceylon.ant.RepoSet"/>
+    <typedef name="linkset" classname="com.redhat.ceylon.ant.LinkSet"/>
+    
+    <typedef name="ceylon-compile" classname="com.redhat.ceylon.ant.CeylonCompileAntTask"/>
+    <typedef name="ceylon-compile-js" classname="com.redhat.ceylon.ant.CeylonCompileJsAntTask"/>
+    
+    <typedef name="ceylon-run" classname="com.redhat.ceylon.ant.CeylonRunAntTask"/>
+    <typedef name="ceylon-run-js" classname="com.redhat.ceylon.ant.CeylonRunJsAntTask"/>
+    
+    <typedef name="ceylon-test" classname="com.redhat.ceylon.ant.CeylonTestAntTask"/>
+    <typedef name="ceylon-test-js" classname="com.redhat.ceylon.ant.CeylonTestJsAntTask"/>
+    
+    <typedef name="ceylon-doc" classname="com.redhat.ceylon.ant.CeylonDocAntTask"/>
+    <typedef name="ceylon-import-jar" classname="com.redhat.ceylon.ant.CeylonImportJarAntTask"/>
+    <typedef name="ceylon-copy" classname="com.redhat.ceylon.ant.CeylonCopyAntTask"/>
+    <typedef name="ceylon-plugin" classname="com.redhat.ceylon.ant.CeylonPluginAntTask"/>
+    <typedef name="ceylon-war" classname="com.redhat.ceylon.ant.CeylonWarAntTask"/>
+    <typedef name="ceylon-p2" classname="com.redhat.ceylon.ant.CeylonP2AntTask"/>
+    
+    <typedef name="ceylon-config" classname="com.redhat.ceylon.ant.CeylonConfigAntTask"/>
+    <typedef name="ceylon-config-value" classname="com.redhat.ceylon.ant.CeylonConfigValueAntTask"/>
+    <typedef name="ceylon-config-repository" classname="com.redhat.ceylon.ant.CeylonConfigRepositoryAntTask"/>
+</antlib>

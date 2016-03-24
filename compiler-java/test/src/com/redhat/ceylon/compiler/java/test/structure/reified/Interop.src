@@ -1,0 +1,95 @@
+package com.redhat.ceylon.compiler.java.test.structure.reified;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::JavaInterface<Element>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.reified::JavaClass<Element>")
+class CeylonClass<Element> extends .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.JavaInterface<Element> {
+    
+    CeylonClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {"ceylon.language::Object"},
+            caseTypes = {})})
+    public final <T>void foo() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass.class, $reified$Element);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::JavaInterface<Element>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface CeylonInterface<Element> extends .com.redhat.ceylon.compiler.java.test.structure.reified.JavaInterface<Element> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class reifiedInstantiateInterop_ {
+    
+    private reifiedInstantiateInterop_() {
+    }
+    
+    @.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void reifiedInstantiateInterop() {
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> c = new .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+        c.<.java.lang.Object>foo();
+        c.<.java.lang.Object>foo();
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.structure.reified.CeylonClass<.ceylon.language.Integer> $instance$ = c;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            $instance$.<.ceylon.language.Integer>foo();
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
+        f.$call$();
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c2 = new .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>> constr = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass.class, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "JavaClass<Integer>()", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> $call$() {
+                return new .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer>();
+            }
+        };
+        final .com.redhat.ceylon.compiler.java.test.structure.reified.JavaClass<.ceylon.language.Integer> c3 = constr.$call$();
+    }
+}

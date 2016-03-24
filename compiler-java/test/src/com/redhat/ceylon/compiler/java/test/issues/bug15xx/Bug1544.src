@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1544_ {
+    
+    private bug1544_() {
+    }
+    
+    static void bug1544() {
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong num = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(3L);
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> ref = (
+            let
+            {
+                final long $instance$ = num.ref;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final long $ceylontmp$other = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(.ceylon.language.Integer.plus($instance$, $ceylontmp$other));
+                }
+            };
+        );
+    }
+}

@@ -1,0 +1,29 @@
+<project name="Java 8 jar" default="jar" basedir=".">
+	
+	<property name="classes.dir" value="classes"/>
+    <property name="sources.dir" value="src"/>
+    <property name="mlib.dir" value="mlib"/>
+    <property name="jar.file" value="${mlib.dir}/java9.jar"/>
+	
+    <target name="classes">
+    	<mkdir dir="${classes.dir}"/>
+        <javac srcdir="${sources.dir}" includeantruntime="false" destdir="${classes.dir}" source="1.9">
+            <include name="com/**"/>
+        </javac>
+    </target>
+
+	<target name="jar" depends="classes">
+		<mkdir dir="${mlib.dir}"/>
+		<exec executable="jar">
+            <arg value="--create"/>
+            <arg value="--file"/>
+            <arg value="${jar.file}"/>
+            <arg value="--module-version=123"/>
+			<arg value="--main-class"/>
+            <arg value="com.ceylon.java9.Test"/>
+    		<arg value="-C"/>
+    		<arg value="${classes.dir}"/>
+    		<arg value="."/>
+		</exec>
+	</target>
+</project>

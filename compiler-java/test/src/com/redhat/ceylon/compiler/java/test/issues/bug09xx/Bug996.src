@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug996_ {
+    
+    private bug996_() {
+    }
+    
+    static void bug996() {
+        final .ceylon.language.Sequence t = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.Character.$TypeDescriptor$)), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.String.instance("2"),
+                new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(51))});
+        final .ceylon.language.Sequence t2 = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom(t, .ceylon.language.Integer.instance(0L));
+        if (t.equals(t2)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "t == t2"));
+        }
+    }
+}

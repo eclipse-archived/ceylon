@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+public final class objectArgumentNamedInvocation_ {
+    
+    private objectArgumentNamedInvocation_() {
+    }
+    
+    public static void objectArgumentNamedInvocation() {
+        
+        final class callFunction_ {
+            
+            private callFunction_() {
+            }
+            
+            void callFunction(final .java.lang.Object o) {
+            }
+        }
+        final callFunction_ callFunction = new callFunction_();
+        final .java.lang.String o = "";
+        (
+            let
+            {
+                
+                final class o_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private o_() {
+                        super();
+                        this.hash = 0L;
+                    }
+                    
+                    @.java.lang.Override
+                    public final boolean equals(final .java.lang.Object other) {
+                        return false;
+                    }
+                    private final long hash;
+                    
+                    @.java.lang.Override
+                    public final int hashCode() {
+                        return (int)(
+                            let
+                            {
+                                long $ceylontmp$hash$1 = hash;
+                            }
+                            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+                        );
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocation_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+                    }
+                }
+                final o_ arg$0$0 = new o_();
+                callFunction.callFunction(arg$0$0);
+            }
+            returning null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.objectArgumentNamedInvocation_.objectArgumentNamedInvocation();
+    }
+}

@@ -1,0 +1,176 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+abstract class Top1728 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Top1728() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728.class);
+}
+class Side1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 {
+    
+    Side1728() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Side1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Side1728.class);
+}
+abstract class Mid1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 {
+    
+    Mid1728() {
+        super();
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 getChild();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mid1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mid1728.class);
+}
+class Bottom1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Mid1728 {
+    
+    protected Bottom1728() {
+        super();
+        this.child = null;
+    }
+    
+    Bottom1728(final .java.lang.Object child) {
+        super();
+        this.child = (.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728)child;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 child;
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Top1728 getChild() {
+        return child;
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728 copy(final .java.lang.Object blob) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728(blob);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728.class);
+}
+abstract class Type1728 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Type1728() {
+        this.children = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728> children;
+    
+    public .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728> getChildren() {
+        return children;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728.class);
+}
+class IntersectionType1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728 {
+    
+    IntersectionType1728() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.IntersectionType1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.IntersectionType1728.class);
+}
+abstract class PrimaryType1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728 {
+    
+    PrimaryType1728() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.PrimaryType1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.PrimaryType1728.class);
+}
+class OptionalType1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.PrimaryType1728 {
+    
+    OptionalType1728() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.OptionalType1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.OptionalType1728.class);
+}
+class BaseType1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.PrimaryType1728 {
+    
+    BaseType1728() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.BaseType1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.BaseType1728.class);
+}
+class UnionType1728 extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728 {
+    
+    protected UnionType1728() {
+        super();
+        this.children = null;
+    }
+    
+    UnionType1728(final .ceylon.language.Sequence children) {
+        super();
+        this.children = children;
+    }
+    private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Type1728> children;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential getChildren() {
+        return children;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug17xx.UnionType1728.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.UnionType1728.class);
+}
+final class use1728_ {
+    
+    private use1728_() {
+    }
+    
+    static void use1728() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728 bot1 = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728(new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Side1728());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728 bot2 = (
+            let
+            {
+                .java.lang.Object arg$0$0 = bot1;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728(arg$0$0);
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728 bot3 = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bottom1728(bot2);
+        final .com.redhat.ceylon.compiler.java.test.issues.bug17xx.UnionType1728 ut = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.UnionType1728((.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug17xx.OptionalType1728.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug17xx.BaseType1728.$TypeDescriptor$), new .java.lang.Object[]{
+                new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.OptionalType1728(),
+                new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.BaseType1728()}));
+    }
+}

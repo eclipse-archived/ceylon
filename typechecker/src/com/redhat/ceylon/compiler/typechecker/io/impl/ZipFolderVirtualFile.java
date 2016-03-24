@@ -25,6 +25,11 @@ class ZipFolderVirtualFile implements VirtualFile {
     }
 
     @Override
+    public boolean exists() {
+        return true;
+    }
+
+    @Override
     public boolean isFolder() {
         return true;
     }
@@ -64,5 +69,25 @@ class ZipFolderVirtualFile implements VirtualFile {
         sb.append("{name='").append(name).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return getPath().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof VirtualFile) {
+            return ((VirtualFile) obj).getPath().equals(getPath());
+        }
+        else {
+            return super.equals(obj);
+        }
+    }
+
+    @Override
+    public int compareTo(VirtualFile o) {
+        return getPath().compareTo(o.getPath());
     }
 }

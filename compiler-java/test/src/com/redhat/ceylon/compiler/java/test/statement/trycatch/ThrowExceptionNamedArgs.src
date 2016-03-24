@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class ThrowExceptionNamedArgs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ThrowExceptionNamedArgs() {
+    }
+    
+    private final void t$priv$() {
+        throw (
+            let
+            {
+                .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("Bang!");
+                .java.lang.Throwable arg$0$1 = null;
+            }
+            returning new .ceylon.language.Exception(arg$0$0, arg$0$1);
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionNamedArgs.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ThrowExceptionNamedArgs.class);
+}

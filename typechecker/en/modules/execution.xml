@@ -239,7 +239,7 @@ void run() {
         or when an exception is thrown by an evaluation, assignment, invocation, or 
         instantiation.</para>
         
-        <section>
+        <section id="frames">
             <title>Frames</title>
         
             <para>When execution of a body begins, a <emphasis>frame</emphasis> is created.
@@ -294,7 +294,7 @@ void run() {
         
         </section>
         
-        <section>
+        <section id="currentinstancesandcurrentframes">
             <title>Current instances and current frames</title>
             
             <para>A frame may be the <emphasis>current frame</emphasis> for a body. When the 
@@ -443,17 +443,20 @@ String result = middleObject.string;</programlisting>
                     <para>For each superclass <literal>X</literal> of <literal>C</literal>, 
                     there is exactly one other superclass <literal>Y</literal> of 
                     <literal>C</literal> that directly extends <literal>X</literal>. When
-                    execution of the initializer of <literal>X</literal>, and the constructor
-                    of <literal>X</literal>, if any, terminates without a thrown exception, 
-                    execution of the initializer of <literal>Y</literal> begins. Finally, if 
-                    <literal>Y</literal> has constructors, the constructor delegated by 
-                    <literal>X</literal> is executed.</para>
+                    execution of the initializer of <literal>X</literal> terminates without 
+                    a thrown exception, execution of the initializer of <literal>Y</literal> 
+                    begins. When sequential execution of the initializer reaches the 
+                    declaration of the invoked or delegated constructor of <literal>Y</literal>, 
+                    if any, the constructor itself is executed. When execution of the 
+                    constructor terminates without a thrown exception, execution of the 
+                    initializer resumes at the next statement after the constructor 
+                    declaration.</para>
                 </listitem>
                 <listitem>
                     <para>Finally, when execution of the initializer of <literal>C</literal>, 
-                    and the invoked constructor of <literal>C</literal>, if any, terminates 
-                    without a thrown exception, the new instance of <literal>C</literal> is 
-                    fully-initialized and made accessible to the calling code.</para>
+                     terminates without a thrown exception, the new instance of 
+                     <literal>C</literal> is fully-initialized and made accessible to the 
+                     calling code.</para>
                 </listitem>
             </itemizedlist>
             
@@ -583,7 +586,7 @@ String result = middleObject.string;</programlisting>
             
         </section>
         
-        <section if="lateinitialization">
+        <section id="lateinitialization">
             <title>Initialization of late references</title>
             
             <para>A reference annotated <literal>late</literal> may be uninitialized in a 
@@ -1013,8 +1016,8 @@ String result = middleObject.string;</programlisting>
             
             <para>Evaluation of an invocation expression, as defined in 
             <xref linkend="invocationexpressions"/>, results in <emphasis>invocation</emphasis>
-            of a function or constructor, or <emphasis>instantiation</emphasis> of a class. 
-            Every invocation has a callable expression:</para>
+            of a function or callable constructor, or <emphasis>instantiation</emphasis> of a 
+            class. Every invocation has a callable expression:</para>
             
             <itemizedlist>
                 <listitem>

@@ -71,7 +71,7 @@
 "A declaration."
 ^(abstract DECLARATION:STATEMENT
     ANNOTATION_LIST?
-    IDENTIFIER
+    IDENTIFIER?
     abstract Declaration declarationModel;)
 
 ^(MISSING_DECLARATION:DECLARATION
@@ -80,13 +80,10 @@
 "A class, interface, or type parameter declaration."
 ^(abstract TYPE_DECLARATION:DECLARATION
     TYPE_PARAMETER_LIST?
-    CASE_TYPES?
-    SATISFIED_TYPES?
     abstract TypeDeclaration declarationModel;)
 
 "A class or interface declaration."
 ^(abstract CLASS_OR_INTERFACE:TYPE_DECLARATION
-    TYPE_CONSTRAINT_LIST?
     abstract ClassOrInterface declarationModel;)
 
 "The constraints for a certain type parameter."
@@ -112,7 +109,8 @@
 
 "A set of type constraints on a certain type parameter."
 ^(TYPE_CONSTRAINT:TYPE_DECLARATION
-    PARAMETER_LIST? 
+    CASE_TYPES?
+    SATISFIED_TYPES?
     ABSTRACTED_TYPE?
     TypeParameter declarationModel;)
 
@@ -131,18 +129,30 @@
 "A class declaration or alias."
 ^(ANY_CLASS:CLASS_OR_INTERFACE
     PARAMETER_LIST?
+    CASE_TYPES?
     EXTENDED_TYPE?
+    SATISFIED_TYPES?
+    TYPE_CONSTRAINT_LIST?
     Class declarationModel;)
 
 "A class declaration."
 ^(CLASS_DEFINITION:ANY_CLASS
     CLASS_BODY)
 
+"A value constructor."
+^(ENUMERATED:DECLARATION
+    DELEGATED_CONSTRUCTOR?
+    BLOCK
+    Value declarationModel;
+    Constructor enumerated;)
+
+"A callable constructor."
 ^(CONSTRUCTOR:DECLARATION
     PARAMETER_LIST?
     DELEGATED_CONSTRUCTOR?
     BLOCK
-    Constructor declarationModel;)
+    Function declarationModel;
+    Constructor constructor;)
 
 ^(DELEGATED_CONSTRUCTOR
     SIMPLE_TYPE? type
@@ -154,6 +164,9 @@
 
 "An interface declaration or alias."
 ^(ANY_INTERFACE:CLASS_OR_INTERFACE
+    CASE_TYPES?
+    SATISFIED_TYPES?
+    TYPE_CONSTRAINT_LIST?
     Interface declarationModel;)
 
 "An interface declaration."
@@ -194,7 +207,7 @@
     TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
     TYPE_CONSTRAINT_LIST?
-    Method declarationModel;)
+    Function declarationModel;)
 
 "A function declaration followed by a block."
 ^(METHOD_DEFINITION:ANY_METHOD
@@ -259,7 +272,7 @@
 ^(INTERFACE_BODY:BODY)
 
 ^(abstract TYPE
-    ProducedType typeModel;)
+    Type typeModel;)
 
 ^(abstract STATIC_TYPE:TYPE
     TYPE_VARIANCE?
@@ -272,9 +285,11 @@
 ^(abstract SIMPLE_TYPE:STATIC_TYPE
     IDENTIFIER 
     TYPE_ARGUMENT_LIST?
-    TypeDeclaration declarationModel;)
+    TypeDeclaration declarationModel;
+    boolean inherited;)
 
-^(BASE_TYPE: SIMPLE_TYPE)
+^(BASE_TYPE: SIMPLE_TYPE
+    boolean packageQualified;)
 
 ^(QUALIFIED_TYPE: SIMPLE_TYPE
     STATIC_TYPE outerType)
@@ -306,6 +321,12 @@
     STATIC_TYPE keyType
     STATIC_TYPE valueType)
 
+^(TYPE_CONSTRUCTOR: STATIC_TYPE
+    TYPE_PARAMETER_LIST
+    TYPE
+    TYPE_CONSTRAINT_LIST?
+    TypeAlias declarationModel;)
+
 ^(SUPER_TYPE: STATIC_TYPE)
 
 ^(abstract META_LITERAL:PRIMARY
@@ -314,15 +335,14 @@
     Declaration declaration;)
 
 ^(TYPE_LITERAL:META_LITERAL
-    STATIC_TYPE? type
-    BASE_MEMBER_EXPRESSION? objectExpression)
+    STATIC_TYPE? type)
 
 ^(MEMBER_LITERAL:META_LITERAL
     STATIC_TYPE? type
-    BASE_MEMBER_EXPRESSION? objectExpression
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
-    ProducedReference target;)
+    boolean packageQualified;
+    Reference target;)
 
 ^(CLASS_LITERAL:TYPE_LITERAL)
 ^(NEW_LITERAL:TYPE_LITERAL)
@@ -355,7 +375,7 @@
 
 "A list of type arguments in a generic invocation."
 ^(TYPE_ARGUMENTS
-    List<ProducedType> typeModels;)
+    List<Type> typeModels;)
 
 "A list of type arguments in a produced type."
 ^(TYPE_ARGUMENT_LIST:TYPE_ARGUMENTS
@@ -547,7 +567,7 @@
     Value declarationModel;)
 
 ^(abstract TERM
-    ProducedType typeModel;
+    Type typeModel;
     boolean unboxed;
     boolean typeErased;
     boolean untrustedType;)
@@ -669,15 +689,17 @@
 
 ^(PARAMETERIZED_EXPRESSION:PRIMARY
     PRIMARY
+    TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
     boolean leftTerm;)
 
 ^(abstract MEMBER_OR_TYPE_EXPRESSION:PRIMARY
-    ProducedReference target;
+    Reference target;
     Declaration declaration;
-    List<ProducedType> signature;
+    List<Type> signature;
     boolean ellipsis;
     boolean directlyInvoked;
+    boolean indirectlyInvoked;
     boolean assigned;
     boolean staticMethodReference;
     boolean staticMethodReferencePrimary;)
@@ -687,8 +709,8 @@
 ^(abstract STATIC_MEMBER_OR_TYPE_EXPRESSION:MEMBER_OR_TYPE_EXPRESSION
     IDENTIFIER
     TYPE_ARGUMENTS?
-    ProducedTypedReference targetParameter;
-    ProducedType parameterType;)
+    TypedReference targetParameter;
+    Type parameterType;)
 
 ^(abstract BASE_MEMBER_OR_TYPE_EXPRESSION:STATIC_MEMBER_OR_TYPE_EXPRESSION)
 
@@ -756,7 +778,7 @@
 
 "A single listed argument, spread argument or comprehension."
 ^(abstract POSITIONAL_ARGUMENT 
-    ProducedType typeModel; 
+    Type typeModel; 
     Parameter parameter;)
 "A single listed argument."
 ^(LISTED_ARGUMENT:POSITIONAL_ARGUMENT
@@ -768,10 +790,12 @@
 "An anonymous function."
 ^(FUNCTION_ARGUMENT:TERM
     TYPE type
+    TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
+    TYPE_CONSTRAINT_LIST?
     EXPRESSION?
     BLOCK?
-    Method declarationModel;)
+    Function declarationModel;)
 
 "An anonymous function."
 ^(OBJECT_EXPRESSION:PRIMARY
@@ -805,10 +829,11 @@
     abstract TypedDeclaration declarationModel;)
 "A function declaration that occurs as a named argument."
 ^(METHOD_ARGUMENT:TYPED_ARGUMENT
+    TYPE_PARAMETER_LIST?
     PARAMETER_LIST*
     BLOCK? 
     SPECIFIER_EXPRESSION?
-    Method declarationModel;)
+    Function declarationModel;)
 "A value declaration that occurs as a named argument."
 ^(ATTRIBUTE_ARGUMENT:TYPED_ARGUMENT
     BLOCK? 
@@ -861,7 +886,8 @@
 
 "Enumerated elements of an iterable."
 ^(SEQUENCE_ENUMERATION:ATOM 
-    SEQUENCED_ARGUMENT?)
+    SEQUENCED_ARGUMENT?
+    STATEMENT*)
 
 "Enumerated elements of a tuple."
 ^(TUPLE:ATOM
@@ -895,8 +921,8 @@
 
 "A single clause of comprehension"
 ^(abstract COMPREHENSION_CLAUSE:CONTROL_CLAUSE
-    ProducedType typeModel;
-    ProducedType firstTypeModel;
+    Type typeModel;
+    Type firstTypeModel;
     boolean possiblyEmpty;)
 
 "A clause that can appear at the beginning of a comprehension."

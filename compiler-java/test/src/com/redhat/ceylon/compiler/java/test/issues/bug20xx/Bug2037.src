@@ -1,0 +1,76 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bug2037_ {
+    
+    private bug2037_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bug2037(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.javax.annotation.Generated({"by me"})
+    final .java.lang.String p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.javax.annotation.Generated({"by me"})
+    final .java.lang.String p2) {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug2037() {
+        super();
+        this.p2 = null;
+        this.p1 = null;
+    }
+    
+    public Bug2037(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+    @.javax.annotation.Generated({"by me"})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String p2;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getP2$priv$() {
+        return p2;
+    }
+    @.javax.annotation.Generated({"by me"})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String p1;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    private final .java.lang.String getP1$priv$() {
+        return p1;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    @.javax.annotation.Generated({"by me"})
+    final .java.lang.Object other) {
+        return false;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2037.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2037.class);
+}

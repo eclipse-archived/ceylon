@@ -1,0 +1,215 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassAttributeGetterSetter() {
+        
+        final class f$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f$getter$_ = new f$getter$_();
+        
+        final class f$setter$_ {
+            
+            private f$setter$_() {
+            }
+            private .java.lang.String value;
+            
+            public void set_(final .java.lang.String f) {
+            }
+        }
+        final f$setter$_ f$setter$_ = new f$setter$_();
+        this.f5 = "";
+        
+        final class f6$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private f6$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> f6$getter$_ = new f6$getter$_();
+        
+        final class f6$setter$_ {
+            
+            private f6$setter$_() {
+            }
+            private .java.lang.String value;
+            
+            public void set_(final .java.lang.String f6) {
+                (
+                    let
+                    {
+                        .java.lang.String $ceylontmp$op$0 = f6;
+                        setF2($ceylontmp$op$0);
+                    }
+                    returning $ceylontmp$op$0;
+                );
+            }
+        }
+        final f6$setter$_ f6$setter$_ = new f6$setter$_();
+        this.f10 = "";
+    }
+    
+    public final .java.lang.String getF2() {
+        return "";
+    }
+    
+    public final void setF2(final .java.lang.String f2) {
+    }
+    
+    public .java.lang.String getF3() {
+        return "";
+    }
+    
+    public .java.lang.String getF4() {
+        return "";
+    }
+    
+    public void setF4(final .java.lang.String f4) {
+    }
+    private final .java.lang.String f5;
+    
+    public .java.lang.String getF5() {
+        return f5;
+    }
+    
+    public final .java.lang.String getF7() {
+        return "";
+    }
+    
+    public final void setF7(final .java.lang.String f7) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$op$1 = f7;
+                setF2($ceylontmp$op$1);
+            }
+            returning $ceylontmp$op$1;
+        );
+    }
+    
+    public .java.lang.String getF8() {
+        return "";
+    }
+    
+    public .java.lang.String getF9() {
+        return "";
+    }
+    
+    public void setF9(final .java.lang.String f9) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$op$2 = f9;
+                setF2($ceylontmp$op$2);
+            }
+            returning $ceylontmp$op$2;
+        );
+    }
+    private final .java.lang.String f10;
+    
+    public .java.lang.String getF10() {
+        return f10;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter.class);
+}
+class SubClassAttributeGetterSetter extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeGetterSetter {
+    
+    SubClassAttributeGetterSetter() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF3() {
+        return "";
+    }
+    
+    public final void setF3(final .java.lang.String f3) {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF4() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final void setF4(final .java.lang.String f4) {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF5() {
+        return "";
+    }
+    
+    public final void setF5(final .java.lang.String f5) {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF8() {
+        return "";
+    }
+    
+    public final void setF8(final .java.lang.String f8) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$op$3 = f8;
+                setF2($ceylontmp$op$3);
+            }
+            returning $ceylontmp$op$3;
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF9() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public final void setF9(final .java.lang.String f9) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$op$4 = f9;
+                setF2($ceylontmp$op$4);
+            }
+            returning $ceylontmp$op$4;
+        );
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getF10() {
+        return "";
+    }
+    
+    public final void setF10(final .java.lang.String f10) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$op$5 = f10;
+                setF2($ceylontmp$op$5);
+            }
+            returning $ceylontmp$op$5;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassAttributeGetterSetter.class);
+}

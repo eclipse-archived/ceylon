@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.treegen;
 
 public class Util {
     
-    static java.io.PrintStream out = System.out;
+    public static java.io.PrintStream out = System.out;
 
     public static String className(String nodeName) { 
         return toJavaIdentifier(nodeName, true); 

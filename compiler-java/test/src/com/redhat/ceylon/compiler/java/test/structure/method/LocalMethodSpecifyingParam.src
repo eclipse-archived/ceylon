@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class higher_ {
+    
+    private higher_() {
+    }
+    
+    static void higher(final .ceylon.language.Callable<? extends .ceylon.language.String> ref) {
+        
+        final class f_ {
+            
+            private f_() {
+            }
+            
+            .java.lang.String f(final long i) {
+                return ref.$call$((.java.lang.Object).ceylon.language.Integer.instance(i)).toString();
+            }
+        }
+        final f_ f = new f_();
+        f.f(2L);
+    }
+}

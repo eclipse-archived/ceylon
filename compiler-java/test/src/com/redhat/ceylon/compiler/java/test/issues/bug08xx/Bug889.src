@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bug889_ {
+    
+    private bug889_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(element)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean(Element)")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static <Element>.ceylon.language.Callable<? extends .ceylon.language.Boolean> bug889(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.com.redhat.ceylon.compiler.java.metadata.Name("val")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element")
+    final Element val) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element), "Boolean(Element)", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final Element element = (Element)$param$0;
+                return .ceylon.language.Boolean.instance(true);
+            }
+        };
+    }
+}

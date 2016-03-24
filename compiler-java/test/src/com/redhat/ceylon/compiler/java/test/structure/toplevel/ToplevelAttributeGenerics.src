@@ -1,0 +1,124 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class topLevelAttributeGenerics_ {
+    
+    private topLevelAttributeGenerics_() {
+    }
+    private static final .ceylon.language.List<? extends .ceylon.language.String> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
+        if (topLevelAttributeGenerics_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAttributeGenerics\' before it was set");
+        }
+    }
+}
+public final class topLevelAttributeGenericsShared_ {
+    
+    private topLevelAttributeGenericsShared_() {
+    }
+    private static final .ceylon.language.List<? extends .ceylon.language.String> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
+        if (topLevelAttributeGenericsShared_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAttributeGenericsShared\' before it was set");
+        }
+    }
+}
+final class topLevelVariableGenerics_ {
+    
+    private topLevelVariableGenerics_() {
+    }
+    private static .ceylon.language.List<? extends .ceylon.language.String> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
+        if (topLevelVariableGenerics_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelVariableGenerics\' before it was set");
+        }
+    }
+    
+    public static void set_(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenerics) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = topLevelVariableGenerics;
+    }
+}
+public final class topLevelVariableGenericsShared_ {
+    
+    private topLevelVariableGenericsShared_() {
+    }
+    private static .ceylon.language.List<? extends .ceylon.language.String> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.List<? extends .ceylon.language.String> get_() {
+        if (topLevelVariableGenericsShared_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelVariableGenericsShared\' before it was set");
+        }
+    }
+    
+    public static void set_(final .ceylon.language.List<? extends .ceylon.language.String> topLevelVariableGenericsShared) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = topLevelVariableGenericsShared;
+    }
+}

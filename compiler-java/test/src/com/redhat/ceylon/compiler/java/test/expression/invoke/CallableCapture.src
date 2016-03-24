@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class higher_ {
+    
+    private higher_() {
+    }
+    
+    static .java.lang.String higher(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        return "";
+    }
+}
+final class callableCapture_foo_ {
+    
+    private callableCapture_foo_() {
+    }
+    
+    static .java.lang.String callableCapture_foo(final long i) {
+        return "";
+    }
+}
+final class callableCapture_m_ {
+    
+    private callableCapture_m_() {
+    }
+    
+    static void callableCapture_m() {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> callableCapture_bar = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableCapture_foo_.callableCapture_foo($ceylontmp$i));
+            }
+        };
+        final boolean b = .com.redhat.ceylon.compiler.java.test.expression.invoke.higher_.higher(callableCapture_bar).equals("");
+    }
+}

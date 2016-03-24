@@ -1,0 +1,70 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfConditionList implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ForIfConditionList() {
+    }
+    
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> m$priv$(final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> xs) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$){
+                    {
+                        $iterator$0 = xs.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> $iterator$0;
+                    private .ceylon.language.Sequential<? extends .java.lang.Object> x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    private long y$4;
+                    private .ceylon.language.Sequence<? extends .java.lang.Object> x$2;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
+                            final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
+                            .java.lang.Object y$3 = null;
+                            .ceylon.language.Sequential<? extends .java.lang.Object> x$1 = null;
+                            if ((x$1 = x) instanceof .ceylon.language.Sequence) {
+                                x$2 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)x$1;
+                                if ((y$3 = x$2.getFromFirst(0L)) instanceof .ceylon.language.Integer) {
+                                    y$4 = ((.ceylon.language.Integer)y$3).longValue();
+                                    if (y$4 > 0L) {
+                                        break ifcomp_1;
+                                    }
+                                }
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .ceylon.language.Sequence<? extends .java.lang.Object> x$2 = this.x$2;
+                            final long y$4 = this.y$4;
+                            final .ceylon.language.Sequential<? extends .java.lang.Object> x = this.x;
+                            return .ceylon.language.Boolean.instance(y$4 == 1L);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionList.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfConditionList.class);
+}

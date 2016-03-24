@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWhileExistsWithMethod() {
+    }
+    
+    private final .ceylon.language.Integer give$priv$() {
+        return .ceylon.language.Integer.instance(0L);
+    }
+    
+    public final long m() {
+        loop_0: while (true) {
+            .ceylon.language.Integer y$0;
+            if ((y$0 = give$priv$()) != null) {
+                final long y$1 = y$0.longValue();
+                return y$1;
+            } else {
+                break loop_0;
+            }
+        }
+        return 0L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsWithMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsWithMethod.class);
+}

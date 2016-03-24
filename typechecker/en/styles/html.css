@@ -83,6 +83,7 @@ PRE, PRE SPAN,
 .synopsis span.emphasis, 
 .literal span.emphasis  {
     font-family: Inconsolata, Monaco, Consolas, "Lucida Console", monospace;
+    line-height: normal; /* overriding 1.40em from another rule, see #1186 */
 }
 
 .screen, .synopsis {

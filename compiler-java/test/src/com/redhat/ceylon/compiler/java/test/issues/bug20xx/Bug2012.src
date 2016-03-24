@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+final class bug2012_ {
+    
+    private bug2012_() {
+    }
+    
+    static void bug2012() {
+        .java.lang.Object elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.Boolean> truth$iterator$$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Boolean.instance(true);
+                
+                case 1: 
+                    return .ceylon.language.Boolean.instance(false);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.iterator();
+        loop_0: while (!((elem$0 = truth$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
+            final boolean truth = ((.ceylon.language.Boolean)elem$0).booleanValue();
+            final boolean theTruth = truth;
+        }
+    }
+}

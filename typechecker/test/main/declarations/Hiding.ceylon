@@ -31,27 +31,41 @@ interface Hiding {
 	}
 	
 	class Super() {
-		shared interface Interface {
+		shared interface InnerInterface {
 			shared formal String hello;
 		}
 	}
 	
 	@error class BadSub() 
 			extends Super() 
-			satisfies Interface {
+			satisfies InnerInterface {
+		//@error //slightly undesirable
+		shared actual String hello = "hi";
+	}
+	
+	interface SuperInterface {
+		shared interface InnerInterface {
+			shared formal String hello;
+		}
+	}
+	
+	@error class BadInterfaceImpl()
+			satisfies SuperInterface & InnerInterface {
+		@error //slightly undesirable
 		shared actual String hello = "hi";
 	}
 	
 	class GoodSub() 
 			extends Super() {
 		class Inner() {
-			shared class Impl() satisfies Interface {
+			shared class Impl() 
+					satisfies InnerInterface {
 				shared actual String hello = "hi";
 			}
 		}
 		void method() {
 			Inner.Impl impl = Inner().Impl();
-			Interface intfc = impl;
+			InnerInterface intfc = impl;
 		}
 	}
 	

@@ -1,0 +1,819 @@
+body {
+	font-family: 'Source Sans Pro', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'PT Sans', Helvetica, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: bold;
+}
+
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; } 
+h4 { font-size: 16px; }
+
+code, pre {
+	font-family: Inconsolata, Monaco, Courier, monospace;
+    font-size: 14px;
+    color: black;
+    border: none;
+}
+
+code {
+    padding: 0px;
+}
+
+.module-header {
+	float: left;
+	display: block;
+	font-size: 20px;
+	font-weight: bold;
+	margin: 4px 0 0 -16px;
+}
+
+.module-header:HOVER {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.module-header:HOVER .module-name {
+	color: rgb(242, 223, 183);
+}
+
+.module-name {
+	color: rgb(250, 250, 250);
+	margin-top: 6px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.module-label,
+.module-version {
+	color: rgb(160, 160, 160);
+	margin: 6px 6px 0 6px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.module-logo {
+	display: inline-block;
+	background-image: url("ceylondoc-logo.png");
+	background-repeat: no-repeat;
+	height: 28px;
+	width: 28px;
+	margin-top: 3px;
+	margin-left: 3px;
+}
+
+.sub-navbar {
+	background-color: #EEE;
+	border-top: 1px solid rgb(190, 190, 190);
+	border-bottom: 1px solid rgb(190, 190, 190);
+	margin-bottom: 10px;
+}
+
+.sub-navbar-inner {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 14px 6px 6px 20px;
+}
+
+.sub-navbar-label {
+	color: rgb(76,76,76);
+	padding-right: 6px;
+}
+
+.sub-navbar-package {
+    font-size: 16px;
+}
+
+.sub-navbar-menu {
+	margin-top: 1em;
+	text-align: center;
+	line-height: 15px;
+	position: relative;
+	top: -4px;
+	font-weight: bold;
+}
+
+.sub-navbar-menu a {
+	color: rgb(80, 80, 80);
+	padding: 0 20px;
+}
+
+.sub-navbar-menu .accesskey {
+	//color: #0088cc;
+	text-decoration: underline;
+}
+
+.section {
+	padding: 4px 0;
+}
+.section .title {
+    font-weight: bold;
+}
+.section .title:HOVER {
+	text-decoration: none;
+}
+.section .title .icon-expand,
+.section .title .icon-collapse {
+    margin: 0px;
+    vertical-align: text-top;
+}
+
+
+.table-bordered th, .table-bordered td {
+	padding: 6px;
+}
+
+.table-header {
+	font-weight: bold;
+	background-color: #EEE;
+	color: #333;
+	cursor: pointer;
+}
+
+.table-header:HOVER {
+	background-color: rgb(232, 232, 232);
+}
+
+.doc a {
+    color: #005580;
+}
+
+.link, .link-custom-text,
+.link code, .link-custom-text code {
+    color: #005580;
+}
+
+.link-one-self,
+.link-source-code,
+.link-collapsible {
+	float: right;
+	font-size: 0.8em;
+	padding-left: 10px;
+}
+
+.link-source-code:VISITED
+.link-collapsible:VISITED {
+	color: #0088cc;
+}
+
+.link-unresolvable code {
+	color: red;
+}
+
+.link-dropdown {
+    position: relative;
+}
+
+.link-dropdown .caret {
+    position: absolute;
+    right: -8px;
+    bottom: 0px;
+    border-top: 5px solid #005580;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    display: none;
+}
+
+.link-dropdown:HOVER .caret {
+    display: inline-block;
+}
+
+.link-dropdown .dropdown-menu small {
+    color: #999999;
+}
+
+.module-description,
+.class-description {
+	padding: 10px 0;
+}
+
+.module-description .link-source-code {
+	position: relative;
+	top: -8px;
+}
+
+.sub-navbar .link-source-code {
+	padding-top: 2px;
+	padding-right: 24px;
+}
+
+.parameter, .parameter-default-value, .signature {
+	//font-weight: bold;
+}
+
+.parameter-default-value {
+	color: rgb(120, 120, 120);
+}
+
+.identifier, 
+.identifier a.link,
+.identifier a.link code {
+    color: rgb(0,51,153);
+}
+
+.type-identifier, 
+.type-identifier a.link, 
+.type-identifier a.link code {
+    color: rgb(153,0,102);
+}
+
+.sub-navbar-name .package-identifier a {
+    font-family: 'Source Sans Pro', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    vertical-align: top;
+}
+
+.modifiers {
+	color: rgb(51,153,204);
+}
+
+.parameter {
+    //color: rgb(102,51,153);
+}
+
+.by, .license, .platform {
+   font-size: 14px;
+}
+
+.signature a {
+    color: rgb(153,0,102);
+}
+
+.void {
+    color: rgb(76,76,76);
+}
+
+.dynamic {
+    color: rgb(76,76,76);
+}
+
+.type-parameter {
+	font-style: italic;
+	padding-right: 2px;
+	padding-left: 1px;
+	color: grey;
+}
+
+.sub-navbar-inner .type-parameter-constraint, 
+.inheritance-satisfies, 
+.inheritance-extends, 
+.inheritance-of {
+	padding-left: 30px;
+	font-size: 16px;
+	padding-top: 3px;
+}
+
+.signature .type-parameter-constraint {
+    padding-left: 60px;
+}
+
+.type-parameter-keyword {
+	color: rgb(76,76,76);
+}
+
+.type-parameter-value a {
+    color: #005580;
+    font-style: normal;
+}
+
+.decl-label, a.decl-label {
+    //font-weight: bold;
+    color: #333;
+}
+
+.literal {
+    color: darkblue;
+}
+
+.keyword {
+	color: rgb(76,76,76);
+	//font-weight: bold;
+}
+
+.specifier,
+.specifier-rest {
+	padding-left: 6px;
+}
+
+.specifier-rest {
+	display: none;
+	white-space: pre;
+}
+
+.specifier-ellipsis {
+	color: #0088cc;
+	padding-left: 4px;
+}
+
+div .type-alias-specifier {
+    padding-left: 60px;
+}
+
+.inherited-members {
+	padding-left: 30px;
+}
+
+.type-tabs {
+    margin-bottom: 10px;
+}
+
+.type-tabs .nav-tabs {
+    margin-bottom: 4px;    
+}
+
+.type-tabs [class^='icon-'] {
+    vertical-align: text-bottom;
+} 
+
+.type-tabs li>a {
+    color: #333;
+    font-size: 14px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.type-tabs .nav-tabs {
+    font-weight: bold;
+}
+
+.type-tabs .nav-tabs>.active>a {}
+
+.type-tabs .nav-tabs a>.disabled,
+.type-tabs .nav-tabs>.active>a>.disabled {
+    color: #aaa;
+}
+
+.type-tabs li>a.hint {
+    color: rgb(180,180,180);
+    cursor: pointer;
+    font-style: italic;
+}
+
+
+.hierarchy-level {
+	list-style-type: none;
+}
+.hierarchy-arrow-none {
+	display: inline-block;
+	min-width: 10px;
+}
+.hierarchy-arrow-right,
+.hierarchy-arrow-down {
+	width: 0;
+	height: 0;
+	display: inline-block;
+}
+.hierarchy-arrow-right {
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-left: 5px solid rgb(80, 80, 80);
+}
+.hierarchy-arrow-down {
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-top: 5px solid rgb(80, 80, 80);
+}
+.hierarchy-arrow-container {
+	cursor: pointer;
+	display: inline-block;
+	width: 16px;
+}
+
+td.shrink {
+	width: 1px;
+    white-space: nowrap;
+}
+
+td .description {
+    padding: 0 30px;
+}
+
+td .import-description {
+    padding: 0 6px;
+}
+
+.description-collapsed {
+    height: 26px;
+    overflow: hidden;
+}
+
+.row-collapsible {
+    cursor: pointer;
+}
+
+.description-decoration {
+    height: 4px;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+.tags.section {
+    padding: 0;
+    float: right;
+    clear: right;
+}
+
+.tag {
+    position: relative;
+    top: -4px;
+    margin-left: 4px;
+}
+
+.tag:HOVER {
+    background-color: rgb(120, 120, 120);
+}
+
+.tagOccurrenceCount {
+    font-size: small;
+    float: right;
+    position: relative;
+    top: 6px;
+}
+
+.tagSelected {
+    background-color: #468847;
+}
+
+.tagSelected:hover {
+    background-color: #356635;
+}
+
+.assertions ul {
+	margin-left: 20px;
+}
+
+.assertions li {
+	list-style-type: none;
+}
+
+.assertions p {
+	display: inline;
+}
+
+.assertions code {
+	font-size: 13px;
+	background-color: inherit;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+#info-dropdown-panel {
+	min-width: 600px;
+	padding: 16px;
+}
+
+#info-dropdown-panel .key {
+	float: left;
+	margin-right: 10px;
+	text-align: center;
+	min-width: 10px;
+}
+
+#info-search-shortcuts .key {
+	min-width: 30px;
+}
+
+#info-dropdown-panel .info {
+	position: relative;
+	top: -2px;
+}
+
+#filterDropdown {
+	display: none;
+}
+
+#filterDropdownPanel {
+    min-width: 260px;
+}
+
+#filterDropdownPanelInfo {
+    padding: 10px 8px 2px 8px;
+}
+
+#filterActions {
+    text-align: center;
+}
+
+#filterActions a {
+    cursor: pointer;
+    padding: 0 16px;
+    display: inline;
+    color: #08C;
+    font-size: 12px;
+}
+
+#filterDropdownPanelTags {
+    margin: 0 4px;
+}
+
+#filterDropdownPanelTags .tag {
+    padding: 1px 4px 2px;
+    line-height: 14px;
+    color: white;
+    display: inline-block;
+    vertical-align: sub;
+    top: 0;
+}
+
+#search {
+	padding: 40px 0 20px 0;
+	text-align: center;
+}
+
+#search input {
+	width: 200px;
+}
+
+.highlight {
+	background-color: #fcf8e3;
+}
+
+.doc.section {
+    margin-bottom: -10px; /* HACK for <p> padding-bottom 10px */
+}
+
+.class-description .doc {
+    margin-top: 10px;
+}
+
+td>p:FIRST-CHILD {
+    margin: 0; /* HACK for markdown first paragraph */
+}
+
+code {
+	color: #333; /* default bootstrap color is red */
+    border:none;
+    background-color:inherit;
+}
+
+[class^='icon-'] {
+	display: inline-block;
+	background-image: url("ceylondoc-icons.png") !important;
+	background-repeat: no-repeat;
+	height: 16px;
+	width: 16px;
+	vertical-align: baseline;
+	margin-right: 4px;
+}
+
+td [class^='icon-'] {
+	vertical-align: text-top;
+}
+
+.icon-none {
+	background-image: none;
+}
+
+.icon-local-member {
+	background-position: 0px 0px;
+}
+
+.icon-shared-member {
+	background-position: -16px 0px;
+}
+
+.icon-interface {
+	background-position: -32px 0px;
+}
+
+.icon-class {
+	background-position: -48px 0px;
+}
+
+.icon-object {
+	background-position: -64px 0px;
+}
+
+.icon-package {
+	background-position: -80px 0px;
+}
+
+.icon-decoration-local {
+	background-position: 4px 4px;
+}
+
+.icon-decoration-abstract {
+	background-position: -96px 0px;
+}
+
+.icon-decoration-final,
+.icon-decoration-formal {
+	background-position: -112px 0px;
+}
+
+.icon-decoration-impl {
+	background-position: -128px 0px;
+}
+
+.icon-decoration-over {
+	background-position: -144px 0px;
+}
+
+.icon-decoration-deprecated {
+	background-position: -160px 0px;
+}
+
+.icon-search {
+	vertical-align: text-bottom;
+	background-position: -192px 0px;
+}
+
+.icon-filter {
+    vertical-align: text-bottom;
+    background-position: -224px 0px;
+}
+
+.icon-info {
+    vertical-align: text-bottom;
+    background-position: -256px 0px;
+}
+
+.icon-expand {
+	background-position: -272px 0px;
+}
+
+.icon-collapse {
+	background-position: -288px 0px;
+}
+
+.icon-indentation {
+	background-position: -304px 0px;
+	position: relative;
+	top: -6px;
+	left: -2px;
+}
+
+.icon-source-code {
+	background-position: -320px 0px;
+	vertical-align: top;
+	margin-right: 1px;
+}
+
+.icon-link {
+	background-position: -336px 0px;
+}
+
+.icon-expand2 {
+	background-position: -352px 0px;
+}
+
+.icon-collapse2 {
+	background-position: -368px 0px;
+}
+
+.icon-decoration-expand {
+	background-position: -384px 0px;
+	width: 32px;
+	height: 4px;
+}
+
+.icon-decoration-collapse {
+	background-position: -416px 0px;
+	width: 32px;
+	height: 4px;
+}
+
+.icon-expand-all {
+	background-position: -448px 0px;
+}
+
+.icon-collapse-all {
+	background-position: -480px 0px;
+}
+
+.icon-type-alias {
+    background-position: -512px 0px;
+}
+
+.icon-module {
+	background-position: -528px 0px;
+}
+
+.icon-module-exported-decoration {
+    background-position: -544px -4px;
+}
+
+.icon-module-optional-decoration {
+    background-position: -560px -1px;
+}
+
+.icon-decoration-annotation {
+	background-position: -576px 0px;
+}
+
+.icon-decoration-variable {
+    background-position: -592px 0px;
+}
+
+.icon-assertion {
+    background-position: -608px 0px;
+}
+
+.icon-subtype-hierarchy {
+    background-position: -624px 0px;
+}
+
+.icon-supertype-hierarchy {
+    background-position: -640px 0px;
+}
+
+.icon-type-hierarchy {
+    background-position: -656px 0px;
+}
+
+.icon-indentation-arrow-up {
+    background-position: -672px 0px;
+    position: relative;
+    top: -6px;
+    left: -2px;
+}
+
+.icon-indentation-arrow-right {
+    background-position: -688px 0px;
+    position: relative;
+    top: -6px;
+    left: -2px;
+}
+
+.icon-subtype-hierarchy-disabled {
+    background-position: -704px 0px;
+}
+
+.icon-supertype-hierarchy-disabled {
+    background-position: -720px 0px;
+}
+
+.icon-type-hierarchy-disabled {
+    background-position: -736px 0px;
+}
+
+.icon-decoration-enumerated {
+    background-position: -752px 0px;
+    position: relative;
+    top: -3px;
+    left: -7px;
+}
+
+.icon-documentation {
+    background-position: -769px 0px;
+}
+
+a:HOVER .icon-expand-all,
+a:FOCUS .icon-expand-all {
+	background-position: -464px 0px;
+}
+
+a:HOVER .icon-collapse-all,
+a:FOCUS .icon-collapse-all {
+	background-position: -496px 0px;
+}
+
+a:HOVER .icon-search,
+a:FOCUS .icon-search {
+	vertical-align: text-bottom;
+	background-position: -176px 0px;
+}
+
+a:HOVER .icon-filter,
+a:FOCUS .icon-filter,
+.dropdown.open .icon-filter {
+    vertical-align: text-bottom;
+    background-position: -208px 0px;
+}
+
+a:HOVER .icon-info,
+a:FOCUS .icon-info,
+.dropdown.open .icon-info {
+    vertical-align: text-bottom;
+    background-position: -240px 0px;
+}
+
+thead .icon-expand,
+thead .icon-collapse {
+	float: right;
+}
+
+td .icon-source-code,
+td .icon-link,
+td .icon-expand2,
+td .icon-collapse2 {
+	vertical-align: top;
+	margin-right: 1px;
+	margin-top: 3px;
+}
+
+.expand-all,
+.collapse-all {
+	padding: 10px 5px 10px !important;
+}
+
+table.rainbow {
+    border-collapse: collapse;
+}

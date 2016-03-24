@@ -1,0 +1,3 @@
+<maven-overrides>
+    <set module="moduletest" version="1"/>
+</maven-overrides>

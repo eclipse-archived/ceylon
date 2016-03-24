@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+class ImportTypeAlias implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ImportTypeAlias() {
+    }
+    
+    private final void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.C1();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportTypeAlias.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.importIt.ImportTypeAlias.class);
+}

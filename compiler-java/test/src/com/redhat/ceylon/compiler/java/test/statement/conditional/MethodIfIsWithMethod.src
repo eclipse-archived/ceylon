@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfIsWithMethod() {
+    }
+    
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo give$priv$() {
+        return new .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub();
+    }
+    
+    public final void m() {
+        .java.lang.Object y$1;
+        if ((y$1 = give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub y$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)y$1;
+            y$2.foo();
+        }
+        .java.lang.Object y$4;
+        if ((y$4 = give$priv$()) == null) {
+            final .java.lang.Object y$5 = y$4;
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsWithMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfIsWithMethod.class);
+}

@@ -1,0 +1,75 @@
+<project name="ceylond script tests" >
+  <target name="-init">
+    <echo message="ant.home: ${ant.home}"/>
+    <echo message="ant.file: ${ant.file}"/>
+    <echo message="src: ${arg.src}"/>
+    <echo message="out: ${arg.out}"/>
+  </target>
+  
+  <target name="version" depends="-init">
+  	<exec executable="${script.ceylon}" failonerror="true">
+  	  <arg value="doc"/>
+      <arg value="-version"/>
+    </exec>
+  </target>    
+    
+  <target name="help" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
+      <arg value="--help"/>
+    </exec>
+  </target>
+        
+  <target name="h" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
+      <arg value="-h"/>
+    </exec>
+  </target>
+
+  <target name="jhelp" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
+      <arg value="--jhelp"/>
+    </exec>
+  </target>
+  
+  <target name="foo" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
+      <arg value="--src=${arg.src}"/>
+      <arg value="--out=${arg.out}"/>
+      <arg value="com.example.foo"/>
+    </exec>
+  </target>
+  
+  <target name="foo-non-shared" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
+      <arg value="--src=${arg.src}"/>
+      <arg value="--out=${arg.out}"/>
+      <arg value="--non-shared"/>
+      <arg value="com.example.foo"/>
+    </exec>
+  </target>
+
+  <target name="foo-source-code" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
+      <arg value="--src=${arg.src}"/>
+      <arg value="--out=${arg.out}"/>
+      <arg value="--source-code"/>
+      <arg value="com.example.foo"/>
+    </exec>
+  </target>
+	  
+  <target name="default-module" depends="-init">
+    <exec executable="${script.ceylon}" failonerror="true">
+      <arg value="doc"/>
+      <arg value="--src=${arg.src}/def"/>
+      <arg value="--out=${arg.out}"/>
+      <arg value="default"/>
+    </exec>
+  </target>
+
+</project>

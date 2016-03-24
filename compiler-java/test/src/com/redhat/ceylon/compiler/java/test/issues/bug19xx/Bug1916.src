@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1916_ {
+    
+    private bug1916_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .ceylon.language.Boolean> bug1916(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> predicate) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Boolean(Anything)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Boolean $ceylontmp$ifResult$0;
+                        .java.lang.Object val$2;
+                        if ((val$2 = val) != null) {
+                            final .java.lang.Object val$4 = val$2;
+                            $ceylontmp$ifResult$0 = predicate.$call$((.java.lang.Object)val$4);
+                        } else {
+                            final .java.lang.Object val$3 = val$2;
+                            $ceylontmp$ifResult$0 = .ceylon.language.Boolean.instance(false);
+                        }
+                    }
+                    returning $ceylontmp$ifResult$0;
+                );
+            }
+        };
+    }
+}
+final class bug1916_2_ {
+    
+    private bug1916_2_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .ceylon.language.Boolean> bug1916_2(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> predicate) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Boolean(Anything)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Boolean $ceylontmp$ifResult$5;
+                        {
+                            .java.lang.Object sel$6 = val;
+                            if (sel$6 != null) {
+                                final .java.lang.Object val$8 = (.java.lang.Object)sel$6;
+                                $ceylontmp$ifResult$5 = predicate.$call$((.java.lang.Object)val$8);
+                            } else {
+                                final .java.lang.Object val$7 = (.java.lang.Object)sel$6;
+                                $ceylontmp$ifResult$5 = .ceylon.language.Boolean.instance(false);
+                            }
+                        }
+                    }
+                    returning $ceylontmp$ifResult$5;
+                );
+            }
+        };
+    }
+}

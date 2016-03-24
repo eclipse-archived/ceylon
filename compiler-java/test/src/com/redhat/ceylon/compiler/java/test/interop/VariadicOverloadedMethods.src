@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class variadicOverloadedMethods_ {
+    
+    private variadicOverloadedMethods_() {
+    }
+    
+    static void variadicOverloadedMethods() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> java = new .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer>();
+        java.variadic();
+        java.variadic(1L);
+        java.variadic(1L, 2L);
+        java.variadic(new long[]{
+                1L,
+                2L,
+                3L});
+        java.variadic(.com.redhat.ceylon.compiler.java.Util.toLongArray((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)})));
+        java.variadic(1.0);
+        java.variadic(1.0, 2.0);
+        java.variadic(new double[]{
+                1.0,
+                2.0,
+                3.0});
+        java.variadic(.ceylon.language.String.instance("a"));
+        java.variadic("a", "b");
+        java.variadic((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$0$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.String.instance("a"),
+                        .ceylon.language.String.instance("b")});
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$0$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())]);
+        ));
+    }
+}

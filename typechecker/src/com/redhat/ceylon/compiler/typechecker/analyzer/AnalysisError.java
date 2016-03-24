@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.AnalysisMessage;
 
@@ -13,8 +14,16 @@ public class AnalysisError extends AnalysisMessage {
 		super(treeNode, message);
 	}
     
+    public AnalysisError(Node treeNode, String message, Backend backend) {
+        super(treeNode, message, backend);
+    }
+    
     public AnalysisError(Node treeNode, String message, int code) {
         super(treeNode, message, code);
+    }
+    
+    public AnalysisError(Node treeNode, String message, int code, Backend backend) {
+        super(treeNode, message, code, backend);
     }
     
 }

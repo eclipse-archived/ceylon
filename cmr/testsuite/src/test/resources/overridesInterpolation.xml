@@ -1,0 +1,6 @@
+<maven-overrides>
+    <define name="version" value="1.0.0"/>
+    <artifact module="moduletest" version="0.1">
+        <remove module="hello" version="${version}"/>
+    </artifact>
+</maven-overrides>

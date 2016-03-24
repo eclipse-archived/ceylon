@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+interface Bug633Ranged<Index, Span> {
+    
+    public abstract .java.lang.Object span(final Index from);
+}
+interface Bug633Empty extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<.ceylon.language.Integer, .java.lang.Object> {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty.class);
+}
+class Bug633EmptyImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty, .java.io.Serializable {
+    
+    Bug633EmptyImpl() {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object span(final .ceylon.language.Integer from) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl.class);
+}
+final class bug633_ {
+    
+    private bug633_() {
+    }
+    
+    static void bug633() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl a = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Empty b = new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer> c = (.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged<? super .ceylon.language.Integer, ? extends .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633Ranged)new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug633EmptyImpl();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+}

@@ -1,0 +1,5 @@
+<maven-overrides>
+    <artifact module="moduletest" version="0.1">
+        <optional module="hello"/>
+    </artifact>
+</maven-overrides>

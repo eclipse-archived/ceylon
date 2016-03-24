@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.interop.access;
+
+class CallsDefaultAccessMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CallsDefaultAccessMethod() {
+    }
+    
+    private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.interop.access.JavaAccessModifiers j) {
+        j.defaultAccessMethod();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.access.CallsDefaultAccessMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.access.CallsDefaultAccessMethod.class);
+}

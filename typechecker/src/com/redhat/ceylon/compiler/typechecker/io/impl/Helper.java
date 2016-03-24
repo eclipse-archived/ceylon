@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.io.impl;
 import java.io.File;
 import java.util.zip.ZipEntry;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 
 /**
@@ -35,7 +36,7 @@ public class Helper {
         } else {
             repo = new File( ceylonUserRepo );
         }
-        repo.mkdirs();
+        FileUtil.mkdirs(repo);
         return repo;
     }
 

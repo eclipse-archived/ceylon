@@ -1,0 +1,69 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    QualifiedAttributeAssign() {
+        this.b = true;
+        this.b2 = true;
+        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign();
+    }
+    private boolean b;
+    
+    private final boolean getB$priv$() {
+        return b;
+    }
+    
+    private final void setB$priv$(final boolean b) {
+        this.b = b;
+    }
+    private boolean b2;
+    
+    public final boolean getB2() {
+        return b2;
+    }
+    
+    public final void setB2(final boolean b2) {
+        this.b2 = b2;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign q;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign getQ$priv$() {
+        return q;
+    }
+    
+    private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
+        this.setB$priv$(false);
+        this.setB2(false);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB$priv$(true);
+        new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB2(true);
+        getQ$priv$().setB$priv$(getQ$priv$().getB2());
+        f.setB(f.getB());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign.class);
+}
+class QualifiedAttributeAssignFoo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    QualifiedAttributeAssignFoo() {
+        this.b = true;
+    }
+    private boolean b;
+    
+    public final boolean getB() {
+        return b;
+    }
+    
+    public final void setB(final boolean b) {
+        this.b = b;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo.class);
+}

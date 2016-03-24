@@ -39,6 +39,9 @@ void coverage() {
     {Nothing+} y3 = x3 of {Nothing+};
     
     @error abstract class Problem() satisfies Empty&{Nothing+} {}
+    
+    Set<Anything> s1 = nothing;
+    Set<Object> s2 = s1 of Set<Object>;
 }
 
 T&<Object?> covFun0<T>(T maybe) => maybe of T&<Object?>;

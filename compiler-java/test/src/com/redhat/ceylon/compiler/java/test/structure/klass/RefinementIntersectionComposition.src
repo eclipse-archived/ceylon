@@ -1,0 +1,77 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface RIC_A {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A.class);
+}
+interface RIC_B {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B.class);
+}
+interface RIC_C {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_C.class);
+}
+interface RIC_Top<T> {
+    
+    public abstract T getVal();
+    
+    public abstract T get();
+}
+abstract class RIC_Middle implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A>, .java.io.Serializable {
+    
+    RIC_Middle() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Middle.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Middle.class);
+}
+interface RIC_Left extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B> {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left.class);
+}
+interface RIC_Right extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Top<.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_C> {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right.class);
+}
+class RIC_Nothing_From_Class extends .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Middle implements .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right {
+    
+    RIC_Nothing_From_Class() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A getVal() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A get() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Class.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Class.class);
+}
+class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Left, .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Right, .java.io.Serializable {
+    
+    RIC_Nothing_From_Interface() {
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B getVal() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B get() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Interface.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_Nothing_From_Interface.class);
+}

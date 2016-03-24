@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class compareBoxing_ {
+    
+    private compareBoxing_() {
+    }
+    
+    static <T extends .ceylon.language.Comparable<? super T>>void compareBoxing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long i, final double f, final .java.lang.String s, final .ceylon.language.Comparable<? super .ceylon.language.Integer> intSelf, final .ceylon.language.Comparable<? super .ceylon.language.Float> floatSelf, final .ceylon.language.Comparable<? super .ceylon.language.String> stringSelf, final T t, final .ceylon.language.Comparable<? super T> tSelf) {
+        boolean cmp = false;
+        .ceylon.language.Comparison ord = null;
+        ord = .ceylon.language.Integer.compare(i, i);
+        cmp = i < i;
+        ord = .ceylon.language.Float.compare(f, f);
+        cmp = f < f;
+        ord = .ceylon.language.String.compare(s, s);
+        cmp = .ceylon.language.String.compare(s, s) == .ceylon.language.smaller_.get_();
+        ord = ((T)t).compare((T)t);
+        cmp = ((T)t).compare((T)t) == .ceylon.language.smaller_.get_();
+        ord = .ceylon.language.Integer.compare(((.ceylon.language.Integer)intSelf).longValue(), i);
+        cmp = ((.ceylon.language.Integer)intSelf).longValue() < i;
+        ord = .ceylon.language.Float.compare(((.ceylon.language.Float)floatSelf).doubleValue(), f);
+        cmp = ((.ceylon.language.Float)floatSelf).doubleValue() < f;
+        ord = .ceylon.language.String.compare(((.ceylon.language.String)stringSelf).toString(), s);
+        cmp = .ceylon.language.String.compare(((.ceylon.language.String)stringSelf).toString(), s) == .ceylon.language.smaller_.get_();
+        ord = ((T)tSelf).compare((T)t);
+        cmp = ((T)tSelf).compare((T)t) == .ceylon.language.smaller_.get_();
+        if (((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).getFirst()).longValue() > 0L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1].first>0"));
+        }
+    }
+}

@@ -4,18 +4,20 @@
  */
 package com.redhat.ceylon.compiler.typechecker.util;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.Util.hasErrorOrWarning;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isAbstraction;
-import static com.redhat.ceylon.compiler.typechecker.model.Util.isTypeUnknown;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasErrorOrWarning;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
-import com.redhat.ceylon.compiler.typechecker.model.Declaration;
-import com.redhat.ceylon.compiler.typechecker.model.Functional;
-import com.redhat.ceylon.compiler.typechecker.model.ProducedType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 /**
  *
@@ -23,12 +25,16 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class UsageVisitor extends Visitor {
 	
-    private ReferenceCounter rc;
-	
+    private final ReferenceCounter rc;
+    
 	public UsageVisitor(ReferenceCounter rc) {
 		this.rc = rc;
 	}
 	
+    @Override public void visit(Tree.CompilationUnit that) {
+        super.visit(that);
+    }
+    
     @Override
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
@@ -45,7 +51,7 @@ public class UsageVisitor extends Visitor {
         if (d!=null) {
         	referenced = rc.isReferenced(d);
         	if (isAbstraction(d)) {
-        		for (Declaration od: ((Functional) d).getOverloads()) {
+        		for (Declaration od: d.getOverloads()) {
         			referenced=referenced||rc.isReferenced(od);
         		}
         	}
@@ -66,27 +72,36 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.Declaration that) {
         super.visit(that);
         Declaration declaration = that.getDeclarationModel();
+        Backends bs = declaration.getNativeBackends();
         if (declaration!=null && 
+                declaration.getName()!=null &&
         		!declaration.isShared() && 
         		!declaration.isToplevel() && 
         		!rc.isReferenced(declaration) &&
         		!declaration.isParameter() &&
-        		!(that instanceof Tree.Variable)) {
-            that.addUsageWarning(Warning.unusedDeclaration,
-                    "declaration is never used: '" + 
-                        declaration.getName() + "'");
+        		!(that instanceof Tree.Variable) &&
+        		!(declaration instanceof TypeParameter &&
+        		    ((TypeParameter) declaration).getDeclaration() 
+        		            instanceof TypeParameter)) {
+            if (bs.none() || isForBackend(bs, that.getUnit())) {
+                that.addUsageWarning(Warning.unusedDeclaration,
+                        "declaration is never used: '" + 
+                            declaration.getName() + "'");
+            }
         }
-        
     }
 
     @Override
     public void visit(Tree.Term that) {
         super.visit(that);
         if (!hasErrorOrWarning(that)) {
-            ProducedType type = that.getTypeModel();
+            Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
-                that.addUsageWarning(Warning.expressionTypeNothing,
-                        "expression has type 'Nothing'");
+                Backends inBackends = that.getScope().getScopedBackends();
+                if (inBackends.none() || isForBackend(inBackends, that.getUnit())) {
+                    that.addUsageWarning(Warning.expressionTypeNothing,
+                            "expression has type 'Nothing'");
+                }
             }
         }
     }

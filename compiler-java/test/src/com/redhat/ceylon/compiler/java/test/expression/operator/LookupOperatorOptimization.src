@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+class LookupOperatorOptimization implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected LookupOperatorOptimization() {
+        super();
+    }
+    
+    LookupOperatorOptimization(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Boolean> cor, final .ceylon.language.List<? extends .ceylon.language.Boolean> list, final .ceylon.language.Array<.ceylon.language.Boolean> array) {
+        .ceylon.language.Boolean first = null;
+        first = cor.get(.ceylon.language.Integer.instance(0L));
+        first = list.getFromFirst(0L);
+        first = array.getFromFirst(0L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.LookupOperatorOptimization.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.LookupOperatorOptimization.class);
+}

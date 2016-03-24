@@ -1,0 +1,91 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
+
+interface Bug1899Top {
+    
+    public abstract long getA();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Top.class);
+}
+interface Bug1899Left extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Top {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Left$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1899Left$impl();
+    
+    @.java.lang.Override
+    public long getA();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Left.class);
+}
+final class Bug1899Left$impl implements .java.io.Serializable {
+    
+    Bug1899Left$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Left $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Left $this;
+    
+    public final long getA() {
+        return 2L;
+    }
+}
+interface Bug1899Right extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Top {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Right$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1899Right$impl();
+    
+    @.java.lang.Override
+    public long getA();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Right.class);
+}
+final class Bug1899Right$impl implements .java.io.Serializable {
+    
+    Bug1899Right$impl(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Right $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Right $this;
+    
+    public final long getA() {
+        return 2L;
+    }
+}
+final class bug1899_ {
+    
+    private bug1899_() {
+    }
+    
+    static <T extends .ceylon.language.Category<? super .java.lang.Object>>void bug1899(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Comparison>> compare = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Comparison>>)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Comparison>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Comparison.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$)), "Comparison(Nothing)(IntegerOrFloat)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.Comparison> $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $instance$ = $param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Comparison>(.ceylon.language.Comparison.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), "Comparison(Nothing)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Comparison $call$(final .java.lang.Object $param$0) {
+                        final .ceylon.language.Comparable other = (.ceylon.language.Comparable)$param$0;
+                        return ((.ceylon.language.Comparable)$instance$).compare(other);
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Boolean>> contains = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Boolean>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$T), "Boolean(Object)(T)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.Boolean> $call$(final .java.lang.Object $param$0) {
+                final T $instance$ = (T)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                        final .java.lang.Object element = $param$0;
+                        return .ceylon.language.Boolean.instance($instance$.contains(element));
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> a = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Left.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Right.$TypeDescriptor$)), "Integer(LeftOrRight)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $instance$ = $param$0;
+                return .ceylon.language.Integer.instance(((.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1899Top)$instance$).getA());
+            }
+        };
+    }
+}

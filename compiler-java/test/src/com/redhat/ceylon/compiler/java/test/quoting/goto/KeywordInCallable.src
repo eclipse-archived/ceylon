@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KeywordInCallable() {
+    }
+    
+    private final void m$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> $do) {
+        $do.$call$();
+        
+        final class enum_ {
+            
+            private enum_() {
+            }
+            
+            .ceylon.language.Callable<? extends .java.lang.Object> $enum() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInCallable.this.goto$priv$();
+                            }
+                            returning null;
+                        );
+                    }
+                };
+            }
+        }
+        final enum_ enum = new enum_();
+        m$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInCallable.this.goto$priv$();
+                    }
+                    returning null;
+                );
+            }
+        });
+        m$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "Anything()()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$() {
+                return enum.$enum();
+            }
+        });
+    }
+    
+    private final void goto$priv$() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInCallable.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInCallable.class);
+}

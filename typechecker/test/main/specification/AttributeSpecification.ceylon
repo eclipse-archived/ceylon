@@ -502,3 +502,18 @@ class InitializerWithAnonFunction() {
     });
     name = "gavin";
 }
+
+shared void run1() {
+    for (i in 0..10) {}
+    String s;
+    @error value d = s;
+}
+
+
+shared void run2() {
+    for (i in 0..10) {}
+    else {}
+    String s;
+    @error value d = s;
+}
+

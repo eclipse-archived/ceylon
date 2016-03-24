@@ -1,0 +1,263 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>15</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ceylon</groupId>
+    <artifactId>modules</artifactId>
+    <packaging>pom</packaging>
+    <version>1.1.1-SNAPSHOT</version>
+    <name>Ceylon Modules</name>
+    <url>http://ceylon-lang.org</url>
+    <description>A Ceylon Modules</description>
+    <scm>
+        <connection>scm:svn:http://anonsvn.jboss.org/repos/ceylon/modules/trunk</connection>
+        <developerConnection>scm:svn:https://svn.jboss.org/repos/ceylon/modules/trunk</developerConnection>
+        <url>https://svn.jboss.org/repos/ceylon/modules/trunk</url>
+    </scm>
+    <licenses>
+        <license>
+            <name>lgpl</name>
+            <url>http://repository.jboss.org/licenses/lgpl.txt</url>
+        </license>
+    </licenses>
+    <organization>
+        <name>JBoss, A division of Red Hat, Inc</name>
+        <url>http://www.jboss.org</url>
+    </organization>
+
+    <properties>
+        <version.com.redhat.ceylon.language>1.1.1</version.com.redhat.ceylon.language>
+        <version.com.redhat.ceylon.common>1.1.1</version.com.redhat.ceylon.common>
+        <version.com.redhat.ceylon.cmr>1.1.1-SNAPSHOT</version.com.redhat.ceylon.cmr>
+        <version.org.jboss.modules>1.4.4.Final</version.org.jboss.modules>
+        <version.org.jboss.shrinkwrap>1.1.0</version.org.jboss.shrinkwrap>
+        <version.junit>4.10</version.junit>
+        <!-- Maven -->
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+    </properties>
+
+    <modules>
+        <module>spi</module>
+        <module>api</module>
+        <module>impl</module>
+        <module>bootstrap</module>
+        <module>testsuite</module>
+    </modules>
+
+    <build>
+        <plugins>
+
+            <!-- define how we want compilation to take place
+    here, we accept most of the defaults but say that we want the
+    optimization flag set, and define the source and target to be 1.5,
+    these setting will be inherited by child projects -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+            <!-- define that we wish to create src jars -->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.0-beta-1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-java-maven-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>1.7</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemProperties>
+                        <property>
+                            <name>ceylon.runtime.home</name>
+                            <value>${project.basedir}/..</value>
+                        </property>
+                        <property>
+                            <name>ceylon.repo</name>
+                            <value>${user.home}/.ceylon/repo</value>
+                        </property>
+                    </systemProperties>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <includes>
+                        <include>org/jboss/ceylon/test/**/*TestCase.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagBase>https://svn.jboss.org/repos/ceylon/modules/tags</tagBase>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <configuration>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <!-- Optional directory to put findbugs xml report -->
+                    <findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>ceylon</groupId>
+                <artifactId>modules-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ceylon</groupId>
+                <artifactId>modules-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ceylon</groupId>
+                <artifactId>modules-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ceylon</groupId>
+                <artifactId>modules-bootstrap</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ceylon.language</groupId>
+                <artifactId>ceylon-language</artifactId>
+                <version>${version.com.redhat.ceylon.language}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat.ceylon</groupId>
+                <artifactId>ceylon-common</artifactId>
+                <version>${version.com.redhat.ceylon.common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-api</artifactId>
+                <version>${version.com.redhat.ceylon.cmr}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-impl</artifactId>
+                <version>${version.com.redhat.ceylon.cmr}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-utils</artifactId>
+                <version>${version.com.redhat.ceylon.cmr}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat.ceylon.cmr</groupId>
+                <artifactId>cmr-maven</artifactId>
+                <version>${version.com.redhat.ceylon.cmr}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.modules</groupId>
+                <artifactId>jboss-modules</artifactId>
+                <version>${version.org.jboss.modules}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-api</artifactId>
+                <version>${version.org.jboss.shrinkwrap}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-spi</artifactId>
+                <version>${version.org.jboss.shrinkwrap}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-impl-base</artifactId>
+                <version>${version.org.jboss.shrinkwrap}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>

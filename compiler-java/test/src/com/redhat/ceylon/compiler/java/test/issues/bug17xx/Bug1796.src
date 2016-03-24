@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+final class bug1796_ {
+    
+    private bug1796_() {
+    }
+    
+    static void bug1796() {
+        final boolean normalize = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        
+        final class process_ {
+            
+            private process_() {
+                this.process = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.String> process;
+            
+            .java.lang.String process(final .java.lang.String input) {
+                if (process == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return process.$call$(.ceylon.language.String.instance(input)).toString();
+            }
+        }
+        final process_ process = new process_();
+        if (normalize) {
+            process.process = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.String input = ((.ceylon.language.String)$param$0).toString();
+                    return .ceylon.language.String.instance(.ceylon.language.String.getNormalized(input));
+                }
+            };
+        } else {
+            process.process = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                    return .ceylon.language.String.instance(s);
+                }
+            };
+        }
+    }
+}

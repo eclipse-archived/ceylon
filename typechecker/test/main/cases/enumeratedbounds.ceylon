@@ -30,3 +30,10 @@ void testEnumeratedBounds() {
 }
 
 void brokenEnumBound<O>() @error given O of true|false {}
+
+class Lizt<out Item>() {
+    shared Item add<in InItem>(InItem i) 
+            @error given InItem of Item { 
+        return i of Item; 
+    }
+}

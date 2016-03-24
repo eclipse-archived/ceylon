@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon jigsaw" tool
+summary=Tools to interop with Java 9 (Jigsaw) modules
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.tools.classpath.CeylonJigsawTool
+

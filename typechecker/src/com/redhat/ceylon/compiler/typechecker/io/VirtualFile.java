@@ -11,7 +11,12 @@ import java.util.List;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public interface VirtualFile {
+public interface VirtualFile extends Comparable<VirtualFile> {
+    /**
+     * Does the file or folder exist and is it readable?
+     */
+    boolean exists();
+
     /**
      * Is the file a folder?
      */
@@ -38,5 +43,5 @@ public interface VirtualFile {
     /**
      * Unmodifiable list of folder children
      */
-    List<VirtualFile> getChildren();
+    List<? extends VirtualFile> getChildren();
 }

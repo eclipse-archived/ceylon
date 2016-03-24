@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class VariadicPossiblyEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    VariadicPossiblyEmpty() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$arg$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$arg$0);
+            }
+            returning null;
+        );
+    }
+    
+    VariadicPossiblyEmpty(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.VariadicPossiblyEmpty.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VariadicPossiblyEmpty.class);
+}
+class VariadicNonEmpty implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected VariadicNonEmpty() {
+        super();
+    }
+    
+    VariadicNonEmpty(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> arg) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.VariadicNonEmpty.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.VariadicNonEmpty.class);
+}

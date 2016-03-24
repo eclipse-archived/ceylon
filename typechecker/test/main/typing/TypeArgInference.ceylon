@@ -140,10 +140,10 @@ class TypeArgInference() {
     higherAnything { void f(String x) { print(x); } };
 
     X|Y higher<X,Y>(X f(Y? y)) given Y satisfies Object => f(null);
-    @type:"Integer|String" higher((String? y) => 1);
-    @type:"Float|String" higher { function f(String? y) => 1.0; };
+    @type:"Integer" higher((String? y) => 1);
+    @type:"Float" higher { function f(String? y) => 1.0; };
     function argfun(Integer? x) => x?.float;
-    @type:"Null|Float|Integer" higher(argfun);
+    @type:"Null|Float" higher(argfun);
     
     @type:"Iterable<Integer,Nothing>" { "hello", "world" }.map((String s) => s.size);
     @type:"Iterable<String,Null>" { "hello", "world" }.filter((String s) => !s.empty);
@@ -222,7 +222,29 @@ void folding() {
     
 }
 
-void inferenceAndAliases() {
+void inferenceAndAliases1() {
+    class Test1<T>(T(T) x) {}
+    @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
+    @type:"Test1<Integer>" value test1x = Test1 { x = (Integer x) => x; };
+    alias TestFun<T> => T(T);
+    class Test2<T>(TestFun<T> x) {}
+    @type:"Test2<Integer>" value test2 = Test2((Integer x) => x);
+    @type:"Test2<Integer>" value test2x = Test2 { x = (Integer x) => x; };
+}
+
+void inferenceAndSequencedAliases1() {
+    class Test1<T>(T(T)* x) {}
+    @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
+    @type:"Test1<Integer>" value test1c = Test1(for (i in 1..1) (Integer x) => x);
+    @type:"Test1<Integer>" value test1x = Test1 { x = [(Integer x) => x]; };
+    alias TestFun<T> => T(T);
+    class Test2<T>(TestFun<T>* x) {}
+    @type:"Test2<Integer>" value test2 = Test2((Integer x) => x);
+    @type:"Test1<Integer>" value test2c = Test1(for (i in 1..1) (Integer x) => x);
+    @type:"Test2<Integer>" value test2x = Test2 { x = [(Integer x) => x]; };
+}
+
+void inferenceAndAliases2() {
     class Test1<T>(Anything(T) x) {}
     @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
     @type:"Test1<Integer>" value test1x = Test1 { x = (Integer x) => x; };
@@ -232,7 +254,7 @@ void inferenceAndAliases() {
     @type:"Test2<Integer>" value test2x = Test2 { x = (Integer x) => x; };
 }
 
-void inferenceAndSequencedAliases() {
+void inferenceAndSequencedAliases2() {
     class Test1<T>(Anything(T)* x) {}
     @type:"Test1<Integer>" value test1 = Test1((Integer x) => x);
     @type:"Test1<Integer>" value test1c = Test1(for (i in 1..1) (Integer x) => x);
@@ -274,4 +296,64 @@ void inferenceForRecursiveFuns() {
     T? extract1<T>(Foo<T>? foo) => extract1(foo);
     T? extract2<T>(Foo<T>? foo) => extract1(foo);
     String|T echoST<T>(String|T val) => echoST(val);
+}
+
+void higherOrderFun<Bar>(void func(Bar b)) {} 
+void testHigherOrderFun() {
+    higherOrderFun<String>(void(b){ @type:"String" value bb=b; });
+    higherOrderFun(void(String b){});
+    @error higherOrderFun(void(b){});
+}
+
+Bar anotherHigherOrderFun<Bar>(Bar b, void func(Bar b)){return b;}
+void testAnotherHigherOrderFun() {
+    Integer result1
+            = anotherHigherOrderFun(42, void(Integer b){});
+    Integer result2 
+            = anotherHigherOrderFun<Integer>(42, void(b){});
+    @error Integer result3
+            = anotherHigherOrderFun(42, void(b){});
+}
+
+class BlahBlah<X,Y>(Y x, Y y) 
+        given Y satisfies List<X> {}
+void testBlahBlah() {
+    List<String> strings1 = ["", ""];
+    List<Integer> ints1 = [1, 2, 3];
+    @type:"BlahBlah<String|Integer,List<String>|List<Integer>>" 
+    BlahBlah(strings1, ints1);
+    
+    Sequence<String> strings2 = ["", ""];
+    Sequence<Integer> ints2 = [1, 2, 3];
+    @type:"BlahBlah<String|Integer,Sequence<String>|Sequence<Integer>>" 
+    BlahBlah(strings2, ints2);
+}
+
+class BlahBlahBlah<in X,in Y>(Anything(Y,Y) x, Anything(Y,Y) y) 
+        given X satisfies Object
+        given Y satisfies X {}
+void testBlahBlahBlah() {
+    interface String {} interface Integer {} interface Float {}
+    void strings(String x, Integer y) {}
+    void ints(Float x, Float y) {}
+    @type:"BlahBlahBlah<Object,String&Integer&Float>" 
+    BlahBlahBlah(strings, ints);
+}
+
+void inferenceWithSafeMemberOp() {
+    
+    [Integer*]? ints = [1,2,3];
+    ints?.reduce(plus<Integer>);
+    // Integer(Integer, Integer) is not assignable to Nothing(Integer, Integer)
+    
+    ints?.follow("a");
+    // String is not assignable to Nothing
+    
+    {[Integer*]*} intss = {[1,2,3], [0,-1]};
+    intss*.reduce(plus<Integer>);
+    // Integer(Integer, Integer) is not assignable to Nothing(Integer, Integer)
+    
+    intss*.follow("a");
+    // String is not assignable to Nothing
+    
 }

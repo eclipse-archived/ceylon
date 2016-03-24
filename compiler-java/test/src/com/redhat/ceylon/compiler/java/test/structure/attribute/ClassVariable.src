@@ -1,0 +1,67 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+abstract class ClassVariable implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassVariable() {
+        .java.lang.String uncapturedvar = null;
+        setPublicvar("");
+        uncapturedvar = "";
+        setCapturedvar$priv$("");
+    }
+    private .java.lang.String publicvar;
+    
+    public final .java.lang.String getPublicvar() {
+        return publicvar;
+    }
+    
+    public final void setPublicvar(final .java.lang.String publicvar) {
+        this.publicvar = publicvar;
+    }
+    private .java.lang.String capturedvar;
+    
+    private final .java.lang.String getCapturedvar$priv$() {
+        return capturedvar;
+    }
+    
+    private final void setCapturedvar$priv$(final .java.lang.String capturedvar) {
+        this.capturedvar = capturedvar;
+    }
+    
+    public abstract .java.lang.String getFormalvar();
+    
+    public abstract void setFormalvar(final .java.lang.String formalvar);
+    
+    private final void m$priv$() {
+        setCapturedvar$priv$("new value");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable.class);
+}
+class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassVariable {
+    
+    SubClassVariable() {
+        super();
+        this.formalvar = "";
+    }
+    private .java.lang.String formalvar;
+    
+    @.java.lang.Override
+    public final .java.lang.String getFormalvar() {
+        return formalvar;
+    }
+    
+    @.java.lang.Override
+    public final void setFormalvar(final .java.lang.String formalvar) {
+        this.formalvar = formalvar;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassVariable.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.SubClassVariable.class);
+}

@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.interop.bug4389.b;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class b_ {
+    
+    private b_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void b() {
+        final .com.redhat.ceylon.compiler.java.test.interop.bug4389.a.A a = new .com.redhat.ceylon.compiler.java.test.interop.bug4389.a.A();
+        loop_0: for (.java.lang.String s$iterator$$1 : a) {
+            final .java.lang.String s = (.java.lang.String)s$iterator$$1;
+        }
+        loop_1: for (.java.lang.String s$iterator$$3 : .com.redhat.ceylon.compiler.java.Util.checkNull(a.getIterable())) {
+            final .java.lang.String s = (.java.lang.String)s$iterator$$3;
+        }
+    }
+}

@@ -1,0 +1,1 @@
+This is just a simple resource test file, but with a longer text to distinguish it from the other README.txt

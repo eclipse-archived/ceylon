@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableReturnReturningInteger_foo_ {
+    
+    private callableReturnReturningInteger_foo_() {
+    }
+    
+    static long callableReturnReturningInteger_foo() {
+        return 1L;
+    }
+}
+final class callableReturnReturningInteger_bar_ {
+    
+    private callableReturnReturningInteger_bar_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .ceylon.language.Integer> callableReturnReturningInteger_bar() {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.callableReturnReturningInteger_foo_.callableReturnReturningInteger_foo());
+            }
+        };
+    }
+}

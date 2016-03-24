@@ -348,3 +348,167 @@ void superfluousValue() {
         e.printStackTrace();
     }
 }
+
+class TestGuards() {
+    
+    Integer a([Integer*] ints) {
+        if (is [] ints) {
+            return 0;
+        }
+        return ints.first;
+    }
+    
+    Integer b([Integer*] ints) {
+        if (!is [Integer+] ints) {
+            return 0;
+        }
+        return ints.first;
+    }
+    
+    
+    Integer c([Integer*] ints) {
+        if (!nonempty ints) {
+            return 0;
+        }
+        return ints.first;
+    }
+    
+    
+    Integer d(Integer? int) {
+        if (!exists int) {
+            return 0;
+        }
+        return int;
+    }
+    
+    Integer e(Integer? int) {
+        if (is Null int) {
+            return 0;
+        }
+        return int;
+    }    
+    
+    Integer f(Integer? int) {
+        if (!is Integer int) {
+            return 0;
+        }
+        return int;
+    }
+    
+    Integer g(Integer? int) {
+        if (!exists int) {
+            if (1==0) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        return int;
+    }
+    
+    Integer h(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                return 0;
+            }
+            case (false) {
+                return 1;
+            }
+        }
+        return int;
+    }
+    
+    Integer i(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        return int;
+    }
+    
+    Integer j(Integer? int) {
+        if (!exists int) {
+            for (i in 0:10) {
+                print(i);
+            }
+            else {
+                return 0;
+            }
+        }
+        return int;
+    }
+    
+    Integer g1(Integer? int) {
+        if (!exists int) {
+            if (1==0) {
+                //return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer g2(Integer? int) {
+        if (!exists int) {
+            if (1==0) {
+                return 0;
+            }
+            else {
+                //return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer h1(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                //return 0;
+            }
+            case (false) {
+                return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer i1(Integer? int) {
+        if (!exists int) {
+            switch (1==0) 
+            case (true) {
+                return 0;
+            }
+            else {
+                //return 1;
+            }
+        }
+        @error return int;
+    }
+    
+    Integer d1(Integer? int) {
+        if (!exists int) {
+            print("hello");
+        }
+        @error return int;
+    }
+    
+    Integer z([Integer*] ints) {
+        if (!nonempty ints) {
+            return 0;
+        }
+        else {
+            return ints.first;
+        }
+    }
+
+}

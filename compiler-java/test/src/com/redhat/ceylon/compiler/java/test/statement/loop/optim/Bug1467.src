@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1467() {
+        this.size = 1024L * 1024L / 4L;
+        this.buff = new int[.com.redhat.ceylon.compiler.java.Util.toInt(getSize$priv$())];
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final long size;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    private final long getSize$priv$() {
+        return size;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final int[] buff;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::IntArray")
+    private final int[] getBuff$priv$() {
+        return buff;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void bufferTest$priv$() {
+        final long start$0 = 0L;
+        final long length$1 = getSize$priv$() - 1L;
+        loop_0: for (long i$2 = 0; i$2 < length$1; i$2++) {
+            final long i = i$2 + start$0;
+            getBuff$priv$()[.com.redhat.ceylon.compiler.java.Util.toInt(i)] = .com.redhat.ceylon.compiler.java.Util.toInt(i);
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void buffer() {
+        final long startTime = .ceylon.language.system_.get_().getNanoseconds();
+        final long $ceylontmp$first$4 = 1L;
+        final long $ceylontmp$last$5 = 100L;
+        final boolean $ceylontmp$increasing$6 = .ceylon.language.Integer.offset($ceylontmp$last$5, $ceylontmp$first$4) >= 0;
+        final long $ceylontmp$incr$7 = $ceylontmp$increasing$6 ? 1L : -1L;
+        long i$10 = $ceylontmp$first$4;
+        long $ceylontmp$element$9 = $ceylontmp$first$4;
+        boolean $ceylontmp$f$8 = false;
+        loop_1: do {
+            if ($ceylontmp$f$8) $ceylontmp$element$9 += $ceylontmp$incr$7;
+            $ceylontmp$f$8 = true;
+            i$10 = $ceylontmp$element$9;
+            final long i = i$10;
+            $ceylontmp$continue$3: do {
+                bufferTest$priv$();
+            }             while (false);
+        }         while ($ceylontmp$increasing$6 ? i$10 - $ceylontmp$last$5 != 0L : i$10 - $ceylontmp$last$5 != 0L);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Duration: ").append((.ceylon.language.system_.get_().getNanoseconds() - startTime) / 100L).append("\n").toString()));
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1467_ {
+    
+    private bug1467_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug1467() {
+        final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467 b = new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467();
+        b.buffer();
+    }
+}

@@ -1,0 +1,50 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class FunctionInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    FunctionInSetter() {
+        
+        final class foo$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private foo$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> foo$getter$_ = new foo$getter$_();
+        
+        final class foo$setter$_ {
+            
+            private foo$setter$_() {
+            }
+            private .java.lang.String value;
+            
+            public void set_(final .java.lang.String foo) {
+                if (true) {
+                    final long i = 1L;
+                    
+                    final class bar_ {
+                        
+                        private bar_() {
+                        }
+                        
+                        .java.lang.String bar() {
+                            return .ceylon.language.Integer.toString(i);
+                        }
+                    }
+                    final bar_ bar = new bar_();
+                    bar.bar();
+                }
+            }
+        }
+        final foo$setter$_ foo$setter$_ = new foo$setter$_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.FunctionInSetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.FunctionInSetter.class);
+}

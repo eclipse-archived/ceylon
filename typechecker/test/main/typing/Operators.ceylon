@@ -163,9 +163,9 @@ class Operators() {
     @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.sequence();
     @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld*.lines;
     @type:"Null|String" value x51 = helloworld[1]?.normalized;
-    @type:"Null|Iterable<String,Null>" value x512 = helloworld[1]?.split((Character c) => c==' ');
+    @type:"Null|Iterable<String,Nothing>" value x512 = helloworld[1]?.split((Character c) => c==' ');
     @type:"Sequence<String>" value x52 = helloworld*.normalized;
-    @type:"Sequence<Iterable<String,Null>>" value x522 = helloworld*.split((Character c) => c==' ');
+    @type:"Sequence<Iterable<String,Nothing>>" value x522 = helloworld*.split((Character c) => c==' ');
     //@type:"Null|String" value x53 = noSequence?[0]?.normalized;
     //@type:"Null|Iterable<String,Null>" value x532 = noSequence?[0]?.split((Character c) => c==' ');
     @type:"Sequence<Operators.X>" value x54 = [Operators()]*.X();
@@ -173,7 +173,7 @@ class Operators() {
     {String*} onetwo = {"one", "two"};
     @type:"Sequential<String>" value x61 = onetwo*.uppercased;
     @type:"Sequential<Sequential<Character>>" value x62 = onetwo*.sequence();
-    @type:"Sequential<Iterable<String,Null>>" value x63 = onetwo*.split((Character c) => c==' ');
+    @type:"Sequential<Iterable<String,Nothing>>" value x63 = onetwo*.split((Character c) => c==' ');
     
     @type:"Sequential<Operators.X>" value s1 = sequence[1...];
     @type:"Sequential<Operators.X>" value s2 = sequence[...2];
@@ -254,6 +254,9 @@ class Operators() {
     Integer|Float defaultIon2(Null|Integer|Float x) {
         return x else 0;
     }
+    
+    @type:"Null|Integer"
+    value rangeElement = (-3..10)[5];
 
     Boolean b1 = true;
     Boolean b2 = false;
@@ -395,6 +398,11 @@ class Operators() {
     @type:"Boolean" value within2 = 0<="hello".size<10;
     @error @type:"Boolean" value within3 = 0<"hello".size<"oops";
     @error @type:"Boolean" value within3 = "oops"<="hello".size<=10;
+    
+    @error value iterFirst = Iterable<Integer>*.first;
+    
+    @error value arrayOfSize = Array?.ofSize(10, 0);
+
 }
 
 class Sc() satisfies Scalable<Float,Sc> {
@@ -409,4 +417,46 @@ void testScale() {
 
 class Cat() satisfies Category<String> {
     contains(String string) => !string.empty;
+}
+
+interface MySet<T> satisfies Set<T> given T satisfies Object {}
+void testSetOperators(variable MySet<String> myset, 
+    variable Set<Object> set, 
+    variable Set<Integer> yourset) {
+    @error myset &= myset;
+    @error myset ~= myset;
+    @error myset |= myset;
+    @error myset &= set;
+    @error myset ~= set;
+    @error myset |= set;
+    set &= myset;
+    set ~= myset;
+    set |= myset;
+    set &= set;
+    set ~= set;
+    set |= set;
+    set &= yourset;
+    set ~= yourset;
+    set |= yourset;
+    yourset &= set;
+    yourset ~= set;
+    @error yourset |= set;
+    
+    Integer int1 = (1..3)[0];
+    @error Integer int2 = (1..3)[1];
+    @error Integer int3 = (1..3)[-1];
+    [Integer+] ints1 = (1..3)[0...];
+    @error [Integer+] ints2 = (1..3)[1...];
+    [Integer+] ints3 = (1..3)[-1...];
+}
+
+void testOperatorsOnUnions() {
+    variable Integer|Float iof = 1.0;
+    @error iof += 1;
+    @error iof -= 1;
+    @error iof = iof+iof;
+    @error iof = iof-iof;
+    iof = -iof;
+    iof = +iof;
+
 }

@@ -9,6 +9,10 @@ class Lambdas() {
     repeat(10, (Integer n) => print("Hello"));
     repeat(10, (Integer n) => print("Hello"));
     repeat(10, (Integer n) => print("Hello"));
+    
+    "hello world".each((ch) { print(ch.letter.string); });
+    @error "hello world".each((ch) { if (ch.letter) { return null; } });
+    repeat(10, (n) { print("Hello"); });
 
     @error repeat(10, (Float n) => print("Hello"));
     
@@ -29,7 +33,7 @@ class Lambdas() {
     @error acceptLazyFloat(() { return 0; });
     @error acceptLazyFloat((String s) { return 0.0; });
     @error acceptLazyFloat(() {});
-    acceptLazyFloat(() { @error return; });
+    @error acceptLazyFloat(() { return; });
     @error acceptLazyFloat(() { if (1==1) { return 0.0; } });
 
     function foo(Float bar(Float x)(Integer y)) => bar(1.0)(0);
@@ -127,6 +131,23 @@ class Lambdas() {
     
     Float square(Float x) = (Float y) y**2;
     Float cube(Float x) = (Float y) return y**3;*/
+    
+    @type:"Integer()(Integer)" 
+    @error value fun1
+            = (first)() {
+        variable Integer first;
+        return first++;
+    };
+    @type:"Integer(Integer)()" 
+    value fun2
+            = ()(first) {
+        variable Integer first;
+        return first++;
+    };
+    
+    @type:"Anything()" value withVoid = void () { throw; };
+    @type:"Nothing()" value withFunction = function () { throw; };
+    @type:"Anything()" value withNone = () { throw; };
     
 }
 

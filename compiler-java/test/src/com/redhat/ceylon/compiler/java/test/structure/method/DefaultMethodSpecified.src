@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class DefaultMethodSpecified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    DefaultMethodSpecified() {
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecified.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecified.class);
+}
+class DefaultMethodSpecifiedSub extends .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecified {
+    
+    DefaultMethodSpecifiedSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecifiedSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.DefaultMethodSpecifiedSub.class);
+}

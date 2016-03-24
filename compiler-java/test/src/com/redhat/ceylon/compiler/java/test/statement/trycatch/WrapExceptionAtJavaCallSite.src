@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class ReplaceExceptionAtJavaCallSite implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ReplaceExceptionAtJavaCallSite() {
+    }
+    
+    private final void m$priv$() {
+        final .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
+        final boolean n = jt.throwException();
+        final boolean m = jt.throwThrowable();
+        final boolean x = jt.throwRuntimeException();
+        final boolean y = jt.throwError();
+        final boolean z = jt.throwsMultiple();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ReplaceExceptionAtJavaCallSite.class);
+}

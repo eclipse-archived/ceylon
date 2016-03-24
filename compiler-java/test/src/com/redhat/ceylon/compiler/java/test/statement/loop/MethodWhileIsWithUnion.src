@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWhileIsUnion() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        loop_0: while (true) {
+            if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x).common();
+            } else {
+                break loop_0;
+            }
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        loop_1: while (true) {
+            .java.lang.Object x$1;
+            if ((x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Foo || x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.loop.Bar) {
+                final .java.lang.Object x$2 = x$1;
+                ((.com.redhat.ceylon.compiler.java.test.statement.loop.Common)x$2).common();
+            } else {
+                break loop_1;
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsUnion.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsUnion.class);
+}

@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+interface Bug1288_Foo<T> {
+    
+    public abstract T foo(final .java.lang.Object t);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1288(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element")
+    private final Element plus$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element")
+    final Element x, @.com.redhat.ceylon.compiler.java.metadata.Name("inc")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long inc) {
+        if (x instanceof .ceylon.language.Integer) {
+            final long result = ((.ceylon.language.Integer)x).longValue() + inc;
+            final .java.lang.Object result$4;
+            .java.lang.Object result$3 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$3 = .ceylon.language.Integer.instance(result), $reified$Element)) {
+                result$4 = result$3;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            }
+            return (Element)result$4;
+        }
+        final Element x$5 = (Element)x;
+        .java.lang.Object x$7;
+        if ((x$7 = x$5) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo && .com.redhat.ceylon.compiler.java.Util.isReified(x$7, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .java.lang.Object x$8 = x$7;
+            final long result = ((.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo)x$8).foo(.ceylon.language.Boolean.instance(true)).longValue();
+            final .java.lang.Object result$11;
+            .java.lang.Object result$10 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$10 = .ceylon.language.Integer.instance(result), $reified$Element)) {
+                result$11 = result$10;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
+            }
+            return (Element)result$11;
+        }
+        final Element x$12 = (Element)x$5;
+        return (Element).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288.class, $reified$Element);
+    }
+}

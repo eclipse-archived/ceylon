@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+class SwitchNarrowedElse implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SwitchNarrowedElse() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        {
+            .java.lang.Object sel$0 = x;
+            if (sel$0 instanceof .com.redhat.ceylon.compiler.java.test.statement.swtch.Foo) {
+                final .com.redhat.ceylon.compiler.java.test.statement.swtch.Foo x$2 = (.com.redhat.ceylon.compiler.java.test.statement.swtch.Foo)sel$0;
+            } else {
+                final .com.redhat.ceylon.compiler.java.test.statement.swtch.Bar x$1 = (.com.redhat.ceylon.compiler.java.test.statement.swtch.Bar)sel$0;
+                x$1.bar();
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchNarrowedElse.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchNarrowedElse.class);
+}

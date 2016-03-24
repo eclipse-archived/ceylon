@@ -1,0 +1,132 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+public final class run_ {
+    
+    private run_() {
+    }
+    
+    public static void run() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog log = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.LogMsg logmsg = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog arg$0$callable$ = log;
+                .java.lang.String arg$0$2 = "17";
+                .java.lang.String arg$0$0 = arg$0$callable$.$default$LogMsg$text();
+                long arg$0$1 = arg$0$callable$.$default$LogMsg$severity(arg$0$0);
+            }
+            returning arg$0$callable$.LogMsg$new$(arg$0$0, arg$0$1, arg$0$2);
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug20xx.run_.run();
+    }
+}
+public class SQLog implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public SQLog() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.LogMsg LogMsg$new$(.java.lang.String text, long severity, .java.lang.String error) {
+        return new LogMsg(text, severity, error);
+    }
+    
+    public final .java.lang.String $default$LogMsg$text() {
+        return "";
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.LogMsg LogMsg$new$() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$text$1 = $default$LogMsg$text();
+                long $ceylontmp$severity$2 = $default$LogMsg$severity($ceylontmp$text$1);
+                .java.lang.String $ceylontmp$error$3 = $default$LogMsg$error($ceylontmp$text$1, $ceylontmp$severity$2);
+            }
+            returning new LogMsg($ceylontmp$text$1, $ceylontmp$severity$2, $ceylontmp$error$3);
+        );
+    }
+    
+    public final long $default$LogMsg$severity(.java.lang.String text) {
+        return 0L;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.LogMsg LogMsg$new$(.java.lang.String text) {
+        return (
+            let
+            {
+                long $ceylontmp$severity$4 = $default$LogMsg$severity(text);
+                .java.lang.String $ceylontmp$error$5 = $default$LogMsg$error(text, $ceylontmp$severity$4);
+            }
+            returning new LogMsg(text, $ceylontmp$severity$4, $ceylontmp$error$5);
+        );
+    }
+    
+    public final .java.lang.String $default$LogMsg$error(.java.lang.String text, long severity) {
+        return "";
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.LogMsg LogMsg$new$(.java.lang.String text, long severity) {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$error$6 = $default$LogMsg$error(text, severity);
+            }
+            returning new LogMsg(text, severity, $ceylontmp$error$6);
+        );
+    }
+    
+    public class LogMsg implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected LogMsg(.java.lang.String text, long severity, .java.lang.String error) {
+            this.text = text;
+            this.severity = severity;
+            this.error = error;
+        }
+        private .java.lang.String text;
+        
+        public final .java.lang.String getText() {
+            return text;
+        }
+        
+        public final void setText(final .java.lang.String text) {
+            this.text = text;
+        }
+        private long severity;
+        
+        public final long getSeverity() {
+            return severity;
+        }
+        
+        public final void setSeverity(final long severity) {
+            this.severity = severity;
+        }
+        private .java.lang.String error;
+        
+        public final .java.lang.String getError() {
+            return error;
+        }
+        
+        public final void setError(final .java.lang.String error) {
+            this.error = error;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.LogMsg.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog.class);
+}

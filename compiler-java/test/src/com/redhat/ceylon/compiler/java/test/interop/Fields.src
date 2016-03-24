@@ -1,0 +1,103 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class fields_ {
+    
+    private fields_() {
+    }
+    
+    static void fields() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaFields java = new .com.redhat.ceylon.compiler.java.test.interop.JavaFields();
+        long sync = 0L;
+        sync = java.readOnlyField;
+        sync = java.readWriteField;
+        java.readWriteField = 2L;
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$0 = java;
+                long $ceylontmp$opV$1 = $ceylontmp$opE$0.readWriteField;
+                $ceylontmp$opE$0.readWriteField = $ceylontmp$opV$1 + 1;
+            }
+            returning $ceylontmp$opV$1;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$2 = java;
+                long $ceylontmp$opV$3 = $ceylontmp$opE$2.readWriteField + 1;
+                $ceylontmp$opE$2.readWriteField = $ceylontmp$opV$3;
+            }
+            returning $ceylontmp$opV$3;
+        );
+        java.readWriteField = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$4 = java;
+                long $ceylontmp$opV$5 = java.readWriteField;
+                $ceylontmp$opE$4.readWriteField = $ceylontmp$opV$5;
+            }
+            returning $ceylontmp$opV$5;
+        );
+        java.readWriteField = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.interop.JavaFields $ceylontmp$opE$6 = java;
+                long $ceylontmp$opV$7 = $ceylontmp$opE$6.readWriteField + java.readWriteField;
+                $ceylontmp$opE$6.readWriteField = $ceylontmp$opV$7;
+            }
+            returning $ceylontmp$opV$7;
+        );
+        sync = java.fieldWithNoGetter;
+        java.setFieldWithNoGetter(2L);
+    }
+}
+class CeylonFields extends .com.redhat.ceylon.compiler.java.test.interop.JavaFields implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    CeylonFields() {
+        super();
+    }
+    
+    private final void f$priv$() {
+        final long i1 = readOnlyField;
+        final long i2 = readWriteField;
+        readWriteField = 2L;
+        (
+            let
+            {
+                long $ceylontmp$op$8 = readWriteField;
+                readWriteField = $ceylontmp$op$8 + 1;
+            }
+            returning $ceylontmp$op$8;
+        );
+        (
+            let
+            {
+                long $ceylontmp$op$9 = readWriteField + 1;
+                readWriteField = $ceylontmp$op$9;
+            }
+            returning $ceylontmp$op$9;
+        );
+        readWriteField = (
+            let
+            {
+                long $ceylontmp$op$10 = readWriteField;
+                readWriteField = $ceylontmp$op$10;
+            }
+            returning $ceylontmp$op$10;
+        );
+        readWriteField = (
+            let
+            {
+                long $ceylontmp$op$11 = readWriteField + readWriteField;
+                readWriteField = $ceylontmp$op$11;
+            }
+            returning $ceylontmp$op$11;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.CeylonFields.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.CeylonFields.class);
+}

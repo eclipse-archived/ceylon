@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+interface Bug1928<T, A extends .ceylon.language.Sequential<? extends .java.lang.Object>> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1928$impl<? extends T, ? super A> $com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1928$impl();
+    
+    public abstract T a();
+}
+final class Bug1928$impl<T, A extends .ceylon.language.Sequential<? extends .java.lang.Object>> implements .java.io.Serializable {
+    
+    Bug1928$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1928<? extends T, ? super A> $this) {
+        this.$reified$T = $reified$T;
+        this.$reified$A = $reified$A;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1928<? extends T, ? super A> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A) {
+        this.$reified$A = $reified$A;
+        this.$reified$T = $reified$T;
+    }
+    
+    private void m$priv$(final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1928 x) {
+        final long i = ((.ceylon.language.String)x.a()).getSize();
+    }
+}

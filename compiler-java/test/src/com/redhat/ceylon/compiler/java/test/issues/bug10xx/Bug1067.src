@@ -1,0 +1,52 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+class Bug1067 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$g$0 = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$default$g(f);
+                this(f, $ceylontmp$g$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1067() {
+        super();
+        this.f = null;
+        this.g = null;
+    }
+    
+    Bug1067(final .ceylon.language.Callable<? extends .java.lang.Object> f, final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        this.f = f;
+        this.g = g;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
+    
+    public final void f() {
+        f.$call$();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> g;
+    
+    public final void g() {
+        g.$call$();
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> $default$g(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return null;
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1067.class);
+}

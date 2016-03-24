@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class ceylonKeywords_ {
+    
+    private ceylonKeywords_() {
+    }
+    
+    static void ceylonKeywords() {
+        final .com.redhat.ceylon.compiler.java.test.interop.satisfies klass = new .com.redhat.ceylon.compiler.java.test.interop.satisfies();
+        final long i = klass.satisfies;
+        klass.of();
+    }
+}

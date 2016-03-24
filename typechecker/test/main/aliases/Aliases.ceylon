@@ -60,6 +60,8 @@ class Aliases() {
     interface Seq<T> => T[];
     interface It<T> => {T*};
     interface Fun<T> => T(Object);
+    
+    class Cla(String str) => package.Class<String>(str);
 }
 
 interface Li0<U,V> => List<U>;
@@ -117,6 +119,9 @@ void testOpAliases() {
     //Integer sign = ornum.sign;
     String onstr = ornum.string;
     Or<Float,Integer> ornum2 = ornum;
+    
+    Or<String,List<String>> orstr = "";
+    Integer len  = orstr.size;
 }
 
 abstract class S(String s) => String(s);
@@ -281,3 +286,53 @@ class Case() extends EnumAlias() {}
 @error object dupe extends Duped1() {}
 @error abstract class Duped2() of Dupe|Dupe {}
 @error class Dupe() extends Duped2() {}
+
+@error alias RCA => RCA();
+@error interface RCI => RCI(RCI);
+
+interface Bug824_X {
+    shared String name { return "Gavin"; }
+}
+interface Bug824_Y => Bug824_X;
+interface Bug824_Z => Bug824_Y;
+class Bug824_W() satisfies Bug824_Y {}
+class Bug824_W2() satisfies Bug824_Z {}
+class Invariant<T>(shared T t) {}
+Invariant<Bug824_Z>&Invariant<Bug824_X> inv = Invariant<Bug824_X>(Bug824_W2());
+String name = inv.t.name;
+
+class WithSharedAliasOfTypeParameter<T>() {
+    shared alias AliasOfTypeParameter => T;
+}
+class WithInheritedSharedAliasOfTypeParameter() 
+        extends WithSharedAliasOfTypeParameter<String>() {}
+class WithInheritedSharedAliasOfTupleTypeParameter() 
+        extends WithSharedAliasOfTypeParameter<[String,Integer]>() {}
+void testSharedAliasOfTypeParameter() {
+    WithSharedAliasOfTypeParameter<String>.AliasOfTypeParameter y1 = "";
+    WithInheritedSharedAliasOfTypeParameter.AliasOfTypeParameter y2 = "";
+    WithInheritedSharedAliasOfTupleTypeParameter.AliasOfTypeParameter y3 = ["",1];
+    value [s,i] = y3;
+}
+
+
+class OuterX {
+    shared new create() {}
+    shared class In0() {}
+    shared class In1() {}
+    shared class In2 {
+        shared new create() {}
+    }
+}
+
+class OuterY extends OuterX {
+    shared new create() extends super.create() {}
+    class I0() => In0();
+    class I1() => super.In1();
+    class I2() => In2.create();
+    class X0() => super.create();
+    class X1() => OuterX.create();
+    class X2() => package.OuterX.create();
+    class Y0() => create();
+    class Y1() => package.OuterY.create();
+}

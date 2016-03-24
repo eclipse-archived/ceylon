@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class CallablePositionalInvocationQualified implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CallablePositionalInvocationQualified() {
+        super();
+        this.f = null;
+    }
+    
+    CallablePositionalInvocationQualified(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        this.f = f;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
+    
+    private final void f$priv$() {
+        f.$call$();
+    }
+    
+    private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallablePositionalInvocationQualified c) {
+        c.f$priv$();
+        this.f$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallablePositionalInvocationQualified.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallablePositionalInvocationQualified.class);
+}

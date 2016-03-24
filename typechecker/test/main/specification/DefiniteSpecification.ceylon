@@ -484,7 +484,7 @@ interface DefiniteSpecification {
         catch (Exception e) {
             @error x = X();
         }
-        @error use(x);
+        use(x);
     }
 
     void tryCatch2() {
@@ -518,7 +518,7 @@ interface DefiniteSpecification {
         catch (Exception e) {
             @error x = X();
         }
-        @error use(x);
+        use(x);
     }
 
     void tryCatchCatch2() {
@@ -588,7 +588,7 @@ interface DefiniteSpecification {
         finally {
             @error x = X();
         }
-        @error use(x);
+        use(x);
     }
     
     void switchCase0() {
@@ -712,4 +712,271 @@ class Trompon() {
     string=>name;
     shared String getName();
     this.getName() => name.uppercased;
+}
+
+
+abstract class AssignToFormalDefault() {
+    shared formal variable String name0;
+    shared default variable String name1 = "";
+    shared default String name2 => "";
+    assign name2 {}
+    @error name0 = "foo";
+    @error name1 = "foo";
+    @error name2 = "foo";
+}
+
+class C2() {
+    shared default String name => "";
+    assign name {}
+    @error name = "foo";
+}
+
+void initInLoop() {
+    variable String[] data1 = [];
+    for (i in 0..10) {
+        data1 = data1.append([]);
+    }
+    variable String[] data2;
+    for (i in 0..10) {
+        @error data2 = data2.append([]);
+    }
+}
+
+Boolean cond => true;
+
+shared void run3() {
+    String s;
+    if (cond) {
+        s = "a";
+    } else if (cond) {
+    } else {
+        throw AssertionError("");
+    }
+    @error print(s);
+}
+
+shared void run4() {
+    String s;
+    while (true) {
+        if (cond) {
+            return;
+        }
+        else {
+            if (cond) {
+                s = "hello";
+                break;
+            }
+        }
+    }
+    print(s);
+}
+
+shared void run5() {
+    String s;
+    for (x in 0:10) {
+        if (cond) {
+            return;
+        }
+        else {
+            if (cond) {
+                s = "hello";
+                break;
+            }
+        }
+    }
+    else {
+        s = "";
+    }
+    print(s);
+}
+
+
+shared void run10() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            @error x = i*10 + j;
+            print(x);
+            break;
+        }
+    } 
+}
+
+shared void run11() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            x = i*10 + j;
+            print(x);
+            return;
+        }
+    } 
+}
+
+void run12() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                @error x = i*10 + j;
+                break;
+            }
+        }
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+void run13() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                x = i*10 + j;
+                break;
+            }
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    @error print(x);
+}
+
+//SEE #5948
+void run14() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                x = i*10 + j;
+                break;
+            }
+        } else {
+            continue;
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+void run15() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                x = i*10 + j;
+                break;
+            }
+        } else {
+            //noop
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    @error print(x);
+}
+
+shared void run20() {
+    Integer x;
+    for (j in 0:3) {
+        x = 10 + j;
+        print(x);
+        //if (1==1) {
+        break;
+        //}
+        //else {
+        //    return;
+        //}
+    }
+    else {
+        x = 0;
+    }
+    print(x);
+}
+
+shared void run21() {
+    Integer x;
+    for (i in 0:3) {
+        for (k in 0:3) {
+            for (j in 0:3) {
+                if (true || false) {
+                    x = i*10 + j;
+                    break;
+                }
+            } else {
+                continue;
+            }
+            break;
+        }
+        else {
+            continue;
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+shared void run22() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                x = i*10 + j;
+                break;
+            }
+        } else {
+            continue;
+        }
+        break;
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+shared void run23() {
+    Integer x;
+    for (i in 0:3) {
+        for (j in 0:3) {
+            if (true || false) {
+                @error x = i*10 + j;
+                break;
+            }
+        } else {
+            continue;
+        }
+    } else {
+        x = -1;
+    }
+    print(x);
+}
+
+shared void run24() {
+    Integer x;
+    for (i in 0:3) {
+        for (k in 0:3) {
+            for (j in 0:3) {
+                if (true || false) {
+                    @error x = i*10 + j;
+                    break;
+                }
+            } else {
+                continue;
+            }
+            break;
+        }
+        else {
+            continue;
+        }
+    } else {
+        x = -1;
+    }
+    print(x);
 }

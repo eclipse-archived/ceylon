@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+class OuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    OuterClass() {
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass InnerClass$new$() {
+        return new InnerClass();
+    }
+    
+    public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected InnerClass() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.class);
+}
+final class m_ {
+    
+    private m_() {
+    }
+    
+    static void m() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass o = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass i = o.InnerClass$new$();
+    }
+}

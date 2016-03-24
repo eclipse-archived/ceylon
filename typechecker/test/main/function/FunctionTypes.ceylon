@@ -203,15 +203,17 @@ void method() {
     function str(Float f) => f.string;
     function zero() => 0.0;
     @type:"Entry<Float,String>" generic(str,zero);
-    @type:"Entry<Float,String>" generic(str,nothing);
-    @type:"Entry<Object,Object>" generic((Object obj) => obj, () => "hello");
-    @type:"Entry<Object,String>" generic((Object obj) => obj.string, () => "hello");
+    @type:"Entry<Nothing,String>" generic(str,nothing);
+    @type:"Entry<String,Object>" generic((Object obj) => obj, () => "hello");
+    @type:"Entry<String,String>" generic((Object obj) => obj.string, () => "hello");
     @type:"Entry<String,String>" generic((String str) => str, () => "hello");
     
     function fx(String g()) => do<String>;
-    @error function fy(String g()) => do;
+    @type:"<T> => Callable<T,Tuple<Callable<T,Empty>,Callable<T,Empty>,Empty>>" 
+    function fy(String g()) => do;
     value fw = do<String>;
-    @error value fz = do;
+    @type:"<T> => Callable<T,Tuple<Callable<T,Empty>,Callable<T,Empty>,Empty>>" 
+    value fz = do;
 
     function sqrt(Float x) => x^0.5;
     value temp = sqrt;
@@ -386,8 +388,12 @@ T indirectInvocationWhichIsNotReallyIndirect<T>(T t){
     indirectInvocationWhichIsNotReallyIndirect(2);
     @type:"Integer"
     (indirectInvocationWhichIsNotReallyIndirect)(2);
-    @type:"Integer"
+    @error
     (indirectInvocationWhichIsNotReallyIndirect){ t = 2; };
+    
+    @error value a = ("hello ".plus) { "world"; };   
+    @error value b = (("hello ".plus)) { "world"; }; 
+
     return t;
 }
 
@@ -397,4 +403,65 @@ void abbreviations<T>() given T satisfies Anything[] {
     @type:"Callable<String,Tuple<String,String,Empty>>" String(String) f3;
     @error String(*String) f4;
     @type:"Callable<String,Tuple<String,String,Empty>>" String(*[String]) f5;
+}
+
+void inferenceIssue() {
+    class X<out Y>(shared Y y) {}
+    
+    X<To> transform<From, To>
+            (X<From> x, To(From) convert)
+            => X(convert(x.y));
+    
+    X<String> x1 = X("10");
+    X<Integer?> x2 = transform(x1, parseInteger);
+}
+
+void inferenceIssue2() {
+    class X<out Y>(shared Y y) {}
+    
+    X<To> transform<From, To>
+            (To(From) convert)(X<From> x)
+            => X(convert(x.y));
+    
+    X<String> x1 = X("10");
+    X<Integer?> x3 = transform(parseInteger)(x1);
+}
+
+shared class TreeSet<Element>(compare, elements={})
+        given Element satisfies Object {
+    
+    "A comparator function used to sort the elements."
+    Comparison compare(Element x, Element y);
+    
+    "The initial elements of the set."
+    {Element*} elements;
+}
+
+shared class ArrayList<Element>
+        (initialCapacity = 0, growthFactor=1.5,
+         elements = {}) {
+    
+    "The initial size of the backing array."
+    Integer initialCapacity;
+    
+    "The factor used to determine the new size of the
+     backing array when a new backing array is allocated."
+    Float growthFactor;
+    
+    "The initial elements of the list."
+    {Element*} elements;
+    
+}
+
+void treesetsAndArraylists() {
+    function compare(String x, String y) => x<=>y;
+    @type:"TreeSet<String>" TreeSet((String x, String y)=>x<=>y);
+    @type:"TreeSet<String>" TreeSet(compare);
+    @type:"TreeSet<String>" TreeSet { compare; "foo", "bar" };
+    @type:"TreeSet<Integer|Float>" TreeSet { 
+        (Float|Integer x, Float|Integer y) => larger; 
+        1, 1.0 
+    };
+    @type:"ArrayList<String>" ArrayList { "", "hello" };
+    @type:"ArrayList<Float|Integer>" ArrayList { 1.0, 1 };
 }

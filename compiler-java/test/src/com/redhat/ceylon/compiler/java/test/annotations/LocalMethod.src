@@ -1,0 +1,55 @@
+package com.redhat.ceylon.compiler.java.test.annotations;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+public class LocalMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public LocalMethod() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void m$priv$() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class m2_ {
+            
+            private m2_() {
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            void m2(final long i1) {
+                (
+                    let
+                    {
+                        .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        m2(i1, $ceylontmp$s$0);
+                    }
+                    returning null;
+                );
+            }
+            
+            void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
+            final long i1, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+            @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+            final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
+            }
+        }
+        final m2_ m2 = new m2_();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.annotations.LocalMethod();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.LocalMethod.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.LocalMethod.class);
+}

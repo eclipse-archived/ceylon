@@ -1,0 +1,105 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public NamedArgumentInvocationLocal() {
+    }
+    
+    public final void f() {
+        
+        final class m_ {
+            
+            private m_() {
+            }
+            
+            long m(final long n, final .java.lang.String s) {
+                return n;
+            }
+        }
+        final m_ m = new m_();
+        
+        final class v_ {
+            
+            private v_() {
+            }
+            
+            void v(final long n, final .java.lang.String s) {
+            }
+        }
+        final v_ v = new v_();
+        (
+            let
+            {
+                .java.lang.String arg$0$1 = "abc";
+                long arg$0$0 = 123L;
+                v.v(arg$0$0, arg$0$1);
+            }
+            returning null;
+        );
+        final long x = (
+            let
+            {
+                .java.lang.String arg$1$1 = "abc";
+                long arg$1$0 = 123L;
+            }
+            returning m.m(arg$1$0, arg$1$1);
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationLocal.class);
+}
+class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    X() {
+    }
+    
+    private final void foo$priv$(final .java.lang.String s, final boolean b) {
+    }
+    
+    private final void bar$priv$() {
+        
+        final class foo_ {
+            
+            private foo_() {
+            }
+            
+            void foo(final .java.lang.String s, final boolean b) {
+            }
+        }
+        final foo_ foo = new foo_();
+        (
+            let
+            {
+                boolean arg$2$1 = true;
+                .java.lang.String arg$2$0 = "a";
+                foo.foo(arg$2$0, arg$2$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.X arg$3$callable$ = this;
+                boolean arg$3$1 = true;
+                .java.lang.String arg$3$0 = "a";
+                arg$3$callable$.foo$priv$(arg$3$0, arg$3$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.X.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.X.class);
+}

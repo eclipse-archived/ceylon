@@ -1,0 +1,2 @@
+class Syntax() {
+// missing }

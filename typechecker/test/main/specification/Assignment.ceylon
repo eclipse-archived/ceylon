@@ -3,6 +3,11 @@ void testAssignmentInExpression() {
     value x = true -> (b=true);
     print(b);
 }
+void testAssignmentInLazyExpression() {
+    variable Boolean b;
+    value x => true -> (b=true);
+    @error print(b);
+}
 void testOkAssignmentInExpression() {
     variable Boolean b;
     value x = (b=true) || false;
@@ -48,10 +53,11 @@ void testAssignmentInIf1() {
     @error print(b);
 }
 void testAssignmentInIf2() {
-	interface I {}
+    interface I {}
+    class J(Boolean b) {}
     variable Boolean b;
-    @error if (is I i = (b=true)) {}
-    print(b);
+    if (is I i = J(b=true)) {}
+    @error print(b); //not really necessary in this special case!
 }
 void testAssignmentInIf3() {
 	interface I {}
@@ -59,6 +65,18 @@ void testAssignmentInIf3() {
     variable Object o="hello";
     if (is String s = (o=hello)) {}
     print(o);
+}
+void testAssignmentInIf4() {
+    variable Boolean b;
+    if (1==1, true||(b=true)) {}
+    @error print(b);
+}
+void testAssignmentInIf5() {
+    interface I {}
+    class J(Boolean b) {}
+    variable Boolean b;
+    if (1==1, is I i = J(b=true)) {}
+    @error print(b);
 }
 
 void testAssignmentInWhile() {
@@ -73,9 +91,10 @@ void testAssignmentInWhile1() {
 }
 void testAssignmentInWhile2() {
 	interface I {}
+	class J(Boolean b) {}
     variable Boolean b;
-    @error while (is I i = (b=true)) {}
-    print(b);
+    while (is I i = J(b=true)) {}
+    @error print(b); //not really necessary in this special case!
 }
 void testAssignmentInWhile3() {
 	interface I {}
@@ -110,3 +129,34 @@ void withLocalCircular() {
 @error Integer circular = circular;
 @error Integer recursize => recursize;
 
+void testAssignmentInIfExpression(Boolean flag) {
+    variable String name;
+    value result = if (flag) then (name="A") else (name="B");
+    @error print(name); //unnecessary error!
+}
+void testBrokenAssignmentInIfExpression1(Boolean flag) {
+    variable String name;
+    value result = if (flag) then (name="A") else "B";
+    @error print(name);
+}
+void testBrokenAssignmentInIfExpression2(Boolean flag) {
+    variable String name;
+    value result = if (flag) then "A" else (name="B");
+    @error print(name);
+}
+
+void testAssignmentInSwitchExpression(Boolean flag) {
+    variable String name;
+    value result = switch (flag) case (true) (name="A") else (name="B");
+    @error print(name); //unnecessary error!
+}
+void testBrokenAssignmentInSwitchExpression1(Boolean flag) {
+    variable String name;
+    value result = switch (flag) case (true) (name="A") else "B";
+    @error print(name);
+}
+void testBrokenAssignmentInSwitchExpression2(Boolean flag) {
+    variable String name;
+    value result = switch (flag) case (true) "A" else (name="B");
+    @error print(name);
+}

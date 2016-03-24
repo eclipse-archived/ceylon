@@ -1,0 +1,25 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class GetString implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    GetString() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaGetString jgs = new .com.redhat.ceylon.compiler.java.test.interop.JavaGetString();
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(jgs.toString());
+        s = .com.redhat.ceylon.compiler.java.Util.checkNull(jgs.getString());
+        boolean b = jgs.isString();
+        jgs.setString("");
+        long h = jgs.hashCode();
+        h = jgs.getHash();
+        b = jgs.isHash();
+        jgs.setHash(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.GetString.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.GetString.class);
+}

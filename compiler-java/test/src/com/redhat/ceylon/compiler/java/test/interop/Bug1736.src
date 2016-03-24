@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+public final class bug1736_ {
+    
+    private bug1736_() {
+    }
+    
+    public static void bug1736() {
+        final .java.lang.String[] array$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.strings());
+        loop_0: for (int i$2 = 0; i$2 < array$0.length; i$2++) {
+            final .java.lang.String s = array$0[i$2];
+            .ceylon.language.print_.print(s);
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.bug1736_.bug1736();
+    }
+}

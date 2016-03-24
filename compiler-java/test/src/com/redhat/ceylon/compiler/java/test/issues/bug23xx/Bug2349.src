@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+class Bug2349C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug2349C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    
+    Bug2349C(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2349C.class, $reified$T);
+    }
+}
+final class bug2349_ {
+    
+    private bug2349_() {
+    }
+    
+    static void bug2349() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2349C<.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> c = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$);
+                .ceylon.language.Iterable arg$0$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2349C<.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(arg$0$reified$0, arg$0$0);
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$);
+                .ceylon.language.Iterable arg$1$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+            }
+            returning .ceylon.language.identity_.<.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>identity(arg$1$reified$0, arg$1$0);
+        );
+    }
+}

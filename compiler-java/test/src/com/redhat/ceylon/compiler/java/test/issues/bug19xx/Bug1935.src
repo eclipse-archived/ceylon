@@ -1,0 +1,227 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+interface One1935<Item> {
+}
+class OneClass1935<Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<Item>, .java.io.Serializable {
+    
+    protected OneClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Item = $reified$Item;
+    }
+    
+    OneClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t) {
+        this.$reified$Item = $reified$Item;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.OneClass1935.class, $reified$Item);
+    }
+}
+final class one1935_ {
+    
+    private one1935_() {
+    }
+    
+    static <Item>.com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> one1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.OneClass1935<Item>($reified$Item, t);
+    }
+}
+interface Two1935<Key, Item> {
+}
+class TwoClass1935<Key, Item> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<Key, Item>, .java.io.Serializable {
+    
+    protected TwoClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
+    
+    TwoClass1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.TwoClass1935.class, $reified$Key, $reified$Item);
+    }
+}
+final class two1935_ {
+    
+    private two1935_() {
+    }
+    
+    static <Key, Item>.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> two1935(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.TwoClass1935<Key, Item>($reified$Key, $reified$Item, t);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Item",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "X",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Y",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+interface Parameter1935<Key, Item, X, Y> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object oneObject(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug19xx::One1935<Item&ceylon.language::Object>")
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object oneXy(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.issues.bug19xx::One1935<X&Y>",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935 t);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object twoObject(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,Item&ceylon.language::Object>")
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object twoXy(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,X&Y>",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935 t);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug19xx::Parameter1935<Key,Item,X,Y>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Item",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "X",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"Y"},
+                caseTypes = {}),
+        @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Y",
+                variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+class ParameterSub1935<Key, Item, X extends Y, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Parameter1935<Key, Item, X, Y>, .java.io.Serializable {
+    
+    ParameterSub1935(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object oneObject(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug19xx::One1935<Item>")
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object oneXy(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.issues.bug19xx::One1935<X>",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.One1935 t) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object twoObject(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,Item>")
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object twoXy(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,X>",
+            erased = true)
+    final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Two1935 t) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.ParameterSub1935.class, $reified$Key, $reified$Item, $reified$X, $reified$Y);
+    }
+}

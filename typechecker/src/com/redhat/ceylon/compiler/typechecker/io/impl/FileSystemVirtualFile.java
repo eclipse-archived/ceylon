@@ -26,6 +26,11 @@ public class FileSystemVirtualFile implements VirtualFile {
     }
 
     @Override
+    public boolean exists() {
+        return file.exists() && file.canRead();
+    }
+
+    @Override
     public boolean isFolder() {
         return file.isDirectory();
     }
@@ -84,6 +89,11 @@ public class FileSystemVirtualFile implements VirtualFile {
         else {
             return super.equals(obj);
         }
+    }
+
+    @Override
+    public int compareTo(VirtualFile o) {
+        return getPath().compareTo(o.getPath());
     }
 
     @Override

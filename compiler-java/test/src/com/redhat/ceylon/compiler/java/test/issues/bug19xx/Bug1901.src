@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1901_ {
+    
+    private bug1901_() {
+    }
+    
+    static void bug1901() {
+        .ceylon.language.print_.print(.ceylon.language.identity_.<.ceylon.language.Integer>identity(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(42L)));
+    }
+}

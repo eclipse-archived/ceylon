@@ -1,0 +1,251 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+@.ceylon.language.SharedAnnotation$annotation$
+public interface Bug2361A<Other extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A<Other>> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract .java.lang.Object bar(final Other other);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract <Indirect extends Other>.java.lang.Object gee(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Indirect, final Indirect other);
+}
+interface Bug2361 {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361.class);
+}
+@.ceylon.language.SharedAnnotation$annotation$
+public interface Bug2361B<Other extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361 & .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B<Other>> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    public abstract .java.lang.Object bar(final Other other);
+}
+public final class bug2361_ {
+    
+    private bug2361_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2361() {
+        .java.lang.Object r = null;
+        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A foo = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A).ceylon.language.nothing_.get_();
+        r = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)foo;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), "Anything(Nothing)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                    return $instance$.bar($ceylontmp$other);
+                }
+            };
+        );
+        r = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)foo;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), "Anything(Nothing)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                    return $instance$.<.java.lang.Object>gee(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmp$other);
+                }
+            };
+        );
+        r = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A<.java.lang.Object> $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A<.java.lang.Object>).ceylon.language.nothing_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(Nothing[2])", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)(.ceylon.language.Sequence<? extends .java.lang.Object>)$param$0;
+                    return $instance$.bar($ceylontmp$other);
+                }
+            };
+        );
+        r = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A).ceylon.language.nothing_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "Anything(String|Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                    return $instance$.bar($ceylontmp$other);
+                }
+            };
+        );
+        r = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B).ceylon.language.nothing_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), "Anything(Nothing)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361 $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361)$param$0;
+                    return $instance$.bar($ceylontmp$other);
+                }
+            };
+        );
+        r = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B<.java.lang.Object> $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B<.java.lang.Object>).ceylon.language.nothing_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(Nothing[2])", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361 $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361)(.ceylon.language.Sequence<? extends .java.lang.Object>)$param$0;
+                    return $instance$.bar($ceylontmp$other);
+                }
+            };
+        );
+        r = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B).ceylon.language.nothing_.get_();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "Anything(String|Integer)", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361 $ceylontmp$other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361)$param$0;
+                    return $instance$.bar($ceylontmp$other);
+                }
+            };
+        );
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))), "Anything(Nothing[2])(Bug2361B<Nothing[2]>)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B<.java.lang.Object> $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(Nothing[2])", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361 other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361)(.ceylon.language.Sequence<? extends .java.lang.Object>)$param$0;
+                        return $instance$.bar(other);
+                    }
+                };
+            }
+        };
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(Nothing)(Bug2361B<Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361B)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), "Anything(Nothing)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361 other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361)$param$0;
+                        return $instance$.bar(other);
+                    }
+                };
+            }
+        };
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))), "Anything(Nothing[2])(Bug2361A<Nothing[2]>)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A<.java.lang.Object> $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A<.java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(Nothing[2])", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)(.ceylon.language.Sequence<? extends .java.lang.Object>)$param$0;
+                        return $instance$.bar(other);
+                    }
+                };
+            }
+        };
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(Nothing)(Bug2361A<Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), "Anything(Nothing)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                        return $instance$.bar(other);
+                    }
+                };
+            }
+        };
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(Nothing)(Bug2361A<Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), "Anything(Nothing)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A other = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2361A)$param$0;
+                        return $instance$.gee(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, other);
+                    }
+                };
+            }
+        };
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer, Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Integer $ceylontmp$x = (.ceylon.language.Integer)$param$0;
+                final .ceylon.language.Integer $ceylontmp$y = (.ceylon.language.Integer)$param$1;
+                return (.ceylon.language.Integer).ceylon.language.plus_.<.ceylon.language.Integer>plus(.ceylon.language.Integer.$TypeDescriptor$, $ceylontmp$x, $ceylontmp$y);
+            }
+        };
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer $instance$ = (.ceylon.language.Integer)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                        final .ceylon.language.Integer other = (.ceylon.language.Integer)$param$0;
+                        return $instance$.plus(other);
+                    }
+                };
+            }
+        };
+        r = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.math.whole.Whole>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.math.whole.Whole.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.math.whole.Whole.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.math.whole.Whole.$TypeDescriptor$), "Whole(Whole)(Whole)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .ceylon.math.whole.Whole> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.math.whole.Whole $instance$ = (.ceylon.math.whole.Whole)$param$0;
+                return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.math.whole.Whole>(.ceylon.math.whole.Whole.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.math.whole.Whole.$TypeDescriptor$), "Whole(Whole)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.math.whole.Whole $call$(final .java.lang.Object $param$0) {
+                        final .ceylon.math.whole.Whole other = (.ceylon.math.whole.Whole)$param$0;
+                        return (.ceylon.math.whole.Whole)$instance$.plus(other);
+                    }
+                };
+            }
+        };
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2361_.bug2361();
+    }
+}

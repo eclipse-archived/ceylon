@@ -1,0 +1,396 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface I1 {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl();
+    
+    public abstract long i1();
+    
+    public long m1();
+    
+    public abstract long m1$n();
+    
+    public long m1(final long n);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1.class);
+}
+final class I1$impl implements .java.io.Serializable {
+    
+    I1$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1 $this;
+    
+    public long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$0 = m1$n();
+            }
+            returning m1$canonical$($ceylontmp$n$0);
+        );
+    }
+    
+    public final long m1$n() {
+        return $this.i1();
+    }
+    
+    private long m1$canonical$(final long n) {
+        return n + $this.i1();
+    }
+    
+    public long m1(final long n) {
+        return m1$canonical$(n);
+    }
+}
+class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .java.io.Serializable {
+    
+    CI1() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
+    }
+    
+    @.java.lang.Override
+    public final long m1$n() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1$n();
+    }
+    
+    @.java.lang.Override
+    public long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$1 = m1$n();
+            }
+            returning m1$canonical$($ceylontmp$n$1);
+        );
+    }
+    
+    @.java.lang.Override
+    public long m1(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
+    }
+    
+    private long m1$canonical$(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.CI1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CI1.class);
+}
+interface I2 {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$impl();
+    
+    public abstract long i2();
+    
+    public long m2();
+    
+    public abstract long m2$n();
+    
+    public long m2(final long n);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2.class);
+}
+final class I2$impl implements .java.io.Serializable {
+    
+    I2$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 $this;
+    
+    public long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$2 = m2$n();
+            }
+            returning m2$canonical$($ceylontmp$n$2);
+        );
+    }
+    
+    public final long m2$n() {
+        return $this.i2();
+    }
+    
+    private long m2$canonical$(final long n) {
+        return n + $this.i2();
+    }
+    
+    public long m2(final long n) {
+        return m2$canonical$(n);
+    }
+}
+interface I3 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I3.class);
+}
+interface I4 {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I4$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I4$impl();
+    
+    public abstract long i4();
+    
+    public long m4();
+    
+    public abstract long m4$n();
+    
+    public long m4(final long n);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I4.class);
+}
+final class I4$impl implements .java.io.Serializable {
+    
+    I4$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.I4 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.I4 $this;
+    
+    public long m4() {
+        return (
+            let
+            {
+                long $ceylontmp$n$3 = m4$n();
+            }
+            returning m4$canonical$($ceylontmp$n$3);
+        );
+    }
+    
+    public final long m4$n() {
+        return $this.i4();
+    }
+    
+    private long m4$canonical$(final long n) {
+        return n;
+    }
+    
+    public long m4(final long n) {
+        return m4$canonical$(n);
+    }
+}
+class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2, .java.io.Serializable {
+    
+    CI3() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
+    }
+    
+    @.java.lang.Override
+    public final long m1$n() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1$n();
+    }
+    
+    @.java.lang.Override
+    public long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$4 = m1$n();
+            }
+            returning m1$canonical$($ceylontmp$n$4);
+        );
+    }
+    
+    @.java.lang.Override
+    public long m1(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
+    }
+    
+    private long m1$canonical$(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
+    }
+    
+    @.java.lang.Override
+    public final long m2$n() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2$n();
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public final long i2() {
+        return 2L;
+    }
+    
+    public final long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$5 = m2$n();
+            }
+            returning m2$canonical$($ceylontmp$n$5);
+        );
+    }
+    
+    private long m2$canonical$(final long n) {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final long m2(final long n) {
+        return m2$canonical$(n);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.CI3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CI3.class);
+}
+abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I3, .com.redhat.ceylon.compiler.java.test.structure.concrete.I4, .java.io.Serializable {
+    
+    A7() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl(this);
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$I4$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.I4$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I1$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$;
+    }
+    
+    @.java.lang.Override
+    public final long m1$n() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1$n();
+    }
+    
+    @.java.lang.Override
+    public long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$6 = m1$n();
+            }
+            returning m1$canonical$($ceylontmp$n$6);
+        );
+    }
+    
+    @.java.lang.Override
+    public long m1(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
+    }
+    
+    private long m1$canonical$(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I1$this$.m1(n);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$;
+    }
+    
+    @.java.lang.Override
+    public final long m2$n() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2$n();
+    }
+    
+    @.java.lang.Override
+    public long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$7 = m2$n();
+            }
+            returning m2$canonical$($ceylontmp$n$7);
+        );
+    }
+    
+    @.java.lang.Override
+    public long m2(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2(n);
+    }
+    
+    private long m2$canonical$(final long n) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I2$this$.m2(n);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.I4$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I4$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.I4$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$I4$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I4$this$;
+    }
+    
+    @.java.lang.Override
+    public final long m4$n() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I4$this$.m4$n();
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    public final long m4() {
+        return (
+            let
+            {
+                long $ceylontmp$n$8 = m4$n();
+            }
+            returning m4$canonical$($ceylontmp$n$8);
+        );
+    }
+    
+    private long m4$canonical$(final long n) {
+        return 5L;
+    }
+    
+    @.java.lang.Override
+    public final long m4(final long n) {
+        return m4$canonical$(n);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.A7.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.A7.class);
+}
+class CA7 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.A7 {
+    
+    CA7() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long i2() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final long i4() {
+        return 4L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.CA7.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CA7.class);
+}

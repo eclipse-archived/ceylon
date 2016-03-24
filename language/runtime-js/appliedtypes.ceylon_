@@ -1,0 +1,17 @@
+import ceylon.language.meta.model {
+  ClosedType=Type,
+  Member, Interface, Class, ClassOrInterface, Attribute, Method, Value, Function,
+  MemberInterface,MemberClass
+}
+import ceylon.language.meta.declaration {
+  ClassDeclaration, InterfaceDeclaration, ValueDeclaration, FunctionDeclaration,
+  TypeParameter
+}
+
+shared class AppliedAttribute<in Container, out Get=Anything, in Set=Nothing>() satisfies Attribute<Container,Get,Set> {
+    shared actual ClassOrInterface<Anything>? container { throw Exception("unimplemented"); }
+    shared actual default ClassOrInterface<Anything> declaringType { throw Exception("unimplemented"); }
+    shared actual ClosedType<Get> type { throw Exception("unimplemented"); }
+    shared actual default ValueDeclaration declaration { throw Exception("unimplemented"); }
+    shared actual Value<Get,Set> bind(Object container) { throw Exception("AppliedAttribute.bind"); }
+}

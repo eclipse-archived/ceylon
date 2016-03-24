@@ -1,0 +1,79 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class NamedArgumentInvocationInitWithSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    NamedArgumentInvocationInitWithSequence(final .java.lang.String a) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$b$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(a, $ceylontmp$b$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected NamedArgumentInvocationInitWithSequence() {
+        super();
+    }
+    
+    NamedArgumentInvocationInitWithSequence(final .java.lang.String a, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b) {
+    }
+    
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner(final boolean x, final .java.lang.String y) {
+            (
+                let
+                {
+                    .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$z$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                    this(x, y, $ceylontmp$z$1);
+                }
+                returning null;
+            );
+        }
+        
+        Inner(final boolean x, final .java.lang.String y, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> z) {
+        }
+        
+        public final void m2() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner.class));
+        }
+    }
+    
+    private final void m$priv$() {
+        (
+            let
+            {
+                .java.lang.String arg$2$0 = "a";
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$2$1 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(1L),
+                        .ceylon.language.Integer.instance(2L),
+                        .ceylon.language.Integer.instance(3L)});
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence(arg$2$0, arg$2$1);
+        ).m$priv$();
+        (
+            let
+            {
+                .java.lang.String arg$3$1 = "";
+                boolean arg$3$0 = true;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> arg$3$2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.Integer.instance(4L),
+                        .ceylon.language.Integer.instance(5L),
+                        .ceylon.language.Integer.instance(6L)});
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.Inner(arg$3$0, arg$3$1, arg$3$2);
+        ).m2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInitWithSequence.class);
+}

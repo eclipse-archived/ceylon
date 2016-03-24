@@ -241,8 +241,27 @@ class CX() {
 class CY() {
     shared default String name;
     @error name = "Gavin";
-    @error shared actual String string => name;
+    shared actual String string => name;
 }
+
+class CZ() {
+    shared default String name;
+    if (1==1) {
+        @error name = "Gavin";
+    }
+    else {
+        @error name = "Trompon";
+    }
+    shared actual String string => name;
+}
+
+class CW() {
+    @error shared default String name;
+    if (1==1) {
+        @error name = "Gavin";
+    }
+}
+
 
 class Elephant() {
     default shared String name;
@@ -326,7 +345,7 @@ void intermediateShortcutRefinement() {
         shared actual formal Float val2;
     }
     
-    class BarAndBaz() satisfies Bar, Baz {
+    class BarAndBaz() satisfies Bar & Baz {
         @error method1() => null;
         @error val1 = 2.3;
         @error method2() => null;
@@ -345,4 +364,13 @@ class DEF() extends ABC() {
     @error shared void mul(Integer hi) {
         print("Nope");
     }
+}
+
+
+class Options(shared default String abc) {}
+
+class OptionsExt(String abc) extends Options(abc) {}
+
+class OptionsExtExt() extends OptionsExt("initial") {
+    shared actual variable String abc = "initial";
 }

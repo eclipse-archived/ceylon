@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.bc.refinedreturn;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug6068_ {
+    
+    private bug6068_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug6068() {
+        .ceylon.language.noop_.noop((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Anything.$TypeDescriptor$, new .java.lang.Object[]{((.ceylon.language.Map<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)(.ceylon.language.Map)(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.Integer.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$0$2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(1L));
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+                .ceylon.collection.Stability arg$0$0 = .ceylon.collection.HashMap.HashMap$stability(arg$0$reified$0, arg$0$reified$1);
+                .ceylon.collection.Hashtable arg$0$1 = .ceylon.collection.HashMap.HashMap$hashtable(arg$0$reified$0, arg$0$reified$1, arg$0$0);
+            }
+            returning new .ceylon.collection.HashMap<.ceylon.language.Integer, .ceylon.language.Integer>(arg$0$reified$0, arg$0$reified$1, arg$0$0, arg$0$1, arg$0$2);
+        )).getKeys()}, .ceylon.language.empty_.get_()));
+    }
+}

@@ -1,0 +1,187 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+interface T {
+    
+    public .com.redhat.ceylon.compiler.java.test.statement.conditional.T$impl $com$redhat$ceylon$compiler$java$test$statement$conditional$T$impl();
+    
+    public long f();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.T.class);
+}
+final class T$impl implements .java.io.Serializable {
+    
+    T$impl(.com.redhat.ceylon.compiler.java.test.statement.conditional.T $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.statement.conditional.T $this;
+    
+    public long f() {
+        return 2L;
+    }
+}
+interface A extends .com.redhat.ceylon.compiler.java.test.statement.conditional.T {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.A.class);
+}
+interface B extends .com.redhat.ceylon.compiler.java.test.statement.conditional.T {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.B.class);
+}
+final class ifExpression_ {
+    
+    private ifExpression_() {
+    }
+    
+    static void ifExpression() {
+        final .ceylon.language.String boxed = .ceylon.language.String.instance("ok");
+        final .java.lang.String s1 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                if (true) {
+                    $ceylontmp$ifResult$0 = "ok";
+                } else {
+                    $ceylontmp$ifResult$0 = "fail";
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+        final .ceylon.language.String s2 = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$ifResult$2;
+                if (true) {
+                    $ceylontmp$ifResult$2 = boxed;
+                } else {
+                    $ceylontmp$ifResult$2 = .ceylon.language.String.instance("fail");
+                }
+            }
+            returning $ceylontmp$ifResult$2;
+        );
+        final .java.lang.String s3 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$4;
+                .java.lang.Object boxed$6;
+                if ((boxed$6 = boxed) != null) {
+                    final .java.lang.String boxed$7 = ((.ceylon.language.String)boxed$6).toString();
+                    $ceylontmp$ifResult$4 = boxed$7;
+                } else {
+                    $ceylontmp$ifResult$4 = "fail";
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        );
+        final .java.lang.Object erased = .ceylon.language.Integer.instance(2L);
+        final .java.lang.String s4 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$8;
+                .java.lang.Object erased$10;
+                if ((erased$10 = erased) instanceof .ceylon.language.String) {
+                    final .java.lang.String erased$11 = ((.ceylon.language.String)erased$10).toString();
+                    $ceylontmp$ifResult$8 = erased$11;
+                } else {
+                    $ceylontmp$ifResult$8 = "fail";
+                }
+            }
+            returning $ceylontmp$ifResult$8;
+        );
+        final .java.lang.String s5 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$12;
+                boolean $ceylontmp$if$13 = false;
+                .java.lang.Object erased$15;
+                final .java.lang.String erased$16;
+                if (erased instanceof .ceylon.language.Integer || erased instanceof .ceylon.language.String) {
+                    if ((erased$15 = erased) instanceof .ceylon.language.String) {
+                        erased$16 = ((.ceylon.language.String)erased$15).toString();
+                        $ceylontmp$if$13 = true;
+                    } else {
+                        erased$16 = null;
+                    }
+                } else {
+                    erased$16 = null;
+                }
+                if ($ceylontmp$if$13) {
+                    $ceylontmp$ifResult$12 = erased$16;
+                } else {
+                    $ceylontmp$ifResult$12 = "fail";
+                }
+            }
+            returning $ceylontmp$ifResult$12;
+        );
+        final .java.lang.Object erased2 = .ceylon.language.nothing_.get_();
+        final long i1 = ((.com.redhat.ceylon.compiler.java.test.statement.conditional.T)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$17;
+                if (erased2 != null) {
+                    $ceylontmp$ifResult$17 = erased2;
+                } else {
+                    $ceylontmp$ifResult$17 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.A).ceylon.language.nothing_.get_();
+                }
+            }
+            returning $ceylontmp$ifResult$17;
+        )).f();
+        final .ceylon.language.Integer arg = (.ceylon.language.Integer).ceylon.language.nothing_.get_();
+        final .java.lang.String x0 = (
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$20;
+                .ceylon.language.Integer arg$22;
+                if ((arg$22 = arg) != null) {
+                    final long arg$24 = arg$22.longValue();
+                    $ceylontmp$ifResult$20 = .ceylon.language.Integer.toString(arg$24);
+                } else {
+                    final .java.lang.Object arg$23 = arg$22;
+                    $ceylontmp$ifResult$20 = "0.0";
+                }
+            }
+            returning $ceylontmp$ifResult$20;
+        );
+        final double x1 = (
+            let
+            {
+                double $ceylontmp$ifResult$25;
+                .ceylon.language.Integer arg$27;
+                if ((arg$27 = arg) != null) {
+                    final long arg$29 = arg$27.longValue();
+                    $ceylontmp$ifResult$25 = 1.0;
+                } else {
+                    final .java.lang.Object arg$28 = arg$27;
+                    $ceylontmp$ifResult$25 = 0.0;
+                }
+            }
+            returning $ceylontmp$ifResult$25;
+        );
+        final .java.lang.Object x2 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$30;
+                .ceylon.language.Integer arg$32;
+                if ((arg$32 = arg) != null) {
+                    final long arg$34 = arg$32.longValue();
+                    $ceylontmp$ifResult$30 = .ceylon.language.String.instance(.ceylon.language.Integer.toString(arg$34));
+                } else {
+                    final .java.lang.Object arg$33 = arg$32;
+                    $ceylontmp$ifResult$30 = .ceylon.language.Float.instance(0.0);
+                }
+            }
+            returning $ceylontmp$ifResult$30;
+        );
+        final .java.lang.Object x3 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$35;
+                .ceylon.language.Integer arg$37;
+                if ((arg$37 = arg) != null) {
+                    final long arg$39 = arg$37.longValue();
+                    $ceylontmp$ifResult$35 = .ceylon.language.String.instance(.ceylon.language.Integer.toString(arg$39));
+                } else {
+                    final .java.lang.Object arg$38 = arg$37;
+                    $ceylontmp$ifResult$35 = .ceylon.language.Float.instance(0.0);
+                }
+            }
+            returning $ceylontmp$ifResult$35;
+        );
+    }
+}

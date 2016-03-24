@@ -43,7 +43,7 @@ void testGraph() {
     
     OnOffGraph.Edge e2 = method2(OnOffGraph());
 
-    Edge method3<ActualGraph, Node, Edge>(ActualGraph g) 
+    Edge method3<out ActualGraph, Node, Edge>(ActualGraph g) 
             given ActualGraph satisfies Graph<Node,Edge> 
             @error given Node satisfies ActualGraph.Node 
             @error given Edge satisfies ActualGraph.Edge {
@@ -79,4 +79,15 @@ void testGraph() {
     Graph<BasicGraph.Node, BasicGraph.Edge> gbg = BasicGraph();
     BasicGraph.Node bgn = gbg.Node() of BasicGraph.Node;
     BasicGraph.Edge bge = gbg.Edge(bgn,bgn) of BasicGraph.Edge;
+
+
+    Edge createEdge<Node,Edge>(Graph<Node, Edge> g) 
+            given Node satisfies Graph<Node,Edge>.Node 
+            given Edge satisfies Graph<Node,Edge>.Edge {
+        return g.Edge(g.Node() of Node, g.Node() of Node) of Edge;
+    }
+    
+    BasicGraph.Edge edge1 = createEdge(BasicGraph());
+    OnOffGraph.Edge edge2 = createEdge(OnOffGraph());
+    
 }

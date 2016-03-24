@@ -1,0 +1,365 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
+
+public interface Iterable<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<? extends Element> repeat();
+    
+    public abstract long repeat$times();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<? extends Element> repeat(final long times);
+    
+    public abstract .java.lang.Object repeat2();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<? extends Element> getRepeatAttr();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<? extends Element>.Member Member$new$(final long times);
+    
+    public abstract long $default$Member$times();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<? extends Element>.Member Member$new$();
+}
+public final class Iterable$impl<Element> implements .java.io.Serializable {
+    
+    public Iterable$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public final long repeat$times() {
+        return 2L;
+    }
+    
+    public final long $default$Member$times() {
+        return 2L;
+    }
+    
+    public abstract class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Member() {
+            (
+                let
+                {
+                    long $ceylontmp$times$0 = $default$Member$times();
+                    this($ceylontmp$times$0);
+                }
+                returning null;
+            );
+        }
+        
+        protected Member(final long times) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable.class, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl.this.$reified$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl.Member.class));
+        }
+    }
+}
+public interface Iterable2<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<? extends Element> repeat();
+    
+    public abstract long repeat$times();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<? extends Element> repeat(final long times);
+    
+    public abstract .java.lang.Object repeat2();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<? extends Element> getRepeatAttr();
+}
+public final class Iterable2$impl<Element> implements .java.io.Serializable {
+    
+    public Iterable2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public final long repeat$times() {
+        return 2L;
+    }
+}
+public interface List<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> repeat();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> repeat(final long times);
+    
+    @.java.lang.Override
+    public abstract .ceylon.language.Integer repeat2();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> getRepeatAttr();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element>.Member Member$new$(final long times);
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element>.Member Member$new$();
+}
+public final class List$impl<Element> implements .java.io.Serializable {
+    
+    public List$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public abstract class Member extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<? extends Element>.Member {
+        
+        public Member() {
+            (
+                let
+                {
+                    long $ceylontmp$times$1 = $this.$default$Member$times();
+                    this($ceylontmp$times$1);
+                }
+                returning null;
+            );
+        }
+        
+        protected Member(final long times) {
+            $this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$impl().super(times);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List.class, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl.this.$reified$Element), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl.Member.class));
+        }
+    }
+}
+public interface List2<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<Element> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$impl();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> repeat();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> repeat(final long times);
+    
+    @.java.lang.Override
+    public abstract .ceylon.language.Integer repeat2();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> getRepeatAttr();
+}
+public final class List2$impl<Element> implements .java.io.Serializable {
+    
+    public List2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+}
+public interface ListMutator<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<.java.lang.Object> {
+}
+public interface ListMutator2<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<.java.lang.Object> {
+}
+public abstract class ListMutatorClass<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<.java.lang.Object>, .java.io.Serializable {
+    
+    public ListMutatorClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$this$;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<.java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<? extends .java.lang.Object> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$;
+    }
+    
+    @.java.lang.Override
+    public final long repeat$times() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$.repeat$times();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.ListMutatorClass.class, $reified$Element);
+    }
+}
+public interface MutableList<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<Element>, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ListMutator<Element> {
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> repeat();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> repeat(final long times);
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<? extends Element> getRepeatAttr();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element>.Member Member$new$();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element>.Member Member$new$(final long times);
+}
+public interface MutableList2<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<Element>, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ListMutator2<Element> {
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> repeat();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> repeat(final long times);
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends Element> getRepeatAttr();
+}
+public abstract class MutableListClass<Element> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ListMutatorClass<Element> implements .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<Element> {
+    
+    public MutableListClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super($reified$Element);
+        this.$reified$Element = $reified$Element;
+        $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$.$refine$($reified$Element);
+        $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$this$.$refine$($reified$Element);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableListClass.class, $reified$Element);
+    }
+}
+interface MweList1<T> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList<T> {
+}
+abstract class MweList1Class<T> extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableListClass<T> {
+    
+    MweList1Class(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.MweList1Class.class, $reified$T);
+    }
+}
+abstract class MweList2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList<T>, .java.io.Serializable {
+    
+    MweList2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<T>($reified$T, (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<T>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List)this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<T>($reified$T, (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable<T>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable)this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$this$;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$;
+    }
+    
+    @.java.lang.Override
+    public final long repeat$times() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable$this$.repeat$times();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.MweList2.class, $reified$T);
+    }
+}
+class MweList3<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList2<T>, .java.io.Serializable {
+    
+    MweList3(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2$impl<T>($reified$T, (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<T>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2)this);
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2$impl<T>($reified$T, (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2<T>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2)this);
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$this$;
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Iterable2$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$this$;
+    }
+    
+    @.java.lang.Override
+    public final long repeat$times() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$this$.repeat$times();
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T> repeat() {
+        return (
+            let
+            {
+                long $ceylontmp$times$2 = repeat$times();
+            }
+            returning repeat$canonical$($ceylontmp$times$2);
+        );
+    }
+    
+    private .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T> repeat$canonical$(final long times) {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T>).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T> repeat(final long times) {
+        return repeat$canonical$(times);
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T> getRepeatAttr() {
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2<? extends T>).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer repeat2() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.MweList3.class, $reified$T);
+    }
+}

@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon doc" tool
+summary=Generates Ceylon API documentation from Ceylon source files
+module=com.redhat.ceylon.compiler.java/@ceylon-version@
+class=com.redhat.ceylon.ceylondoc.CeylonDocTool
+

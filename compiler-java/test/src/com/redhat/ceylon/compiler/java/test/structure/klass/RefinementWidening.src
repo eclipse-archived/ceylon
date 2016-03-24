@@ -1,0 +1,182 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class RWInvParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWInvParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParam.class, $reified$T);
+    }
+}
+class RWInvParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParam<T> {
+    
+    RWInvParamExt(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParamExt.class, $reified$T);
+    }
+}
+class RWCovParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWCovParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam.class, $reified$T);
+    }
+}
+class RWCovParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam<T> {
+    
+    RWCovParamExt(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParamExt.class, $reified$T);
+    }
+}
+class RWContrParam<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWContrParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam.class, $reified$T);
+    }
+}
+class RWContrParamExt<T> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam<T> {
+    
+    RWContrParamExt(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParamExt.class, $reified$T);
+    }
+}
+interface RWTopI {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI.class);
+}
+interface RWLeft extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWLeft.class);
+}
+interface RWRight extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTopI {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWRight.class);
+}
+interface RWNumber {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber.class);
+}
+interface RWInteger extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger.class);
+}
+interface RWFloat extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWFloat.class);
+}
+abstract class RWTop<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWTop(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParam<.com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber> m();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber> m2();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber> m2_erasure();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam<? super .com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger> m3();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam<? super .com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger> m3_erasure();
+    
+    public abstract <T>T tParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
+    
+    public abstract <T>T tParamErasure(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
+    
+    public abstract <T extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger>T tCovBoundParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
+    
+    public abstract X typeBound();
+    
+    public abstract X typeCovBound();
+    
+    public abstract Y classBound();
+    
+    public abstract Y classBound_erasure();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWTop.class, $reified$X, $reified$Y);
+    }
+}
+abstract class RWBottom<Z> extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWTop<.com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber, Z> {
+    
+    RWBottom(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
+        super(.com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber.$TypeDescriptor$, $reified$Z);
+        this.$reified$Z = $reified$Z;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z;
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWInvParamExt<.com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber> m();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParamExt<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger> m2();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWCovParam m2_erasure();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParamExt<? super .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber> m3();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWContrParam m3_erasure();
+    
+    @.java.lang.Override
+    public abstract <S>S tParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
+    
+    @.java.lang.Override
+    public abstract <S>S tParamErasure(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
+    
+    @.java.lang.Override
+    public abstract <S extends .com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger>S tCovBoundParam(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWNumber typeBound();
+    
+    @.java.lang.Override
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.RWInteger typeCovBound();
+    
+    @.java.lang.Override
+    public abstract Z classBound();
+    
+    @.java.lang.Override
+    public abstract Z classBound_erasure();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RWBottom.class, $reified$Z);
+    }
+}

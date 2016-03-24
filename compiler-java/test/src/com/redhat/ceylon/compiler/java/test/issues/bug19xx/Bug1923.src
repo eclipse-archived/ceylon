@@ -1,0 +1,181 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+public interface Bug1923 {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923$impl $com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$impl();
+    
+    public .java.lang.Object f();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.class);
+}
+public final class Bug1923$impl implements .java.io.Serializable {
+    
+    public Bug1923$impl(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 $this;
+    
+    public .java.lang.Object f() {
+        return null;
+    }
+}
+public final class bug1923_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 {
+    
+    private bug1923_() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923$impl(this);
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.class);
+    
+    private final void priv$priv$() {
+    }
+    
+    private final <T>T optional$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        return t;
+    }
+    
+    private final <T>.ceylon.language.Sequential<? extends T> plural$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance($reified$T, new .java.lang.Object[]{t});
+    }
+    
+    public final void bug1923Usesite() {
+        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 x = this;
+        final .ceylon.language.Callable<? extends .java.lang.Object> fRef = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923)x;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.f();
+                }
+            };
+        );
+        final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 y = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923)(.java.lang.Object)<.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923>optional$priv$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.$TypeDescriptor$), this);
+        final .ceylon.language.Callable<? extends .java.lang.Object> fRefY = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 $instance$ = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923)y;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 safe$1 = (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923)$instance$;
+                        }
+                        returning safe$1 != null ? $instance$.f() : null;
+                    );
+                }
+            };
+        );
+        final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923> zs = <.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923>plural$priv$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923.$TypeDescriptor$), this);
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> fRefZ = (
+            let
+            {
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923, ? extends .java.lang.Object> spread$2$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923, ? extends .java.lang.Object>)zs;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Anything.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "Anything[]()", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Sequential<? extends .java.lang.Object> $call$() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                        
+                        @.java.lang.Override
+                        public final .ceylon.language.Iterator<? extends .java.lang.Object> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$){
+                                final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923> spread$3$iterator$ = spread$2$iterable$.iterator();
+                                
+                                @.java.lang.Override
+                                public final .java.lang.Object next() {
+                                    .java.lang.Object spread$3$element$;
+                                    if (!((spread$3$element$ = spread$3$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                        spread$3$element$ = ((.com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923)spread$3$element$).f();
+                                    }
+                                    return spread$3$element$;
+                                }
+                            };
+                        }
+                    }.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> fRef2 = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923 $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.this;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.f();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .java.lang.Object> privRef2 = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_ $instance$ = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.this;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            $instance$.priv$priv$();
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923$impl $com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923$impl $com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$this$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object f() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$this$.f();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_ get_() {
+        if (bug1923_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1923\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$TypeDescriptor$;
+    }
+}

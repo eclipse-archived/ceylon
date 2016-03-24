@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+interface Bug1208I<T> {
+    
+    public abstract long m1();
+    
+    public abstract T m2();
+    
+    public abstract long m3();
+    
+    public abstract T m4();
+}
+class Bug1208 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208I<.ceylon.language.Integer>, .java.io.Serializable {
+    
+    Bug1208() {
+    }
+    
+    @.java.lang.Override
+    public final long m1() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer m2() {
+        return .ceylon.language.Integer.instance(2L);
+    }
+    
+    @.java.lang.Override
+    public final long m3() {
+        return m2().longValue();
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer m4() {
+        return m2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1208.class);
+}

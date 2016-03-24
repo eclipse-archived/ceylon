@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+interface Bug891_Interface {
+    
+    public abstract .java.lang.Object f();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface.class);
+}
+class Bug891_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Interface, .java.io.Serializable {
+    
+    protected Bug891_Class() {
+        super();
+        this.arg = null;
+    }
+    
+    Bug891_Class(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
+        this.arg = arg;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
+    
+    private final void arg$priv$() {
+        arg.$call$();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f() {
+        return (
+            let
+            {
+                arg$priv$();
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Class.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug891_Class.class);
+}

@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug08xx;
+
+final class bug895SideEffects_ {
+    
+    private bug895SideEffects_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> bug895SideEffects() {
+        return (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+    }
+}
+final class bug895_ {
+    
+    private bug895_() {
+    }
+    
+    static void bug895() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> foo1 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects_.bug895SideEffects();
+        final .ceylon.language.Callable<? extends .java.lang.Object> foo2 = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects2_.get_();
+    }
+}
+abstract class Bug895A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug895A() {
+    }
+    
+    public abstract .java.lang.Object f();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895A.class);
+}
+class Bug895B extends .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895A {
+    
+    Bug895B() {
+        super();
+        this.f$specifier$ = .com.redhat.ceylon.compiler.java.test.issues.bug08xx.bug895SideEffects2_.get_();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f$specifier$;
+    
+    @.java.lang.Override
+    public final .java.lang.Object f() {
+        return f$specifier$.$call$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895B.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug895B.class);
+}
+final class bug895SideEffects2_ {
+    
+    private bug895SideEffects2_() {
+    }
+    
+    public static .ceylon.language.Callable<? extends .java.lang.Object> get_() {
+        return (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+    }
+}

@@ -1,0 +1,162 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+public interface Bug1225Availability {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability.class);
+}
+public final class bug1225available_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
+    
+    private bug1225available_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.class);
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_ get_() {
+        if (bug1225available_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225available\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$;
+    }
+}
+public final class bug1225unavailableBy_O_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
+    
+    private bug1225unavailableBy_O_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.class);
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_ get_() {
+        if (bug1225unavailableBy_O_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225unavailableBy_O\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.$TypeDescriptor$;
+    }
+}
+public final class bug1225unavailableBy_X_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability {
+    
+    private bug1225unavailableBy_X_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.class);
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_ get_() {
+        if (bug1225unavailableBy_X_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225unavailableBy_X\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.$TypeDescriptor$;
+    }
+}
+public final class Bug1225Board {
+    
+    private Bug1225Board() {
+    }
+}
+class Bug1225Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1225Test() {
+        (
+            let
+            {
+                .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability>> $ceylontmp$board$0 = .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Test.$default$board();
+                this($ceylontmp$board$0);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1225Test(final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability>> board) {
+    }
+    
+    public static .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability>> $default$board() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Availability>>)(.ceylon.language.Sequence)(.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$), new .java.lang.Object[]{
+                (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$, new .java.lang.Object[]{
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_(),
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_(),
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_()}),
+                (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$, new .java.lang.Object[]{
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_(),
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_(),
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_()}),
+                (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$TypeDescriptor$, new .java.lang.Object[]{
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_(),
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_(),
+                        .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_()})});
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Test.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1225Test.class);
+}

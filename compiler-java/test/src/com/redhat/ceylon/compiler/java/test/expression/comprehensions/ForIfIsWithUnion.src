@@ -1,0 +1,107 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ForIfIsUnion() {
+    }
+    
+    public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
+                    {
+                        $iterator$0 = xs.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = $ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
+                            final .java.lang.Object x = this.x;
+                            if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
+                                break ifcomp_1;
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .java.lang.Object x = this.x;
+                            return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x).common();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+    }
+    
+    public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
+                    {
+                        $iterator$0 = ys.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object y;
+                    private boolean y$exhausted$;
+                    
+                    private final boolean y() {
+                        final .java.lang.Object $ceylontmp$item$2 = $iterator$0.next();
+                        y$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
+                        if (y$exhausted$) {
+                            return false;
+                        } else {
+                            y = $ceylontmp$item$2;
+                            return true;
+                        }
+                    }
+                    private .java.lang.Object x$4;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.y()) break ifcomp_1;
+                            final .java.lang.Object y = this.y;
+                            .java.lang.Object x$3 = null;
+                            if ((x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x$3 instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
+                                x$4 = x$3;
+                                break ifcomp_1;
+                            }
+                        }
+                        return !y$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .java.lang.Object x$4 = this.x$4;
+                            final .java.lang.Object y = this.y;
+                            return ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x$4).common();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsUnion.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsUnion.class);
+}

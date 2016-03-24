@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+final class methodSpecifyingToplevelWithResult_f_ {
+    
+    private methodSpecifyingToplevelWithResult_f_() {
+    }
+    
+    static long methodSpecifyingToplevelWithResult_f() {
+        return 1L;
+    }
+}
+class MethodSpecifyingToplevelWithResult implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodSpecifyingToplevelWithResult() {
+    }
+    
+    private final long foo$priv$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.methodSpecifyingToplevelWithResult_f_.methodSpecifyingToplevelWithResult_f();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingToplevelWithResult.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifyingToplevelWithResult.class);
+}

@@ -170,6 +170,25 @@
     ...
 }</programlisting>
             
+            <para>As an exception to this rule, the namespace of a declaration annotated
+            <literal>native</literal> may contain a second declaration with the same name
+            if:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the second declaration has exactly the same schema, as defined
+                    in <xref linkend="type"/>,</para>
+                </listitem>
+                <listitem>
+                    <para>the second declaration is also annotated <literal>native</literal>,
+                    and</para>
+                </listitem>
+                <listitem>
+                    <para>the two <literal>native</literal> annotations have distinct 
+                    arguments for the <literal>backend</literal> parameter.</para>
+                </listitem>
+            </itemizedlist>
+            
             <para>A class or interface may not inherit a declaration with the same name as 
             a declaration it contains unless either:</para>
                 
@@ -517,7 +536,8 @@ class Complex(Float x, Float y=0.0)
             
             <para>When a toplevel declaration of a package is hidden by another declaration, 
             the toplevel declaration may be accessed via the containing package reference 
-            <literal>package</literal>, defined in <xref linkend="thispackage"/>.</para>
+            <literal>package</literal>, as defined in 
+            <xref linkend="unqualifiedreferenceresolution"/>.</para>
             
             <programlisting>Integer n => 0;
 Integer f(Integer n) => n+package.n;</programlisting>
@@ -535,11 +555,16 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>the program element occurs within the lexical scope of the 
-                    declaration, or</para>
+                    declaration,</para>
                 </listitem>
                 <listitem>
-                    <para>the declaration does not directly occur in a block or in the
-                    initializer section of a class body.</para>
+                    <para>the declaration is a parameter and the program element occurs 
+                    within the <literal>extends</literal> clause of the declaration it
+                    parameterizes, or</para>
+                </listitem>
+                <listitem>
+                    <para>the declaration does not directly occur in a block, nor in 
+                    the initializer section of a class body.</para>
                 </listitem>
             </itemizedlist>
             
@@ -647,30 +672,30 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <para>A value declared using the keyword <literal>value</literal> or a
             function declared using the keyword <literal>function</literal> may be 
             in scope at a program element, but its type may not be 
-            <emphasis>inferrable</emphasis>, as defined by 
+            <emphasis>inferable</emphasis>, as defined by 
             <xref linkend="typeinference"/>, from the point of view of that program 
             element.</para>
             
             <para>The type of a value or function declared using the keyword 
-            <literal>value</literal> or <literal>function</literal> is inferrable 
+            <literal>value</literal> or <literal>function</literal> is inferable 
             to a program element if the declaration is in scope at the program 
             element and the program element occurs within the lexical scope of the 
             declaration.</para>
             
             <comment><para>Note: the type of a value or function declared using
             the keyword <literal>value</literal> or <literal>function</literal> is
-            not inferrable within the body of the value or function 
+            not inferable within the body of the value or function 
             itself.</para></comment>
             
             <para>For any other declaration, including any declaration which 
-            explicitly specifies its type, the type is considered inferrable to a 
+            explicitly specifies its type, the type is considered inferable to a 
             program element if the declaration is in scope at the program 
             element.</para>
             
             <para>The following code is not legal:</para>
             
             <programlisting>interface Point {
-    value x => y;  //error: type of y is not inferrable
+    value x => y;  //error: type of y is not inferable
     value y => x;
 }</programlisting>
             
@@ -696,8 +721,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     in <literal>Sequence&lt;String&gt;</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para>the value, function, or type name in a base expression, 
-                    as defined by <xref linkend="baseexpressions"/>, for example 
+                    <para>the value, function, constructor, or type name in a base 
+                    expression, as defined by <xref linkend="baseexpressions"/>, 
+                    for example 
                     <literal>counter</literal> in <literal>counter.count</literal>, 
                     <literal>entries</literal> and <literal>people</literal> in 
                     <literal>entries(people*.name)</literal>, or 
@@ -707,8 +733,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 </listitem>
                 <listitem>
                     <para>the type name in an unqualified type in a static expression, 
-                    as defined by <xref linkend="staticexpressions"/>, for example 
-                    <literal>Sequence</literal> in 
+                    as defined by <xref linkend="staticexpressions"/>, or constructor
+                    expression, as defined by <xref linkend="constructorexpressions"/>, 
+                    for example <literal>Sequence</literal> in 
                     <literal>Sequence.iterator</literal>.</para>
                 </listitem>
             </itemizedlist>
@@ -732,6 +759,11 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>As an exception to this, if the expression or type expression begins
+            with the qualifier keyword <literal>package</literal>, then there must be a
+            toplevel declaration with the given name defined in the package to which the
+            compilation unit belongs.</para> 
+            
             <para>Then the reference is to this unique unhidden declaration, and:</para>
             
             <itemizedlist>
@@ -739,7 +771,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     <para>the declaration must be referenceable at the program element,</para>
                 </listitem>
                 <listitem>
-                    <para>the type of the declaration must be inferrable to the program 
+                    <para>the type of the declaration must be inferable to the program 
                     element, and</para>
                 </listitem>
                 <listitem>
@@ -873,7 +905,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     element,</para>
                 </listitem>
                 <listitem>
-                    <para>the type of the member must be inferrable to the program 
+                    <para>the type of the member must be inferable to the program 
                     element, and</para>
                 </listitem>
                 <listitem>
@@ -983,10 +1015,14 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <section id="patterns">
             <title>Patterns</title>
         
-            <para>An expression whose type is an instantiation of <literal>Sequence</literal>, 
-            <literal>Tuple</literal>, or <literal>Entry</literal> may be assigned to a 
-            <emphasis>pattern</emphasis>. The type of an expression assigned to a pattern 
-            is called the <emphasis>patterned type</emphasis>.</para>
+            <para>An expression whose type is an instantiation of <literal>Sequential</literal>, 
+            <literal>Sequence</literal>, <literal>Tuple</literal>, or <literal>Entry</literal> 
+            may be assigned to a <emphasis>pattern</emphasis>. The type of an expression 
+            assigned to a pattern is called the <emphasis>patterned type</emphasis>.</para>
+            
+            <comment><para>TODO: actually, the following section does not do justice to 
+            the compiler, which can actually handle subtypes of these types, including
+            type parameters upper bounded by these types.</para></comment>
             
             <para>Patterns are formed from:</para>
             
@@ -1037,11 +1073,12 @@ Integer f(Integer n) => n+package.n;</programlisting>
             variable called a <emphasis>variadic</emphasis> element pattern. 
             Tuple patterns are enclosed in brackets.</para>
             
-            <synopsis>TuplePattern: "[" Pattern ("," Pattern)* ("," VariadicVariable)? "]"</synopsis>
+            <synopsis>TuplePattern: "[" (Pattern ",")* (Pattern | VariadicVariable) "]"</synopsis>
             
             <para>The patterned type must be an instantiation of the type
-            <literal>Tuple</literal> or <literal>Sequence</literal> in 
-            <literal>ceylon.language</literal>. Then:</para>
+            <literal>Tuple</literal>, <literal>Sequential</literal>, or 
+            <literal>Sequence</literal> in <literal>ceylon.language</literal>.
+            Then:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1076,10 +1113,22 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     and the patterned type of the second element pattern is 
                     <literal>[T*]</literal>.</para>
                 </listitem>
+                <!--listitem>
+                    <para>Or, if the patterned type is an instantiation 
+                    <literal>[T*]</literal> of <literal>Sequential</literal>, 
+                    then there must be exactly one pattern, and it must be 
+                    variadic. Then the patterned type of the element pattern 
+                    is <literal>[T*]</literal>.</para>
+                </listitem-->
             </itemizedlist>
             
             <programlisting>value [x, y, z] = [1.0, 2.0, 0.0];</programlisting>
             <programlisting>value [first, *rest] = sequence;</programlisting>
+            
+            <comment><para>Note: Ceylon does not support parallel assignment 
+            statements of form <literal>value x, y, z = 1.0, 2.0, 0.0;</literal>
+            since the infix <literal>=</literal> symbol has a higher precedence 
+            than the comma <literal>,</literal> throughout the language.</para></comment>
                 
         </section>
         
@@ -1556,8 +1605,14 @@ else {
                     the declaration.</para>
                 </listitem>
                 <listitem>
+                    <para>A constructor of a class definitely initializes a declaration if the 
+                    body of the constructor definitely initializes the declaration, or if the 
+                    constructor delegates to a constructor which definitely initializes the 
+                    declaration.</para>
+                </listitem>
+                <listitem>
                     <para>The constructors of a class definitely initialize a declaration if
-                    the body of every constructor of the class definititely initializes the
+                    every non-partial constructor of the class definitely initializes the 
                     declaration.</para>
                 </listitem>
             </itemizedlist>
@@ -1566,7 +1621,7 @@ else {
             may or may not definitely initialize a value. Specify this!</para></comment>
             
             <para>If a function or value declaration is referenceable at a certain statement or 
-            declaration, it may additionally considered <emphasis>definitely initialized</emphasis> 
+            declaration, it may additionally be considered <emphasis>definitely initialized</emphasis> 
             at that statement or declaration.</para>
             
             <para>If a function declaration is definitely initialized at a certain statement or 
@@ -1584,6 +1639,10 @@ else {
                     statements from its declaration to the given statement or declaration.</para>
                 </listitem>
             </itemizedlist>
+            
+            <para>As an exception, a member of a class is not considered definitely initialized
+            within the <literal>extends</literal> clause of the class or of any of its 
+            constructors.</para>
             
             <para>If a value declaration is definitely initialized at a certain statement or 
             declaration if it is referenceable at that statement or declaration and:</para>
@@ -1683,6 +1742,15 @@ else {
                     declaration, if one of the <literal>catch</literal> blocks possibly initializes 
                     the declaration, or if the <literal>finally</literal> block possibly initializes 
                     the declaration.</para>
+                </listitem>
+                <listitem>
+                    <para>A constructor of a class possibly initializes a declaration if the body 
+                    of the constructor possibly initializes the declaration, or if the constructor 
+                    delegates to a constructor which possibly initializes the declaration.</para>
+                </listitem>
+                <listitem>
+                    <para>The constructors of a class possibly initialize a declaration if at least 
+                    one constructor of the class possibly initializes the declaration.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1808,6 +1876,12 @@ else {
             
             <para>A <emphasis>negated</emphasis> assignability condition is one which starts 
             with <literal>!</literal>.</para>
+            
+            <comment><para>Note: the prefix form <literal>is Type val</literal> reads a 
+            little unnaturally in English. But for a condition with a specifier, the 
+            form <literal>is Type val = expression</literal> is much less ambiguous than
+            <literal>val = expression is Type</literal>, which looks like an assignment
+            of a boolean value.</para></comment>
             
             <comment><para>TODO: are we going to allow <literal>is Type this</literal> and 
             <literal>is Type outer</literal> to narrow the type of a self reference?</para></comment>
@@ -1996,8 +2070,8 @@ if (is Usable tx) { ... }</programlisting>
                     by the compiler as having type <literal>T&amp;Object</literal> inside the block 
                     or expression that immediately follows the condition, where the conditional 
                     expression is of type <literal>T</literal>, and, if this is the only condition 
-                    in the condition list, as having the type <literal>Null</literal> inside the 
-                    following <literal>else</literal> block or expression if any.</para>
+                    in the condition list, as having the type <literal>T&amp;Null</literal> inside 
+                    the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2005,18 +2079,18 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a pattern variable, the
-                    patterned type is <literal>Null</literal>, and the declared type of the 
-                    variable, if any, must be <literal>Null</literal>, or</para>
+                    <para>if the condition has a pattern, it must be a pattern variable, and the
+                    patterned type is <literal>T&amp;Null</literal>, where the specifier expression 
+                    is of type <literal>T</literal>, and the declared type of the variable, if any, 
+                    must be <literal>Null</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>Null</literal> inside the block or 
-                    expression that immediately follows the condition, and, if this is the only 
-                    condition in the condition list, as having the type 
-                    <literal>T&amp;Object</literal> inside the following <literal>else</literal> 
-                    block or expression if any, where the conditional expression is of type 
-                    <literal>T</literal>.</para>
+                    by the compiler as having type <literal>T&amp;Null</literal> inside the block 
+                    or expression that immediately follows the condition, where the conditional 
+                    expression is of type <literal>T</literal>, and, if this is the only condition 
+                    in the condition list, as having the type <literal>T&amp;Object</literal> 
+                    inside the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2037,7 +2111,7 @@ if (is Usable tx) { ... }</programlisting>
                     or expression that immediately follows the condition, where the conditional 
                     expression is of type <literal>T</literal> and <literal>T</literal> has the 
                     principal instantiation <literal>E[]?</literal>, and, if this is the only 
-                    condition in the condition list, as having the type <literal>[]</literal> 
+                    condition in the condition list, as having the type <literal>T&amp;[]</literal> 
                     inside the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
@@ -2046,18 +2120,20 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>if the condition has a pattern, it must be a pattern variable, the
-                    patterned type is <literal>[]</literal>, and the declared type of the variable,
+                    <para>if the condition has a pattern, it must be a pattern variable, and the
+                    patterned type is <literal>T&amp;[]</literal>, where the specifier expression is 
+                    of type <literal>T</literal> and <literal>T</literal> has the principal 
+                    instantiation <literal>E[]?</literal>, and the declared type of the variable,
                     if any, must be <literal>[]</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>[]</literal> inside the block or 
-                    expression that immediately follows the condition, and, if this is the only 
+                    by the compiler as having type <literal>T&amp;[]</literal> inside the block or 
+                    expression that immediately follows the condition, where the conditional 
+                    expression is of type <literal>T</literal> and <literal>T</literal> has the 
+                    principal instantiation <literal>E[]?</literal>, and, if this is the only 
                     condition in the condition list, as having the type <literal>T&amp;[E+]</literal> 
-                    inside the following <literal>else</literal> block or expression if any, where 
-                    the conditional expression is of type <literal>T</literal> and <literal>T</literal> 
-                    has the principal instantiation <literal>E[]?</literal>.</para>
+                    inside the following <literal>else</literal> block or expression if any.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2087,8 +2163,9 @@ if (is Usable tx) { ... }</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>a <emphasis>value case</emphasis>&mdash;a list of string literals, 
-                    character literals, integer literals, negated integer literals, and/or 
-                    value references to anonymous classes, or</para>
+                    character literals, integer literals, negated integer literals, value 
+                    references to value constructors, and/or value references to anonymous 
+                    classes, or</para>
                 </listitem>
                 <listitem>
                     <para>a <emphasis>type case</emphasis>&mdash;an assignability condition 
@@ -2096,10 +2173,23 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
+            <para>For a value case, each value reference must be to:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>a toplevel anonymous class that is a subtype of 
+                    <literal>Identifiable|Null</literal>, or</para>
+                </listitem>
+                <listitem>
+                    <para>a value constructor of a toplevel class that is a subtype of 
+                    <literal>Identifiable</literal>.</para>
+                </listitem>
+            </itemizedlist>
+            
             <synopsis>CaseCondition: "(" (ValueCase | TypeCase) ")"</synopsis>
             <synopsis>ValueCase: CaseValue ("|" CaseValue)*</synopsis>
             <synopsis>TypeCase: "is" Type</synopsis>
-            <synopsis>CaseValue: LiteralCase | BaseExpression</synopsis>
+            <synopsis>CaseValue: LiteralCase | BaseExpression | ConstructorExpression</synopsis>
             <synopsis>LiteralCase: "-"? IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
             
             <para>Every case condition has a type:</para>
@@ -2114,19 +2204,29 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>The type of every case condition must be a subtype of the 
-            switched type, as defined below in <xref linkend="switchcaseelse"/>.</para>
+            <comment><para>Note: to each value constructor, the compiler assigns an internal
+            type which is a subtype of the type of the class to which the constructor belongs.
+            The union of all internal value constructor types for value constructors listed 
+            in the <literal>of</literal> clause of the class declaration covers the class 
+            type.</para></comment>
             
-            <para>For a value case, each value reference must be to an anonymous class that
-            is a subtype of <literal>Identifiable|Null</literal>.</para>
+            <para>For a case of type <literal>U</literal> of a <literal>switch</literal> with 
+            switched type <literal>V</literal>, as defined below in 
+            <xref linkend="switchcaseelse"/>:</para>
             
-            <para>For a type case of type <literal>U</literal>, and a switched type 
-            <literal>V</literal>, the intersection type <literal>V&amp;U</literal> must not 
-            be exactly <literal>Nothing</literal>. Then the <literal>switch</literal> 
-            variable or, if there is no inline variable declared by the <literal>switch</literal>, 
-            the value referred by the <literal>switch</literal> expression, will be treated 
-            by the compiler as having the type <literal>V&amp;U</literal> inside the 
-            <literal>case</literal> block.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>the intersection type <literal>V&amp;U</literal> must not be exactly 
+                    <literal>Nothing</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>if the case is a type case, the <literal>switch</literal> variable, 
+                    or, if there is no inline variable declared by the <literal>switch</literal>, 
+                    the value referred by the <literal>switch</literal> expression, will be 
+                    treated by the compiler as having the type <literal>V&amp;U</literal> inside 
+                    the <literal>case</literal> block.</para>
+                </listitem>
+            </itemizedlist>
             
             <para>As a special exception to the above, if a <literal>switch</literal> occurs 
             in a <literal>dynamic</literal> block, and there is no switched type, the 
@@ -2270,7 +2370,7 @@ else {
             <para>The <literal>switch/case/else</literal> conditional has the following 
             form:</para>
             
-            <synopsis>SwitchCaseElse: Switch Case+ DefaultCase?</synopsis>
+            <synopsis>SwitchCaseElse: Switch Case+ Else?</synopsis>
             
             <para>Every <literal>switch</literal> conditional has a
             <literal>switch</literal> clause.</para> 
@@ -2292,8 +2392,8 @@ else {
             
             <synopsis>SwitchVariableOrExpression: Expression | Variable Specifier</synopsis>
             
-            <para>The <emphasis>switched type</emphasis> is the type of the expression
-            or inline variable.</para>
+            <para>The <emphasis>switched type</emphasis> is the type of the expression or 
+            inline variable.</para>
             
             <comment><para>Note: there is an ambiguity here between assignment expressions
             and inline variable declarations. This ambiguity is resolved in favor of 
@@ -2314,13 +2414,15 @@ else {
                     and,</para>
                 </listitem>
                 <listitem>
+                    <para>optionally, a chain of an arbitrary number of child 
+                    <literal>else if</literal> clauses, and/or</para>
+                </listitem>
+                <listitem>
                     <para>optionally, an <literal>else</literal> clause.</para>
                 </listitem>
             </itemizedlist>
             
             <synopsis>Case: "case" CaseCondition Block</synopsis>
-            
-            <synopsis>DefaultCase: "else" Block</synopsis>
             
             <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
             if:</para>
@@ -2359,7 +2461,7 @@ else {
             variable or, if there is no inline variable declared by the <literal>switch</literal>, 
             the value referred by the <literal>switch</literal> expression, will be treated 
             by the compiler as having the type <literal>V~U</literal> inside the 
-            <literal>case</literal> block, where <literal>V</literal> is the switched type, 
+            <literal>else</literal> block, where <literal>V</literal> is the switched type, 
             and <literal>U</literal> is the union type formed by the types of the case 
             conditions of the <literal>switch</literal>.</para>
             
@@ -2424,8 +2526,8 @@ case (is Float) {
             <synopsis>Fail: "else" Block</synopsis>
             
             <para>Every <literal>for/else</literal> conditional construct has an 
-            <literal>for</literal> clause. The construct may optionally include
-            an <literal>else</literal> clause, as specified in 
+            <literal>for</literal> clause. The construct may optionally include an 
+            <literal>else</literal> clause, as specified in 
             <xref linkend="executionofloops"/>.</para>
             
             <para>The <literal>for</literal> iterator has an <emphasis>iterator 

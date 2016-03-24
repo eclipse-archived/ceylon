@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class NamedArgumentSequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    NamedArgumentSequencedTypeParamInvocation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public final void algo() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                algo$canonical$($ceylontmp$strings$0);
+            }
+            returning null;
+        );
+    }
+    
+    private void algo$canonical$(final .ceylon.language.Sequential<? extends T> strings) {
+    }
+    
+    public final void algo(final .ceylon.language.Sequential<? extends T> strings) {
+        (
+            let
+            {
+                algo$canonical$(strings);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation.class, $reified$T);
+    }
+}
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    static void foo() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String> arg$1$callable$ = new .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentSequencedTypeParamInvocation<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
+                .ceylon.language.Sequential<? extends .ceylon.language.String> arg$1$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                        .ceylon.language.String.instance("x"),
+                        .ceylon.language.String.instance("y")});
+                arg$1$callable$.algo(arg$1$0);
+            }
+            returning null;
+        );
+    }
+}

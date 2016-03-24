@@ -672,4 +672,5 @@ interface DefiniteAssignment {
             j = 0;
         }
     }
+    
 }

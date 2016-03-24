@@ -66,3 +66,65 @@ void check(My<out String> myout, My<in String> myin) {
     myin.var = "";
     @error myin.var = 1;
 }
+
+interface Pair<First, Second> {
+    shared formal Pair<First, Second> clone();
+    shared formal Pair<out First, out Second> clone2();
+    shared formal Pair<in First, in Second> clone3();
+    shared formal List<Second> list();
+}
+
+void multicheck(Pair<String, out Object> myout, Pair<String, in String> myin) {
+    @type:"Pair<String,out Object>" myout.clone();
+    @type:"Pair<String,in String>" myin.clone();
+    @type:"Pair<out String,out Object>" myout.clone2();
+    @type:"Pair<out String,out Anything>" myin.clone2();
+    @type:"Pair<in String,in Nothing>" myout.clone3();
+    @type:"Pair<in String,in String>" myin.clone3();
+    
+    
+    @type:"List<Object>" myout.list();
+    @type:"List<Anything>" myin.list();
+}
+
+interface Constrained<X> 
+        given X satisfies Identifiable {
+    shared formal List<X> list;
+    shared formal Constrained<X> clone;
+    shared formal Constrained<out X> clone1;
+    shared formal Constrained<in X> clone2;
+}
+
+class Foo() {}
+
+void constrainedCheck(Constrained<out Foo> myout, Constrained<in Foo> myin) {
+    @type:"List<Foo>" value _1 = myout.list;
+    @type:"List<Identifiable>" value _2 = myin.list;
+    @type:"Constrained<out Foo>" value _3 = myout.clone;
+    @type:"Constrained<in Foo>" value _4 = myin.clone;
+    @type:"Constrained<out Foo>" value _5 = myout.clone1;
+    @type:"Constrained<out Identifiable>" value _6 = myin.clone1;
+    @type:"Constrained<in Nothing>" value _7 = myout.clone2;
+    @type:"Constrained<in Foo>" value _8 = myin.clone2;
+}
+
+void instantiations() {
+    
+    interface Set<T> {}
+    
+    Set<String> & Set<out Object> set1 = nothing;
+    Set<Object> & Set<in String> set2 = nothing;
+    Set<out String> & Set<out Integer> set3 = nothing;
+    Set<in Integer> & Set<in String> set4 = nothing;
+    Set<Integer> & Set<String> set5 = nothing;
+    Set<Integer> & Set<in String> set6 = nothing;
+    Set<Integer> & Set<out String> set7 = nothing;
+    @type:"Set<out Nothing>" value ss3 = set3;
+    @type:"Set<in Integer|String>" value ss4 = set4;
+    @type:"Set<String>" value ss1 = set1;
+    @type:"Set<Object>" value ss2 = set2;
+    @type:"Nothing" value ss5 = set5;
+    @type:"Nothing" value ss6 = set5;
+    @type:"Nothing" value ss7 = set5;
+
+}
