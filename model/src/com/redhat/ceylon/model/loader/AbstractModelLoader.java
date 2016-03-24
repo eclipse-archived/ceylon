@@ -1152,7 +1152,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decl = makeTypeAlias(classMirror);
                     setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
                 }else{
-                    final List<MethodMirror> constructors = getClassConstructors(classMirror, constructorOnly);
+                    final List<MethodMirror> constructors = getClassConstructors(classMirror, classMirror, constructorOnly);
                     if (!constructors.isEmpty()) {
                         Boolean hasConstructors = hasConstructors(classMirror);
                         if (constructors.size() > 1) {
@@ -1483,10 +1483,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private List<MethodMirror> getClassConstructors(ClassMirror classMirror, MethodMirrorFilter p) {
+    private List<MethodMirror> getClassConstructors(ClassMirror instantiatedType, ClassMirror methodContainer, MethodMirrorFilter p) {
         LinkedList<MethodMirror> constructors = new LinkedList<MethodMirror>();
-        boolean isFromJDK = isFromJDK(classMirror);
-        for(MethodMirror methodMirror : classMirror.getDirectMethods()){
+        boolean isFromJDK = isFromJDK(methodContainer);
+        for(MethodMirror methodMirror : methodContainer.getDirectMethods()){
             // We skip members marked with @Ignore, unless they value constructor getters
             if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null
                     &&methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null)
@@ -1506,10 +1506,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
 
             // if we are expecting Ceylon code, check that we have enough reified type parameters
-            if(classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
-                List<AnnotationMirror> tpAnnotations = getTypeParametersFromAnnotations(classMirror);
-                int tpCount = tpAnnotations != null ? tpAnnotations.size() : classMirror.getTypeParameters().size();
-                if(!checkReifiedTypeDescriptors(tpCount, classMirror.getQualifiedName(), methodMirror, true))
+            if(methodContainer.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
+                List<AnnotationMirror> tpAnnotations = getTypeParametersFromAnnotations(instantiatedType);
+                int tpCount = tpAnnotations != null ? tpAnnotations.size() : instantiatedType.getTypeParameters().size();
+                if(!checkReifiedTypeDescriptors(tpCount, instantiatedType.getQualifiedName(), methodMirror, true))
                     continue;
             }
             
@@ -2376,10 +2376,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (hasConstructors != null && hasConstructors) {
             HashMap<String, MethodMirror> m = new HashMap<>();
             // Get all the java constructors...
-            for (MethodMirror ctorMirror : getClassConstructors(classMirror, constructorOnly)) {
+            for (MethodMirror ctorMirror : getClassConstructors(classMirror, classMirror, constructorOnly)) {
                 m.put(getCtorName(ctorMirror), ctorMirror);
             }
-            for (MethodMirror ctor : getClassConstructors(classMirror.getEnclosingClass() != null ? classMirror.getEnclosingClass() : classMirror, new ValueConstructorGetter(classMirror))) {
+            for (MethodMirror ctor : getClassConstructors(
+                    classMirror,
+                    classMirror.getEnclosingClass() != null ? classMirror.getEnclosingClass() : classMirror,
+                            
+                            new ValueConstructorGetter(classMirror))) {
                 Object name = getAnnotationValue(ctor, CEYLON_NAME_ANNOTATION);
                 MethodMirror ctorMirror = m.remove(name);
                 Constructor c;
