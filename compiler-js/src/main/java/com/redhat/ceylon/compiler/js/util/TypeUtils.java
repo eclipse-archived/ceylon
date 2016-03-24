@@ -350,7 +350,7 @@ public class TypeUtils {
                         return;
                     }
                 }
-                gen.out("'", tp.getName(), "'");
+                gen.out("'", gen.getNames().typeParameterName(tp), "'");
                 //gen.out.spitOut("Passing reference to " + tp.getQualifiedNameString() + " as a string...");
                 //gen.out("/*Please report this to the ceylon-js team: METHOD TYPEPARM plist ",
                 //Integer.toString(plistCount), "#", tp.getName(), "*/'", type.getProducedTypeQualifiedName(),
