@@ -50,6 +50,8 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
         if(version == null)
             return;
         loadModule(module, version);
+        // we do depend on having a Main
+        loadModule("com.redhat.ceylon.java.main", Versions.CEYLON_VERSION_NUMBER);
 
         if(!force)
             errorOnConflictingModule(module, version);

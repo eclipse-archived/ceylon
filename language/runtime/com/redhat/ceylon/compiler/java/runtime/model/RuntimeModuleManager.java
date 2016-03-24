@@ -9,6 +9,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.AndroidUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
@@ -126,8 +127,6 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
 
     protected String runtimeVersion(String moduleName, String version) {
         RuntimeResolver runtimeResolver = this.runtimeResolver;
-        if(runtimeResolver == null)
-        	runtimeResolver = OverridesRuntimeResolver.getFromThreadLocal();
         if (runtimeResolver == null && Thread.currentThread().getContextClassLoader() instanceof org.jboss.modules.ConcurrentClassLoader) {
             Object contextModuleLoader;
             try {

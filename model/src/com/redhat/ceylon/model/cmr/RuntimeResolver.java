@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.runtime.model;
+package com.redhat.ceylon.model.cmr;
 
 /**
  * Contract to determine the runtime version of a module 

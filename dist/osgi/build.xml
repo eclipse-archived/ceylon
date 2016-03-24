@@ -327,6 +327,7 @@
             <module name="com.redhat.ceylon.compiler.java" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
             <module name="com.redhat.ceylon.compiler.js" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
             <module name="com.redhat.ceylon.typechecker" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <module name="com.redhat.ceylon.java.main" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
         </ceylon-p2>
     	<!--
         <exec dir="${basedir}" executable="eclipse" failonerror="true">

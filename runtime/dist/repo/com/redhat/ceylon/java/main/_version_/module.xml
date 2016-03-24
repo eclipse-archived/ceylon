@@ -22,20 +22,15 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="ceylon.language" slot="@ceylon-version@">
+<module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.java.main" slot="@ceylon-version@">
     <resources>
-        <resource-root path="ceylon.language-@ceylon-version@.car"/>
+        <resource-root path="com.redhat.ceylon.java.main-@ceylon-version@.jar"/>
     </resources>
-
-    <!--
-      WARNING! Make sure this list is always the same as the one in
-      /compiler-java/src/com/redhat/ceylon/compiler/loader/AbstractModelLoader.java
-    -->
     <dependencies>
-        <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
-        <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
-        <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@"/>
-        <module name="org.jboss.modules" slot="1.4.4.Final" export="true"/>
+        <module name="ceylon.language" slot="@ceylon-version@"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
+        <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
         <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

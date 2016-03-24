@@ -35,7 +35,7 @@ import com.redhat.ceylon.compiler.java.runtime.Main.ClassPath.ModuleNotFoundExce
 public class MainTest {
 
     public static String getCurrentPackagePath() {
-        return "test-jvm/"+getCurrentPackagePathPart();
+        return "test/"+getCurrentPackagePathPart();
     }
 
     public static String getCurrentPackagePathPart() {
@@ -51,7 +51,7 @@ public class MainTest {
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         
         String javaModulePath = javaModule.replace('.', '/');
-        File moduleFile = new File("test-jvm/"+javaModulePath, javaClassName+".java");
+        File moduleFile = new File("test/"+javaModulePath, javaClassName+".java");
         Iterable<? extends JavaFileObject> units = fileManager.getJavaFileObjects(moduleFile);
         File destDir = new File("build/javaModules");
         FileUtil.delete(destDir);
@@ -77,13 +77,13 @@ public class MainTest {
     public void testCeylonModule() throws IOException, ModuleNotFoundException{
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-        File moduleFile = new File("test-jvm/foo/foo", "$module_.java");
+        File moduleFile = new File("test/foo/foo", "$module_.java");
         Iterable<? extends JavaFileObject> units = fileManager.getJavaFileObjects(moduleFile);
         File destDir = new File("build/mainTest");
         FileUtil.delete(destDir);
         destDir.mkdirs();
         CompilationTask task = compiler.getTask(null, null, null, Arrays.asList("-d", destDir.getPath(), 
-                "-cp", "build/classes"+File.pathSeparator+"ide-dist/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"), null, units);
+                "-cp", "build/classes"+File.pathSeparator+"../language/ide-dist/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"), null, units);
         Boolean result = task.call();
         assertTrue(result != null && result.booleanValue());
 

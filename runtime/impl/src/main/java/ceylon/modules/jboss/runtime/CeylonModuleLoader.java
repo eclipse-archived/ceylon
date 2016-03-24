@@ -47,11 +47,11 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.compiler.java.runtime.model.RuntimeResolver;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.RuntimeResolver;
 
 import ceylon.modules.api.runtime.LogChecker;
 import ceylon.modules.api.util.ModuleVersion;

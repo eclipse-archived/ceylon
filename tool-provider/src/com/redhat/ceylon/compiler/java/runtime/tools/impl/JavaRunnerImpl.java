@@ -7,7 +7,6 @@ import java.net.URL;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.JVMModuleUtil;
-import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunner;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions;
@@ -31,7 +30,6 @@ public class JavaRunnerImpl implements JavaRunner {
                 .upgradeDist(!options.isDowngradeDist())
                 .logger(new CmrLogger(options.isVerbose("cmr")))
                 .buildManager();
-        new OverridesRuntimeResolver(repositoryManager.getOverrides()).installInThreadLocal();
         ClassLoader delegateClassLoader = null;
         if(options instanceof JavaRunnerOptions){
             delegateClassLoader = ((JavaRunnerOptions) options).getDelegateClassLoader();

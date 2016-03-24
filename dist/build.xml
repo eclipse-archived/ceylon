@@ -19,9 +19,9 @@
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-cli,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon.language,ceylon-runtime" />
-    <property name="moddirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime" />
-    <property name="testdirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime" />
+    <property name="modules" value="ceylon-common,ceylon-cli,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon-java-main,ceylon.language,ceylon-runtime" />
+    <property name="moddirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
+    <property name="testdirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
@@ -37,6 +37,7 @@
     <property name="project-runtime.dir" location="${projects.base.dir}/runtime"/>
     <property name="project-tool-provider.dir" value="${projects.base.dir}/tool-provider"/>
     <property name="project-js.dir" location="${projects.base.dir}/compiler-js"/>
+    <property name="project-java-main.dir" location="${projects.base.dir}/java-main"/>
     
     <property name="github-url" value="https://github.com/"/>
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
@@ -509,7 +510,16 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-runtime" depends="install-common,install-model,install-cmr,install-tool-provider,install-language,install-runtime-nodeps" />
+    <target name="install-java-main" depends="install-common,install-model,install-cmr,install-language,install-java-main-nodeps" />
+    <target name="install-java-main-nodeps">
+        <ant antfile="${project-java-main.dir}/build.xml" target="publish" dir="${project-java-main.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-runtime" depends="install-common,install-model,install-cmr,install-tool-provider,install-language,install-java-main,install-runtime-nodeps" />
     <target name="install-runtime-nodeps">
         <ant antfile="${project-runtime.dir}/build.xml" target="publish" dir="${project-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>

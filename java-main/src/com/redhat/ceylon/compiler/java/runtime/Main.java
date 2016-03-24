@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.api.OverridesRuntimeResolver;
 import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.Configuration;
@@ -40,7 +42,6 @@ import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleSpec.Option;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.java.runtime.model.OverridesRuntimeResolver;
 import com.redhat.ceylon.langtools.classfile.Annotation;
 import com.redhat.ceylon.langtools.classfile.Attribute;
 import com.redhat.ceylon.langtools.classfile.ClassFile;
@@ -921,8 +922,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
-        // FIXME: we should get rid of that and call reset with the runtimeResolver
-        new OverridesRuntimeResolver(parsedOverrides).installInThreadLocal();
+        Metamodel.resetModuleManager(new OverridesRuntimeResolver(parsedOverrides));
         if(moduleClassLoader == null)
         	setupModuleClassLoader(module);
         if (classPath == null) {
@@ -931,7 +931,6 @@ public class Main {
             registerInMetamodel("ceylon.language", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
             registerInMetamodel("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false);
-            registerInMetamodel("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
         }
         if(module.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME))
             version = null;
