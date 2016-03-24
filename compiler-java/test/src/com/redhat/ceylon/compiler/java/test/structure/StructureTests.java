@@ -134,7 +134,10 @@ public class StructureTests extends CompilerTests {
                 CompilerError.warning(26, "literal value is not small but is assignable to small declaration 'toosmall2'"),
                 CompilerError.warning(29, "literal value is not small but is assignable to small declaration 's'"),
                 CompilerError.warning(30, "literal value is not small but is assignable to small declaration 's'"),
-                CompilerError.warning(32, "literal value is not small but is assignable to small declaration 'smallFunction3'"));
+                CompilerError.warning(32, "literal value is not small but is assignable to small declaration 'smallFunction3'"),
+                CompilerError.warning(45, "small annotation on actual member 'big' in 'SmallRefiner' will be ignored: 'big' in 'SmallRefinement' is not small"),
+                CompilerError.warning(51, "small annotation on parameter 'a' of 'bigParam' will be ignored: corresponding parameter 'a' of 'bigParam' is not small")
+                );
     }
     
     //

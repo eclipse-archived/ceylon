@@ -1265,8 +1265,9 @@ public class RefinementVisitor extends Visitor {
             boolean refinedSmall = ((FunctionOrValue)refinedDeclaration).isSmall();
             if (refiningSmall
                     && !refinedSmall) {
-                that.addError("refining member cannot be made small when refined member is not small:" 
-                    + message(refinedDeclaration) + " is not small, but " + message(refiningDeclaration) + " is");
+                that.addUsageWarning(Warning.smallIgnored, "small annotation on actual member " +
+                        message(refiningDeclaration) + " will be ignored: " +
+                        message(refinedDeclaration) + " is not small");
             }
             ((FunctionOrValue)refiningDeclaration).setSmall(refinedSmall);
         }
@@ -1512,8 +1513,8 @@ public class RefinementVisitor extends Visitor {
                 Declaration member, Parameter param, Declaration refinedMember, Parameter refinedParam) {
         if (param.getModel().isSmall()
                 && !refinedParam.getModel().isSmall()) {
-            that.addError("parameter '"+param.getName()+"' of '"+member.getName()+
-                    "' cannot be annotated small: corresponding parameter '"+refinedParam.getName()+
+            that.addUsageWarning(Warning.smallIgnored, "small annotation on parameter '"+param.getName()+"' of '"+member.getName()+
+                    "' will be ignored: corresponding parameter '"+refinedParam.getName()+
                     "' of '"+refinedMember.getName()+"' is not small");
         }
         param.getModel().setSmall(refinedParam.getModel().isSmall());

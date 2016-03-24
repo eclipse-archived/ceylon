@@ -41,12 +41,12 @@ abstract class SmallRefinement() {
 }
 class SmallRefiner() extends SmallRefinement() {
     shared actual Integer little() => 1;
-    @error:"refining member cannot be made small when refined member is not small:'big' in 'SmallRefinement' is not small, but 'big' in 'SmallRefiner' is"
+    //@error:"refining member cannot be made small when refined member is not small:'big' in 'SmallRefinement' is not small, but 'big' in 'SmallRefiner' is"
     shared actual small Integer big() => 2;
     
     shared actual void littleParam(Integer a) {}
     
     shared actual void bigParam(
-        @error:"parameter 'a' of 'bigParam' cannot be annotated small: corresponding parameter 'a' of 'bigParam' is not small"
+        //@error:"parameter 'a' of 'bigParam' cannot be annotated small: corresponding parameter 'a' of 'bigParam' is not small"
         small Integer a) {}
 }

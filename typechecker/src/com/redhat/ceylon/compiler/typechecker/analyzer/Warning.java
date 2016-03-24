@@ -19,5 +19,6 @@ public enum Warning {
     importsOtherJdk,
     javaAnnotationElement,
     syntaxDeprecation,
-    notSmall
+    smallIgnored,
+    literalNotSmall
 }

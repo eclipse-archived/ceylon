@@ -37,7 +37,7 @@ public class SmallVisitor extends Visitor {
                 (term instanceof Tree.NaturalLiteral || 
                 (term instanceof Tree.NegativeOp &&  
                     ((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral))) {
-            term.addUsageWarning(Warning.notSmall, 
+            term.addUsageWarning(Warning.literalNotSmall, 
                     "literal value is not small but is assignable to small declaration '"+
                             assigning.getName(term.getUnit())+"'", 
                     Backend.Java);
