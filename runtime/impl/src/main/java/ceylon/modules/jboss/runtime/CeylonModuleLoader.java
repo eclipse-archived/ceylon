@@ -79,6 +79,8 @@ public class CeylonModuleLoader extends ModuleLoader
     private static final ModuleIdentifier ANTLR_ANTLR;
     private static final ModuleIdentifier ANTLR_STRINGTEMPLATE;
     private static final ModuleIdentifier ANTLR_RUNTIME;
+    private static final ModuleIdentifier CLI;
+    private static final ModuleIdentifier MARKDOWN_PAPERS;
     // Maven support
     private static final ModuleIdentifier AETHER_API;
     private static final ModuleIdentifier AETHER_SPI;
@@ -118,7 +120,8 @@ public class CeylonModuleLoader extends ModuleLoader
         COMPILER = ModuleIdentifier.create("com.redhat.ceylon.compiler.java", defaultVersion);
         LANGTOOLS_CLASSFILE = ModuleIdentifier.create("com.redhat.ceylon.langtools.classfile", defaultVersion);
         TOOL_PROVIDER = ModuleIdentifier.create("com.redhat.ceylon.tool.provider", defaultVersion);
-        
+        CLI = ModuleIdentifier.create("com.redhat.ceylon.cli", defaultVersion);
+
         // Maven support
         AETHER_API = ModuleIdentifier.create("org.eclipse.aether.aether-api", "1.1.0");
         AETHER_SPI = ModuleIdentifier.create("org.eclipse.aether.aether-spi", "1.1.0");
@@ -146,6 +149,7 @@ public class CeylonModuleLoader extends ModuleLoader
         ANTLR_ANTLR = ModuleIdentifier.create("org.antlr.antlr", "2.7.7");
         ANTLR_STRINGTEMPLATE = ModuleIdentifier.create("org.antlr.stringtemplate", "3.2.1");
         ANTLR_RUNTIME = ModuleIdentifier.create("org.antlr.runtime", "3.4");
+        MARKDOWN_PAPERS = ModuleIdentifier.create("org.tautua.markdownpapers.core", "1.2.7");
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
 
@@ -158,12 +162,14 @@ public class CeylonModuleLoader extends ModuleLoader
         BOOTSTRAP.add(COMPILER);
         BOOTSTRAP.add(LANGTOOLS_CLASSFILE);
         BOOTSTRAP.add(TOOL_PROVIDER);
+        BOOTSTRAP.add(CLI);
         BOOTSTRAP.add(MODULES);
         BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
         BOOTSTRAP.add(ANTLR_RUNTIME);
         BOOTSTRAP.add(ANTLR_ANTLR);
         BOOTSTRAP.add(ANTLR_STRINGTEMPLATE);
+        BOOTSTRAP.add(MARKDOWN_PAPERS);
         // Maven support
         BOOTSTRAP.add(AETHER_API);
         BOOTSTRAP.add(AETHER_SPI);
