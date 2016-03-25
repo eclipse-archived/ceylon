@@ -32,8 +32,14 @@ tagged("Basic types")
 shared abstract class Object() 
         extends Anything() {
     
-    "Determine if two values are equal. Implementations
-     should respect the constraints that:
+    "Determine if two values are equal.
+     
+     For any two non-null objects `x` and `y`, `x.equals(y)`
+     may be written as:
+     
+         x == y 
+     
+     Implementations should respect the constraints that:
      
      - if `x===y` then `x==y` (reflexivity), 
      - if `x==y` then `y==x` (symmetry), 

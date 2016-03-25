@@ -27,7 +27,12 @@ shared interface Correspondence<in Key, out Item=Anything>
         given Key satisfies Object {
     
     "Returns the value defined for the given key, or `null` 
-     if there is no value defined for the given key."
+     if there is no value defined for the given key.
+     
+     For any instance `c` of `Correspondence`, `c.get(key)` 
+     may be written using the item operator:
+     
+         c[key]"
     see (`function Correspondence.getAll`)
     shared formal Item? get(Key key);
     

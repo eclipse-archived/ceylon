@@ -32,7 +32,12 @@ shared interface Summable<Other> of Other
     "The result of adding the given value to this value. 
      This operation should never perform any kind of 
      mutation upon either the receiving value or the 
-     argument value."
+     argument value.
+     
+     For any two instances `x` and `y` of a type that 
+     implements `Summable`, `x.plus(y)` may be written as:
+     
+         x + y"
     shared formal Other plus(Other other);
     
 }
