@@ -73,7 +73,7 @@ public class WebDAVContentStore extends URLContentStore {
         super(root, log, offline, timeout, proxy);
     }
 
-    protected SardineImpl getSardine() {
+    private SardineImpl getSardine() {
         if (sardine == null) {
             synchronized (this) {
                 if (sardine == null) {
@@ -96,6 +96,7 @@ public class WebDAVContentStore extends URLContentStore {
         return sardine;
     }
 
+    @Override
     public OpenNode create(Node parent, String child) {
         if (!connectionAllowed()) {
             return null;
@@ -109,6 +110,7 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
+    @Override
     public ContentHandle peekContent(Node node) {
         if (!connectionAllowed()) {
             return null;
@@ -121,10 +123,12 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
+    @Override
     public ContentHandle getContent(Node node) throws IOException {
         return new WebDAVContentHandle(getUrlAsString(node));
     }
 
+    @Override
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         if (!connectionAllowed()) {
             return null;
@@ -168,7 +172,7 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
-    public RepositoryException convertIOException(IOException x) {
+    private RepositoryException convertIOException(IOException x) {
         if (x instanceof SardineException) {
             // hide this from callers because its getMessage() is borked
             SardineException sx = (SardineException) x;
@@ -186,7 +190,7 @@ public class WebDAVContentStore extends URLContentStore {
         return new RepositoryException(x);
     }
 
-    protected void mkdirs(Sardine s, Node parent) throws IOException {
+    private void mkdirs(Sardine s, Node parent) throws IOException {
         if (parent == null)
             return;
 
@@ -198,10 +202,12 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
+    @Override
     protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
         return new WebDAVContentHandle(root + path);
     }
 
+    @Override
     public Iterable<? extends OpenNode> find(Node parent) {
         if (!connectionAllowed()) {
             return Collections.emptyList();
@@ -239,6 +245,7 @@ public class WebDAVContentStore extends URLContentStore {
         }
     }
 
+    @Override
     protected boolean urlExists(URL url) {
         if (!connectionAllowed()) {
             return false;
@@ -264,6 +271,7 @@ public class WebDAVContentStore extends URLContentStore {
             this.url = url;
         }
 
+        @Override
         public boolean hasBinaries() {
             if (!connectionAllowed()) {
                 return false;
@@ -277,11 +285,13 @@ public class WebDAVContentStore extends URLContentStore {
             }
         }
 
+        @Override
         public InputStream getBinariesAsStream() throws IOException {
             SizedInputStream ret = getBinariesAsSizedStream();
             return ret != null ? ret.getInputStream() : null;
         }
         
+        @Override
         public SizedInputStream getBinariesAsSizedStream() throws IOException {
             if (!connectionAllowed()) {
                 return null;
@@ -291,10 +301,12 @@ public class WebDAVContentStore extends URLContentStore {
             return new SizedInputStream(inputStream, length != null ? length.longValue() : -1);
         }
 
+        @Override
         public File getContentAsFile() throws IOException {
             return null;
         }
 
+        @Override
         public long getSize() throws IOException {
             if (connectionAllowed()) {
                 if (isHerd()) {
@@ -312,6 +324,7 @@ public class WebDAVContentStore extends URLContentStore {
             return -1L;
         }
 
+        @Override
         public long getLastModified() throws IOException {
             if (connectionAllowed()) {
                 if (isHerd()) {
@@ -329,6 +342,7 @@ public class WebDAVContentStore extends URLContentStore {
             return -1L;
         }
 
+        @Override
         public void clean() {
         }
     }
