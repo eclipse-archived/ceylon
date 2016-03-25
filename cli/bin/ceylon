@@ -57,11 +57,25 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
         CEYL_COLS="$(tput 2>/dev/null cols)"
     fi
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$CEYL_COLS"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=$(tput 2>/dev/null setaf 1)"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.green=$(tput 2>/dev/null setaf 2)"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.yellow=$(tput 2>/dev/null setaf 3)"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.blue=$(tput 2>/dev/null setaf 4)"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.reset=$(tput 2>/dev/null sgr0)"
+    case "$TERM" in
+        xterm*|screen*|linux*|ansi*)
+            # ANSI escape sequences
+            e="$(printf '\033')"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=${e}[31m"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.green=${e}[32m"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.yellow=${e}[33m"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.blue=${e}[34m"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.reset=${e}[0m"
+            ;;
+        *)
+            # unknown escape sequences, consult terminfo/termcap
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=$(tput 2>/dev/null setaf 1)"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.green=$(tput 2>/dev/null setaf 2)"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.yellow=$(tput 2>/dev/null setaf 3)"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.blue=$(tput 2>/dev/null setaf 4)"
+            PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.reset=$(tput 2>/dev/null sgr0)"
+            ;;
+    esac
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename "$PRG")"
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
