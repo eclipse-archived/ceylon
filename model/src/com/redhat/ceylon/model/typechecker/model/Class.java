@@ -225,6 +225,18 @@ public class Class extends ClassOrInterface implements Functional {
     	return (flags&OVERLOADED)!=0;
     }
     
+    @Override
+    public boolean isJsNew() {
+        if (hasConstructors()) {
+            Constructor defaultConstructor = 
+                    getDefaultConstructor();
+            return defaultConstructor!=null &&
+                    defaultConstructor.isJsNew();
+        } else {
+            return false;
+        }
+    }
+    
     public void setOverloaded(boolean overloaded) {
         if (overloaded) {
             flags|=OVERLOADED;

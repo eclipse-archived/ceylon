@@ -234,6 +234,9 @@ public class JsonPackage extends LazyPackage {
                 cnst.setScope(cls);
                 cnst.setUnit(cls.getUnit());
                 cnst.setExtendedType(cls.getType());
+                if (cons.getValue().containsKey(MetamodelGenerator.KEY_JS_NEW)) {
+                    cnst.setJsNew((Boolean)cons.getValue().remove(MetamodelGenerator.KEY_JS_NEW));
+                }
                 setAnnotations(cnst, (Integer)cons.getValue().remove(MetamodelGenerator.KEY_PACKED_ANNS),
                         (Map<String,Object>)cons.getValue().remove(MetamodelGenerator.KEY_ANNOTATIONS));
                 final List<Map<String,Object>> modelPlist = (List<Map<String,Object>>)cons.getValue().remove(
@@ -268,6 +271,7 @@ public class JsonPackage extends LazyPackage {
                     cf.setVisibleScope(cnst.getVisibleScope());
                     cf.setShared(cnst.isShared());
                     cf.setDeprecated(cnst.isDeprecated());
+                    cf.setJsNew(cnst.isJsNew());
                     cls.addMember(cf);
                 }
             }
