@@ -17,7 +17,7 @@ public class Constructors {
     static void classConstructor(final Tree.Constructor that, final Tree.ClassDefinition cdef,
             final List<Tree.Constructor> constructors, final GenerateJsVisitor gen) {
         gen.comment(that);
-        Constructor d = TypeUtils.getConstructor(that.getDeclarationModel());
+        final Constructor d = TypeUtils.getConstructor(that.getDeclarationModel());
         final Class container = cdef.getDeclarationModel();
         final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
         if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
@@ -25,7 +25,7 @@ public class Constructors {
         }
         //Add reference to metamodel
         gen.out(fullName, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        TypeUtils.encodeForRuntime(that, d, that.getAnnotationList(), gen);
         gen.endLine(true);
         gen.out(gen.getNames().name(container), ".", fullName, "=", fullName);
         gen.endLine(true);

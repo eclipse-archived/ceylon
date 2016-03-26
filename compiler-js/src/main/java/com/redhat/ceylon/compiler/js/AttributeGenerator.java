@@ -153,7 +153,7 @@ public class AttributeGenerator {
                     if (attributeNode == null) {
                         TypeUtils.encodeForRuntime(expr, decl, gen);
                     } else {
-                        TypeUtils.encodeForRuntime(decl, attributeNode.getAnnotationList(), gen);
+                        TypeUtils.encodeForRuntime(attributeNode, decl, attributeNode.getAnnotationList(), gen);
                     }
                     gen.out(")");
                     gen.endLine(true);
@@ -244,10 +244,10 @@ public class AttributeGenerator {
                 gen.out("undefined");
             }
             gen.out(",");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+            TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
             if (setterDef != null) {
                 gen.out(",");
-                TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
+                TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
             }
             gen.out(")");
             gen.endLine(true);
@@ -295,10 +295,10 @@ public class AttributeGenerator {
                         gen.out(",undefined");
                     }
                     gen.out(",");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+                    TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
                     if (setterDef != null) {
                         gen.out(",");
-                        TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
+                        TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
                     }
                     gen.out(")");
                     gen.endLine(true);
@@ -335,7 +335,7 @@ public class AttributeGenerator {
                         gen.out(",undefined");
                     }
                     gen.out(",");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+                    TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
                     gen.out(")");
                     gen.endLine(true);
                 }
@@ -373,7 +373,7 @@ public class AttributeGenerator {
             }
             //issue 297 this is only needed in some cases
             gen.out(pnameMeta, "={$crtmm$:");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+            TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
             gen.out("}"); gen.endLine(true);
             if (d.isToplevel()) {
                 gen.out("ex$.", pnameMeta, "=", pnameMeta);

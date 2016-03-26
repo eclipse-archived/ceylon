@@ -143,7 +143,7 @@ public class Singletons {
                 gen.out(objvar);
             }
             gen.out(";},undefined,");
-            TypeUtils.encodeForRuntime(d, annots, gen);
+            TypeUtils.encodeForRuntime(that, d, annots, gen);
             gen.out(")");
             gen.endLine(true);
         } else if (d != null) {
@@ -180,7 +180,7 @@ public class Singletons {
                 if(gen.outerSelf(d))gen.out(".");
             }
             gen.out(objectGetterName, ".$crtmm$=");
-            TypeUtils.encodeForRuntime(d, annots, gen);
+            TypeUtils.encodeForRuntime(that, d, annots, gen);
             gen.endLine(true);
             gen.out(gen.getNames().getter(c, true), "=", objectGetterName);
             gen.endLine(true);
@@ -267,7 +267,7 @@ public class Singletons {
             gen.out("this.", objvar, "=", selfvar, ";");
         }
         gen.out("}return ", nested?"this.":"", objvar, ";};", typevar, "_", singvar, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
         gen.out(";");
         if (td.isClassOrInterfaceMember()) {
             gen.outerSelf(td);

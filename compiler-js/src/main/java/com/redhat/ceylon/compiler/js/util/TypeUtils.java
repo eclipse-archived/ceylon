@@ -781,9 +781,9 @@ public class TypeUtils {
     }
 
     /** Output a metamodel map for runtime use. */
-    public static void encodeForRuntime(final Declaration d, final Tree.AnnotationList annotations,
-            final GenerateJsVisitor gen) {
-        encodeForRuntime(annotations, d, gen, new RuntimeMetamodelAnnotationGenerator() {
+    public static void encodeForRuntime(final Node node, final Declaration d,
+            final Tree.AnnotationList annotations, final GenerateJsVisitor gen) {
+        encodeForRuntime(node, d, gen, new RuntimeMetamodelAnnotationGenerator() {
             @Override public void generateAnnotations() {
                 outputAnnotationsFunction(annotations, d, gen);
             }
@@ -1089,18 +1089,22 @@ public class TypeUtils {
         if (!outputMetamodelTypeList(resolveTargsFromScope, node, pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();
             if (pt.isTypeParameter()) {
-                Declaration tpowner = ((TypeParameter)type).getDeclaration();
-                if (resolveTargsFromScope && ModelUtil.contains((Scope)tpowner, node.getScope())) {
+                final TypeParameter tparm = (TypeParameter)type;
+                final Declaration tpowner = tparm.getDeclaration();
+                final boolean nodeIsDecl = node instanceof Tree.Declaration;
+                boolean rtafs = tpowner instanceof TypeDeclaration == false
+                        && (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() != tpowner : true);
+                if (rtafs && ModelUtil.contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
                         gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",
-                                gen.getNames().typeParameterName((TypeParameter)type));
+                                gen.getNames().typeParameterName(tparm));
                     } else if (tpowner instanceof Function) {
                         gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",
-                                gen.getNames().typeParameterName((TypeParameter)type));
+                                gen.getNames().typeParameterName(tparm));
                     }
                 } else {
-                    gen.out("'", type.getNameAsString(), "$", tpowner.getName(), "'");
+                    gen.out("'", gen.getNames().typeParameterName(tparm), "'");
                 }
             } else if (pt.isTypeAlias()) {
                 outputQualifiedTypename(node, gen.isImported(pkg, type), pt, gen, false);
