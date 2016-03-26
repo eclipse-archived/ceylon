@@ -962,7 +962,7 @@ public class GenerateJsVisitor extends Visitor {
                         defineAttribute(names.self(d), names.name(vc.getDeclarationModel()));
                         out("{return ", typename, "_", names.name(vc.getDeclarationModel()),
                                 "();},undefined,");
-                        TypeUtils.encodeForRuntime(vc.getDeclarationModel(), vc.getAnnotationList(), this);
+                        TypeUtils.encodeForRuntime(vc, vc.getDeclarationModel(), vc.getAnnotationList(), this);
                         out(");");
                     }
                 }
@@ -1168,7 +1168,7 @@ public class GenerateJsVisitor extends Visitor {
                 return true;
             }
             out(names.name(d), ".$crtmm$=");
-            TypeUtils.encodeForRuntime(d, n.getAnnotationList(), this);
+            TypeUtils.encodeForRuntime(n, d, n.getAnnotationList(), this);
             endLine(true);
             return true;
         } else {
@@ -1418,10 +1418,10 @@ public class GenerateJsVisitor extends Visitor {
                 AttributeGenerator.setter(setterDef, this);
             }
             out(",");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+            TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
             if (setterDef != null) {
                 out(",");
-                TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+                TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
             }
             out(");");
         }
@@ -1477,10 +1477,10 @@ public class GenerateJsVisitor extends Visitor {
             AttributeGenerator.setter(setterDef, this);
         }
         out(",");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         if (setterDef != null) {
             out(",");
-            TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
+            TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), setterDef.getAnnotationList(), this);
         }
         out(");");
     }
@@ -1527,7 +1527,7 @@ public class GenerateJsVisitor extends Visitor {
         if (!shareSetter(d)) { out(";"); }
         if (!d.isToplevel())outerSelf(d);
         out(names.setter(d.getGetter()), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         endLine(true);
         AttributeGenerator.generateAttributeMetamodel(that, false, true, this);
     }
@@ -1644,10 +1644,10 @@ public class GenerateJsVisitor extends Visitor {
                             out(",undefined");
                         }
                         out(",");
-                        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), this);
+                        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
                         if (setterDef != null) {
                             out(",");
-                            TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(),
+                            TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(),
                                     setterDef.getAnnotationList(), this);
                         }
                         out(")");
@@ -3435,7 +3435,7 @@ public class GenerateJsVisitor extends Visitor {
         defineAttribute(names.self(klass), names.name(that.getDeclarationModel()));
         out("{return ", names.name(klass), "_", names.name(that.getDeclarationModel()),
                 "();},undefined,");
-        TypeUtils.encodeForRuntime(that.getDeclarationModel(), that.getAnnotationList(), this);
+        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         out(");");
     }
 
