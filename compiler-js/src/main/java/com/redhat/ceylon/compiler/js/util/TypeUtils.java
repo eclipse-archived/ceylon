@@ -1092,12 +1092,12 @@ public class TypeUtils {
                 final TypeParameter tparm = (TypeParameter)type;
                 final Declaration tpowner = tparm.getDeclaration();
                 final boolean nodeIsDecl = node instanceof Tree.Declaration;
-                boolean rtafs = tpowner instanceof TypeDeclaration == false
-                        && (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() != tpowner : true);
+                boolean rtafs = tpowner instanceof TypeDeclaration == false &&
+                        (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() != tpowner : true);
                 if (rtafs && ModelUtil.contains((Scope)tpowner, node.getScope())) {
                     //Attempt to resolve this to an argument if the scope allows for it
                     if (tpowner instanceof TypeDeclaration) {
-                        gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".",
+                        gen.out(gen.getNames().self((TypeDeclaration)tpowner), ".$$targs$$.",
                                 gen.getNames().typeParameterName(tparm));
                     } else if (tpowner instanceof Function) {
                         gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",
