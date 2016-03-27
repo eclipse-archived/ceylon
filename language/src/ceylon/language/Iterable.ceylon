@@ -1606,8 +1606,7 @@ shared interface Iterable<out Element=Anything,
     shared Map<Element&Object,Integer> frequencies()
             => coalesced.summarize(identity, 
                     (Integer? count, _) 
-                            => if (exists count) 
-                            then count+1 else 1);
+                            => (count else 0) + 1);
     
     "Produces a [[Map]] mapping elements to items where each 
      [[entry|Entry]] maps a distinct non-null element of 
@@ -1679,9 +1678,8 @@ shared interface Iterable<out Element=Anything,
              .group((i) => i%3)
              .mapItems((_, item) 
                 => item.fold([0,1])
-                    ((pair, i) 
-                        => let ([sum, product] = pair) 
-                            [sum+i, product*i]))
+                    (([sum, product], i) 
+                        => [sum+i, product*i]))
      
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."

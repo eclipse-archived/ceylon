@@ -102,10 +102,8 @@ shared interface Collection<out Element=Anything>
             .items
             .sort((x,y) => x.first.key<=>y.first.key)
             .indexed
-            .flatMap(
-                (entry) 
-                    => let (index->entries = entry)
-                    entries.map((entry) => index->entry.item));
+            .flatMap((index->entries) 
+                    => entries.map((entry) => index->entry.item));
         
         empty => multiset.empty;
         
