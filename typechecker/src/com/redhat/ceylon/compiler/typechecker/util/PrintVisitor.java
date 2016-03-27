@@ -5,6 +5,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -195,7 +197,13 @@ public class PrintVisitor extends Visitor {
 			}
         }
         if (!node.getErrors().isEmpty()) {
-            print(" [X]" + node.getErrors());
+            String icon = " [!]";
+            for (Message e: node.getErrors()) {
+                if (!(e instanceof UsageWarning)) {
+                    icon = " [X]";
+                }
+            }
+            print(icon + node.getErrors());
         }
     }
 }
