@@ -456,9 +456,66 @@ public class ExpressionVisitor extends Visitor {
         if (se != null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                destructure(pattern, se, e.getTypeModel());
+                Tree.Term term = e.getTerm();
+                Type et = e.getTypeModel();
+                if (term instanceof Tree.BaseMemberExpression
+                        && et.isUnknown()) {
+                    Tree.BaseMemberExpression bme = 
+                            (Tree.BaseMemberExpression) 
+                                term;
+                    Tree.Identifier id = bme.getIdentifier();
+                    if (id.getToken()==null) { //TODO: fix nasty way to detect destructured parameter!
+                        Type type = patternType(pattern);
+                        Value value = (Value) bme.getDeclaration();
+                        value.setType(type);
+                        bme.setTypeModel(type);
+                        return; //EARLY EXIT!!
+                    }
+                }
+                destructure(pattern, se, et);
             }
         }
+    }
+
+    private Type patternType(Tree.Pattern pattern) {
+        if (pattern instanceof Tree.VariablePattern) {
+            Tree.VariablePattern variablePattern = 
+                    (Tree.VariablePattern) pattern;
+            return variablePattern
+                    .getVariable()
+                    .getType()
+                    .getTypeModel();
+        }
+        else if (pattern instanceof Tree.KeyValuePattern) {
+            Tree.KeyValuePattern keyValuePattern = 
+                    (Tree.KeyValuePattern) pattern;
+            return unit.getEntryType(
+                    patternType(keyValuePattern.getKey()),
+                    patternType(keyValuePattern.getValue()));
+        }
+        else if (pattern instanceof Tree.TuplePattern) {
+            Tree.TuplePattern tuplePattern = 
+                    (Tree.TuplePattern) pattern;
+            List<Type> list = new ArrayList<Type>();
+            boolean variadic = false;
+            boolean atLeastOne = false;
+            for (Tree.Pattern p: tuplePattern.getPatterns()) {
+                list.add(patternType(p));
+                if (p instanceof Tree.VariablePattern) {
+                    Tree.Type type = 
+                            ((Tree.VariablePattern) p)
+                            .getVariable().getType();
+                    if (type instanceof Tree.SequencedType) {
+                        Tree.SequencedType st = 
+                                (Tree.SequencedType) type;
+                        variadic = true;
+                        atLeastOne = st.getAtLeastOne();
+                    }
+                }
+            }
+            return unit.getTupleType(list, variadic, atLeastOne, -1);
+        }
+        return null;
     }
 
     private void destructure(Tree.Pattern pattern,
@@ -1726,12 +1783,24 @@ public class ExpressionVisitor extends Visitor {
                                 null, false);
             if (a==null) {
                 Declaration fun = p.getDeclaration();
-                that.addError(
+                if (that.getIdentifier().getToken()==null) { //TODO: much better way to detect destructured param
+                    Value value = new Value();
+                    value.setUnit(unit);
+                    value.setName(p.getName());
+                    p.setModel(value);
+                    value.setInitializerParameter(p);
+                    Function m = (Function) fun;
+                    value.setContainer(m);
+                    m.addMember(value);
+                }
+                else {
+                    that.addError(
                         (fun!=null && fun.isAnonymous() ?
                             "parameter is not declared explicitly, and its type cannot be inferred" :
                             "parameter is not declared")
                         +": '" + p.getName() + 
                         "' (specify the parameter type explicitly)");
+                }
             }
         }
     }
@@ -3097,8 +3166,7 @@ public class ExpressionVisitor extends Visitor {
                             pr, param, anon);
                 }
                 else { 
-                    Type paramType = 
-                            tpr.getFullType();
+                    Type paramType = tpr.getFullType();
                     if (variadic) {
                         paramType = 
                                 unit.getIteratedType(paramType);
@@ -6794,10 +6862,12 @@ public class ExpressionVisitor extends Visitor {
                             scope.getScopedBackends()) &&
                     !isAbstraction(member) && 
                     isTypeUnknown(fullType)) {
-                that.addError(
-                        "could not determine type of function or value reference: '" +
-                        member.getName(unit) + "'" + 
-                        getTypeUnknownError(fullType));
+                if (that.getIdentifier().getToken()!=null) { //TODO: much better way to detect destructured parameter ref
+                    that.addError(
+                            "could not determine type of function or value reference: '" +
+                            member.getName(unit) + "'" + 
+                            getTypeUnknownError(fullType));
+                }
             }
             if (dynamic && 
                     isTypeUnknown(fullType)) {
