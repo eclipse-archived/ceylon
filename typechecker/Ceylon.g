@@ -1223,14 +1223,14 @@ parameters returns [ParameterList parameterList]
     : LPAREN
       { $parameterList=new ParameterList($LPAREN); }
       (
-        ap1=parameterDeclarationOrRef 
+        ap1=parameterDeclarationOrRefOrPattern 
         { if ($ap1.parameter!=null)
               $parameterList.addParameter($ap1.parameter); }
         (
           c=COMMA
           { $parameterList.setEndToken($c); }
           (
-            ap2=parameterDeclarationOrRef
+            ap2=parameterDeclarationOrRefOrPattern
             { if ($ap2.parameter!=null) {
                   $parameterList.addParameter($ap2.parameter); 
                   $parameterList.setEndToken(null); } }
@@ -1319,13 +1319,23 @@ parameterRef returns [InitializerParameter parameter]
       )?
     ;
 
+parameterDeclarationOrRefOrPattern returns [Parameter parameter]
+    : (patternStart) => pattern
+      { PatternParameter pp = new PatternParameter(null);
+        pp.setPattern($pattern.pattern);
+        $parameter = pp; }
+    | parameterDeclarationOrRef
+      { $parameter = $parameterDeclarationOrRef.parameter; }
+    ;
+
 parameterDeclarationOrRef returns [Parameter parameter]
     :
-      r=parameterRef
-      { $parameter=$r.parameter; }
+      //(compilerAnnotations annotatedDeclarationStart) => 
+      parameter
+      { $parameter = $parameter.parameter; }
     | 
-      p=parameter
-      { $parameter=$p.parameter; }
+      parameterRef
+      { $parameter = $parameterRef.parameter; }
     ;
 
 typeParameters returns [TypeParameterList typeParameterList]
@@ -2440,8 +2450,8 @@ anonParametersStart
       LPAREN
       ( 
         RPAREN
+      | (LIDENTIFIER|LBRACKET) => pattern (COMMA | RPAREN anonParametersStart2)
       | compilerAnnotations annotatedDeclarationStart 
-      | LIDENTIFIER (COMMA | RPAREN anonParametersStart2)
       )
     ;
 
@@ -2451,8 +2461,8 @@ anonParametersStart2
         RPAREN anonParametersStart2
       | (LIDENTIFIER COMMA)*
         (
-          compilerAnnotations annotatedDeclarationStart
-        | LIDENTIFIER RPAREN anonParametersStart2 
+          (LIDENTIFIER|LBRACKET) => pattern RPAREN anonParametersStart2 
+        | compilerAnnotations annotatedDeclarationStart
         )
       )
     | COMPUTE

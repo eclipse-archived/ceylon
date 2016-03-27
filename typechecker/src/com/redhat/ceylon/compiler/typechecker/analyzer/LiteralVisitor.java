@@ -10,12 +10,14 @@ import static java.lang.Character.isWhitespace;
 import static java.lang.Character.toChars;
 import static java.lang.Integer.parseInt;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
@@ -533,6 +535,79 @@ public class LiteralVisitor extends Visitor {
                 }
             }
         }
+    }
+    
+    @Override
+    public void visit(Tree.FunctionArgument that) {
+        List<Tree.ParameterList> parameterLists = 
+                that.getParameterLists();
+        final Tree.Expression funExpression = 
+                that.getExpression();
+        final Tree.Block funBody = that.getBlock();
+        final Tree.LetClause letClause;
+        final Tree.Expression expression;
+        if (funBody==null) {
+            expression = new Tree.Expression(null);
+            Tree.LetExpression let = new Tree.LetExpression(null);
+            letClause = new Tree.LetClause(null);
+            let.setLetClause(letClause);
+            letClause.setExpression(funExpression);
+            expression.setTerm(let);
+        }
+        else {
+            letClause = null;
+            expression = null;
+        }
+        int k = 0;
+        for (int i=0; i<parameterLists.size(); i++) {
+            Tree.ParameterList list = parameterLists.get(i);
+            List<Tree.Parameter> parameters = 
+                    list.getParameters();
+            for (int j=0; j<parameters.size(); j++) {
+                Tree.Parameter p = parameters.get(j);
+                if (p instanceof Tree.PatternParameter) {
+                    Tree.PatternParameter pp = 
+                            (Tree.PatternParameter) p;
+                    Tree.Pattern pattern = pp.getPattern();
+                    CommonToken token = 
+                            new CommonToken(
+                                    CeylonLexer.LIDENTIFIER, 
+                                    "_" + k);
+                    Tree.Identifier id = 
+                            new Tree.Identifier(token);
+                    Tree.InitializerParameter param =
+                            new Tree.InitializerParameter(null);
+                    param.setIdentifier(id);
+                    parameters.set(j, param);
+                    Tree.Destructure destructure = 
+                            new Tree.Destructure(null);
+                    Tree.SpecifierExpression spec = 
+                            new Tree.SpecifierExpression(null);
+                    Tree.Expression destExpression = 
+                            new Tree.Expression(null);
+                    Tree.BaseMemberExpression bme = 
+                            new Tree.BaseMemberExpression(null);
+                    Tree.InferredTypeArguments typeArgs = 
+                            new Tree.InferredTypeArguments(null);
+                    bme.setTypeArguments(typeArgs);
+                    bme.setIdentifier(id);
+                    destExpression.setTerm(bme);
+                    spec.setExpression(destExpression);
+                    destructure.setSpecifierExpression(spec);
+                    destructure.setPattern(pattern);
+                    if (funBody==null) {
+                        letClause.getVariables().add(destructure);
+                        that.setExpression(expression);
+                    }
+                    else {
+                        funBody.getStatements()
+                            .add(k, destructure);
+                    }
+                    k++;
+                }
+            }
+        }
+        super.visit(that);
     }
     
 }
