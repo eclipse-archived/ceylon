@@ -398,7 +398,7 @@ public abstract class Declaration
     /**
      * Obtain a reference to this declaration, as seen 
      * within the body of the declaration itself. That is,
-     * within its type parameters as their own arguments.
+     * with its type parameters as their own arguments.
      */
     public abstract Reference getReference();
     
