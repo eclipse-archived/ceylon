@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
-import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
@@ -26,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -541,23 +541,11 @@ public class LiteralVisitor extends Visitor {
     public void visit(Tree.FunctionArgument that) {
         List<Tree.ParameterList> parameterLists = 
                 that.getParameterLists();
+        final Tree.Block funBody = that.getBlock();
         final Tree.Expression funExpression = 
                 that.getExpression();
-        final Tree.Block funBody = that.getBlock();
-        final Tree.LetClause letClause;
-        final Tree.Expression expression;
-        if (funBody==null) {
-            expression = new Tree.Expression(null);
-            Tree.LetExpression let = new Tree.LetExpression(null);
-            letClause = new Tree.LetClause(null);
-            let.setLetClause(letClause);
-            letClause.setExpression(funExpression);
-            expression.setTerm(let);
-        }
-        else {
-            letClause = null;
-            expression = null;
-        }
+        final Tree.LetClause letClause = 
+                new Tree.LetClause(null);
         int k = 0;
         for (int i=0; i<parameterLists.size(); i++) {
             Tree.ParameterList list = parameterLists.get(i);
@@ -569,35 +557,41 @@ public class LiteralVisitor extends Visitor {
                     Tree.PatternParameter pp = 
                             (Tree.PatternParameter) p;
                     Tree.Pattern pattern = pp.getPattern();
-                    CommonToken token = 
+                    /*CommonToken token = 
                             new CommonToken(
                                     CeylonLexer.LIDENTIFIER, 
                                     "_" + k);
+                    token.setStartIndex(pattern.getStartIndex());
+                    token.setStopIndex(pattern.getStopIndex());
+                    token.setLine(pattern.getToken().getLine());
+                    token.setCharPositionInLine(pattern.getToken().getCharPositionInLine());*/
                     Tree.Identifier id = 
-                            new Tree.Identifier(token);
+                            new Tree.Identifier(null);
+                    id.setText("_" + k);
                     Tree.InitializerParameter param =
                             new Tree.InitializerParameter(null);
                     param.setIdentifier(id);
                     parameters.set(j, param);
-                    Tree.Destructure destructure = 
-                            new Tree.Destructure(null);
-                    Tree.SpecifierExpression spec = 
-                            new Tree.SpecifierExpression(null);
-                    Tree.Expression destExpression = 
-                            new Tree.Expression(null);
                     Tree.BaseMemberExpression bme = 
                             new Tree.BaseMemberExpression(null);
+                    bme.setIdentifier(id);
                     Tree.InferredTypeArguments typeArgs = 
                             new Tree.InferredTypeArguments(null);
                     bme.setTypeArguments(typeArgs);
-                    bme.setIdentifier(id);
+                    Tree.Expression destExpression = 
+                            new Tree.Expression(null);
                     destExpression.setTerm(bme);
+                    Tree.SpecifierExpression spec = 
+                            new Tree.SpecifierExpression(null);
                     spec.setExpression(destExpression);
+                    Tree.Destructure destructure = 
+                            new Tree.Destructure(null);
+                    destructure.setType(new ValueModifier(null)); //unnecessary?
                     destructure.setSpecifierExpression(spec);
                     destructure.setPattern(pattern);
                     if (funBody==null) {
-                        letClause.getVariables().add(destructure);
-                        that.setExpression(expression);
+                        letClause.getVariables()
+                            .add(destructure);
                     }
                     else {
                         funBody.getStatements()
@@ -606,6 +600,16 @@ public class LiteralVisitor extends Visitor {
                     k++;
                 }
             }
+        }
+        if (k>0 && funBody==null) {
+            letClause.setExpression(funExpression);
+            Tree.LetExpression let = 
+                    new Tree.LetExpression(null);
+            let.setLetClause(letClause);
+            Tree.Expression expression = 
+                    new Tree.Expression(null);
+            expression.setTerm(let);
+            that.setExpression(expression);
         }
         super.visit(that);
     }
