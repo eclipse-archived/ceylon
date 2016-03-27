@@ -223,7 +223,11 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
   if(rejectInheritedOrPrivate$(mm, coi.tipo, noInherit)){
     return null;
   }
-  return AppliedMethod$jsint(fun,$ci2na$(types),{Container$AppliedMethod:{t:_tipo},Type$AppliedMethod:_t,Arguments$AppliedMethod:_a});
+  var containerTarg={t:_tipo};
+  if ($$$mptypes.Container$getMethod.a) {
+    containerTarg.a=$$$mptypes.Container$getMethod.a;
+  }
+  return AppliedMethod$jsint(fun,$ci2na$(types),{Container$Method:containerTarg,Type$Method:_t,Arguments$Method:_a});
 }
 function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
@@ -244,8 +248,12 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
           if (mm.ps) for (var i=0; i<mm.ps.length;i++) {
             types.push(typeLiteral$meta({Type$typeLiteral:mm.ps[i].$t}));
           }
-          mems.push(AppliedMethod$jsint(mem,undefined,{Container$AppliedMethod:{t:_tipo},
-                    Type$AppliedMethod:mm.$t,Arguments$AppliedMethod:types.length?{t:'T',l:types}:{t:Empty}}));
+          var containerTarg={t:_tipo};
+          if ($$$mptypes.Container$getMethods.a) {
+            containerTarg.a=$$$mptypes.Container$getMethods.a;
+          }
+          mems.push(AppliedMethod$jsint(mem,undefined,{Container$Method:containerTarg,
+                    Type$Method:mm.$t,Arguments$Method:types.length?{t:'T',l:types}:{t:Empty}}));
         }
       }
     }
