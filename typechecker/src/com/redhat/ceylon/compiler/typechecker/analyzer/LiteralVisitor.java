@@ -580,6 +580,7 @@ public class LiteralVisitor extends Visitor {
     
     @Override
     public void visit(Tree.FunctionArgument that) {
+        //desugar pattern parameters in anon functions
         List<Tree.ParameterList> parameterLists = 
                 that.getParameterLists();
         final Tree.Block funBody = that.getBlock();
@@ -598,20 +599,15 @@ public class LiteralVisitor extends Visitor {
                     Tree.PatternParameter pp = 
                             (Tree.PatternParameter) p;
                     Tree.Pattern pattern = pp.getPattern();
-                    /*CommonToken token = 
-                            new CommonToken(
-                                    CeylonLexer.LIDENTIFIER, 
-                                    "_" + k);
-                    token.setStartIndex(pattern.getStartIndex());
-                    token.setStopIndex(pattern.getStopIndex());
-                    token.setLine(pattern.getToken().getLine());
-                    token.setCharPositionInLine(pattern.getToken().getCharPositionInLine());*/
                     Tree.Identifier id = 
                             new Tree.Identifier(null);
                     id.setText("_" + k);
                     Tree.Type type = asType(pattern);
                     Tree.Parameter param;
                     if (type!=null) {
+                        //we have enough explicit type
+                        //information in the pattern to set
+                        //up a static type for the parameter
                         Tree.AttributeDeclaration model = 
                                 new Tree.AttributeDeclaration(null);
                         model.setIdentifier(id);
@@ -625,6 +621,7 @@ public class LiteralVisitor extends Visitor {
                         param = vpd;
                     }
                     else {
+                        //its type is going to be inferred
                         Tree.InitializerParameter ip =
                                 new Tree.InitializerParameter(null);
                         ip.setIdentifier(id);
