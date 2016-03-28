@@ -4024,12 +4024,16 @@ caseItemList returns [CaseItem item]
     ;
 
 caseItem returns [CaseItem item]
-    : (IS_OP)=>isCaseCondition 
-      { $item=$isCaseCondition.item; }
-    | (SATISFIES)=>satisfiesCaseCondition
-      { $item=$satisfiesCaseCondition.item; }
+    : (IS_OP) => isCaseCondition 
+      { $item = $isCaseCondition.item; }
+    | (SATISFIES) => satisfiesCaseCondition
+      { $item = $satisfiesCaseCondition.item; }
+    | (patternStart) => pattern
+      { PatternCase pc = new PatternCase(null);
+        pc.setPattern($pattern.pattern);
+        $item = pc; }
     | matchCaseCondition
-      { $item=$matchCaseCondition.item; }
+      { $item = $matchCaseCondition.item; }
     ;
 
 matchCaseCondition returns [MatchCase item]

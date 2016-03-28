@@ -578,6 +578,90 @@ public class LiteralVisitor extends Visitor {
         return null;
     }
     
+    private Tree.Identifier switchId; 
+    
+    @Override
+    public void visit(Tree.SwitchExpression that) {
+        Tree.Identifier oid = switchId;
+        super.visit(that);
+        switchId = oid;
+    }
+    
+    @Override
+    public void visit(Tree.SwitchStatement that) {
+        Tree.Identifier oid = switchId;
+        super.visit(that);
+        switchId = oid;
+    }
+    
+    @Override
+    public void visit(Tree.Switched that) {
+        super.visit(that);
+        switchId = null;
+        Tree.Variable variable = that.getVariable();
+        Tree.Expression expression = that.getExpression();
+        if (variable != null) {
+            switchId = variable.getIdentifier();
+        }
+        else if (expression != null) {
+            Tree.Term term = expression.getTerm();
+            if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression smte = 
+                        (Tree.StaticMemberOrTypeExpression) 
+                            term;
+                switchId = smte.getIdentifier();
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.CaseClause that) {
+        Tree.CaseItem item = that.getCaseItem();
+        if (item instanceof Tree.PatternCase) {
+            Tree.PatternCase pc = (Tree.PatternCase) item;
+            Tree.Pattern pattern = pc.getPattern();
+            Tree.Type type = asType(pattern);
+            if (type==null) {
+                //TODO: better to construct a partial type!
+                type = new Tree.ValueModifier(null);
+            }
+            Tree.Identifier id = new Tree.Identifier(null);
+            id.setText(switchId==null ? "_" : switchId.getText());
+            that.setCaseItem(createIsCase(type, id));
+            Tree.Destructure destructure = 
+                    destructure(pattern, id);
+            Tree.Expression e = that.getExpression();
+            Tree.Block b = that.getBlock();
+            if (e!=null) {
+                Tree.LetClause letClause = 
+                        new Tree.LetClause(null);
+                letClause.getVariables()
+                    .add(destructure);
+                letClause.setExpression(e);
+                that.setExpression(createLetExpression(letClause));
+            }
+            if (b!=null) {
+                b.getStatements().add(0, destructure);
+            }
+        }
+        super.visit(that);
+    }
+
+    private Tree.IsCase createIsCase(Tree.Type type, Tree.Identifier id) {
+        Tree.IsCase ic = new Tree.IsCase(null);
+        ic.setType(type);
+        ic.setVariable(createVariable(id));
+        return ic;
+    }
+
+    private Tree.Variable createVariable(Tree.Identifier id) {
+        Tree.Variable var = new Tree.Variable(null);
+        var.setType(new Tree.SyntheticVariable(null));
+        var.setIdentifier(id);
+        var.setSpecifierExpression(createReference(id));
+        return var;
+    }
+    
     @Override
     public void visit(Tree.FunctionArgument that) {
         //desugar pattern parameters in anon functions
@@ -602,49 +686,12 @@ public class LiteralVisitor extends Visitor {
                     Tree.Identifier id = 
                             new Tree.Identifier(null);
                     id.setText("_" + k);
-                    Tree.Type type = asType(pattern);
-                    Tree.Parameter param;
-                    if (type!=null) {
-                        //we have enough explicit type
-                        //information in the pattern to set
-                        //up a static type for the parameter
-                        Tree.AttributeDeclaration model = 
-                                new Tree.AttributeDeclaration(null);
-                        model.setIdentifier(id);
-                        model.setType(type);
-                        Tree.AnnotationList al =
-                                new Tree.AnnotationList(null);
-                        model.setAnnotationList(al);
-                        Tree.ValueParameterDeclaration vpd =
-                                new Tree.ValueParameterDeclaration(null);
-                        vpd.setTypedDeclaration(model);
-                        param = vpd;
-                    }
-                    else {
-                        //its type is going to be inferred
-                        Tree.InitializerParameter ip =
-                                new Tree.InitializerParameter(null);
-                        ip.setIdentifier(id);
-                        param = ip;
-                    }
+                    Tree.Parameter param = 
+                            createParameter(id, 
+                                    asType(pattern));
                     parameters.set(j, param);
-                    Tree.BaseMemberExpression bme = 
-                            new Tree.BaseMemberExpression(null);
-                    bme.setIdentifier(id);
-                    Tree.InferredTypeArguments typeArgs = 
-                            new Tree.InferredTypeArguments(null);
-                    bme.setTypeArguments(typeArgs);
-                    Tree.Expression destExpression = 
-                            new Tree.Expression(null);
-                    destExpression.setTerm(bme);
-                    Tree.SpecifierExpression spec = 
-                            new Tree.SpecifierExpression(null);
-                    spec.setExpression(destExpression);
                     Tree.Destructure destructure = 
-                            new Tree.Destructure(null);
-                    destructure.setType(new ValueModifier(null)); //unnecessary?
-                    destructure.setSpecifierExpression(spec);
-                    destructure.setPattern(pattern);
+                            destructure(pattern, id);
                     if (funBody==null) {
                         letClause.getVariables()
                             .add(destructure);
@@ -659,15 +706,70 @@ public class LiteralVisitor extends Visitor {
         }
         if (k>0 && funBody==null) {
             letClause.setExpression(funExpression);
-            Tree.LetExpression let = 
-                    new Tree.LetExpression(null);
-            let.setLetClause(letClause);
-            Tree.Expression expression = 
-                    new Tree.Expression(null);
-            expression.setTerm(let);
-            that.setExpression(expression);
+            that.setExpression(createLetExpression(letClause));
         }
         super.visit(that);
+    }
+
+    private Tree.Expression createLetExpression(Tree.LetClause letClause) {
+        Tree.LetExpression let = 
+                new Tree.LetExpression(null);
+        let.setLetClause(letClause);
+        Tree.Expression expression = 
+                new Tree.Expression(null);
+        expression.setTerm(let);
+        return expression;
+    }
+
+    private Tree.Parameter createParameter(Tree.Identifier id, Tree.Type type) {
+        if (type!=null) {
+            //we have enough explicit type
+            //information in the pattern to set
+            //up a static type for the parameter
+            Tree.AttributeDeclaration model = 
+                    new Tree.AttributeDeclaration(null);
+            model.setIdentifier(id);
+            model.setType(type);
+            Tree.AnnotationList al =
+                    new Tree.AnnotationList(null);
+            model.setAnnotationList(al);
+            Tree.ValueParameterDeclaration vpd =
+                    new Tree.ValueParameterDeclaration(null);
+            vpd.setTypedDeclaration(model);
+            return vpd;
+        }
+        else {
+            //its type is going to be inferred
+            Tree.InitializerParameter ip =
+                    new Tree.InitializerParameter(null);
+            ip.setIdentifier(id);
+            return ip;
+        }
+    }
+
+    private Tree.Destructure destructure(Tree.Pattern pattern, Tree.Identifier id) {
+        Tree.Destructure destructure = 
+                new Tree.Destructure(null);
+        destructure.setType(new ValueModifier(null)); //unnecessary?
+        destructure.setSpecifierExpression(createReference(id));
+        destructure.setPattern(pattern);
+        return destructure;
+    }
+
+    private Tree.SpecifierExpression createReference(Tree.Identifier id) {
+        Tree.BaseMemberExpression bme = 
+                new Tree.BaseMemberExpression(null);
+        bme.setIdentifier(id);
+        Tree.InferredTypeArguments typeArgs = 
+                new Tree.InferredTypeArguments(null);
+        bme.setTypeArguments(typeArgs);
+        Tree.Expression destExpression = 
+                new Tree.Expression(null);
+        destExpression.setTerm(bme);
+        Tree.SpecifierExpression spec = 
+                new Tree.SpecifierExpression(null);
+        spec.setExpression(destExpression);
+        return spec;
     }
     
 }
