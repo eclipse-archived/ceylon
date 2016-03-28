@@ -583,6 +583,8 @@ public class LiteralVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchExpression that) {
         Tree.Identifier oid = switchId;
+        createSwitchVariable(that.getSwitchClause(), 
+                that.getSwitchCaseList());
         super.visit(that);
         switchId = oid;
     }
@@ -590,26 +592,51 @@ public class LiteralVisitor extends Visitor {
     @Override
     public void visit(Tree.SwitchStatement that) {
         Tree.Identifier oid = switchId;
+        createSwitchVariable(that.getSwitchClause(), 
+                that.getSwitchCaseList());
         super.visit(that);
         switchId = oid;
     }
-    
-    @Override
-    public void visit(Tree.Switched that) {
-        super.visit(that);
+
+    private void createSwitchVariable(Tree.SwitchClause switchClause, Tree.SwitchCaseList switchCaseList) {
         switchId = null;
-        Tree.Variable variable = that.getVariable();
-        Tree.Expression expression = that.getExpression();
-        if (variable != null) {
-            switchId = variable.getIdentifier();
-        }
-        else if (expression != null) {
-            Tree.Term term = expression.getTerm();
-            if (term instanceof Tree.StaticMemberOrTypeExpression) {
-                Tree.StaticMemberOrTypeExpression smte = 
-                        (Tree.StaticMemberOrTypeExpression) 
-                            term;
-                switchId = smte.getIdentifier();
+        if (switchClause!=null && switchCaseList!=null) {
+            Tree.Switched switched = switchClause.getSwitched();
+            if (switched!=null) {
+                Tree.Variable variable = switched.getVariable();
+                Tree.Expression expression = switched.getExpression();
+                if (variable != null) {
+                    switchId = variable.getIdentifier();
+                }
+                else if (expression != null) {
+                    Tree.Term term = expression.getTerm();
+                    if (term instanceof Tree.BaseMemberExpression) {
+                        Tree.BaseMemberExpression bme = 
+                                (Tree.BaseMemberExpression) 
+                                    term;
+                        switchId = bme.getIdentifier();
+                    }
+                    else {
+                        boolean found = false;
+                        for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
+                            Tree.CaseItem item = cc.getCaseItem();
+                            if (item instanceof Tree.IsCase) {
+                                return;
+                            }
+                            if (item instanceof Tree.PatternCase) {
+                                found = true;
+                            }
+                        }
+                        if (found) {
+                            Tree.Identifier id = new Tree.Identifier(null);
+                            id.setText("_");
+                            switchId = id;
+                            switched.setVariable(createVariable(id, expression));
+                            switched.setExpression(null);
+                            return;
+                        }
+                    }
+                }
             }
         }
     }
@@ -654,6 +681,17 @@ public class LiteralVisitor extends Visitor {
         return ic;
     }
 
+    private Tree.Variable createVariable(Tree.Identifier id, Tree.Expression e) {
+        Tree.SpecifierExpression se = 
+                new Tree.SpecifierExpression(null);
+        se.setExpression(e);
+        Tree.Variable var = new Tree.Variable(null);
+        var.setType(new Tree.SyntheticVariable(null));
+        var.setIdentifier(id);
+        var.setSpecifierExpression(se);
+        return var;
+    }
+    
     private Tree.Variable createVariable(Tree.Identifier id) {
         Tree.Variable var = new Tree.Variable(null);
         var.setType(new Tree.SyntheticVariable(null));
