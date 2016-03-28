@@ -537,6 +537,47 @@ public class LiteralVisitor extends Visitor {
         }
     }
     
+    Tree.Type asType(Tree.Pattern pattern) {
+        if (pattern instanceof Tree.VariablePattern) {
+            Tree.VariablePattern vp = 
+                    (Tree.VariablePattern) pattern;
+            Tree.Variable variable = vp.getVariable();
+            Tree.Type type = variable.getType();
+            if (!(type instanceof Tree.StaticType)) {
+                return null;
+            }
+            return type;
+        }
+        else if (pattern instanceof Tree.KeyValuePattern) {
+            Tree.KeyValuePattern ep = 
+                    (Tree.KeyValuePattern) pattern;
+            Tree.Type keyType = asType(ep.getKey());
+            Tree.Type valueType = asType(ep.getValue());
+            if (!(keyType instanceof Tree.StaticType) ||
+                !(valueType instanceof Tree.StaticType)) {
+                return null;
+            }
+            Tree.EntryType et = new Tree.EntryType(null);
+            et.setKeyType((Tree.StaticType) keyType);
+            et.setValueType((Tree.StaticType) valueType);
+            return et;
+        }
+        else if (pattern instanceof Tree.TuplePattern) {
+            Tree.TuplePattern tp = 
+                    (Tree.TuplePattern) pattern;
+            Tree.TupleType tt = new Tree.TupleType(null);
+            for (Tree.Pattern p: tp.getPatterns()) {
+                Tree.Type type = asType(p);
+                if (!(type instanceof Tree.StaticType)) {
+                    return null;
+                }
+                tt.getElementTypes().add(type);
+            }
+            return tt;
+        }
+        return null;
+    }
+    
     @Override
     public void visit(Tree.FunctionArgument that) {
         List<Tree.ParameterList> parameterLists = 
@@ -568,9 +609,27 @@ public class LiteralVisitor extends Visitor {
                     Tree.Identifier id = 
                             new Tree.Identifier(null);
                     id.setText("_" + k);
-                    Tree.InitializerParameter param =
-                            new Tree.InitializerParameter(null);
-                    param.setIdentifier(id);
+                    Tree.Type type = asType(pattern);
+                    Tree.Parameter param;
+                    if (type!=null) {
+                        Tree.AttributeDeclaration model = 
+                                new Tree.AttributeDeclaration(null);
+                        model.setIdentifier(id);
+                        model.setType(type);
+                        Tree.AnnotationList al =
+                                new Tree.AnnotationList(null);
+                        model.setAnnotationList(al);
+                        Tree.ValueParameterDeclaration vpd =
+                                new Tree.ValueParameterDeclaration(null);
+                        vpd.setTypedDeclaration(model);
+                        param = vpd;
+                    }
+                    else {
+                        Tree.InitializerParameter ip =
+                                new Tree.InitializerParameter(null);
+                        ip.setIdentifier(id);
+                        param = ip;
+                    }
                     parameters.set(j, param);
                     Tree.BaseMemberExpression bme = 
                             new Tree.BaseMemberExpression(null);
