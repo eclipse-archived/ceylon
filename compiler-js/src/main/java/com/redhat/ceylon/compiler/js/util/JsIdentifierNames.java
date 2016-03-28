@@ -122,14 +122,14 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniquePrivateName(decl, false);
         }
-        return sanitize(name);
+        return JsUtils.escapeStringLiteral(name);
     }
 
     public String privateName(Parameter param) {
         if (param == null) { return null; }
         FunctionOrValue decl = param.getModel();
         String name = uniquePrivateName(decl, false);
-        return sanitize(name);
+        return JsUtils.escapeStringLiteral(name);
     }
 
     public String valueName(FunctionOrValue d) {
@@ -216,7 +216,7 @@ public class JsIdentifierNames {
         if (decl instanceof Constructor) {
             decl = (TypeDeclaration)decl.getContainer();
         }
-        String name = sanitize(decl.getName());
+        String name = JsUtils.escapeStringLiteral(decl.getName());
         if (decl.isShared() || decl.isToplevel()) {
             name += nestingSuffix(decl, true);
         } else {
@@ -284,7 +284,7 @@ public class JsIdentifierNames {
             name="anon$" + name.substring(10);
         }
         if (decl.isClassOrInterfaceMember() && ((ClassOrInterface)decl.getContainer()).isDynamic()) {
-            return sanitize(decl.getName());
+            return JsUtils.escapeStringLiteral(decl.getName());
         }
         boolean nonLocal = !priv;
         if (nonLocal) {
@@ -344,7 +344,7 @@ public class JsIdentifierNames {
         if (decl instanceof TypeAlias) {
             name+="()";
         }
-        return sanitize(name);
+        return JsUtils.escapeStringLiteral(name);
     }
 
     private String uniquePrivateName(Declaration d, boolean priv) {
@@ -402,26 +402,6 @@ public class JsIdentifierNames {
             cname = tp.getDeclaration().getName();
         }
         return tp.getName() + "$" + cname;
-    }
-
-    /** Replace any characters considered invalid in JS with some regular
-     * mark specifying the Unicode codepoint. */
-    public static String sanitize(String name) {
-        for (int i=0; i < name.length(); i++) {
-            if (Character.isLowSurrogate(name.charAt(i)) || Character.isHighSurrogate(name.charAt(i))) {
-                StringBuilder sb = new StringBuilder(name.substring(0,i));
-                for (int j = i; j < name.length(); j++) {
-                    char c = name.charAt(j);
-                    if (Character.isLowSurrogate(c) || Character.isHighSurrogate(c)) {
-                        sb.append("$u").append((long)c);
-                    } else {
-                        sb.append(c);
-                    }
-                }
-                return sb.toString();
-            }
-        }
-        return name;
     }
 
     public String valueConstructorName(TypeDeclaration d) {
