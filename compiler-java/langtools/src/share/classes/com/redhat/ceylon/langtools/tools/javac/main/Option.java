@@ -462,7 +462,7 @@ public enum Option {
             if (options.get(SOURCEPATH) == null) {
                 options.put(SOURCEPATH.getText(), arg);
             } else {
-                options.put(SOURCEPATH.getText(), options.get(SOURCEPATH) + ":" + arg);
+                options.put(SOURCEPATH.getText(), options.get(SOURCEPATH) + File.pathSeparatorChar + arg);
             }
             return false;
         }
@@ -473,7 +473,7 @@ public enum Option {
             if (options.get(this) == null) {
                 options.put(getText(), arg);
             } else {
-                options.put(getText(), options.get(this) + ":" + arg);
+                options.put(getText(), options.get(this) + File.pathSeparatorChar + arg);
             }
             return false;
         }
@@ -541,7 +541,7 @@ public enum Option {
                 if (!f.isFile()) {
                     // -sourcepath not -src because the COption for 
                     // CEYLONSOURCEPATH puts it in the options map as -sourcepath
-                    String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                    String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(File.pathSeparator);
                     if(sourcePaths == null || sourcePaths.length == 0)
                         sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
                     if (checkIfModule(sourcePaths, s)) {
@@ -572,7 +572,7 @@ public enum Option {
                     return false;
                 }
                 // find a corresponding physical module in the source path
-                String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(File.pathSeparator);
                 if(sourcePaths == null || sourcePaths.length == 0)
                     sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
                 if (checkIfModule(sourcePaths, s)) {
