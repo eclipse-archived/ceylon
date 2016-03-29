@@ -1,0 +1,337 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug6143_ {
+    
+    private bug6143_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug6143() {
+        final .java.util.ArrayList<.ceylon.language.String> jlist = new .java.util.ArrayList<.ceylon.language.String>();
+        jlist.add(null);
+        loop_0: for (.ceylon.language.String element$iterator$$1 : jlist) {
+            final .ceylon.language.String element = (.ceylon.language.String)element$iterator$$1;
+            .ceylon.language.print_.print(element);
+        }
+        loop_1: for (.ceylon.language.String element$iterator$$3 : jlist) {
+            final .java.lang.String element = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.Util.checkNull(element$iterator$$3)).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(element + ""));
+        }
+        loop_2: for (.ceylon.language.String element$iterator$$5 : jlist) {
+            final .java.lang.String element = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.Util.checkNull(element$iterator$$5)).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(element + ""));
+        }
+        .ceylon.language.Sequential<? extends .java.lang.Object> sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)){
+                    {
+                        $iterator$0 = jlist.iterator();
+                    }
+                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = !$iterator$0.hasNext();
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = $iterator$0.next();
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .ceylon.language.String element = this.element;
+                            return element;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = jlist.iterator();
+                    }
+                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = !$iterator$0.hasNext();
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($iterator$0.next());
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .ceylon.language.String element = this.element;
+                            return .ceylon.language.String.instance(element.toString() + "");
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = jlist.iterator();
+                    }
+                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = !$iterator$0.hasNext();
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($iterator$0.next());
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .ceylon.language.String element = this.element;
+                            return .ceylon.language.String.instance(element.toString() + "");
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        final .ceylon.language.String[] jarray = new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt(1L)];
+        jarray[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = null;
+        final .ceylon.language.String[] array$9 = jarray;
+        loop_3: for (int i$11 = 0; i$11 < array$9.length; i$11++) {
+            final .ceylon.language.String element = array$9[i$11];
+            .ceylon.language.print_.print(element);
+        }
+        final .ceylon.language.String[] array$12 = jarray;
+        loop_4: for (int i$14 = 0; i$14 < array$12.length; i$14++) {
+            final .java.lang.String element = .com.redhat.ceylon.compiler.java.Util.checkNull(array$12[i$14]).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(element + ""));
+        }
+        final .ceylon.language.String[] array$15 = jarray;
+        loop_5: for (int i$17 = 0; i$17 < array$15.length; i$17++) {
+            final .java.lang.String element = .com.redhat.ceylon.compiler.java.Util.checkNull(array$15[i$17]).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(element + ""));
+        }
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final .ceylon.language.String[] $array$0 = jarray;
+                    private .ceylon.language.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = $array$0[$iterator$0++];
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .ceylon.language.String element = this.element;
+                            return element;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final .ceylon.language.String[] $array$0 = jarray;
+                    private .java.lang.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]).toString();
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .java.lang.String element = this.element;
+                            return .ceylon.language.String.instance(element + "");
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final .ceylon.language.String[] $array$0 = jarray;
+                    private .java.lang.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]).toString();
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .java.lang.String element = this.element;
+                            return .ceylon.language.String.instance(element + "");
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        final int[] jintarray = new int[.com.redhat.ceylon.compiler.java.Util.toInt(1L)];
+        jintarray[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = .com.redhat.ceylon.compiler.java.Util.toInt(1L);
+        final int[] array$21 = jintarray;
+        loop_6: for (int i$23 = 0; i$23 < array$21.length; i$23++) {
+            final .ceylon.language.Integer element = .ceylon.language.Integer.instance(array$21[i$23]);
+            .ceylon.language.print_.print(element);
+        }
+        final int[] array$24 = jintarray;
+        loop_7: for (int i$26 = 0; i$26 < array$24.length; i$26++) {
+            final long element = array$24[i$26];
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 1L));
+        }
+        final int[] array$27 = jintarray;
+        loop_8: for (int i$29 = 0; i$29 < array$27.length; i$29++) {
+            final long element = array$27[i$29];
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 1L));
+        }
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final int[] $array$0 = jintarray;
+                    private .ceylon.language.Integer element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = .ceylon.language.Integer.instance($array$0[$iterator$0++]);
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .ceylon.language.Integer element = this.element;
+                            return element;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final int[] $array$0 = jintarray;
+                    private long element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = $array$0[$iterator$0++];
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final long element = this.element;
+                            return .ceylon.language.Integer.instance(element + 1L);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final int[] $array$0 = jintarray;
+                    private long element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = $array$0[$iterator$0++];
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final long element = this.element;
+                            return .ceylon.language.Integer.instance(element + 1L);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+    }
+}
