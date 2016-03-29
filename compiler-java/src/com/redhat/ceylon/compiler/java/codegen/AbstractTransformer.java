@@ -2577,6 +2577,7 @@ public abstract class AbstractTransformer implements Transformation {
      * @return The result type of the {@code Callable}.
      */
     Type getReturnTypeOfCallable(Type typeModel) {
+        typeModel = typeModel.resolveAliases();
         if (!isCeylonCallableSubtype(typeModel)) {
             throw new BugException("expected Callable<...>, but was " + typeModel);
         } else if (typeFact().getNothingType().isExactly(typeModel)) {
@@ -2587,6 +2588,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     Type getParameterTypeOfCallable(Type callableType, int parameter) {
+        callableType = callableType.resolveAliases();
         if (!isCeylonCallableSubtype(callableType)) {
             throw new BugException("expected Callable<...>, but was " + callableType);
         }

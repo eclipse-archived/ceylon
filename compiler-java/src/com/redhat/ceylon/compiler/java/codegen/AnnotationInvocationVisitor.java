@@ -508,6 +508,8 @@ class AnnotationInvocationVisitor extends Visitor {
             if (exprGen.isJavaEnumType(term.getTypeModel())) {
                 // A Java enum
                 append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, null));
+            } else {
+                super.visit(term);
             }
         } else {
             super.visit(term);

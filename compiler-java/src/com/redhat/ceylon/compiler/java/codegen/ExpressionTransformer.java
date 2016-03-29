@@ -5749,6 +5749,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                     innerBody.add(gen.make().Return(gen.makeBoolean(false)));
                 }
                 
+                JCExpression nextInvocation = gen.make().Apply(null, 
+                        gen.makeSelect(iterVar.makeIdent(), "next"),
+                        List.<JCExpression>nil());
+                if (gen.statementGen().requiresNullCheck(forIterator)) {
+                    nextInvocation = gen.utilInvocation().checkNull(nextInvocation);
+                }
+                
                 contextBody.add(
                         gen.make().If(
                                 itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), 
@@ -5756,8 +5763,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 gen.make().Block(0,
                                         List.<JCStatement>of(
                                                 gen.make().Exec(gen.make().Assign(itemVar.makeIdent(),
-                                                        gen.make().Apply(null, gen.makeSelect(iterVar.makeIdent(), "next"), 
-                                                        List.<JCExpression>nil()))),
+                                                        nextInvocation)),
                                                 gen.make().Return(gen.makeBoolean(true))))));
                 return contextBody;
             }
@@ -5833,11 +5839,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 
                 JCExpression indexed = gen.make().Indexed(arrayVar.makeIdent(), 
                         gen.make().Unary(JCTree.Tag.POSTINC, iterVar.makeIdent()));
+
+                if (gen.statementGen().requiresNullCheck(forIterator)) {
+                    indexed = gen.utilInvocation().checkNull(indexed);
+                }
                 indexed = gen.applyErasureAndBoxing(indexed,
-                        ((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel().getType(),
+                        gen.typeFact().getJavaArrayElementType(iterType),
                         gen.typeFact().getJavaObjectArrayDeclaration().equals(iterType.resolveAliases().getDeclaration()),
                         CodegenUtil.getBoxingStrategy(((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel()),
                         ((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel().getType());
+                
                 
                 contextBody.add(
                         gen.make().If(

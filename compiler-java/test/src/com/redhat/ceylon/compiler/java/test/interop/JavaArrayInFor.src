@@ -23,12 +23,12 @@ final class javaArrayInFor_ {
         long sum = 0L;
         final .ceylon.language.String[] array$0 = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
         loop_0: for (int i$2 = 0; i$2 < array$0.length; i$2++) {
-            final .java.lang.String s = array$0[i$2].toString();
+            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$0[i$2]).toString();
             sum += .ceylon.language.String.hashCode(s);
         }
         final .java.lang.String[] array$3 = (.java.lang.String[]).ceylon.language.nothing_.get_();
         loop_1: for (int i$5 = 0; i$5 < array$3.length; i$5++) {
-            final .java.lang.String s = array$3[i$5];
+            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$3[i$5]);
             sum += s.hashCode();
         }
         final boolean[] array$6 = (boolean[]).ceylon.language.nothing_.get_();
@@ -73,12 +73,12 @@ final class javaArrayInFor_ {
         }
         final .ceylon.language.String[] array$30 = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
         loop_10: for (int i$32 = 0; i$32 < array$30.length; i$32++) {
-            final .java.lang.String s = array$30[i$32].toString();
+            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$30[i$32]).toString();
             sum += .ceylon.language.String.hashCode(s);
         }
         final .java.lang.String[] array$33 = (.java.lang.String[]).ceylon.language.nothing_.get_();
         loop_11: for (int i$35 = 0; i$35 < array$33.length; i$35++) {
-            final .java.lang.String s = array$33[i$35];
+            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$33[i$35]);
             sum += s.hashCode();
         }
     }

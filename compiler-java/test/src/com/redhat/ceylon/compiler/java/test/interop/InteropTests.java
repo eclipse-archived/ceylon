@@ -493,6 +493,11 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testAnnotationBug6145() {
+        compareWithJavaSource("AnnotationBug6145");
+    }
+    
+    @Test
     public void testSealedInterop(){
         compile("access/JavaSealed.java");
         assertErrors("Sealed",
@@ -709,5 +714,10 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testIopJavaArrayTypeConstraint(){
         compile("JavaArrayTypeConstraint.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6143(){
+        compareWithJavaSource("Bug6143");
     }
 }

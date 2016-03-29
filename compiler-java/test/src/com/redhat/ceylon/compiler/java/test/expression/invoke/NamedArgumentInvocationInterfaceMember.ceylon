@@ -17,16 +17,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm")
-module com.redhat.ceylon.compiler.java.test.interop "1" {
-    import java.base "7";
-    import javax.xml "7";
-    import java.desktop "7";
-    import oracle.jdk.httpserver "7";
-    import javax.annotation "7";
-    import java.management "7";
-    import ceylon.interop.java "1.2.0";
-    import javax.inject "1";
-    import "javax.validation:validation-api" "1.1.0.Final";
-    import "javax.ws.rs:javax.ws.rs-api" "2.0.1";
+@noanno
+interface NamedArgumentInvocationInterfaceMember {
+    class Inner(foo, bar = foo.size) {
+        shared String foo;
+        shared Integer bar;
+    }
+    class InnerWithCtor {
+        shared String foo;
+        shared Integer bar;
+        shared new () {
+            this.foo = "";
+            this.bar = 0;
+        }
+        shared new ctor(String foo, Integer bar = foo.size) {
+            this.foo = foo;
+            this.bar = bar;
+        }
+    }
+    
+    void func() {
+        value i = Inner {
+            foo = "foo";
+        };
+        value i2 = this.Inner {
+            foo = "foo";
+        };
+        value i3 = InnerWithCtor.ctor {
+            foo = "foo";
+        };
+        value i4 = this.InnerWithCtor.ctor {
+            foo = "foo";
+        };
+    }
 }

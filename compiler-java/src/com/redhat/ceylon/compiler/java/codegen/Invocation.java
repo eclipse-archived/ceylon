@@ -1354,7 +1354,9 @@ class NamedArgumentInvocation extends Invocation {
                 thisExpr = callVarName.makeIdent();
             break;
         case OUTER_COMPANION:
-            thisExpr = callVarName.makeIdent();
+            if (getQmePrimary() != null && !Decl.isConstructor(getPrimaryDeclaration())) {
+                thisExpr = callVarName.makeIdent();
+            }
             break;
         case INIT_COMPANION:
             thisExpr = varBaseName.suffixedBy(Suffix.$argthis$).makeIdent();

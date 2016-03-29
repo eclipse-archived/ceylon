@@ -17,16 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-native("jvm")
-module com.redhat.ceylon.compiler.java.test.interop "1" {
-    import java.base "7";
-    import javax.xml "7";
-    import java.desktop "7";
-    import oracle.jdk.httpserver "7";
-    import javax.annotation "7";
-    import java.management "7";
-    import ceylon.interop.java "1.2.0";
-    import javax.inject "1";
-    import "javax.validation:validation-api" "1.1.0.Final";
-    import "javax.ws.rs:javax.ws.rs-api" "2.0.1";
-}
+@noanno
+alias Bug6129<T> => Boolean(Object) | T;
+@noanno
+Bug6129<Nothing> bug6129 = nothing ;
+@noanno
+Anything bug6129Ignored = bug6129("Adfasd");
