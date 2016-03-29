@@ -2223,6 +2223,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             || (optimizeLower // otherwise onle if all optimizable
                 && optimizeUpper)) {
             opt = OptimisationStrategy.OPTIMISE;
+            middleType.setUnderlyingType(middleTerm.getTypeModel().getUnderlyingType());
         } else {
             opt = OptimisationStrategy.NONE;
         }
