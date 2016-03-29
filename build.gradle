@@ -3,6 +3,17 @@ subprojects {
 
     compileJava.options.encoding = 'UTF-8'
 
+    repositories {
+        flatDir {
+            dirs '../dist/dist/repo', '../lib'
+        }
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.11'
+    }
+
     sourceSets {
         main {
             java {
@@ -14,17 +25,6 @@ subprojects {
                 srcDir 'test'
             }
         }
-    }
-
-    repositories {
-        flatDir {
-            dirs '../dist/dist/repo', '../lib'
-        }
-        mavenCentral()
-    }
-
-    dependencies {
-        testCompile 'junit:junit:4.11'
     }
 
 }
