@@ -804,11 +804,7 @@ public class GenerateJsVisitor extends Visitor {
         Scope superscope = getSuperMemberScope(ext.getType());
         if (superscope != null) {
             out("getT$all()['");
-            if (superscope instanceof Declaration) {
-                out(TypeUtils.qualifiedNameSkippingMethods((Declaration)superscope));
-            } else {
-                out(superscope.getQualifiedNameString());
-            }
+            out(superscope.getQualifiedNameString());
             out("'].$$.prototype.", aliasedName, ".call(", names.self(prototypeOwner), ",");
         } else {
             out(aliasedName, "(");
@@ -1956,13 +1952,9 @@ public class GenerateJsVisitor extends Visitor {
         boolean metaGetter = false;
         Scope scope = getSuperMemberScope(node);
         if (opts.isOptimize() && (scope != null) && !isConstructor) {
-            sb.append("getT$all()['");
-            if (scope instanceof Declaration) {
-                sb.append(TypeUtils.qualifiedNameSkippingMethods((Declaration)scope));
-            } else {
-                sb.append(scope.getQualifiedNameString());
-            }
-            sb.append("']");
+            sb.append("getT$all()['")
+                .append(scope.getQualifiedNameString())
+                .append("']");
             if (AttributeGenerator.defineAsProperty(decl)) {
                 return getClAlias() + (setter ? "attrSetter(" : "attrGetter(")
                         + sb.toString() + ",'" + names.name(decl) + "')";
