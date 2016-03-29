@@ -1,1 +1,1 @@
-include 'common', 'langtools-classfile', 'model'
+include 'common', 'langtools-classfile', 'model', 'cmr'
