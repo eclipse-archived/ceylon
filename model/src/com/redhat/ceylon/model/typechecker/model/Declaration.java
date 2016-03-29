@@ -47,6 +47,7 @@ public abstract class Declaration
 	private boolean otherInstanceAccess;
     private DeclarationCompleter actualCompleter;
     private List<String> aliases;
+    private int memoizedHash;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -559,19 +560,21 @@ public abstract class Declaration
 
     @Override
     public int hashCode() {
-        int ret = 17;
-        Scope container = getContainer();
-        ret = (37 * ret) + 
-                (container == null ? 0 : container.hashCode());
-        String qualifier = getQualifier();
-        ret = (37 * ret) + 
-                (qualifier == null ? 0 : qualifier.hashCode());
-        String name = getName();
-        ret = (37 * ret) + (name == null ? 0 : name.hashCode());
-        // make sure we don't consider getter/setter or value/anonymous-type equal
-        ret = (37 * ret) + (isSetter() ? 0 : 1);
-        ret = (37 * ret) + (isAnonymous() ? 0 : 1);
-        return ret;
+        if (memoizedHash == 0) {
+            memoizedHash = 17;
+            Scope container = getContainer();
+            memoizedHash = (37 * memoizedHash) + 
+                    (container == null ? 0 : container.hashCode());
+            String qualifier = getQualifier();
+            memoizedHash = (37 * memoizedHash) + 
+                    (qualifier == null ? 0 : qualifier.hashCode());
+            String name = getName();
+            memoizedHash = (37 * memoizedHash) + (name == null ? 0 : name.hashCode());
+            // make sure we don't consider getter/setter or value/anonymous-type equal
+            memoizedHash = (37 * memoizedHash) + (isSetter() ? 0 : 1);
+            memoizedHash = (37 * memoizedHash) + (isAnonymous() ? 0 : 1);
+        }
+        return memoizedHash;
     }
     
     /**
