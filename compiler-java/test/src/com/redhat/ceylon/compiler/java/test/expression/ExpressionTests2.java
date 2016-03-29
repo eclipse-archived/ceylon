@@ -140,6 +140,11 @@ public class ExpressionTests2 extends CompilerTests {
     }
     
     @Test
+    public void testInvNamedArgumentInvocationInterfaceMember(){
+        compareWithJavaSource("invoke/NamedArgumentInvocationInterfaceMember");
+    }
+    
+    @Test
     public void testInvNamedArgumentNoArgs(){
         compareWithJavaSource("invoke/NamedArgumentNoArgs");
     }
