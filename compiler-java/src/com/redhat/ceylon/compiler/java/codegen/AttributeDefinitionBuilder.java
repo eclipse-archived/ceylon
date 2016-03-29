@@ -505,7 +505,7 @@ public class AttributeDefinitionBuilder {
         if (late) {
             
             JCExpressionStatement makeInit = null;
-            if(lateWithInit)
+            if(hasInitFlag())
                 makeInit = owner.make().Exec(owner.make().Assign(makeInitFlagExpr(true),
                                                                  owner.make().Literal(true)));
             if (variable) {
@@ -553,7 +553,7 @@ public class AttributeDefinitionBuilder {
         }
         // TODO this should be encapsulated so the s11n stuff and this
         // code can just call something common
-        if(toplevel || lateWithInit){
+        if(hasInitFlag()){
             JCExpression ret = owner.naming.makeQualIdent(initFlagFieldOwner, Naming.getInitializationFieldName(fieldName));
             if(!positiveIfTest)
                 return owner.make().Unary(JCTree.Tag.NOT, ret);
