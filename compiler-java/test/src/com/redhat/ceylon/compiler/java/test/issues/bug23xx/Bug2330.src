@@ -18,13 +18,13 @@ final class bug2330_ {
             final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L)) == .ceylon.language.smaller_.get_();
             final boolean gt = 5L > ((.ceylon.language.Integer)item).longValue();
             final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable)item) == .ceylon.language.smaller_.get_();
-            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
+            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5));
             final boolean wthn = (
                 let
                 {
                     .java.lang.Object middle$24 = item;
                 }
-                returning ((.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable)middle$24) != .ceylon.language.larger_.get_() && ((.ceylon.language.Comparable)middle$24).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L)) != .ceylon.language.larger_.get_();
+                returning ((.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable)middle$24) != .ceylon.language.larger_.get_() && ((.ceylon.language.Comparable)middle$24).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5)) != .ceylon.language.larger_.get_();
             );
         } else {
             final Item item$4 = (Item)item$3;
@@ -100,13 +100,13 @@ final class bug2330_ {
             final boolean lt = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L)) == .ceylon.language.smaller_.get_();
             final boolean gt = 5L > ((.ceylon.language.Integer)item).longValue();
             final boolean eq = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable)item) == .ceylon.language.smaller_.get_();
-            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
+            final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5));
             final boolean wthn = (
                 let
                 {
                     .java.lang.Object middle$47 = item;
                 }
-                returning ((.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable)middle$47) != .ceylon.language.larger_.get_() && ((.ceylon.language.Comparable)middle$47).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L)) != .ceylon.language.larger_.get_();
+                returning ((.ceylon.language.Comparable)item).compare((.ceylon.language.Comparable)middle$47) != .ceylon.language.larger_.get_() && ((.ceylon.language.Comparable)middle$47).compare((.ceylon.language.Comparable).ceylon.language.Integer.instance(5)) != .ceylon.language.larger_.get_();
             );
         } else {
             final Item item$27 = (Item)item$26;

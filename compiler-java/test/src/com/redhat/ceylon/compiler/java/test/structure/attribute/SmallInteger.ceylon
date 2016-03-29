@@ -54,10 +54,21 @@ class SmallInteger(shared small Integer intp) {
         inta /= intp;
         inta %= intp;
         
+        this.inta += intp;
+        this.inta -= intp;
+        this.inta *= intp;
+        this.inta /= intp;
+        this.inta %= intp;
+        
         inta++;
         inta--;
         ++inta;
         --inta;
+        
+        this.inta++;
+        this.inta--;
+        ++this.inta;
+        --this.inta;
     }
     shared void intMixedArithmeticOperators() {
         // These should all be transformed as long expressions
@@ -69,11 +80,25 @@ class SmallInteger(shared small Integer intp) {
         inta = inta % long;
         inta = inta ^ long;
         
+        small variable Integer short;
+        inta = short = inta + long;
+        inta = short = inta - long;
+        inta = short = inta * long;
+        inta = short = inta / long;
+        inta = short = inta % long;
+        inta = short = inta ^ long;
+        
         inta += long;
         inta -= long;
         inta *= long;
         inta /= long;
         inta %= long;
+        
+        this.inta += long;
+        this.inta -= long;
+        this.inta *= long;
+        this.inta /= long;
+        this.inta %= long;
     }
     
     shared void intComparisonOps() {
@@ -102,8 +127,11 @@ class SmallInteger(shared small Integer intp) {
         // because we're calling it as a *method* the following should 
         // dispatch to Integer.power(long, long), not Integer.power(int, int)
         exponentiation = x.power(y);
-        exponentiation = x.power{other=y;};
-        value exp2 = x.power{other=y;};
+        exponentiation = x.power{ other=y; };
+        value exp2 = x.power{ other=y; };
+        
+        variable value cmp = x.compare(y);
+        cmp = x.compare{ other = y; };
     }
     
     void argumentConversion() {

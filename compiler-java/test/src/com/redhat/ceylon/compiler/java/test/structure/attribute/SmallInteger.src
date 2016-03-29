@@ -145,84 +145,259 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                int $ceylontmp$op$7 = getInta$priv$();
-                setInta$priv$($ceylontmp$op$7 + 1);
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$7 = this;
+                int $ceylontmp$opV$8 = $ceylontmp$opE$7.getInta$priv$() + getIntp();
+                $ceylontmp$opE$7.setInta$priv$($ceylontmp$opV$8);
             }
-            returning $ceylontmp$op$7;
+            returning $ceylontmp$opV$8;
         );
         (
             let
             {
-                int $ceylontmp$op$8 = getInta$priv$();
-                setInta$priv$($ceylontmp$op$8 - 1);
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$9 = this;
+                int $ceylontmp$opV$10 = $ceylontmp$opE$9.getInta$priv$() - getIntp();
+                $ceylontmp$opE$9.setInta$priv$($ceylontmp$opV$10);
             }
-            returning $ceylontmp$op$8;
+            returning $ceylontmp$opV$10;
         );
         (
             let
             {
-                int $ceylontmp$op$9 = getInta$priv$() + 1;
-                setInta$priv$($ceylontmp$op$9);
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$11 = this;
+                int $ceylontmp$opV$12 = $ceylontmp$opE$11.getInta$priv$() * getIntp();
+                $ceylontmp$opE$11.setInta$priv$($ceylontmp$opV$12);
             }
-            returning $ceylontmp$op$9;
+            returning $ceylontmp$opV$12;
         );
         (
             let
             {
-                int $ceylontmp$op$10 = getInta$priv$() - 1;
-                setInta$priv$($ceylontmp$op$10);
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$13 = this;
+                int $ceylontmp$opV$14 = $ceylontmp$opE$13.getInta$priv$() / getIntp();
+                $ceylontmp$opE$13.setInta$priv$($ceylontmp$opV$14);
             }
-            returning $ceylontmp$op$10;
+            returning $ceylontmp$opV$14;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$15 = this;
+                int $ceylontmp$opV$16 = $ceylontmp$opE$15.getInta$priv$() % getIntp();
+                $ceylontmp$opE$15.setInta$priv$($ceylontmp$opV$16);
+            }
+            returning $ceylontmp$opV$16;
+        );
+        (
+            let
+            {
+                int $ceylontmp$op$17 = getInta$priv$();
+                setInta$priv$($ceylontmp$op$17 + 1);
+            }
+            returning $ceylontmp$op$17;
+        );
+        (
+            let
+            {
+                int $ceylontmp$op$18 = getInta$priv$();
+                setInta$priv$($ceylontmp$op$18 - 1);
+            }
+            returning $ceylontmp$op$18;
+        );
+        (
+            let
+            {
+                int $ceylontmp$op$19 = getInta$priv$() + 1;
+                setInta$priv$($ceylontmp$op$19);
+            }
+            returning $ceylontmp$op$19;
+        );
+        (
+            let
+            {
+                int $ceylontmp$op$20 = getInta$priv$() - 1;
+                setInta$priv$($ceylontmp$op$20);
+            }
+            returning $ceylontmp$op$20;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$21 = this;
+                int $ceylontmp$opV$22 = $ceylontmp$opE$21.getInta$priv$();
+                $ceylontmp$opE$21.setInta$priv$($ceylontmp$opV$22 + 1);
+            }
+            returning $ceylontmp$opV$22;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$23 = this;
+                int $ceylontmp$opV$24 = $ceylontmp$opE$23.getInta$priv$();
+                $ceylontmp$opE$23.setInta$priv$($ceylontmp$opV$24 - 1);
+            }
+            returning $ceylontmp$opV$24;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$25 = this;
+                int $ceylontmp$opV$26 = $ceylontmp$opE$25.getInta$priv$() + 1;
+                $ceylontmp$opE$25.setInta$priv$($ceylontmp$opV$26);
+            }
+            returning $ceylontmp$opV$26;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$27 = this;
+                int $ceylontmp$opV$28 = $ceylontmp$opE$27.getInta$priv$() - 1;
+                $ceylontmp$opE$27.setInta$priv$($ceylontmp$opV$28);
+            }
+            returning $ceylontmp$opV$28;
         );
     }
     
     public final void intMixedArithmeticOperators() {
-        final long $long = 0;
+        final long $long = 0L;
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() + $long));
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() - $long));
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() * $long));
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() / $long));
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() % $long));
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.power(getInta$priv$(), $long)));
+        int $short = 0;
+        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
+            let
+            {
+                long $ceylontmp$op$29 = getInta$priv$() + $long;
+                $short = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$29);
+            }
+            returning $ceylontmp$op$29;
+        )));
+        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
+            let
+            {
+                long $ceylontmp$op$30 = getInta$priv$() - $long;
+                $short = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$30);
+            }
+            returning $ceylontmp$op$30;
+        )));
+        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
+            let
+            {
+                long $ceylontmp$op$31 = getInta$priv$() * $long;
+                $short = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$31);
+            }
+            returning $ceylontmp$op$31;
+        )));
+        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
+            let
+            {
+                long $ceylontmp$op$32 = getInta$priv$() / $long;
+                $short = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$32);
+            }
+            returning $ceylontmp$op$32;
+        )));
+        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
+            let
+            {
+                long $ceylontmp$op$33 = getInta$priv$() % $long;
+                $short = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$33);
+            }
+            returning $ceylontmp$op$33;
+        )));
+        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
+            let
+            {
+                long $ceylontmp$op$34 = .ceylon.language.Integer.power(getInta$priv$(), $long);
+                $short = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$34);
+            }
+            returning $ceylontmp$op$34;
+        )));
         (
             let
             {
-                long $ceylontmp$op$11 = getInta$priv$() + $long;
-                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$11));
+                long $ceylontmp$op$35 = getInta$priv$() + $long;
+                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$35));
             }
-            returning $ceylontmp$op$11;
+            returning $ceylontmp$op$35;
         );
         (
             let
             {
-                long $ceylontmp$op$12 = getInta$priv$() - $long;
-                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$12));
+                long $ceylontmp$op$36 = getInta$priv$() - $long;
+                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$36));
             }
-            returning $ceylontmp$op$12;
+            returning $ceylontmp$op$36;
         );
         (
             let
             {
-                long $ceylontmp$op$13 = getInta$priv$() * $long;
-                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$13));
+                long $ceylontmp$op$37 = getInta$priv$() * $long;
+                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$37));
             }
-            returning $ceylontmp$op$13;
+            returning $ceylontmp$op$37;
         );
         (
             let
             {
-                long $ceylontmp$op$14 = getInta$priv$() / $long;
-                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$14));
+                long $ceylontmp$op$38 = getInta$priv$() / $long;
+                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$38));
             }
-            returning $ceylontmp$op$14;
+            returning $ceylontmp$op$38;
         );
         (
             let
             {
-                long $ceylontmp$op$15 = getInta$priv$() % $long;
-                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$15));
+                long $ceylontmp$op$39 = getInta$priv$() % $long;
+                setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$39));
             }
-            returning $ceylontmp$op$15;
+            returning $ceylontmp$op$39;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$40 = this;
+                long $ceylontmp$opV$41 = $ceylontmp$opE$40.getInta$priv$() + $long;
+                $ceylontmp$opE$40.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$41));
+            }
+            returning $ceylontmp$opV$41;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$42 = this;
+                long $ceylontmp$opV$43 = $ceylontmp$opE$42.getInta$priv$() - $long;
+                $ceylontmp$opE$42.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$43));
+            }
+            returning $ceylontmp$opV$43;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$44 = this;
+                long $ceylontmp$opV$45 = $ceylontmp$opE$44.getInta$priv$() * $long;
+                $ceylontmp$opE$44.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$45));
+            }
+            returning $ceylontmp$opV$45;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$46 = this;
+                long $ceylontmp$opV$47 = $ceylontmp$opE$46.getInta$priv$() / $long;
+                $ceylontmp$opE$46.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$47));
+            }
+            returning $ceylontmp$opV$47;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$48 = this;
+                long $ceylontmp$opV$49 = $ceylontmp$opE$48.getInta$priv$() % $long;
+                $ceylontmp$opE$48.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$49));
+            }
+            returning $ceylontmp$opV$49;
         );
     }
     
@@ -236,16 +411,16 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         c = (
             let
             {
-                long middle$16 = getInta$priv$();
+                int middle$50 = getInta$priv$();
             }
-            returning 0 < middle$16 && middle$16 < getIntp();
+            returning 0 < middle$50 && middle$50 < getIntp();
         );
         c = (
             let
             {
-                long middle$17 = getInta$priv$();
+                int middle$51 = getInta$priv$();
             }
-            returning 0 <= middle$17 && middle$17 <= getIntp();
+            returning 0 <= middle$51 && middle$51 <= getIntp();
         );
         .ceylon.language.Comparison cmp = .ceylon.language.Integer.compare(getInta$priv$(), getIntp());
     }
@@ -254,9 +429,9 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                int $ceylontmp$p1$18 = intParamDefault$p1();
-                int $ceylontmp$p2$19 = intParamDefault$p2($ceylontmp$p1$18);
-                intParamDefault$priv$$canonical$($ceylontmp$p1$18, $ceylontmp$p2$19);
+                int $ceylontmp$p1$52 = intParamDefault$p1();
+                int $ceylontmp$p2$53 = intParamDefault$p2($ceylontmp$p1$52);
+                intParamDefault$priv$$canonical$($ceylontmp$p1$52, $ceylontmp$p2$53);
             }
             returning null;
         );
@@ -270,8 +445,8 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                int $ceylontmp$p2$20 = intParamDefault$p2(p1);
-                intParamDefault$priv$$canonical$(p1, $ceylontmp$p2$20);
+                int $ceylontmp$p2$54 = intParamDefault$p2(p1);
+                intParamDefault$priv$$canonical$(p1, $ceylontmp$p2$54);
             }
             returning null;
         );
@@ -299,6 +474,31 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         addition = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.plus(x, y));
         int exponentiation = .ceylon.language.Integer.power(x, y);
         exponentiation = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.power((long)x, (long)y));
+        exponentiation = .com.redhat.ceylon.compiler.java.Util.toInt((
+            let
+            {
+                long arg$55$callable$ = x;
+                long arg$55$0 = y;
+            }
+            returning .ceylon.language.Integer.power(arg$55$callable$, arg$55$0);
+        ));
+        final long exp2 = (
+            let
+            {
+                long arg$56$callable$ = x;
+                long arg$56$0 = y;
+            }
+            returning .ceylon.language.Integer.power(arg$56$callable$, arg$56$0);
+        );
+        .ceylon.language.Comparison cmp = .ceylon.language.Integer.compare((long)x, (long)y);
+        cmp = (
+            let
+            {
+                long arg$57$callable$ = x;
+                long arg$57$0 = y;
+            }
+            returning .ceylon.language.Integer.compare(arg$57$callable$, arg$57$0);
+        );
     }
     
     private final void argumentConversion$priv$() {
@@ -306,16 +506,16 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                int arg$21$0 = 1;
-                int arg$21$1 = 1;
-                powerMethodIsNotSmall$priv$(arg$21$0, arg$21$1);
+                int arg$58$0 = 1;
+                int arg$58$1 = 1;
+                powerMethodIsNotSmall$priv$(arg$58$0, arg$58$1);
             }
             returning null;
         );
         (
             let
             {
-                int arg$22$0 = 1;
+                int arg$59$0 = 1;
                 
                 final class y$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterInt {
                     
@@ -326,48 +526,118 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                         return 1;
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.GetterInt y$getter$_ = new y$getter$_();
-                final int arg$22$1 = y$getter$_.get_();
-                powerMethodIsNotSmall$priv$(arg$22$0, arg$22$1);
+                final .com.redhat.ceylon.compiler.java.language.GetterLong y$getter$_ = new y$getter$_();
+                final int arg$59$1 = y$getter$_.get_();
+                powerMethodIsNotSmall$priv$(arg$59$0, arg$59$1);
             }
             returning null;
         );
     }
     
-    public final void intRangeOps() {
+    public final void intMeasureOps() {
         .java.lang.Object range = .ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getInta$priv$()), getIntp());
-        final int start$23 = getInta$priv$();
-        final int length$24 = getIntp();
-        loop_0: for (int i$25 = 0; i$25 < length$24; i$25++) {
-            final long i = i$25 + start$23;
+        final int start$25 = getInta$priv$();
+        final int length$26 = getIntp();
+        loop_0: for (int i$27 = 0; i$27 < length$26; i$27++) {
+            final long i = i$27 + start$25;
         }
         final long $long = 0L;
-        final long start$26 = $long;
-        final int length$27 = getIntp();
-        loop_1: for (int i$28 = 0; i$28 < length$27; i$28++) {
-            final long i = i$28 + start$26;
+        final long start$28 = $long;
+        final int length$29 = getIntp();
+        loop_1: for (int i$30 = 0; i$30 < length$29; i$30++) {
+            final long i = i$30 + start$28;
         }
-        final int start$29 = 0;
-        final int length$30 = 10;
-        loop_2: for (int i$31 = 0; i$31 < length$30; i$31++) {
-            final long i = i$31 + start$29;
+        final int start$31 = getInta$priv$();
+        final long length$32 = $long;
+        loop_2: for (long i$33 = 0; i$33 < length$32; i$33++) {
+            final long i = i$33 + start$31;
         }
-        range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getInta$priv$()), .ceylon.language.Integer.instance(getIntp()));
-        final int $ceylontmp$first$27 = getInta$priv$();
-        final int $ceylontmp$last$28 = getIntp();
-        final boolean $ceylontmp$increasing$29 = .ceylon.language.Integer.offset($ceylontmp$last$28, $ceylontmp$first$27) >= 0;
-        final int $ceylontmp$incr$30 = $ceylontmp$increasing$29 ? 1 : -1;
-        int i$33 = $ceylontmp$first$27;
-        int $ceylontmp$element$32 = $ceylontmp$first$27;
-        boolean $ceylontmp$f$31 = false;
-        loop_1: do {
-            if ($ceylontmp$f$31) $ceylontmp$element$32 += $ceylontmp$incr$30;
-            $ceylontmp$f$31 = true;
-            i$33 = $ceylontmp$element$32;
-            final int i = i$33;
-            $ceylontmp$continue$26: do {
+        final int start$34 = 0;
+        final int length$35 = 10;
+        loop_3: for (int i$36 = 0; i$36 < length$35; i$36++) {
+            final long i = i$36 + start$34;
+        }
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.getInta$priv$()), .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.getIntp())).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$37 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$37 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmp$item$37;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        x = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0), 10)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$38 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$38 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmp$item$38;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return i;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+    }
+    
+    public final void intSpanOps() {
+        .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getInta$priv$()), .ceylon.language.Integer.instance(getIntp()));
+        final long $ceylontmp$first$40 = getInta$priv$();
+        final long $ceylontmp$last$41 = getIntp();
+        final boolean $ceylontmp$increasing$42 = .ceylon.language.Integer.offset($ceylontmp$last$41, $ceylontmp$first$40) >= 0;
+        final long $ceylontmp$incr$43 = $ceylontmp$increasing$42 ? 1L : -1L;
+        long i$46 = $ceylontmp$first$40;
+        long $ceylontmp$element$45 = $ceylontmp$first$40;
+        boolean $ceylontmp$f$44 = false;
+        loop_4: do {
+            if ($ceylontmp$f$44) $ceylontmp$element$45 += $ceylontmp$incr$43;
+            $ceylontmp$f$44 = true;
+            i$46 = $ceylontmp$element$45;
+            final long i = i$46;
+            $ceylontmp$continue$39: do {
             }             while (false);
-         }         while ($ceylontmp$increasing$29 ? i$33 - $ceylontmp$last$28 != 0 : i$33 - $ceylontmp$last$28 != 0);
+        }         while ($ceylontmp$increasing$42 ? i$46 - $ceylontmp$last$41 != 0L : i$46 - $ceylontmp$last$41 != 0L);
     }
     
     @.java.lang.Override

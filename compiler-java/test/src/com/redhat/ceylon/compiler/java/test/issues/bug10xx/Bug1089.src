@@ -9,9 +9,9 @@ final class bug1089_ {
         if ((
             let
             {
-                long middle$1 = 0L;
+                int middle$1 = 0;
             }
-            returning 0L <= middle$1 && middle$1 < 2L;
+            returning 0 <= middle$1 && middle$1 < 2;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=0<2"));
@@ -19,9 +19,9 @@ final class bug1089_ {
         if ((
             let
             {
-                long middle$3 = 1L;
+                int middle$3 = 1;
             }
-            returning 0L < middle$3 && middle$3 < 2L;
+            returning 0 < middle$3 && middle$3 < 2;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<2"));
@@ -29,9 +29,9 @@ final class bug1089_ {
         if ((
             let
             {
-                long middle$5 = 1L;
+                int middle$5 = 1;
             }
-            returning 0L <= middle$5 && middle$5 < 2L;
+            returning 0 <= middle$5 && middle$5 < 2;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<2"));
@@ -39,9 +39,9 @@ final class bug1089_ {
         if ((
             let
             {
-                long middle$7 = 1L;
+                int middle$7 = 1;
             }
-            returning 0L < middle$7 && middle$7 <= 2L;
+            returning 0 < middle$7 && middle$7 <= 2;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<=2"));
@@ -49,9 +49,9 @@ final class bug1089_ {
         if ((
             let
             {
-                long middle$9 = 1L;
+                int middle$9 = 1;
             }
-            returning 0L <= middle$9 && middle$9 <= 2L;
+            returning 0 <= middle$9 && middle$9 <= 2;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<=2"));
