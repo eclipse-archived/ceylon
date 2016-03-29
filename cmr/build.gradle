@@ -33,7 +33,7 @@ sourceSets {
             srcDirs 'testsuite/src/test/java', 'maven/src/test/java'
         }
         resources {
-            srcDir 'testsuite/src/test/resources'
+            srcDirs 'testsuite/src/test/resources', 'maven/src/test/resources'
         }
     }
 }
