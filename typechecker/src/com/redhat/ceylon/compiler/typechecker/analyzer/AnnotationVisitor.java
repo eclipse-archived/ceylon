@@ -229,6 +229,9 @@ public class AnnotationVisitor extends Visitor {
                              .isObjectClass())) {
                     //ok
                 }
+                else if (d != null && d.isStaticallyImportable()) {
+                    // ok
+                }
                 else {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
                 }
