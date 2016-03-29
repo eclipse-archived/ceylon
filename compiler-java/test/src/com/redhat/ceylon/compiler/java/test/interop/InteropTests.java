@@ -493,6 +493,11 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testAnnotationBug6145() {
+        compareWithJavaSource("AnnotationBug6145");
+    }
+    
+    @Test
     public void testSealedInterop(){
         compile("access/JavaSealed.java");
         assertErrors("Sealed",
