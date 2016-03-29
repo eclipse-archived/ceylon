@@ -1,29 +1,30 @@
 
+dependencies {
+    compile project(':common'),
+        project(':langtools-classfile'),
+        project(':model'),
+        'org.jboss:jandex:2.0.0.Final',
+        'org.jboss.modules:jboss-modules:1.4.4.Final',
+        'net.minidev:json-smart:1.1.1',
+        'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-maven:2.2.2',
+        'com.github.lookfirst:sardine:5.1'
+}
+
 sourceSets {
     main {
         java {
-            srcDir 'api/src/main/java', 'spi/src/main/java', 'impl/src/main/java', 'ceylon/src/main/java', 'webdav/src/main/java', 'maven/src/main/java'
+            srcDirs 'api/src/main/java', 'spi/src/main/java', 'impl/src/main/java', 'ceylon/src/main/java', 'webdav/src/main/java', 'maven/src/main/java'
         }
         resources {
-            srcDir 'api/src/main/resources', 'spi/src/main/resources', 'impl/src/main/resources', 'ceylon/src/main/resources', 'webdav/src/main/resources', 'maven/src/main/resources'
+            srcDirs 'api/src/main/resources', 'spi/src/main/resources', 'impl/src/main/resources', 'ceylon/src/main/resources', 'webdav/src/main/resources', 'maven/src/main/resources'
         }
     }
     test {
         java {
-            srcDir 'testsuite/src/test/java'
+            srcDirs 'testsuite/src/test/java', 'maven/src/test/java'
         }
         resources {
             srcDir 'testsuite/src/test/resources'
         }
     }
-}   
-
-dependencies {
-    compile project(':common'),
-    project(':langtools-classfile'),
-    project(':model'),
-    'org.jboss:jandex:2.0.0.Final',
-    'org.jboss.modules:jboss-modules:1.4.4.Final',
-    'com.github.lookfirst:sardine:5.1'
 }
-
