@@ -1588,7 +1588,13 @@ public class StatementTransformer extends AbstractTransformer {
                 Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
                 elem_name = naming.synthetic(variable);
                 iteratorVarName = naming.synthetic(variable.getDeclarationModel()).suffixedBy(Suffix.$iterator$).alias();
-                JCVariableDecl varExpr = transformVariable(variable, iteratorVarName.makeIdent()).build();
+                JCExpression iteratorVar = iteratorVarName.makeIdent();
+                if (variable.getDeclarationModel() instanceof TypedDeclaration &&
+                        !forIterator.getSpecifierExpression().getExpression().getTypeModel().isSubtypeOf(typeFact().getIterableType(typeFact().getAnythingType())) &&
+                        variable.getDeclarationModel().getType().isSubtypeOf(typeFact().getObjectType())) {
+                    iteratorVar = utilInvocation().checkNull(iteratorVar);
+                }
+                JCVariableDecl varExpr = transformVariable(variable, iteratorVar).build();
                 itemDecls = itemDecls.append(varExpr);
                 loopvar = makeVar(iteratorVarName, makeJavaType(
                         variable.getDeclarationModel().getType(), JT_NO_PRIMITIVES), null);
