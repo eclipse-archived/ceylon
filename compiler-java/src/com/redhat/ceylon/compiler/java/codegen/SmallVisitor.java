@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Marks Terms as small if they're being used in an assignment to 
@@ -14,6 +15,17 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
  */
 public class SmallVisitor extends Visitor {
 
+    /**
+     * Things like {@code <=>} return a non-small type, but we use the rule
+     * that only if the expression result is small can the computation be 
+     * small. We use a fake "small" value for operators which return 
+     * non-smallable types like Comparison.  
+     */
+    private static final Value NON_SMALLABLE = new Value();
+    static {
+        NON_SMALLABLE.setSmall(true);
+    }
+    
     /** 
      * Mark the given term as small and reset the type to with an 
      * appropriate underlying type.
@@ -197,11 +209,29 @@ public class SmallVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.WithinOp that) {
+    public void visit(Tree.CompareOp that) {
+        Declaration preva = assigning;
+        assigning = NON_SMALLABLE;
         super.visit(that);
+        assigning = preva;
+    }
+    
+    @Override
+    public void visit(Tree.WithinOp that) {
+        Declaration preva = assigning;
+        assigning = NON_SMALLABLE;
+        super.visit(that);
+        assigning = preva;
         if (that.getLowerBound().getSmall() && 
                 that.getUpperBound().getSmall() &&
                 that.getTerm().getSmall()) {
+            markSmall(that);
+        }
+    }
+    @Override
+    public void visit(Tree.Bound that) {
+        super.visit(that);
+        if (that.getTerm().getSmall()) {
             markSmall(that);
         }
     }
