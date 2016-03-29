@@ -2545,7 +2545,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         final Type leftType = getSupertype(op.getLeftTerm(), compoundType);
-        final Type resultType = getMostPreciseType(op.getLeftTerm(), getTypeArgument(leftType, 0));
+        
         // Normally we don't look at the RHS type because it can lead to unknown types, but if we want to extract its
         // underlying type we have to, and we deal with any eventual unknown type. Presumably unknown types will not have
         // any useful underlying type anyways.
@@ -2561,9 +2561,11 @@ public class ExpressionTransformer extends AbstractTransformer {
             rightTypeArgument = getTypeArgument(leftType);
         final Type rightType = getMostPreciseType(op.getLeftTerm(), rightTypeArgument);
 
+        final Type resultType = getLeastPreciseType(op.getLeftTerm(), op.getRightTerm());
+        
         // we work on boxed types
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), boxResult, 
-                leftType, resultType, 
+                op.getLeftTerm().getTypeModel(), resultType, 
                 new AssignAndReturnOperationFactory(){
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
@@ -2645,9 +2647,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         Tree.Term term = unwrapExpressionUntilTerm(expr.getTerm());
         
-        Interface compoundType = expr.getUnit().getOrdinalDeclaration();
-        Type valueType = getSupertype(expr.getTerm(), compoundType);
-        Type returnType = getMostPreciseType(term, getTypeArgument(valueType, 0));
+        Type returnType = term.getTypeModel();
 
         List<JCVariableDecl> decls = List.nil();
         List<JCStatement> stats = List.nil();
@@ -2783,11 +2783,11 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         Interface compoundType = expr.getUnit().getOrdinalDeclaration();
         Type valueType = getSupertype(term, compoundType);
-        final Type returnType = getMostPreciseType(term, getTypeArgument(valueType, 0));
+        final Type returnType = term.getTypeModel();//getMostPreciseType(term, getTypeArgument(valueType, 0));
         
         // we work on boxed types unless we could have optimised
         return transformAssignAndReturnOperation(expr, term, !canOptimise, 
-                valueType, returnType, new AssignAndReturnOperationFactory(){
+                term.getTypeModel(), returnType, new AssignAndReturnOperationFactory(){
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // use +1/-1 if we can optimise a bit
@@ -6420,9 +6420,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     private Type getMostPreciseType(Tree.Term term, Type defaultType) {
         // special case for interop when we're dealing with java types
         Type termType = term.getTypeModel();
-        if(termType.getUnderlyingType() != null)
+        if(!term.getSmall() && termType.getUnderlyingType() != null)
             return termType;
         return defaultType;
+    }
+    
+    private Type getLeastPreciseType(Tree.Term term, Tree.Term defaultType) {
+        Type termType = term.getTypeModel();
+        if(term.getSmall() || termType.getUnderlyingType() != null)
+            return defaultType.getTypeModel();
+        return termType;
     }
 
     //
