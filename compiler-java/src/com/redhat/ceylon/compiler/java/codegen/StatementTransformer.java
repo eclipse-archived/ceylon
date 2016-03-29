@@ -1589,9 +1589,7 @@ public class StatementTransformer extends AbstractTransformer {
                 elem_name = naming.synthetic(variable);
                 iteratorVarName = naming.synthetic(variable.getDeclarationModel()).suffixedBy(Suffix.$iterator$).alias();
                 JCExpression iteratorVar = iteratorVarName.makeIdent();
-                if (variable.getDeclarationModel() instanceof TypedDeclaration &&
-                        !forIterator.getSpecifierExpression().getExpression().getTypeModel().isSubtypeOf(typeFact().getIterableType(typeFact().getAnythingType())) &&
-                        variable.getDeclarationModel().getType().isSubtypeOf(typeFact().getObjectType())) {
+                if (requiresNullCheck(forIterator)) {
                     iteratorVar = utilInvocation().checkNull(iteratorVar);
                 }
                 JCVariableDecl varExpr = transformVariable(variable, iteratorVar).build();
@@ -1603,7 +1601,11 @@ public class StatementTransformer extends AbstractTransformer {
                 Tree.Pattern pat = patIter.getPattern();
                 elem_name = naming.synthetic(pat);
                 iteratorVarName = elem_name.suffixedBy(Suffix.$iterator$);
-                List<VarDefBuilder> varsDefs = transformPattern(pat, iteratorVarName.makeIdent());
+                JCExpression iteratorVar = iteratorVarName.makeIdent();
+                if (requiresNullCheck(forIterator)) {
+                    iteratorVar = utilInvocation().checkNull(iteratorVar);
+                }
+                List<VarDefBuilder> varsDefs = transformPattern(pat, iteratorVar);
                 for (VarDefBuilder vdb : varsDefs) {
                     itemDecls = itemDecls.append(vdb.build());
                 }
@@ -1630,9 +1632,19 @@ public class StatementTransformer extends AbstractTransformer {
             
             return result;
         }
+
+        
         
     }
 
+    boolean requiresNullCheck(Tree.ForIterator forIterator) {
+        Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
+        Type iterableType = forIterator.getSpecifierExpression().getExpression().getTypeModel();
+        return variable.getDeclarationModel() instanceof TypedDeclaration &&
+                (isJavaIterable(iterableType) || isJavaObjectArray(iterableType)) &&
+                variable.getDeclarationModel().getType().isSubtypeOf(typeFact().getObjectType());
+    }
+    
     protected boolean isJavaIterable(Type iterableType) {
         return iterableType.getSupertype((TypeDeclaration)javacJavaTypeDeclaration(syms().iterableType)) != null;
     }
@@ -2077,7 +2089,13 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexedAccess() {
-            return make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
+            
+            JCExpression result = make().Indexed(indexableName.makeIdent(), indexName.makeIdent());
+            if (requiresNullCheck(stmt.getForClause().getForIterator())
+                    && isJavaObjectArray(javaArrayType)) {
+                result = utilInvocation().checkNull(result);
+            }
+            return result;
         }
         
         @Override
