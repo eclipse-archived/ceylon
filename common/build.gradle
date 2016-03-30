@@ -3,3 +3,14 @@ dependencies {
     compile 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
 }
 
+sourceSets {
+    test {
+        java {
+            srcDir 'test/src'
+        }
+        resources {
+            srcDir 'test/src'
+            exclude '**/*.java'
+        }
+    }
+}

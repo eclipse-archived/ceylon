@@ -23,10 +23,18 @@ subprojects {
             java {
                 srcDir 'src'
             }
+            resources {
+                srcDir 'src'
+                exclude '**/*.java'
+            }
         }
         test {
             java {
                 srcDir 'test'
+            }
+            resources {
+                srcDir 'test'
+                exclude '**/*.java'
             }
         }
     }
