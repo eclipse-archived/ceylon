@@ -115,4 +115,14 @@ public class SmallDeclarationVisitor extends Visitor {
         super.visit(that);
         //declaration = prevd;
     }
+    
+
+    @Override
+    public void visit(Tree.AttributeArgument that) {
+        if (Decl.isSmall(that.getParameter().getModel())) {
+            that.getDeclarationModel().setSmall(true);
+            smallDeclaration(that.getDeclarationModel());
+        }
+        super.visit(that);
+    }
 }
