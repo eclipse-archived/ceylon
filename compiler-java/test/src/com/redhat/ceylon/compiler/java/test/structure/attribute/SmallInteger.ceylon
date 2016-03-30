@@ -147,7 +147,7 @@ class SmallInteger(shared small Integer intp) {
     }
     
     
-    shared void intRangeOps() {
+    shared void intMeasureOps() {
         // not optimizable because : means measure() whose first parameter is a type parameter
         // so gets boxed
         variable value range = inta:intp;
@@ -158,12 +158,19 @@ class SmallInteger(shared small Integer intp) {
         for (i in long:intp) {
             
         }
+        for (i in inta:long) {
+            
+        }
         for (i in 0:10) {
             
         }
+        variable value x = [for (i in inta:intp) i];
+        x = [for (i in 0:10) i];
+    }
+    shared void intSpanOps() {
         // not optimizable because .. means span() whose parameters are a type parameter
         // so gets boxed
-        range = inta..intp;
+        variable value range = inta..intp;
         for (i in inta..intp) {
             
         }
