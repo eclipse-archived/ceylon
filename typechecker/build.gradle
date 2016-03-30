@@ -11,7 +11,7 @@ dependencies {
 sourceSets {
     main {
         antlr {
-            srcDir 'treegen'
+            srcDir 'antlr'
         }
     }
 }   
