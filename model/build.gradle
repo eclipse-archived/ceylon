@@ -2,12 +2,3 @@
 dependencies {
     compile project(':common'), project(':langtools-classfile')
 }
-
-sourceSets {
-    main {
-        resources {
-			srcDir 'src'
-			include 'com/redhat/ceylon/model/cmr/package-list*'
-        }
-    }
-}
