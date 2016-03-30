@@ -100,7 +100,7 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         setFloata$priv$((float)(getFloata$priv$() - getFloatp()));
         setFloata$priv$((float)(getFloata$priv$() * getFloatp()));
         setFloata$priv$((float)(getFloata$priv$() / getFloatp()));
-        setFloata$priv$(.ceylon.language.Float.power(getFloata$priv$(), getFloatp()));
+        setFloata$priv$(.ceylon.language.Float.$power$(getFloata$priv$(), getFloatp()));
         (
             let
             {
@@ -141,7 +141,7 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         setFloata$priv$((float)(getFloata$priv$() - $double));
         setFloata$priv$((float)(getFloata$priv$() * $double));
         setFloata$priv$((float)(getFloata$priv$() / $double));
-        setFloata$priv$((float).ceylon.language.Float.power(getFloata$priv$(), $double));
+        setFloata$priv$((float).ceylon.language.Float.$power$(getFloata$priv$(), $double));
         (
             let
             {
@@ -247,7 +247,7 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final void powerMethodIsNotSmall$priv$(final float x, final float y) {
         float addition = (float)(x + y);
         addition = (float).ceylon.language.Float.plus(x, y);
-        float exponentiation = .ceylon.language.Float.power(x, y);
+        float exponentiation = .ceylon.language.Float.$power$(x, y);
         exponentiation = (float).ceylon.language.Float.power(x, y);
     }
     

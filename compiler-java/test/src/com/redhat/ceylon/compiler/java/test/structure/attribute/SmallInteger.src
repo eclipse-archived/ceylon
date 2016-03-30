@@ -101,7 +101,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         setInta$priv$(getInta$priv$() * getIntp());
         setInta$priv$(getInta$priv$() / getIntp());
         setInta$priv$(getInta$priv$() % getIntp());
-        setInta$priv$(.ceylon.language.Integer.power(getInta$priv$(), getIntp()));
+        setInta$priv$(.ceylon.language.Integer.$power$(getInta$priv$(), getIntp()));
         (
             let
             {
@@ -264,7 +264,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() * $long));
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() / $long));
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(getInta$priv$() % $long));
-        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.power(getInta$priv$(), $long)));
+        setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.$power$(getInta$priv$(), $long)));
         int $short = 0;
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
             let
@@ -309,7 +309,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt((
             let
             {
-                long $ceylontmp$op$34 = .ceylon.language.Integer.power(getInta$priv$(), $long);
+                long $ceylontmp$op$34 = .ceylon.language.Integer.$power$(getInta$priv$(), $long);
                 $short = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$34);
             }
             returning $ceylontmp$op$34;
@@ -472,32 +472,53 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final void powerMethodIsNotSmall$priv$(final int x, final int y) {
         int addition = x + y;
         addition = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.plus(x, y));
-        int exponentiation = .ceylon.language.Integer.power(x, y);
-        exponentiation = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.power((long)x, (long)y));
+        int exponentiation = .ceylon.language.Integer.$power$(x, y);
+        exponentiation = (
+            let
+            {
+                int base$55 = x;
+            }
+            returning base$55 * base$55;
+        );
+        exponentiation = (
+            let
+            {
+                int base$56 = x;
+            }
+            returning base$56 * base$56 * base$56 * base$56;
+        );
+        exponentiation = (
+            let
+            {
+                int base$57 = x;
+            }
+            returning base$57 * base$57 * base$57 * base$57 * base$57 * base$57 * base$57 * base$57 * base$57 * base$57;
+        );
+        exponentiation = .com.redhat.ceylon.compiler.java.Util.toInt(.ceylon.language.Integer.power(x, y));
         exponentiation = .com.redhat.ceylon.compiler.java.Util.toInt((
             let
             {
-                long arg$55$callable$ = x;
-                long arg$55$0 = y;
+                int arg$58$callable$ = x;
+                long arg$58$0 = y;
             }
-            returning .ceylon.language.Integer.power(arg$55$callable$, arg$55$0);
+            returning .ceylon.language.Integer.power(arg$58$callable$, arg$58$0);
         ));
         final long exp2 = (
             let
             {
-                long arg$56$callable$ = x;
-                long arg$56$0 = y;
+                long arg$59$callable$ = x;
+                long arg$59$0 = y;
             }
-            returning .ceylon.language.Integer.power(arg$56$callable$, arg$56$0);
+            returning .ceylon.language.Integer.power(arg$59$callable$, arg$59$0);
         );
-        .ceylon.language.Comparison cmp = .ceylon.language.Integer.compare((long)x, (long)y);
+        .ceylon.language.Comparison cmp = .ceylon.language.Integer.compare(x, y);
         cmp = (
             let
             {
-                long arg$57$callable$ = x;
-                long arg$57$0 = y;
+                long arg$60$callable$ = x;
+                long arg$60$0 = y;
             }
-            returning .ceylon.language.Integer.compare(arg$57$callable$, arg$57$0);
+            returning .ceylon.language.Integer.compare(arg$60$callable$, arg$60$0);
         );
     }
     
@@ -506,16 +527,16 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                int arg$58$0 = 1;
-                int arg$58$1 = 1;
-                powerMethodIsNotSmall$priv$(arg$58$0, arg$58$1);
+                int arg$61$0 = 1;
+                int arg$61$1 = 1;
+                powerMethodIsNotSmall$priv$(arg$61$0, arg$61$1);
             }
             returning null;
         );
         (
             let
             {
-                int arg$59$0 = 1;
+                int arg$62$0 = 1;
                 
                 final class y$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterInt {
                     
@@ -527,8 +548,8 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     }
                 }
                 final .com.redhat.ceylon.compiler.java.language.GetterInt y$getter$_ = new y$getter$_();
-                final int arg$59$1 = y$getter$_.get_();
-                powerMethodIsNotSmall$priv$(arg$59$0, arg$59$1);
+                final int arg$62$1 = y$getter$_.get_();
+                powerMethodIsNotSmall$priv$(arg$62$0, arg$62$1);
             }
             returning null;
         );

@@ -143,6 +143,9 @@ class SmallInteger(shared small Integer intp) {
         small variable value addition = x+y;
         addition = x.plus(y);
         small variable value exponentiation = x^y;
+        exponentiation = x^2;
+        exponentiation = x^4;
+        exponentiation = x^10;
         // because we're calling it as a *method* the following should 
         // dispatch to Integer.power(long, long), not Integer.power(int, int)
         exponentiation = x.power(y);
