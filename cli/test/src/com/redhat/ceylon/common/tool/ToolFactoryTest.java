@@ -3,7 +3,7 @@ package com.redhat.ceylon.common.tool;
 import java.util.Arrays;
 import java.util.Collections;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
