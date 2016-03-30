@@ -11,9 +11,9 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.ModuleCopycat;
-import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.Argument;
@@ -23,7 +23,7 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 @Summary("Copies modules from one module repository to another")

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.cmr.ceylon;
+package com.redhat.ceylon.common.tools;
 
 import java.io.File;
 import java.io.Flushable;
@@ -30,6 +30,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentStore;

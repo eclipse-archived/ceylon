@@ -10,8 +10,8 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Description;
@@ -19,13 +19,12 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.JdkProvider;
-import com.redhat.ceylon.model.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
 

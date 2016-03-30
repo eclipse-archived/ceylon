@@ -23,7 +23,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -35,7 +35,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 
 @Summary("Prints information about modules in repositories")
 @Description("When passed a search query like `*foo*` it will look at all the modules in all " +

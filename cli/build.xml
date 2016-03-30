@@ -18,6 +18,8 @@
     <path id="classpath">
         <pathelement path="${markdownpapers.lib}" />
         <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.model.lib}" />
+        <pathelement path="${ceylon.module-resolver.lib}" />
     </path>
 
     <path id="test.run.classpath">

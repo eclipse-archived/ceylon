@@ -1,11 +1,13 @@
-package com.redhat.ceylon.cmr.ceylon;
+package com.redhat.ceylon.common.tools;
 
 import java.io.File;
 import java.util.ResourceBundle;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
+import com.redhat.ceylon.cmr.ceylon.ShaSigner;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
 

@@ -473,7 +473,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-cli" depends="install-common,install-cli-nodeps" />
+    <target name="install-cli" depends="install-common,install-model,install-cmr,install-cli-nodeps" />
     <target name="install-cli-nodeps">
         <ant antfile="${project-cli.dir}/build.xml" target="publish" dir="${project-cli.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -492,7 +492,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-cmr" depends="install-common,install-cli,install-model,install-cmr-nodeps" />
+    <target name="install-cmr" depends="install-common,install-model,install-cmr-nodeps" />
     <target name="install-cmr-nodeps">
         <ant antfile="${project-module-resolver.dir}/build.xml" target="publish" dir="${project-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>

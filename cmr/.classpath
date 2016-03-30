@@ -25,7 +25,6 @@
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/github/lookfirst/sardine/5.1/com.github.lookfirst.sardine-5.1.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/net/minidev/json-smart/1.1.1/net.minidev.json-smart-1.1.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-cli"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-api/1.1.0/org.eclipse.aether.aether-api-1.1.0.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-connector-basic/1.1.0/org.eclipse.aether.aether-connector-basic-1.1.0.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-spi/1.1.0/org.eclipse.aether.aether-spi-1.1.0.jar"/>
