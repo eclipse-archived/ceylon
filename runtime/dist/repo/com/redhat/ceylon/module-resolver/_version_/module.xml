@@ -31,11 +31,13 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
-        <!-- Make all four optional -->
-        <module name="com.github.lookfirst.sardine" slot="5.1"/>
+        <!-- Make optional -->
         <module name="net.minidev.json-smart" slot="1.1.1"/>
-        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
-        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2"/>
+        <!-- Used by WebDavContentStore for HTTP output repos -->
+        <module name="com.github.lookfirst.sardine" slot="5.1" optional="true"/>
+        <!-- Those are dependencies due to Sardine -->
+        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2" optional="true"/>
+        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2" optional="true"/>
         <!-- Maven support -->
         <module name="org.eclipse.aether.aether-impl" slot="1.1.0" optional="true"/>
         <module name="org.eclipse.aether.aether-util" slot="1.1.0" optional="true"/>

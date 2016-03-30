@@ -69,8 +69,14 @@ public class WebDAVContentStore extends URLContentStore {
         super(root, log, offline, timeout, proxy, apiVersion);
     }
 
-    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy) {
+    /**
+     * WARNING: used by reflection from CeylonUtils
+     */
+    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy, 
+            String username, String password) {
         super(root, log, offline, timeout, proxy);
+        setUsername(username);
+        setPassword(password);
     }
 
     private SardineImpl getSardine() {
