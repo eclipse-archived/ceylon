@@ -186,6 +186,7 @@ public abstract class TypeDescriptor
         
         private static final long serialVersionUID = -490491495105002855L;
         
+        private int memoizedHash;
         protected final java.lang.Class<?> klass;
 
         public Class(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments){
@@ -278,12 +279,14 @@ public abstract class TypeDescriptor
         
         @Override
         public int hashCode() {
-            int ret = 17;
-            ret = 37 * ret + "class".hashCode();
-            ret = 37 * ret + Arrays.hashCode(typeArguments);
-            ret = 37 * ret + Arrays.hashCode(useSiteVariance);
-            ret = 37 * ret + klass.hashCode();
-            return  ret;
+            if (memoizedHash == 0) {
+            	memoizedHash = 17;
+            	memoizedHash = 37 * memoizedHash + "class".hashCode();
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(useSiteVariance);
+            	memoizedHash = 37 * memoizedHash + klass.hashCode();
+            }
+            return  memoizedHash;
         }
         
         @Override
@@ -404,6 +407,7 @@ public abstract class TypeDescriptor
         // only set when requested
         private TypeDescriptor elementUnion;
         private TypeDescriptor rest;
+        private int memoizedHash;
 
         public Tuple(boolean variadic, boolean atLeastOne, int firstDefaulted, TypeDescriptor[] elements) {
             super(ceylon.language.Tuple.class, NO_VARIANCE, null);
@@ -458,13 +462,15 @@ public abstract class TypeDescriptor
         
         @Override
         public int hashCode() {
-            int ret = 17;
-            ret = 37 * ret + "tuple".hashCode();
-            ret = 37 * ret + Arrays.hashCode(elements);
-            ret = 37 * ret + (variadic ? 1 : 0);
-            ret = 37 * ret + (atLeastOne ? 1 : 0);
-            ret = 37 * ret + firstDefaulted;
-            return  ret;
+            if (memoizedHash == 0) {
+            	memoizedHash = 17;
+            	memoizedHash = 37 * memoizedHash + "tuple".hashCode();
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(elements);
+            	memoizedHash = 37 * memoizedHash + (variadic ? 1 : 0);
+            	memoizedHash = 37 * memoizedHash + (atLeastOne ? 1 : 0);
+            	memoizedHash = 37 * memoizedHash + firstDefaulted;
+            }
+            return  memoizedHash;
         }
 
         @Override
@@ -575,6 +581,7 @@ public abstract class TypeDescriptor
         private final String name;
         private final java.lang.Class<?> klass;
         private final boolean local;
+        private int memoizedHash;
         
         /**
          * For members
@@ -671,12 +678,14 @@ public abstract class TypeDescriptor
         
         @Override
         public int hashCode() {
-            int ret = 17;
-            ret = 37 * ret + "functionorvalue".hashCode();
-            ret = 37 * ret + Arrays.hashCode(typeArguments);
-            ret = 37 * ret + (klass != null ? klass.hashCode() : 0);
-            ret = 37 * ret + (name != null ? name.hashCode() : 0);
-            return  ret;
+            if (memoizedHash == 0) {
+            	memoizedHash = 17;
+            	memoizedHash = 37 * memoizedHash + "functionorvalue".hashCode();
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
+            	memoizedHash = 37 * memoizedHash + (klass != null ? klass.hashCode() : 0);
+            	memoizedHash = 37 * memoizedHash + (name != null ? name.hashCode() : 0);
+            }
+            return  memoizedHash;
         }
         
         @Override

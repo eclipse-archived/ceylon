@@ -116,7 +116,7 @@
 
     <!-- ################################################################## -->
 
-    <target name="clean"
+    <target name="clean" depends="clean.doc,clean.antlr"
             description="Clean up everything.">
         <delete dir="${build.dir}"/>
     </target>

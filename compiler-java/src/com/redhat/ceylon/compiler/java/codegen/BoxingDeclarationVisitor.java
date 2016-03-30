@@ -386,7 +386,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if (iter instanceof ValueIterator) {
             // The exception to the "always boxed for now" rule is Java arrays
             Type typeModel = iter.getSpecifierExpression().getExpression().getTypeModel();
-            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(iter.getUnit().isJavaArrayType(typeModel));
+            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(
+                    (iter.getUnit().isJavaArrayType(typeModel) && ((ValueIterator) iter).getVariable().getDeclarationModel().getType().isSubtypeOf(iter.getUnit().getObjectType())));
         } else if (iter instanceof PatternIterator) {
             boxPattern(((PatternIterator) iter).getPattern());
         }

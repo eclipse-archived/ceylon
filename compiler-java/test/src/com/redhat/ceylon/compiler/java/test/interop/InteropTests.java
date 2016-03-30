@@ -715,4 +715,9 @@ public class InteropTests extends CompilerTests {
     public void testIopJavaArrayTypeConstraint(){
         compile("JavaArrayTypeConstraint.ceylon");
     }
+    
+    @Test
+    public void testIopBug6143(){
+        compareWithJavaSource("Bug6143");
+    }
 }

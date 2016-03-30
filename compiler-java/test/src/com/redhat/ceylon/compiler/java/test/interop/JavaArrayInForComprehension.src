@@ -72,7 +72,7 @@ final class javaArrayInForComprehension_ {
                         if (s$exhausted$) {
                             return false;
                         } else {
-                            s = $array$0[$iterator$0++].toString();
+                            s = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]).toString();
                             return true;
                         }
                     }
@@ -106,7 +106,7 @@ final class javaArrayInForComprehension_ {
                         if (s$exhausted$) {
                             return false;
                         } else {
-                            s = $array$0[$iterator$0++];
+                            s = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]);
                             return true;
                         }
                     }
@@ -446,7 +446,7 @@ final class javaArrayInForComprehension_ {
                         if (s$exhausted$) {
                             return false;
                         } else {
-                            s = $array$0[$iterator$0++].toString();
+                            s = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]).toString();
                             return true;
                         }
                     }
@@ -480,7 +480,7 @@ final class javaArrayInForComprehension_ {
                         if (s$exhausted$) {
                             return false;
                         } else {
-                            s = $array$0[$iterator$0++];
+                            s = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]);
                             return true;
                         }
                     }
