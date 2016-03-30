@@ -139,6 +139,11 @@ public class StructureTests extends CompilerTests {
                 CompilerError.warning(70, "small annotation on parameter 'a' of 'bigParam' will be ignored: corresponding parameter 'a' of 'bigParam' is not small")
                 );
     }
+    @Test
+    public void testAtrSmallLoading(){
+        compile("attribute/SmallLoadingDecls.ceylon");
+        compareWithJavaSource("attribute/SmallLoadingUse");
+    }
     
     //
     // Classes
