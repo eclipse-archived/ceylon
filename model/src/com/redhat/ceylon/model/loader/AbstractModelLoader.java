@@ -5663,4 +5663,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public JdkProvider getJdkProvider(){
     	return jdkProvider;
     }
+    
+    public Interface getRepeatableContainer(Class c) {
+        if (c instanceof AnnotationProxyClass) {
+            AnnotationMirror mirror = ((AnnotationProxyClass)c).iface.classMirror.getAnnotation("java.lang.annotation.Repeatable");
+            if (mirror != null) {
+                TypeMirror m = (TypeMirror)mirror.getValue();
+                Module module = findModuleForClassMirror(m.getDeclaredClass());
+                return (Interface)convertDeclaredTypeToDeclaration(module, m, DeclarationType.TYPE);
+            } 
+        }
+        return null;
+    }
 }

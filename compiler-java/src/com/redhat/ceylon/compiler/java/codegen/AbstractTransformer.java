@@ -99,6 +99,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
+import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -5462,6 +5464,14 @@ public abstract class AbstractTransformer implements Transformation {
         return meta != null && klass.getType().isSubtypeOf(
                 meta.appliedType(null, 
                 Arrays.asList(typeFact().getAnythingType(), typeFact().getNothingType())));
+    }
+    
+    boolean isRepeatableAnnotation(Class klass) {
+        return getRepeatableContainer(klass) != null;
+    }
+    
+    Interface getRepeatableContainer(Class klass) {
+        return loader.getRepeatableContainer(klass);
     }
 
     private Module getLanguageModule() {

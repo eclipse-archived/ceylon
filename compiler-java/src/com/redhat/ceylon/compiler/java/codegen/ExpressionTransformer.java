@@ -6825,7 +6825,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                         makeJavaType(annotationClass.getType(), JT_ANNOTATIONS), 
                         List.<JCExpression>of(make().NewArray(null,  null, (List)annotations.toList())));
                 result.append(wrapperAnnotation);
-            } else {
+            } else if (isRepeatableAnnotation(annotationClass)) {
+                Interface containerAnnotation = getRepeatableContainer(annotationClass);
+                JCAnnotation wrapperAnnotation = make().Annotation(
+                        makeJavaType(containerAnnotation.appliedType(null, Collections.<Type>emptyList())),
+                        List.<JCExpression>of(make().NewArray(null,  null, (List)annotations.toList())));
+                result.append(wrapperAnnotation);
+            }else {
                 if (annotations.size() > 1) {
                     makeErroneous(annotationList, "compiler bug: multiple occurances of non-sequenced annotation class " + annotationClass.getQualifiedNameString());
                 }
