@@ -61,11 +61,12 @@ following platforms to make sure it works:
 ### Linux
 
 - Ubuntu "quantal" 12.10 (64 bit) JDK 1.7.0_09 (IcedTea) Node 0.10.15
-- Fedora 17 (64 bit) JDK 1.7.0_09 (IcedTea)
-- Fedora 16 (64 bit), JDK 1.7.0_b147 (IcedTea)
+- Fedora 22 (64 bit), JDK 1.8.0_72 (OpenJDK)
+- Fedora 22 (64 bit), JDK 1.7.0_71 (Oracle)
 
 ### Windows
 
+- Windows 10 Home (64 bit) 1.8.0_77
 - Windows 7 (64 bit) 1.7.0_05 (Oracle)
 - Windows Server 2008 R2 SP1 JDK 1.7.0_04
 
