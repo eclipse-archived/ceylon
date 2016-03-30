@@ -165,7 +165,7 @@ class SmallInteger(shared small Integer intp) {
         };
     }
     
-    
+    /*
     shared void intMeasureOps() {
         // not optimizable because : means measure() whose first parameter is a type parameter
         // so gets boxed
@@ -195,7 +195,7 @@ class SmallInteger(shared small Integer intp) {
         }
     }
     
-    /*
+    
     shared void intMethods() {
         // TODO plus bitshifting and bit masking
     }

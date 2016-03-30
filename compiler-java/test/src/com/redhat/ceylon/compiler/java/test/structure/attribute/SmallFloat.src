@@ -145,32 +145,32 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         (
             let
             {
-                float $ceylontmp$op$6 = getFloata$priv$() + (float)$double;
-                setFloata$priv$($ceylontmp$op$6);
+                double $ceylontmp$op$6 = getFloata$priv$() + $double;
+                setFloata$priv$((float)$ceylontmp$op$6);
             }
             returning $ceylontmp$op$6;
         );
         (
             let
             {
-                float $ceylontmp$op$7 = getFloata$priv$() - (float)$double;
-                setFloata$priv$($ceylontmp$op$7);
+                double $ceylontmp$op$7 = getFloata$priv$() - $double;
+                setFloata$priv$((float)$ceylontmp$op$7);
             }
             returning $ceylontmp$op$7;
         );
         (
             let
             {
-                float $ceylontmp$op$8 = getFloata$priv$() * (float)$double;
-                setFloata$priv$($ceylontmp$op$8);
+                double $ceylontmp$op$8 = getFloata$priv$() * $double;
+                setFloata$priv$((float)$ceylontmp$op$8);
             }
             returning $ceylontmp$op$8;
         );
         (
             let
             {
-                float $ceylontmp$op$9 = getFloata$priv$() / (float)$double;
-                setFloata$priv$($ceylontmp$op$9);
+                double $ceylontmp$op$9 = getFloata$priv$() / $double;
+                setFloata$priv$((float)$ceylontmp$op$9);
             }
             returning $ceylontmp$op$9;
         );
@@ -186,14 +186,14 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         c = (
             let
             {
-                double middle$10 = getFloata$priv$();
+                float middle$10 = getFloata$priv$();
             }
             returning 0.0 < middle$10 && middle$10 < getFloatp();
         );
         c = (
             let
             {
-                double middle$11 = getFloata$priv$();
+                float middle$11 = getFloata$priv$();
             }
             returning 0.0 <= middle$11 && middle$11 <= getFloatp();
         );
@@ -267,17 +267,17 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             {
                 float arg$16$0 = (float)1.0;
                 
-                final class y$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterDouble {
+                final class y$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterFloat {
                     
                     private y$getter$_() {
                     }
                     
-                    public double get_() {
-                        return 1.0;
+                    public float get_() {
+                        return (float)1.0;
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.GetterDouble y$getter$_ = new y$getter$_();
-                final float arg$16$1 = (float)y$getter$_.get_();
+                final .com.redhat.ceylon.compiler.java.language.GetterFloat y$getter$_ = new y$getter$_();
+                final float arg$16$1 = y$getter$_.get_();
                 powerMethodIsNotSmall$priv$(arg$16$0, arg$16$1);
             }
             returning null;

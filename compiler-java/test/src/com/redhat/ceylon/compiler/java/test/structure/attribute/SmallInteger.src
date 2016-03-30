@@ -526,118 +526,12 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                         return 1;
                     }
                 }
-                final .com.redhat.ceylon.compiler.java.language.GetterLong y$getter$_ = new y$getter$_();
+                final .com.redhat.ceylon.compiler.java.language.GetterInt y$getter$_ = new y$getter$_();
                 final int arg$59$1 = y$getter$_.get_();
                 powerMethodIsNotSmall$priv$(arg$59$0, arg$59$1);
             }
             returning null;
         );
-    }
-    
-    public final void intMeasureOps() {
-        .java.lang.Object range = .ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getInta$priv$()), getIntp());
-        final int start$25 = getInta$priv$();
-        final int length$26 = getIntp();
-        loop_0: for (int i$27 = 0; i$27 < length$26; i$27++) {
-            final long i = i$27 + start$25;
-        }
-        final long $long = 0L;
-        final long start$28 = $long;
-        final int length$29 = getIntp();
-        loop_1: for (int i$30 = 0; i$30 < length$29; i$30++) {
-            final long i = i$30 + start$28;
-        }
-        final int start$31 = getInta$priv$();
-        final long length$32 = $long;
-        loop_2: for (long i$33 = 0; i$33 < length$32; i$33++) {
-            final long i = i$33 + start$31;
-        }
-        final int start$34 = 0;
-        final int length$35 = 10;
-        loop_3: for (int i$36 = 0; i$36 < length$35; i$36++) {
-            final long i = i$36 + start$34;
-        }
-        .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-            
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.getInta$priv$()), .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.getIntp())).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
-                    
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$37 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$37 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$37;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return i;
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
-            }
-        }.sequence();
-        x = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-            
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0), 10)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
-                    
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$38 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$38 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$38;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return i;
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
-            }
-        }.sequence();
-    }
-    
-    public final void intSpanOps() {
-        .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(getInta$priv$()), .ceylon.language.Integer.instance(getIntp()));
-        final long $ceylontmp$first$40 = getInta$priv$();
-        final long $ceylontmp$last$41 = getIntp();
-        final boolean $ceylontmp$increasing$42 = .ceylon.language.Integer.offset($ceylontmp$last$41, $ceylontmp$first$40) >= 0;
-        final long $ceylontmp$incr$43 = $ceylontmp$increasing$42 ? 1L : -1L;
-        long i$46 = $ceylontmp$first$40;
-        long $ceylontmp$element$45 = $ceylontmp$first$40;
-        boolean $ceylontmp$f$44 = false;
-        loop_4: do {
-            if ($ceylontmp$f$44) $ceylontmp$element$45 += $ceylontmp$incr$43;
-            $ceylontmp$f$44 = true;
-            i$46 = $ceylontmp$element$45;
-            final long i = i$46;
-            $ceylontmp$continue$39: do {
-            }             while (false);
-        }         while ($ceylontmp$increasing$42 ? i$46 - $ceylontmp$last$41 != 0L : i$46 - $ceylontmp$last$41 != 0L);
     }
     
     @.java.lang.Override
