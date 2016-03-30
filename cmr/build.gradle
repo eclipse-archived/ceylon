@@ -1,6 +1,7 @@
 
 dependencies {
     compile project(':common'),
+        project(':cli'),
         project(':langtools-classfile'),
         project(':model'),
         'org.jboss:jandex:2.0.0.Final',
