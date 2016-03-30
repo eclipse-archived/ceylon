@@ -71,16 +71,11 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 	}
 	
 	protected boolean loadModule(String moduleName, String moduleVersion) throws IOException {
-		return loadModule(moduleName, moduleVersion, false);
-	}
-	
-	protected boolean loadModule(String moduleName, String moduleVersion, boolean optional) throws IOException {
-		boolean success = false;
 		if (moduleVersion != null) {
-			success = internalLoadModule(moduleName, moduleVersion, false);
+			return internalLoadModule(moduleName, moduleVersion);
 		}
 		
-		return success;
+		return false;
 	}
 
 	protected boolean shouldExclude(String moduleName, String version) {
@@ -91,7 +86,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 		return jdkProvider.isJDKModule(moduleName);
 	}
 
-	private boolean internalLoadModule(String name, String version, boolean optional) throws IOException {
+	private boolean internalLoadModule(String name, String version) throws IOException {
         String key = name + "/" + version;
         if(loadedModules.containsKey(key))
             return true;
@@ -112,8 +107,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         RepositoryManager repositoryManager = getRepositoryManager(upgradeDist);
         ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
-        if(!optional
-                && (result == null || result.artifact() == null || !result.artifact().exists())){
+        if(result == null || result.artifact() == null || !result.artifact().exists()){
             String err = getModuleNotFoundErrorMessage(repositoryManager, name, version);
             errorAppend(err);
             errorNewline();
@@ -123,7 +117,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         loadedModules.put(key, result);
         if(result != null){
             for(ArtifactResult dep : result.dependencies()){
-                internalLoadModule(dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL);
+                if(dep.importType() != ImportType.OPTIONAL){
+                    internalLoadModule(dep.name(), dep.version());
+                }
             }
         }
         
@@ -160,7 +156,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     	super.initialize(mainTool);
     	if(jdkProviderModule != null){
     		ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
-			if(!internalLoadModule(moduleSpec.getName(), moduleSpec.getVersion(), false)){
+			if(!internalLoadModule(moduleSpec.getName(), moduleSpec.getVersion())){
 		        throw new ToolUsageError(Messages.msg(bundle, "jdk.provider.not.found", jdkProviderModule));
 			}
 			ArtifactResult result = loadedModules.get(moduleSpec.getName()+"/"+moduleSpec.getVersion());

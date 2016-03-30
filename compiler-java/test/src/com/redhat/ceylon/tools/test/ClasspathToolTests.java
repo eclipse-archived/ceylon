@@ -123,4 +123,19 @@ public class ClasspathToolTests extends AbstractToolTests {
             Assert.assertTrue(x.getMessage().contains("Version 666 not found for module ceylon.language"));
         }
     }
+
+    @Test
+    public void testNoOptionalModules() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String cp = b.toString();
+        Assert.assertTrue(cp.contains("ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"));
+        Assert.assertFalse(cp.contains("minidev"));
+        Assert.assertFalse(cp.contains("maven"));
+    }
 }
