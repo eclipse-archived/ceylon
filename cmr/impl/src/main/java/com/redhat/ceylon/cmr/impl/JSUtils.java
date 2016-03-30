@@ -30,9 +30,7 @@ import java.util.Set;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-import net.minidev.json.JSONValue;
-
-import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -44,15 +42,19 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
+import net.minidev.json.JSONValue;
+
 /**
  * Utility functions to retrieve module meta information from compiled JS modules
  *
  * @author <a href="mailto:tako@ceylon-lang.org">Tako Schotanus</a>
  */
-public final class JSUtils extends AbstractDependencyResolver implements ModuleInfoReader {
-    public static JSUtils INSTANCE = new JSUtils();
+public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader {
 
-    private JSUtils() {
+    /**
+     * Warning: used by reflection in Configuration
+     */
+    public JSUtils() {
     }
 
     @Override

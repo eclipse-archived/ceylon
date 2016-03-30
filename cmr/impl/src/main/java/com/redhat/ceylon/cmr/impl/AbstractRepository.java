@@ -807,7 +807,7 @@ public abstract class AbstractRepository implements CmrRepository {
         } else if (ArtifactContext.JAR.equalsIgnoreCase(suffix)) {
             return JarUtils.INSTANCE;
         } else if (ArtifactContext.JS.equalsIgnoreCase(suffix) || ArtifactContext.JS_MODEL.equalsIgnoreCase(suffix)) {
-            return JSUtils.INSTANCE;
+            return Configuration.getJavaScriptResolver();
         } else {
             return null;
         }

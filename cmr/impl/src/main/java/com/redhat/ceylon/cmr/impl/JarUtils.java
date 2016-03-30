@@ -26,6 +26,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -43,7 +44,7 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
  *
  * @author <a href="mailto:tako@ceylon-lang.org">Tako Schotanus</a>
  */
-public final class JarUtils extends AbstractDependencyResolver implements ModuleInfoReader {
+public final class JarUtils extends AbstractDependencyResolverAndModuleInfoReader {
     public static JarUtils INSTANCE = new JarUtils();
 
     private JarUtils() {

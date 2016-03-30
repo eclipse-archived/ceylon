@@ -30,6 +30,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -53,7 +54,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class BytecodeUtils extends AbstractDependencyResolver implements ModuleInfoReader {
+public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfoReader {
     public static BytecodeUtils INSTANCE = new BytecodeUtils();
 
     private BytecodeUtils() {

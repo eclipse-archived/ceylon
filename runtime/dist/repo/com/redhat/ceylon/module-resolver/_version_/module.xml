@@ -31,8 +31,8 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
-        <!-- Make optional -->
-        <module name="net.minidev.json-smart" slot="1.1.1"/>
+        <!-- Used by JsUtils, the JS DependencyResolver -->
+        <module name="net.minidev.json-smart" slot="1.1.1" optional="true"/>
         <!-- Used by WebDavContentStore for HTTP output repos -->
         <module name="com.github.lookfirst.sardine" slot="5.1" optional="true"/>
         <!-- Those are dependencies due to Sardine -->
