@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
+import com.redhat.ceylon.cmr.api.ModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;

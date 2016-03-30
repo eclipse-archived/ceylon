@@ -1,4 +1,4 @@
-package com.redhat.ceylon.cmr.impl;
+package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
 
