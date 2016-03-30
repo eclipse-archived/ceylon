@@ -524,7 +524,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     protected String getModuleNotFoundErrorMessage(RepositoryManager repoMgr, String name, String version, String msgkeyNotFound) {
         StringBuilder err = new StringBuilder();
-        err.append(Messages.msg(bundle, msgkeyNotFound, name, version));
+        String descr = version == null ? name : name+"/"+version;
+        err.append(Messages.msg(bundle, msgkeyNotFound, descr));
         err.append("\n");
         boolean fullySearchable = true;
         for (CmrRepository repo : repoMgr.getRepositories()) {
