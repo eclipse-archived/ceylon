@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -32,23 +32,6 @@ import java.lang.annotation.IncompleteAnnotationException;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
-import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
-import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
-import com.redhat.ceylon.javax.lang.model.element.Name;
-import com.redhat.ceylon.javax.lang.model.element.PackageElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeParameterElement;
-import com.redhat.ceylon.javax.lang.model.type.MirroredTypeException;
-import com.redhat.ceylon.javax.lang.model.type.MirroredTypesException;
-import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
-import com.redhat.ceylon.javax.lang.model.util.ElementFilter;
-import com.redhat.ceylon.javax.lang.model.util.Elements;
-import com.redhat.ceylon.javax.lang.model.util.Types;
-
-import com.redhat.ceylon.javax.lang.model.element.Modifier;
 import com.redhat.ceylon.javax.lang.model.type.*;
 import com.redhat.ceylon.javax.lang.model.util.*;
 
@@ -77,8 +60,7 @@ import com.redhat.ceylon.javax.lang.model.util.*;
  * @see TypeMirror
  * @since 1.6
  */
-public interface Element {
-
+public interface Element extends com.redhat.ceylon.javax.lang.model.AnnotatedConstruct {
     /**
      * Returns the type defined by this element.
      *
@@ -104,66 +86,6 @@ public interface Element {
      * @return the kind of this element
      */
     ElementKind getKind();
-
-    /**
-     * Returns the annotations that are directly present on this element.
-     *
-     * <p> To get inherited annotations as well, use
-     * {@link Elements#getAllAnnotationMirrors(Element) getAllAnnotationMirrors}.
-     *
-     * @see ElementFilter
-     *
-     * @return the annotations directly present on this element;
-     *          an empty list if there are none
-     */
-    List<? extends AnnotationMirror> getAnnotationMirrors();
-
-    /**
-     * Returns this element's annotation for the specified type if
-     * such an annotation is present, else {@code null}.  The
-     * annotation may be either inherited or directly present on this
-     * element.
-     *
-     * <p> The annotation returned by this method could contain an element
-     * whose value is of type {@code Class}.
-     * This value cannot be returned directly:  information necessary to
-     * locate and load a class (such as the class loader to use) is
-     * not available, and the class might not be loadable at all.
-     * Attempting to read a {@code Class} object by invoking the relevant
-     * method on the returned annotation
-     * will result in a {@link MirroredTypeException},
-     * from which the corresponding {@link TypeMirror} may be extracted.
-     * Similarly, attempting to read a {@code Class[]}-valued element
-     * will result in a {@link MirroredTypesException}.
-     *
-     * <blockquote>
-     * <i>Note:</i> This method is unlike others in this and related
-     * interfaces.  It operates on runtime reflective information &mdash;
-     * representations of annotation types currently loaded into the
-     * VM &mdash; rather than on the representations defined by and used
-     * throughout these interfaces.  Consequently, calling methods on
-     * the returned annotation object can throw many of the exceptions
-     * that can be thrown when calling methods on an annotation object
-     * returned by core reflection.  This method is intended for
-     * callers that are written to operate on a known, fixed set of
-     * annotation types.
-     * </blockquote>
-     *
-     * @param <A>  the annotation type
-     * @param annotationType  the {@code Class} object corresponding to
-     *          the annotation type
-     * @return this element's annotation for the specified annotation
-     *         type if present on this element, else {@code null}
-     *
-     * @see #getAnnotationMirrors()
-     * @see java.lang.reflect.AnnotatedElement#getAnnotation
-     * @see EnumConstantNotPresentException
-     * @see AnnotationTypeMismatchException
-     * @see IncompleteAnnotationException
-     * @see MirroredTypeException
-     * @see MirroredTypesException
-     */
-    <A extends Annotation> A getAnnotation(Class<A> annotationType);
 
     /**
      * Returns the modifiers of this element, excluding annotations.
@@ -196,6 +118,10 @@ public interface Element {
      * instance initializer}, an empty name is returned.
      *
      * @return the simple name of this element
+     * @see PackageElement#getSimpleName
+     * @see ExecutableElement#getSimpleName
+     * @see TypeElement#getSimpleName
+     * @see VariableElement#getSimpleName
      */
     Name getSimpleName();
 
@@ -219,6 +145,11 @@ public interface Element {
      * {@linkplain TypeParameterElement#getGenericElement the
      * generic element} of the type parameter is returned.
      *
+     * <li> If this is a {@linkplain
+     * VariableElement#getEnclosingElement method or constructor
+     * parameter}, {@linkplain ExecutableElement the executable
+     * element} which declares the parameter is returned.
+     *
      * </ul>
      *
      * @return the enclosing element, or {@code null} if there is none
@@ -230,14 +161,13 @@ public interface Element {
      * Returns the elements that are, loosely speaking, directly
      * enclosed by this element.
      *
-     * A class or interface is considered to enclose the fields,
-     * methods, constructors, and member types that it directly
-     * declares.  This includes any (implicit) default constructor and
-     * the implicit {@code values} and {@code valueOf} methods of an
-     * enum type.
+     * A {@linkplain TypeElement#getEnclosedElements class or
+     * interface} is considered to enclose the fields, methods,
+     * constructors, and member types that it directly declares.
      *
-     * A package encloses the top-level classes and interfaces within
-     * it, but is not considered to enclose subpackages.
+     * A {@linkplain PackageElement#getEnclosedElements package}
+     * encloses the top-level classes and interfaces within it, but is
+     * not considered to enclose subpackages.
      *
      * Other kinds of elements are not currently considered to enclose
      * any elements; however, that may change as this API or the
@@ -247,6 +177,8 @@ public interface Element {
      * methods in {@link ElementFilter}.
      *
      * @return the enclosed elements, or an empty list if none
+     * @see PackageElement#getEnclosedElements
+     * @see TypeElement#getEnclosedElements
      * @see Elements#getAllMembers
      * @jls 8.8.9 Default Constructor
      * @jls 8.9 Enums
@@ -270,6 +202,7 @@ public interface Element {
      * @return {@code true} if the specified object represents the same
      *          element as this
      */
+    @Override
     boolean equals(Object obj);
 
     /**
@@ -277,7 +210,28 @@ public interface Element {
      *
      * @see #equals
      */
+    @Override
     int hashCode();
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p> To get inherited annotations as well, use {@link
+     * Elements#getAllAnnotationMirrors(Element)
+     * getAllAnnotationMirrors}.
+     *
+     * @since 1.6
+     */
+    @Override
+    List<? extends AnnotationMirror> getAnnotationMirrors();
+
+    /**
+     * {@inheritDoc}
+     * @since 1.6
+     */
+    @Override
+    <A extends Annotation> A getAnnotation(Class<A> annotationType);
 
     /**
      * Applies a visitor to this element.

@@ -58,7 +58,7 @@ public class Bug2164 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     

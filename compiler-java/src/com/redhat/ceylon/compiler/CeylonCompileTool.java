@@ -21,12 +21,15 @@ package com.redhat.ceylon.compiler;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
@@ -45,16 +48,15 @@ import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
-import com.redhat.ceylon.langtools.tools.javac.main.JavacOption;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions.OptionHelper;
+import com.redhat.ceylon.langtools.tools.javac.main.Main.Result;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
@@ -118,55 +120,73 @@ import com.redhat.ceylon.langtools.tools.javac.util.Options;
         "future releases.")
 public class CeylonCompileTool extends OutputRepoUsingTool {
 
-    private static final class Helper implements OptionHelper {
-        String lastError;
-
+    private static final class Helper extends com.redhat.ceylon.langtools.tools.javac.main.OptionHelper {
+        String lastError = null;
+        private final HashMap<String,String> options = new HashMap<String,String>();
+        private final HashMap<String,List<String>> multiOptions = new HashMap<String,List<String>>();
         @Override
-        public void setOut(PrintWriter out) {
-            
+        public String get(com.redhat.ceylon.langtools.tools.javac.main.Option option) {
+            return options.get(option.text);
         }
 
         @Override
-        public void printXhelp() {
-            
+        public void put(String name, String value) {
+            options.put(name, value);
         }
 
         @Override
-        public void printVersion() {
-            
+        public void remove(String name) {
+            options.remove(name);
         }
 
         @Override
-        public void printHelp() {
-            
+        public Log getLog() {
+            return null;
         }
 
         @Override
-        public void printFullVersion() {
-            
+        public String getOwnName() {
+            return null;
         }
 
         @Override
-        public void error(String key, Object... args) {
+        protected void error(String key, Object... args) {
             lastError = Main.getLocalizedString(key, args);
         }
 
         @Override
-        public void addFile(File f) {
+        protected void addFile(File f) {
+            
         }
 
         @Override
-        public void addClassName(String s) {
+        protected void addClassName(String s) {
+            
+        }
+
+        @Override
+        public List<String> getMulti(com.redhat.ceylon.langtools.tools.javac.main.Option option) {
+            return multiOptions.get(option.text);
+        }
+
+        @Override
+        public void addMulti(String name, String value) {
+            List<String> list = multiOptions.get(name);
+            if (list == null) {
+                list = new ArrayList<String>(2);
+                multiOptions.put(name, list);
+            }
+            list.add(value);
         }
     }
     
-    private static final Helper HELPER = new Helper();
+    private Helper helper = new Helper();
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
     private List<String> modulesOrFiles = Arrays.asList("*");
     private boolean continueOnErrors;
-    private boolean progress;
+    private boolean progress = DefaultToolOptions.getCompilerProgress();
     private List<String> javac = Collections.emptyList();
     private String encoding;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
@@ -175,15 +195,25 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
     private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
-    private boolean flatClasspath;
-    private boolean autoExportMavenDependencies;
+    private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
+    private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
-
+    private ModuleSpec jdkProvider;
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
     }
 
+    @OptionArgument(longName="jdk-provider", argumentName="module")
+    @Description("Specifies the name of the module providing the JDK (default: the underlying JDK).")
+    public void setJdkProvider(String jdkProvider) {
+        setJdkProviderSpec(ModuleSpec.parse(jdkProvider));
+    }
+    
+    public void setJdkProviderSpec(ModuleSpec jdkProvider) {
+        this.jdkProvider = jdkProvider;
+    }
+    
     @Option(longName="flat-classpath")
     @Description("Launches the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
@@ -330,20 +360,17 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         return sources;
     }
 
-    private static void validateWithJavac(Options options, JavacOption encodingOpt, String option, String argument, String key) {
-        if (!encodingOpt.matches(option)) {
-            throw new IllegalArgumentException(CeylonCompileMessages.msg(key, option));
-        }
-        HELPER.lastError = null;
-        if (encodingOpt.hasArg()) {
-            if (encodingOpt.process(options, option, argument)
-                    || HELPER.lastError != null) {
-                throw new IllegalArgumentException(HELPER.lastError);
+    private void validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option option, String argument, String value) {
+        helper.lastError = null;
+        if (option.hasArg()) {
+            if (option.process(helper, option.text, value)
+                    || helper.lastError != null) {
+                throw new IllegalArgumentException(helper.lastError);
             }
         } else {
-            if (encodingOpt.process(options, option)
-                    || HELPER.lastError != null) {
-                throw new IllegalArgumentException(HELPER.lastError);
+            if (option.process(helper, argument)
+                    || helper.lastError != null) {
+                throw new IllegalArgumentException(helper.lastError);
             }
         }
     }
@@ -351,6 +378,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws IOException {
         compiler = new Main("ceylon compile");
+        helper.options.clear();
         Options options = Options.instance(new Context());
         
         if (modulesOrFiles.isEmpty() &&
@@ -367,16 +395,20 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add(cwd.getPath());
         }
         
+        if(jdkProvider != null){
+            arguments.add("-jdk-provider");
+            arguments.add(jdkProvider.toString());
+        }
+        
         for (File source : applyCwd(this.sources)) {
             arguments.add("-src");
             arguments.add(source.getPath());
-            options.addMulti(OptionName.SOURCEPATH, source.getPath());
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.CEYLONSOURCEPATH, "-sourcepath", source.getPath());
         }
         
         for (File resource : applyCwd(this.resources)) {
             arguments.add("-res");
             arguments.add(resource.getPath());
-            //options.addMulti(OptionName.RESOURCEPATH, resource.getPath());
         }
         
         if (resourceRoot != null) {
@@ -467,10 +499,15 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             fileEncoding = DefaultToolOptions.getDefaultEncoding();
         }
         if (fileEncoding != null) {
-            JavacOption encodingOpt = getJavacOpt(OptionName.ENCODING.toString());
-            validateWithJavac(options, encodingOpt, OptionName.ENCODING.toString(), fileEncoding, "option.error.syntax.encoding");
-            arguments.add(OptionName.ENCODING.toString());
+            
+            try {
+                Charset.forName(fileEncoding);
+            } catch (IllegalCharsetNameException|UnsupportedCharsetException e) {
+                throw new IllegalArgumentException("Unsupported encoding: "+ fileEncoding);
+            }
+            arguments.add(com.redhat.ceylon.langtools.tools.javac.main.Option.ENCODING.text);
             arguments.add(fileEncoding);
+            
         }
 
         if (systemRepo != null) {
@@ -507,11 +544,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             throw new ToolUsageError("No modules or source files to compile");
         }
         
-        JavacOption sourceFileOpt = getJavacOpt(OptionName.SOURCEFILE.toString());
-        if (sourceFileOpt != null) {
-            for (String moduleOrFile : expandedModulesOrFiles) {
-                validateWithJavac(options, sourceFileOpt, moduleOrFile, moduleOrFile, "argument.error");
+        for (String moduleOrFile : expandedModulesOrFiles) {
+            if (!com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEFILE.matches(moduleOrFile)) {
+                throw new IllegalArgumentException(CeylonCompileMessages.msg("argument.error", moduleOrFile));
             }
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEFILE, moduleOrFile, moduleOrFile);
         }
         
         validateSourceArguments(expandedModulesOrFiles);
@@ -529,9 +566,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         resolver.cwd(cwd).parse(modulesOrFiles);
     }
     
-    private static JavacOption getJavacOpt(String optionName) {
-        for (com.redhat.ceylon.langtools.tools.javac.main.JavacOption o : RecognizedOptions.getJavaCompilerOptions(HELPER)) {
-            if (optionName.equals(o.getName().toString())) {
+    private static com.redhat.ceylon.langtools.tools.javac.main.Option getJavacOpt(String optionName) {
+        for (com.redhat.ceylon.langtools.tools.javac.main.Option o : com.redhat.ceylon.langtools.tools.javac.main.Option.getJavaCompilerOptions()) {
+            if (optionName.equals(o.text)) {
                 return o;
             }
         }
@@ -547,8 +584,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
      */
     @Override
     public void run() throws IOException {
-        int result = compiler.compile(arguments.toArray(new String[arguments.size()]));
-        handleExitCode(result, compiler.exitState);
+        Result result = compiler.compile(arguments.toArray(new String[arguments.size()]));
+        handleExitCode(result.exitCode, compiler.exitState);
     }
 
     private void handleExitCode(
@@ -573,9 +610,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     private void addJavacArguments(List<String> arguments) {
-        Options options = Options.instance(new Context());
+        Helper helper = new Helper();
         for (String argument : javac) {
-            HELPER.lastError = null;
+            helper.lastError = null;
             String value = null;
             int index = argument.indexOf('=');
             if (index != -1) {
@@ -583,7 +620,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 argument = argument.substring(0, index);
             }
             
-            JavacOption javacOpt = getJavacOpt(argument.replaceAll(":.*", ":"));
+            com.redhat.ceylon.langtools.tools.javac.main.Option javacOpt = getJavacOpt(argument.replaceAll(":.*", ":"));
             if (javacOpt == null) {
                 throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
             }
@@ -596,8 +633,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 if (!javacOpt.matches(argument)) {
                     throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
                 }
-                if (javacOpt.process(options, argument, value)) {
-                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, HELPER.lastError));
+                if (javacOpt.process(helper, argument, value)) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, helper.lastError));
                 }
                 
             
@@ -608,8 +645,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 if (!javacOpt.matches(argument)) {
                     throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
                 }
-                if (javacOpt.process(options, argument)) {
-                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, HELPER.lastError));
+                if (javacOpt.process(helper, argument)) {
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, helper.lastError));
                 }
             }
             

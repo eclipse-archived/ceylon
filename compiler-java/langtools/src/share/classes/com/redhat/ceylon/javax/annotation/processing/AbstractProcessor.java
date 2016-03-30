@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,33 +26,19 @@
 package com.redhat.ceylon.javax.annotation.processing;
 
 import java.util.Set;
-
-import com.redhat.ceylon.javax.annotation.processing.Completion;
-import com.redhat.ceylon.javax.annotation.processing.Messager;
-import com.redhat.ceylon.javax.annotation.processing.ProcessingEnvironment;
-import com.redhat.ceylon.javax.annotation.processing.Processor;
-import com.redhat.ceylon.javax.annotation.processing.RoundEnvironment;
-import com.redhat.ceylon.javax.annotation.processing.SupportedAnnotationTypes;
-import com.redhat.ceylon.javax.annotation.processing.SupportedOptions;
-import com.redhat.ceylon.javax.annotation.processing.SupportedSourceVersion;
-import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
-
-import com.redhat.ceylon.javax.lang.model.SourceVersion;
-import com.redhat.ceylon.javax.lang.model.element.*;
-import com.redhat.ceylon.javax.tools.Diagnostic;
-
 import java.util.HashSet;
 import java.util.Collections;
+import java.util.Objects;
+import com.redhat.ceylon.javax.lang.model.element.*;
+import com.redhat.ceylon.javax.lang.model.SourceVersion;
+import com.redhat.ceylon.javax.tools.Diagnostic;
 
 /**
  * An abstract annotation processor designed to be a convenient
  * superclass for most concrete annotation processors.  This class
  * examines annotation values to compute the {@linkplain
  * #getSupportedOptions options}, {@linkplain
- * #getSupportedAnnotationTypes annotations}, and {@linkplain
+ * #getSupportedAnnotationTypes annotation types}, and {@linkplain
  * #getSupportedSourceVersion source version} supported by its
  * subtypes.
  *
@@ -161,8 +147,7 @@ public abstract class AbstractProcessor implements Processor {
     public synchronized void init(ProcessingEnvironment processingEnv) {
         if (initialized)
             throw new IllegalStateException("Cannot call init more than once.");
-        if (processingEnv == null)
-            throw new NullPointerException("Tool provided null ProcessingEnvironment");
+        Objects.requireNonNull(processingEnv, "Tool provided null ProcessingEnvironment");
 
         this.processingEnv = processingEnv;
         initialized = true;

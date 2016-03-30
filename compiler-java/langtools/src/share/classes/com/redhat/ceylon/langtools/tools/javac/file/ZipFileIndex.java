@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +59,7 @@ import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeFile;
  * the command line.)
  *
  * Location where to look for/generate optimized zip index files can be
- * provided using "-XDcachezipindexdir=<directory>". If this flag is not
+ * provided using "{@code -XDcachezipindexdir=<directory>}". If this flag is not
  * provided, the default location is the value of the "java.io.tmpdir" system
  * property.
  *
@@ -83,7 +83,7 @@ public class ZipFileIndex {
     public final static long NOT_MODIFIED = Long.MIN_VALUE;
 
 
-    private static boolean NON_BATCH_MODE = System.getProperty("nonBatchMode") != null;// TODO: Use -XD compiler switch for this.
+    private static final boolean NON_BATCH_MODE = System.getProperty("nonBatchMode") != null;// TODO: Use -XD compiler switch for this.
 
     private Map<RelativeDirectory, DirectoryEntry> directories =
             Collections.<RelativeDirectory, DirectoryEntry>emptyMap();
@@ -284,7 +284,7 @@ public class ZipFileIndex {
         try {
             checkIndex();
             if (allDirs == Collections.EMPTY_SET) {
-                allDirs = new HashSet<RelativeDirectory>(directories.keySet());
+                allDirs = new java.util.LinkedHashSet<RelativeDirectory>(directories.keySet());
             }
 
             return allDirs;
@@ -548,17 +548,15 @@ public class ZipFileIndex {
                 }
 
                 if (i >= 0) {
-                    zipDir = new byte[get4ByteLittleEndian(endbuf, i + 12) + 2];
-                    zipDir[0] = endbuf[i + 10];
-                    zipDir[1] = endbuf[i + 11];
+                    zipDir = new byte[get4ByteLittleEndian(endbuf, i + 12)];
                     int sz = get4ByteLittleEndian(endbuf, i + 16);
                     // a negative offset or the entries field indicates a
                     // potential zip64 archive
-                    if (sz < 0 || get2ByteLittleEndian(zipDir, 0) == 0xffff) {
+                    if (sz < 0 || get2ByteLittleEndian(endbuf, i + 10) == 0xffff) {
                         throw new ZipFormatException("detected a zip64 archive");
                     }
                     zipRandomFile.seek(start + sz);
-                    zipRandomFile.readFully(zipDir, 2, zipDir.length - 2);
+                    zipRandomFile.readFully(zipDir, 0, zipDir.length);
                     return;
                 } else {
                     endbufend = endbufpos + 21;
@@ -568,14 +566,13 @@ public class ZipFileIndex {
         }
 
         private void buildIndex() throws IOException {
-            int entryCount = get2ByteLittleEndian(zipDir, 0);
+            int len = zipDir.length;
 
             // Add each of the files
-            if (entryCount > 0) {
-                directories = new HashMap<RelativeDirectory, DirectoryEntry>();
+            if (len > 0) {
+                directories = new LinkedHashMap<RelativeDirectory, DirectoryEntry>();
                 ArrayList<Entry> entryList = new ArrayList<Entry>();
-                int pos = 2;
-                for (int i = 0; i < entryCount; i++) {
+                for (int pos = 0; pos < len; ) {
                     pos = readEntry(pos, entryList, directories);
                 }
 
@@ -867,7 +864,7 @@ public class ZipFileIndex {
                 if (zipFile.lastModified() != fileStamp) {
                     ret = false;
                 } else {
-                    directories = new HashMap<RelativeDirectory, DirectoryEntry>();
+                    directories = new LinkedHashMap<RelativeDirectory, DirectoryEntry>();
                     int numDirs = raf.readInt();
                     for (int nDirs = 0; nDirs < numDirs; nDirs++) {
                         int dirNameBytesLen = raf.readInt();

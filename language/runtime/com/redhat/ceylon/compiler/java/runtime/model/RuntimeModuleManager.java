@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.model;
 
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,11 +9,16 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.AndroidUtil;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.StaticMetamodelLoader;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -21,7 +27,7 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
-public class RuntimeModuleManager extends ReflectionModuleManager {
+public class RuntimeModuleManager extends ReflectionModuleManager implements StaticMetamodelLoader {
 
     private RuntimeResolver runtimeResolver;
 
@@ -122,17 +128,10 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
 
     protected String runtimeVersion(String moduleName, String version) {
         RuntimeResolver runtimeResolver = this.runtimeResolver;
-        if(runtimeResolver == null)
-        	runtimeResolver = OverridesRuntimeResolver.getFromThreadLocal();
-        if (runtimeResolver == null && Thread.currentThread().getContextClassLoader() instanceof org.jboss.modules.ConcurrentClassLoader) {
-            Object contextModuleLoader;
-            try {
-                contextModuleLoader= org.jboss.modules.Module.getContextModuleLoader();
-            } catch (NullPointerException e) {
-                contextModuleLoader = null;
-            }
-            if (contextModuleLoader instanceof RuntimeResolver) {
-                runtimeResolver = (RuntimeResolver)contextModuleLoader;
+        if (runtimeResolver == null){
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            if(contextClassLoader instanceof CeylonModuleClassLoader) {
+                runtimeResolver = ((CeylonModuleClassLoader) contextClassLoader).getRuntimeResolver();
             }
         }
         if (runtimeResolver != null) {
@@ -199,4 +198,18 @@ public class RuntimeModuleManager extends ReflectionModuleManager {
         isCache.put(key, result);
         return result;
     }
+    
+    @Override
+    protected void loadStaticMetamodel() {
+        InputStream is = JvmBackendUtil.getStaticMetamodelInputStream(getClass());
+        if(is != null){
+        	List<String> dexEntries = AndroidUtil.getDexEntries();
+        	JvmBackendUtil.loadStaticMetamodel(is, dexEntries, this);
+        }
+    }
+
+	@Override
+	public void loadModule(String name, String version, ArtifactResult artifact) {
+		loadModule(name, version, artifact, getClass().getClassLoader());
+	}
 }

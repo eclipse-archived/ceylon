@@ -108,14 +108,14 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         long $ceylontmp$element$39 = $ceylontmp$first$34;
         boolean $ceylontmp$f$38 = false;
         loop_4: do {
-            if ($ceylontmp$f$38 && $ceylontmp$step$41 == 1L) $ceylontmp$step$41 == 1 ? ($ceylontmp$element$39 += $ceylontmp$incr$37) : ($ceylontmp$element$39 = .ceylon.language.Integer.neighbour($ceylontmp$element$39, $ceylontmp$incr$37));
+            if ($ceylontmp$f$38 && $ceylontmp$step$41 == 1L) $ceylontmp$step$41 == 1 ? $ceylontmp$element$39 += $ceylontmp$incr$37 : ($ceylontmp$element$39 = .ceylon.language.Integer.neighbour($ceylontmp$element$39, $ceylontmp$incr$37));
             $ceylontmp$f$38 = true;
             i$40 = $ceylontmp$element$39;
             final long i = i$40;
             $ceylontmp$continue$33: do {
                 sum += i;
             }             while (false);
-            if ($ceylontmp$step$41 != 1L) $ceylontmp$step$41 == 1 ? ($ceylontmp$element$39 += $ceylontmp$incr$37) : ($ceylontmp$element$39 = .ceylon.language.Integer.neighbour($ceylontmp$element$39, $ceylontmp$incr$37));
+            if ($ceylontmp$step$41 != 1L) $ceylontmp$step$41 == 1 ? $ceylontmp$element$39 += $ceylontmp$incr$37 : ($ceylontmp$element$39 = .ceylon.language.Integer.neighbour($ceylontmp$element$39, $ceylontmp$incr$37));
         }         while ($ceylontmp$step$41 == 1L ? $ceylontmp$step$41 == 1 ? $ceylontmp$increasing$36 ? i$40 - $ceylontmp$last$35 != 0L : i$40 - $ceylontmp$last$35 != 0L : $ceylontmp$increasing$36 ? .ceylon.language.Integer.offsetSign(i$40, $ceylontmp$last$35) <= 0L && .ceylon.language.Integer.offsetSign(i$40, $ceylontmp$first$34) >= 0L : .ceylon.language.Integer.offsetSign(i$40, $ceylontmp$last$35) >= 0L && .ceylon.language.Integer.offsetSign(i$40, $ceylontmp$first$34) <= 0L : $ceylontmp$step$41 == 1 ? $ceylontmp$increasing$36 ? $ceylontmp$element$39 - $ceylontmp$last$35 != 0L : $ceylontmp$element$39 - $ceylontmp$last$35 != 0L : $ceylontmp$increasing$36 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$39, $ceylontmp$last$35) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$39, $ceylontmp$first$34) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$39, $ceylontmp$last$35) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$39, $ceylontmp$first$34) <= 0L);
         final long $ceylontmp$step$50 = 3L;
         if ($ceylontmp$step$50 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
@@ -127,14 +127,14 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
         long $ceylontmp$element$48 = $ceylontmp$first$43;
         boolean $ceylontmp$f$47 = false;
         loop_5: do {
-            if ($ceylontmp$f$47 && $ceylontmp$step$50 == 1L) $ceylontmp$step$50 == 1 ? ($ceylontmp$element$48 += $ceylontmp$incr$46) : ($ceylontmp$element$48 = .ceylon.language.Integer.neighbour($ceylontmp$element$48, $ceylontmp$incr$46));
+            if ($ceylontmp$f$47 && $ceylontmp$step$50 == 1L) $ceylontmp$step$50 == 1 ? $ceylontmp$element$48 += $ceylontmp$incr$46 : ($ceylontmp$element$48 = .ceylon.language.Integer.neighbour($ceylontmp$element$48, $ceylontmp$incr$46));
             $ceylontmp$f$47 = true;
             i$49 = $ceylontmp$element$48;
             final long i = i$49;
             $ceylontmp$continue$42: do {
                 sum += i;
             }             while (false);
-            if ($ceylontmp$step$50 != 1L) $ceylontmp$step$50 == 1 ? ($ceylontmp$element$48 += $ceylontmp$incr$46) : ($ceylontmp$element$48 = .ceylon.language.Integer.neighbour($ceylontmp$element$48, $ceylontmp$incr$46));
+            if ($ceylontmp$step$50 != 1L) $ceylontmp$step$50 == 1 ? $ceylontmp$element$48 += $ceylontmp$incr$46 : ($ceylontmp$element$48 = .ceylon.language.Integer.neighbour($ceylontmp$element$48, $ceylontmp$incr$46));
         }         while ($ceylontmp$step$50 == 1L ? $ceylontmp$step$50 == 1 ? $ceylontmp$increasing$45 ? i$49 - $ceylontmp$last$44 != 0L : i$49 - $ceylontmp$last$44 != 0L : $ceylontmp$increasing$45 ? .ceylon.language.Integer.offsetSign(i$49, $ceylontmp$last$44) <= 0L && .ceylon.language.Integer.offsetSign(i$49, $ceylontmp$first$43) >= 0L : .ceylon.language.Integer.offsetSign(i$49, $ceylontmp$last$44) >= 0L && .ceylon.language.Integer.offsetSign(i$49, $ceylontmp$first$43) <= 0L : $ceylontmp$step$50 == 1 ? $ceylontmp$increasing$45 ? $ceylontmp$element$48 - $ceylontmp$last$44 != 0L : $ceylontmp$element$48 - $ceylontmp$last$44 != 0L : $ceylontmp$increasing$45 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$48, $ceylontmp$last$44) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$48, $ceylontmp$first$43) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$48, $ceylontmp$last$44) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$48, $ceylontmp$first$43) <= 0L);
     }
     

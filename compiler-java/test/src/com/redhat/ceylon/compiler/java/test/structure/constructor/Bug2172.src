@@ -28,7 +28,7 @@ public class Point implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     private static final class cartesian$delegation$_ {
         
-        private cartesian$delegation$_() {
+        cartesian$delegation$_() {
         }
     }
     
@@ -41,7 +41,7 @@ public class Point implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     public static final class cartesian_ {
         
-        private cartesian_() {
+        cartesian_() {
         }
     }
     

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -34,7 +34,6 @@ import java.lang.ref.SoftReference;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -47,13 +46,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
+import java.util.Set;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
+
+import com.redhat.ceylon.langtools.tools.javac.code.Lint;
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
-import com.redhat.ceylon.langtools.tools.javac.main.JavacOption;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions;
+import com.redhat.ceylon.langtools.tools.javac.file.FSInfo;
+import com.redhat.ceylon.langtools.tools.javac.file.Locations;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionHelper;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionHelper.GrumpyHelper;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
 
 /**
@@ -65,15 +68,21 @@ public abstract class BaseFileManager {
     protected BaseFileManager(Charset charset) {
         this.charset = charset;
         byteBufferCache = new ByteBufferCache();
+        locations = createLocations();
     }
 
     /**
      * Set the context for JavacPathFileManager.
      */
-    protected void setContext(Context context) {
+    public void setContext(Context context) {
         log = Log.instance(context);
         options = Options.instance(context);
         classLoaderClass = options.get("procloader");
+        locations.update(log, options, Lint.instance(context), FSInfo.instance(context));
+    }
+
+    protected Locations createLocations() {
+        return new Locations();
     }
 
     /**
@@ -82,7 +91,7 @@ public abstract class BaseFileManager {
     public Log log;
 
     /**
-     * User provided charset (through javax.tools).
+     * User provided charset (through com.redhat.ceylon.javax.tools).
      */
     protected Charset charset;
 
@@ -90,8 +99,14 @@ public abstract class BaseFileManager {
 
     protected String classLoaderClass;
 
+    protected Locations locations;
+    
+    public Locations getLocations() {
+        return locations;
+    }
+
     protected Source getSource() {
-        String sourceName = options.get(OptionName.SOURCE);
+        String sourceName = options.get(Option.SOURCE);
         Source source = null;
         if (sourceName != null)
             source = Source.lookup(sourceName);
@@ -101,9 +116,8 @@ public abstract class BaseFileManager {
     protected ClassLoader getClassLoader(URL[] urls) {
         ClassLoader thisClassLoader = getClass().getClassLoader();
 
-        // Bug: 6558476
-        // Ideally, ClassLoader should be Closeable, but before JDK7 it is not.
-        // On older versions, try the following, to get a closeable classloader.
+        // Allow the following to specify a closeable classloader
+        // other than URLClassLoader.
 
         // 1: Allow client to specify the class to use via hidden option
         if (classLoaderClass != null) {
@@ -117,33 +131,36 @@ public abstract class BaseFileManager {
                 // ignore errors loading user-provided class loader, fall through
             }
         }
-
-        // 2: If URLClassLoader implements Closeable, use that.
-        if (Closeable.class.isAssignableFrom(URLClassLoader.class))
-            return new URLClassLoader(urls, thisClassLoader);
-
-        // 3: Try using private reflection-based CloseableURLClassLoader
-        try {
-            return new CloseableURLClassLoader(urls, thisClassLoader);
-        } catch (Throwable t) {
-            // ignore errors loading workaround class loader, fall through
-        }
-
-        // 4: If all else fails, use plain old standard URLClassLoader
         return new URLClassLoader(urls, thisClassLoader);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Option handling">
     public boolean handleOption(String current, Iterator<String> remaining) {
-        for (JavacOption o: javacFileManagerOptions) {
+        OptionHelper helper = new GrumpyHelper(log) {
+            @Override
+            public String get(Option option) {
+                return options.get(option.getText());
+            }
+
+            @Override
+            public void put(String name, String value) {
+                options.put(name, value);
+            }
+
+            @Override
+            public void remove(String name) {
+                options.remove(name);
+            }
+        };
+        for (Option o: javacFileManagerOptions) {
             if (o.matches(current))  {
                 if (o.hasArg()) {
                     if (remaining.hasNext()) {
-                        if (!o.process(options, current, remaining.next()))
+                        if (!o.process(helper, current, remaining.next()))
                             return true;
                     }
                 } else {
-                    if (!o.process(options, current))
+                    if (!o.process(helper, current))
                         return true;
                 }
                 // operand missing, or process returned false
@@ -154,12 +171,11 @@ public abstract class BaseFileManager {
         return false;
     }
     // where
-        private static JavacOption[] javacFileManagerOptions =
-            RecognizedOptions.getJavacFileManagerOptions(
-            new RecognizedOptions.GrumpyHelper());
+        private static final Set<Option> javacFileManagerOptions =
+            Option.getJavacFileManagerOptions();
 
     public int isSupportedOption(String option) {
-        for (JavacOption o : javacFileManagerOptions) {
+        for (Option o : javacFileManagerOptions) {
             if (o.matches(option))
                 return o.hasArg() ? 1 : 0;
         }
@@ -181,7 +197,7 @@ public abstract class BaseFileManager {
     }
 
     public String getEncodingName() {
-        String encName = options.get(OptionName.ENCODING);
+        String encName = options.get(Option.ENCODING);
         if (encName == null)
             return getDefaultEncodingName();
         else
@@ -210,15 +226,13 @@ public abstract class BaseFileManager {
 
         while (true) {
             CoderResult result = decoder.decode(inbuf, dest, true);
-            // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
-            ((Buffer)dest).flip();
+            dest.flip();
 
             if (result.isUnderflow()) { // done reading
                 // make sure there is at least one extra character
                 if (dest.limit() == dest.capacity()) {
                     dest = CharBuffer.allocate(dest.capacity()+1).put(dest);
-                    // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
-                    ((Buffer)dest).flip();
+                    dest.flip();
                 }
                 return dest;
             } else if (result.isOverflow()) { // buffer too small; expand
@@ -241,13 +255,11 @@ public abstract class BaseFileManager {
                 }
 
                 // skip past the coding error
-                // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
-                ((Buffer)inbuf).position(inbuf.position() + result.length());
+                inbuf.position(inbuf.position() + result.length());
 
                 // undo the flip() to prepare the output buffer
                 // for more translation
-                // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
-                ((Buffer)dest).position(dest.limit());
+                dest.position(dest.limit());
                 dest.limit(dest.capacity());
                 dest.put((char)0xfffd); // backward compatible
             } else {
@@ -295,11 +307,9 @@ public abstract class BaseFileManager {
                 position,
                 limit - position);
             if (count < 0) break;
-            // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
-            ((Buffer)result).position(position += count);
+            result.position(position += count);
         }
-        // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
-        return (ByteBuffer)((Buffer)result).flip();
+        return (ByteBuffer)result.flip();
     }
 
     public void recycleByteBuffer(ByteBuffer bb) {
@@ -315,8 +325,7 @@ public abstract class BaseFileManager {
             if (capacity < 20480) capacity = 20480;
             ByteBuffer result =
                 (cached != null && cached.capacity() >= capacity)
-                // Cast to Buffer to avoid issues with JDK9's addition of ByteBuffer.position()
-                ? (ByteBuffer)((Buffer)cached).clear()
+                ? (ByteBuffer)cached.clear()
                 : ByteBuffer.allocate(capacity + capacity>>1);
             cached = null;
             return result;
@@ -331,16 +340,46 @@ public abstract class BaseFileManager {
 
     // <editor-fold defaultstate="collapsed" desc="Content cache">
     public CharBuffer getCachedContent(JavaFileObject file) {
-        SoftReference<CharBuffer> r = contentCache.get(file);
-        return (r == null ? null : r.get());
+        ContentCacheEntry e = contentCache.get(file);
+        if (e == null)
+            return null;
+
+        if (!e.isValid(file)) {
+            contentCache.remove(file);
+            return null;
+        }
+
+        return e.getValue();
     }
 
     public void cache(JavaFileObject file, CharBuffer cb) {
-        contentCache.put(file, new SoftReference<CharBuffer>(cb));
+        contentCache.put(file, new ContentCacheEntry(file, cb));
     }
 
-    protected final Map<JavaFileObject, SoftReference<CharBuffer>> contentCache
-            = new HashMap<JavaFileObject, SoftReference<CharBuffer>>();
+    public void flushCache(JavaFileObject file) {
+        contentCache.remove(file);
+    }
+
+    protected final Map<JavaFileObject, ContentCacheEntry> contentCache
+            = new HashMap<JavaFileObject, ContentCacheEntry>();
+
+    protected static class ContentCacheEntry {
+        final long timestamp;
+        final SoftReference<CharBuffer> ref;
+
+        ContentCacheEntry(JavaFileObject file, CharBuffer cb) {
+            this.timestamp = file.getLastModified();
+            this.ref = new SoftReference<CharBuffer>(cb);
+        }
+
+        boolean isValid(JavaFileObject file) {
+            return timestamp == file.getLastModified();
+        }
+
+        CharBuffer getValue() {
+            return ref.get();
+        }
+    }
     // </editor-fold>
 
     public Kind getKind(String name) {

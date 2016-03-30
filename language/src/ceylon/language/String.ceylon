@@ -249,14 +249,22 @@ shared native final class String(characters)
      the first index in the string, return the empty string. 
      Otherwise, if the last index is larger than the last 
      index in the string, return all characters from the 
-     start index to last character of the string."
+     start index to last character of the string..
+     
+     Using the [[span operator|Ranged.span]], 
+     `string.span(to, from)` may be written as 
+     `string[from...to]`."
     shared actual native String span(Integer from, Integer to);
     
     "A string containing the characters of this string from 
      the given [[start index|from]] inclusive to the end of 
      the string. If the start index is larger than the last 
      index of the string, return the empty string. If the
-     start index is negative, return this string."
+     start index is negative, return this string..
+     
+     Using the [[span operator|Ranged.spanFrom]], 
+     `string.spanFrom(from)` may be written as 
+     `string[from...]`."
     shared actual native String spanFrom(Integer from)
             => from<size then span(from, size) else "";
     
@@ -264,7 +272,10 @@ shared native final class String(characters)
      the start of the string up to and including the given 
      [[end index|to]]. If the end index is negative, return 
      the empty string. If the end index is larger than the
-     last index in this string, return this string."
+     last index in this string, return this string.
+     
+     Using the [[span operator|Ranged.spanTo]], 
+     `string.spanTo(to)` may be written as `string[...to]`."
     shared actual native String spanTo(Integer to)
             => to>=0 then span(0, to) else "";
     
@@ -276,7 +287,11 @@ shared native final class String(characters)
      this string from the given index until the end of this 
      string. Otherwise, return a string of the given length. 
      If the start index is larger than the last index of the 
-     string, return the empty string."
+     string, return the empty string.
+     
+     Using the [[measure operator|Ranged.measure]], 
+     `string.measure(from, length)` may be written as
+     `string[from:length]`."
     shared native actual String measure(Integer from, 
                                         Integer length);
     
@@ -327,7 +342,11 @@ shared native final class String(characters)
      the string or past the end of string. The first 
      character in the string occurs at index zero. The last 
      character in the string occurs at index 
-     `string.size-1`."
+     `string.size-1`.
+     
+     Using the [[item operator|Correspondence.get]],
+     `string.getFromFirst(index)` may be written as
+     `string[index]`."
     shared actual native Character? getFromFirst(Integer index);
     
     //shared actual native Boolean->Character? lookup(Integer index);
@@ -336,7 +355,11 @@ shared native final class String(characters)
      so, if it occurs as a substring of this string, or if 
      the object is a `Character` that occurs in this string. 
      That is to say, a string is considered a [[Category]] 
-     of its substrings and of its characters."
+     of its substrings and of its characters.
+     
+     Using the [[`in` operator|Category.contains]],
+     `string.contains(element)` may be written as
+     `element in string`."
     shared actual native Boolean contains(Object element);
     
     shared actual native Boolean startsWith(List<Anything> substring);
@@ -344,7 +367,11 @@ shared native final class String(characters)
     shared actual native Boolean endsWith(List<Anything> substring);
     
     "Returns the concatenation of this string with the
-     given string."
+     given string.
+     
+     Using the [[addition operator|Summable.plus]], 
+     `string.plus(otherString)` may be written as
+     `string + otherString`."
     shared actual native String plus(String other);
     
     "Returns a string formed by repeating this string the 
@@ -534,6 +561,32 @@ shared native final class String(characters)
         Integer length 
                 = smallest(size - sourcePosition,
                     destination.size - destinationPosition));
+    
+    "A string containing the characters of this string 
+     beginning at the given [[start index|from]], up to, but
+     not including, the given [[end index|end]]. If the 
+     given end index is greater than the last index of this
+     string, return the portion of the string from the 
+     given start index until the end of the string. If the 
+     start index is larger than the last index of the string, 
+     or if the end index is less than one or less than the 
+     start index, return the empty string.
+     
+     For every pair of indexes, `start`, and `end`, and for
+     any `string`:
+     
+         string.substring(start, end) == string[start:end-start]
+     
+     _Note: this operation is provided to ease migration of
+     code written in other languages. It is more idiomatic 
+     to use [[measure]] or [[span]] where reasonable._"
+    see (`function measure`, `function span`)
+    shared String substring(
+        "The inclusive start index"
+        Integer from = 0,
+        "The exclusive end index" 
+        Integer end = size)
+            => measure(from, end-from);
     
     shared actual native List<Character> sublistFrom(Integer from);
     shared actual native List<Character> sublistTo(Integer to);

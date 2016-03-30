@@ -23,14 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// WATCH OUT: should fix this in model to not use that type
-import javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeVariableSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.ArrayType;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.TypeVar;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.WildcardType;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeKind;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 
@@ -77,7 +77,6 @@ public class JavacType implements TypeMirror {
 
     @Override
     public TypeKind getKind() {
-    	// WATCH OUT: should fix this in model to not use that type
         return TypeKind.valueOf(type.getKind().name());
     }
 
@@ -154,7 +153,7 @@ public class JavacType implements TypeMirror {
         if(getKind() != TypeKind.TYPEVAR)
             return null;
         if(!typeParameterSet){
-            typeParameter = new JavacTypeParameter(type.tsym);
+            typeParameter = new JavacTypeParameter((TypeVariableSymbol)type.tsym);
             typeParameterSet = true;
         }
         return typeParameter;

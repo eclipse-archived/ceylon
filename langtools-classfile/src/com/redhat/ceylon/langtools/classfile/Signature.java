@@ -27,7 +27,6 @@ package com.redhat.ceylon.langtools.classfile;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.redhat.ceylon.langtools.classfile.Type.*;
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,8 +25,6 @@
 
 package com.redhat.ceylon.langtools.tools.javac.util;
 
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTags.*;
-
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
 
 /**
@@ -48,7 +46,7 @@ public class Constants {
     public static Object decode(Object value, Type type) {
         if (value instanceof Integer) {
             int i = (Integer) value;
-            switch (type.tag) {
+            switch (type.getTag()) {
             case BOOLEAN:  return i != 0;
             case CHAR:     return (char) i;
             case BYTE:     return (byte) i;
@@ -64,7 +62,7 @@ public class Constants {
      */
     public static String format(Object value, Type type) {
         value = decode(value, type);
-        switch (type.tag) {
+        switch (type.getTag()) {
         case BYTE:      return formatByte((Byte) value);
         case LONG:      return formatLong((Long) value);
         case FLOAT:     return formatFloat((Float) value);

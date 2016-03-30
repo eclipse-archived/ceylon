@@ -179,7 +179,7 @@ class AnnotationInvocationVisitor extends Visitor {
     private static JCAnnotation transformInstantiation(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
         AnnotationInvocation ai = annoCtorModel(invocation);
         AnnotationInvocationVisitor visitor = new AnnotationInvocationVisitor(exprGen, invocation, annoCtorModel(invocation));
-        ListBuffer<JCExpression> annotationArguments = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> annotationArguments = new ListBuffer<JCExpression>();
         if (invocation.getPositionalArgumentList() != null) {
             for (Tree.PositionalArgument arg : invocation.getPositionalArgumentList().getPositionalArguments()) {
                 visitor.parameter = arg.getParameter();
@@ -272,7 +272,7 @@ class AnnotationInvocationVisitor extends Visitor {
             appendArgument(args, classParameter, 
                 exprGen.makeErroneous(invocation, "compiler bug: unbound annotation class parameter " + classParameter.getName()));
         }
-        ListBuffer<JCExpression> assignments = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> assignments = new ListBuffer<JCExpression>();
         for (Map.Entry<Parameter, ListBuffer<JCExpression>> entry : args.entrySet()) {
             ListBuffer<JCExpression> exprs = entry.getValue();
             if (exprs.size() == 1) {
@@ -296,7 +296,7 @@ class AnnotationInvocationVisitor extends Visitor {
         if (expr != null) {
             ListBuffer<JCExpression> exprList = args.get(classParameter);
             if (exprList == null) {
-                exprList = ListBuffer.<JCExpression>lb();
+                exprList = new ListBuffer<JCExpression>();
                 args.put(classParameter, exprList);
             }
             exprList.append(expr);
@@ -508,6 +508,8 @@ class AnnotationInvocationVisitor extends Visitor {
             if (exprGen.isJavaEnumType(term.getTypeModel())) {
                 // A Java enum
                 append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, null));
+            } else {
+                super.visit(term);
             }
         } else {
             super.visit(term);
@@ -554,7 +556,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     private ListBuffer<JCExpression> startArray() {
         ListBuffer<JCExpression> prevArray = arrayExprs;
-        arrayExprs = ListBuffer.<JCExpression>lb();
+        arrayExprs = new ListBuffer<JCExpression>();
         expectedType = exprGen.typeFact().getIteratedType(parameter.getType());
         return prevArray;
     }

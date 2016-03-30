@@ -71,7 +71,7 @@ class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
     
     public static final class possiblyEmpty_ {
         
-        private possiblyEmpty_() {
+        possiblyEmpty_() {
         }
     }
     
@@ -81,7 +81,7 @@ class SequencedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
     
     public static final class nonEmpty_ {
         
-        private nonEmpty_() {
+        nonEmpty_() {
         }
     }
     

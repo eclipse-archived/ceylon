@@ -212,7 +212,7 @@ public class ClassGenerator {
         }
         //Add reference to metamodel
         gen.out(typeName, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        TypeUtils.encodeForRuntime(that, d, that.getAnnotationList(), gen);
         gen.endLine(true);
         if (!isAbstractNative) {
             gen.share(d);

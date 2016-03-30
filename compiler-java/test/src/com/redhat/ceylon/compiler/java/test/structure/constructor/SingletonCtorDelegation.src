@@ -21,7 +21,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     
     private static final class cartesian$delegation$_ {
         
-        private cartesian$delegation$_() {
+        cartesian$delegation$_() {
         }
     }
     
@@ -33,7 +33,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     
     public static final class cartesian_ {
         
-        private cartesian_() {
+        cartesian_() {
         }
     }
     
@@ -43,7 +43,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     
     private static final class origin_ {
         
-        private origin_() {
+        origin_() {
         }
     }
     
@@ -61,7 +61,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     
     private static final class oneone_ {
         
-        private oneone_() {
+        oneone_() {
         }
     }
     
@@ -114,7 +114,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
     
     private static final class point_ {
         
-        private point_() {
+        point_() {
         }
     }
     
@@ -125,7 +125,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
     
     private static final class origin_ {
         
-        private origin_() {
+        origin_() {
         }
     }
     
@@ -143,7 +143,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
     
     private static final class oneone_ {
         
-        private oneone_() {
+        oneone_() {
         }
     }
     

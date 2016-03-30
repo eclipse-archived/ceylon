@@ -30,7 +30,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 
 class ModuleInfo {
         private static final String[] PropertyNames = new String[]{
@@ -43,8 +43,10 @@ class ModuleInfo {
         final File jar;
         Attributes osgiAttributes;
         String osgiVersion;
+		private CeylonP2Tool tool;
 
-        public ModuleInfo(String name, String version, File jar) throws IOException {
+        public ModuleInfo(CeylonP2Tool tool, String name, String version, File jar) throws IOException {
+        	this.tool = tool;
             this.name = name;
             this.version = version;
             this.jar = jar;
@@ -127,7 +129,7 @@ class ModuleInfo {
                     String[] details = pkg.split(";");
                     String name = details[0];
                     // skip some modules
-                    if(CeylonP2Tool.skipModule(name))
+                    if(tool.skipModule(name))
                         continue;
                     String version = "";// GRRR: API of ModuleInfo
                     for(int i=1;i<details.length;i++){

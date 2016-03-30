@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,20 +26,7 @@
 package com.redhat.ceylon.javax.lang.model.element;
 
 import java.util.List;
-
-import com.redhat.ceylon.javax.lang.model.element.AnnotationValue;
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.Name;
-import com.redhat.ceylon.javax.lang.model.element.Parameterizable;
-import com.redhat.ceylon.javax.lang.model.element.TypeParameterElement;
-import com.redhat.ceylon.javax.lang.model.element.VariableElement;
-import com.redhat.ceylon.javax.lang.model.type.ExecutableType;
-import com.redhat.ceylon.javax.lang.model.type.NoType;
-import com.redhat.ceylon.javax.lang.model.type.TypeKind;
-import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
-
 import com.redhat.ceylon.javax.lang.model.type.*;
-import com.redhat.ceylon.javax.lang.model.util.Types;
 
 /**
  * Represents a method, constructor, or initializer (static or
@@ -82,6 +69,25 @@ public interface ExecutableElement extends Element, Parameterizable {
     List<? extends VariableElement> getParameters();
 
     /**
+     * Returns the receiver type of this executable,
+     * or {@link com.redhat.ceylon.javax.lang.model.type.NoType NoType} with
+     * kind {@link com.redhat.ceylon.javax.lang.model.type.TypeKind#NONE NONE}
+     * if the executable has no receiver type.
+     *
+     * An executable which is an instance method, or a constructor of an
+     * inner class, has a receiver type derived from the {@linkplain
+     * #getEnclosingElement declaring type}.
+     *
+     * An executable which is a static method, or a constructor of a
+     * non-inner class, or an initializer (static or instance), has no
+     * receiver type.
+     *
+     * @return the receiver type of this executable
+     * @since 1.8
+     */
+    TypeMirror getReceiverType();
+
+    /**
      * Returns {@code true} if this method or constructor accepts a variable
      * number of arguments and returns {@code false} otherwise.
      *
@@ -89,6 +95,16 @@ public interface ExecutableElement extends Element, Parameterizable {
      * number of arguments and {@code false} otherwise
      */
     boolean isVarArgs();
+
+    /**
+     * Returns {@code true} if this method is a default method and
+     * returns {@code false} otherwise.
+     *
+     * @return {@code true} if this method is a default method and
+     * {@code false} otherwise
+     * @since 1.8
+     */
+    boolean isDefault();
 
     /**
      * Returns the exceptions and other throwables listed in this

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,15 +25,19 @@
 
 package com.redhat.ceylon.langtools.tools.javac.jvm;
 
-import java.util.*;
-
 import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Type;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Types;
+import com.redhat.ceylon.langtools.tools.javac.code.Types.UniqueType;
+
+import com.redhat.ceylon.langtools.tools.javac.util.ArrayUtils;
 import com.redhat.ceylon.langtools.tools.javac.util.Assert;
 import com.redhat.ceylon.langtools.tools.javac.util.Filter;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
+
+import java.util.*;
 
 /** An internal structure that corresponds to the constant pool of a classfile.
  *
@@ -59,11 +63,14 @@ public class Pool {
      */
     Map<Object,Integer> indices;
 
+    Types types;
+
     /** Construct a pool with given number of elements and element array.
      */
-    public Pool(int pp, Object[] pool) {
+    public Pool(int pp, Object[] pool, Types types) {
         this.pp = pp;
         this.pool = pool;
+        this.types = types;
         this.indices = new HashMap<Object,Integer>(pool.length);
         for (int i = 1; i < pp; i++) {
             if (pool[i] != null) indices.put(pool[i], i);
@@ -72,8 +79,8 @@ public class Pool {
 
     /** Construct an empty pool.
      */
-    public Pool() {
-        this(1, new Object[64]);
+    public Pool(Types types) {
+        this(1, new Object[64], types);
     }
 
     /** Return the number of entries in the constant pool.
@@ -89,20 +96,11 @@ public class Pool {
         indices.clear();
     }
 
-    /** Double pool buffer in size.
-     */
-    private void doublePool() {
-        Object[] newpool = new Object[pool.length * 2];
-        System.arraycopy(pool, 0, newpool, 0, pool.length);
-        pool = newpool;
-    }
-
     /** Place an object in the pool, unless it is already there.
      *  If object is a symbol also enter its owner unless the owner is a
      *  package.  Return the object's index in the pool.
      */
     public int put(Object value) {
-        // Backported by Ceylon from JDK8
         value = makePoolValue(value);
 //      assert !(value instanceof Type.TypeVar);
         Integer index = indices.get(value);
@@ -110,24 +108,25 @@ public class Pool {
 //          System.err.println("put " + value + " " + value.getClass());//DEBUG
             index = pp;
             indices.put(value, index);
-            if (pp == pool.length) doublePool();
+            pool = ArrayUtils.ensureCapacity(pool, pp);
             pool[pp++] = value;
             if (value instanceof Long || value instanceof Double) {
-                if (pp == pool.length) doublePool();
+                pool = ArrayUtils.ensureCapacity(pool, pp);
                 pool[pp++] = null;
             }
         }
         return index.intValue();
     }
 
-    // Backported by Ceylon from JDK8
     Object makePoolValue(Object o) {
         if (o instanceof DynamicMethodSymbol) {
-            return new DynamicMethod((DynamicMethodSymbol)o);
+            return new DynamicMethod((DynamicMethodSymbol)o, types);
         } else if (o instanceof MethodSymbol) {
-            return new Method((MethodSymbol)o);
+            return new Method((MethodSymbol)o, types);
         } else if (o instanceof VarSymbol) {
-            return new Variable((VarSymbol)o);
+            return new Variable((VarSymbol)o, types);
+        } else if (o instanceof Type) {
+            return new UniqueType((Type)o, types);
         } else {
             return o;
         }
@@ -141,35 +140,36 @@ public class Pool {
         return n == null ? -1 : n.intValue();
     }
 
-    static class Method extends DelegatedSymbol {
-        MethodSymbol m;
-        Method(MethodSymbol m) {
+    static class Method extends DelegatedSymbol<MethodSymbol> {
+        UniqueType uniqueType;
+        Method(MethodSymbol m, Types types) {
             super(m);
-            this.m = m;
+            this.uniqueType = new UniqueType(m.type, types);
         }
-        public boolean equals(Object other) {
-            if (!(other instanceof Method)) return false;
-            MethodSymbol o = ((Method)other).m;
+        public boolean equals(Object any) {
+            if (!(any instanceof Method)) return false;
+            MethodSymbol o = ((Method)any).other;
+            MethodSymbol m = this.other;
             return
                 o.name == m.name &&
                 o.owner == m.owner &&
-                o.type.equals(m.type);
+                ((Method)any).uniqueType.equals(uniqueType);
         }
         public int hashCode() {
+            MethodSymbol m = this.other;
             return
                 m.name.hashCode() * 33 +
                 m.owner.hashCode() * 9 +
-                m.type.hashCode();
+                uniqueType.hashCode();
         }
     }
 
-    // Backported by Ceylon from JDK8
     static class DynamicMethod extends Method {
         public Object[] uniqueStaticArgs;
 
-        DynamicMethod(DynamicMethodSymbol m) {
-            super(m);
-            uniqueStaticArgs = m.staticArgs;
+        DynamicMethod(DynamicMethodSymbol m, Types types) {
+            super(m, types);
+            uniqueStaticArgs = getUniqueTypeArray(m.staticArgs, types);
         }
 
         @Override
@@ -195,31 +195,44 @@ public class Pool {
             }
             return hash;
         }
+
+        private Object[] getUniqueTypeArray(Object[] objects, Types types) {
+            Object[] result = new Object[objects.length];
+            for (int i = 0; i < objects.length; i++) {
+                if (objects[i] instanceof Type) {
+                    result[i] = new UniqueType((Type)objects[i], types);
+                } else {
+                    result[i] = objects[i];
+                }
+            }
+            return result;
+        }
     }
 
-    static class Variable extends DelegatedSymbol {
-        VarSymbol v;
-        Variable(VarSymbol v) {
+    static class Variable extends DelegatedSymbol<VarSymbol> {
+        UniqueType uniqueType;
+        Variable(VarSymbol v, Types types) {
             super(v);
-            this.v = v;
+            this.uniqueType = new UniqueType(v.type, types);
         }
-        public boolean equals(Object other) {
-            if (!(other instanceof Variable)) return false;
-            VarSymbol o = ((Variable)other).v;
+        public boolean equals(Object any) {
+            if (!(any instanceof Variable)) return false;
+            VarSymbol o = ((Variable)any).other;
+            VarSymbol v = other;
             return
                 o.name == v.name &&
                 o.owner == v.owner &&
-                o.type.equals(v.type);
+                ((Variable)any).uniqueType.equals(uniqueType);
         }
         public int hashCode() {
+            VarSymbol v = other;
             return
                 v.name.hashCode() * 33 +
                 v.owner.hashCode() * 9 +
-                v.type.hashCode();
+                uniqueType.hashCode();
         }
     }
 
-    // Backported by Ceylon from JDK8
     public static class MethodHandle {
 
         /** Reference kind - see ClassFile */
@@ -228,12 +241,12 @@ public class Pool {
         /** Reference symbol */
         Symbol refSym;
 
-        Type uniqueType;
+        UniqueType uniqueType;
 
-        public MethodHandle(int refKind, Symbol refSym) {
+        public MethodHandle(int refKind, Symbol refSym, Types types) {
             this.refKind = refKind;
             this.refSym = refSym;
-            this.uniqueType = this.refSym.type;
+            this.uniqueType = new UniqueType(this.refSym.type, types);
             checkConsistent();
         }
         public boolean equals(Object other) {
@@ -283,7 +296,10 @@ public class Pool {
                     interfaceOwner = true;
                     staticOk = true;
                 case ClassFile.REF_invokeVirtual:
+                    expectedKind = Kinds.MTH;
+                    break;
                 case ClassFile.REF_invokeSpecial:
+                    interfaceOwner = true;
                     expectedKind = Kinds.MTH;
                     break;
             }

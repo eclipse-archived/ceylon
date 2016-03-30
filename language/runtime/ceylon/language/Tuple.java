@@ -1514,4 +1514,10 @@ public final class Tuple<Element, First extends Element,
         return $ceylon$language$List$impl().hashCode();
     }
     
+    @Override @Ignore
+    public <Result> List<? extends Result> mapElements(
+            TypeDescriptor $reified$Result, Callable<? extends Result> collecting) {
+        return $ceylon$language$List$impl().mapElements($reified$Result, collecting);
+    }
+
 }

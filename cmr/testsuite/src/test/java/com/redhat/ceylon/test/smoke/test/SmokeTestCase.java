@@ -337,6 +337,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testInterpolation() {
         Map<String,String> interpolation = new HashMap<>();
+        Assert.assertEquals(Versions.CEYLON_VERSION_NUMBER, Overrides.interpolate("${CEYLON_VERSION}", interpolation));
         interpolation.put("foo", "bar");
         Assert.assertEquals("", Overrides.interpolate("", interpolation));
         Assert.assertEquals(null, Overrides.interpolate(null, interpolation));
@@ -594,7 +595,7 @@ public class SmokeTestCase extends AbstractTest {
         }
     }
 
-    private final static ModuleDependencyInfo language = new ModuleDependencyInfo("ceylon.language", "1.2.2", false, false);
+    private final static ModuleDependencyInfo language = new ModuleDependencyInfo("ceylon.language", "1.2.3", false, false);
     public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
     public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
     public final static ModuleDetails hello_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);

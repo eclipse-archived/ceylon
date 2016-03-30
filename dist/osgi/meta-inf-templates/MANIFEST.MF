@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ceylon Distribution Bundle
+Bundle-SymbolicName: com.redhat.ceylon.dist
+Bundle-Version: @ceylon-version@.qualifier
+Eclipse-BundleShape: dir
+Bundle-Vendor: RedHat
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.7
+ ))"
+Bundle-ClassPath: .
+Export-Package: com.redhat.ceylon.dist.osgi
+Bundle-ActivationPolicy: lazy;exclude:="*"
+Import-Package: org.osgi.framework;version="1.6",
+ org.osgi.framework.wiring;version="1.0"
+Require-Bundle: ceylon.bootstrap;bundle-version="@ceylon-version@",
+ ceylon.language;bundle-version="@ceylon-version@",
+ com.github.lookfirst.sardine;bundle-version="5.1",
+ com.redhat.ceylon.common;bundle-version="@ceylon-version@",
+ com.redhat.ceylon.model;bundle-version="@ceylon-version@",
+ com.redhat.ceylon.langtools.classfile;bundle-version="@ceylon-version@",
+ com.redhat.ceylon.module-resolver;bundle-version="@ceylon-version@",
+ net.minidev.json-smart;bundle-version="1.1.1",
+ org.apache.commons.codec;bundle-version="1.8",
+ org.apache.commons.logging;bundle-version="1.1.1",
+ org.apache.httpcomponents.httpclient;bundle-version="4.3.2",
+ org.apache.httpcomponents.httpcore;bundle-version="4.3.2",
+ org.jboss.logmanager;bundle-version="2.0.3.Final",
+ org.jboss.modules;bundle-version="1.4.4.Final",
+ org.tautua.markdownpapers.core;bundle-version="1.2.7"
+

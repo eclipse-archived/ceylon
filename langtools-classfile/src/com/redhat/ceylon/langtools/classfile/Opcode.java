@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -448,10 +448,10 @@ public enum Opcode {
 
     }
 
-    private static Opcode[] stdOpcodes = new Opcode[256];
-    private static Opcode[] wideOpcodes = new Opcode[256];
-    private static Opcode[] nonPrivOpcodes = new Opcode[256];
-    private static Opcode[] privOpcodes = new Opcode[256];
+    private static final Opcode[] stdOpcodes = new Opcode[256];
+    private static final Opcode[] wideOpcodes = new Opcode[256];
+    private static final Opcode[] nonPrivOpcodes = new Opcode[256];
+    private static final Opcode[] privOpcodes = new Opcode[256];
     static {
         for (Opcode o: values())
             getOpcodeBlock(o.opcode >> 8)[o.opcode & 0xff] = o;

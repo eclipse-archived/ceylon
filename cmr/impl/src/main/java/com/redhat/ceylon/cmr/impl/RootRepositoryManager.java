@@ -17,9 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,7 +90,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 }
                 try {
                     log.debug(" -> Found it, now caching it");
-                    final File file = putContent(context, node, sizedInputStream.inputStream, sizedInputStream.size);
+                    final File file = putContent(context, node, sizedInputStream.getInputStream(), sizedInputStream.getSize());
                     log.debug("    Caching done: " + file);
                     String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
                     File originalRepoFile = new File(file.getParentFile(), file.getName().concat(ORIGIN));                        
@@ -106,7 +104,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     // we expect the remote nodes to support Ceylon module info
                     return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), file, repositoryDisplayString);
                 } finally {
-                    IOUtils.safeClose(sizedInputStream.inputStream);
+                    IOUtils.safeClose(sizedInputStream.getInputStream());
                 }
             } catch (IOException e) {
                 throw new RepositoryException(e);
@@ -171,7 +169,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     }
 
     private File putContent(ArtifactContext context, Node node, InputStream stream, long length) throws IOException {
-        log.debug("Creating local copy of external node: " + node + " at repo: " + 
+        log.debug("  Creating local copy of external node: " + node + " at repo: " + 
                 (fileContentStore != null ? fileContentStore.getDisplayString() : null));
         if(fileContentStore == null)
             throw new IOException("No location to place node at: fileContentStore is null");
@@ -180,86 +178,55 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
         if (callback == null) {
             callback = ArtifactCallbackStream.getCallback();
         }
-        final File file;
+        
+        final File finalFile;
+        VerifiedDownload dl = new VerifiedDownload(log, context, fileContentStore, node);
         try {
-            if (callback != null) {
-                callback.start(NodeUtils.getFullPath(node), length != -1 ? length : node.getSize(), node.getStoreDisplayString());
-                stream = new ArtifactCallbackStream(callback, stream);
-            }
-            fileContentStore.putContent(node, stream, context); // stream should be closed closer to API call
-            file = fileContentStore.getFile(node); // re-get
-            if (callback != null) {
-                callback.done(file);
-            }
-        } catch (Throwable t) {
-            if (callback != null) {
-                callback.error(fileContentStore.getFile(node), t);
-            }
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw IOUtils.toIOException(t);
-            }
-        }
-
-        if (context.isIgnoreSHA() == false && node instanceof OpenNode) {
-            final OpenNode on = (OpenNode) node;
-            final String sha1 = IOUtils.sha1(new FileInputStream(file));
-            if (sha1 != null) {
-                ByteArrayInputStream shaStream = new ByteArrayInputStream(sha1.getBytes("ASCII"));
-                Node parent = NodeUtils.firstParent(node);
-                if (parent == null) {
-                    throw new IllegalArgumentException("Parent should not be null: " + node);
-                }
-                Node sha = parent.getChild(on.getLabel() + SHA1);
-                if (sha == null) {
-                    // put it to ext node as well, if supported
-                    on.addContent(SHA1, shaStream, context);
-                    shaStream.reset(); // reset, for next read
-                } else if (sha.hasBinaries()) {
-                    final String existingSha1 = IOUtils.readSha1(sha.getInputStream());
-                    if (sha1.equals(existingSha1) == false) {
-                        try {
-                            fileContentStore.delete(file, node);
-                        } catch (Exception e) {
-                            log.warning("Error removing new content: " + file);
-                        }
-                        throw new IOException("Bad SHA1 - file: " + sha1 + " != " + existingSha1);
+            dl.fetch(callback, stream, length);
+            // don't commit it yet, as something might go wrong getting the descriptor...
+            
+            // only check for jars or forced checks
+            if (ArtifactContext.JAR.equals(context.getSingleSuffix()) || context.forceDescriptorCheck()) {
+                // transfer descriptor as well, if there is one
+                final Node descriptor = Configuration.getResolvers(this).descriptor(node);
+                if (descriptor != null && descriptor.hasBinaries()) {
+                    VerifiedDownload descriptorDl = new VerifiedDownload(log, context, fileContentStore, descriptor);
+                    try {
+                        descriptorDl.fetch(callback, descriptor.getInputStream(), 40);
+                        descriptorDl.commit();
+                    } catch (RuntimeException e) {
+                        dl.rollback(e);
+                        throw e;
+                    } catch (IOException e) {
+                        dl.rollback(e);
+                        throw e;
                     }
                 }
-                // create empty marker node
-                OpenNode sl = ((OpenNode) parent).addNode(on.getLabel() + SHA1 + LOCAL);
-                // put sha to local store as well
-                fileContentStore.putContent(sl, shaStream, context);
             }
+            // ... got descriptor OK, so can now commit
+            finalFile = dl.commit();
+        } catch (RuntimeException e) {
+            dl.rollback(e);
+            throw e;
+        } catch (IOException e) {
+            dl.rollback(e);
+            throw e;
         }
-
-        // only check for jars or forced checks
-        if (ArtifactContext.JAR.equals(context.getSingleSuffix()) || context.forceDescriptorCheck()) {
-            // transfer descriptor as well, if there is one
-            final Node descriptor = Configuration.getResolvers(this).descriptor(node);
-            if (descriptor != null && descriptor.hasBinaries()) {
-                try (InputStream is = descriptor.getInputStream()) {
-                    fileContentStore.putContent(descriptor, is, context);
-                }
-            }
-        }
-
+        
         // refresh markers from root to this newly put node
         if(getCache() != null){
             final List<String> paths = NodeUtils.toLabelPath(node);
             OpenNode current = getCache();
             for (String path : paths) {
-                if (current == null)
+                if (current == null) {
                     break;
-
+                }
                 current.refresh(false);
                 final Node tmp = current.peekChild(path);
                 current = (tmp instanceof OpenNode) ? OpenNode.class.cast(tmp) : null;
             }
         }
-
-        return file;
+        return finalFile;
     }
 
     @Override
@@ -312,22 +279,6 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                 fileContentStore.removeFile(node);
             }
         }
-    }
-
-    @Override
-    protected Boolean checkSHA(Node artifact) throws IOException {
-        Boolean result = super.checkSHA(artifact);
-        if (result == null && artifact.isRemote() == false 
-                && getCache() != null && NodeUtils.isAncestor(getCache(), artifact)) {
-            Node sha = artifact.getChild(SHA1 + LOCAL);
-            if (sha != null) {
-                // fileContentStore cannot be null if we have a cache
-                File shaFile = fileContentStore.getFile(sha);
-                if (shaFile.exists())
-                    return checkSHA(artifact, IOUtils.toInputStream(shaFile));
-            }
-        }
-        return result;
     }
 
     @Override

@@ -28,4 +28,5 @@ module com.redhat.ceylon.compiler.java.test.interop "1" {
     import ceylon.interop.java "1.2.0";
     import javax.inject "1";
     import "javax.validation:validation-api" "1.1.0.Final";
+    import "javax.ws.rs:javax.ws.rs-api" "2.0.1";
 }

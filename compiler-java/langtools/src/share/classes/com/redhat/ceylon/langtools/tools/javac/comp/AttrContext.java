@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,8 +25,9 @@
 
 package com.redhat.ceylon.langtools.tools.javac.comp;
 
-import com.redhat.ceylon.langtools.tools.javac.code.*;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
+import com.redhat.ceylon.langtools.tools.javac.code.*;
 
 /** Contains information specific to the attribute and enter
  *  passes, to be used in place of the generic field in environments.
@@ -54,13 +55,13 @@ public class AttrContext {
      */
     boolean selectSuper = false;
 
+    /** Is the current target of lambda expression or method reference serializable?
+     */
+    boolean isSerializable = false;
+
     /** Are arguments to current function applications boxed into an array for varargs?
      */
-    boolean varArgs = false;
-
-    /** A list of type variables that are all-quantifed in current context.
-     */
-    List<Type> tvars = List.nil();
+    Resolve.MethodResolutionPhase pendingResolutionPhase = null;
 
     /** A record of the lint/SuppressWarnings currently in effect
      */
@@ -71,6 +72,22 @@ public class AttrContext {
      */
     Symbol enclVar = null;
 
+    /** ResultInfo to be used for attributing 'return' statement expressions
+     * (set by Attr.visitMethod and Attr.visitLambda)
+     */
+    Attr.ResultInfo returnResult = null;
+
+    /** Symbol corresponding to the site of a qualified default super call
+     */
+    Type defaultSuperCallSite = null;
+
+    /** Tree that when non null, is to be preferentially used in diagnostics.
+     *  Usually Env<AttrContext>.tree is the tree to be referred to in messages,
+     *  but this may not be true during the window a method is looked up in enclosing
+     *  contexts (JDK-8145466)
+     */
+    JCTree preferredTreeForDiagnostics;
+
     /** Duplicate this context, replacing scope field and copying all others.
      */
     AttrContext dup(Scope scope) {
@@ -79,10 +96,13 @@ public class AttrContext {
         info.staticLevel = staticLevel;
         info.isSelfCall = isSelfCall;
         info.selectSuper = selectSuper;
-        info.varArgs = varArgs;
-        info.tvars = tvars;
+        info.pendingResolutionPhase = pendingResolutionPhase;
         info.lint = lint;
         info.enclVar = enclVar;
+        info.returnResult = returnResult;
+        info.defaultSuperCallSite = defaultSuperCallSite;
+        info.isSerializable = isSerializable;
+        info.preferredTreeForDiagnostics = preferredTreeForDiagnostics;
         return info;
     }
 
@@ -98,6 +118,12 @@ public class AttrContext {
         return scope.getElements();
     }
 
+    boolean lastResolveVarargs() {
+        return pendingResolutionPhase != null &&
+                pendingResolutionPhase.isVarargsRequired();
+    }
+
+    @Override
     public String toString() {
         return "AttrContext[" + scope.toString() + "]";
     }

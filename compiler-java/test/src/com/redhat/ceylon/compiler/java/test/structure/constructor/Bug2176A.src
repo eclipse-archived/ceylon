@@ -4,7 +4,7 @@ class Bug2176A implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     private static final class true_ {
         
-        private true_() {
+        true_() {
         }
     }
     
@@ -21,7 +21,7 @@ class Bug2176A implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     private static final class false_ {
         
-        private false_() {
+        false_() {
         }
     }
     

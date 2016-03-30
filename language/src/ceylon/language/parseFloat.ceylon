@@ -124,10 +124,13 @@ shared Float? parseFloat(String string) {
 //TODO: replace with a native implementation
 "The maximum number of decimal digits that can be 
  represented by an [[Integer]]."
-Integer maximumIntegerExponent
+native Integer maximumIntegerExponent;
+
+native("jvm") Integer maximumIntegerExponent
         = smallest(runtime.maxIntegerValue.string.size,
                    runtime.minIntegerValue.string.size-1)
             - 1;
+native("js") Integer maximumIntegerExponent => 17;
 
 Integer? parseFloatExponent(String string) {
     switch (string)

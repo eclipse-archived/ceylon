@@ -14,11 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoadException;
-import org.jboss.modules.ModuleLoader;
-
-import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
@@ -62,10 +57,10 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ValueConstructorIm
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
-import com.redhat.ceylon.compiler.java.runtime.model.RuntimeResolver;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.model.loader.NamingBase;
@@ -82,6 +77,8 @@ import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
 import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.model.loader.model.LazyValue;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader.ModuleLoadException;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -101,55 +98,31 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
 import ceylon.language.Annotated;
-import ceylon.language.Annotated;
-import ceylon.language.Anything;
 import ceylon.language.Anything;
 import ceylon.language.Array;
-import ceylon.language.Array;
-import ceylon.language.Callable;
 import ceylon.language.Callable;
 import ceylon.language.Iterator;
-import ceylon.language.Iterator;
-import ceylon.language.Null;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.finished_;
-import ceylon.language.null_;
 import ceylon.language.null_;
 import ceylon.language.sequence_;
-import ceylon.language.sequence_;
-import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.Module;
-import ceylon.language.meta.declaration.Module;
-import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
-import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
 import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.ClassOrInterface;
-import ceylon.language.meta.model.ClassOrInterface;
-import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.Generic;
-import ceylon.language.meta.model.Generic;
-import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
-import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
-import ceylon.language.meta.model.TypeApplicationException;
-import ceylon.language.meta.model.ValueModel;
 import ceylon.language.meta.model.ValueModel;
 
 public class Metamodel {
@@ -513,19 +486,23 @@ public class Metamodel {
         // we must use the context module loader, which is the one CeylonModuleLoader for every user module
         // if we use the language module loader it will be a LocalModuleLoader which doesn't know about the
         // module repos specified on the command-line.
-        ModuleLoader moduleLoader = org.jboss.modules.Module.getContextModuleLoader();
         // no loading required for these
         if(JDKUtils.isJDKModule(declaration.getNameAsString())
                 || JDKUtils.isOracleJDKModule(declaration.getNameAsString()))
             return;
         try {
-            org.jboss.modules.Module jbossModule = moduleLoader.loadModule(ModuleIdentifier.create(declaration.getNameAsString(), declaration.getVersion()));
-            org.jboss.modules.ModuleClassLoader cl = jbossModule.getClassLoader();
+            // Stef: this can fail, in particular is the TCCCL is that of a bootstrap module CL since we can't override those
+            // if it does we have to resort to reflection to get around this
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            if(contextClassLoader instanceof CeylonModuleClassLoader) {
+                // this will return null for bootstrap modules
+                CeylonModuleClassLoader newModuleClassLoader = ((CeylonModuleClassLoader) contextClassLoader).loadModule(declaration.getNameAsString(), declaration.getVersion());
             
-            // if we can force it loaded, let's do
-            if(cl instanceof CeylonModuleClassLoader){
-                // this can complete in another thread or this thread
-                ((CeylonModuleClassLoader) cl).registerInMetaModel();
+                // if we can force it loaded, let's do
+                if(newModuleClassLoader != null){
+                    // this can complete in another thread or this thread
+                    newModuleClassLoader.registerInMetaModel();
+                }
                 if(!declaration.isAvailable()){
                     // perhaps it is being loaded in another thread, wait for it
                     Object lock = getLock();
@@ -568,7 +545,9 @@ public class Metamodel {
     }
 
     private static boolean isJBossModules() {
-        return Metamodel.class.getClassLoader() instanceof org.jboss.modules.ModuleClassLoader;
+        // Metamodel is from ceylon.language which is loaded by the InitialModuleLoader, which can't change its
+        // ClassLoader implementation from that, so it should be safe
+        return Metamodel.class.getClassLoader().getClass().getName().equals("org.jboss.modules.ModuleClassLoader");
     }
 
     public static ceylon.language.meta.declaration.OpenType getMetamodel(Type pt) {
@@ -1125,8 +1104,8 @@ public class Metamodel {
     
     protected static <AT extends java.lang.annotation.Annotation> Class<AT> getJavaAnnotationClass(
             Class<? extends Annotation> ceylonAnnotationClass) {
-        if(ceylonAnnotationClass == ceylon.language.Annotation.class
-                || ceylonAnnotationClass == ceylon.language.ConstrainedAnnotation.class)
+        if(((Class<?>)ceylonAnnotationClass) == ceylon.language.Annotation.class
+                || ((Class<?>)ceylonAnnotationClass) == ceylon.language.ConstrainedAnnotation.class)
             return (Class<AT>) java.lang.annotation.Annotation.class;
         String suffix;
         if (ceylon.language.SequencedAnnotation.class.isAssignableFrom(ceylonAnnotationClass)) {

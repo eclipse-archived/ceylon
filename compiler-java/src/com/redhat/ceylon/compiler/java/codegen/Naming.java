@@ -35,7 +35,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
@@ -2098,7 +2098,7 @@ public class Naming extends NamingBase implements LocalId {
             return maker.TypeCast(
                     makeTypeDeclarationExpression(null, constructor, flags),
                     //makeTypeDeclarationExpression(makeTypeDeclarationExpression(null, cls, DeclNameFlag.QUALIFIED), constructor, DeclNameFlag.QUALIFIED),
-                    make().Literal(TypeTags.BOT, null));
+                    make().Literal(TypeTag.BOT, null));
         }
     }
     

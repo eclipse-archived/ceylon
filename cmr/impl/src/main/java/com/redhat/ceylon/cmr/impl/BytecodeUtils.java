@@ -19,7 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -28,13 +28,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.jboss.jandex.AnnotationInstance;
-import org.jboss.jandex.AnnotationValue;
-import org.jboss.jandex.ClassInfo;
-import org.jboss.jandex.DotName;
-import org.jboss.jandex.Index;
-import org.jboss.jandex.Indexer;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -47,7 +40,11 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.langtools.classfile.Annotation;
+import com.redhat.ceylon.langtools.classfile.ClassFile;
+import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.ClassFileUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 /**
@@ -61,11 +58,11 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     private BytecodeUtils() {
     }
 
-    private static final DotName MODULE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Module");
-    private static final DotName PACKAGE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Package");
-    private static final DotName CEYLON_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ceylon");
-    private static final DotName IGNORE_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.Ignore");
-    private static final DotName LOCAL_CONTAINER_ANNOTATION = DotName.createSimple("com.redhat.ceylon.compiler.java.metadata.LocalContainer");
+    private static final String MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
+    private static final String PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
+    private static final String CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
+    private static final String IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
+    private static final String LOCAL_CONTAINER_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.LocalContainer";
 
     @Override
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
@@ -100,185 +97,179 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
      * @return module info list
      */
     private static ModuleInfo readModuleInformation(final String moduleName, final File jarFile, Overrides overrides) {
-        Index index = readModuleIndex(moduleName, jarFile, false);
-        final AnnotationInstance ai = getAnnotation(index, moduleName, MODULE_ANNOTATION);
+    	ClassFile moduleInfo = readModuleInfo(moduleName, jarFile);
+    	if(moduleInfo == null)
+    		return null;
+    	Annotation ai = ClassFileUtil.findAnnotation(moduleInfo, MODULE_ANNOTATION);
         if (ai == null)
             return null;
-        final AnnotationValue version = ai.value("version");
+        final String version = (String) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "version");
         if(version == null)
             return null;
         
-        final AnnotationValue dependencies = ai.value("dependencies");
+        final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
         if (dependencies == null)
             return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
 
         final Set<ModuleDependencyInfo> infos = new LinkedHashSet<ModuleDependencyInfo>();
 
-        final AnnotationInstance[] imports = dependencies.asNestedArray();
-        if (imports != null){
-            for (AnnotationInstance im : imports) {
-                final String name = asString(im, "name");
-                final ModuleDependencyInfo mi = new ModuleDependencyInfo(
-                        name,
-                        asString(im, "version"),
-                        asBoolean(im, "optional"),
-                        asBoolean(im, "export"));
-                infos.add(mi);
-            }
+        for (Object im : dependencies) {
+        	Annotation dep = (Annotation) im;
+        	final String name = (String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "name");
+        	final ModuleDependencyInfo mi = new ModuleDependencyInfo(
+        			name,
+        			(String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "version"),
+        			asBoolean(moduleInfo, dep, "optional"),
+        			asBoolean(moduleInfo, dep, "export"));
+        	infos.add(mi);
         }
         ModuleInfo ret = new ModuleInfo(null, infos);
         if(overrides != null)
-            ret = overrides.applyOverrides(moduleName, version.asString(), ret);
+            ret = overrides.applyOverrides(moduleName, version, ret);
         return ret;
     }
 
-    private static Index readModuleIndex(String moduleName, final File jarFile, boolean everything) {
+    private static List<ClassFile> readClassFiles(final File jarFile) {
         try {
             try(JarFile jar = new JarFile(jarFile)){
-                Indexer indexer = new Indexer();
-            	// FIXME: try reading the index directly rather than iterate
-            	if(!everything){
-            		// default module has no module descriptor
-            		if(Module.DEFAULT_MODULE_NAME.equals(moduleName))
-            			return indexer.complete();
-            		String modulePath = getModulePath(moduleName);
-            		String name1 = modulePath+"/$module_.class";
-            		JarEntry entry = jar.getJarEntry(name1);
-            		if(entry == null){
-                		String name2 = modulePath+"/module_.class";
-                		entry = jar.getJarEntry(name2);
-            		}
-            		if(entry != null){
-                        try(InputStream stream = jar.getInputStream(entry)){
-                        	indexer.index(stream);
-                        }
-            		}
-            		return indexer.complete();
-            	}
+            	List<ClassFile> ret = new ArrayList<ClassFile>(jar.size());
                 Enumeration<JarEntry> entries = jar.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
                     String name = entry.getName().toLowerCase();
-                    if(everything && name.endsWith(".class")){
+                    if(name.endsWith(".class")){
                         try(InputStream stream = jar.getInputStream(entry)){
-                            indexer.index(stream);
+                            try {
+								ret.add(ClassFile.read(stream));
+							} catch (ConstantPoolException e) {
+								throw new RuntimeException(e);
+							}
                         }
                     }
                 }
-                return indexer.complete();
+            	return ret;
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read index for module " + jarFile.getPath(), e);
+            throw new RuntimeException("Failed to read class file for module " + jarFile.getPath(), e);
         }
     }
-    
+
+    private static ClassFile readModuleInfo(String moduleName, final File jarFile) {
+		// default module has no module descriptor
+		if(Module.DEFAULT_MODULE_NAME.equals(moduleName))
+			return null;
+        try {
+            try(JarFile jar = new JarFile(jarFile)){
+            	String modulePath = getModulePath(moduleName);
+            	String name1 = modulePath+"/$module_.class";
+            	JarEntry entry = jar.getJarEntry(name1);
+            	if(entry == null){
+            		String name2 = modulePath+"/module_.class";
+            		entry = jar.getJarEntry(name2);
+            	}
+            	if(entry != null){
+            		try(InputStream stream = jar.getInputStream(entry)){
+            			return ClassFile.read(stream);
+            		} catch (ConstantPoolException e) {
+            			throw new RuntimeException(e);
+					}
+            	}
+            	return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read class file for module " + jarFile.getPath(), e);
+        }
+    }
+
     private static String getModulePath(String moduleName) {
         String quotedModuleName = JVMModuleUtil.quoteJavaKeywords(moduleName);
 		return quotedModuleName.replace('.', '/');
 	}
 
-	private static ClassInfo getModuleInfo(final Index index, final String moduleName) {
-        // we need to escape any java keyword from the package list
-        String quotedModuleName = JVMModuleUtil.quoteJavaKeywords(moduleName);
-        DotName moduleClassName = DotName.createSimple(quotedModuleName + ".$module_");
-        ClassInfo ret = index.getClassByName(moduleClassName);
-        if(ret == null){
-            // read previous module descriptor name
-            moduleClassName = DotName.createSimple(quotedModuleName + ".module_");
-            ret = index.getClassByName(moduleClassName);
-        }
-        return ret;
-    }
-
     @Override
     public int[] getBinaryVersions(String moduleName, String moduleVersion, File moduleArchive) {
-        Index index = readModuleIndex(moduleName, moduleArchive, false);
-        final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
+    	ClassFile moduleInfo = readModuleInfo(moduleName, moduleArchive);
+    	if(moduleInfo == null)
+    		return null;
+    	Annotation ceylonAnnotation = ClassFileUtil.findAnnotation(moduleInfo, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
-
-        AnnotationValue majorAnnotation = ceylonAnnotation.value("major");
-        AnnotationValue minorAnnotation = ceylonAnnotation.value("minor");
-
-        int major = majorAnnotation != null ? majorAnnotation.asInt() : 0;
-        int minor = minorAnnotation != null ? minorAnnotation.asInt() : 0;
+        
+        int major = asInt(moduleInfo, ceylonAnnotation, "major");
+        int minor = asInt(moduleInfo, ceylonAnnotation, "minor");
         return new int[]{major, minor};
     }
 
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, String moduleVersion, File moduleArchive, boolean includeMembers, Overrides overrides) {
-        Index index = readModuleIndex(moduleName, moduleArchive, true);
-        final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
+    	ClassFile moduleInfo = readModuleInfo(moduleName, moduleArchive);
+    	if(moduleInfo == null)
+    		return null;
+    	Annotation moduleAnnotation = ClassFileUtil.findAnnotation(moduleInfo, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
         
-        AnnotationValue doc = moduleAnnotation.value("doc");
-        AnnotationValue license = moduleAnnotation.value("license");
-        AnnotationValue by = moduleAnnotation.value("by");
-        AnnotationValue dependencies = moduleAnnotation.value("dependencies");
+        String doc = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "doc");
+        String license = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "license");
+        Object[] by = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "by");
+        Object[] dependencies = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "dependencies");
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
         
-        final AnnotationInstance ceylonAnnotation = getAnnotation(index, moduleName, CEYLON_ANNOTATION);
+    	Annotation ceylonAnnotation = ClassFileUtil.findAnnotation(moduleInfo, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
 
-        AnnotationValue majorVer = ceylonAnnotation.value("major");
-        AnnotationValue minorVer = ceylonAnnotation.value("minor");
+        int major = asInt(moduleInfo, ceylonAnnotation, "major");
+        int minor = asInt(moduleInfo, ceylonAnnotation, "minor");
 
         ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
-        mvd.setDoc(doc != null ? doc.asString() : null);
-        mvd.setLicense(license != null ? license.asString() : null);
+        mvd.setDoc(doc);
+        mvd.setLicense(license);
         if (by != null) {
-            mvd.getAuthors().addAll(Arrays.asList(by.asStringArray()));
+        	for(Object author : by){
+        		mvd.getAuthors().add((String)author);
+        	}
         }
-        mvd.getDependencies().addAll(getDependencies(dependencies, moduleName, mvd.getVersion(), overrides));
-        ModuleVersionArtifact mva = new ModuleVersionArtifact(type, majorVer != null ? majorVer.asInt() : 0, minorVer != null ? minorVer.asInt() : 0);
+        mvd.getDependencies().addAll(getDependencies(moduleInfo, dependencies, moduleName, mvd.getVersion(), overrides));
+        ModuleVersionArtifact mva = new ModuleVersionArtifact(type, major, minor);
         mvd.getArtifactTypes().add(mva);
         
         if (includeMembers) {
-            mvd.setMembers(getMembers(index));
+            mvd.setMembers(getMembers(moduleArchive));
         }
         
         return mvd;
     }
 
-    private Set<String> getMembers(Index index) {
+    private Set<String> getMembers(File moduleArchive) {
         HashSet<String> members = new HashSet<>(); 
-        for (ClassInfo cls : index.getKnownClasses()) {
+        for (ClassFile cls : readClassFiles(moduleArchive)) {
             if (shouldAddMember(cls)) {
-                members.add(classNameToDeclName(cls.name().toString()));
+                try {
+					members.add(classNameToDeclName(cls.getName().replace('/', '.')));
+				} catch (ConstantPoolException e) {
+					throw new RuntimeException(e);
+				}
             }
         }
         return members;
     }
 
-    private boolean shouldAddMember(ClassInfo cls) {
+    private boolean shouldAddMember(ClassFile cls) {
         // ignore what we must ignore
-        if (getClassAnnotation(cls, IGNORE_ANNOTATION) != null) {
+        if (ClassFileUtil.findAnnotation(cls, IGNORE_ANNOTATION) != null) {
             return false;
         }
         // ignore module and package descriptors
-        if (getClassAnnotation(cls, MODULE_ANNOTATION) != null || getClassAnnotation(cls, PACKAGE_ANNOTATION) != null) {
+        if (ClassFileUtil.findAnnotation(cls, MODULE_ANNOTATION) != null 
+        		|| ClassFileUtil.findAnnotation(cls, PACKAGE_ANNOTATION) != null) {
             return false;
         }
         // ignore local types
-        if (getClassAnnotation(cls, LOCAL_CONTAINER_ANNOTATION) != null) {
+        if (ClassFileUtil.findAnnotation(cls, LOCAL_CONTAINER_ANNOTATION) != null) {
             return false;
         }
         return true;
-    }
-    
-    private AnnotationInstance getClassAnnotation(ClassInfo cls, DotName annoName) {
-        List<AnnotationInstance> annos = cls.annotations().get(annoName);
-        if (annos != null) {
-            // Just return the first one we can find on the class itself
-            for (AnnotationInstance anno : annos) {
-                if (anno.target() == cls) {
-                    return anno;
-                }
-            }
-        }
-        return null;
     }
     
     // Returns a fully qualified declaration name making sure that
@@ -329,18 +320,18 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         }
     }
 
-    private static Set<ModuleDependencyInfo> getDependencies(AnnotationValue dependencies, String module, String version, Overrides overrides) {
-        AnnotationInstance[] deps = dependencies.asNestedArray();
-        Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>(deps.length);
-        for (AnnotationInstance dep : deps) {
-            AnnotationValue depName = dep.value("name");
-            AnnotationValue depVersion = dep.value("version");
-            AnnotationValue export = dep.value("export");
-            AnnotationValue optional = dep.value("optional");
+    private static Set<ModuleDependencyInfo> getDependencies(ClassFile classFile, Object[] dependencies, 
+    		String module, String version, Overrides overrides) {
+    	
+        Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>(dependencies.length);
+        for (Object depObject : dependencies) {
+        	Annotation dep = (Annotation) depObject;
+            String depName = (String)ClassFileUtil.getAnnotationValue(classFile, dep, "name");
+            String depVersion = (String)ClassFileUtil.getAnnotationValue(classFile, dep, "version");
+            boolean export = asBoolean(classFile, dep, "export");
+            boolean optional = asBoolean(classFile, dep, "optional");
             
-            result.add(new ModuleDependencyInfo(depName.asString(), depVersion.asString(),
-                    (optional!= null) && optional.asBoolean(),
-                    (export != null) && export.asBoolean()));
+            result.add(new ModuleDependencyInfo(depName, depVersion, optional, export));
         }
         if(overrides != null)
             return overrides.applyOverrides(module, version, new ModuleInfo(null, result)).getDependencies();
@@ -348,29 +339,32 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     }
     
     public boolean matchesModuleInfo(String moduleName, String moduleVersion, File moduleArchive, String query, Overrides overrides) {
-        Index index = readModuleIndex(moduleName, moduleArchive, false);
-        final AnnotationInstance moduleAnnotation = getAnnotation(index, moduleName, MODULE_ANNOTATION);
+    	ClassFile moduleInfo = readModuleInfo(moduleName, moduleArchive);
+    	if(moduleInfo == null)
+    		return false;
+    	Annotation moduleAnnotation = ClassFileUtil.findAnnotation(moduleInfo, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return false;
-        AnnotationValue version = moduleAnnotation.value("version");
+        
+        String version = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "version");
         if (version == null)
             return false;
-        AnnotationValue doc = moduleAnnotation.value("doc");
-        if (doc != null && matches(doc.asString(), query))
+        String doc = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "doc");
+        if (doc != null && matches(doc, query))
             return true;
-        AnnotationValue license = moduleAnnotation.value("license");
-        if (license != null && matches(license.asString(), query))
+        String license = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "license");
+        if (license != null && matches(license, query))
             return true;
-        AnnotationValue by = moduleAnnotation.value("by");
+        Object[] by = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "by");
         if (by != null) {
-            for (String author : by.asStringArray()) {
-                if (matches(author, query))
+            for (Object author : by) {
+                if (matches((String)author, query))
                     return true;
             }
         }
-        AnnotationValue dependencies = moduleAnnotation.value("dependencies");
+        Object[] dependencies = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "dependencies");
         if (dependencies != null) {
-            for (ModuleDependencyInfo dep : getDependencies(dependencies, moduleName, version.asString(), overrides)) {
+            for (ModuleDependencyInfo dep : getDependencies(moduleInfo, dependencies, moduleName, version, overrides)) {
                 if (matches(dep.getModuleName(), query))
                     return true;
             }
@@ -382,27 +376,13 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         return string.toLowerCase().contains(query);
     }
 
-    private static String asString(AnnotationInstance ai, String name) {
-        final AnnotationValue av = ai.value(name);
-        if (av == null)
-            throw new IllegalArgumentException("Missing required annotation attribute: " + name);
-        return av.asString();
+    private static boolean asBoolean(ClassFile classFile, Annotation annotation, String name) {
+    	Boolean ret = (Boolean) ClassFileUtil.getAnnotationValue(classFile, annotation, name);
+        return (ret != null) && ret.booleanValue();
     }
 
-    private static boolean asBoolean(AnnotationInstance ai, String name) {
-        final AnnotationValue av = ai.value(name);
-        return (av != null) && av.asBoolean();
-    }
-
-    private static AnnotationInstance getAnnotation(Index index, String moduleName, DotName annotationName) {
-        final ClassInfo moduleClass = getModuleInfo(index, moduleName);
-        if (moduleClass == null)
-            return null;
-        
-        List<AnnotationInstance> annotations = moduleClass.annotations().get(annotationName);
-        if (annotations == null || annotations.isEmpty())
-            return null;
-        
-        return annotations.get(0);
+    private static int asInt(ClassFile classFile, Annotation annotation, String name) {
+    	Integer ret = (Integer) ClassFileUtil.getAnnotationValue(classFile, annotation, name);
+        return (ret != null) ? ret.intValue() : 0;
     }
 }

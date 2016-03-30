@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2001, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -28,9 +28,10 @@ package com.redhat.ceylon.langtools.tools.javac.jvm;
 import java.util.*;
 
 import com.redhat.ceylon.langtools.tools.javac.tree.*;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
+import com.redhat.ceylon.langtools.tools.javac.tree.EndPosTable;
 
 /** This class contains the CharacterRangeTable for some method
  *  and the hashtable for mapping trees or lists of trees to their
@@ -54,9 +55,9 @@ implements CRTFlags {
      */
     private Map<Object,SourceRange> positions = new HashMap<Object,SourceRange>();
 
-    /** The hashtable for ending positions stored in the parser.
+    /** The object for ending positions stored in the parser.
      */
-    private Map<JCTree, Integer> endPositions;
+    private EndPosTable endPosTable;
 
     /** The tree of the method this table is intended for.
      *  We should traverse this tree to get source ranges.
@@ -65,9 +66,9 @@ implements CRTFlags {
 
     /** Constructor
      */
-    public CRTable(JCTree.JCMethodDecl tree, Map<JCTree, Integer> endPositions) {
+    public CRTable(JCTree.JCMethodDecl tree, EndPosTable endPosTable) {
         this.methodTree = tree;
-        this.endPositions = endPositions;
+        this.endPosTable = endPosTable;
     }
 
     /** Create a new CRTEntry and add it to the entries.
@@ -161,7 +162,7 @@ implements CRTFlags {
     }
 
     /** Source file positions in CRT are integers in the format:
-     *  line-number << LINESHIFT + column-number
+     *  {@literal line-number << LINESHIFT + column-number }
      */
      private int encodePosition(int pos, Position.LineMap lineMap, Log log) {
          int line = lineMap.getLineNumber(pos);
@@ -502,6 +503,14 @@ implements CRTFlags {
             result = sr;
         }
 
+        @Override
+        public void visitLetExpr(LetExpr tree) {
+            SourceRange sr = new SourceRange(startPos(tree), endPos(tree));
+            sr.mergeWith(csp(tree.stats));
+            sr.mergeWith(csp(tree.expr));
+            result = sr;
+        }
+
         public void visitTypeParameter(JCTypeParameter tree) {
             SourceRange sr = new SourceRange(startPos(tree), endPos(tree));
             sr.mergeWith(csp(tree.bounds));
@@ -524,7 +533,7 @@ implements CRTFlags {
          */
         public int startPos(JCTree tree) {
             if (tree == null) return Position.NOPOS;
-            return tree.pos;
+            return TreeInfo.getStartPos(tree);
         }
 
         /** The end position of given tree, if it has
@@ -532,12 +541,7 @@ implements CRTFlags {
          */
         public int endPos(JCTree tree) {
             if (tree == null) return Position.NOPOS;
-            if (tree.getTag() == JCTree.BLOCK)
-                return ((JCBlock) tree).endpos;
-            Integer endpos = endPositions.get(tree);
-            if (endpos != null)
-                return endpos.intValue();
-            return Position.NOPOS;
+            return TreeInfo.getEndPos(tree, endPosTable);
         }
     }
 

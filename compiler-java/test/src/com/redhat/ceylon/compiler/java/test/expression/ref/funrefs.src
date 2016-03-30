@@ -13,6 +13,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     Person(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String name) {
         this.name = name;
     }

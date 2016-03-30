@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,17 +24,18 @@
  */
 package com.redhat.ceylon.langtools.tools.javac.util;
 
-import static com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter.PositionKind.*;
-
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Locale;
-
 import com.redhat.ceylon.javax.tools.JavaFileObject;
-import com.redhat.ceylon.langtools.tools.javac.api.Formattable;
+
 import com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter.Configuration.*;
+import com.redhat.ceylon.langtools.tools.javac.api.Formattable;
 import com.redhat.ceylon.langtools.tools.javac.file.BaseFileObject;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
 import com.redhat.ceylon.langtools.tools.javac.util.AbstractDiagnosticFormatter.SimpleConfiguration;
+
+import static com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter.PositionKind.*;
 
 /**
  * A raw formatter for diagnostic messages.
@@ -51,7 +52,7 @@ public final class RawDiagnosticFormatter extends AbstractDiagnosticFormatter {
 
     /**
      * Create a formatter based on the supplied options.
-     * @param msgs
+     * @param options
      */
     public RawDiagnosticFormatter(Options options) {
         super(null, new SimpleConfiguration(options,
@@ -117,16 +118,17 @@ public final class RawDiagnosticFormatter extends AbstractDiagnosticFormatter {
     @Override
     protected String formatArgument(JCDiagnostic diag, Object arg, Locale l) {
         String s;
-        if (arg instanceof Formattable)
+        if (arg instanceof Formattable) {
             s = arg.toString();
-        else if (arg instanceof BaseFileObject)
+        } else if (arg instanceof JCExpression) {
+            JCExpression tree = (JCExpression)arg;
+            s = "@" + tree.getStartPosition();
+        } else if (arg instanceof BaseFileObject) {
             s = ((BaseFileObject) arg).getShortName();
-        else
+        } else {
             s = super.formatArgument(diag, arg, null);
-        if (arg instanceof JCDiagnostic)
-            return "(" + s + ")";
-        else
-            return s;
+        }
+        return (arg instanceof JCDiagnostic) ? "(" + s + ")" : s;
     }
 
     @Override

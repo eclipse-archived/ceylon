@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2015, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,15 +25,18 @@
 
 package com.redhat.ceylon.langtools.tools.javac.jvm;
 
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTags.*;
-import static com.redhat.ceylon.langtools.tools.javac.jvm.ByteCodes.*;
-import static com.redhat.ceylon.langtools.tools.javac.jvm.ClassWriter.StackMapTableFrame;
-import static com.redhat.ceylon.langtools.tools.javac.jvm.UninitializedType.*;
-
 import com.redhat.ceylon.langtools.tools.javac.code.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
+import com.redhat.ceylon.langtools.tools.javac.code.Types.UniqueType;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.BOT;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.INT;
+import static com.redhat.ceylon.langtools.tools.javac.jvm.ByteCodes.*;
+import static com.redhat.ceylon.langtools.tools.javac.jvm.UninitializedType.*;
+import static com.redhat.ceylon.langtools.tools.javac.jvm.ClassWriter.StackMapTableFrame;
 
 /** An internal structure that corresponds to the code attribute of
  *  methods in a classfile. The class also provides some utility operations to
@@ -122,7 +125,7 @@ public class Code {
 
 /*---------- internal fields: --------------- */
 
-    /** Are we generating code with jumps >= 32K?
+    /** Are we generating code with jumps &ge; 32K?
      */
     public boolean fatcode;
 
@@ -224,7 +227,7 @@ public class Code {
      *  JVM architecture).
      */
     public static int typecode(Type type) {
-        switch (type.tag) {
+        switch (type.getTag()) {
         case BYTE: return BYTEcode;
         case SHORT: return SHORTcode;
         case CHAR: return CHARcode;
@@ -242,7 +245,7 @@ public class Code {
         case UNINITIALIZED_THIS:
         case UNINITIALIZED_OBJECT:
             return OBJECTcode;
-        default: throw new AssertionError("typecode " + type.tag);
+        default: throw new AssertionError("typecode " + type.getTag());
         }
     }
 
@@ -281,7 +284,7 @@ public class Code {
     /** Given a type, return its code for allocating arrays of that type.
      */
     public static int arraycode(Type type) {
-        switch (type.tag) {
+        switch (type.getTag()) {
         case BYTE: return 8;
         case BOOLEAN: return 4;
         case SHORT: return 9;
@@ -303,9 +306,19 @@ public class Code {
 
     /** The current output code pointer.
      */
-    public int curPc() {
-        if (pendingJumps != null) resolvePending();
-        if (pendingStatPos != Position.NOPOS) markStatBegin();
+    public int curCP() {
+        /*
+         * This method has side-effects because calling it can indirectly provoke
+         *  extra code generation, like goto instructions, depending on the context
+         *  where it's called.
+         *  Use with care or even better avoid using it.
+         */
+        if (pendingJumps != null) {
+            resolvePending();
+        }
+        if (pendingStatPos != Position.NOPOS) {
+            markStatBegin();
+        }
         fixedPc = true;
         return cp;
     }
@@ -314,11 +327,7 @@ public class Code {
      */
     private  void emit1(int od) {
         if (!alive) return;
-        if (cp == code.length) {
-            byte[] newcode = new byte[cp * 2];
-            System.arraycopy(code, 0, newcode, 0, cp);
-            code = newcode;
-        }
+        code = ArrayUtils.ensureCapacity(code, cp);
         code[cp++] = (byte)od;
     }
 
@@ -373,6 +382,17 @@ public class Code {
 
     void postop() {
         Assert.check(alive || state.stacksize == 0);
+    }
+
+    /** Emit a ldc (or ldc_w) instruction, taking into account operand size
+    */
+    public void emitLdc(int od) {
+        if (od <= 255) {
+            emitop1(ldc1, od);
+        }
+        else {
+            emitop2(ldc2, od);
+        }
     }
 
     /** Emit a multinewarray instruction.
@@ -459,7 +479,6 @@ public class Code {
     /** Emit an invokedynamic instruction.
      */
     public void emitInvokedynamic(int desc, Type mtype) {
-        // N.B. this format is under consideration by the JSR 292 EG
         int argsize = width(mtype.getParameterTypes());
         emitop(invokedynamic);
         if (!alive) return;
@@ -481,7 +500,7 @@ public class Code {
             state.pop(1);
             //sometimes 'null type' is treated as a one-dimensional array type
             //see Gen.visitLiteral - we should handle this case accordingly
-            Type stackType = a.tag == BOT ?
+            Type stackType = a.hasTag(BOT) ?
                 syms.objectType :
                 types.erasure(types.elemtype(a));
             state.push(stackType); }
@@ -902,11 +921,15 @@ public class Code {
         if (o instanceof Long) return syms.longType;
         if (o instanceof Double) return syms.doubleType;
         if (o instanceof ClassSymbol) return syms.classType;
-        if (o instanceof Type.ArrayType) return syms.classType;
-        // Backported by Ceylon from JDK8
-        if (o instanceof Type.MethodType) return syms.methodTypeType;
         if (o instanceof Pool.MethodHandle) return syms.methodHandleType;
-        throw new AssertionError(o);
+        if (o instanceof UniqueType) return typeForPool(((UniqueType)o).type);
+        if (o instanceof Type) {
+            Type ty = ((Type)o).unannotatedType();
+
+            if (ty instanceof Type.ArrayType) return syms.classType;
+            if (ty instanceof Type.MethodType) return syms.methodTypeType;
+        }
+        throw new AssertionError("Invalid type of constant pool entry: " + o.getClass());
     }
 
     /** Emit an opcode with a one-byte operand field;
@@ -993,7 +1016,16 @@ public class Code {
             state.pop(((Symbol)(pool.pool[od])).erasure(types));
             break;
         case new_:
-            state.push(uninitializedObject(((Symbol)(pool.pool[od])).erasure(types), cp-3));
+            Symbol sym;
+            if (pool.pool[od] instanceof UniqueType) {
+                // Required by change in Gen.makeRef to allow
+                // annotated types.
+                // TODO: is this needed anywhere else?
+                sym = ((UniqueType)(pool.pool[od])).type.tsym;
+            } else {
+                sym = (Symbol)(pool.pool[od]);
+            }
+            state.push(uninitializedObject(sym.erasure(types), cp-3));
             break;
         case sipush:
             state.push(syms.intType);
@@ -1034,7 +1066,7 @@ public class Code {
             Object o = pool.pool[od];
             Type t = (o instanceof Symbol)
                 ? ((Symbol)o).erasure(types)
-                : types.erasure(((Type)o));
+                : types.erasure((((UniqueType)o).type));
             state.push(t);
             break; }
         case ldc2w:
@@ -1080,13 +1112,15 @@ public class Code {
             while (cp % incr != 0) emitop0(nop);
     }
 
-    /** Place a byte into code at address pc. Pre: pc + 1 <= cp.
+    /** Place a byte into code at address pc.
+     *  Pre: {@literal pc + 1 <= cp }.
      */
     private void put1(int pc, int op) {
         code[pc] = (byte)op;
     }
 
-    /** Place two bytes into code at address pc. Pre: pc + 2 <= cp.
+    /** Place two bytes into code at address pc.
+     *  Pre: {@literal pc + 2 <= cp }.
      */
     private void put2(int pc, int od) {
         // pre: pc + 2 <= cp
@@ -1094,7 +1128,8 @@ public class Code {
         put1(pc+1, od);
     }
 
-    /** Place four  bytes into code at address pc. Pre: pc + 4 <= cp.
+    /** Place four  bytes into code at address pc.
+     *  Pre: {@literal pc + 4 <= cp }.
      */
     public void put4(int pc, int od) {
         // pre: pc + 4 <= cp
@@ -1142,7 +1177,7 @@ public class Code {
     /** Declare an entry point; return current code pointer
      */
     public int entryPoint() {
-        int pc = curPc();
+        int pc = curCP();
         alive = true;
         pendingStackMap = needStackMap;
         return pc;
@@ -1152,9 +1187,11 @@ public class Code {
      *  return current code pointer
      */
     public int entryPoint(State state) {
-        int pc = curPc();
+        int pc = curCP();
         alive = true;
-        this.state = state.dup();
+        State newState = state.dup();
+        setDefined(newState.defined);
+        this.state = newState;
         Assert.check(state.stacksize <= max_stack);
         if (debugCode) System.err.println("entry point " + state);
         pendingStackMap = needStackMap;
@@ -1165,9 +1202,11 @@ public class Code {
      *  return current code pointer
      */
     public int entryPoint(State state, Type pushed) {
-        int pc = curPc();
+        int pc = curCP();
         alive = true;
-        this.state = state.dup();
+        State newState = state.dup();
+        setDefined(newState.defined);
+        this.state = newState;
         Assert.check(state.stacksize <= max_stack);
         this.state.push(pushed);
         if (debugCode) System.err.println("entry point " + state);
@@ -1205,7 +1244,7 @@ public class Code {
 
     /** Emit a stack map entry.  */
     public void emitStackMap() {
-        int pc = curPc();
+        int pc = curCP();
         if (!needStackMap) return;
 
 
@@ -1245,12 +1284,8 @@ public class Code {
 
         if (stackMapBuffer == null) {
             stackMapBuffer = new StackMapFrame[20];
-        } else if (stackMapBuffer.length == stackMapBufferSize) {
-            StackMapFrame[] newStackMapBuffer =
-                new StackMapFrame[stackMapBufferSize << 1];
-            System.arraycopy(stackMapBuffer, 0, newStackMapBuffer,
-                             0, stackMapBufferSize);
-            stackMapBuffer = newStackMapBuffer;
+        } else {
+            stackMapBuffer = ArrayUtils.ensureCapacity(stackMapBuffer, stackMapBufferSize);
         }
         StackMapFrame frame =
             stackMapBuffer[stackMapBufferSize++] = new StackMapFrame();
@@ -1318,12 +1353,10 @@ public class Code {
 
         if (stackMapTableBuffer == null) {
             stackMapTableBuffer = new StackMapTableFrame[20];
-        } else if (stackMapTableBuffer.length == stackMapBufferSize) {
-            StackMapTableFrame[] newStackMapTableBuffer =
-                new StackMapTableFrame[stackMapBufferSize << 1];
-            System.arraycopy(stackMapTableBuffer, 0, newStackMapTableBuffer,
-                             0, stackMapBufferSize);
-            stackMapTableBuffer = newStackMapTableBuffer;
+        } else {
+            stackMapTableBuffer = ArrayUtils.ensureCapacity(
+                                    stackMapTableBuffer,
+                                    stackMapBufferSize);
         }
         stackMapTableBuffer[stackMapBufferSize++] =
                 StackMapTableFrame.getInstance(frame, lastFrame.pc, lastFrame.locals, types);
@@ -1455,6 +1488,9 @@ public class Code {
                 chain.pc + 3 == target && target == cp && !fixedPc) {
                 // If goto the next instruction, the jump is not needed:
                 // compact the code.
+                if (varDebugInfo) {
+                    adjustAliveRanges(cp, -3);
+                }
                 cp = cp - 3;
                 target = target - 3;
                 if (chain.next == null) {
@@ -1545,7 +1581,28 @@ public class Code {
      */
     public void addCatch(
         char startPc, char endPc, char handlerPc, char catchType) {
-        catchInfo.append(new char[]{startPc, endPc, handlerPc, catchType});
+            catchInfo.append(new char[]{startPc, endPc, handlerPc, catchType});
+        }
+
+
+    public void compressCatchTable() {
+        ListBuffer<char[]> compressedCatchInfo = new ListBuffer<>();
+        List<Integer> handlerPcs = List.nil();
+        for (char[] catchEntry : catchInfo) {
+            handlerPcs = handlerPcs.prepend((int)catchEntry[2]);
+        }
+        for (char[] catchEntry : catchInfo) {
+            int startpc = catchEntry[0];
+            int endpc = catchEntry[1];
+            if (startpc == endpc ||
+                    (startpc == (endpc - 1) &&
+                    handlerPcs.contains(startpc))) {
+                continue;
+            } else {
+                compressedCatchInfo.append(catchEntry);
+            }
+        }
+        catchInfo = compressedCatchInfo;
     }
 
 
@@ -1612,7 +1669,7 @@ public class Code {
         State dup() {
             try {
                 State state = (State)super.clone();
-                state.defined = defined.dup();
+                state.defined = new Bits(defined);
                 state.stack = stack.clone();
                 if (locks != null) state.locks = locks.clone();
                 if (debugCode) {
@@ -1628,10 +1685,8 @@ public class Code {
         void lock(int register) {
             if (locks == null) {
                 locks = new int[20];
-            } else if (locks.length == nlocks) {
-                int[] newLocks = new int[locks.length << 1];
-                System.arraycopy(locks, 0, newLocks, 0, locks.length);
-                locks = newLocks;
+            } else {
+                locks = ArrayUtils.ensureCapacity(locks, nlocks);
             }
             locks[nlocks] = register;
             nlocks++;
@@ -1645,23 +1700,19 @@ public class Code {
 
         void push(Type t) {
             if (debugCode) System.err.println("   pushing " + t);
-            switch (t.tag) {
-            case TypeTags.VOID:
+            switch (t.getTag()) {
+            case VOID:
                 return;
-            case TypeTags.BYTE:
-            case TypeTags.CHAR:
-            case TypeTags.SHORT:
-            case TypeTags.BOOLEAN:
+            case BYTE:
+            case CHAR:
+            case SHORT:
+            case BOOLEAN:
                 t = syms.intType;
                 break;
             default:
                 break;
             }
-            if (stacksize+2 >= stack.length) {
-                Type[] newstack = new Type[2*stack.length];
-                System.arraycopy(stack, 0, newstack, 0, stack.length);
-                stack = newstack;
-            }
+            stack = ArrayUtils.ensureCapacity(stack, stacksize+2);
             stack[stacksize++] = t;
             switch (width(t)) {
             case 1:
@@ -1715,7 +1766,7 @@ public class Code {
          *  of its current type. */
         void forceStackTop(Type t) {
             if (!alive) return;
-            switch (t.tag) {
+            switch (t.getTag()) {
             case CLASS:
             case ARRAY:
                 int width = width(t);
@@ -1730,8 +1781,9 @@ public class Code {
 
         void markInitialized(UninitializedType old) {
             Type newtype = old.initializedType();
-            for (int i=0; i<stacksize; i++)
+            for (int i=0; i<stacksize; i++) {
                 if (stack[i] == old) stack[i] = newtype;
+            }
             for (int i=0; i<lvar.length; i++) {
                 LocalVar lv = lvar[i];
                 if (lv != null && lv.sym.type == old) {
@@ -1739,14 +1791,13 @@ public class Code {
                     sym = sym.clone(sym.owner);
                     sym.type = newtype;
                     LocalVar newlv = lvar[i] = new LocalVar(sym);
-                    // should the following be initialized to cp?
-                    newlv.start_pc = lv.start_pc;
+                    newlv.aliveRanges = lv.aliveRanges;
                 }
             }
         }
 
         State join(State other) {
-            defined = defined.andSet(other.defined);
+            defined.andSet(other.defined);
             Assert.check(stacksize == other.stacksize
                     && nlocks == other.nlocks);
             for (int i=0; i<stacksize; ) {
@@ -1817,7 +1868,7 @@ public class Code {
         }
     }
 
-    static Type jsrReturnValue = new Type(TypeTags.INT, null);
+    static final Type jsrReturnValue = new JCPrimitiveType(INT, null);
 
 
 /* **************************************************************************
@@ -1828,8 +1879,36 @@ public class Code {
     static class LocalVar {
         final VarSymbol sym;
         final char reg;
-        char start_pc = Character.MAX_VALUE;
-        char length = Character.MAX_VALUE;
+
+        class Range {
+            char start_pc = Character.MAX_VALUE;
+            char length = Character.MAX_VALUE;
+
+            Range() {}
+
+            Range(char start) {
+                this.start_pc = start;
+            }
+
+            Range(char start, char length) {
+                this.start_pc = start;
+                this.length = length;
+            }
+
+            boolean closed() {
+                return start_pc != Character.MAX_VALUE && length != Character.MAX_VALUE;
+            }
+
+            @Override
+            public String toString() {
+                int currentStartPC = start_pc;
+                int currentLength = length;
+                return "startpc = " + currentStartPC + " length " + currentLength;
+            }
+        }
+
+        java.util.List<Range> aliveRanges = new java.util.ArrayList<>();
+
         LocalVar(VarSymbol v) {
             this.sym = v;
             this.reg = (char)v.adr;
@@ -1837,9 +1916,81 @@ public class Code {
         public LocalVar dup() {
             return new LocalVar(sym);
         }
-        public String toString() {
-            return "" + sym + " in register " + ((int)reg) + " starts at pc=" + ((int)start_pc) + " length=" + ((int)length);
+
+        Range firstRange() {
+            return aliveRanges.isEmpty() ? null : aliveRanges.get(0);
         }
+
+        Range lastRange() {
+            return aliveRanges.isEmpty() ? null : aliveRanges.get(aliveRanges.size() - 1);
+        }
+
+        void removeLastRange() {
+            Range lastRange = lastRange();
+            if (lastRange != null) {
+                aliveRanges.remove(lastRange);
+            }
+        }
+
+        @Override
+        public String toString() {
+            if (aliveRanges == null) {
+                return "empty local var";
+            }
+            StringBuilder sb = new StringBuilder().append(sym)
+                    .append(" in register ").append((int)reg).append(" \n");
+            for (Range r : aliveRanges) {
+                sb.append(" starts at pc=").append(Integer.toString(((int)r.start_pc)))
+                    .append(" length=").append(Integer.toString(((int)r.length)))
+                    .append("\n");
+            }
+            return sb.toString();
+        }
+
+        public void openRange(char start) {
+            if (!hasOpenRange()) {
+                aliveRanges.add(new Range(start));
+            }
+        }
+
+        public void closeRange(char length) {
+            if (isLastRangeInitialized() && length > 0) {
+                Range range = lastRange();
+                if (range != null) {
+                    if (range.length == Character.MAX_VALUE) {
+                        range.length = length;
+                    }
+                }
+            } else {
+                removeLastRange();
+            }
+        }
+
+        public boolean hasOpenRange() {
+            if (aliveRanges.isEmpty()) {
+                return false;
+            }
+            return lastRange().length == Character.MAX_VALUE;
+        }
+
+        public boolean isLastRangeInitialized() {
+            if (aliveRanges.isEmpty()) {
+                return false;
+            }
+            return lastRange().start_pc != Character.MAX_VALUE;
+        }
+
+        public Range getWidestRange() {
+            if (aliveRanges.isEmpty()) {
+                return new Range();
+            } else {
+                Range firstRange = firstRange();
+                Range lastRange = lastRange();
+                char length = (char)(lastRange.length + (lastRange.start_pc - firstRange.start_pc));
+                return new Range(firstRange.start_pc, length);
+            }
+         }
+
     };
 
     /** Local variables, indexed by register. */
@@ -1848,23 +1999,43 @@ public class Code {
     /** Add a new local variable. */
     private void addLocalVar(VarSymbol v) {
         int adr = v.adr;
-        if (adr+1 >= lvar.length) {
-            int newlength = lvar.length << 1;
-            if (newlength <= adr) newlength = adr + 10;
-            LocalVar[] new_lvar = new LocalVar[newlength];
-            System.arraycopy(lvar, 0, new_lvar, 0, lvar.length);
-            lvar = new_lvar;
-        }
+        lvar = ArrayUtils.ensureCapacity(lvar, adr+1);
         Assert.checkNull(lvar[adr]);
-        if (pendingJumps != null) resolvePending();
+        if (pendingJumps != null) {
+            resolvePending();
+        }
         lvar[adr] = new LocalVar(v);
         state.defined.excl(adr);
+    }
+
+    void adjustAliveRanges(int oldCP, int delta) {
+        for (LocalVar localVar: lvar) {
+            if (localVar != null) {
+                for (LocalVar.Range range: localVar.aliveRanges) {
+                    if (range.closed() && range.start_pc + range.length >= oldCP) {
+                        range.length += delta;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Calculates the size of the LocalVariableTable.
+     */
+    public int getLVTSize() {
+        int result = varBufferSize;
+        for (int i = 0; i < varBufferSize; i++) {
+            LocalVar var = varBuffer[i];
+            result += var.aliveRanges.size() - 1;
+        }
+        return result;
     }
 
     /** Set the current variable defined state. */
     public void setDefined(Bits newDefined) {
         if (alive && newDefined != state.defined) {
-            Bits diff = state.defined.dup().xorSet(newDefined);
+            Bits diff = new Bits(state.defined).xorSet(newDefined);
             for (int adr = diff.nextBit(0);
                  adr >= 0;
                  adr = diff.nextBit(adr+1)) {
@@ -1886,8 +2057,7 @@ public class Code {
         } else {
             state.defined.incl(adr);
             if (cp < Character.MAX_VALUE) {
-                if (v.start_pc == Character.MAX_VALUE)
-                    v.start_pc = (char)cp;
+                v.openRange((char)cp);
             }
         }
     }
@@ -1897,15 +2067,15 @@ public class Code {
         state.defined.excl(adr);
         if (adr < lvar.length &&
             lvar[adr] != null &&
-            lvar[adr].start_pc != Character.MAX_VALUE) {
+            lvar[adr].isLastRangeInitialized()) {
             LocalVar v = lvar[adr];
-            char length = (char)(curPc() - v.start_pc);
-            if (length > 0 && length < Character.MAX_VALUE) {
+            char length = (char)(curCP() - v.lastRange().start_pc);
+            if (length < Character.MAX_VALUE) {
                 lvar[adr] = v.dup();
-                v.length = length;
+                v.closeRange(length);
                 putVar(v);
             } else {
-                v.start_pc = Character.MAX_VALUE;
+                v.removeLastRange();
             }
         }
     }
@@ -1914,31 +2084,103 @@ public class Code {
     private void endScope(int adr) {
         LocalVar v = lvar[adr];
         if (v != null) {
-            lvar[adr] = null;
-            if (v.start_pc != Character.MAX_VALUE) {
-                char length = (char)(curPc() - v.start_pc);
+            if (v.isLastRangeInitialized()) {
+                char length = (char)(curCP() - v.lastRange().start_pc);
                 if (length < Character.MAX_VALUE) {
-                    v.length = length;
+                    v.closeRange(length);
                     putVar(v);
+                    fillLocalVarPosition(v);
+                }
+            }
+            /** the call to curCP() can implicitly adjust the current cp, if so
+             * the alive range of local variables may be modified. Thus we need
+             * all of them. For this reason assigning null to the given address
+             * should be the last action to do.
+             */
+            lvar[adr] = null;
+        }
+        state.defined.excl(adr);
+    }
+
+    private void fillLocalVarPosition(LocalVar lv) {
+        if (lv == null || lv.sym == null || !lv.sym.hasTypeAnnotations())
+            return;
+        for (Attribute.TypeCompound ta : lv.sym.getRawTypeAttributes()) {
+            TypeAnnotationPosition p = ta.position;
+            LocalVar.Range widestRange = lv.getWidestRange();
+            p.lvarOffset = new int[] { (int)widestRange.start_pc };
+            p.lvarLength = new int[] { (int)widestRange.length };
+            p.lvarIndex = new int[] { (int)lv.reg };
+            p.isValidOffset = true;
+        }
+    }
+
+    // Method to be called after compressCatchTable to
+    // fill in the exception table index for type
+    // annotations on exception parameters.
+    public void fillExceptionParameterPositions() {
+        for (int i = 0; i < varBufferSize; ++i) {
+            LocalVar lv = varBuffer[i];
+            if (lv == null || lv.sym == null
+                    || !lv.sym.hasTypeAnnotations()
+                    || !lv.sym.isExceptionParameter())
+                continue;
+
+            for (Attribute.TypeCompound ta : lv.sym.getRawTypeAttributes()) {
+                TypeAnnotationPosition p = ta.position;
+                // At this point p.type_index contains the catch type index.
+                // Use that index to determine the exception table index.
+                // We can afterwards discard the type_index.
+                // A TA position is shared for all type annotations in the
+                // same location; updating one is enough.
+                // Use -666 as a marker that the exception_index was already updated.
+                if (p.type_index != -666) {
+                    p.exception_index = findExceptionIndex(p.type_index);
+                    p.type_index = -666;
                 }
             }
         }
-        state.defined.excl(adr);
+    }
+
+    private int findExceptionIndex(int catchType) {
+        if (catchType == Integer.MIN_VALUE) {
+            // We didn't set the catch type index correctly.
+            // This shouldn't happen.
+            // TODO: issue error?
+            return -1;
+        }
+        List<char[]> iter = catchInfo.toList();
+        int len = catchInfo.length();
+        for (int i = 0; i < len; ++i) {
+            char[] catchEntry = iter.head;
+            iter = iter.tail;
+            char ct = catchEntry[3];
+            if (catchType == ct) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /** Put a live variable range into the buffer to be output to the
      *  class file.
      */
     void putVar(LocalVar var) {
-        if (!varDebugInfo) return;
-        if ((var.sym.flags() & Flags.SYNTHETIC) != 0) return;
+        // Keep local variables if
+        // 1) we need them for debug information
+        // 2) it is an exception type and it contains type annotations
+        boolean keepLocalVariables = varDebugInfo ||
+            (var.sym.isExceptionParameter() && var.sym.hasTypeAnnotations());
+        if (!keepLocalVariables) return;
+        //don't keep synthetic vars, unless they are lambda method parameters
+        boolean ignoredSyntheticVar = (var.sym.flags() & Flags.SYNTHETIC) != 0 &&
+                ((var.sym.owner.flags() & Flags.LAMBDA_METHOD) == 0 ||
+                 (var.sym.flags() & Flags.PARAMETER) == 0);
+        if (ignoredSyntheticVar) return;
         if (varBuffer == null)
             varBuffer = new LocalVar[20];
-        else if (varBufferSize >= varBuffer.length) {
-            LocalVar[] newVarBuffer = new LocalVar[varBufferSize*2];
-            System.arraycopy(varBuffer, 0, newVarBuffer, 0, varBuffer.length);
-            varBuffer = newVarBuffer;
-        }
+        else
+            varBuffer = ArrayUtils.ensureCapacity(varBuffer, varBufferSize);
         varBuffer[varBufferSize++] = var;
     }
 
@@ -1972,7 +2214,7 @@ public class Code {
         nextreg = max_locals;
     }
 
-    /** End scopes of all variables with registers >= first.
+    /** End scopes of all variables with registers &ge; first.
      */
     public void endScopes(int first) {
         int prevNextReg = nextreg;

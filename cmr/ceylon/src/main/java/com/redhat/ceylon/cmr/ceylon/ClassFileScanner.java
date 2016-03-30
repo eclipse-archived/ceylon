@@ -23,6 +23,7 @@ import com.redhat.ceylon.langtools.classfile.Attributes;
 import com.redhat.ceylon.langtools.classfile.BootstrapMethods_attribute;
 import com.redhat.ceylon.langtools.classfile.ClassFile;
 import com.redhat.ceylon.langtools.classfile.Code_attribute;
+import com.redhat.ceylon.langtools.classfile.Code_attribute.Exception_data;
 import com.redhat.ceylon.langtools.classfile.ConstantPool;
 import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
 import com.redhat.ceylon.langtools.classfile.Instruction;
@@ -63,8 +64,8 @@ import com.redhat.ceylon.langtools.classfile.Type.MethodType;
 import com.redhat.ceylon.langtools.classfile.Type.SimpleType;
 import com.redhat.ceylon.langtools.classfile.Type.TypeParamType;
 import com.redhat.ceylon.langtools.classfile.Type.Visitor;
-import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.PathFilter;
+import com.redhat.ceylon.model.loader.JdkProvider;
 
 public class ClassFileScanner {
 
@@ -72,6 +73,7 @@ public class ClassFileScanner {
 	private boolean isPublicApi;
     private boolean ignoreAnnotations;
     private Set<String> jarClassNames;
+    private final JdkProvider jdkProvider;
     Set<String> externalClasses;
     Set<String> publicApiExternalClasses;
 
@@ -420,7 +422,8 @@ public class ClassFileScanner {
 		
 	};
 	
-	public ClassFileScanner(File jarFile, boolean ignoreAnnotations) throws IOException{
+	public ClassFileScanner(File jarFile, boolean ignoreAnnotations, JdkProvider jdkProvider) throws IOException{
+		this.jdkProvider = jdkProvider;
         externalClasses = new TreeSet<>();
         publicApiExternalClasses = new TreeSet<>();
         jarClassNames = JarUtils.gatherClassnamesFromJar(jarFile);
@@ -440,8 +443,6 @@ public class ClassFileScanner {
 
     private void recordTypeNameUsage(String name) {
 		if(name != null && !jarClassNames.contains(name)){
-			if(name.startsWith("javax.inject"))
-				"".toString();
 			externalClasses.add(name);
 			if(isPublicApi)
 				publicApiExternalClasses.add(name);
@@ -529,6 +530,15 @@ public class ClassFileScanner {
     	if(code != null){
     		for(Instruction instr : code.getInstructions()){
     			instr.accept(codeVisitor, constant_pool);
+    		}
+    		for(Exception_data exc : code.exception_table){
+    			if(exc.catch_type != 0){
+    				try {
+						constant_pool.getClassInfo(exc.catch_type).accept(constantPoolVisitor, constant_pool);
+					} catch (ConstantPoolException e) {
+						throw new RuntimeException(e);
+					}
+    			}
     		}
     	}
 	}
@@ -656,7 +666,7 @@ public class ClassFileScanner {
         while (iterator.hasNext()) {
         	String className = iterator.next();
             String pkgName = getPackageFromClass(className);
-            if (JDKUtils.isJDKPackage(jdkModule, pkgName) || JDKUtils.isOracleJDKPackage(jdkModule, pkgName)) {
+            if (jdkProvider.isJDKPackage(jdkModule, pkgName)) {
             	iterator.remove();
             	used = true;
             	usedInPublicApi |= publicApiExternalClasses.remove(className);
@@ -708,7 +718,7 @@ public class ClassFileScanner {
         Set<String> jdkModules = new TreeSet<>();
         Set<String> newPackages = new HashSet<>();
         for (String pkg : packages) {
-            String mod = JDKUtils.getJDKModuleNameForPackage(pkg);
+            String mod = jdkProvider.getJDKModuleNameForPackage(pkg);
             if (mod != null) {
                 jdkModules.add(mod);
             } else {

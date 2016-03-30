@@ -43,7 +43,7 @@ final class bug1878A2_ {
         long $ceylontmp$element$14 = $ceylontmp$first$9;
         boolean $ceylontmp$f$13 = false;
         loop_1: do {
-            if ($ceylontmp$f$13 && $ceylontmp$step$16 == 1L) $ceylontmp$step$16 == 1 ? ($ceylontmp$element$14 += $ceylontmp$incr$12) : ($ceylontmp$element$14 = .ceylon.language.Integer.neighbour($ceylontmp$element$14, $ceylontmp$incr$12));
+            if ($ceylontmp$f$13 && $ceylontmp$step$16 == 1L) $ceylontmp$step$16 == 1 ? $ceylontmp$element$14 += $ceylontmp$incr$12 : ($ceylontmp$element$14 = .ceylon.language.Integer.neighbour($ceylontmp$element$14, $ceylontmp$incr$12));
             $ceylontmp$f$13 = true;
             _$15 = $ceylontmp$element$14;
             final long _ = _$15;

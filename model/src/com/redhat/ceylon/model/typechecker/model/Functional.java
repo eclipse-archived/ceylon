@@ -25,5 +25,11 @@ public interface Functional {
 //    public List<TypeParameter> getTypeParameters();
     
     public boolean isDeclaredVoid();
+    /**
+     * Returns {@code true} if this is a constructor that should,
+     * on the JavaScript backend,
+     * be instantiated with {@code new}.
+     */
+    public boolean isJsNew();
 
 }

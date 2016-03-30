@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,9 +25,7 @@
 
 package com.redhat.ceylon.langtools.tools.javac.nio;
 
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,23 +48,22 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
-import com.redhat.ceylon.javax.tools.JavaFileManager.Location;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
-import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
-import com.redhat.ceylon.langtools.tools.javac.file.Paths;
+import com.redhat.ceylon.javax.tools.StandardLocation;
+
+import static java.nio.file.FileVisitOption.*;
+import static com.redhat.ceylon.javax.tools.StandardLocation.*;
+
 import com.redhat.ceylon.langtools.tools.javac.util.BaseFileManager;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 
-import static com.redhat.ceylon.javax.tools.StandardLocation.*;
-import static com.redhat.ceylon.langtools.tools.javac.main.OptionName.*;
-import static java.nio.file.FileVisitOption.*;
+import static com.redhat.ceylon.langtools.tools.javac.main.Option.*;
 
 
 // NOTE the imports carefully for this compilation unit.
@@ -125,9 +122,8 @@ public class JavacPathFileManager extends BaseFileManager implements PathFileMan
      * Set the context for JavacPathFileManager.
      */
     @Override
-    protected void setContext(Context context) {
+    public void setContext(Context context) {
         super.setContext(context);
-        searchPaths = Paths.instance(context);
     }
 
     @Override
@@ -173,7 +169,7 @@ public class JavacPathFileManager extends BaseFileManager implements PathFileMan
 
     @Override
     public boolean isDefaultBootClassPath() {
-        return searchPaths.isDefaultBootClassPath();
+        return locations.isDefaultBootClassPath();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Location handling">
@@ -231,13 +227,13 @@ public class JavacPathFileManager extends BaseFileManager implements PathFileMan
         if (locn instanceof StandardLocation) {
             switch ((StandardLocation) locn) {
                 case CLASS_PATH:
-                    files = searchPaths.userClassPath();
+                    files = locations.userClassPath();
                     break;
                 case PLATFORM_CLASS_PATH:
-                    files = searchPaths.bootClassPath();
+                    files = locations.bootClassPath();
                     break;
                 case SOURCE_PATH:
-                    files = searchPaths.sourcePath();
+                    files = locations.sourcePath();
                     break;
                 case CLASS_OUTPUT: {
                     String arg = options.get(D);
@@ -257,7 +253,8 @@ public class JavacPathFileManager extends BaseFileManager implements PathFileMan
             for (File f: files)
                 pl.add(f.toPath());
         }
-        pathsForLocation.put(locn, pl);
+        if (!pl.isEmpty())
+            pathsForLocation.put(locn, pl);
     }
 
     private void lazyInitSearchPaths() {
@@ -272,7 +269,6 @@ public class JavacPathFileManager extends BaseFileManager implements PathFileMan
         private boolean inited = false;
 
     private Map<Location, PathsForLocation> pathsForLocation;
-    private Paths searchPaths;
 
     private static class PathsForLocation extends LinkedHashSet<Path> {
         private static final long serialVersionUID = 6788510222394486733L;
@@ -518,7 +514,8 @@ public class JavacPathFileManager extends BaseFileManager implements PathFileMan
     }
 
     private static String getRelativePath(String packageName, String relativeName) {
-        return packageName.replace(".", "/") + relativeName;
+        return packageName.isEmpty()
+                ? relativeName : packageName.replace(".", "/") + "/" + relativeName;
     }
 
     private static String getBaseName(String relativePath) {

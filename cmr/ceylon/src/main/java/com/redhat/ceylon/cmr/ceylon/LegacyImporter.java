@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +33,9 @@ import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.loader.JdkProvider;
 
 
 /**
@@ -48,6 +51,7 @@ public class LegacyImporter {
     private final RepositoryManager lookupRepoman;
     private final ImporterFeedback feedback;
     private final Logger log;
+    private final JdkProvider jdkProvider;
     
     private File descriptorFile;
     
@@ -66,7 +70,8 @@ public class LegacyImporter {
         DEP_MARK_UNSHARED, // The dependency was found but is not part of the code's public API and does not have to be marked shared
         DEP_NOT_FOUND, // The dependency was listed in the descriptor file but was not found in the repository
         DEP_CHECK_FAILED, // An error occurred while trying to check the dependency
-        DEP_JDK; // The dependency is a Java SDK (JigSaw) module
+        DEP_JDK, // The dependency is a Java SDK (JigSaw) module
+        DEP_TRANSITIVE_ERROR; // An error occured while resolving transitive shared dependencies
     }
     
     public enum DependencyErrors {
@@ -236,6 +241,8 @@ public class LegacyImporter {
         this.lookupRepoman = lookupRepository;
         this.log = log;
         this.feedback = feedback;
+        // FIXME: this probably needs to be an option
+        this.jdkProvider = new JdkProvider();
     }
     
     /**
@@ -335,7 +342,7 @@ public class LegacyImporter {
                 if (!jdkModules.isEmpty()) {
                     feedback.beforeJdkModules();
                     for (String mod : jdkModules) {
-                        ModuleDependencyInfo dep = new ModuleDependencyInfo(mod, JDKUtils.jdk.version, 
+                        ModuleDependencyInfo dep = new ModuleDependencyInfo(mod, jdkProvider.getJDKVersion(), 
                         		false, publicApiJdkModules.contains(mod));
                         feedback.dependency(DependencyResults.DEP_JDK, dep);
                         expectedDependencies.add(dep);
@@ -438,6 +445,8 @@ public class LegacyImporter {
             }
             descriptorContext.setForceOperation(true);
             outRepoman.putArtifact(descriptorContext, descriptorFile);
+            
+            ShaSigner.signArtifact(outRepoman, descriptorContext, descriptorFile, log);
         }
         
         return this;
@@ -448,9 +457,20 @@ public class LegacyImporter {
     // from the given set of external class names
     private void checkModuleDescriptor(ModuleInfo dependencies) throws Exception {
         feedback.beforeDependencies();
-        if (!dependencies.getDependencies().isEmpty()) {
-            TreeSet<ModuleDependencyInfo> sortedDeps = new TreeSet<>(dependencies.getDependencies());
+        Set<String> visited = new HashSet<String>();
+        checkDependencies(dependencies.getDependencies(), visited);
+        feedback.afterDependencies();
+    }
+    
+    private void checkDependencies(Set<ModuleDependencyInfo> dependencies, Set<String> visited) throws Exception {
+        if (!dependencies.isEmpty()) {
+            TreeSet<ModuleDependencyInfo> sortedDeps = new TreeSet<>(dependencies);
             for (ModuleDependencyInfo dep : sortedDeps) {
+            	
+            	// skip already-visited dependencies based on name/version key
+            	if(!visited.add(dep.getModuleName()))
+            		continue;
+            	
                 feedback.beforeDependency(dep);
                 String name = dep.getName();
                 String version = dep.getVersion();
@@ -461,15 +481,18 @@ public class LegacyImporter {
                     feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_DEFAULT, dep);
                 if(version == null || version.isEmpty())
                     feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_VERSION, dep);
+                
                 Usage usage = null;
-                if (JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)) {
+                if (jdkProvider.isJDKModule(name)) {
                 	usage = scanner.removeMatchingJdkClasses(name);
                 } else {
                     ArtifactContext context = new ArtifactContext(name, dep.getVersion(), ArtifactContext.CAR, ArtifactContext.JAR);
-                    File artifact = lookupRepoman.getArtifact(context);
+                    ArtifactResult result = lookupRepoman.getArtifactResult(context);
+                    File artifact = result != null ? result.artifact() : null;
                     if (artifact != null && artifact.exists()) {
                         try {
                             Set<String> importedClasses = JarUtils.gatherClassnamesFromJar(artifact);
+                            addTransitiveDependenciesClasses(result, importedClasses, visited, dep);
                             usage = scanner.removeMatchingClasses(importedClasses);
                         } catch (IOException e) {
                             feedback.dependency(DependencyResults.DEP_CHECK_FAILED, dep);
@@ -518,10 +541,53 @@ public class LegacyImporter {
                 expectedDependencies.add(dep);
             }
         }
-        feedback.afterDependencies();
-    }
-    
-    private static String wildcardToRegex(String wildcard){
+	}
+
+	private void addTransitiveDependenciesClasses(ArtifactResult result, Set<String> classes, Set<String> visited, ModuleDependencyInfo originalDependency) throws Exception {
+		log.info("Visiting transitive dependencies for "+result.name()+"/"+result.version());
+		try{
+		for(ArtifactResult dep : result.dependencies()){
+			// skip non-shared dependencies
+			if(dep.importType() == ImportType.EXPORT){
+				// skip already-visited dependencies
+				if(!visited.add(dep.name()+"/"+dep.version()))
+					continue;
+				/* FIXME: this is just wrong:
+				 * - We should check for JDK
+				 * - We should report errors with transitive paths
+				 * - Finding a dep transitively puts it in the visited set and prevents toplevel imports from
+				 *   being checked
+				 */
+				// skip JDK checks
+                if (jdkProvider.isJDKModule(dep.name()))
+                	continue;
+				log.info(" dep "+dep.name()+"/"+dep.version());
+				// look it up
+				ArtifactContext context = new ArtifactContext(dep.name(), dep.version(), ArtifactContext.CAR, ArtifactContext.JAR);
+				ArtifactResult depResult = lookupRepoman.getArtifactResult(context);
+                File artifact = depResult != null ? depResult.artifact() : null;
+        		log.info("Result: "+depResult);
+                if (artifact != null && artifact.exists()) {
+                    try {
+                        Set<String> importedClasses = JarUtils.gatherClassnamesFromJar(artifact);
+                        classes.addAll(importedClasses);
+                        addTransitiveDependenciesClasses(depResult, classes, visited, originalDependency);
+                    }catch(IOException x){
+                    	feedback.dependency(DependencyResults.DEP_TRANSITIVE_ERROR, originalDependency);
+                    	hasErrors = true;
+                    }
+                }else{
+                	feedback.dependency(DependencyResults.DEP_TRANSITIVE_ERROR, originalDependency);
+                	hasErrors = true;
+                }
+			}
+		}
+		}catch(Throwable t){
+			t.printStackTrace();
+		}
+	}
+
+	private static String wildcardToRegex(String wildcard){
 		// ? -> .
 		// * -> [^.]*
 		// ** -> .*
@@ -563,12 +629,11 @@ public class LegacyImporter {
             if (!jarFile.isFile()) {
                 throw new FileNotFoundException("Could not find " + jarFile);
             }
-            scanner = new ClassFileScanner(jarFile, ignoreAnnotations);
+            scanner = new ClassFileScanner(jarFile, ignoreAnnotations, jdkProvider);
             expectedDependencies = new HashSet<>();
             scanner.scan(moduleInfo);
         }
     }
-
 
     private void outputSuggestions(String pkg) throws Exception {
         ModuleDependencyInfo dep = null;

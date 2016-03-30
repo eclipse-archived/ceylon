@@ -45,6 +45,6 @@ public class CompilerBugException extends FatalToolError {
         // printed and compiler continues, so we need to refer used to 
         // stacktrace *above*
         // In other cases we want to refer to stacktrace below
-        return CeylonCompileMessages.msgBug(exitState.javacExitCode, getCause(), exitState.ceylonCodegenExceptionCount > 0);
+        return CeylonCompileMessages.msgBug(exitState.javacExitCode.exitCode, getCause(), exitState.ceylonCodegenExceptionCount > 0);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2014, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,24 +26,10 @@
 package com.redhat.ceylon.langtools.tools.javac.processing;
 
 import java.lang.annotation.Annotation;
-
 import com.redhat.ceylon.javax.annotation.processing.*;
 import com.redhat.ceylon.javax.lang.model.element.*;
-import com.redhat.ceylon.javax.lang.model.type.DeclaredType;
-import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
 import com.redhat.ceylon.javax.lang.model.util.*;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
-
 import java.util.*;
-
-import com.redhat.ceylon.javax.annotation.processing.ProcessingEnvironment;
-import com.redhat.ceylon.javax.annotation.processing.RoundEnvironment;
-import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
-import com.redhat.ceylon.javax.lang.model.util.ElementScanner7;
-import com.redhat.ceylon.javax.lang.model.util.Types;
 
 /**
  * Object providing state about a prior round of annotation processing.
@@ -116,7 +102,7 @@ public class JavacRoundEnvironment implements RoundEnvironment {
      * Only type elements <i>included</i> in this round of annotation
      * processing, or declarations of members, parameters, or type
      * parameters declared within those, are returned.  Included type
-     * elements are {@linkplain #getSpecifiedTypeElements specified
+     * elements are {@linkplain #getRootElements specified
      * types} and any types nested within them.
      *
      * @param a  annotation type being requested
@@ -125,50 +111,53 @@ public class JavacRoundEnvironment implements RoundEnvironment {
      */
     public Set<? extends Element> getElementsAnnotatedWith(TypeElement a) {
         Set<Element> result = Collections.emptySet();
-        Types typeUtil = processingEnv.getTypeUtils();
         if (a.getKind() != ElementKind.ANNOTATION_TYPE)
             throw new IllegalArgumentException(NOT_AN_ANNOTATION_TYPE + a);
 
-        DeclaredType annotationTypeElement;
-        TypeMirror tm = a.asType();
-        if ( tm instanceof DeclaredType )
-            annotationTypeElement = (DeclaredType) a.asType();
-        else
-            throw new AssertionError("Bad implementation type for " + tm);
-
-        ElementScanner7<Set<Element>, DeclaredType> scanner =
-            new AnnotationSetScanner(result, typeUtil);
+        ElementScanner8<Set<Element>, TypeElement> scanner =
+            new AnnotationSetScanner(result);
 
         for (Element element : rootElements)
-            result = scanner.scan(element, annotationTypeElement);
+            result = scanner.scan(element, a);
 
         return result;
     }
 
     // Could be written as a local class inside getElementsAnnotatedWith
     private class AnnotationSetScanner extends
-        ElementScanner7<Set<Element>, DeclaredType> {
+        ElementScanner8<Set<Element>, TypeElement> {
         // Insertion-order preserving set
         Set<Element> annotatedElements = new LinkedHashSet<Element>();
-        Types typeUtil;
 
-        AnnotationSetScanner(Set<Element> defaultSet, Types typeUtil) {
+        AnnotationSetScanner(Set<Element> defaultSet) {
             super(defaultSet);
-            this.typeUtil = typeUtil;
         }
 
         @Override
-        public Set<Element> scan(Element e, DeclaredType p) {
+        public Set<Element> visitType(TypeElement e, TypeElement p) {
+            // Type parameters are not considered to be enclosed by a type
+            scan(e.getTypeParameters(), p);
+            return super.visitType(e, p);
+        }
+
+        @Override
+        public Set<Element> visitExecutable(ExecutableElement e, TypeElement p) {
+            // Type parameters are not considered to be enclosed by an executable
+            scan(e.getTypeParameters(), p);
+            return super.visitExecutable(e, p);
+        }
+
+        @Override
+        public Set<Element> scan(Element e, TypeElement p) {
             java.util.List<? extends AnnotationMirror> annotationMirrors =
                 processingEnv.getElementUtils().getAllAnnotationMirrors(e);
             for (AnnotationMirror annotationMirror : annotationMirrors) {
-                if (typeUtil.isSameType(annotationMirror.getAnnotationType(), p))
+                if (p.equals(annotationMirror.getAnnotationType().asElement()))
                     annotatedElements.add(e);
             }
             e.accept(this, p);
             return annotatedElements;
         }
-
     }
 
     /**

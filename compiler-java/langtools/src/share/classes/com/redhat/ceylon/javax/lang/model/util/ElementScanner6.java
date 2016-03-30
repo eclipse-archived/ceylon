@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,22 +25,10 @@
 
 package com.redhat.ceylon.javax.lang.model.util;
 
-import static com.redhat.ceylon.javax.lang.model.SourceVersion.*;
-import static com.redhat.ceylon.javax.lang.model.element.ElementKind.*;
-
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
-import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
-import com.redhat.ceylon.javax.lang.model.element.PackageElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeParameterElement;
-import com.redhat.ceylon.javax.lang.model.element.VariableElement;
-import com.redhat.ceylon.javax.lang.model.util.AbstractElementVisitor6;
-import com.redhat.ceylon.javax.lang.model.util.ElementScanner7;
-
+import com.redhat.ceylon.javax.lang.model.element.*;
 import com.redhat.ceylon.javax.annotation.processing.SupportedSourceVersion;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
-import com.redhat.ceylon.javax.lang.model.element.*;
+import static com.redhat.ceylon.javax.lang.model.SourceVersion.*;
 
 
 /**
@@ -101,6 +89,7 @@ import com.redhat.ceylon.javax.lang.model.element.*;
  * @author Peter von der Ah&eacute;
  *
  * @see ElementScanner7
+ * @see ElementScanner8
  * @since 1.6
  */
 @SupportedSourceVersion(RELEASE_6)
@@ -121,6 +110,8 @@ public class ElementScanner6<R, P> extends AbstractElementVisitor6<R, P> {
     /**
      * Constructor for concrete subclasses; uses the argument for the
      * default value.
+     *
+     * @param defaultValue the default value
      */
     protected ElementScanner6(R defaultValue){
         DEFAULT_VALUE = defaultValue;
@@ -146,6 +137,9 @@ public class ElementScanner6<R, P> extends AbstractElementVisitor6<R, P> {
     /**
      * Processes an element by calling {@code e.accept(this, p)};
      * this method may be overridden by subclasses.
+     *
+     * @param e the element to scan
+     * @param p a scanner-specified parameter
      * @return the result of visiting {@code e}.
      */
     public R scan(Element e, P p) {
@@ -154,6 +148,8 @@ public class ElementScanner6<R, P> extends AbstractElementVisitor6<R, P> {
 
     /**
      * Convenience method equivalent to {@code v.scan(e, null)}.
+     *
+     * @param e the element to scan
      * @return the result of scanning {@code e}.
      */
     public final R scan(Element e) {

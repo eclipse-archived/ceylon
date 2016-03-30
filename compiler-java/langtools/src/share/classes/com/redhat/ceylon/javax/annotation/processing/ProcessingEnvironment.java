@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,18 +26,10 @@
 package com.redhat.ceylon.javax.annotation.processing;
 
 import java.util.Map;
-
-import com.redhat.ceylon.javax.annotation.processing.Filer;
-import com.redhat.ceylon.javax.annotation.processing.Messager;
-import com.redhat.ceylon.javax.annotation.processing.Processor;
-
+import java.util.Locale;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.lang.model.util.Elements;
 import com.redhat.ceylon.javax.lang.model.util.Types;
-
-import java.util.List;
-import java.util.Locale;
-import java.io.File;
 
 /**
  * An annotation processing tool framework will {@linkplain

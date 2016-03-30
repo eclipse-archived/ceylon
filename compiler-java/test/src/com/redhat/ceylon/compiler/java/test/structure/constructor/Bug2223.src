@@ -8,7 +8,7 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     static final class Foo$foo {
         
-        private Foo$foo() {
+        Foo$foo() {
         }
     }
     private transient Foo $instance$Foo$foo = null;
@@ -39,7 +39,7 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     static final class Bar$foo {
         
-        private Bar$foo() {
+        Bar$foo() {
         }
     }
     private transient Bar $instance$Bar$foo = null;
@@ -90,7 +90,7 @@ public final class bug2223_ {
             
             final class foo_ {
                 
-                private foo_() {
+                foo_() {
                 }
             }
             
@@ -108,7 +108,7 @@ public final class bug2223_ {
             
             final class foo_ {
                 
-                private foo_() {
+                foo_() {
                 }
             }
             

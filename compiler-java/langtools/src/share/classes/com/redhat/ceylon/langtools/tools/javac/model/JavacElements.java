@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,25 +25,15 @@
 
 package com.redhat.ceylon.langtools.tools.javac.model;
 
-import static com.redhat.ceylon.javax.lang.model.util.ElementFilter.methodsIn;
-
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Inherited;
 import java.util.Map;
-
-import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
-import com.redhat.ceylon.javax.lang.model.element.AnnotationValue;
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
-import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
-import com.redhat.ceylon.javax.lang.model.element.PackageElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
 
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.lang.model.element.*;
 import com.redhat.ceylon.javax.lang.model.type.DeclaredType;
 import com.redhat.ceylon.javax.lang.model.util.Elements;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import static com.redhat.ceylon.javax.lang.model.util.ElementFilter.methodsIn;
+
 import com.redhat.ceylon.langtools.tools.javac.code.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
 import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
@@ -52,11 +42,13 @@ import com.redhat.ceylon.langtools.tools.javac.comp.Env;
 import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
 import com.redhat.ceylon.langtools.tools.javac.processing.PrintingProcessor;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeScanner;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.CLASS;
+import static com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Tag.*;
 
 /**
  * Utility methods for operating on program elements.
@@ -100,43 +92,6 @@ public class JavacElements implements Elements {
         types = Types.instance(context);
         enter = Enter.instance(context);
     }
-
-
-    /**
-     * An internal-use utility that creates a reified annotation.
-     */
-    public static <A extends Annotation> A getAnnotation(Symbol annotated,
-                                                         Class<A> annoType) {
-        if (!annoType.isAnnotation())
-            throw new IllegalArgumentException("Not an annotation type: "
-                                               + annoType);
-        String name = annoType.getName();
-        for (Attribute.Compound anno : annotated.getAnnotationMirrors())
-            if (name.equals(anno.type.tsym.flatName().toString()))
-                return AnnotationProxyMaker.generateAnnotation(anno, annoType);
-        return null;
-    }
-
-    /**
-     * An internal-use utility that creates a reified annotation.
-     * This overloaded version take annotation inheritance into account.
-     */
-    public static <A extends Annotation> A getAnnotation(ClassSymbol annotated,
-                                                         Class<A> annoType) {
-        boolean inherited = annoType.isAnnotationPresent(Inherited.class);
-        A result = null;
-        while (annotated.name != annotated.name.table.names.java_lang_Object) {
-            result = getAnnotation((Symbol)annotated, annoType);
-            if (result != null || !inherited)
-                break;
-            Type sup = annotated.getSuperclass();
-            if (sup.tag != TypeTags.CLASS || sup.isErroneous())
-                break;
-            annotated = (ClassSymbol) sup.tsym;
-        }
-        return result;
-    }
-
 
     public PackageSymbol getPackageElement(CharSequence name) {
         String strName = name.toString();
@@ -243,8 +198,10 @@ public class JavacElements implements Elements {
         tree.accept(vis);
         if (vis.result == null)
             return null;
+
+        List<Attribute.Compound> annos = sym.getRawAttributes();
         return matchAnnoToTree(cast(Attribute.Compound.class, findme),
-                               sym.getAnnotationMirrors(),
+                               annos,
                                vis.result);
     }
 
@@ -296,7 +253,7 @@ public class JavacElements implements Elements {
                 }
             }
             public void visitArray(Attribute.Array array) {
-                if (tree.getTag() == JCTree.NEWARRAY &&
+                if (tree.hasTag(NEWARRAY) &&
                         types.elemtype(array.type).tsym == findme.type.tsym) {
                     List<JCExpression> elems = ((JCNewArray) tree).elems;
                     for (Attribute value : array.values) {
@@ -335,7 +292,7 @@ public class JavacElements implements Elements {
                     scan(t.args);
             }
             public void visitAssign(JCAssign t) {
-                if (t.lhs.getTag() == JCTree.IDENT) {
+                if (t.lhs.hasTag(IDENT)) {
                     JCIdent ident = (JCIdent) t.lhs;
                     if (ident.sym == sym)
                         result = t.rhs;
@@ -357,18 +314,7 @@ public class JavacElements implements Elements {
     }
 
     public String getDocComment(Element e) {
-        // Our doc comment is contained in a map in our toplevel,
-        // indexed by our tree.  Find our enter environment, which gives
-        // us our toplevel.  It also gives us a tree that contains our
-        // tree:  walk it to find our tree.  This is painful.
-        Pair<JCTree, JCCompilationUnit> treeTop = getTreeAndTopLevel(e);
-        if (treeTop == null)
-            return null;
-        JCTree tree = treeTop.fst;
-        JCCompilationUnit toplevel = treeTop.snd;
-        if (toplevel.docComments == null)
-            return null;
-        return toplevel.docComments.get(tree);
+        return null;
     }
 
     public PackageElement getPackageOf(Element e) {
@@ -445,18 +391,20 @@ public class JavacElements implements Elements {
      * @param e  the element being examined
      * @return all annotations of the element
      */
+    @Override
     public List<Attribute.Compound> getAllAnnotationMirrors(Element e) {
         Symbol sym = cast(Symbol.class, e);
         List<Attribute.Compound> annos = sym.getAnnotationMirrors();
         while (sym.getKind() == ElementKind.CLASS) {
             Type sup = ((ClassSymbol) sym).getSuperclass();
-            if (sup.tag != TypeTags.CLASS || sup.isErroneous() ||
+            if (!sup.hasTag(CLASS) || sup.isErroneous() ||
                     sup.tsym == syms.objectType.tsym) {
                 break;
             }
             sym = sup.tsym;
             List<Attribute.Compound> oldAnnos = annos;
-            for (Attribute.Compound anno : sym.getAnnotationMirrors()) {
+            List<Attribute.Compound> newAnnos = sym.getAnnotationMirrors();
+            for (Attribute.Compound anno : newAnnos) {
                 if (isInherited(anno.type) &&
                         !containsAnnoOfType(oldAnnos, anno.type)) {
                     annos = annos.prepend(anno);
@@ -470,11 +418,7 @@ public class JavacElements implements Elements {
      * Tests whether an annotation type is @Inherited.
      */
     private boolean isInherited(Type annotype) {
-        for (Attribute.Compound anno : annotype.tsym.getAnnotationMirrors()) {
-            if (anno.type.tsym == syms.inheritedType.tsym)
-                return true;
-        }
-        return false;
+        return annotype.tsym.attribute(syms.inheritedType.tsym) != null;
     }
 
     /**
@@ -568,6 +512,16 @@ public class JavacElements implements Elements {
 
     public Name getName(CharSequence cs) {
         return names.fromString(cs.toString());
+    }
+
+    @Override
+    public boolean isFunctionalInterface(TypeElement element) {
+        if (element.getKind() != ElementKind.INTERFACE)
+            return false;
+        else {
+            TypeSymbol tsym = cast(TypeSymbol.class, element);
+            return types.isFunctionalInterface(tsym);
+        }
     }
 
     /**

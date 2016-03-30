@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,6 +26,8 @@
 package com.redhat.ceylon.langtools.tools.javac.jvm;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Types;
+import com.redhat.ceylon.langtools.tools.javac.code.Types.UniqueType;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 
 
@@ -45,7 +47,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
  *     classSignature         ::= [ typeparams ] supertype { interfacetype }
  *  </pre>
  *  <p>The type syntax in signatures is extended as follows:
- *  <pre>
+ *  <pre>{@literal
  *     type       ::= ... | classtype | methodtype | typevar
  *     classtype  ::= classsig { '.' classsig }
  *     classig    ::= 'L' name [typeargs] ';'
@@ -54,7 +56,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
  *     typeargs   ::= '<' type { type } '>'
  *     typeparams ::= '<' typeparam { typeparam } '>'
  *     typeparam  ::= name ':' type
- *  </pre>
+ *  }</pre>
  *  <p>This class defines constants used in class files as well
  *  as routines to convert between internal ``.'' and external ``/''
  *  separators in class names.
@@ -84,7 +86,6 @@ public class ClassFile {
     public final static int CONSTANT_MethodType = 16;
     public final static int CONSTANT_InvokeDynamic = 18;
 
-    // Backported by Ceylon from JDK8
     public final static int REF_getField = 1;
     public final static int REF_getStatic = 2;
     public final static int REF_putField = 3;
@@ -106,9 +107,9 @@ public class ClassFile {
         V49(49, 0),   // JDK 1.5: enum, generics, annotations
         V50(50, 0),   // JDK 1.6: stackmaps
         V51(51, 0),   // JDK 1.7
-    	// Ceylon: backport:
-        V52(52, 0),   // JDK 1.8
-        V53(53, 0);   // JDK 1.9
+        V52(52, 0),   // JDK 1.8: lambda, type annos, param names
+        // Ceylon: backport:
+        V53(53, 0);   // JDK 1.9:
         Version(int major, int minor) {
             this.major = major;
             this.minor = minor;
@@ -169,22 +170,29 @@ public class ClassFile {
      */
     public static class NameAndType {
         Name name;
-        Type type;
+        UniqueType uniqueType;
+        Types types;
 
-        NameAndType(Name name, Type type) {
+        NameAndType(Name name, Type type, Types types) {
             this.name = name;
-            this.type = type;
+            this.uniqueType = new UniqueType(type, types);
+            this.types = types;
         }
 
+        void setType(Type type) {
+            this.uniqueType = new UniqueType(type, types);
+        }
+
+        @Override
         public boolean equals(Object other) {
-            return
-                other instanceof NameAndType &&
-                name == ((NameAndType) other).name &&
-                type.equals(((NameAndType) other).type);
+            return (other instanceof NameAndType &&
+                    name == ((NameAndType) other).name &&
+                        uniqueType.equals(((NameAndType) other).uniqueType));
         }
 
+        @Override
         public int hashCode() {
-            return name.hashCode() * type.hashCode();
+            return name.hashCode() * uniqueType.hashCode();
         }
     }
 }

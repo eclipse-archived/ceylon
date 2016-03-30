@@ -30,7 +30,6 @@ import java.io.Reader;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.StreamTokenizer;
-
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 
 /**

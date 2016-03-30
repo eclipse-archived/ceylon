@@ -272,10 +272,10 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                         "   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n"+
                         "   Failed to find declaration for Properties"),
                 new CompilerError(22, "package not found in imported modules: java.util (add module import to module descriptor of com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581)"),
-                new CompilerError(25, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
-                new CompilerError(27, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
-                new CompilerError(29, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
-                new CompilerError(32, "cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(25, "Ceylon backend error: cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(27, "Ceylon backend error: cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(29, "Ceylon backend error: cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
+                new CompilerError(32, "Ceylon backend error: cannot find symbol\n  symbol:   class Properties\n  location: class com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581.Bug1581Java"),
                 new CompilerError(22, "parameter type could not be determined: 'props' of 'Bug1581Java': Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n" + 
                         "   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n" + 
                         "   Failed to find declaration for Properties"),
@@ -493,9 +493,10 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         assertErrors("bug16xx/Bug1664",
                 new CompilerError(30, "refined member type parameter 'NewUnitType' of 'convertTo' in 'Bug1664UnitOfTime' has upper bound which refining member type parameter 'NewUnitType' does not satisfy: 'UnitType' ('NewUnitType' should be upper bounded by 'Bug1664Milliseconds')"),
                 new CompilerError(37, "refined member type parameter 'NewUnitType' of 'convertTo' in 'Bug1664UnitOfTime' has upper bound which refining member type parameter 'NewUnitType' does not satisfy: 'UnitType' ('NewUnitType' should be upper bounded by 'Bug1664Seconds')"),
-                new CompilerError(28, "com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Milliseconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
-                new CompilerError(35, "com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Seconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
-                new CompilerError(44, "method convertTo in class com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime<UnitType> cannot be applied to given types;\n"
+                new CompilerError(-1, "Ceylon backend error: com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Milliseconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
+                //new CompilerError(-1, "com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Seconds is not abstract and does not override abstract method <NewUnitType>convertTo(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor) in com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime"),
+                new CompilerError(44, "Ceylon backend error: method invoked with incorrect number of arguments; expected 1, found 0"),
+                new CompilerError(44, "Ceylon backend error: method convertTo in class com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664UnitOfTime<UnitType> cannot be applied to given types;\n"
                         +"  required: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n"
                         +"  found: com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor\n"
                         +"  reason: explicit type argument com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Seconds does not conform to declared bound(s) com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1664Milliseconds"));
@@ -799,7 +800,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1830.ceylon");
         ExitState call2 = task.call2();
         Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
-        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode);
+        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode.exitCode);
     }
     
     @Test
@@ -818,7 +819,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1836.ceylon");
         ExitState call2 = task.call2();
         Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
-        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode);
+        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode.exitCode);
     }
     
     @Test

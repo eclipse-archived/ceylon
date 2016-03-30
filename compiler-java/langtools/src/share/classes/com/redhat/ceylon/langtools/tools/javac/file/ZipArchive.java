@@ -42,11 +42,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager.Archive;
 import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeDirectory;
 import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeFile;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
-
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 

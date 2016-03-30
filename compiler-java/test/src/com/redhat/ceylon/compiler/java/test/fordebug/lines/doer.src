@@ -1,5 +1,5 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
- // line 1
+
 class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
      // line 1
     protected Doer() { // line 1
@@ -14,7 +14,7 @@ class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class);
-} // line 2
+}
 final class id_ {
      // line 2
     private id_() { // line 2
@@ -37,7 +37,7 @@ final class id_ {
                         }
                     };
                 }
-                returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 2
+                returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 2, 3
             );
             $initException$ = null; // line 2
             $init$value = true; // line 2

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,26 +25,14 @@
 
 package com.redhat.ceylon.javax.lang.model.util;
 
-import java.lang.Iterable;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
-import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
-import com.redhat.ceylon.javax.lang.model.element.PackageElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
-import com.redhat.ceylon.javax.lang.model.element.VariableElement;
-
-import com.redhat.ceylon.javax.lang.model.element.*;
-import com.redhat.ceylon.javax.lang.model.type.*;
-
 import java.util.EnumSet;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.NoSuchElementException;
+
+import com.redhat.ceylon.javax.lang.model.element.*;
 
 
 /**
@@ -64,7 +52,7 @@ import java.util.NoSuchElementException;
  * calls to the methods in this class more concise; for example:
  *
  * <blockquote><pre>
- *     import static javax.lang.model.util.ElementFilter.*;
+ *     import static com.redhat.ceylon.javax.lang.model.util.ElementFilter.*;
  *     ...
  *         {@code List<VariableElement>} fs = fieldsIn(someClass.getEnclosedElements());
  * </pre></blockquote>
@@ -78,19 +66,19 @@ import java.util.NoSuchElementException;
 public class ElementFilter {
     private ElementFilter() {} // Do not instantiate.
 
-    private static Set<ElementKind> CONSTRUCTOR_KIND =
+    private static final Set<ElementKind> CONSTRUCTOR_KIND =
         Collections.unmodifiableSet(EnumSet.of(ElementKind.CONSTRUCTOR));
 
-    private static Set<ElementKind> FIELD_KINDS =
+    private static final Set<ElementKind> FIELD_KINDS =
         Collections.unmodifiableSet(EnumSet.of(ElementKind.FIELD,
                                                ElementKind.ENUM_CONSTANT));
-    private static Set<ElementKind> METHOD_KIND =
+    private static final Set<ElementKind> METHOD_KIND =
         Collections.unmodifiableSet(EnumSet.of(ElementKind.METHOD));
 
-    private static Set<ElementKind> PACKAGE_KIND =
+    private static final Set<ElementKind> PACKAGE_KIND =
         Collections.unmodifiableSet(EnumSet.of(ElementKind.PACKAGE));
 
-    private static Set<ElementKind> TYPE_KINDS =
+    private static final Set<ElementKind> TYPE_KINDS =
         Collections.unmodifiableSet(EnumSet.of(ElementKind.CLASS,
                                                ElementKind.ENUM,
                                                ElementKind.INTERFACE,

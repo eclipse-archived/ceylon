@@ -27,7 +27,6 @@
 
     <properties>
         <version.ceylon.common>1.1.1</version.ceylon.common>
-        <version.jboss.jandex>2.0.0.Final</version.jboss.jandex>
         <version.jboss.modules>1.4.4.Final</version.jboss.modules>
         <version.sardine.webdav>5.1</version.sardine.webdav>
         <version.shrinkwrap.resolver>2.2.0-beta-1</version.shrinkwrap.resolver>
@@ -169,14 +168,6 @@
                 <groupId>com.redhat.ceylon</groupId>
                 <artifactId>ceylon-common</artifactId>
                 <version>${version.ceylon.common}</version>
-            </dependency>
-
-            <!-- Jandex -->
-
-            <dependency>
-                <groupId>org.jboss</groupId>
-                <artifactId>jandex</artifactId>
-                <version>${version.jboss.jandex}</version>
             </dependency>
 
             <!-- Modules -->

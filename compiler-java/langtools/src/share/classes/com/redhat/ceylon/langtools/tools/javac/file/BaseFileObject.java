@@ -34,7 +34,6 @@ import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.CharsetDecoder;
-
 import com.redhat.ceylon.javax.lang.model.element.Modifier;
 import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.FileObject;

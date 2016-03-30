@@ -33,7 +33,7 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     
     private static final class x$delegation$_ {
         
-        private x$delegation$_() {
+        x$delegation$_() {
         }
     }
     
@@ -47,7 +47,7 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     
     public static final class x_ {
         
-        private x_() {
+        x_() {
         }
     }
     
@@ -62,7 +62,7 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     
     public static final class y_ {
         
-        private y_() {
+        y_() {
         }
     }
     
@@ -80,7 +80,7 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     
     private static final class z$delegation$_ {
         
-        private z$delegation$_() {
+        z$delegation$_() {
         }
     }
     
@@ -94,7 +94,7 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     
     public static final class z_ {
         
-        private z_() {
+        z_() {
         }
     }
     
@@ -112,7 +112,7 @@ class C<T> extends .com.redhat.ceylon.compiler.java.test.structure.constructor.C
     
     public static final class alpha_ {
         
-        private alpha_() {
+        alpha_() {
         }
     }
     
@@ -141,7 +141,7 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     private static final class pour$delegation$_ {
         
-        private pour$delegation$_() {
+        pour$delegation$_() {
         }
     }
     
@@ -156,7 +156,7 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public static final class pour_ {
         
-        private pour_() {
+        pour_() {
         }
     }
     
@@ -169,7 +169,7 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public static final class monde_ {
         
-        private monde_() {
+        monde_() {
         }
     }
     
@@ -203,7 +203,7 @@ class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     private static final class pour$delegation$_ {
         
-        private pour$delegation$_() {
+        pour$delegation$_() {
         }
     }
     
@@ -214,7 +214,7 @@ class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class pour_ {
         
-        private pour_() {
+        pour_() {
         }
     }
     
@@ -226,7 +226,7 @@ class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class monde_ {
         
-        private monde_() {
+        monde_() {
         }
     }
     

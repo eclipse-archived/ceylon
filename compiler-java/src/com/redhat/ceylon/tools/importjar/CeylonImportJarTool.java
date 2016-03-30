@@ -44,7 +44,8 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 
 @Summary("Imports a jar file into a Ceylon module repository")
@@ -272,21 +273,28 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             
             @Override
             public void dependency(DependencyResults result, ModuleDependencyInfo dep) throws IOException {
+                String txt = "";
                 switch (result) {
                 case DEP_OK:
-                    msg("info.ok");
+                    txt = OSUtil.color(Messages.msg(bundle, "info.ok"), OSUtil.Color.green);
                     break;
                 case DEP_OK_UNUSED:
-                    msg("info.okButUnused");
+                    txt = OSUtil.color(Messages.msg(bundle, "info.okButUnused"), OSUtil.Color.green);
                     break;
                 case DEP_MARK_SHARED:
-                    msg("error.markShared");
+                    txt = OSUtil.color(Messages.msg(bundle, "error.markShared"), OSUtil.Color.yellow);
+                    break;
+                case DEP_MARK_UNSHARED:
+                    txt = OSUtil.color(Messages.msg(bundle, "info.markUnshared"), OSUtil.Color.yellow);
                     break;
                 case DEP_NOT_FOUND:
-                    msg("info.notFound");
+                    txt = OSUtil.color(Messages.msg(bundle, "info.notFound"), OSUtil.Color.red);
                     break;
                 case DEP_CHECK_FAILED:
-                    msg("error.checkFailed");
+                    txt = OSUtil.color(Messages.msg(bundle, "error.checkFailed"), OSUtil.Color.red);
+                    break;
+                case DEP_TRANSITIVE_ERROR:
+                    txt = OSUtil.color(Messages.msg(bundle, "error.transitiveError"), OSUtil.Color.red);
                     break;
                 case DEP_JDK:
                     append("    ").append(dep.getName());
@@ -294,7 +302,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     	append(" ... [shared]");
                     newline();
                     break;
+                default:
+                    break;
                 }
+                append(txt);
             }
             
             @Override

@@ -30,7 +30,7 @@ final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
     
     public static final class Member$other {
         
-        private Member$other() {
+        Member$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other Member$other = null;
@@ -99,7 +99,7 @@ final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
     
     public static final class SharedMember$other {
         
-        private SharedMember$other() {
+        SharedMember$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other SharedMember$other = null;

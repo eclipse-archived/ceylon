@@ -5,7 +5,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberFo
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,8 +15,8 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
-import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;

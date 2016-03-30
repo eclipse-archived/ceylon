@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2008, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,7 +26,6 @@ package com.redhat.ceylon.langtools.tools.javac.api;
 
 import java.util.Locale;
 import java.util.Set;
-
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.langtools.tools.javac.api.DiagnosticFormatter.*;
 
@@ -139,7 +138,7 @@ public interface DiagnosticFormatter<D extends Diagnostic<?>> {
         /**
          * Configure the set of diagnostic parts that should be displayed
          * by the formatter.
-         * @param options options to set
+         * @param visibleParts the parts to be set
          */
         public void setVisible(Set<DiagnosticPart> visibleParts);
 

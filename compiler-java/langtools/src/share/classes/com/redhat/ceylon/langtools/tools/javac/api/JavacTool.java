@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,40 +25,31 @@
 
 package com.redhat.ceylon.langtools.tools.javac.api;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import com.redhat.ceylon.javax.tools.DiagnosticListener;
-import com.redhat.ceylon.javax.tools.JavaCompiler;
-import com.redhat.ceylon.javax.tools.JavaFileManager;
-import com.redhat.ceylon.javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.tools.*;
+
 import com.redhat.ceylon.langtools.source.util.JavacTask;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
-import com.redhat.ceylon.langtools.tools.javac.main.JavacOption;
 import com.redhat.ceylon.langtools.tools.javac.main.Main;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions;
-import com.redhat.ceylon.langtools.tools.javac.main.JavacOption.OptionKind;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions.GrumpyHelper;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionHelper;
+import com.redhat.ceylon.langtools.tools.javac.main.OptionHelper.GrumpyHelper;
 import com.redhat.ceylon.langtools.tools.javac.util.ClientCodeException;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.PrefixKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
-import com.redhat.ceylon.langtools.tools.javac.util.Pair;
 
 /**
  * TODO: describe com.redhat.ceylon.langtools.tools.javac.api.Tool
@@ -71,24 +62,11 @@ import com.redhat.ceylon.langtools.tools.javac.util.Pair;
  * @author Peter von der Ah\u00e9
  */
 public class JavacTool implements JavaCompiler {
-    private final List<Pair<String,String>> options
-        = new ArrayList<Pair<String,String>>();
-    private final Context dummyContext = new Context();
-
-    private final PrintWriter silent = new PrintWriter(new OutputStream(){
-        public void write(int b) {}
-    });
-
-    private final Main sharedCompiler = new Main("javac", silent);
-    {
-        sharedCompiler.setOptions(Options.instance(dummyContext));
-    }
-
     /**
-     * Constructor used by service provider mechanism.  The correct way to
-     * obtain an instance of this class is using create or the service provider
-     * mechanism.
-     * @see javax.tools.JavaCompilerTool
+     * Constructor used by service provider mechanism.  The recommended way to
+     * obtain an instance of this class is by using {@link #create} or the
+     * service provider mechanism.
+     * @see com.redhat.ceylon.javax.tools.JavaCompiler
      * @see com.redhat.ceylon.javax.tools.ToolProvider
      * @see #create
      */
@@ -101,49 +79,6 @@ public class JavacTool implements JavaCompiler {
      */
     public static JavacTool create() {
         return new JavacTool();
-    }
-
-    private String argsToString(Object... args) {
-        String newArgs = null;
-        if (args.length > 0) {
-            StringBuilder sb = new StringBuilder();
-            String separator = "";
-            for (Object arg : args) {
-                sb.append(separator).append(arg.toString());
-                separator = File.pathSeparator;
-            }
-            newArgs = sb.toString();
-        }
-        return newArgs;
-    }
-
-    private void setOption1(String name, OptionKind kind, Object... args) {
-        String arg = argsToString(args);
-        JavacOption option = sharedCompiler.getOption(name);
-        if (option == null || !match(kind, option.getKind()))
-            throw new IllegalArgumentException(name);
-        if ((args.length != 0) != option.hasArg())
-            throw new IllegalArgumentException(name);
-        if (option.hasArg()) {
-            if (option.process(null, name, arg)) // FIXME
-                throw new IllegalArgumentException(name);
-        } else {
-            if (option.process(null, name)) // FIXME
-                throw new IllegalArgumentException(name);
-        }
-        options.add(new Pair<String,String>(name,arg));
-    }
-
-    public void setOption(String name, Object... args) {
-        setOption1(name, OptionKind.NORMAL, args);
-    }
-
-    public void setExtendedOption(String name, Object... args)  {
-        setOption1(name, OptionKind.EXTENDED, args);
-    }
-
-    private static boolean match(OptionKind clientKind, OptionKind optionKind) {
-        return (clientKind == (optionKind == OptionKind.HIDDEN ? OptionKind.EXTENDED : optionKind));
     }
 
     public JavacFileManager getStandardFileManager(
@@ -161,18 +96,30 @@ public class JavacTool implements JavaCompiler {
         return new JavacFileManager(context, true, charset);
     }
 
+    @Override
     public JavacTask getTask(Writer out,
                              JavaFileManager fileManager,
                              DiagnosticListener<? super JavaFileObject> diagnosticListener,
                              Iterable<String> options,
                              Iterable<String> classes,
-                             Iterable<? extends JavaFileObject> compilationUnits)
+                             Iterable<? extends JavaFileObject> compilationUnits) {
+        Context context = new Context();
+        return getTask(out, fileManager, diagnosticListener,
+                options, classes, compilationUnits,
+                context);
+    }
+
+    public JavacTask getTask(Writer out,
+                             JavaFileManager fileManager,
+                             DiagnosticListener<? super JavaFileObject> diagnosticListener,
+                             Iterable<String> options,
+                             Iterable<String> classes,
+                             Iterable<? extends JavaFileObject> compilationUnits,
+                             Context context)
     {
         try {
-            Context context = new Context();
             ClientCodeWrapper ccw = ClientCodeWrapper.instance(context);
 
-            final String kindMsg = "All compilation units must be of SOURCE kind";
             if (options != null)
                 for (String option : options)
                     option.getClass(); // null check
@@ -184,8 +131,11 @@ public class JavacTool implements JavaCompiler {
             if (compilationUnits != null) {
                 compilationUnits = ccw.wrapJavaFileObjects(compilationUnits); // implicit null check
                 for (JavaFileObject cu : compilationUnits) {
-                    if (cu.getKind() != JavaFileObject.Kind.SOURCE)
+                    if (cu.getKind() != JavaFileObject.Kind.SOURCE) {
+                        String kindMsg = "Compilation unit is not of SOURCE kind: "
+                                + "\"" + cu.getName() + "\"";
                         throw new IllegalArgumentException(kindMsg);
+                    }
                 }
             }
 
@@ -200,7 +150,9 @@ public class JavacTool implements JavaCompiler {
             if (fileManager == null)
                 fileManager = getStandardFileManager(diagnosticListener, null, null);
             fileManager = ccw.wrap(fileManager);
+
             context.put(JavaFileManager.class, fileManager);
+
             processOptions(context, fileManager, options);
             Main compiler = new Main("javacTask", context.get(Log.outKey));
             return new JavacTaskImpl(compiler, options, context, classes, compilationUnits);
@@ -216,45 +168,78 @@ public class JavacTool implements JavaCompiler {
         if (options == null)
             return;
 
-        Options optionTable = Options.instance(context);
+        final Options optionTable = Options.instance(context);
+        Log log = Log.instance(context);
 
-        JavacOption[] recognizedOptions =
-            RecognizedOptions.getJavacToolOptions(new GrumpyHelper());
+        Option[] recognizedOptions =
+                Option.getJavacToolOptions().toArray(new Option[0]);
+        OptionHelper optionHelper = new GrumpyHelper(log) {
+            @Override
+            public String get(Option option) {
+                return optionTable.get(option.getText());
+            }
+            
+            @Override
+            public java.util.List<String> getMulti(Option option) {
+                return optionTable.getMulti(option);
+            }
+
+            @Override
+            public void put(String name, String value) {
+                optionTable.put(name, value);
+            }
+            
+            @Override
+            public void addMulti(String name, String value) {
+                optionTable.addMulti(name, value);
+            }
+
+            @Override
+            public void remove(String name) {
+                optionTable.remove(name);
+            }
+        };
+
         Iterator<String> flags = options.iterator();
         while (flags.hasNext()) {
             String flag = flags.next();
             int j;
-            for (j=0; j<recognizedOptions.length; j++)
-                if (recognizedOptions[j].matches(flag))
+            
+            for (j=0; j<recognizedOptions.length; j++) {
+                Option ro = recognizedOptions[j];
+                if (ro.matches(flag))
                     break;
+            }
 
             if (j == recognizedOptions.length) {
                 if (fileManager.handleOption(flag, flags)) {
                     continue;
                 } else {
-                    String msg = Main.getLocalizedString("err.invalid.flag", flag);
+                    String msg = log.localize(PrefixKind.JAVAC, "err.invalid.flag", flag);
                     throw new IllegalArgumentException(msg);
                 }
             }
 
-            JavacOption option = recognizedOptions[j];
+            Option option = recognizedOptions[j];
             if (option.hasArg()) {
                 if (!flags.hasNext()) {
-                    String msg = Main.getLocalizedString("err.req.arg", flag);
+                    String msg = log.localize(PrefixKind.JAVAC, "err.req.arg", flag);
                     throw new IllegalArgumentException(msg);
                 }
                 String operand = flags.next();
-                if (option.process(optionTable, flag, operand))
+                if (option.process(optionHelper, flag, operand))
                     // should not happen as the GrumpyHelper will throw exceptions
                     // in case of errors
                     throw new IllegalArgumentException(flag + " " + operand);
             } else {
-                if (option.process(optionTable, flag))
+                if (option.process(optionHelper, flag))
                     // should not happen as the GrumpyHelper will throw exceptions
                     // in case of errors
                     throw new IllegalArgumentException(flag);
             }
         }
+
+        optionTable.notifyListeners();
     }
 
     public int run(InputStream in, OutputStream out, OutputStream err, String... arguments) {
@@ -271,9 +256,8 @@ public class JavacTool implements JavaCompiler {
     }
 
     public int isSupportedOption(String option) {
-        JavacOption[] recognizedOptions =
-            RecognizedOptions.getJavacToolOptions(new GrumpyHelper());
-        for (JavacOption o : recognizedOptions) {
+        Set<Option> recognizedOptions = Option.getJavacToolOptions();
+        for (Option o : recognizedOptions) {
             if (o.matches(option))
                 return o.hasArg() ? 1 : 0;
         }

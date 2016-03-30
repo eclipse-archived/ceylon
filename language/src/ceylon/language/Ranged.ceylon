@@ -82,7 +82,12 @@ shared interface Ranged<in Index, out Element, out Subrange>
         given Subrange satisfies Ranged<Index,Element,Subrange> {
     
     "Obtain a span containing the elements between the two 
-     given indices. 
+     given indices.
+     
+     For any ranged stream `r`, `r.span(from, to)` may be
+     written using the span operator:
+     
+         r[from..to]
      
      The span should contain elements of this stream, 
      starting from the element at the given [[starting 
@@ -101,6 +106,11 @@ shared interface Ranged<in Index, out Element, out Subrange>
      [[starting index|from]] and the last index of this 
      ranged object.
      
+     For any ranged stream `r`, `r.spanFrom(from)` may be
+     written using the span operator:
+     
+         r[from...]
+     
      The span should contain elements of this stream, 
      starting from the element at the given [[starting 
      index|from]], in the same order as they are produced by 
@@ -112,6 +122,11 @@ shared interface Ranged<in Index, out Element, out Subrange>
     
     "Obtain a span containing the elements between the first 
      index of this ranged stream and given [[end index|to]].
+     
+     For any ranged stream `r`, `r.spanTo(to)` may be
+     written using the span operator:
+     
+         r[...to]
      
      The span should contain elements of this stream, up to 
      the element at the given [[ending index|to]], in the 
@@ -126,6 +141,11 @@ shared interface Ranged<in Index, out Element, out Subrange>
      from the given [[starting index|from]], with the given 
      [[length]]. If `length<=0`, the resulting measure is 
      empty.
+     
+     For any ranged stream `r`, `r.measure(from, length)` 
+     may be written using the measure operator:
+     
+         r[from:length]
      
      The measure should contain the given [[number|length]] 
      of elements of this stream, starting from the element 

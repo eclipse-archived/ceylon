@@ -198,7 +198,7 @@ public class HerdTestCase extends AbstractTest {
             		true, 
             		"The Herd");
 
-    static final ModuleDependencyInfo langmod = new ModuleDependencyInfo("ceylon.language", "1.2.2", false, false);
+    static final ModuleDependencyInfo langmod = new ModuleDependencyInfo("ceylon.language", "1.2.3", false, false);
     static final ModuleDependencyInfo hello = new ModuleDependencyInfo("hello", "1.0.0", false, false);
     static final ModuleDependencyInfo moduletest_shopt = new ModuleDependencyInfo("moduletest", "0.1", true, true);
     

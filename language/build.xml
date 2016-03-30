@@ -61,7 +61,6 @@
         <pathelement path="${build.test}"/>
         <pathelement path="${ceylon.typechecker.lib}"/>
         <pathelement path="${ceylon.compiler.lib}"/>
-        <pathelement path="${jandex.lib}"/>
         <pathelement path="${hamcrest.lib}"/>
     </path>
     
@@ -73,6 +72,7 @@
         <pathelement path="${antlr.runtime.lib}"/>
         <pathelement path="${json.lib}" />
         <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.cli.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
         <pathelement path="${ceylon.typechecker.lib}"/>

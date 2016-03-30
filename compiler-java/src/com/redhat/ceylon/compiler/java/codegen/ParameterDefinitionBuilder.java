@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Iterator;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
@@ -63,6 +64,8 @@ public class ParameterDefinitionBuilder {
 
     private FunctionOrValue boxedVariable;
 
+    private Node at;
+
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
         this.name = name;
@@ -98,7 +101,6 @@ public class ParameterDefinitionBuilder {
         if (parameter.getModel() instanceof Function) {
             pdb.functionalParameterName = functionalName((Function)parameter.getModel());
         }
-        
         return pdb;
     }
 
@@ -156,7 +158,7 @@ public class ParameterDefinitionBuilder {
     public ParameterDefinitionBuilder userAnnotations(List<JCAnnotation> annos) {
         if (annos != null) {
             if (this.userAnnotations == null) {
-                this.userAnnotations = ListBuffer.lb();
+                this.userAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.userAnnotations.appendList(annos);
         }
@@ -166,7 +168,7 @@ public class ParameterDefinitionBuilder {
     public ParameterDefinitionBuilder modelAnnotations(java.util.List<Annotation> annos) {
         if (annos != null) {
             if (this.modelAnnotations == null) {
-                this.modelAnnotations = ListBuffer.lb();
+                this.modelAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.modelAnnotations.appendList(gen.makeAtAnnotations(annos));
         }
@@ -222,7 +224,7 @@ public class ParameterDefinitionBuilder {
             throw new BugException("already built");
         }
         built = true;
-        ListBuffer<JCAnnotation> annots = ListBuffer.lb();
+        ListBuffer<JCAnnotation> annots = new ListBuffer<JCAnnotation>();
         if (Annotations.includeModel(annotationFlags)) {
             annots.appendList(gen.makeAtName(name));
             if (functionalParameterName != null) {
@@ -276,6 +278,10 @@ public class ParameterDefinitionBuilder {
         sb.append(type).append(' ');
         sb.append(aliasedName != null ? aliasedName : name);
         return sb.toString();
+    }
+
+    public void at(Node node) {
+        this.at = node;
     }
     
 }

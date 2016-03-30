@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,6 +24,8 @@
  */
 
 package com.redhat.ceylon.langtools.tools.javac.parser;
+
+import java.util.Locale;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
@@ -55,11 +57,12 @@ public class ParserFactory {
 
     final TreeMaker F;
     final Log log;
-    final Keywords keywords;
+    final Tokens tokens;
     final Source source;
     final Names names;
     final Options options;
     final ScannerFactory scannerFactory;
+    final Locale locale;
 
     protected ParserFactory(Context context) {
         super();
@@ -67,18 +70,15 @@ public class ParserFactory {
         this.F = TreeMaker.instance(context);
         this.log = Log.instance(context);
         this.names = Names.instance(context);
-        this.keywords = Keywords.instance(context);
+        this.tokens = Tokens.instance(context);
         this.source = Source.instance(context);
         this.options = Options.instance(context);
         this.scannerFactory = ScannerFactory.instance(context);
+        this.locale = context.get(Locale.class);
     }
 
-    public Parser newParser(CharSequence input, boolean keepDocComments, boolean keepEndPos, boolean keepLineMap) {
+    public JavacParser newParser(CharSequence input, boolean keepDocComments, boolean keepEndPos, boolean keepLineMap) {
         Lexer lexer = scannerFactory.newScanner(input, keepDocComments);
-        if (keepEndPos) {
-            return new EndPosParser(this, lexer, keepDocComments, keepLineMap);
-        } else {
-            return new JavacParser(this, lexer, keepDocComments, keepLineMap);
-        }
+        return new JavacParser(this, lexer, keepDocComments, keepLineMap, keepEndPos);
     }
 }

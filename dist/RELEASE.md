@@ -1,12 +1,8 @@
 How to do a release of Ceylon.
 
-# Before (the code)
+# Very first step
 
-1. Find every occurence of the previous version `1.2.0` and turn it into `1.2.1`, take special care with `Versions.java`
-2. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
-3. If required, bump all the `@Ceylon(major = X)` annotations in `ceylon.language` and the compiler tests' `.src` files
-  - Note that most likely you'll need a new Herd as well (good luck)
-4. Check that external sample code (in particular https://github.com/ceylon/ceylon-examples) complies and runs OK.
+1. **Create an issue using the contents of the [Release-Progress-Template](https://github.com/ceylon/ceylon/wiki/Release-Progress-Template) so you can publicly share the progress while going through the rest of this document**
 
 # Before (requirements & testing)
 
@@ -22,6 +18,7 @@ How to do a release of Ceylon.
 5. Run the language tests
   -  $ cd ceylon.language
   -  ceylon.language$ ant test-quick
+6. Check that external sample code (in particular https://github.com/ceylon/ceylon-examples) compiles and runs OK.
 
 # Before (packaging)
 
@@ -35,36 +32,51 @@ How to do a release of Ceylon.
   -  $ git push --tags
 2. Do the release zip
   -  $ mkdir /tmp/ceylon
+  -  $ docker pull ceylon/ceylon-build
   -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
 3. Copy the zip to downloads.ceylon-lang.org:
-  -  $ scp /tmp/ceylon/ceylon-1.2.1.zip ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the Debian file
 
-1. Add a new changelog entry:
-    ceylon-dist $ dch -i
-2. Update the versions and rename some files in `debian/` to match the new version
-3. Package it
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb **1.2.1**
-4. Copy the zip to downloads.ceylon-lang.org:
-  -  $ scp /tmp/ceylon/ceylon-1.2.1_1.2.1_all.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
-5. Build the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
+1. Check out the [`ceylon-debian-repo`](https://github.com/ceylon/ceylon-debian-repo) repository
+2. Make sure you're on `master` and run
+  - $ ./new-version.sh **1.2.1**
+3. Edit the `dist-pkg/debian/changelog` file by hand or use:
+  - $ dch -i
+4. Commit and push the new branch
+5. Package it
+  - $ docker pull ceylon/ceylon-package-deb
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb **1.2.1**
+6. Copy the zip to downloads.ceylon-lang.org:
+  - $ scp /tmp/ceylon/ceylon-**1.2.1_1.2.1**_all.deb **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+7. Build the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-debian-repo/blob/master/repo/build.sh) is up to date
-  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb **1.2.1**
-  -  $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
+  - $ docker pull ceylon/ceylon-repo-deb
+  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb **1.2.1**
+8. Copy the packages to downloads.ceylon-lang.org:
+  - $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon Debian Archive Signing Key" (59935387) imported into their local key ring.
 
 # Build the RedHat file
 
-1. Build it
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm **1.2.1**
-2. Copy the rpm to downloads.ceylon-lang.org:
-  -  $ scp /tmp/ceylon/ceylon-1.2.1-1.2.1-0.noarch.rpm ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
-3. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
+1. Check out the [`ceylon-rpm-repo`](https://github.com/ceylon/ceylon-rpm-repo) repository
+2. Create a new branch:
+  - $ git checkout -b **1.2.1**
+3. Edit the `dist-pkg/ceylon.spec` file
+4. Commit and push the new branch
+5. Build it
+  - $ docker pull ceylon/ceylon-package-rpm
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm **1.2.1**
+6. Copy the rpm to downloads.ceylon-lang.org:
+  - $ scp /tmp/ceylon/ceylon-**1.2.1-1.2.1-0**.noarch.rpm **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+7. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
   - Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
-  -  $ docker run -t --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
-  -  $ rsync -rv --dry-run /tmp/ceylon/{*.noarch.rpm,repodata} ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
+  - $ docker pull ceylon/ceylon-repo-rpm
+  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
+8. Copy the packages to downloads.ceylon-lang.org:
+  - $ rsync -rv --dry-run /tmp/ceylon/{\*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon RPM Archive Signing Key" (E024C8B2) imported into their local key ring.
 
@@ -72,6 +84,7 @@ NB: To be able to sign packages the user running the docker command for generati
 
 1. First create an Upload on the server
 2. Publish the official distribution to it
+  - $ docker pull ceylon/ceylon-publish
   - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-publish **1.2.1** https://modules.ceylon-lang.org/uploads/**XXX**/repo/ **user** **password**
 3. Publish the SDK modules by running the following in the `ceylon-sdk` project:
   - $ ant copy-herd -Dherd.repo=https://modules.ceylon-lang.org/uploads/**XXX**/repo/ -Dherd.user=**user** -Dherd.pass=**password**
@@ -79,15 +92,6 @@ NB: To be able to sign packages the user running the docker command for generati
 # Update the web site
 
  - See [this README](https://github.com/ceylon/ceylon-lang.org/blob/master/RELEASE.md)
-
-# Update OpenShift
-
- - [openshift-cartridge](https://github.com/ceylon/openshift-cartridge)
- - [ceylon.openshift](https://github.com/ceylon/ceylon.openshift)
-
-# Update the Web IDE
-
- - [ceylon-web-ide-backend](https://github.com/ceylon/ceylon-web-ide-backend)
 
 # Update the brew formula for ceylon
 
@@ -101,3 +105,60 @@ This is done via simple `curl` commands, but requires a key and token that will 
 
 1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://sdkman-vendor.herokuapp.com/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
 2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://sdkman-vendor.herokuapp.com/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
+3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://sdkman-vendor.herokuapp.com/announce/struct`
+
+# Update Docker
+
+## ceylon-docker/ceylon
+
+ - Check out [ceylon-docker/ceylon](https://github.com/ceylon-docker/ceylon)
+ - Make sure you're in the `master` branch
+ - Make sure we have all the latest tags: `git fetch --tags`
+ - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
+ - Commit the change
+ - Create a new branch for the new version using the latest version available as a template, for example: `git checkout -b 1.2.2-jre7 1.2.1-jre7`
+ - Edit the `Dockerfile` and update the `CEYLON_VERSION`
+ - Commit the change
+ - Tag the branch with the version name only: `git tag 1.2.2`
+ - Push to remote: `git push --tags --set-upstream origin 1.2.2-jre7`
+ - Force tag the branch with "latest": `git tag -f latest`
+ - Push to remote: `git push -f --tags`
+ - Switch back to `master`
+ - Push to remote: `git push`
+ - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/ceylon/builds/)
+ - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/ceylon/) to be the same as the `README.md` listed above
+
+## ceylon-docker/source-runner
+
+ - Check out [ceylon-docker/source-runner](https://github.com/ceylon-docker/source-runner)
+ - Make sure you're in the `master` branch
+ - Make sure we have all the latest tags: `git fetch --tags`
+ - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
+ - Commit the change
+ - Create a new branch for the new version using the latest version available as a template, for example: `git checkout -b 1.2.2 1.2.1`
+ - Edit the `Dockerfile` and update the `CEYLON_VERSION`
+ - Commit the change
+ - Push to remote: `git push --set-upstream origin 1.2.2`
+ - Force tag the branch with "latest": `git tag -f latest`
+ - Push to remote: `git push -f --tags`
+ - Switch back to `master`
+ - Push to remote: `git push`
+ - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/source-runner/builds/)
+ - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/source-runner/) to be the same as the `README.md` listed above
+
+# Update OpenShift
+
+ - [openshift-cartridge](https://github.com/ceylon/openshift-cartridge)
+ - [ceylon.openshift](https://github.com/ceylon/ceylon.openshift)
+
+# Update the Web IDE
+
+ - [ceylon-web-ide-backend](https://github.com/ceylon/ceylon-web-ide-backend)
+
+# After
+
+1. Find every occurence of the previous version `1.2.0` and turn it into `1.2.1`, take special care with `Versions.java`
+2. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
+3. If required, bump all the `@Ceylon(major = X)` annotations in `ceylon.language` and the compiler tests' `.src` files
+  - Note that most likely you'll need a new Herd as well (good luck)
+

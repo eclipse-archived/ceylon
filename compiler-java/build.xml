@@ -34,6 +34,7 @@
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.classfile.lib}" />
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
@@ -57,10 +58,9 @@
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${ceylon-tests.car}" />
-        <pathelement path="${ceylon.maven-support.lib}" />
+        <pathelement path="${maven-support.lib}" />
         <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
         <pathelement path="${jboss-logmanager.lib}" />
-        <pathelement path="${jandex.lib}" />
         <pathelement path="${slf4j-simple.lib}" />
         <pathelement path="${slf4j-api.lib}" />
         <pathelement path="${sardine.lib}" />
@@ -258,7 +258,7 @@
         <mkdir dir="${build.lib}" />
         <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
             <fileset dir="${build.classes}">
-                <include name="com/redhat/ceylon/launcher/Bootstrap.class" />
+                <include name="com/redhat/ceylon/launcher/Bootstrap*.class" />
                 <include name="com/redhat/ceylon/launcher/CeylonClassLoader.class" />
                 <include name="com/redhat/ceylon/launcher/LauncherUtil.class" />
                 <include name="META-INF/MANIFEST.MF" />
@@ -294,7 +294,7 @@
             <fileset dir="${basedir}/bin">
             </fileset>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
         </copy>
         <chmod perm="0755">

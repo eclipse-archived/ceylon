@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class CompatTests extends CompilerTests {

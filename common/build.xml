@@ -18,7 +18,6 @@
     
     <!-- Classpath for the build tools. -->
     <path id="classpath">
-        <pathelement path="${markdownpapers.lib}" />
     </path>
 
     <path id="test.run.classpath">
@@ -97,7 +96,6 @@
 
     <target name="ceylon-common.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.common.dir}"/>
-        <mkdir dir="${build.bin}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>    	
@@ -115,14 +113,6 @@
     </target>
 
     <target name="build" depends="ceylon-common.jar">
-        <mkdir dir="${build.bin}" />
-        <copy todir="${build.bin}">
-            <fileset dir="${basedir}/bin">
-            </fileset>
-            <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
-            </filterset>
-        </copy>
     </target>
 
     <!-- constant to declare a file binary for checksumsum -->
@@ -236,9 +226,6 @@
     <target name="publish-internal" depends="init.repo">
         <copy todir="${ceylon.repo.dir}" overwrite="true">
             <fileset dir="${build.dist.repo}" />
-        </copy>
-        <copy todir="${ceylon.bin.dir}" overwrite="true">
-            <fileset dir="${build.bin}" />
         </copy>
     </target>
 

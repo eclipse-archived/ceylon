@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -37,7 +37,7 @@ import com.redhat.ceylon.langtools.tools.javac.code.Scope.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.*;
 import com.redhat.ceylon.langtools.tools.javac.jvm.*;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions.PkgInfo;
+import com.redhat.ceylon.langtools.tools.javac.main.Option.PkgInfo;
 import com.redhat.ceylon.langtools.tools.javac.tree.*;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
@@ -48,7 +48,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosit
  *  the symbol table. The pass consists of two phases, organized as
  *  follows:
  *
- *  <p>In the first phase, all class symbols are intered into their
+ *  <p>In the first phase, all class symbols are entered into their
  *  enclosing scope, descending recursively down the tree for classes
  *  which are members of other classes. The class symbols are given a
  *  MemberEnter object as completer.
@@ -76,12 +76,12 @@ import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosit
  *
  *  <p>Classes migrate from one phase to the next via queues:
  *
- *  <pre>
+ *  <pre>{@literal
  *  class enter -> (Enter.uncompleted)         --> member enter (1)
  *              -> (MemberEnter.halfcompleted) --> member enter (2)
  *              -> (Todo)                      --> attribute
  *                                              (only for toplevel classes)
- *  </pre>
+ *  }</pre>
  *
  *  <p><b>This is NOT part of any supported API.
  *  If you write code that depends on this, you do so at your own risk.
@@ -105,6 +105,7 @@ public class Enter extends JCTree.Visitor {
     Names names;
     JavaFileManager fileManager;
     PkgInfo pkginfoOpt;
+    TypeEnvs typeEnvs;
 
     private Todo todo;
 
@@ -136,20 +137,19 @@ public class Enter extends JCTree.Visitor {
 
         predefClassDef = make.ClassDef(
             make.Modifiers(PUBLIC),
-            syms.predefClass.name, null, null, null, null);
+            syms.predefClass.name,
+            List.<JCTypeParameter>nil(),
+            null,
+            List.<JCExpression>nil(),
+            List.<JCTree>nil());
         predefClassDef.sym = syms.predefClass;
         todo = Todo.instance(context);
         fileManager = context.get(JavaFileManager.class);
 
         Options options = Options.instance(context);
         pkginfoOpt = PkgInfo.get(options);
+        typeEnvs = TypeEnvs.instance(context);
     }
-
-    /** A hashtable mapping classes and packages to the environments current
-     *  at the points of their definitions.
-     */
-    Map<TypeSymbol,Env<AttrContext>> typeEnvs =
-            new HashMap<TypeSymbol,Env<AttrContext>>();
 
     /** Accessor for typeEnvs
      */
@@ -162,7 +162,7 @@ public class Enter extends JCTree.Visitor {
         Env<AttrContext> lintEnv = localEnv;
         while (lintEnv.info.lint == null)
             lintEnv = lintEnv.next;
-        localEnv.info.lint = lintEnv.info.lint.augment(sym.attributes_field, sym.flags());
+        localEnv.info.lint = lintEnv.info.lint.augment(sym);
         return localEnv;
     }
 
@@ -233,7 +233,7 @@ public class Enter extends JCTree.Visitor {
      *  only, and members go into the class member scope.
      */
     Scope enterScope(Env<AttrContext> env) {
-        return (env.tree.getTag() == JCTree.CLASSDEF)
+        return (env.tree.hasTag(JCTree.Tag.CLASSDEF))
             ? ((JCClassDecl) env.tree).sym.members_field
             : env.info.scope;
     }
@@ -289,10 +289,11 @@ public class Enter extends JCTree.Visitor {
                                                              JavaFileObject.Kind.SOURCE);
         if (tree.pid != null) {
             tree.packge = reader.enterPackage(TreeInfo.fullName(tree.pid));
-            if (tree.packageAnnotations.nonEmpty() || pkginfoOpt == PkgInfo.ALWAYS) {
+            if (tree.packageAnnotations.nonEmpty()
+                    || pkginfoOpt == PkgInfo.ALWAYS) {
                 if (isPkgInfo) {
                     addEnv = true;
-                } else {
+                } else if (tree.packageAnnotations.nonEmpty()){
                     log.error(tree.packageAnnotations.head.pos(),
                               "pkg.annotations.sb.in.package-info.java");
                 }
@@ -315,9 +316,7 @@ public class Enter extends JCTree.Visitor {
                                                  : null,
                                 "pkg-info.already.seen",
                                 tree.packge);
-                    if (addEnv || (tree0.packageAnnotations.isEmpty() &&
-                                   tree.docComments != null &&
-                                   tree.docComments.get(tree) != null)) {
+                    if (addEnv || (tree0.packageAnnotations.isEmpty())) {
                         typeEnvs.put(tree.packge, topEnv);
                     }
                 }
@@ -391,7 +390,7 @@ public class Enter extends JCTree.Visitor {
         chk.compiled.put(c.flatname, c);
         // CEYLON(stef): don't add anonymous classes to the environment 
         if(tree.name.length() != 0)
-            enclScope.enter(c);
+        enclScope.enter(c);
 
         // Set up an environment for class block and store in `typeEnvs'
         // table, to be retrieved later in memberEnter and attribution.
@@ -466,7 +465,7 @@ public class Enter extends JCTree.Visitor {
      * Ceylon: return true if env.tree is a new unqualified anonymous class
      */
     private boolean isNewAnonymousClass(JCTree tree) {
-        return tree.getTag() == JCTree.NEWCLASS &&
+        return tree.getTag() == JCTree.Tag.NEWCLASS &&
                 ((JCNewClass) tree).encl == null;
     }
 
@@ -475,11 +474,11 @@ public class Enter extends JCTree.Visitor {
      * and an expression which is an unqualified instanciation of that class
      */
     private boolean isNewLetClass(JCTree tree) {
-        if(tree.getTag() != JCTree.LETEXPR)
+        if(tree.getTag() != JCTree.Tag.LETEXPR)
             return false;
         JCTree.LetExpr let = (JCTree.LetExpr)tree;
         return let.stats.size() == 1
-                && let.stats.head.getTag() == JCTree.CLASSDEF
+                && let.stats.head.getTag() == JCTree.Tag.CLASSDEF
                 && let.expr != null
                 && isNewAnonymousClass(let.expr);
     }

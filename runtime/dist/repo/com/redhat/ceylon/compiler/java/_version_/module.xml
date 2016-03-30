@@ -24,7 +24,8 @@
     <dependencies>
         <module name="ceylon.language" slot="@ceylon-version@"/>
         <module name="ceylon.bootstrap" slot="@ceylon-version@"/>
-        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
+        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
+        <module name="com.redhat.ceylon.cli" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>

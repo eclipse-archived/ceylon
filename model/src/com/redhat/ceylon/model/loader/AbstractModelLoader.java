@@ -4,6 +4,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,16 +18,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.lang.model.type.TypeKind;
-
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.mirror.AccessibleMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
@@ -34,6 +34,7 @@ import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.FieldMirror;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.loader.mirror.PackageMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeKind;
 import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.model.loader.mirror.VariableMirror;
@@ -298,6 +299,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Timer timer;
     private Map<String,LazyPackage> modulelessPackages = new HashMap<String,LazyPackage>();
     private ParameterNameParser parameterNameParser = new ParameterNameParser(this);
+    protected JdkProvider jdkProvider;
     
     protected final void initModuleManager(ModuleManager moduleManager) {
         this.moduleManager = moduleManager;
@@ -472,8 +474,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         nested.startTask("load JDK");
         // make sure the jdk modules are loaded
-        loadJDKModules();
-        Module jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version);
+        String jdkModuleSpec = getAlternateJdkModuleSpec();
+        Module jdkModule = null;
+        if(jdkModuleSpec != null){
+            ModuleSpec spec = ModuleSpec.parse(jdkModuleSpec);
+            jdkModule = findOrCreateModule(spec.getName(), spec.getVersion());
+        }
+        if(jdkModule == null){
+            jdkProvider = new JdkProvider();
+            loadJDKModules();
+            jdkModule = findOrCreateModule(JAVA_BASE_MODULE_NAME, jdkProvider.getJDKVersion());
+        }
         nested.endTask();
         
         /*
@@ -485,6 +496,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         loadPackage(languageModule, "com.redhat.ceylon.compiler.java.language", false);
         nested.endTask();
     }
+    
+    protected String getAlternateJdkModuleSpec() {
+    	return null;
+    }
+    
     protected Module loadLanguageModuleAndPackage() {
         Module languageModule = findOrCreateModule(CEYLON_LANGUAGE, null);
         addModuleToClassPath(languageModule, null);
@@ -496,17 +512,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("org.jboss.jandex", Versions.DEPENDENCY_JANDEX_VERSION), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.langtools.classfile", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         
         return languageModule;
     }
+    
     protected void loadJDKModules() {
-        for(String jdkModule : JDKUtils.getJDKModuleNames())
-            findOrCreateModule(jdkModule, JDKUtils.jdk.version);
-        for(String jdkOracleModule : JDKUtils.getOracleJDKModuleNames())
-            findOrCreateModule(jdkOracleModule, JDKUtils.jdk.version);
+    	String version = jdkProvider.getJDKVersion();
+        for(String jdkModule : jdkProvider.getJDKModuleNames())
+            findOrCreateModule(jdkModule, version);
     }
 
     /**
@@ -1136,7 +1150,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     decl = makeTypeAlias(classMirror);
                     setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
                 }else{
-                    final List<MethodMirror> constructors = getClassConstructors(classMirror, constructorOnly);
+                    final List<MethodMirror> constructors = getClassConstructors(classMirror, classMirror, constructorOnly);
                     if (!constructors.isEmpty()) {
                         Boolean hasConstructors = hasConstructors(classMirror);
                         if (constructors.size() > 1) {
@@ -1467,10 +1481,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private List<MethodMirror> getClassConstructors(ClassMirror classMirror, MethodMirrorFilter p) {
+    private List<MethodMirror> getClassConstructors(ClassMirror instantiatedType, ClassMirror methodContainer, MethodMirrorFilter p) {
         LinkedList<MethodMirror> constructors = new LinkedList<MethodMirror>();
-        boolean isFromJDK = isFromJDK(classMirror);
-        for(MethodMirror methodMirror : classMirror.getDirectMethods()){
+        boolean isFromJDK = isFromJDK(methodContainer);
+        for(MethodMirror methodMirror : methodContainer.getDirectMethods()){
             // We skip members marked with @Ignore, unless they value constructor getters
             if(methodMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null
                     &&methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null)
@@ -1490,10 +1504,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
 
             // if we are expecting Ceylon code, check that we have enough reified type parameters
-            if(classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
-                List<AnnotationMirror> tpAnnotations = getTypeParametersFromAnnotations(classMirror);
-                int tpCount = tpAnnotations != null ? tpAnnotations.size() : classMirror.getTypeParameters().size();
-                if(!checkReifiedTypeDescriptors(tpCount, classMirror.getQualifiedName(), methodMirror, true))
+            if(methodContainer.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
+                List<AnnotationMirror> tpAnnotations = getTypeParametersFromAnnotations(instantiatedType);
+                int tpCount = tpAnnotations != null ? tpAnnotations.size() : instantiatedType.getTypeParameters().size();
+                if(!checkReifiedTypeDescriptors(tpCount, instantiatedType.getQualifiedName(), methodMirror, true))
                     continue;
             }
             
@@ -1738,8 +1752,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return pkg;
             // special case for the jdk module
             String moduleName = module.getNameAsString();
-            if(AbstractModelLoader.isJDKModule(moduleName)){
-                if(JDKUtils.isJDKPackage(moduleName, pkgName) || JDKUtils.isOracleJDKPackage(moduleName, pkgName)){
+            if(jdkProvider.isJDKModule(moduleName)){
+                if(jdkProvider.isJDKPackage(moduleName, pkgName)){
                     return findOrCreatePackage(module, pkgName);
                 }
                 return null;
@@ -1880,10 +1894,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return module;
             }
         }
-        if(JDKUtils.isJDKAnyPackage(packageName)
-                || JDKUtils.isOracleJDKAnyPackage(packageName)){
-            String moduleName = JDKUtils.getJDKModuleNameForPackage(packageName);
-            return findModule(moduleName, JDKUtils.jdk.version);
+        if(jdkProvider.isJDKPackage(packageName)){
+            String moduleName = jdkProvider.getJDKModuleNameForPackage(packageName);
+            return findModule(moduleName, jdkProvider.getJDKVersion());
         }
         if(packageName.startsWith("com.redhat.ceylon.compiler.java.runtime")
                 || packageName.startsWith("com.redhat.ceylon.compiler.java.language")
@@ -1915,7 +1928,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(module != null)
                 return module;
 
-            if(JDKUtils.isJDKModule(moduleName) || JDKUtils.isOracleJDKModule(moduleName)){
+            // this method gets called before we set the jdk provider, but for the default and language module
+            if(jdkProvider != null && jdkProvider.isJDKModule(moduleName)){
                 isJdk = true;
             }
 
@@ -2360,10 +2374,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (hasConstructors != null && hasConstructors) {
             HashMap<String, MethodMirror> m = new HashMap<>();
             // Get all the java constructors...
-            for (MethodMirror ctorMirror : getClassConstructors(classMirror, constructorOnly)) {
+            for (MethodMirror ctorMirror : getClassConstructors(classMirror, classMirror, constructorOnly)) {
                 m.put(getCtorName(ctorMirror), ctorMirror);
             }
-            for (MethodMirror ctor : getClassConstructors(classMirror.getEnclosingClass() != null ? classMirror.getEnclosingClass() : classMirror, new ValueConstructorGetter(classMirror))) {
+            for (MethodMirror ctor : getClassConstructors(
+                    classMirror,
+                    classMirror.getEnclosingClass() != null ? classMirror.getEnclosingClass() : classMirror,
+                            
+                            new ValueConstructorGetter(classMirror))) {
                 Object name = getAnnotationValue(ctor, CEYLON_NAME_ANNOTATION);
                 MethodMirror ctorMirror = m.remove(name);
                 Constructor c;
@@ -2973,7 +2991,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private boolean isFromJDK(ClassMirror classMirror) {
         String pkgName = unquotePackageName(classMirror.getPackage());
-        return JDKUtils.isJDKAnyPackage(pkgName) || JDKUtils.isOracleJDKAnyPackage(pkgName);
+        return jdkProvider.isJDKPackage(pkgName);
     }
 
     private void setAnnotations(Annotated annotated, AnnotatedMirror classMirror, boolean isNativeHeader) {
@@ -3639,13 +3657,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(// for class members we rely on abstract bit
            (klass instanceof Class 
                    && methodMirror.isAbstract())
-           // Trust the abstract bit for Java interfaces, but not for Ceylon ones
-           || (klass instanceof Interface
-                   && !((LazyInterface)klass).isCeylon()
-                   && methodMirror.isAbstract())
            // For Ceylon interfaces we rely on annotation
            || methodMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null) {
             decl.setFormal(true);
+        } else if(// for class members we rely on abstract bit
+                (klass instanceof Interface
+                        && !((LazyInterface)klass).isCeylon())) {
+                 decl.setFormal(methodMirror.isAbstract() && !methodMirror.isDefaultMethod());
+                 decl.setDefault(methodMirror.isDefaultMethod());
         } else {
             if (// for class members we rely on final/static bits
                 (klass instanceof Class
@@ -4515,12 +4534,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     klass.getSatisfiedTypes().add(getNonPrimitiveType(ModelUtil.getModule(klass), iface, klass, VarianceLocation.INVARIANT));
                 }catch(ModelResolutionException x){
                     String classPackageName = unquotePackageName(classMirror.getPackage());
-                    if(JDKUtils.isJDKAnyPackage(classPackageName)){
+                    if(jdkProvider.isJDKPackage(classPackageName)){
                         if(iface.getKind() == TypeKind.DECLARED){
                             // check if it's a JDK thing
                             ClassMirror ifaceClass = iface.getDeclaredClass();
                             String ifacePackageName = unquotePackageName(ifaceClass.getPackage());
-                            if(JDKUtils.isOracleJDKAnyPackage(ifacePackageName)){
+                            if(jdkProvider.isJDKPackage(ifacePackageName)){
                                 // just log and ignore it
                                 logMissingOracleType(iface.getQualifiedName());
                                 continue;
@@ -5387,11 +5406,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public void setupSourceFileObjects(List<?> treeHolders) {
     }
 
-    public static boolean isJDKModule(String name) {
-        return JDKUtils.isJDKModule(name)
-                || JDKUtils.isOracleJDKModule(name);
-    }
-    
     @Override
     public Module getLoadedModule(String moduleName, String version) {
         return findModule(moduleName, version);
@@ -5406,7 +5420,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     public Module getJDKBaseModule() {
-        return findModule(JAVA_BASE_MODULE_NAME, JDKUtils.jdk.version);
+        String jdkModuleSpec = getAlternateJdkModuleSpec();
+        if(jdkModuleSpec != null){
+            ModuleSpec spec = ModuleSpec.parse(jdkModuleSpec);
+            return findModule(spec.getName(), spec.getVersion());
+        }
+        return findModule(JAVA_BASE_MODULE_NAME, jdkProvider.getJDKVersion());
     }
 
     public Module findModuleForFile(File file){
@@ -5530,8 +5549,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // ceylon.language imports the JDK
         if((moduleScope.isJava()
                 || ModelUtil.equalModules(moduleScope, getLanguageModule()))
-                && (JDKUtils.isJDKModule(importedModuleName)
-                   || JDKUtils.isOracleJDKModule(importedModuleName)))
+                && (jdkProvider.isJDKModule(importedModuleName)))
             return true;
         // everyone imports the language module
         if(ModelUtil.equalModules(importedModule, getLanguageModule()))
@@ -5618,5 +5636,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(exportedPackages != null){
             module.setExportedJavaPackages(exportedPackages);
         }
+    }
+    
+    public void setupAlternateJdk(Module module, ArtifactResult artifact) {
+        try {
+            jdkProvider = new JdkProvider(module.getNameAsString(), module.getVersion(), module, artifact.artifact());
+        } catch (RepositoryException | IOException e) {
+            throw new RuntimeException("Failed to load alternate Jdk provider "+module, e);
+        }
+    }
+    
+    public JdkProvider getJdkProvider(){
+    	return jdkProvider;
     }
 }

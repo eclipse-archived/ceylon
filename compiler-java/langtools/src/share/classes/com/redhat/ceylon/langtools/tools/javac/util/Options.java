@@ -25,13 +25,9 @@
 
 package com.redhat.ceylon.langtools.tools.javac.util;
 
-import java.util.List;
-
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
-
-import static com.redhat.ceylon.langtools.tools.javac.main.OptionName.*;
-
 import java.util.*;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
+import static com.redhat.ceylon.langtools.tools.javac.main.Option.*;
 
 /** A table of all command-line options.
  *  If an option has an argument, the option name is mapped to the argument.
@@ -50,7 +46,7 @@ public class Options {
         new Context.Key<Options>();
 
     private LinkedHashMap<String,String> values;
-    private LinkedHashMap<String,List<String>> multiValues;
+    private LinkedHashMap<String,java.util.List<String>> multiValues;
 
     /** Get the Options instance for this context. */
     public static Options instance(Context context) {
@@ -63,7 +59,7 @@ public class Options {
     protected Options(Context context) {
 // DEBUGGING -- Use LinkedHashMap for reproducability
         values = new LinkedHashMap<String,String>();
-        multiValues = new LinkedHashMap<String,List<String>>();
+        multiValues = new LinkedHashMap<String,java.util.List<String>>();
         context.put(optionsKey, this);
     }
 
@@ -74,21 +70,15 @@ public class Options {
         return values.get(name);
     }
 
-    public List<String> getMulti(String name) {
-        if(multiValues.containsKey(name))
-            return multiValues.get(name);
-        return Collections.emptyList();
-    }
-
     /**
      * Get the value for an option.
      */
-    public String get(OptionName name) {
-        return values.get(name.optionName);
+    public String get(Option option) {
+        return values.get(option.text);
     }
-
-    public List<String> getMulti(OptionName name) {
-        return getMulti(name.optionName);
+    
+    public java.util.List<String> getMulti(Option option) {
+        return multiValues.get(option.text);
     }
 
     /**
@@ -117,15 +107,15 @@ public class Options {
     /**
      * Check if the value for an option has been set.
      */
-    public boolean isSet(OptionName name) {
-        return (values.get(name.optionName) != null);
+    public boolean isSet(Option option) {
+        return (values.get(option.text) != null);
     }
 
     /**
      * Check if the value for a choice option has been set to a specific value.
      */
-    public boolean isSet(OptionName name, String value) {
-        return (values.get(name.optionName + value) != null);
+    public boolean isSet(Option option, String value) {
+        return (values.get(option.text + value) != null);
     }
 
     /**
@@ -138,38 +128,34 @@ public class Options {
     /**
      * Check if the value for an option has not been set.
      */
-    public boolean isUnset(OptionName name) {
-        return (values.get(name.optionName) == null);
+    public boolean isUnset(Option option) {
+        return (values.get(option.text) == null);
     }
 
     /**
      * Check if the value for a choice option has not been set to a specific value.
      */
-    public boolean isUnset(OptionName name, String value) {
-        return (values.get(name.optionName + value) == null);
+    public boolean isUnset(Option option, String value) {
+        return (values.get(option.text + value) == null);
     }
 
     public void put(String name, String value) {
         values.put(name, value);
     }
-
-    public void put(OptionName name, String value) {
-        values.put(name.optionName, value);
-    }
-
+    
     public void addMulti(String name, String value) {
-        List<String> list = multiValues.get(name);
-        if(list == null){
-            list = new LinkedList<String>();
+        java.util.List<String> list = multiValues.get(name);
+        if (list == null) {
+            list = new ArrayList<String>(2);
             multiValues.put(name, list);
         }
-        if(!list.contains(value))
-            list.add(value);
+        list.add(value);
     }
 
-    public void addMulti(OptionName name, String value) {
-        addMulti(name.optionName, value);
+    public void put(Option option, String value) {
+        values.put(option.text, value);
     }
+
 
     public void putAll(Options options) {
         values.putAll(options.values);
@@ -185,6 +171,19 @@ public class Options {
 
     public int size() {
         return values.size();
+    }
+
+    // light-weight notification mechanism
+
+    private List<Runnable> listeners = List.nil();
+
+    public void addListener(Runnable listener) {
+        listeners = listeners.prepend(listener);
+    }
+
+    public void notifyListeners() {
+        for (Runnable r: listeners)
+            r.run();
     }
 
     /** Check for a lint suboption. */

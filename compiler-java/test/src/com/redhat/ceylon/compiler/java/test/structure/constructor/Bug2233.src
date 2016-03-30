@@ -29,7 +29,7 @@ class Test2233<F> extends .com.redhat.ceylon.compiler.java.test.structure.constr
     
     private static final class bar$delegation$_ {
         
-        private bar$delegation$_() {
+        bar$delegation$_() {
         }
     }
     
@@ -42,7 +42,7 @@ class Test2233<F> extends .com.redhat.ceylon.compiler.java.test.structure.constr
     
     public static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     

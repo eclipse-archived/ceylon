@@ -28,7 +28,6 @@ package com.redhat.ceylon.langtools.tools.javac.file;
 import java.io.File;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 
 /**

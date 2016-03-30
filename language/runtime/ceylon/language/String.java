@@ -1361,12 +1361,38 @@ public final class String
                        @Name("to") final Integer to) {
         return instance(span(value, from.longValue(), to.longValue()));
     }
-
+    
+    @Ignore
+    public long substring$start() {
+        return 0;
+    }
+    
+    @Ignore
+    public long substring$end() {
+        return java.lang.Integer.MAX_VALUE;
+    }
+    
+    @Ignore
+    public java.lang.String substring() {
+        return value;
+    }
+    
+    @Ignore
+    public java.lang.String substring(final long from) {
+        return measure(value, from, java.lang.Integer.MAX_VALUE);
+    }
+    
+    public java.lang.String substring(
+            @Defaulted @Name("from") final long from,
+            @Defaulted @Name("end") final long end) {
+        return measure(value, from, end-from);
+    }
+    
     @Override
     public String spanFrom(@Name("from") final Integer from) {
         return instance(spanFrom(value, from.longValue()));
     }
-    
+        
     @Ignore
     public static java.lang.String spanFrom(java.lang.String value, 
             long from) {
@@ -1625,6 +1651,23 @@ public final class String
         return reverse ? getReversed(result) : result;
     }
     
+    @Ignore
+    public static java.lang.String substring(java.lang.String value) {
+        return value;
+    }
+    
+    @Ignore
+    public static java.lang.String substring(java.lang.String value, 
+            long from) {
+        return measure(value, from, java.lang.Integer.MAX_VALUE);
+    }
+    
+    @Ignore
+    public static java.lang.String substring(java.lang.String value, 
+            long from, long end) {
+        return measure(value, from, end-from);
+    }
+    
     @Override
     public String getReversed() {
         return instance(getReversed(value));
@@ -1801,18 +1844,18 @@ public final class String
     }
 
     @Ignore
-    public static Callable<? extends Boolean> split$splitting(){
+    public static Callable<? extends Boolean> split$splitting() {
         return WHITESPACE;
     }
 
     @Ignore
-    public static boolean split$discardSeparators(java.lang.Object separator){
+    public static boolean split$discardSeparators(java.lang.Object separator) {
         return true;
     }
 
     @Ignore
     public static boolean split$groupSeparators(java.lang.Object separator, 
-            boolean discardSeparators){
+            boolean discardSeparators) {
         return true;
     }
     
@@ -3331,4 +3374,18 @@ public final class String
     frequencies(java.lang.String value) {
         return instance(value).frequencies();
     }
+
+    @Ignore
+    public static <Result> List<? extends Result> 
+    mapElements(@Ignore TypeDescriptor $reifiedResult, java.lang.String value, 
+            Callable<? extends Result> f) {
+        return instance(value).mapElements($reifiedResult, f);
+    }
+    
+    @Override @Ignore
+    public <Result> List<? extends Result> mapElements(TypeDescriptor arg0,
+            Callable<? extends Result> arg1) {
+        return $ceylon$language$List$impl().mapElements(arg0, arg1);
+    }
+
 }

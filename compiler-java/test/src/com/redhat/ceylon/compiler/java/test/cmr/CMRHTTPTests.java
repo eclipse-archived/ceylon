@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
@@ -92,7 +93,7 @@ public class CMRHTTPTests extends CompilerTests {
     }
 
     private HttpServer startServer(int port, File repo, boolean herd, RequestCounter rq, ExpectedError error) throws IOException{
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), 1);
+        HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), port), 1);
         server.createContext("/repo", new RepoFileHandler(repo.getPath(), herd, rq, error));
         // make sure we serve at least two concurrent connections, as each one might take a few ms to close
         ThreadPoolExecutor tpool = (ThreadPoolExecutor)Executors.newFixedThreadPool(2);
@@ -193,7 +194,7 @@ public class CMRHTTPTests extends CompilerTests {
             // then try to compile only one module (the other being loaded from its car) 
             assertErrors(files, options, null,
                          new CompilerError(24, "cannot find module artifact com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
-                                 "  due to connection error: java.net.SocketTimeoutException: Timed out reading com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car from "+repoAURL+"\n"+
+                                 "  due to connection error: java.net.SocketTimeoutException: Timed out reading from "+repoAURL+"\n"+
                                  "  \t- dependency tree: com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b/6.6.6 -> com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a/6.6.6"));
 
         }finally{
@@ -208,7 +209,7 @@ public class CMRHTTPTests extends CompilerTests {
             // then try to compile only one module (the other being loaded from its car) 
             assertErrors(files, options, null,
                          new CompilerError(24, "cannot find module artifact com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
-                                 "  due to connection error: java.net.SocketTimeoutException: Timed out during connection to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/depend/a/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
+                                 "  due to connection error: java.net.SocketTimeoutException: Timed out while connecting to "+repoAURL+"/com/redhat/ceylon/compiler/java/test/cmr/modules/depend/a/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
                                  "  \t- dependency tree: com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b/6.6.6 -> com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a/6.6.6"));
 
         }finally{
@@ -223,6 +224,7 @@ public class CMRHTTPTests extends CompilerTests {
             // then try to compile only one module (the other being loaded from its car) 
             assertErrors(files, options, null,
                          new CompilerError(24, "cannot find module artifact com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6(.car|.jar)\n"+
+                                 "  due to connection error: java.net.SocketTimeoutException: Timed out while testing existence of http://localhost:18000/repo/com/redhat/ceylon/compiler/java/test/cmr/modules/depend/a/6.6.6/com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a-6.6.6.car\n"+
                                  "  \t- dependency tree: com.redhat.ceylon.compiler.java.test.cmr.modules.depend.b/6.6.6 -> com.redhat.ceylon.compiler.java.test.cmr.modules.depend.a/6.6.6"));
 
         }finally{

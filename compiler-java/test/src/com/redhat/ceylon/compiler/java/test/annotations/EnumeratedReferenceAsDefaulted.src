@@ -28,7 +28,8 @@ public final class EnumeratedReference_X implements .com.redhat.ceylon.compiler.
         this(new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(anno.y()));
     }
     
-    public EnumeratedReference_X(final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y) {
+    public EnumeratedReference_X(@.ceylon.language.SharedAnnotation$annotation$
+    final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y) {
         this.y = y;
     }
     private final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y;

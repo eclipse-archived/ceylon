@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -49,13 +49,15 @@ import java.util.HashSet;
  */
 public enum SourceVersion {
     /*
-     * Summary of language evoluation
+     * Summary of language evolution
      * 1.1: nested classes
      * 1.2: strictfp
      * 1.3: no changes
      * 1.4: assert
      * 1.5: annotations, generics, autoboxing, var-args...
      * 1.6: no changes
+     * 1.7: diamond syntax, try-with-resources, etc.
+     * 1.8: lambda expressions and default methods
      */
 
     /**
@@ -125,9 +127,21 @@ public enum SourceVersion {
      * The version recognized by the Java Platform, Standard Edition
      * 7.
      *
+     * Additions in this release include, diamond syntax for
+     * constructors, {@code try}-with-resources, strings in switch,
+     * binary literals, and multi-catch.
      * @since 1.7
      */
-    RELEASE_7;
+    RELEASE_7,
+
+    /**
+     * The version recognized by the Java Platform, Standard Edition
+     * 8.
+     *
+     * Additions in this release include lambda expressions and default methods.
+     * @since 1.8
+     */
+    RELEASE_8;
 
     // Note that when adding constants for newer releases, the
     // behavior of latest() and latestSupported() must be updated too.
@@ -138,7 +152,7 @@ public enum SourceVersion {
      * @return the latest source version that can be modeled
      */
     public static SourceVersion latest() {
-        return RELEASE_7;
+        return RELEASE_8;
     }
 
     private static final SourceVersion latestSupported = getLatestSupported();
@@ -146,9 +160,12 @@ public enum SourceVersion {
     private static SourceVersion getLatestSupported() {
         try {
             String specVersion = System.getProperty("java.specification.version");
-            if ("1.7".equals(specVersion))
+
+            if ("1.8".equals(specVersion))
+                return RELEASE_8;
+            else if("1.7".equals(specVersion))
                 return RELEASE_7;
-            else if ("1.6".equals(specVersion))
+            else if("1.6".equals(specVersion))
                 return RELEASE_6;
         } catch (SecurityException se) {}
 

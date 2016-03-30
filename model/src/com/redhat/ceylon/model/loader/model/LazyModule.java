@@ -2,20 +2,15 @@ package com.redhat.ceylon.model.loader.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.model.loader.model.LazyModule.PackagePathsProvider;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -70,9 +65,11 @@ public abstract class LazyModule extends Module {
             if(pkg != null)
                 return pkg;
         }
+        AbstractModelLoader modelLoader = getModelLoader();
+        JdkProvider jdkProvider = modelLoader.getJdkProvider();
         // The JDK uses arrays, which we pretend are in java.lang, and ByteArray needs ceylon.language.Byte,
         // so we pretend the JDK imports the language module
-        if(JDKUtils.isJDKModule(getNameAsString()) || JDKUtils.isOracleJDKModule(getNameAsString())){
+        if(jdkProvider.isJDKModule(getNameAsString())){
             Module languageModule = getModelLoader().getLanguageModule();
             if(languageModule instanceof LazyModule){
                 pkg = findPackageInModule((LazyModule) languageModule, name);
@@ -82,12 +79,12 @@ public abstract class LazyModule extends Module {
         }
         // never try to load java packages from the default module because it would
         // work and appear to come from there
-        if(JDKUtils.isJDKAnyPackage(name) || JDKUtils.isOracleJDKAnyPackage(name)){
+        if(jdkProvider.isJDKPackage(name)){
             return null;
         }
         // do the lookup of the default module last
         if(defaultModule)
-            pkg = getModelLoader().findExistingPackage(this, name);
+            pkg = modelLoader.findExistingPackage(this, name);
         return pkg;
     }
 
@@ -153,61 +150,26 @@ public abstract class LazyModule extends Module {
 
     public void loadPackageList(ArtifactResult artifact) {
         if (artifact instanceof ContentAwareArtifactResult) {
-            for (String entry : ((ContentAwareArtifactResult) artifact).getEntries()) {
-                addPackageForPath(entry, artifact.filter());
+            for (String entry : ((ContentAwareArtifactResult) artifact).getPackages()) {
+                String pkg = entry.replace('.', '/');
+                // make sure we unquote any package part
+                pkg = pkg.replace("$", "");
+                String pathQuery;
+                if(entry.isEmpty())
+                    pathQuery = pkg;
+                else
+                    pathQuery = pkg+"/";
+                if(artifact.filter() == null || artifact.filter().accept(pathQuery))
+                    jarPackages.add(entry);
             }
         } else {
             File file = artifact.artifact();
             if (file != null) {
-                ZipFile zipFile;
                 try {
-                    zipFile = new ZipFile(artifact.artifact());
+                    jarPackages.addAll(JvmBackendUtil.listPackages(file, artifact.filter()));
                 } catch (IOException e) {
                     throw new RuntimeException("Error accessing artifact: " + artifact.artifact(), e);
                 }
-                try{
-                    Enumeration<? extends ZipEntry> entries = zipFile.entries();
-                    while(entries.hasMoreElements())
-                        loadPackageList(entries.nextElement(), artifact.filter());
-                }finally{
-                    try {
-                        zipFile.close();
-                    } catch (IOException e) {
-                        // ignore
-                    }
-                }
-            }
-        }
-    }
-    
-    private void loadPackageList(ZipEntry entry, PathFilter pathFilter) {
-        if(!entry.isDirectory()){
-            String path = entry.getName();
-            addPackageForPath(path, pathFilter);
-        }
-    }
-
-    private void addPackageForPath(String path, PathFilter pathFilter) {
-        // some similar logic is in CachedTOCJars
-        if(path.toLowerCase().endsWith(".class")
-                // skip Java 9 module descriptors
-                && !path.equals("module-info.class")){
-            int sep = path.lastIndexOf('/');
-            if(sep != -1)
-                path = path.substring(0, sep);
-            else
-                path = "";// default package
-            String pkg = path;
-            // make sure we unquote any package part
-            pkg = pkg.replace("$", "");
-            String pathQuery;
-            if(path.isEmpty())
-                pathQuery = pkg;
-            else
-                pathQuery = pkg+"/";
-            if(pathFilter == null || pathFilter.accept(pathQuery)){
-                pkg = pkg.replace('/', '.');
-                jarPackages.add(pkg);
             }
         }
     }
@@ -230,9 +192,13 @@ public abstract class LazyModule extends Module {
             return getJarPackages().contains(pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
-            if(JDKUtils.isJDKPackage(moduleName, pkgName)
-                    || JDKUtils.isOracleJDKPackage(moduleName, pkgName))
+            if(isJdkPackage(moduleName, pkgName))
                 return true;
+            JdkProvider jdkProvider = getModelLoader().getJdkProvider();
+            if(jdkProvider.getJdkContainerModule() == this
+                    && jdkProvider.isJDKPackage(pkgName)){
+                return false;
+            }
             // otherwise we have the list of packages contained in that module jar
             return getJarPackages().contains(pkgName);
         }
@@ -240,13 +206,12 @@ public abstract class LazyModule extends Module {
     
     @Override
     protected boolean isJdkModule(String moduleName) {
-        return JDKUtils.isJDKModule(moduleName) || JDKUtils.isOracleJDKModule(moduleName);
+        return getModelLoader().getJdkProvider().isJDKModule(moduleName);
     }
     
     @Override
     protected boolean isJdkPackage(String moduleName, String packageName) {
-        return JDKUtils.isJDKPackage(moduleName, packageName)
-                || JDKUtils.isOracleJDKPackage(moduleName, packageName);
+        return getModelLoader().getJdkProvider().isJDKPackage(moduleName, packageName);
     }
 
     public void addPackage(Package pkg){

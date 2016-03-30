@@ -17,8 +17,11 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -300,17 +303,74 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         return name;
     }
     
-    protected long lastModified(final URL url) throws IOException {
-        HttpURLConnection con = head(url);
-        return con != null ? con.getLastModified() : -1;
+    class Attempts {
+        /** The total number of attempts (including the initial one) */
+        private final int attempts = 3;
+        private int reattemptsLeft = attempts-1;
+        public boolean reattempt() {
+            return reattemptsLeft-- > 0;
+        }
+        /** The total number of attempts to be made (including the initial one) */
+        public int getAttemptsAllowed() {
+            return attempts;
+        }
+        /** The total number of reattempts not yet made */
+        public int getReattemptsLeft() {
+            return reattemptsLeft;
+        }
+        /** The total number of attempts made so far*/
+        public int getAttemptsMade() {
+            return getAttemptsAllowed()-getReattemptsLeft();
+        }
+        /**
+         * For selected exceptions returns normally if there are 
+         * attempts left, otherwise rethrows the given exception. 
+         */
+        public void giveup(String phase, URL url, IOException e) throws IOException{
+            if (e instanceof SocketTimeoutException
+                    || e instanceof SocketException) {
+                if (reattempt()) {
+                    log.debug("Retry download of "+ url + " after " + e + " (" + getReattemptsLeft() + " reattempts left)");
+                    return;
+                }
+            }
+            if (e instanceof SocketTimeoutException) {
+                // Include url in exception message
+                SocketTimeoutException newException = new SocketTimeoutException("Timed out while " +phase+" "+url);
+                newException.initCause(e);
+                e = newException;
+            }
+            log.debug("Giving up request to " + url + " (after "+ getAttemptsMade() + " attempts) due to: " + e );
+            throw e;
+            
+        }
+    }
+    
+    protected final long lastModified(final URL url) throws IOException {
+        Attempts a = new Attempts();
+        while (true) {
+            try {
+                HttpURLConnection con = head(url);
+                return con != null ? con.getLastModified() : -1;
+            } catch (IOException e) {
+                a.giveup("last modified of", url, e);
+            }
+        }
     }
 
-    protected long size(final URL url) throws IOException {
-        HttpURLConnection con = head(url);
-        return con != null ? con.getContentLength() : -1;
+    protected final long size(final URL url) throws IOException {
+        Attempts a = new Attempts();
+        while (true) {
+            try {
+                HttpURLConnection con = head(url);
+                return con != null ? con.getContentLength() : -1;
+            } catch (IOException e) {
+                a.giveup("size of", url, e);
+            }
+        }
     }
 
-    protected HttpURLConnection head(final URL url) throws IOException {
+    protected final HttpURLConnection head(final URL url) throws IOException {
         if (connectionAllowed()) {
             final URLConnection conn;
             if (proxy != null) {
@@ -324,7 +384,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
                 huc.setRequestMethod("HEAD");
                 addCredentials(huc);
+                conn.connect();
                 int code = huc.getResponseCode();
+                log.debug("Connect: " + huc.getHeaderField("Connection"));
                 huc.disconnect();
                 log.debug("Got " + code + " for url: " + url);
                 if (code == 200) {
@@ -335,12 +397,14 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         return null;
     }
 
+    /**
+     * Adds the {@code Authorization} request header for HTTP basic authentication
+     */
     protected void addCredentials(HttpURLConnection conn) throws IOException {
         if (username != null && password != null) {
             try {
                 String authString = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
                 conn.setRequestProperty("Authorization", "Basic " + authString);
-                conn.connect();
             } catch (Exception e) {
                 throw new IOException("Cannot set basic authorization.", e);
             }

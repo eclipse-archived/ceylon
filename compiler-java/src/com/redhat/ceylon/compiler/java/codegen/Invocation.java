@@ -351,17 +351,8 @@ abstract class Invocation {
 
     protected JCExpression unboxCallableIfNecessary(JCExpression actualPrimExpr, Tree.Term primary) {
         Type primaryModel = primary.getTypeModel();
-        if(!gen.isCeylonCallable(primaryModel)){
-            // if it's not exactly a Callable we may have to unerase it to one
-            Type expectedType;
-            if (gen.typeFact().getNothingType().isExactly(primaryModel)) {
-                expectedType = gen.typeFact().getCallableType(gen.typeFact().getNothingType());
-            } else {
-                expectedType = primaryModel.getSupertype(gen.typeFact().getCallableDeclaration());
-            }
-            return gen.expressionGen().applyErasureAndBoxing(actualPrimExpr, primaryModel, 
-                                                             primary.getTypeErased(), !primary.getUnboxed(), BoxingStrategy.BOXED, 
-                                                             expectedType, 0);
+        if (gen.willEraseToObject(primaryModel)) {
+            actualPrimExpr = gen.make().TypeCast(gen.makeQuotedQualIdentFromString("ceylon.language.Callable"), actualPrimExpr);
         }
         return actualPrimExpr;
     }
@@ -1247,7 +1238,7 @@ class CallableSpecifierInvocation extends Invocation {
 class NamedArgumentInvocation extends Invocation {
     
     private final Tree.NamedArgumentList namedArgumentList;
-    private final ListBuffer<JCStatement> vars = ListBuffer.lb();
+    private final ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
     private final Naming.SyntheticName callVarName;
     private final Naming.SyntheticName varBaseName;
     private final Set<String> argNames = new HashSet<String>();
@@ -1341,6 +1332,7 @@ class NamedArgumentInvocation extends Invocation {
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
         int flags = JT_RAW | JT_NO_PRIMITIVES;
+        gen.at(sequencedArgument);
         JCTree.JCExpression sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
         JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
         
@@ -1362,7 +1354,9 @@ class NamedArgumentInvocation extends Invocation {
                 thisExpr = callVarName.makeIdent();
             break;
         case OUTER_COMPANION:
-            thisExpr = callVarName.makeIdent();
+            if (getQmePrimary() != null && !Decl.isConstructor(getPrimaryDeclaration())) {
+                thisExpr = callVarName.makeIdent();
+            }
             break;
         case INIT_COMPANION:
             thisExpr = varBaseName.suffixedBy(Suffix.$argthis$).makeIdent();
@@ -1381,7 +1375,7 @@ class NamedArgumentInvocation extends Invocation {
     // Make a list of ($arg0, $arg1, ... , $argN)
     // or ($arg$this$, $arg0, $arg1, ... , $argN)
     private List<JCExpression> makeVarRefArgumentList(Parameter param) {
-        ListBuffer<JCExpression> names = ListBuffer.<JCExpression> lb();
+        ListBuffer<JCExpression> names = new ListBuffer<JCExpression>();
         if (!Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
                 && Strategy.defaultParameterMethodTakesThis(param.getModel())) {
             names.append(varBaseName.suffixedBy(Suffix.$argthis$).makeIdent());
@@ -1487,7 +1481,9 @@ class NamedArgumentInvocation extends Invocation {
             exprFlags |= ExpressionTransformer.EXPR_DOWN_CAST;
         }
         JCExpression typeExpr = gen.makeJavaType(type, jtFlags);
+        gen.at(specifiedArg);
         JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type, exprFlags);
+        gen.at(specifiedArg);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
         statements = ListBuffer.<JCStatement>of(varDecl);
         bind(declaredParam, argName, gen.makeJavaType(type, jtFlags), statements.toList());
@@ -1532,6 +1528,7 @@ class NamedArgumentInvocation extends Invocation {
                 Collections.singletonList(methodArg.getParameterLists().get(0)),
                 gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
         JCExpression callable = callableBuilder.build();
+        gen.at(methodArg);
         JCExpression typeExpr = gen.makeJavaType(callableType, JT_RAW);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);
         
@@ -1588,7 +1585,7 @@ class NamedArgumentInvocation extends Invocation {
     }
     
     private ListBuffer<JCStatement> toStmts(Tree.NamedArgument namedArg, final List<JCTree> listOfStatements) {
-        final ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+        final ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
         for (JCTree tree : listOfStatements) {
             if (tree instanceof JCStatement) {
                 result.append((JCStatement)tree);

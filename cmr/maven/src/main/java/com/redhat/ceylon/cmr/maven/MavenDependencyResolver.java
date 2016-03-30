@@ -17,12 +17,13 @@
 package com.redhat.ceylon.cmr.maven;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
+import org.apache.maven.model.Dependency;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyContext;
@@ -35,6 +36,7 @@ import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -77,7 +79,12 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         }
 
         AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
-        MavenArtifactInfo[] dependencies = utils.getDependencies(file, name, version);
+        List<org.apache.maven.model.Dependency> dependencies;
+		try {
+			dependencies = utils.getDependencies(file, name, version);
+		} catch (IOException e) {
+			throw new RepositoryException("Failed to resolve pom", e);
+		}
         return toModuleInfo(dependencies, name, version, overrides);
     }
 
@@ -87,7 +94,12 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         }
 
         AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
-        MavenArtifactInfo[] dependencies = utils.getDependencies(stream, name, version);
+        List<org.apache.maven.model.Dependency> dependencies;
+        try{
+        	dependencies = utils.getDependencies(stream, name, version);
+        } catch (IOException e) {
+        	throw new RepositoryException("Failed to resolve pom", e);
+        }
         return toModuleInfo(dependencies, name, version, overrides);
     }
 
@@ -95,11 +107,10 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         return NodeUtils.firstParent(artifact).getChild("pom.xml");
     }
 
-    protected static ModuleInfo toModuleInfo(MavenArtifactInfo[] dependencies, String name, String version, Overrides overrides) {
+    private static ModuleInfo toModuleInfo(List<org.apache.maven.model.Dependency> dependencies, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
-        for (MavenArtifactInfo dep : dependencies) {
-            MavenCoordinate co = dep.getCoordinate();
-            infos.add(new ModuleDependencyInfo(AetherUtils.toCanonicalForm(co.getGroupId(), co.getArtifactId()), co.getVersion(), AetherUtils.isOptional(dep), false));
+        for (Dependency dep : dependencies) {
+            infos.add(new ModuleDependencyInfo(AetherUtils.toCanonicalForm(dep.getGroupId(), dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false));
         }
         ModuleInfo ret = new ModuleInfo(null, infos);
         if(overrides != null)

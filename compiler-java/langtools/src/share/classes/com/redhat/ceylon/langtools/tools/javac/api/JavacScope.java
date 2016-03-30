@@ -29,6 +29,7 @@ package com.redhat.ceylon.langtools.tools.javac.api;
 import com.redhat.ceylon.javax.lang.model.element.Element;
 import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
 import com.redhat.ceylon.javax.lang.model.element.TypeElement;
+
 import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
 import com.redhat.ceylon.langtools.tools.javac.comp.Env;
 

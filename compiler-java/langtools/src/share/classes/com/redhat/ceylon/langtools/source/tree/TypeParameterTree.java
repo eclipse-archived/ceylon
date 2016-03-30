@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,7 +26,6 @@
 package com.redhat.ceylon.langtools.source.tree;
 
 import java.util.List;
-
 import com.redhat.ceylon.javax.lang.model.element.Name;
 
 /**
@@ -37,6 +36,8 @@ import com.redhat.ceylon.javax.lang.model.element.Name;
  *   <em>name</em>
  *
  *   <em>name</em> extends <em>bounds</em>
+ *
+ *   <em>annotations</em> <em>name</em>
  * </pre>
  *
  * @jls section 4.4
@@ -48,4 +49,17 @@ import com.redhat.ceylon.javax.lang.model.element.Name;
 public interface TypeParameterTree extends Tree {
     Name getName();
     List<? extends Tree> getBounds();
+
+    /**
+     * Return annotations on the type parameter declaration.
+     *
+     * Annotations need Target meta-annotations of
+     * {@link java.lang.annotation.ElementType#TYPE_PARAMETER} or
+     * {@link java.lang.annotation.ElementType#TYPE_USE}
+     * to appear in this position.
+     *
+     * @return annotations on the type parameter declaration
+     * @since 1.8
+     */
+    List<? extends AnnotationTree> getAnnotations();
 }

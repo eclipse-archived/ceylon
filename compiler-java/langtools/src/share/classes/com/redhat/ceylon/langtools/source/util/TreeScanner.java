@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -52,7 +52,7 @@ import com.redhat.ceylon.langtools.source.tree.*;
  *
  * <p>Here is an example to count the number of identifier nodes in a tree:
  * <pre>
- *   class CountIdentifiers extends TreeScanner<Integer,Void> {
+ *   class CountIdentifiers extends TreeScanner&lt;Integer,Void&gt; {
  *      {@literal @}Override
  *      public Integer visitIdentifier(IdentifierTree node, Void p) {
  *          return 1;
@@ -138,6 +138,7 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         r = scanAndReduce(node.getReturnType(), p, r);
         r = scanAndReduce(node.getTypeParameters(), p, r);
         r = scanAndReduce(node.getParameters(), p, r);
+        r = scanAndReduce(node.getReceiverParameter(), p, r);
         r = scanAndReduce(node.getThrows(), p, r);
         r = scanAndReduce(node.getBody(), p, r);
         r = scanAndReduce(node.getDefaultValue(), p, r);
@@ -147,6 +148,7 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
     public R visitVariable(VariableTree node, P p) {
         R r = scan(node.getModifiers(), p);
         r = scanAndReduce(node.getType(), p, r);
+        r = scanAndReduce(node.getNameExpression(), p, r);
         r = scanAndReduce(node.getInitializer(), p, r);
         return r;
     }
@@ -282,6 +284,16 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         R r = scan(node.getType(), p);
         r = scanAndReduce(node.getDimensions(), p, r);
         r = scanAndReduce(node.getInitializers(), p, r);
+        r = scanAndReduce(node.getAnnotations(), p, r);
+        for (Iterable< ? extends Tree> dimAnno : node.getDimAnnotations()) {
+            r = scanAndReduce(dimAnno, p, r);
+        }
+        return r;
+    }
+
+    public R visitLambdaExpression(LambdaExpressionTree node, P p) {
+        R r = scan(node.getParameters(), p);
+        r = scanAndReduce(node.getBody(), p, r);
         return r;
     }
 
@@ -333,6 +345,12 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         return scan(node.getExpression(), p);
     }
 
+    public R visitMemberReference(MemberReferenceTree node, P p) {
+        R r = scan(node.getQualifierExpression(), p);
+        r = scanAndReduce(node.getTypeArguments(), p, r);
+        return r;
+    }
+
     public R visitIdentifier(IdentifierTree node, P p) {
         return null;
     }
@@ -359,8 +377,13 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         return scan(node.getTypeAlternatives(), p);
     }
 
+    public R visitIntersectionType(IntersectionTypeTree node, P p) {
+        return scan(node.getBounds(), p);
+    }
+
     public R visitTypeParameter(TypeParameterTree node, P p) {
-        R r = scan(node.getBounds(), p);
+        R r = scan(node.getAnnotations(), p);
+        r = scanAndReduce(node.getBounds(), p, r);
         return r;
     }
 
@@ -377,6 +400,12 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         r = scanAndReduce(node.getArguments(), p, r);
         return r;
     }
+
+   public R visitAnnotatedType(AnnotatedTypeTree node, P p) {
+       R r = scan(node.getAnnotations(), p);
+       r = scanAndReduce(node.getUnderlyingType(), p, r);
+       return r;
+   }
 
     public R visitOther(Tree node, P p) {
         return null;

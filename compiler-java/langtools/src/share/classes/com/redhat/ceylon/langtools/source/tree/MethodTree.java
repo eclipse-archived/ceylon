@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,7 +26,6 @@
 package com.redhat.ceylon.langtools.source.tree;
 
 import java.util.List;
-
 import com.redhat.ceylon.javax.lang.model.element.Name;
 
 /**
@@ -53,6 +52,15 @@ public interface MethodTree extends Tree {
     Tree getReturnType();
     List<? extends TypeParameterTree> getTypeParameters();
     List<? extends VariableTree> getParameters();
+
+    /**
+     * Return an explicit receiver parameter ("this" parameter).
+     *
+     * @return an explicit receiver parameter ("this" parameter)
+     * @since 1.8
+     */
+    VariableTree getReceiverParameter();
+
     List<? extends ExpressionTree> getThrows();
     BlockTree getBody();
     Tree getDefaultValue(); // for annotation types

@@ -92,8 +92,11 @@ shared native final class Integer(Integer integer)
     "The hash code of this `Integer`, which is just the
      `Integer` itself, except on the JVM platform where, as 
      with all `hash` codes, this 64-bit `Integer` value is 
-     truncated to 32 bits by removal of the 32 higher-order
-     bits."
+     truncated to 32 bits by taking the exclusive 
+     disjunction of the 32 lowest-order bits with the 32 
+     highest-order bits, that is:
+     
+         int.hash == int.rightArithmeticShift(32).exclusiveOr(int)"
     shared actual native Integer hash => this;
     
     shared actual native Comparison compare(Integer other);
@@ -156,13 +159,18 @@ shared native final class Integer(Integer integer)
        [[runtime.maxExactIntegralFloat]] (2<sup>53</sup>) 
        has such a representation.
      - For larger integers on the JVM platform, an 
-       [[OverflowException]] is thrown."
+       [[OverflowException]] is thrown. If this behavior is 
+       not desired, use [[nearestFloat]] instead."
     throws (`class OverflowException`,
         "if the number cannot be represented as a `Float`
          without loss of precision, that is, if 
          
-             this.magnitude>runtime.maxExactIntegralFloat")
-    see (`value runtime.maxExactIntegralFloat`)
+             this.magnitude>runtime.maxExactIntegralFloat
+         
+         (Note that [[nearestFloat]] does not produce an
+         exception in this case.)")
+    see (`value runtime.maxExactIntegralFloat`,
+         `value nearestFloat`)
     shared native Float float;
 
     "The nearest [[Float]] to this number. 
@@ -176,6 +184,7 @@ shared native final class Integer(Integer integer)
        loss of precision.
      
      This method never throws an [[OverflowException]]."
+    see (`value float`)
     shared native Float nearestFloat;
 
     shared actual native Integer predecessor;

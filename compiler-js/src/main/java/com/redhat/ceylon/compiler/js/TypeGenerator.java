@@ -362,7 +362,7 @@ public class TypeGenerator {
         }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        TypeUtils.encodeForRuntime(that, d, that.getAnnotationList(), gen);
         gen.endLine(true);
         gen.share(d);
         initializeType(that, gen, initDeferrer);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -96,6 +96,19 @@ public abstract class AbstractLog {
 
     /** Report an error, unless another error was already reported at same
      *  source position.
+     *  @param flag   A flag to set on the diagnostic
+     *  @param pos    The source position at which to report the error.
+     *  @param key    The key for the localized error message.
+     *  @param args   Fields of the error message.
+     */
+    public void error(DiagnosticFlag flag, DiagnosticPosition pos, String key, Object ... args) {
+        JCDiagnostic d = diags.error(source, pos, key, args);
+        d.setFlag(flag);
+        report(d);
+    }
+
+    /** Report an error, unless another error was already reported at same
+     *  source position.
      *  @param pos    The source position at which to report the error.
      *  @param key    The key for the localized error message.
      *  @param args   Fields of the error message.
@@ -119,7 +132,6 @@ public abstract class AbstractLog {
 
     /** Report a warning, unless suppressed by the  -nowarn option or the
      *  maximum number of warnings has been reached.
-     *  @param pos    The source position at which to report the warning.
      *  @param key    The key for the localized warning message.
      *  @param args   Fields of the warning message.
      */

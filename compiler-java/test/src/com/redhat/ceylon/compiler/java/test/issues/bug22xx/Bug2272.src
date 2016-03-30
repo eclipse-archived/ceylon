@@ -5,7 +5,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2272() {
-        final .ceylon.language.Callable<? extends .java.lang.Object> local1 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+        final .ceylon.language.Callable<? extends .java.lang.Object> local1 = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
         @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
         @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -55,7 +55,7 @@ final class bug2272_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+            value = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
             @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
             @.com.redhat.ceylon.compiler.java.metadata.Method

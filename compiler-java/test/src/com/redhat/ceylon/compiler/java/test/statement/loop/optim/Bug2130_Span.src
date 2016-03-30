@@ -361,7 +361,7 @@ final class compareSpanIntegerBy2130_ {
             long $ceylontmp$element$76 = $ceylontmp$first$71;
             boolean $ceylontmp$f$75 = false;
             loop_3: do {
-                if ($ceylontmp$f$75 && $ceylontmp$step$78 == 1L) $ceylontmp$step$78 == 1 ? ($ceylontmp$element$76 += $ceylontmp$incr$74) : ($ceylontmp$element$76 = .ceylon.language.Integer.neighbour($ceylontmp$element$76, $ceylontmp$incr$74));
+                if ($ceylontmp$f$75 && $ceylontmp$step$78 == 1L) $ceylontmp$step$78 == 1 ? $ceylontmp$element$76 += $ceylontmp$incr$74 : ($ceylontmp$element$76 = .ceylon.language.Integer.neighbour($ceylontmp$element$76, $ceylontmp$incr$74));
                 $ceylontmp$f$75 = true;
                 i$77 = $ceylontmp$element$76;
                 final long i = i$77;
@@ -412,7 +412,7 @@ final class compareSpanIntegerBy2130_ {
                         returning $ceylontmp$op$92;
                     );
                 }                 while (false);
-                if ($ceylontmp$step$78 != 1L) $ceylontmp$step$78 == 1 ? ($ceylontmp$element$76 += $ceylontmp$incr$74) : ($ceylontmp$element$76 = .ceylon.language.Integer.neighbour($ceylontmp$element$76, $ceylontmp$incr$74));
+                if ($ceylontmp$step$78 != 1L) $ceylontmp$step$78 == 1 ? $ceylontmp$element$76 += $ceylontmp$incr$74 : ($ceylontmp$element$76 = .ceylon.language.Integer.neighbour($ceylontmp$element$76, $ceylontmp$incr$74));
             }             while ($ceylontmp$step$78 == 1L ? $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? i$77 - $ceylontmp$last$72 != 0L : i$77 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign(i$77, $ceylontmp$first$71) <= 0L : $ceylontmp$step$78 == 1 ? $ceylontmp$increasing$73 ? $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$element$76 - $ceylontmp$last$72 != 0L : $ceylontmp$increasing$73 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$last$72) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$76, $ceylontmp$first$71) <= 0L);
         } catch (final .java.lang.Throwable t) {
             t2 = t;
@@ -794,7 +794,7 @@ final class compareSpanCharacterBy2130_ {
             int $ceylontmp$element$190 = $ceylontmp$first$185;
             boolean $ceylontmp$f$189 = false;
             loop_7: do {
-                if ($ceylontmp$f$189 && $ceylontmp$step$192 == 1L) $ceylontmp$step$192 == 1 ? ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188)) : ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188));
+                if ($ceylontmp$f$189 && $ceylontmp$step$192 == 1L) $ceylontmp$step$192 == 1 ? $ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188) : ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188));
                 $ceylontmp$f$189 = true;
                 i$191 = $ceylontmp$element$190;
                 final int i = i$191;
@@ -842,7 +842,7 @@ final class compareSpanCharacterBy2130_ {
                         returning $ceylontmp$op$206;
                     );
                 }                 while (false);
-                if ($ceylontmp$step$192 != 1L) $ceylontmp$step$192 == 1 ? ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188)) : ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188));
+                if ($ceylontmp$step$192 != 1L) $ceylontmp$step$192 == 1 ? $ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188) : ($ceylontmp$element$190 = .ceylon.language.Character.neighbour($ceylontmp$element$190, $ceylontmp$incr$188));
             }             while ($ceylontmp$step$192 == 1L ? $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? i$191 - $ceylontmp$last$186 != 0 : i$191 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign(i$191, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign(i$191, $ceylontmp$first$185) <= 0 : $ceylontmp$step$192 == 1 ? $ceylontmp$increasing$187 ? $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$element$190 - $ceylontmp$last$186 != 0 : $ceylontmp$increasing$187 ? .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) <= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$last$186) >= 0 && .ceylon.language.Character.offsetSign($ceylontmp$element$190, $ceylontmp$first$185) <= 0);
         } catch (final .java.lang.Throwable t) {
             t2 = t;

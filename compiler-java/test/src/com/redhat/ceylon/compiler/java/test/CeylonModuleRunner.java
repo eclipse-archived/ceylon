@@ -53,7 +53,6 @@ import org.junit.runners.model.InitializationError;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.java.runtime.Main;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -66,10 +65,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
-import com.redhat.ceylon.javax.tools.DiagnosticListener;
-import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
-import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
+import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -190,7 +189,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
         	args.add("-XaddExports:java.base/sun.reflect.annotation=ALL-UNNAMED");
         }
-        args.add(Main.class.getName());
+        args.add("com.redhat.ceylon.compiler.java.runtime.Main");
         args.add(moduleSpec);
         args.add(runClass);
         

@@ -116,7 +116,8 @@ shared interface Map<out Key=Object, out Item=Anything>
     "A shallow copy of this map, that is, a map with the
      same entries as this map, which do not change if the
      entries in this map change."
-    shared actual formal Map<Key,Item> clone();
+    shared actual default Map<Key,Item> clone() 
+            => package.map(this);
     
     "A [[Collection]] containing the keys of this map."
     //TODO: should be a Set
@@ -236,7 +237,7 @@ shared interface Map<out Key=Object, out Item=Anything>
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
         Result mapping(Key key, Item item)) 
-            given Result satisfies Object
+            given Result satisfies Object //TODO: remove this constraint!
             => object
             extends Object()
             satisfies Map<Key,Result> {
@@ -276,6 +277,8 @@ shared interface Map<out Key=Object, out Item=Anything>
         iterator() => outer.map(mapEntry).iterator();
         
         size => outer.size;
+        
+        keys => outer.keys;
         
         clone() => outer.clone().mapItems(mapping);
         
@@ -477,7 +480,7 @@ shared object emptyMap
     shared actual 
     Map<Nothing, Nothing> mapItems<Result>
             (Result mapping(Nothing key, Nothing item))
-            given Result satisfies Object 
+            given Result satisfies Object //TODO: remove this constraint!
             => emptyMap;
     
     count(Boolean selecting(Nothing->Nothing element)) => 0;

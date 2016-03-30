@@ -11,7 +11,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleValidator;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -112,7 +112,7 @@ public final class CeyloncCompilerDelegate implements
 
     private StatusPrinter getStatusPrinter() {
         Options options = Options.instance(context);
-        boolean isProgressPrinted = options.get(OptionName.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
+        boolean isProgressPrinted = options.get(Option.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
         if(isProgressPrinted){
             return LanguageCompiler.getStatusPrinterInstance(context);
         }else{

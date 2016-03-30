@@ -619,8 +619,9 @@ public class CeylonDocToolTests {
         RepositoryManager repoManager = CeylonUtils.repoManager().systemRepo("../dist/dist/repo").buildManager();
         File jbossModulesModule = repoManager.getArtifact(new ArtifactContext("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
         File runtimeModule = repoManager.getArtifact(new ArtifactContext("ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
-        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.0.0.Beta20", ".jar"));
-        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.1.1.Final", ".jar"));
+        File modelModule = repoManager.getArtifact(new ArtifactContext("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, ".jar"));
+        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.3.5.Final", ".jar"));
+        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
         File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
@@ -631,6 +632,7 @@ public class CeylonDocToolTests {
                 +narnyaModule.getAbsolutePath()+File.pathSeparator
                 +jbossModulesModule.getAbsolutePath()+File.pathSeparator
                 +runtimeModule.getAbsolutePath()+File.pathSeparator
+                +modelModule.getAbsolutePath()+File.pathSeparator
                 +languageModule.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
@@ -645,6 +647,7 @@ public class CeylonDocToolTests {
                 "ceylon/interop/java/internal/javaObjectArray_.java",
                 "ceylon/interop/java/internal/javaShortArray_.java",
                 "ceylon/interop/java/internal/javaStringArray_.java",
+                "ceylon/interop/java/internal/synchronize_.java",
                 "ceylon/interop/java/internal/Util.java",
                 "ceylon/transaction/internal/RecoveryHelper.java",
                 "ceylon/transaction/internal/RecoveryXAResource.java",

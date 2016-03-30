@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,17 +25,20 @@
 
 package com.redhat.ceylon.langtools.tools.javac.code;
 
-import static com.redhat.ceylon.langtools.tools.javac.code.BoundKind.*;
-import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTags.*;
-
 import java.util.Locale;
 
 import com.redhat.ceylon.langtools.tools.javac.api.Messages;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.AnnotatedType;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.ArrayType;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.*;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+
+import static com.redhat.ceylon.langtools.tools.javac.code.BoundKind.*;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.CLASS;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.FORALL;
 
 /**
  * A combined type/symbol visitor for generating non-trivial localized string
@@ -50,6 +53,8 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
 
     List<Type> seenCaptured = List.nil();
     static final int PRIME = 997;  // largest prime less than 1000
+
+    protected Printer() { }
 
     /**
      * This method should be overriden in order to provide proper i18n support.
@@ -98,7 +103,7 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
      * @return localized string representation
      */
     public String visitTypes(List<Type> ts, Locale locale) {
-        ListBuffer<String> sbuf = ListBuffer.lb();
+        ListBuffer<String> sbuf = new ListBuffer<>();
         for (Type t : ts) {
             sbuf.append(visit(t, locale));
         }
@@ -113,7 +118,7 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
      * @return localized string representation
      */
     public String visitSymbols(List<Symbol> ts, Locale locale) {
-        ListBuffer<String> sbuf = ListBuffer.lb();
+        ListBuffer<String> sbuf = new ListBuffer<>();
         for (Symbol t : ts) {
             sbuf.append(visit(t, locale));
         }
@@ -121,9 +126,9 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
     }
 
     /**
-     * Get a localized string represenation for a given type.
+     * Get a localized string representation for a given type.
      *
-     * @param ts type to be displayed
+     * @param t type to be displayed
      * @param locale the locale in which the string is to be rendered
      * @return localized string representation
      */
@@ -132,9 +137,9 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
     }
 
     /**
-     * Get a localized string represenation for a given symbol.
+     * Get a localized string representation for a given symbol.
      *
-     * @param ts symbol to be displayed
+     * @param s symbol to be displayed
      * @param locale the locale in which the string is to be rendered
      * @return localized string representation
      */
@@ -176,15 +181,41 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
 
     @Override
     public String visitArrayType(ArrayType t, Locale locale) {
-        return visit(t.elemtype, locale) + "[]";
+        StringBuilder res = new StringBuilder();
+        printBaseElementType(t, res, locale);
+        printBrackets(t, res, locale);
+        return res.toString();
+    }
+
+    void printBaseElementType(Type t, StringBuilder sb, Locale locale) {
+        Type arrel = t;
+        while (arrel.hasTag(TypeTag.ARRAY)) {
+            arrel = arrel.unannotatedType();
+            arrel = ((ArrayType) arrel).elemtype;
+        }
+        sb.append(visit(arrel, locale));
+    }
+
+    void printBrackets(Type t, StringBuilder sb, Locale locale) {
+        Type arrel = t;
+        while (arrel.hasTag(TypeTag.ARRAY)) {
+            if (arrel.isAnnotated()) {
+                sb.append(' ');
+                sb.append(arrel.getAnnotationMirrors());
+                sb.append(' ');
+            }
+            sb.append("[]");
+            arrel = arrel.unannotatedType();
+            arrel = ((ArrayType) arrel).elemtype;
+        }
     }
 
     @Override
     public String visitClassType(ClassType t, Locale locale) {
-        StringBuffer buf = new StringBuffer();
-        if (t.getEnclosingType().tag == CLASS && t.tsym.owner.kind == Kinds.TYP) {
+        StringBuilder buf = new StringBuilder();
+        if (t.getEnclosingType().hasTag(CLASS) && t.tsym.owner.kind == Kinds.TYP) {
             buf.append(visit(t.getEnclosingType(), locale));
-            buf.append(".");
+            buf.append('.');
             buf.append(className(t, false, locale));
         } else {
             buf.append(className(t, true, locale));
@@ -192,7 +223,7 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
         if (t.getTypeArguments().nonEmpty()) {
             buf.append('<');
             buf.append(visitTypes(t.getTypeArguments(), locale));
-            buf.append(">");
+            buf.append('>');
         }
         return buf.toString();
     }
@@ -209,7 +240,7 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
 
     @Override
     public String visitWildcardType(WildcardType t, Locale locale) {
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         s.append(t.kind);
         if (t.kind != UNBOUND) {
             s.append(visit(t.type, locale));
@@ -227,6 +258,28 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
         return visitType(t, locale);
     }
 
+    @Override
+    public String visitAnnotatedType(AnnotatedType t, Locale locale) {
+        if (t.getAnnotationMirrors().nonEmpty()) {
+            if (t.unannotatedType().hasTag(TypeTag.ARRAY)) {
+                StringBuilder res = new StringBuilder();
+                printBaseElementType(t, res, locale);
+                printBrackets(t, res, locale);
+                return res.toString();
+            } else if (t.unannotatedType().hasTag(TypeTag.CLASS) &&
+                    t.unannotatedType().getEnclosingType() != Type.noType) {
+                return visit(t.unannotatedType().getEnclosingType(), locale) +
+                        ". " +
+                        t.getAnnotationMirrors() +
+                        " " + className((ClassType)t.unannotatedType(), false, locale);
+            } else {
+                return t.getAnnotationMirrors() + " " + visit(t.unannotatedType(), locale);
+            }
+        } else {
+            return visit(t.unannotatedType(), locale);
+        }
+    }
+
     public String visitType(Type t, Locale locale) {
         String s = (t.tsym == null || t.tsym.name == null)
                 ? localize(locale, "compiler.misc.type.none")
@@ -236,7 +289,7 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
 
     /**
      * Converts a class name into a (possibly localized) string. Anonymous
-     * inner classes gets converted into a localized string.
+     * inner classes get converted into a localized string.
      *
      * @param t the type of the class whose name is to be rendered
      * @param longform if set, the class' fullname is displayed - if unset the
@@ -247,9 +300,9 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
     protected String className(ClassType t, boolean longform, Locale locale) {
         Symbol sym = t.tsym;
         if (sym.name.length() == 0 && (sym.flags() & COMPOUND) != 0) {
-            StringBuffer s = new StringBuffer(visit(t.supertype_field, locale));
+            StringBuilder s = new StringBuilder(visit(t.supertype_field, locale));
             for (List<Type> is = t.interfaces_field; is.nonEmpty(); is = is.tail) {
-                s.append("&");
+                s.append('&');
                 s.append(visit(is.head, locale));
             }
             return s.toString();
@@ -258,7 +311,7 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
             ClassType norm = (ClassType) t.tsym.type;
             if (norm == null) {
                 s = localize(locale, "compiler.misc.anonymous.class", (Object) null);
-            } else if (norm.interfaces_field.nonEmpty()) {
+            } else if (norm.interfaces_field != null && norm.interfaces_field.nonEmpty()) {
                 s = localize(locale, "compiler.misc.anonymous.class",
                         visit(norm.interfaces_field.head, locale));
             } else {
@@ -286,14 +339,19 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
         if (!varArgs) {
             return visitTypes(args, locale);
         } else {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             while (args.tail.nonEmpty()) {
                 buf.append(visit(args.head, locale));
                 args = args.tail;
                 buf.append(',');
             }
-            if (args.head.tag == ARRAY) {
-                buf.append(visit(((ArrayType) args.head).elemtype, locale));
+            if (args.head.unannotatedType().hasTag(TypeTag.ARRAY)) {
+                buf.append(visit(((ArrayType) args.head.unannotatedType()).elemtype, locale));
+                if (args.head.getAnnotationMirrors().nonEmpty()) {
+                    buf.append(' ');
+                    buf.append(args.head.getAnnotationMirrors());
+                    buf.append(' ');
+                }
                 buf.append("...");
             } else {
                 buf.append(visit(args.head, locale));
@@ -311,14 +369,14 @@ public abstract class Printer implements Type.Visitor<String, Locale>, Symbol.Vi
 
     @Override
     public String visitMethodSymbol(MethodSymbol s, Locale locale) {
-        if ((s.flags() & BLOCK) != 0) {
+        if (s.isStaticOrInstanceInit()) {
             return s.owner.name.toString();
         } else {
             String ms = (s.name == s.name.table.names.init)
                     ? s.owner.name.toString()
                     : s.name.toString();
             if (s.type != null) {
-                if (s.type.tag == FORALL) {
+                if (s.type.hasTag(FORALL)) {
                     ms = "<" + visitTypes(s.type.getTypeArguments(), locale) + ">" + ms;
                 }
                 ms += "(" + printMethodArgs(

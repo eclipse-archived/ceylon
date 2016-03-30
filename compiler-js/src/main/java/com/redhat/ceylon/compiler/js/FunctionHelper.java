@@ -163,7 +163,7 @@ public class FunctionHelper {
         gen.endBlock(false, true);
         //Add reference to metamodel
         gen.out(gen.getNames().name(c), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(c, null, gen);
+        TypeUtils.encodeForRuntime(that, c, gen);
         gen.endLine(true);
 
         TypeGenerator.typeInitialization(xt, sts, c, new GenerateJsVisitor.PrototypeInitCallback() {

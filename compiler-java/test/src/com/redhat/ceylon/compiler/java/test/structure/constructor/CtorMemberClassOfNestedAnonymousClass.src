@@ -28,7 +28,7 @@ class CtorMemberClassOfNestedAnonymousClass implements .com.redhat.ceylon.compil
         
         class Ctor$other {
             
-            private Ctor$other() {
+            Ctor$other() {
             }
         }
         

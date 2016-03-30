@@ -63,6 +63,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
@@ -73,6 +74,7 @@ import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.test.RunSingleThreaded;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -93,6 +95,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 
+@RunSingleThreaded
 public class CMRTests extends CompilerTests {
     
     //
@@ -792,7 +795,8 @@ public class CMRTests extends CompilerTests {
         assertEquals(Boolean.TRUE, ceylonTask.call());
         compareErrors(collector.get(Diagnostic.Kind.WARNING), 
                 new CompilerError(Diagnostic.Kind.WARNING, null, 21, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
-                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
+                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> org.apache.httpcomponents.httpclient') and 'org.apache.httpcomponents:httpclient/4.3.3' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2')")
+
         );
     }
 
@@ -929,7 +933,7 @@ public class CMRTests extends CompilerTests {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR), 
-                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version '1' and version '2'"),
+                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version '1' (via import path 'cImportsATwice -> a') and version '2' (via import path 'cImportsATwice -> a')"),
                 new CompilerError(20, "source code imports two different versions of module 'a': version '1' and version '2'"),
                 new CompilerError(22, "duplicate module import: 'a'")
         );
@@ -983,7 +987,7 @@ public class CMRTests extends CompilerTests {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version '1' and version '2'"),
+                new CompilerError(20, "module (transitively) imports conflicting versions of dependency 'a': version '1' (via import path 'cImportsABIndirectlyFail -> bExportsA1') and version '2' (via import path 'cImportsABIndirectlyFail -> a')"),
                 new CompilerError(20, "source code imports two different versions of module 'a': version '1' and version '2'")
         );
     }
@@ -1174,7 +1178,7 @@ public class CMRTests extends CompilerTests {
         // JavaB/1 shared imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath()), null,
-                new CompilerError(2, "module (transitively) imports conflicting versions of dependency 'bug1062.javaA': version '1' and version '2'"),
+                new CompilerError(2, "module (transitively) imports conflicting versions of dependency 'bug1062.javaA': version '1' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.bug1062.ceylon -> bug1062.javaB') and version '2' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.bug1062.ceylon -> bug1062.javaA')"),
                 new CompilerError(2, "source code imports two different versions of module 'bug1062.javaA': version '1' and version '2'")
                 );
     }
@@ -1730,7 +1734,10 @@ public class CMRTests extends CompilerTests {
             Assert.assertNotNull(entry);
             try(InputStream is = zf.getInputStream(entry)){
                 DependencyResolver resolver = new MavenDependencyResolver();
-                resolver.resolveFromInputStream(is, coord, version, null);
+                ModuleInfo info = resolver.resolveFromInputStream(is, coord, version, null);
+                Assert.assertNotNull(info);
+                // FIXME: find one with dependencies
+                System.err.println(info.getDependencies());
             }
         }
     }

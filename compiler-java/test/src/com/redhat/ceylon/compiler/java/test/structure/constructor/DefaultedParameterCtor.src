@@ -96,7 +96,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
     
     private static final class one_ {
         
-        private one_() {
+        one_() {
         }
     }
     
@@ -114,7 +114,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
     
     private static final class two_ {
         
-        private two_() {
+        two_() {
         }
     }
     

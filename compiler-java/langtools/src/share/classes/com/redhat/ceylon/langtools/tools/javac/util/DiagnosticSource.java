@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,16 +25,15 @@
 
 package com.redhat.ceylon.langtools.tools.javac.util;
 
-import static com.redhat.ceylon.langtools.tools.javac.util.LayoutCharacters.*;
-
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.nio.CharBuffer;
-import java.util.Map;
-
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.EndPosTable;
+
+import static com.redhat.ceylon.langtools.tools.javac.util.LayoutCharacters.*;
 
 /**
  * A simple abstraction of a source file, as needed for use in a diagnostic message.
@@ -128,11 +127,11 @@ public class DiagnosticSource {
         }
     }
 
-    public Map<JCTree, Integer> getEndPosTable() {
+    public EndPosTable getEndPosTable() {
         return endPosTable;
     }
 
-    public void setEndPosTable(Map<JCTree, Integer> t) {
+    public void setEndPosTable(EndPosTable t) {
         if (endPosTable != null && endPosTable != t)
             throw new IllegalStateException("endPosTable already set");
         endPosTable = t;
@@ -199,7 +198,7 @@ public class DiagnosticSource {
     /** The underlying file object. */
     protected JavaFileObject fileObject;
 
-    protected Map<JCTree, Integer> endPosTable;
+    protected EndPosTable endPosTable;
 
     /** A soft reference to the content of the file object. */
     protected SoftReference<char[]> refBuf;

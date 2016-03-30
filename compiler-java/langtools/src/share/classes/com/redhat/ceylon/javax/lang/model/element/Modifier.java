@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -53,6 +53,11 @@ public enum Modifier {
     /** The modifier {@code protected} */       PROTECTED,
     /** The modifier {@code private} */         PRIVATE,
     /** The modifier {@code abstract} */        ABSTRACT,
+    /**
+     * The modifier {@code default}
+     * @since 1.8
+     */
+     DEFAULT,
     /** The modifier {@code static} */          STATIC,
     /** The modifier {@code final} */           FINAL,
     /** The modifier {@code transient} */       TRANSIENT,
@@ -61,16 +66,10 @@ public enum Modifier {
     /** The modifier {@code native} */          NATIVE,
     /** The modifier {@code strictfp} */        STRICTFP;
 
-
-    private String lowercase = null;    // modifier name in lowercase
-
     /**
      * Returns this modifier's name in lowercase.
      */
     public String toString() {
-        if (lowercase == null) {
-           lowercase = name().toLowerCase(java.util.Locale.US);
-        }
-        return lowercase;
+        return name().toLowerCase(java.util.Locale.US);
     }
 }

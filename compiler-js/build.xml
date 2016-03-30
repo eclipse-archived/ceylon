@@ -29,6 +29,7 @@
         <pathelement path="${antlr.lib}"/>
         <pathelement path="${json.lib}" />
         <pathelement path="${ceylon.common.lib}" />
+        <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
@@ -51,6 +52,7 @@
             <classpath>
                 <pathelement path="${antlr.lib}"/>
                 <pathelement path="${ceylon.common.lib}" />
+                <pathelement path="${ceylon.cli.lib}" />
                 <pathelement path="${ceylon.model.lib}" />
                 <pathelement path="${ceylon.typechecker.lib}" />
                 <pathelement path="${ceylon.module-resolver.lib}" />
@@ -126,6 +128,7 @@
             <classpath>
                 <pathelement location="${ceylon.common.lib}" />
                 <pathelement location="${ceylon.model.lib}" />
+                <pathelement location="${ceylon.cli.lib}" />
                 <pathelement location="${ceylon.typechecker.lib}" />
                 <pathelement location="${ceylon.module-resolver.lib}" />
                 <pathelement location="${ceylon.compiler.lib}" />
@@ -200,7 +203,7 @@
             <fileset dir="${basedir}/bin">
             </fileset>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
         </copy>
     </target>

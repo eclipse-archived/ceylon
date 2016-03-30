@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,7 +25,21 @@
 
 package com.redhat.ceylon.langtools.tools.javac.sym;
 
-import static com.redhat.ceylon.javax.tools.JavaFileObject.Kind.CLASS;
+import com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl;
+import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
+import com.redhat.ceylon.langtools.tools.javac.code.Scope;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Attribute;
+import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
+import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Types;
+import com.redhat.ceylon.langtools.tools.javac.jvm.ClassWriter;
+import com.redhat.ceylon.langtools.tools.javac.jvm.Pool;
+import com.redhat.ceylon.langtools.tools.javac.processing.JavacProcessingEnvironment;
+import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.Names;
+import com.redhat.ceylon.langtools.tools.javac.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +47,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -84,7 +99,10 @@ import com.redhat.ceylon.langtools.tools.javac.util.Pair;
  *
  * @author Peter von der Ah\u00e9
  */
-@SupportedOptions({"com.redhat.ceylon.langtools.tools.javac.sym.Jar","com.redhat.ceylon.langtools.tools.javac.sym.Dest"})
+@SupportedOptions({
+    "com.redhat.ceylon.langtools.tools.javac.sym.Jar",
+    "com.redhat.ceylon.langtools.tools.javac.sym.Dest",
+    "com.redhat.ceylon.langtools.tools.javac.sym.Profiles"})
 @SupportedAnnotationTypes("*")
 public class CreateSymbols extends AbstractProcessor {
 
@@ -102,14 +120,21 @@ public class CreateSymbols extends AbstractProcessor {
             if (renv.processingOver())
                 createSymbols();
         } catch (IOException e) {
+            CharSequence msg = e.getLocalizedMessage();
+            if (msg == null)
+                msg = e.toString();
             processingEnv.getMessager()
-                .printMessage(Diagnostic.Kind.ERROR, e.getLocalizedMessage());
+                .printMessage(Diagnostic.Kind.ERROR, msg);
         } catch (Throwable t) {
+            t.printStackTrace();
             Throwable cause = t.getCause();
             if (cause == null)
                 cause = t;
+            CharSequence msg = cause.getLocalizedMessage();
+            if (msg == null)
+                msg = cause.toString();
             processingEnv.getMessager()
-                .printMessage(Diagnostic.Kind.ERROR, cause.getLocalizedMessage());
+                .printMessage(Diagnostic.Kind.ERROR, msg);
         }
         return true;
     }
@@ -120,12 +145,17 @@ public class CreateSymbols extends AbstractProcessor {
         Set<String> documented = new HashSet<String>();
         Set<PackageSymbol> packages =
             ((JavacProcessingEnvironment)processingEnv).getSpecifiedPackages();
-        String jarName = processingEnv.getOptions().get("com.redhat.ceylon.langtools.tools.javac.sym.Jar");
+        Map<String,String> pOptions = processingEnv.getOptions();
+        String jarName = pOptions.get("com.redhat.ceylon.langtools.tools.javac.sym.Jar");
         if (jarName == null)
             throw new RuntimeException("Must use -Acom.redhat.ceylon.langtools.tools.javac.sym.Jar=LOCATION_OF_JAR");
-        String destName = processingEnv.getOptions().get("com.redhat.ceylon.langtools.tools.javac.sym.Dest");
+        String destName = pOptions.get("com.redhat.ceylon.langtools.tools.javac.sym.Dest");
         if (destName == null)
             throw new RuntimeException("Must use -Acom.redhat.ceylon.langtools.tools.javac.sym.Dest=LOCATION_OF_JAR");
+        String profileSpec=pOptions.get("com.redhat.ceylon.langtools.tools.javac.sym.Profiles");
+        if (profileSpec == null)
+            throw new RuntimeException("Must use -Acom.redhat.ceylon.langtools.tools.javac.sym.Profiles=PROFILES_SPEC");
+        Profiles profiles = Profiles.read(new File(profileSpec));
 
         for (PackageSymbol psym : packages) {
             String name = psym.getQualifiedName().toString();
@@ -165,16 +195,24 @@ public class CreateSymbols extends AbstractProcessor {
             tool.getTask(null, fm, null, options, null, null);
         com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler compiler =
             com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler.instance(task.getContext());
-        ClassReader reader = ClassReader.instance(task.getContext());
         ClassWriter writer = ClassWriter.instance(task.getContext());
         Symtab syms = Symtab.instance(task.getContext());
-        Attribute.Compound proprietary =
+        Names names = Names.instance(task.getContext());
+        Attribute.Compound proprietaryAnno =
             new Attribute.Compound(syms.proprietaryType,
                                    List.<Pair<Symbol.MethodSymbol,Attribute>>nil());
+        Attribute.Compound[] profileAnnos = new Attribute.Compound[profiles.getProfileCount() + 1];
+        Symbol.MethodSymbol profileValue = (MethodSymbol) syms.profileType.tsym.members().lookup(names.value).sym;
+        for (int i = 1; i < profileAnnos.length; i++) {
+            profileAnnos[i] = new Attribute.Compound(syms.profileType,
+                    List.<Pair<Symbol.MethodSymbol, Attribute>>of(
+                    new Pair<Symbol.MethodSymbol, Attribute>(profileValue, new Attribute.Constant(syms.intType, i))));
+        }
 
         Type.moreInfo = true;
-        Pool pool = new Pool();
-        for (JavaFileObject file : fm.list(jarLocation, "", EnumSet.of(CLASS), true)) {
+        Types types = Types.instance(task.getContext());
+        Pool pool = new Pool(types);
+        for (JavaFileObject file : fm.list(jarLocation, "", EnumSet.of(JavaFileObject.Kind.CLASS), true)) {
             String className = fm.inferBinaryName(jarLocation, file);
             int index = className.lastIndexOf('.');
             String pckName = index == -1 ? "" : className.substring(0, index);
@@ -206,10 +244,11 @@ public class CreateSymbols extends AbstractProcessor {
             }
             ClassSymbol cs = (ClassSymbol) sym;
             if (addLegacyAnnotation) {
-                cs.attributes_field = (cs.attributes_field == null)
-                    ? List.of(proprietary)
-                    : cs.attributes_field.prepend(proprietary);
+                cs.prependAttributes(List.of(proprietaryAnno));
             }
+            int p = profiles.getProfile(cs.fullname.toString().replace(".", "/"));
+            if (0 < p && p < profileAnnos.length)
+                cs.prependAttributes(List.of(profileAnnos[p]));
             writeClass(pool, cs, writer);
         }
 
@@ -319,7 +358,7 @@ public class CreateSymbols extends AbstractProcessor {
             "javax.activation",
             "javax.activity",
             "javax.annotation",
-            "javax.annotation.processing",
+            "com.redhat.ceylon.javax.annotation.processing",
             "javax.crypto",
             "javax.crypto.interfaces",
             "javax.crypto.spec",
@@ -332,10 +371,10 @@ public class CreateSymbols extends AbstractProcessor {
             "javax.imageio.stream",
             "javax.jws",
             "javax.jws.soap",
-            "javax.lang.model",
-            "javax.lang.model.element",
-            "javax.lang.model.type",
-            "javax.lang.model.util",
+            "com.redhat.ceylon.javax.lang.model",
+            "com.redhat.ceylon.javax.lang.model.element",
+            "com.redhat.ceylon.javax.lang.model.type",
+            "com.redhat.ceylon.javax.lang.model.util",
             "javax.management",
             "javax.management.loading",
             "javax.management.monitor",
@@ -393,7 +432,7 @@ public class CreateSymbols extends AbstractProcessor {
             "javax.swing.plaf.metal",
             "javax.swing.plaf.multi",
             "javax.swing.plaf.synth",
-            "javax.tools",
+            "com.redhat.ceylon.javax.tools",
             "javax.transaction",
             "javax.transaction.xa",
             "javax.xml.parsers",

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,17 +25,10 @@
 
 package com.redhat.ceylon.javax.lang.model.util;
 
-import static com.redhat.ceylon.javax.lang.model.SourceVersion.*;
-import static com.redhat.ceylon.javax.lang.model.element.ElementKind.*;
-
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
-import com.redhat.ceylon.javax.lang.model.element.VariableElement;
-import com.redhat.ceylon.javax.lang.model.util.ElementScanner6;
-
+import com.redhat.ceylon.javax.lang.model.element.*;
 import com.redhat.ceylon.javax.annotation.processing.SupportedSourceVersion;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
-import com.redhat.ceylon.javax.lang.model.element.*;
+import static com.redhat.ceylon.javax.lang.model.SourceVersion.*;
 
 
 /**
@@ -92,6 +85,7 @@ import com.redhat.ceylon.javax.lang.model.element.*;
  *            additional parameter.
  *
  * @see ElementScanner6
+ * @see ElementScanner8
  * @since 1.7
  */
 @SupportedSourceVersion(RELEASE_7)
@@ -107,6 +101,8 @@ public class ElementScanner7<R, P> extends ElementScanner6<R, P> {
     /**
      * Constructor for concrete subclasses; uses the argument for the
      * default value.
+     *
+     * @param defaultValue the default value
      */
     protected ElementScanner7(R defaultValue){
         super(defaultValue);

@@ -61,7 +61,7 @@
  * <p>For example, if {@code com.vendor.VendorJavaCompiler} is a
  * provider of the {@code JavaCompiler} tool then its jar file
  * would contain the file {@code
- * META-INF/services/javax.tools.JavaCompiler}.  This file would
+ * META-INF/services/com.redhat.ceylon.javax.tools.JavaCompiler}.  This file would
  * contain the single line:
  *
  * <p>{@code com.vendor.VendorJavaCompiler}

@@ -53,7 +53,7 @@ import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.tools.ModuleSpec;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -378,7 +378,7 @@ public abstract class CompilerTests {
     protected void compileIgnoringErrors(ExpectedError expectedErrors, String... ceylon) {
         ErrorCollector c = new ErrorCollector();
         ExitState exitState = getCompilerTask(c, ceylon).call2();
-        assert(exitState.javacExitCode == Main.EXIT_ERROR);
+        assert(exitState.javacExitCode.exitCode == Main.EXIT_ERROR);
         assert(exitState.ceylonState == CeylonState.ERROR);
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors, 
@@ -1009,7 +1009,7 @@ public abstract class CompilerTests {
         try{
         	
         	CeylonJigsawTool jigsawTool = new CeylonJigsawTool();
-        	jigsawTool.setOutputFolder(mlib);
+        	jigsawTool.setOut(mlib);
         	jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
         	jigsawTool.setModule(module.getName());
         	jigsawTool.run();

@@ -46,6 +46,8 @@ import com.redhat.ceylon.model.typechecker.util.TypePrinter;
  */
 public class Type extends Reference {
     
+    private static final Type NullType = new Type();
+    
     private TypeDeclaration declaration;
     private String underlyingType;
     private boolean isRaw;
@@ -1441,9 +1443,8 @@ public class Type extends Reference {
         boolean canCache = canCacheSupertype(dec);
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
-            if (cache.containsKey(this, dec)) {
-                return cache.get(this, dec);
-            }
+            Type ret = cache.get(this, dec);
+            if(ret != null) return ret == NullType ? null : ret;
         }
         
         while (dec.isAlias()) {
@@ -1476,7 +1477,7 @@ public class Type extends Reference {
         
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
-            cache.put(this, dec, superType);
+            cache.put(this, dec, superType == null ? NullType : superType);
         }
         return superType;
     }

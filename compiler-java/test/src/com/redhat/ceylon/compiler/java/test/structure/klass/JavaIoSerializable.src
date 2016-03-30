@@ -250,7 +250,7 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
     private static final class foo_ {
         
-        private foo_() {
+        foo_() {
         }
     }
     
@@ -278,7 +278,7 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
     private static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     
@@ -329,7 +329,7 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
     private static final class foo_ {
         
-        private foo_() {
+        foo_() {
         }
     }
     
@@ -357,7 +357,7 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
     private static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     
@@ -447,7 +447,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
     static final class JavaIoSerializableValueCtors$foo {
         
-        private JavaIoSerializableValueCtors$foo() {
+        JavaIoSerializableValueCtors$foo() {
         }
     }
     private transient JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$foo = null;
@@ -467,7 +467,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
     static final class JavaIoSerializableValueCtors$bar {
         
-        private JavaIoSerializableValueCtors$bar() {
+        JavaIoSerializableValueCtors$bar() {
         }
     }
     private transient JavaIoSerializableValueCtors $instance$JavaIoSerializableValueCtors$bar = null;
@@ -591,7 +591,7 @@ class JavaIoSerializableQuoting implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("val")
     private static final class val_ {
         
-        private val_() {
+        val_() {
         }
     }
     

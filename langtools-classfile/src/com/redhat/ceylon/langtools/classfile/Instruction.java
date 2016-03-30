@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,6 +24,8 @@
  */
 
 package com.redhat.ceylon.langtools.classfile;
+
+import java.util.Locale;
 
 /**
  * See JVMS, chapter 6.
@@ -71,8 +73,13 @@ public class Instruction {
         SHORT(3),
         /** Wide opcode is not followed by any operands. */
         WIDE_NO_OPERANDS(2),
-        /** Wide opcode is followed by a 2-byte reference to a local variable. */
+        /** Wide opcode is followed by a 2-byte index into the local variables array. */
         WIDE_LOCAL(4),
+        /** Wide opcode is followed by a 2-byte index into the constant pool. */
+        WIDE_CPREF_W(4),
+        /** Wide opcode is followed by a 2-byte index into the constant pool,
+         *  and a signed short value. */
+        WIDE_CPREF_W_SHORT(6),
         /** Wide opcode is followed by a 2-byte reference to a local variable,
          *  and a signed short value. */
         WIDE_LOCAL_SHORT(6),
@@ -97,13 +104,13 @@ public class Instruction {
         R visitArrayType(Instruction instr, TypeKind kind, P p);
         /** See {@link Kind#BRANCH}, {@link Kind#BRANCH_W}. */
         R visitBranch(Instruction instr, int offset, P p);
-        /** See {@link Kind#CPREF}, {@link Kind#CPREF_W}. */
+        /** See {@link Kind#CPREF}, {@link Kind#CPREF_W}, {@link Kind#WIDE_CPREF_W}. */
         R visitConstantPoolRef(Instruction instr, int index, P p);
-        /** See {@link Kind#CPREF_W_UBYTE}, {@link Kind#CPREF_W_UBYTE_ZERO}. */
+        /** See {@link Kind#CPREF_W_UBYTE}, {@link Kind#CPREF_W_UBYTE_ZERO}, {@link Kind#WIDE_CPREF_W_SHORT}. */
         R visitConstantPoolRefAndValue(Instruction instr, int index, int value, P p);
         /** See {@link Kind#LOCAL}, {@link Kind#WIDE_LOCAL}. */
         R visitLocal(Instruction instr, int index, P p);
-        /** See {@link Kind#LOCAL_UBYTE}, {@link Kind#WIDE_LOCAL_SHORT}. */
+        /** See {@link Kind#LOCAL_BYTE}. */
         R visitLocalAndValue(Instruction instr, int index, int value, P p);
         /** See {@link Kind#DYNAMIC}. */
         R visitLookupSwitch(Instruction instr, int default_, int npairs, int[] matches, int[] offsets, P p);
@@ -206,7 +213,7 @@ public class Instruction {
         if (opcode == null)
             return "bytecode " + getUnsignedByte(0);
         else
-            return opcode.toString().toLowerCase();
+            return opcode.toString().toLowerCase(Locale.US);
     }
 
     /** Get the length, in bytes, of this instruction, including the opcode
@@ -318,9 +325,16 @@ public class Instruction {
             case WIDE_LOCAL:
                 return visitor.visitLocal(this, getUnsignedShort(2), p);
 
+            case WIDE_CPREF_W:
+                return visitor.visitConstantPoolRef(this, getUnsignedShort(2), p);
+
+            case WIDE_CPREF_W_SHORT:
+                return visitor.visitConstantPoolRefAndValue(
+                        this, getUnsignedShort(2), getUnsignedByte(4), p);
+
             case WIDE_LOCAL_SHORT:
                 return visitor.visitLocalAndValue(
-                        this, getUnsignedShort(2), getUnsignedByte(4), p);
+                        this, getUnsignedShort(2), getShort(4), p);
 
             case UNKNOWN:
                 return visitor.visitUnknown(this, p);

@@ -48,6 +48,10 @@ public class StructureTests2 extends CompilerTests {
         compareWithJavaSource("toplevel/ToplevelAttributeLate");
     }
     @Test
+    public void testTopToplevelAttributeLate2(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate2", "toplevel/ToplevelAttributeLate2.ceylon");
+    }
+    @Test
     public void testTopToplevelAttributeGenerics(){
         compareWithJavaSource("toplevel/ToplevelAttributeGenerics");
     }

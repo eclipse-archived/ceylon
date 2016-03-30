@@ -20,8 +20,9 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 
 public class JavacLogger implements Logger {
@@ -30,7 +31,7 @@ public class JavacLogger implements Logger {
     private Log log;
 
     public JavacLogger(Options options, Log log) {
-        this.debugEnabled = options.get(OptionName.VERBOSE) != null || options.get(OptionName.VERBOSE + ":cmr") != null;
+        this.debugEnabled = options.get(Option.VERBOSE) != null || options.get(Option.VERBOSE + ":cmr") != null;
         this.log = log;
     }
 
@@ -52,7 +53,7 @@ public class JavacLogger implements Logger {
     @Override
     public void debug(String str) {
         if(debugEnabled)
-            log.printLines(log.errWriter, "["+str+"]");
+            log.printRawLines(WriterKind.ERROR, "["+str+"]");
     }
 
 }

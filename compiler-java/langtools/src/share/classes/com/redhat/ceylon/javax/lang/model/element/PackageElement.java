@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2012, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,6 +24,8 @@
  */
 
 package com.redhat.ceylon.javax.lang.model.element;
+
+import java.util.List;
 
 import com.redhat.ceylon.javax.lang.model.element.Element;
 import com.redhat.ceylon.javax.lang.model.element.Name;
@@ -53,13 +55,25 @@ public interface PackageElement extends Element, QualifiedNameable {
 
     /**
      * Returns the simple name of this package.  For an unnamed
-     * package, an empty name is returned
+     * package, an empty name is returned.
      *
      * @return the simple name of this package or an empty name if
      * this is an unnamed package
      */
     @Override
     Name getSimpleName();
+
+    /**
+     * Returns the {@linkplain NestingKind#TOP_LEVEL top-level}
+     * classes and interfaces within this package.  Note that
+     * subpackages are <em>not</em> considered to be enclosed by a
+     * package.
+     *
+     * @return the top-level classes and interfaces within this
+     * package
+     */
+    @Override
+    List<? extends Element> getEnclosedElements();
 
     /**
      * Returns {@code true} is this is an unnamed package and {@code

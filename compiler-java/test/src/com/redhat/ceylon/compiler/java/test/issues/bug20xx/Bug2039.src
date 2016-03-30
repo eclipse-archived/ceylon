@@ -19,7 +19,7 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     public static final class test2_ {
         
-        private test2_() {
+        test2_() {
         }
     }
     

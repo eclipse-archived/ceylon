@@ -27,6 +27,7 @@
     <path id="tool.provider.classpath">
         <pathelement path="${jboss-modules.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.compiler.lib}"/>
         <pathelement path="${ceylon.js.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
@@ -48,7 +49,6 @@
         <pathelement path="${build.test}"/>
         <pathelement path="${ceylon.typechecker.lib}"/>
         <pathelement path="${ceylon.compiler.lib}"/>
-        <pathelement path="${jandex.lib}"/>
     </path>
 
     <!-- ################################################################## -->

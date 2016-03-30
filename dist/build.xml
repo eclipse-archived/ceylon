@@ -19,14 +19,15 @@
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon.language,ceylon-runtime" />
-    <property name="moddirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime" />
-    <property name="testdirs" value="common,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime" />
+    <property name="modules" value="ceylon-common,ceylon-cli,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon-java-main,ceylon.language,ceylon-runtime" />
+    <property name="moddirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
+    <property name="testdirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
     <property name="projects.base.dir" location="${basedir}/.." />
     <property name="project-common.dir" location="${projects.base.dir}/common"/>
+    <property name="project-cli.dir" location="${projects.base.dir}/cli"/>
     <property name="project-model.dir" location="${projects.base.dir}/model"/>
     <property name="project-compiler.dir" location="${projects.base.dir}/compiler-java"/>
     <property name="project-langtools-classfile.dir" value="${projects.base.dir}/langtools-classfile"/>
@@ -36,6 +37,7 @@
     <property name="project-runtime.dir" location="${projects.base.dir}/runtime"/>
     <property name="project-tool-provider.dir" value="${projects.base.dir}/tool-provider"/>
     <property name="project-js.dir" location="${projects.base.dir}/compiler-js"/>
+    <property name="project-java-main.dir" location="${projects.base.dir}/java-main"/>
     
     <property name="github-url" value="https://github.com/"/>
     <property name="dist.name" value="ceylon-${ceylon.version}"/>
@@ -142,6 +144,7 @@ Some super-charged ant tasks:
             </reposet>
             <moduleset>
                 <module name="com.redhat.ceylon.common" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.cli" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.model" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
@@ -152,7 +155,6 @@ Some super-charged ant tasks:
                 <module name="ceylon.bootstrap" version="${ceylon.version}"/>
                 <module name="ceylon.runtime" version="${ceylon.version}"/>
                 <module name="ceylon.language" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.maven-support" version="2.0"/>
             </moduleset>
         </ceylon-copy>
     </target>
@@ -322,10 +324,10 @@ Use this when NOT doing a release!">
                 <include name="**/*.xml"/>
             </fileset>
             <filtermapper>
-                <replacestring from="_version_" to="${ceylon.base.version}"/>
+                <replacestring from="_version_" to="${ceylon.version}"/>
             </filtermapper>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
         </copy>
         <!-- Now copy the JARs -->
@@ -346,8 +348,7 @@ Use this when NOT doing a release!">
     <target name="copy-compiler-binaries">
         <mkdir dir="${ceylon.dist.dir}/bin"/>
         <copy todir="${ceylon.dist.dir}/bin">
-            <fileset dir="${project-common.dir}/build/bin">
-                <include name="java.bat"/>
+            <fileset dir="${project-cli.dir}/build/bin">
                 <include name="ceylon"/>
                 <include name="ceylon.bat"/>
                 <include name="ceylon-completion.bash"/>
@@ -424,7 +425,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-compiler" depends="install-common,install-langtools-classfile,install-model,install-cmr,install-typechecker,install-compiler-nodeps" />
+    <target name="install-compiler" depends="install-common,install-cli,install-langtools-classfile,install-model,install-cmr,install-typechecker,install-compiler-nodeps" />
     <target name="install-compiler-nodeps">
         <ant antfile="${project-compiler.dir}/build.xml" target="publish" dir="${project-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -433,7 +434,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-js" depends="install-common,install-model,install-cmr,install-typechecker,install-js-nodeps" />
+    <target name="install-js" depends="install-common,install-cli,install-model,install-cmr,install-typechecker,install-js-nodeps" />
     <target name="install-js-nodeps">
         <ant antfile="${project-js.dir}/build.xml" target="publish" dir="${project-js.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -444,7 +445,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-typechecker" depends="install-common,install-model,install-cmr,install-typechecker-nodeps" />
+    <target name="install-typechecker" depends="install-common,install-cli,install-model,install-cmr,install-typechecker-nodeps" />
     <target name="install-typechecker-nodeps">
         <ant antfile="${project-spec.dir}/build.xml" target="publish" dir="${project-spec.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -453,7 +454,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-language" depends="install-common,install-model,install-cmr,install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,install-language-nodeps" />
+    <target name="install-language" depends="install-common,install-cli,install-model,install-cmr,install-compiler,install-js,copy-compiler-binaries,copy-jvm-compiler-libraries,install-language-nodeps" />
     <target name="install-language-nodeps">
         <ant antfile="${project-language.dir}/build.xml" target="publish" dir="${project-language.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -472,6 +473,16 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
+    <target name="install-cli" depends="install-common,install-cli-nodeps" />
+    <target name="install-cli-nodeps">
+        <ant antfile="${project-cli.dir}/build.xml" target="publish" dir="${project-cli.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+            <property name="buildid" value="${buildid}" />
+        </ant>
+    </target>
+
     <target name="install-model" depends="install-common,install-langtools-classfile,install-model-nodeps" />
     <target name="install-model-nodeps">
         <ant antfile="${project-model.dir}/build.xml" target="publish" dir="${project-model.dir}" inheritall="false">
@@ -481,7 +492,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-cmr" depends="install-common,install-model,install-cmr-nodeps" />
+    <target name="install-cmr" depends="install-common,install-cli,install-model,install-cmr-nodeps" />
     <target name="install-cmr-nodeps">
         <ant antfile="${project-module-resolver.dir}/build.xml" target="publish" dir="${project-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -490,7 +501,7 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-tool-provider" depends="install-common,install-model,install-cmr,install-compiler,install-js,install-language,install-tool-provider-nodeps" />
+    <target name="install-tool-provider" depends="install-common,install-cli,install-model,install-cmr,install-compiler,install-js,install-language,install-tool-provider-nodeps" />
     <target name="install-tool-provider-nodeps">
         <ant antfile="${project-tool-provider.dir}/build.xml" target="publish" dir="${project-tool-provider.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -499,7 +510,16 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-runtime" depends="install-common,install-model,install-cmr,install-tool-provider,install-language,install-runtime-nodeps" />
+    <target name="install-java-main" depends="install-common,install-model,install-cmr,install-language,install-java-main-nodeps" />
+    <target name="install-java-main-nodeps">
+        <ant antfile="${project-java-main.dir}/build.xml" target="publish" dir="${project-java-main.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-runtime" depends="install-common,install-model,install-cmr,install-tool-provider,install-language,install-java-main,install-runtime-nodeps" />
     <target name="install-runtime-nodeps">
         <ant antfile="${project-runtime.dir}/build.xml" target="publish" dir="${project-runtime.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
@@ -566,6 +586,7 @@ Use this when NOT doing a release!">
         <property file="../common/common-build.properties" />
         <path id="compiler.classpath">
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/cli/${module.com.redhat.ceylon.cli.version}/com.redhat.ceylon.cli-${module.com.redhat.ceylon.cli.version}.jar"/>
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
@@ -655,7 +676,13 @@ Use this when NOT doing a release!">
                                 </then>
                             </if>
                             <if>
-                                <equals arg1="@{moduleOptional}" arg2="true"/>
+                            	<or>
+                                    <equals arg1="@{moduleOptional}" arg2="true"/>
+                                    <and>
+                                        <equals arg1="${Bundle-SymbolicName}" arg2="ceylon.bootstrap"/>
+                                        <equals arg1="@{moduleName}" arg2="ceylon.runtime"/>
+                                    </and>
+                        		</or>
                                 <then>
                                     <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
                                 </then>
@@ -681,7 +708,7 @@ Use this when NOT doing a release!">
         <if>
             <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
             <then>
-                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${ceylon.base.version},com.redhat.ceylon.compiler.java.*;bundle-version=${ceylon.base.version}${line.separator}</echo>
+                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${ceylon.version},com.redhat.ceylon.compiler.java.*;bundle-version=${ceylon.version}${line.separator}</echo>
             </then>
         	
         </if>

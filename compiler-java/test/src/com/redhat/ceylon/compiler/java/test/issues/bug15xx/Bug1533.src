@@ -98,7 +98,7 @@ class Bug1533 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public final <R, A extends .ceylon.language.Sequential<? extends .java.lang.Object>>R tpUnionEmpty(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .java.lang.Object callable, final .java.lang.Object args) {
-        return .com.redhat.ceylon.compiler.java.Util.<R>apply((.ceylon.language.Callable<? extends R>)(.ceylon.language.Callable)callable, (.ceylon.language.Sequential)args);
+        return .com.redhat.ceylon.compiler.java.Util.<R>apply((ceylon.language.Callable)callable, (.ceylon.language.Sequential)args);
     }
     
     @.java.lang.Override

@@ -8964,7 +8964,7 @@ public class ExpressionVisitor extends Visitor {
             pack = unit.getPackage();
         }
         else {
-            pack = importedPackage(path);
+            pack = importedPackage(path, unit.getModuleSourceMapper());
         }
         path.setModel(pack);
         that.setTypeModel(unit.getPackageDeclarationType());
@@ -9443,11 +9443,11 @@ public class ExpressionVisitor extends Visitor {
                                 inBackends))) {
             Declaration d = declarationScope(that.getScope());
             if (!inBackends.none()) {
-                that.addError("illlegal reference to native declaration '" + 
+                that.addError("illegal reference to native declaration '" + 
                         dec.getName(unit) + "': native declaration '" +
                         d.getName(unit) + "' has a different backend");
             } else {
-                that.addError("illlegal reference to native declaration '" +
+                that.addError("illegal reference to native declaration '" +
                         dec.getName(unit) + "': declaration '" +
                         d.getName(unit) + "' is not native (mark it or the module native)");
             }

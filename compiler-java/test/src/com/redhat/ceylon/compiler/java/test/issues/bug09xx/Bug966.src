@@ -245,6 +245,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public <Result>.ceylon.language.List<? extends Result> mapElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> mapping) {
+        return $ceylon$language$List$this$.mapElements($reified$Result, mapping);
+    }
+    
+    @.java.lang.Override
     public final <Other>long patch$from(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .ceylon.language.List<? extends Other> list) {
         return $ceylon$language$List$this$.patch$from($reified$Other, list);
     }

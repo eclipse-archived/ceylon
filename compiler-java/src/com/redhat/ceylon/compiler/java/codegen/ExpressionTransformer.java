@@ -53,7 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
@@ -814,7 +814,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
                 if(ret instanceof JCTree.JCUnary){
                     JCTree.JCUnary unary = (JCTree.JCUnary)ret;
-                    if(unary.getTag() == JCTree.NEG
+                    if(unary.getTag() == JCTree.Tag.NEG
                             && unary.arg instanceof JCTree.JCLiteral){
                         Object value = ((JCTree.JCLiteral)unary.arg).value;
                         if(value instanceof Integer){
@@ -1081,7 +1081,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.CharLiteral lit) {
-        return make().Literal(TypeTags.INT, literalValue(lit));
+        return make().Literal(TypeTag.INT, literalValue(lit));
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
@@ -1758,7 +1758,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.NotOp op) {
         // No need for an erasure cast since Term must be Boolean and we never need to erase that
         JCExpression term = transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), null);
-        JCUnary jcu = at(op).Unary(JCTree.NOT, term);
+        JCUnary jcu = at(op).Unary(JCTree.Tag.NOT, term);
         return jcu;
     }
 
@@ -1803,7 +1803,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         JCExpression expression = transformExpression(op.getTerm(), BoxingStrategy.BOXED, termType);
         at(op);
-        return  make().Binary(JCTree.NE, expression, makeNull());
+        return  make().Binary(JCTree.Tag.NE, expression, makeNull());
     }
 
     public JCExpression transform(Tree.PositiveOp op) {
@@ -1828,7 +1828,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(op.getTerm() instanceof Tree.QualifiedMemberExpression){
             JCExpression ret = checkForByteLiterals((Tree.QualifiedMemberExpression)op.getTerm());
             if(ret != null)
-                return at(op).Unary(JCTree.NEG, ret);
+                return at(op).Unary(JCTree.Tag.NEG, ret);
         }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
     }
@@ -1883,8 +1883,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         // we don't care about the left erased type, since equals() is on Object
         JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null, EXPR_WIDEN_PRIM);
         // we don't care about the right erased type, since equals() is on Object
-        JCExpression expr = transformOverridableBinaryOperator(op.getLeftTerm(), op.getRightTerm(), null, operator, optimisationStrategy, left, op.getTypeModel());
-        return at(op).Unary(JCTree.NOT, expr);
+        JCExpression expr = transformOverridableBinaryOperator(op, op.getLeftTerm(), op.getRightTerm(), null, operator, optimisationStrategy, left, op.getTypeModel());
+        return at(op).Unary(JCTree.Tag.NOT, expr);
     }
 
     public JCExpression transform(Tree.EqualOp op) {
@@ -1944,7 +1944,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression right = transformExpression(elseTerm, BoxingStrategy.BOXED, rightExpectedType);
         Naming.SyntheticName varName = naming.temp();
         JCExpression varIdent = varName.makeIdent();
-        JCExpression test = at(op).Binary(JCTree.NE, varIdent, makeNull());
+        JCExpression test = at(op).Binary(JCTree.Tag.NE, varIdent, makeNull());
         JCExpression cond = make().Conditional(test , varIdent, right);
         JCExpression typeExpr = makeJavaType(typeModel, JT_NO_PRIMITIVES);
         return makeLetExpr(varName, null, typeExpr, left, cond);
@@ -2009,11 +2009,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 makeVar(yName, make().Type(javaType), y),
                 makeVar(zName, make().Type(syms().longType), z),
                 makeVar(wName, make().Type(syms().longType), w)),
-                make().Binary(JCTree.AND, 
-                        make().Binary(JCTree.GT, zName.makeIdent(), make().Literal(0L)),
-                        make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.LE, make().Literal(0L), wName.makeIdent()),
-                                make().Binary(JCTree.LT, wName.makeIdent(), zName.makeIdent()))
+                make().Binary(JCTree.Tag.AND, 
+                        make().Binary(JCTree.Tag.GT, zName.makeIdent(), make().Literal(0L)),
+                        make().Binary(JCTree.Tag.AND, 
+                                make().Binary(JCTree.Tag.LE, make().Literal(0L), wName.makeIdent()),
+                                make().Binary(JCTree.Tag.LT, wName.makeIdent(), zName.makeIdent()))
                         
                                 ));
     }
@@ -2033,16 +2033,16 @@ public class ExpressionTransformer extends AbstractTransformer {
                 makeVar(xName, make().Type(type), x),
                 makeVar(firstName, make().Type(type), first),
                 makeVar(lastName, make().Type(type), last),
-                makeVar(recursiveName, make().Type(syms().booleanType), make().Binary(JCTree.AND,
-                        make().Binary(JCTree.GT,
+                makeVar(recursiveName, make().Type(syms().booleanType), make().Binary(JCTree.Tag.AND,
+                        make().Binary(JCTree.Tag.GT,
                                 firstName.makeIdent(),
-                                make().Binary(JCTree.PLUS, firstName.makeIdent(), make().Literal(1L))),
-                        make().Binary(JCTree.GT,
-                                make().Binary(JCTree.MINUS, lastName.makeIdent(), make().Literal(1L)),
+                                make().Binary(JCTree.Tag.PLUS, firstName.makeIdent(), make().Literal(1L))),
+                        make().Binary(JCTree.Tag.GT,
+                                make().Binary(JCTree.Tag.MINUS, lastName.makeIdent(), make().Literal(1L)),
                                 lastName.makeIdent())))),
                 make().Conditional(recursiveName.makeIdent(), 
                         // x.offset(first) <= last.offset(first)
-                        make().Binary(JCTree.LE,
+                        make().Binary(JCTree.Tag.LE,
                                 make().Apply(null, 
                                         naming.makeSelect(make().QualIdent(ceylonType.tsym), "offset"),
                                         List.<JCExpression>of(
@@ -2053,13 +2053,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                                         List.<JCExpression>of(
                                                 lastName.makeIdent(),
                                                 firstName.makeIdent()))),
-                        make().Binary(JCTree.OR, 
-                                make().Binary(JCTree.AND, 
-                                        make().Binary(JCTree.LE, firstName.makeIdent(), xName.makeIdent()),
-                                        make().Binary(JCTree.LE, xName.makeIdent(), lastName.makeIdent())),
-                                make().Binary(JCTree.AND, 
-                                        make().Binary(JCTree.LE, lastName.makeIdent(), xName.makeIdent()),
-                                        make().Binary(JCTree.LE, xName.makeIdent(), firstName.makeIdent())
+                        make().Binary(JCTree.Tag.OR, 
+                                make().Binary(JCTree.Tag.AND, 
+                                        make().Binary(JCTree.Tag.LE, firstName.makeIdent(), xName.makeIdent()),
+                                        make().Binary(JCTree.Tag.LE, xName.makeIdent(), lastName.makeIdent())),
+                                make().Binary(JCTree.Tag.AND, 
+                                        make().Binary(JCTree.Tag.LE, lastName.makeIdent(), xName.makeIdent()),
+                                        make().Binary(JCTree.Tag.LE, xName.makeIdent(), firstName.makeIdent())
                                         ))));
     }
     
@@ -2083,30 +2083,30 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // it first evaluates `recursive`, 
                 // which uses `successor` and `predecessor` which throw on overflow
                 // so we have to replicate that **short-circuit** logic here
-                makeVar(recursiveName, make().Type(syms().booleanType), make().Binary(JCTree.AND,
-                        make().Binary(JCTree.GT,
+                makeVar(recursiveName, make().Type(syms().booleanType), make().Binary(JCTree.Tag.AND,
+                        make().Binary(JCTree.Tag.GT,
                                 firstName.makeIdent(),
                                 make().Apply(null, 
                                             naming.makeSelect(make().QualIdent(ceylonType.tsym), "getSuccessor"),
                                             List.<JCExpression>of(firstName.makeIdent()))),
-                        make().Binary(JCTree.GT,
+                        make().Binary(JCTree.Tag.GT,
                                 make().Apply(null, 
                                             naming.makeSelect(make().QualIdent(ceylonType.tsym), "getPredecessor"),
                                             List.<JCExpression>of(lastName.makeIdent())),
                                 lastName.makeIdent())))),
-                make().Conditional(make().Binary(JCTree.LT, firstName.makeIdent(), lastName.makeIdent()),
-                        make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.LE, 
+                make().Conditional(make().Binary(JCTree.Tag.LT, firstName.makeIdent(), lastName.makeIdent()),
+                        make().Binary(JCTree.Tag.AND, 
+                                make().Binary(JCTree.Tag.LE, 
                                         xName.makeIdent(), 
                                         lastName.makeIdent()),
-                                make().Binary(JCTree.GE, 
+                                make().Binary(JCTree.Tag.GE, 
                                         xName.makeIdent(), 
                                         firstName.makeIdent())),
-                        make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.GE, 
+                        make().Binary(JCTree.Tag.AND, 
+                                make().Binary(JCTree.Tag.GE, 
                                         xName.makeIdent(), 
                                         lastName.makeIdent()),
-                                make().Binary(JCTree.LE, 
+                                make().Binary(JCTree.Tag.LE, 
                                         xName.makeIdent(), 
                                         firstName.makeIdent()))
                                 ));
@@ -2140,7 +2140,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         OptimisationStrategy optimisationStrategy = OperatorTranslation.BINARY_EQUAL.getBinOpOptimisationStrategy(op, op.getLeftTerm(), op.getRightTerm(), this);
         JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null);
         JCExpression right = transformExpression(op.getRightTerm(), optimisationStrategy.getBoxingStrategy(), null);
-        return at(op).Binary(JCTree.EQ, left, right);
+        return at(op).Binary(JCTree.Tag.EQ, left, right);
     }
     
     public JCExpression transform(Tree.ComparisonOp op) {
@@ -2196,7 +2196,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(op);
         OperatorTranslation andOp = Operators.getOperator(Tree.AndOp.class);
         OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
-        return make().LetExpr(vars, transformOverridableBinaryOperator(andOp, optimisationStrategy, lower, upper, null, null, op.getTypeModel()));
+        return make().LetExpr(vars, transformOverridableBinaryOperator(op, andOp, optimisationStrategy, lower, upper, null, null, op.getTypeModel()));
     }
 
     protected Type getComparableType(Tree.Term middleTerm) {
@@ -2227,7 +2227,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             right = middle.makeIdent();
         }
         at(bound);
-        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, null, leftType, null, bound.getTypeModel());
+        return transformOverridableBinaryOperator(middleTerm, operator, optimisationStrategy, left, right, null, leftType, null, bound.getTypeModel());
     }
 
     public JCExpression transform(Tree.ScaleOp op) {
@@ -2257,7 +2257,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         at(op);
         return make().LetExpr(List.<JCStatement>of(scale, scaleable), 
-                transformOverridableBinaryOperator(operator, OptimisationStrategy.NONE, scaleableName.makeIdent(), scaleName.makeIdent(), null, null, op.getTypeModel()));
+                transformOverridableBinaryOperator(op, operator, OptimisationStrategy.NONE, scaleableName.makeIdent(), scaleName.makeIdent(), null, null, op.getTypeModel()));
     }
     
     // Arithmetic operators
@@ -2322,7 +2322,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression multiplications = baseAlias.makeIdent(); 
         while (power > 1) {
             power--;
-            multiplications = make().Binary(JCTree.MUL, multiplications, baseAlias.makeIdent());
+            multiplications = make().Binary(JCTree.Tag.MUL, multiplications, baseAlias.makeIdent());
         }
         return make().LetExpr(makeVar(baseAlias, 
                     makeJavaType(base.getTypeModel()), 
@@ -2378,24 +2378,29 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(op);
         JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), leftType, EXPR_WIDEN_PRIM);
         JCExpression right = transformExpression(op.getRightTerm(), optimisationStrategy.getBoxingStrategy(), rightType, EXPR_WIDEN_PRIM);
-        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, op.getLeftTerm(), op.getRightTerm(), op.getTypeModel());
+        return transformOverridableBinaryOperator(op, operator, optimisationStrategy, left, right, op.getLeftTerm(), op.getRightTerm(), op.getTypeModel());
     }
 
-    private JCExpression transformOverridableBinaryOperator(Tree.Term leftTerm, Tree.Term rightTerm, Type rightType,
+    private JCExpression transformOverridableBinaryOperator(Node opExpr,
+            Tree.Term leftTerm, Tree.Term rightTerm, Type rightType,
             OperatorTranslation operator, OptimisationStrategy optimisationStrategy, 
             JCExpression left, Type expectedType) {
         JCExpression right = transformExpression(rightTerm, optimisationStrategy.getBoxingStrategy(), rightType, EXPR_WIDEN_PRIM);
-        return transformOverridableBinaryOperator(operator, optimisationStrategy, left, right, leftTerm, rightTerm, expectedType);
+        return transformOverridableBinaryOperator(opExpr, operator, optimisationStrategy, left, right, leftTerm, rightTerm, expectedType);
     }
 
-    private JCExpression transformOverridableBinaryOperator(OperatorTranslation originalOperator,
+    private JCExpression transformOverridableBinaryOperator(
+            Node opExpr,
+            OperatorTranslation originalOperator,
             OptimisationStrategy optimisationStrategy, 
             JCExpression left, JCExpression right,
             Tree.Term leftTerm, Tree.Term rightTerm, Type expectedType) {
-        return transformOverridableBinaryOperator(originalOperator, optimisationStrategy, left, right, leftTerm, leftTerm != null ? leftTerm.getTypeModel() : null, rightTerm, expectedType);
+        return transformOverridableBinaryOperator(opExpr, originalOperator, optimisationStrategy, left, right, leftTerm, leftTerm != null ? leftTerm.getTypeModel() : null, rightTerm, expectedType);
     }
     
-    private JCExpression transformOverridableBinaryOperator(OperatorTranslation originalOperator,
+    private JCExpression transformOverridableBinaryOperator(
+            Node opExpr,
+            OperatorTranslation originalOperator,
             OptimisationStrategy optimisationStrategy, 
             JCExpression left, JCExpression right,
             Tree.Term leftTerm, Type leftType, Tree.Term rightTerm, Type expectedType) {
@@ -2441,7 +2446,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 leftType = leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration());
             }
             
-            result = make().Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), actualOperator.ceylonMethod), args.prepend(left));
+            result = at(opExpr).Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), actualOperator.ceylonMethod), args.prepend(left));
         } else {
             if ((originalOperator == OperatorTranslation.BINARY_LARGE_AS
                     || originalOperator == OperatorTranslation.BINARY_LARGER
@@ -2452,13 +2457,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 left = make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), left);
                 args = List.<JCExpression>of(make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), right));
             }
-            result = make().Apply(typeArgs, makeSelect(left, actualOperator.ceylonMethod), args);
+            result = at(opExpr).Apply(typeArgs, makeSelect(left, actualOperator.ceylonMethod), args);
         }
 
         if (loseComparison) {
             // We cheat slightly bu using == instead of equals, but since those values
             // don't override equals the effect is the same
-            result = make().Binary(originalOperator.javacValueOperator, result, makeLanguageValue(originalOperator.ceylonValue));
+            result = at(opExpr).Binary(originalOperator.javacValueOperator, result, makeLanguageValue(originalOperator.ceylonValue));
         }
 
         return result;
@@ -2515,7 +2520,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
                 // make this call: previousValue OP RHS
-                JCExpression ret = transformOverridableBinaryOperator(op.getLeftTerm(), op.getRightTerm(), rightType,
+                JCExpression ret = transformOverridableBinaryOperator(op, op.getLeftTerm(), op.getRightTerm(), rightType,
                         operator.binaryOperator, 
                         boxResult ? OptimisationStrategy.NONE : OptimisationStrategy.OPTIMISE, 
                         previousValue, op.getTypeModel());
@@ -2536,7 +2541,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformAssignAndReturnOperation(op, op.getLeftTerm(), false, valueType, valueType, new AssignAndReturnOperationFactory() {
             @Override
             public JCExpression getNewValue(JCExpression previousValue) {
-            	JCExpression result = transformOverridableBinaryOperator(op.getLeftTerm(), op.getRightTerm(), rightType, operator.binaryOperator, OptimisationStrategy.NONE, previousValue, op.getTypeModel());
+            	JCExpression result = transformOverridableBinaryOperator(op, op.getLeftTerm(), op.getRightTerm(), rightType, operator.binaryOperator, OptimisationStrategy.NONE, previousValue, op.getTypeModel());
             	return result;
             }
         });
@@ -2626,7 +2631,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression successor;
             if(canOptimise){
                 // use +1/-1 if we can optimise a bit
-                successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
+                successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.Tag.PLUS : JCTree.Tag.MINUS, 
                         make().Ident(varName), makeInteger(1));
                 successor = unAutoPromote(successor, returnType);
             }else{
@@ -2682,7 +2687,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression successor;
             if(canOptimise){
                 // use +1/-1 if we can optimise a bit
-                successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
+                successor = make().Binary(operator == OperatorTranslation.UNARY_POSTFIX_INCREMENT ? JCTree.Tag.PLUS : JCTree.Tag.MINUS, 
                         make().Ident(varVName), makeInteger(1));
                 successor = unAutoPromote(successor, returnType);
             }else{
@@ -2739,7 +2744,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             public JCExpression getNewValue(JCExpression previousValue) {
                 // use +1/-1 if we can optimise a bit
                 if(canOptimise){
-                    JCExpression ret = make().Binary(operator == OperatorTranslation.UNARY_PREFIX_INCREMENT ? JCTree.PLUS : JCTree.MINUS, 
+                    JCExpression ret = make().Binary(operator == OperatorTranslation.UNARY_PREFIX_INCREMENT ? JCTree.Tag.PLUS : JCTree.Tag.MINUS, 
                             previousValue, makeInteger(1));
                     ret = unAutoPromote(ret, returnType);
                     return ret;
@@ -2942,7 +2947,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private final List<ExpressionAndType> transformArguments(Invocation invocation,
             TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
-        ListBuffer<ExpressionAndType> result = ListBuffer.<ExpressionAndType>lb();
+        ListBuffer<ExpressionAndType> result = new ListBuffer<ExpressionAndType>();
         withinInvocation(false);
         appendImplicitArguments(invocation, transformedPrimary, result);
         // Explicit arguments
@@ -2994,7 +2999,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Type iteratedType = typeFact().getObjectType();
         // the single spread argument which is allowed
         JCExpression rest = null;
-        ListBuffer<JCExpression> initial = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> initial = new ListBuffer<JCExpression>();
         for (int ii = 0; ii < invocation.getNumArguments(); ii++) {
             if (invocation.isArgumentSpread(ii)) {
                 rest = invocation.getTransformedArgumentExpression(ii);
@@ -4015,6 +4020,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
+                            expr,
                             expr.getTypeModel(), 
                             method, 
                             producedReference).build();
@@ -4030,6 +4036,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Reference producedReference = expr.getTarget();
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
+                            expr,
                             expr.getTypeModel(), 
                             (Class)member, 
                             producedReference).build();
@@ -4139,7 +4146,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         boolean isBoxed = expr.getDeclaration() instanceof TypeDeclaration 
                 || !CodegenUtil.isUnBoxed((TypedDeclaration)expr.getDeclaration());
         transExpr = boxUnboxIfNecessary(transExpr, isBoxed, expr.getTarget().getType(), BoxingStrategy.BOXED);
-        JCExpression testExpr = make().Binary(JCTree.NE, tmpVarName.makeIdent(), makeNull());
+        JCExpression testExpr = make().Binary(JCTree.Tag.NE, tmpVarName.makeIdent(), makeNull());
         JCExpression condExpr = make().Conditional(testExpr, transExpr, makeNull());
         JCExpression primaryExpr = transformQualifiedMemberPrimary(expr);
         return makeLetExpr(tmpVarName, null, typeExpr, primaryExpr, condExpr);
@@ -4156,7 +4163,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         try {
             Naming.SyntheticName varBaseName = naming.alias("spread");
-            ListBuffer<JCStatement> letStmts = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
             final Naming.SyntheticName srcIterableName;
             if (spreadMethodReferenceInner) {
                 // use the var we initialized in the outer
@@ -4258,7 +4265,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         makeVar(iteratorResultName, 
                             make().Type(syms().objectType), null),
                         make().If(
-                                make().Unary(JCTree.NOT, 
+                                make().Unary(JCTree.Tag.NOT, 
                                 make().TypeTest(make().Assign(
                                         iteratorResultName.makeIdent(), 
                                         make().Apply(null,
@@ -4440,7 +4447,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             callBuilder.instantiate(
                     gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES));
         }
-        ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
+        ListBuffer<ExpressionAndType> reified = new ListBuffer<ExpressionAndType>();
         
         DirectInvocation.addReifiedArguments(gen, producedReference, reified);
         for (ExpressionAndType reifiedArgument : reified) {
@@ -4885,7 +4892,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && ((TypedDeclaration)decl).getType().isTypeConstructor()
                 && !expr.getTypeArguments().getTypeModels().isEmpty()) {
             // applying a type constructor
-            ListBuffer<JCExpression> tds = ListBuffer.lb();
+            ListBuffer<JCExpression> tds = new ListBuffer<JCExpression>();
             for (Type t : expr.getTypeArguments().getTypeModels()) {
                 tds.add(makeReifiedTypeArgument(t));
             }
@@ -5273,9 +5280,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                             makeVar(indexName, make().Type(syms().intType), index)
                     ), 
                     make().Conditional(
-                        make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.GE, indexName.makeIdent(), make().Literal(0)),
-                                make().Binary(JCTree.LT, indexName.makeIdent(), make().Apply(null,  
+                        make().Binary(JCTree.Tag.AND, 
+                                make().Binary(JCTree.Tag.GE, indexName.makeIdent(), make().Literal(0)),
+                                make().Binary(JCTree.Tag.LT, indexName.makeIdent(), make().Apply(null,  
                                         naming.makeQualIdent(listName.makeIdent(), "size"),
                                         List.<JCExpression>nil()))), 
                         at(indexExpr).Apply(List.<JCTree.JCExpression>nil(), 
@@ -5694,7 +5701,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ListBuffer<JCStatement> makeContext(ExpressionTransformer gen, ComprehensionTransformation ct,
                     Tree.ForIterator forIterator,
                     SyntheticName iterVar, SyntheticName itemVar, SyntheticName tmpItem, ListBuffer<JCStatement> elseBody) {
-                ListBuffer<JCStatement> contextBody = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
               //Assign the next item to an Object variable
                 contextBody.add(gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), tmpItem.asName(),
                         gen.makeJavaType(gen.typeFact().getObjectType()),
@@ -5702,7 +5709,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 List.<JCExpression>nil())));
                 //Then we check if it's exhausted
                 contextBody.add(gen.make().Exec(gen.make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
-                        gen.make().Binary(JCTree.EQ, tmpItem.makeIdent(), gen.makeFinished()))));
+                        gen.make().Binary(JCTree.Tag.EQ, tmpItem.makeIdent(), gen.makeFinished()))));
                 ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
                 if (ct.idx>0) {
                     //Subsequent contexts run once for every iteration of the previous loop
@@ -5730,9 +5737,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Tree.ForIterator forIterator, 
                     SyntheticName iterVar, SyntheticName itemVar, SyntheticName tmpItem,
                     ListBuffer<JCStatement> elseBody) {
-                ListBuffer<JCStatement> contextBody = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
                 contextBody.add(gen.make().Exec(gen.make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
-                        gen.make().Unary(JCTree.NOT, gen.make().Apply(null, gen.makeSelect(iterVar.makeIdent(), "hasNext"), 
+                        gen.make().Unary(JCTree.Tag.NOT, gen.make().Apply(null, gen.makeSelect(iterVar.makeIdent(), "hasNext"), 
                                 List.<JCExpression>nil())))));
                 
                 ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
@@ -5742,6 +5749,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                     innerBody.add(gen.make().Return(gen.makeBoolean(false)));
                 }
                 
+                JCExpression nextInvocation = gen.make().Apply(null, 
+                        gen.makeSelect(iterVar.makeIdent(), "next"),
+                        List.<JCExpression>nil());
+                if (gen.statementGen().requiresNullCheck(forIterator)) {
+                    nextInvocation = gen.utilInvocation().checkNull(nextInvocation);
+                }
+                
                 contextBody.add(
                         gen.make().If(
                                 itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(), 
@@ -5749,8 +5763,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 gen.make().Block(0,
                                         List.<JCStatement>of(
                                                 gen.make().Exec(gen.make().Assign(itemVar.makeIdent(),
-                                                        gen.make().Apply(null, gen.makeSelect(iterVar.makeIdent(), "next"), 
-                                                        List.<JCExpression>nil()))),
+                                                        nextInvocation)),
                                                 gen.make().Return(gen.makeBoolean(true))))));
                 return contextBody;
             }
@@ -5778,17 +5791,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                     SyntheticName iterVar,
                     JCExpression iterableExpr) {
                 SyntheticName arrayVar = arrayVar(gen, ct);
-                ListBuffer<JCStatement> block = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> block = new ListBuffer<JCStatement>();
                 ct.fields.add(gen.make().VarDef(gen.make().Modifiers(Flags.PRIVATE), iterVar.asName(), gen.make().Type(gen.syms().intType),
                         null));
                 ct.fields.add(gen.make().VarDef(gen.make().Modifiers(Flags.PRIVATE), arrayVar.asName(), makeIteratorType(gen, iterType),
                         null));
                 
                 block.appendList(List.<JCStatement>of(
-                        gen.make().If(gen.make().Binary(JCTree.NE, arrayVar.makeIdent(), gen.makeNull()),
+                        gen.make().If(gen.make().Binary(JCTree.Tag.NE, arrayVar.makeIdent(), gen.makeNull()),
                                 gen.make().Return(gen.makeBoolean(true)),
                                 null),
-                        gen.make().If(gen.make().Unary(JCTree.NOT, gen.make().Apply(null, ct.ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
+                        gen.make().If(gen.make().Unary(JCTree.Tag.NOT, gen.make().Apply(null, ct.ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
                                 gen.make().Return(gen.makeBoolean(false)),
                                 null)));
                 block.appendList(ct.capture());
@@ -5810,12 +5823,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Tree.ForIterator forIterator,
                     SyntheticName iterVar, SyntheticName itemVar, SyntheticName tmpItem,
                     ListBuffer<JCStatement> elseBody) {
-                ListBuffer<JCStatement> contextBody = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
                 Tree.SpecifierExpression specexpr = forIterator.getSpecifierExpression();
                 Type iterType = specexpr.getExpression().getTypeModel();
                 SyntheticName arrayVar = arrayVar(gen, ct);
                 contextBody.add(gen.make().Exec(gen.make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
-                        gen.make().Binary(JCTree.GE, iterVar.makeIdent(), gen.naming.makeSelect(arrayVar.makeIdent(), "length")))));
+                        gen.make().Binary(JCTree.Tag.GE, iterVar.makeIdent(), gen.naming.makeSelect(arrayVar.makeIdent(), "length")))));
                 
                 ListBuffer<JCStatement> innerBody = new ListBuffer<JCStatement>();
                 if (ct.idx > 0) {
@@ -5825,12 +5838,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 
                 JCExpression indexed = gen.make().Indexed(arrayVar.makeIdent(), 
-                        gen.make().Unary(JCTree.POSTINC, iterVar.makeIdent()));
+                        gen.make().Unary(JCTree.Tag.POSTINC, iterVar.makeIdent()));
+
+                if (gen.statementGen().requiresNullCheck(forIterator)) {
+                    indexed = gen.utilInvocation().checkNull(indexed);
+                }
                 indexed = gen.applyErasureAndBoxing(indexed,
-                        ((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel().getType(),
+                        gen.typeFact().getJavaArrayElementType(iterType),
                         gen.typeFact().getJavaObjectArrayDeclaration().equals(iterType.resolveAliases().getDeclaration()),
                         CodegenUtil.getBoxingStrategy(((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel()),
                         ((Tree.ValueIterator) forIterator).getVariable().getDeclarationModel().getType());
+                
                 
                 contextBody.add(
                         gen.make().If(
@@ -5870,13 +5888,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ComprehensionTransformation ct,
                 Type iterType, SyntheticName iterVar,
                 JCExpression iterableExpr) {
-            ListBuffer<JCStatement> block = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> block = new ListBuffer<JCStatement>();
             ct.fields.add(gen.make().VarDef(gen.make().Modifiers(Flags.PRIVATE), iterVar.asName(), makeIteratorType(gen, iterType), null));
             block.appendList(List.<JCStatement>of(
-                    gen.make().If(gen.make().Binary(JCTree.NE, iterVar.makeIdent(), gen.makeNull()),
+                    gen.make().If(gen.make().Binary(JCTree.Tag.NE, iterVar.makeIdent(), gen.makeNull()),
                             gen.make().Return(gen.makeBoolean(true)),
                             null),
-                    gen.make().If(gen.make().Unary(JCTree.NOT, gen.make().Apply(null, ct.ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
+                    gen.make().If(gen.make().Unary(JCTree.Tag.NOT, gen.make().Apply(null, ct.ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
                             gen.make().Return(gen.makeBoolean(false)),
                             null)));
             block.appendList(ct.capture());
@@ -5913,7 +5931,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // the variable captured by whatever gets transformed there holds the value
         // at *that point* on the iteration, and not the (variable) value of 
         // the iterator. See #986, #2304
-        private ListBuffer<VarDefBuilder> valueCaptures = ListBuffer.<VarDefBuilder>lb();
+        private ListBuffer<VarDefBuilder> valueCaptures = new ListBuffer<VarDefBuilder>();
         public ComprehensionTransformation(final Tree.Comprehension comp, Type elementType) {
             this.comp = comp;
             targetIterType = typeFact().getIterableType(elementType);
@@ -6009,7 +6027,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Type iteratorType = typeFact().getIteratorType(iteratedType);
             JCExpression iteratorTypeExpr = make().TypeApply(makeIdent(syms().ceylonAbstractIteratorType),
                     List.<JCExpression>of(makeJavaType(iteratedType, JT_TYPE_ARGUMENT)));
-            JCExpression iterator = make().NewClass(null, List.<JCExpression>nil(), iteratorTypeExpr, 
+            JCExpression iterator = at(comp).NewClass(null, List.<JCExpression>nil(), iteratorTypeExpr, 
                     List.<JCExpression>of(makeReifiedTypeArgument(iteratedType)), 
                     make().AnonymousClassDef(make().Modifiers(0), 
                             fields.toList().prepend(
@@ -6046,7 +6064,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         class IfComprehensionCondList extends CondList {
 
-            private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+            private final ListBuffer<JCStatement> varDecls = new ListBuffer<JCStatement>();
             /**
              * A list of statements that are placed in the main body, before the conditions.
              */
@@ -6072,7 +6090,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Name breakLabel) {
                 this(conditions,
                     // check condExpr before the conditions
-                        capture().prepend(make().If(make().Unary(JCTree.NOT, condExpr), make().Break(breakLabel), null)),
+                        capture().prepend(make().If(make().Unary(JCTree.Tag.NOT, condExpr), make().Break(breakLabel), null)),
                     // break if a condition matches
                     List.<JCStatement>of(make().Break(breakLabel)),
                     null);
@@ -6150,7 +6168,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             public List<JCStatement> getResult() {
                 List<JCStatement> stmts = transformList(conditions);
-                ListBuffer<JCStatement> result = ListBuffer.lb();
+                ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
                 result.appendList(preCheck);
                 result.appendList(varDecls);
                 result.appendList(stmts);
@@ -6184,7 +6202,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             		assert (ctxtName != null);
             		JCStatement returnIfExhausted = make().If(
             				//if the previous comprehension is false or was already evaluated...
-            				make().Unary(JCTree.NOT, make().Apply(null,
+            				make().Unary(JCTree.Tag.NOT, make().Apply(null,
             						ctxtName.makeIdentWithThis(), List.<JCExpression>nil())),
             				//return false
                     		make().Return(makeBoolean(false)), null);
@@ -6213,7 +6231,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 List<JCStatement> ifs = ifComprehensionCondList.getResult();
                 JCStatement loop = make().Labelled(label, make().WhileLoop(makeBoolean(true), make().Block(0, ifs)));
                 body = List.<JCStatement>of(loop,
-                    make().Return(make().Unary(JCTree.NOT, prevItemVar.suffixedBy(Suffix.$exhausted$).makeIdent())));
+                    make().Return(make().Unary(JCTree.Tag.NOT, prevItemVar.suffixedBy(Suffix.$exhausted$).makeIdent())));
         	}
             MethodDefinitionBuilder mb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, ctxtName.getName())
                 .ignoreModelAnnotations()
@@ -6245,7 +6263,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 //The subsequent iterators need to be inside a method,
                 //in case they depend on the current element of the previous iterator
-                ListBuffer<JCStatement> block = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> block = new ListBuffer<JCStatement>();
                 if (lastIteratorCtxtName != null) {
                     block.append(make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted$).makeIdent(),
                             make().Return(makeBoolean(false)),
@@ -6253,6 +6271,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 block.appendList(tx.makeSubsequent(ExpressionTransformer.this, this, iterType, iterVar, iterableExpr));
                 JCBlock body = make().Block(0l, block.toList());
+
                 fields.add(make().MethodDef(make().Modifiers(Flags.PRIVATE | Flags.FINAL),
                         iterVar.asName(), makeJavaType(typeFact().getBooleanType()), 
                         List.<JCTree.JCTypeParameter>nil(),
@@ -6616,7 +6635,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
                 if (operator.valueMask != 0) {
-                    leftExpr = make().Binary(JCTree.BITAND, leftExpr, makeInteger(operator.valueMask));
+                    leftExpr = make().Binary(JCTree.Tag.BITAND, leftExpr, makeInteger(operator.valueMask));
                 }
                 
                 result =  make().Binary(operator.javacOperator, leftExpr, rightExpr);
@@ -6632,7 +6651,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
                 if (operator.valueMask != 0) {
-                    leftExpr = make().Binary(JCTree.BITAND, leftExpr, makeInteger(operator.valueMask));
+                    leftExpr = make().Binary(JCTree.Tag.BITAND, leftExpr, makeInteger(operator.valueMask));
                 }
                 
                 result = make().Unary(operator.javacOperator, leftExpr);
@@ -6736,7 +6755,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         }
-        ListBuffer<JCAnnotation> result = ListBuffer.lb();
+        ListBuffer<JCAnnotation> result = new ListBuffer<JCAnnotation>();
         for (Class annotationClass : annotationSet.keySet()) {
             ListBuffer<JCAnnotation> annotations = annotationSet.get(annotationClass);
             if (isSequencedAnnotation(annotationClass)) {
@@ -6810,12 +6829,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return target == OutputElement.TYPE;
             } else if (useSite instanceof Value) {
                 Value value = (Value)useSite;
-                TypeDeclaration decltype = typeFact().getValueDeclarationType().getDeclaration();
-                if (value.isParameter()
-                        && !value.isShared()
-                        && !(value.isCaptured() && value.isMember())) {
-                    return target ==  OutputElement.PARAMETER;
-                } else if (annotationCtorDecl instanceof AnnotationProxyMethod) {
+                boolean p = value.isParameter()
+                        && target == OutputElement.PARAMETER;
+                if (annotationCtorDecl instanceof AnnotationProxyMethod) {
                     if (value.isLate() || value.isVariable()) {
                         return target == OutputElement.SETTER;
                     } else if (!value.isTransient()) {
@@ -6824,7 +6840,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         return target == OutputElement.GETTER;
                     }
                 } else {
-                    return target == OutputElement.GETTER;
+                    return p || target == OutputElement.GETTER;
                 }
             } else if (useSite instanceof Setter) {
                 return target == OutputElement.SETTER;
@@ -6872,7 +6888,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCAnnotation annotation, Class annotationClass) {
         ListBuffer<JCAnnotation> list = annotationSet.get(annotationClass);
         if (list == null) {
-            list = ListBuffer.lb();
+            list = new ListBuffer<JCAnnotation>();
         }
         annotationSet.put(annotationClass, list.append(annotation));
     }

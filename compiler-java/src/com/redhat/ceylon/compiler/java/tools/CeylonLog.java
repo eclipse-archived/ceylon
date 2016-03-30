@@ -22,7 +22,7 @@ package com.redhat.ceylon.compiler.java.tools;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.DiagnosticSource;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic;
@@ -76,7 +76,7 @@ public class CeylonLog extends Log {
         super(context);
         sourceLanguage = SourceLanguage.instance(context);
         Options options = Options.instance(context);
-        boolean isProgressPrinted = options.get(OptionName.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
+        boolean isProgressPrinted = options.get(Option.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
         if(isProgressPrinted){
             sp = LanguageCompiler.getStatusPrinterInstance(context);
         }else{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2002, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,13 +25,13 @@
 
 package com.redhat.ceylon.langtools.tools.javac.jvm;
 
-import static com.redhat.ceylon.langtools.tools.javac.main.OptionName.*;
-
 import java.util.*;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
+
+import static com.redhat.ceylon.langtools.tools.javac.main.Option.TARGET;
 
 /** The classfile version target.
  *
@@ -48,17 +48,6 @@ public enum Target {
     /** J2SE1.4 = Merlin. */
     JDK1_4("1.4", 48, 0),
 
-    /** Support for the JSR14 prototype compiler (targeting 1.4 VMs
-     *  augmented with a few support classes).  This is a transitional
-     *  option that will not be supported in the product.  */
-    JSR14("jsr14", 48, 0),
-
-    /** The following are undocumented transitional targets that we
-     *  had used to test VM fixes in update releases.  We do not
-     *  promise to retain support for them.  */
-    JDK1_4_1("1.4.1", 48, 0),
-    JDK1_4_2("1.4.2", 48, 0),
-
     /** Tiger. */
     JDK1_5("1.5", 49, 0),
 
@@ -67,7 +56,6 @@ public enum Target {
 
     /** JDK 7. */
     JDK1_7("1.7", 51, 0),
-    /* Ceylon: backport from Java 8*/
 
     /** JDK 8. */
     JDK1_8("1.8", 52, 0);
@@ -87,17 +75,15 @@ public enum Target {
         return instance;
     }
 
-    private static Target MIN;
+    private static final Target MIN = values()[0];
     public static Target MIN() { return MIN; }
 
-    private static Target MAX;
+    private static final Target MAX = values()[values().length - 1];
     public static Target MAX() { return MAX; }
 
-    private static Map<String,Target> tab = new HashMap<String,Target>();
+    private static final Map<String,Target> tab = new HashMap<String,Target>();
     static {
         for (Target t : values()) {
-            if (MIN == null) MIN = t;
-            MAX = t;
             tab.put(t.name, t);
         }
         tab.put("5", JDK1_5);
@@ -178,23 +164,23 @@ public enum Target {
         return compareTo(JDK1_5) >= 0;
     }
 
-    /** Beginning in -target 1.4.2, we make synthetic variables
+    /** Beginning in -target 1.5, we make synthetic variables
      *  package-private instead of private.  This is to prevent the
      *  necessity of access methods, which effectively relax the
      *  protection of the field but bloat the class files and affect
      *  execution.
      */
     public boolean usePrivateSyntheticFields() {
-        return compareTo(JDK1_4_2) < 0;
+        return compareTo(JDK1_5) < 0;
     }
 
     /** Sometimes we need to create a field to cache a value like a
-     *  class literal of the assertions flag.  In -target 1.4.2 and
+     *  class literal of the assertions flag.  In -target 1.5 and
      *  later we create a new synthetic class for this instead of
      *  using the outermost class.  See 4401576.
      */
     public boolean useInnerCacheClass() {
-        return compareTo(JDK1_4_2) >= 0;
+        return compareTo(JDK1_5) >= 0;
     }
 
     /** Return true if cldc-style stack maps need to be generated. */
@@ -279,7 +265,7 @@ public enum Target {
      *  See 4468823
      */
     public boolean classLiteralsNoInit() {
-        return compareTo(JDK1_4_2) >= 0;
+        return compareTo(JDK1_5) >= 0;
     }
 
     /** Although we may not have support for class literals, when we
@@ -303,23 +289,11 @@ public enum Target {
         return compareTo(JDK1_5) >= 0;
     }
 
-    /** For bootstrapping javac only, we do without java.lang.Enum if
-     *  necessary.
-     */
-    public boolean compilerBootstrap(Symbol c) {
-        return
-            this == JSR14 &&
-            (c.flags() & Flags.ENUM) != 0 &&
-            c.flatName().toString().startsWith("com.redhat.ceylon.langtools.tools.")
-            // && !Target.class.getSuperclass().getName().equals("java.lang.Enum")
-            ;
-    }
-
     /** In J2SE1.5.0, we introduced the "EnclosingMethod" attribute
      *  for improved reflection support.
      */
     public boolean hasEnclosingMethodAttribute() {
-        return compareTo(JDK1_5) >= 0 || this == JSR14;
+        return compareTo(JDK1_5) >= 0;
     }
 
     /**

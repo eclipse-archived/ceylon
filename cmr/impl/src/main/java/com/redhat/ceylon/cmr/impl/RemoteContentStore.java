@@ -47,41 +47,254 @@ public class RemoteContentStore extends URLContentStore {
         super(root, log, offline, timeout, proxy);
     }
 
+    private static class NotGettable extends RuntimeException {
+    }
+    
     protected SizedInputStream openSizedStream(final URL url) throws IOException {
         if (connectionAllowed()) {
-            final URLConnection conn;
-            if (proxy != null) {
-                conn = url.openConnection(proxy);
-            } else {
-                conn = url.openConnection();
-            }
-            if (conn instanceof HttpURLConnection) {
-                HttpURLConnection huc = (HttpURLConnection) conn;
-                huc.setConnectTimeout(timeout);
-                huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
-                addCredentials(huc);
-                try{
-                    InputStream stream = conn.getInputStream();
-                    int code = huc.getResponseCode();
-                    if (code != -1 && code != 200) {
-                        log.info("Got " + code + " for url: " + url);
-                        return null;
-                    }
-                    log.debug("Got " + code + " for url: " + url);
-                    long contentLength = huc.getContentLengthLong();
-                    return new SizedInputStream(stream, contentLength);
-                }catch(SocketTimeoutException timeoutException){
-                    SocketTimeoutException newException = new SocketTimeoutException("Timed out during connection to "+url);
-                    newException.initCause(timeoutException);
-                    throw newException;
-                }
+            try {
+                return new RetryingSizedInputStream(url, proxy, timeout);
+            } catch (NotGettable e) {
+                // fall through
             }
         }
         return null;
     }
+    
+    /**
+     * A {@link SizedInputStream} that can reconnect some number f times
+     */
+    class RetryingSizedInputStream extends SizedInputStream {
+        
+        private final URL url;
+        private final Proxy proxy;
+        /**
+         * The connection timeout for each request
+         */
+        private final int timeout;
+        /** 
+         * Whether range requests should be made when 
+         * the {@link ReconnectingInputStream} has to reconnect.
+         */
+        private boolean rangeRequests;
+        /** The number of attempts to download the resource */
+        private final Attempts attempts = new Attempts();
+        /** The <em>current</em> stream: Gets mutated when {@link ReconnectingInputStream} reconnects */
+        
+        private HttpURLConnection connection = null;
+        private InputStream stream = null;
+        long bytesRead = 0;
+        private final ReconnectingInputStream reconnectingStream;
+        private final long contentLength;
+        
+        public RetryingSizedInputStream(URL url, Proxy proxy, int timeout) throws NotGettable, IOException {
+            super(null, 0);
+            this.url = url;
+            this.proxy = proxy;
+            this.timeout = timeout;
+            long length = 0;
+            connecting: while (true) {
+                try{
+                    connection = makeConnection(url, -1);
+                    int code = connection.getResponseCode();
+                    if (code != -1 && code != 200) {
+                        log.info("Got " + code + " for url: " + url);
+                        NotGettable notGettable = new NotGettable();
+                        cleanUpStreams(notGettable);
+                        throw notGettable;
+                    }
+                    String acceptRange = connection.getHeaderField("Accept-Range");
+                    rangeRequests = acceptRange == null || !acceptRange.equalsIgnoreCase("none");
+                    debug("Connection: "+connection.getHeaderField("Connection"));
+                    debug("Got " + code + " for url: " + url);
+                    length = connection.getContentLengthLong();
+                    stream = connection.getInputStream();
+                    break connecting;
+                } catch(IOException connectException) {
+                    maybeRetry(url, connectException, "connecting to");
+                }
+            }
+            this.contentLength = length;
+            this.reconnectingStream = new ReconnectingInputStream();
+        }
 
-    protected boolean exists(final URL url) throws IOException {
-        return head(url) != null;
+        protected void maybeRetry(URL url, IOException e, String phase) throws IOException {
+            cleanUpStreams(e);
+            attempts.giveup(phase, url, e);
+        }
+
+        /**
+         * According to https://docs.oracle.com/javase/8/docs/technotes/guides/net/http-keepalive.html
+         * we should read the error stream so the connection can be reused.
+         */
+        protected void cleanUpStreams(Exception inflight) {
+            if (stream != null) {
+                try {
+                    stream.close();
+                    stream = null;
+                } catch (IOException closeException) {
+                    inflight.addSuppressed(closeException);
+                }
+            }
+            
+            if (connection != null) {
+                byte[] buf = new byte[8*2014];
+                InputStream es = connection.getErrorStream();
+                if (es != null) {
+                    try {
+                        try {
+                            while (es.read(buf) > 0) {}
+                        } finally {
+                            es.close();
+                        }
+                    } catch (IOException errorStreamError) {
+                        inflight.addSuppressed(errorStreamError);
+                    }
+                }
+            }
+        }
+
+        private void debug(String s) {
+            log.debug("    " + s);
+        }
+        
+
+        protected HttpURLConnection makeConnection(URL url, long start)
+                throws IOException, SocketTimeoutException, NotGettable {
+            URLConnection conn;
+            if (proxy != null) {
+                conn = url.openConnection(proxy);
+            } else {
+                conn = url.openConnection();
+            }   
+            if (!(conn instanceof HttpURLConnection)) {
+                throw new NotGettable();
+            }
+            HttpURLConnection huc = (HttpURLConnection)conn;
+            huc.setConnectTimeout(timeout);
+            huc.setReadTimeout(timeout * Constants.READ_TIMEOUT_MULTIPLIER);
+            boolean useRangeRequest = start > 0;
+            if (useRangeRequest) {
+                String range = "bytes "+start+"-";
+                debug("Using Range request for" + range + " of " + url);
+                huc.setRequestProperty("Range", range);
+            }
+            addCredentials(huc);
+            debug("Connecting to " + url);
+            conn.connect();
+            return huc;
+        }
+        
+        public long getSize() {
+            return contentLength;
+        }
+        
+        public InputStream getInputStream() {
+            return reconnectingStream;
+        }
+        
+        /**
+         * An InputStream that can reconnects on SocketTimeoutException.
+         * If it reconnects it makes a {@code Range} request to get just the 
+         * remainder of the resource, unless {@link #rangeRequests} is false.
+         */
+        class ReconnectingInputStream extends InputStream {
+            public void close() throws IOException {
+                if (stream != null) {
+                    stream.close();
+                }
+            }
+            
+            public int read(byte[] buf, int offset, int length) throws IOException {
+                /*
+                 * Overridden because {@link InputStream#read(byte[], int, int)}
+                 * behaves badly wrt non-initial {@link #read()}s throwing.
+                 */
+                while (true) {
+                    try {
+                        int result = stream.read(buf, offset, length);
+                        if (result != -1) {
+                            bytesRead+=result;
+                        }
+                        return result;
+                    } catch (IOException readException) {
+                        recover(readException);
+                    }
+                }
+            }
+            
+            @Override
+            public int read() throws IOException {
+                while (true) {
+                    try {
+                        int result = stream.read();
+                        if (result != -1) {
+                            bytesRead++;
+                        }
+                        return result;
+                    } catch (IOException readException) {
+                        recover(readException);
+                    }
+                }
+            }
+            
+            /**
+             * Reconnects, reassigning {@link RetryingSizedInputStream#connection} 
+             * and {@link RetryingSizedInputStream#stream}, or 
+             * throws {@code IOException} if we can't retry.
+             */
+            protected void recover(IOException readException) throws IOException {
+                maybeRetry(url, readException, "reading from");
+                // if we maybeRetry didn't propage the exception let's retry...
+                reconnect: while (true) {
+                    try {
+                        // otherwise open another connection...
+                        // using a range request unless initial request had Accept-Ranges: none
+                        connection = makeConnection(url, rangeRequests ? bytesRead : -1);
+                        final int code = connection.getResponseCode();
+                        debug("Got " + code + " for reconnection to url: " + url);
+                        if (rangeRequests && code == 206) {
+                            stream = connection.getInputStream();
+                        } else if (code == 200) {
+                            if (rangeRequests) {
+                                debug("Looks like " + url.getHost() + ":" + url.getPort() + " does support range request, to reading first " + bytesRead + " bytes");
+                            }
+                            // we didn't make a range request
+                            // (or the server didn't understand the Range header)
+                            // so spool the appropriate number of bytes
+                            stream = connection.getInputStream();
+                            try {
+                                for (long ii = 0; ii < bytesRead; ii++) {
+                                    stream.read();
+                                }
+                            } catch (IOException spoolException) {
+                                maybeRetry(url, spoolException, "spooling");
+                                continue reconnect;
+                            }
+                        } else {
+                            throw new IOException("Got HTTP status code " + code + " on reconnect");
+                        }
+                        debug("Reconnected to url: " + url);
+                        break reconnect;
+                    } catch (IOException reconnectionException) {
+                        maybeRetry(url, reconnectionException, "reconnecting to");
+                    }
+                }
+            }
+            
+
+        }
+    }
+
+    protected final boolean exists(final URL url) throws IOException {
+        Attempts a = new Attempts();
+        while (true) {
+            try {
+                return head(url) != null;
+            } catch (IOException e) {
+                a.giveup("testing existence of", url, e);
+            }
+        }
     }
 
     public ContentHandle peekContent(Node node) {
@@ -119,7 +332,7 @@ public class RemoteContentStore extends URLContentStore {
         try {
             return exists(url);
         } catch (IOException ignored) {
-            return false;
+            throw new RuntimeException(ignored);
         }
     }
 
@@ -141,7 +354,7 @@ public class RemoteContentStore extends URLContentStore {
 
         public InputStream getBinariesAsStream() throws IOException {
             SizedInputStream ret = getBinariesAsSizedStream();
-            return ret != null ? ret.inputStream : null;
+            return ret != null ? ret.getInputStream() : null;
         }
 
         public SizedInputStream getBinariesAsSizedStream() throws IOException {

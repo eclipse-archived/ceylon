@@ -16,7 +16,7 @@ final class localClassCtor_ {
             
             class other_ {
                 
-                private other_() {
+                other_() {
                 }
             }
             
@@ -39,7 +39,7 @@ final class localClassCtor_ {
             
             class other_ {
                 
-                private other_() {
+                other_() {
                 }
             }
             

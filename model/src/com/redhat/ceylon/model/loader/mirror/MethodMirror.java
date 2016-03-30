@@ -25,6 +25,12 @@ public interface MethodMirror extends AnnotatedMirror, AccessibleMirror {
     boolean isAbstract();
     
     /**
+     * Is this a {@code default} method of a java interface.
+     * Note the difference with {@link #isDefault()}.
+     */
+    boolean isDefaultMethod();
+    
+    /**
      * Returns true if this method is final
      */
     boolean isFinal();
@@ -59,9 +65,10 @@ public interface MethodMirror extends AnnotatedMirror, AccessibleMirror {
     /**
      * If this is a method on an annotation type, whether the method has a 
      * {@code default} expression;
+     * Note the difference with {@link #isDefaultMethod()}.
      */
     boolean isDefault();
-
+    
     /**
      * Return this method's enclosing class.
      */

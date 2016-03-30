@@ -14,7 +14,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throws_ {
         
-        private throws_() {
+        throws_() {
         }
     }
     
@@ -30,7 +30,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwIfTrue_ {
         
-        private throwIfTrue_() {
+        throwIfTrue_() {
         }
     }
     
@@ -49,7 +49,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwIfFalse_ {
         
-        private throwIfFalse_() {
+        throwIfFalse_() {
         }
     }
     
@@ -68,7 +68,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwWhileTrue_ {
         
-        private throwWhileTrue_() {
+        throwWhileTrue_() {
         }
     }
     
@@ -91,7 +91,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwWhileFalse_ {
         
-        private throwWhileFalse_() {
+        throwWhileFalse_() {
         }
     }
     
@@ -114,7 +114,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalse_ {
         
-        private assertFalse_() {
+        assertFalse_() {
         }
     }
     
@@ -130,7 +130,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalseIfTrue_ {
         
-        private assertFalseIfTrue_() {
+        assertFalseIfTrue_() {
         }
     }
     
@@ -149,7 +149,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalseIfFalse_ {
         
-        private assertFalseIfFalse_() {
+        assertFalseIfFalse_() {
         }
     }
     
@@ -168,7 +168,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalseFor_ {
         
-        private assertFalseFor_() {
+        assertFalseFor_() {
         }
     }
     

@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
@@ -152,53 +153,67 @@ public class AssertionVisitor extends Visitor {
 //        }
 //    }
 
+    protected void out(String level, String message, String at, String of) {
+        StringBuffer buf = new StringBuffer();
+        if (level != null) {
+            if (level.contains("error")) {
+                buf.append(
+                        OSUtil.color(level, OSUtil.Color.red));
+            } else if (level.contains("warning")) {
+                buf.append(
+                        OSUtil.color(level, OSUtil.Color.yellow));
+            } else {
+                buf.append(level);
+            }
+            buf.append(" [");
+            buf.append(message);
+            buf.append("]");
+        } else {
+            buf.append(message);
+        }
+        if (at != null) {
+            buf.append(" at ");
+            buf.append(at);
+        }
+        if (of != null) {
+            buf.append(" of ");
+            buf.append(OSUtil.color(of, OSUtil.Color.blue));
+        }
+        System.out.println(buf.toString());
+    }
+
+    protected void out(String level, AnalysisMessage err) {
+        out(level, err.getMessage(),
+                err.getTreeNode().getLocation(), file(err.getTreeNode()));
+    }
+
     protected void out(Node that, String message) {
-        System.err.println(
-            message + " at " + 
-            that.getLocation() + " of " +
-            file(that));
+        out(null, message, that.getLocation(), file(that));
     }
 
     protected void out(Node that, LexError err) {
         errors++;
-        System.err.println(
-            "lex error [" +
-            err.getMessage() + "] at " + 
-            err.getHeader() + " of " + 
-            file(that));
+        out("lex error", err.getMessage(), err.getHeader(), file(that));
     }
 
     protected void out(Node that, ParseError err) {
         errors++;
-        System.err.println(
-            "parse error [" +
-            err.getMessage() + "] at " + 
-            err.getHeader() + " of " + 
-            file(that));
+        out("parse error", err.getMessage(), err.getHeader(), file(that));
     }
 
     protected void out(UnexpectedError err) {
         errors++;
-        System.err.println(
-            "unexpected error [" +
-            err.getMessage() + "] at " + 
-            loc(err));
+        out("unexpected error", err);
     }
 
     protected void out(AnalysisError err) {
         errors++;
-        System.err.println(
-            "error [" +
-            err.getMessage() + "] at " + 
-            loc(err));
+        out("error", err);
     }
 
     protected void out(UnsupportedError err) {
         warnings++;
-        System.out.println(
-            "warning [" + 
-            err.getMessage() + "] at " + 
-            loc(err));
+        out("warning", err);
     }
 
     /**
@@ -207,16 +222,8 @@ public class AssertionVisitor extends Visitor {
      * @param err error message
      */
     protected void out(UsageWarning err) {
-        System.out.println(
-            "warning [" +
-            err.getMessage() + "] at " +
-            loc(err));
+        out("warning", err);
     }
-
-	private String loc(AnalysisMessage err) {
-		return err.getTreeNode().getLocation() + " of " +
-		            file(err.getTreeNode());
-	}
 
 	private String file(Node that) {
 		Unit unit = that.getUnit();

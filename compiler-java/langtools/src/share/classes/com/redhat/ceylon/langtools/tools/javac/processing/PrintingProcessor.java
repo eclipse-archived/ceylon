@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,43 +25,18 @@
 
 package com.redhat.ceylon.langtools.tools.javac.processing;
 
+import com.redhat.ceylon.javax.annotation.processing.*;
+import com.redhat.ceylon.javax.lang.model.*;
+import com.redhat.ceylon.javax.lang.model.element.*;
 import static com.redhat.ceylon.javax.lang.model.element.ElementKind.*;
 import static com.redhat.ceylon.javax.lang.model.element.NestingKind.*;
+import com.redhat.ceylon.javax.lang.model.type.*;
+import com.redhat.ceylon.javax.lang.model.util.*;
 
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.*;
-
-import com.redhat.ceylon.javax.annotation.processing.AbstractProcessor;
-import com.redhat.ceylon.javax.annotation.processing.RoundEnvironment;
-import com.redhat.ceylon.javax.annotation.processing.SupportedAnnotationTypes;
-import com.redhat.ceylon.javax.annotation.processing.SupportedSourceVersion;
-import com.redhat.ceylon.javax.lang.model.SourceVersion;
-import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
-import com.redhat.ceylon.javax.lang.model.element.AnnotationValue;
-import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
-import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
-import com.redhat.ceylon.javax.lang.model.element.Modifier;
-import com.redhat.ceylon.javax.lang.model.element.NestingKind;
-import com.redhat.ceylon.javax.lang.model.element.PackageElement;
-import com.redhat.ceylon.javax.lang.model.element.Parameterizable;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
-import com.redhat.ceylon.javax.lang.model.element.TypeParameterElement;
-import com.redhat.ceylon.javax.lang.model.element.VariableElement;
-import com.redhat.ceylon.javax.lang.model.type.ArrayType;
-import com.redhat.ceylon.javax.lang.model.type.DeclaredType;
-import com.redhat.ceylon.javax.lang.model.type.TypeKind;
-import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
-import com.redhat.ceylon.javax.lang.model.util.ElementFilter;
-import com.redhat.ceylon.javax.lang.model.util.Elements;
-import com.redhat.ceylon.javax.lang.model.util.SimpleElementVisitor7;
-
-import com.redhat.ceylon.javax.annotation.processing.*;
-import com.redhat.ceylon.javax.lang.model.*;
-import com.redhat.ceylon.javax.lang.model.element.*;
-import com.redhat.ceylon.javax.lang.model.type.*;
-import com.redhat.ceylon.javax.lang.model.util.*;
+import com.redhat.ceylon.langtools.tools.javac.util.StringUtils;
 
 /**
  * A processor which prints out elements.  Used to implement the
@@ -74,8 +49,7 @@ import com.redhat.ceylon.javax.lang.model.util.*;
  * deletion without notice.</b>
  */
 @SupportedAnnotationTypes("*")
-// TODO: Change to version 7 based visitors when available
-@SupportedSourceVersion(SourceVersion.RELEASE_7)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class PrintingProcessor extends AbstractProcessor {
     PrintWriter writer;
 
@@ -109,7 +83,7 @@ public class PrintingProcessor extends AbstractProcessor {
      * Used for the -Xprint option and called by Elements.printElements
      */
     public static class PrintingElementVisitor
-        extends SimpleElementVisitor7<PrintingElementVisitor, Boolean> {
+        extends SimpleElementVisitor8<PrintingElementVisitor, Boolean> {
         int indentation; // Indentation level;
         final PrintWriter writer;
         final Elements elementUtils;
@@ -229,7 +203,7 @@ public class PrintingProcessor extends AbstractProcessor {
                     writer.print("@interface");
                     break;
                 default:
-                    writer.print(kind.toString().toLowerCase());
+                    writer.print(StringUtils.toLowerCase(kind.toString()));
                 }
                 writer.print(" ");
                 writer.print(e.getSimpleName());

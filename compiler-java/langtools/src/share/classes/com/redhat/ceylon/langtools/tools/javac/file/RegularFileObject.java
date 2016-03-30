@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -39,8 +39,8 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharsetDecoder;
-
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import java.text.Normalizer;
 
 /**
  * A subclass of JavaFileObject representing regular files.
@@ -58,6 +58,7 @@ public class RegularFileObject extends BaseFileObject {
     private String name;
     final File file;
     private Reference<File> absFileRef;
+    final static boolean isMacOS = System.getProperty("os.name", "").contains("OS X");
 
     public RegularFileObject(JavacFileManager fileManager, File f) {
         this(fileManager, f.getName(), f);
@@ -99,6 +100,7 @@ public class RegularFileObject extends BaseFileObject {
 
     @Override
     public OutputStream openOutputStream() throws IOException {
+        fileManager.flushCache(this);
         ensureParentDirectoriesExist();
         return new FileOutputStream(file);
     }
@@ -129,6 +131,7 @@ public class RegularFileObject extends BaseFileObject {
 
     @Override
     public Writer openWriter() throws IOException {
+        fileManager.flushCache(this);
         ensureParentDirectoriesExist();
         return new OutputStreamWriter(new FileOutputStream(file), fileManager.getEncodingName());
     }
@@ -179,7 +182,19 @@ public class RegularFileObject extends BaseFileObject {
         if (name.equals(n)) {
             return true;
         }
-        if (name.equalsIgnoreCase(n)) {
+        if (isMacOS && Normalizer.isNormalized(name, Normalizer.Form.NFD)
+            && Normalizer.isNormalized(n, Normalizer.Form.NFC)) {
+            // On Mac OS X it is quite possible to file name and class
+            // name normalized in a different way - in that case we have to normalize file name
+            // to the Normal Form Compised (NFC)
+            String normName = Normalizer.normalize(name, Normalizer.Form.NFC);
+            if (normName.equals(n)) {
+                this.name = normName;
+                return true;
+            }
+        }
+
+            if (name.equalsIgnoreCase(n)) {
             try {
                 // allow for Windows
                 return file.getCanonicalFile().getName().equals(n);
@@ -233,7 +248,7 @@ public class RegularFileObject extends BaseFileObject {
                 // so try the canonical file for best results
                 absFile = file.getCanonicalFile();
             } catch (IOException e) {
-                absFile = file.getAbsoluteFile();
+            absFile = file.getAbsoluteFile();
             }
             absFileRef = new SoftReference<File>(absFile);
         }

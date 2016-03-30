@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2008, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -56,7 +56,10 @@ public class AccessFlags {
     public static final int ACC_SYNTHETIC     = 0x1000; // class, inner, field, method
     public static final int ACC_ANNOTATION    = 0x2000; // class, inner
     public static final int ACC_ENUM          = 0x4000; // class, inner, field
-    public static final int ACC_MODULE        = 0x8000; // class, inner, field, method
+    public static final int ACC_MANDATED      = 0x8000; //                          method parameter
+    public static final int ACC_MODULE        = 0x8000; // class
+
+
 
     public static enum Kind { Class, InnerClass, Field, Method};
 
@@ -81,7 +84,7 @@ public class AccessFlags {
     }
 
     private static final int[] classModifiers = {
-        ACC_PUBLIC, ACC_FINAL, ACC_ABSTRACT, ACC_MODULE
+        ACC_PUBLIC, ACC_FINAL, ACC_ABSTRACT
     };
 
     private static final int[] classFlags = {
@@ -100,12 +103,12 @@ public class AccessFlags {
 
     private static final int[] innerClassModifiers = {
         ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED, ACC_STATIC, ACC_FINAL,
-        ACC_ABSTRACT, ACC_MODULE
+        ACC_ABSTRACT
     };
 
     private static final int[] innerClassFlags = {
         ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED, ACC_STATIC, ACC_FINAL, ACC_SUPER,
-        ACC_INTERFACE, ACC_ABSTRACT, ACC_SYNTHETIC, ACC_ANNOTATION, ACC_ENUM, ACC_MODULE
+        ACC_INTERFACE, ACC_ABSTRACT, ACC_SYNTHETIC, ACC_ANNOTATION, ACC_ENUM
     };
 
     public Set<String> getInnerClassModifiers() {
@@ -119,12 +122,12 @@ public class AccessFlags {
 
     private static final int[] fieldModifiers = {
         ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED, ACC_STATIC, ACC_FINAL,
-        ACC_VOLATILE, ACC_TRANSIENT, ACC_MODULE
+        ACC_VOLATILE, ACC_TRANSIENT
     };
 
     private static final int[] fieldFlags = {
         ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED, ACC_STATIC, ACC_FINAL,
-        ACC_VOLATILE, ACC_TRANSIENT, ACC_SYNTHETIC, ACC_ENUM, ACC_MODULE
+        ACC_VOLATILE, ACC_TRANSIENT, ACC_SYNTHETIC, ACC_ENUM
     };
 
     public Set<String> getFieldModifiers() {
@@ -137,13 +140,13 @@ public class AccessFlags {
 
     private static final int[] methodModifiers = {
         ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED, ACC_STATIC, ACC_FINAL,
-        ACC_SYNCHRONIZED, ACC_NATIVE, ACC_ABSTRACT, ACC_STRICT, ACC_MODULE
+        ACC_SYNCHRONIZED, ACC_NATIVE, ACC_ABSTRACT, ACC_STRICT
     };
 
     private static final int[] methodFlags = {
         ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED, ACC_STATIC, ACC_FINAL,
         ACC_SYNCHRONIZED, ACC_BRIDGE, ACC_VARARGS, ACC_NATIVE, ACC_ABSTRACT,
-        ACC_STRICT, ACC_SYNTHETIC, ACC_MODULE
+        ACC_STRICT, ACC_SYNTHETIC
     };
 
     public Set<String> getMethodModifiers() {
@@ -208,8 +211,8 @@ public class AccessFlags {
                 return "abstract";
             case ACC_STRICT:
                 return "strictfp";
-            case ACC_MODULE:
-                return "module";
+            case ACC_MANDATED:
+                return "mandated";
             default:
                 return null;
         }
@@ -247,8 +250,8 @@ public class AccessFlags {
             return "ACC_ANNOTATION";
         case ACC_ENUM:
             return "ACC_ENUM";
-        case ACC_MODULE:
-            return "ACC_MODULE";
+        case 0x8000:
+            return (t == Kind.Class ? "ACC_MODULE" : "ACC_MANDATED");
         default:
             return null;
         }

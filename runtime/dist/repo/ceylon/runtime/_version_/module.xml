@@ -34,7 +34,6 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
-        <module name="com.redhat.ceylon.maven-support" slot="2.0" services="import" optional="true"/>
         <module name="com.redhat.ceylon.tool.provider" slot="@ceylon-version@"/>
         <module name="org.jboss.modules" slot="1.4.4.Final" export="true"/>
         <module name="org.jboss.logmanager" slot="2.0.3.Final"/>

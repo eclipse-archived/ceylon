@@ -22,7 +22,7 @@ class ExpressionAndType {
      * Returns a list of the types in the given list
      */
     public static List<JCExpression> toTypeList(Iterable<ExpressionAndType> exprAndTypes) {
-        ListBuffer<JCExpression> lb = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
         for (ExpressionAndType arg : exprAndTypes) {
             lb.append(arg.type);
         }
@@ -33,7 +33,7 @@ class ExpressionAndType {
      * Returns a list of the expressions in the given list
      */
     public static List<JCExpression> toExpressionList(Iterable<ExpressionAndType> exprAndTypes) {
-        ListBuffer<JCExpression> lb = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
         for (ExpressionAndType arg : exprAndTypes) {
             lb.append(arg.expression);
         }

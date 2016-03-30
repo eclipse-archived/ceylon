@@ -51,6 +51,7 @@ public class ToolsTest {
     private static final String BuildToolsRunnerClassesDir = BuildToolsBuildDir + "/launcher-classes"; // this one is where the IDE/build puts ToolsTestRunner
     private static final String OutputRepository = BuildToolsBuildDir + "/modules";
     private static String SystemRepo = BuildToolsBuildDir + "/repo";
+    private static String FlatSystemRepo = BuildToolsBuildDir + "/flat-repo";
     private static String FlatRepoLib = BuildToolsBuildDir + "/lib";
     private static String FlatRepoOverrides = BuildToolsBuildDir + "/overrides";
     
@@ -74,13 +75,19 @@ public class ToolsTest {
         FileUtil.delete(outputRepo);
         outputRepo.mkdirs();
 
-        // create the flat repo with Ceylon distrib
+        // create the system repo with Ceylon distrib
         File systemRepo = new File(SystemRepo);
         FileUtil.delete(systemRepo);
         systemRepo.mkdirs();
-        
+
+        // create the flat repo with Ceylon distrib
+        File flatSystemRepo = new File(FlatSystemRepo);
+        FileUtil.delete(flatSystemRepo);
+        flatSystemRepo.mkdirs();
+
         // copy the distrib repo as is
         final Path systemRepoPath = systemRepo.toPath();
+        final Path flatSystemRepoPath = flatSystemRepo.toPath();
         Files.walkFileTree(repo.toPath(), new SimpleFileVisitor<Path>(){
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -89,8 +96,10 @@ public class ToolsTest {
                         || (file.toString().endsWith(".js") && file.getFileName().toString().startsWith("ceylon.language-"))){
                     File relativeFile = FileUtil.relativeFile(repo, file.toFile());
                     Path target = systemRepoPath.resolve(relativeFile.toPath());
+                    Path flatTarget = flatSystemRepoPath.resolve(file.getFileName());
                     Files.createDirectories(target.getParent());
                     Files.copy(file, target, StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(file, flatTarget, StandardCopyOption.REPLACE_EXISTING);
                 }
                 return FileVisitResult.CONTINUE;
             }
@@ -261,7 +270,7 @@ public class ToolsTest {
         testCompiler(CeylonToolProvider.getCompiler(Backend.Java), "modules.extra", "1");
         
         RunnerOptions options = new RunnerOptions();
-        options.setSystemRepository(SystemRepo);
+        options.setSystemRepository("flat:"+FlatSystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         options.addUserRepository("flat:"+FlatRepoOverrides);
         options.addUserRepository(OutputRepository);
@@ -316,7 +325,7 @@ public class ToolsTest {
         };
         CompilerOptions options = new CompilerOptions();
         options.addSourcePath(new File("test"));
-        options.setSystemRepository(SystemRepo);
+        options.setSystemRepository("flat:"+FlatSystemRepo);
         options.addUserRepository("flat:"+FlatRepoLib);
         if (useDependenciesOverrides) {
             options.setOverrides(new File(FlatRepoOverrides, "overrides.xml").getAbsolutePath());

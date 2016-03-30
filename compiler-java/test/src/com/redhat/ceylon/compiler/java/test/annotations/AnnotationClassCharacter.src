@@ -25,7 +25,8 @@ final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java
         this(anno.c());
     }
     
-    AnnotationClassCharacter(final int c) {
+    AnnotationClassCharacter(@.ceylon.language.SharedAnnotation$annotation$
+    final int c) {
         this.c = c;
     }
     private final int c;
@@ -71,7 +72,8 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
         this(anno.c());
     }
     
-    AnnotationClassCharacterDefaulted(final int c) {
+    AnnotationClassCharacterDefaulted(@.ceylon.language.SharedAnnotation$annotation$
+    final int c) {
         this.c = c;
     }
     private final int c;

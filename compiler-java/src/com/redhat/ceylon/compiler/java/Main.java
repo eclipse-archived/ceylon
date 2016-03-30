@@ -45,12 +45,12 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.Main {
      */
     public static int compile(String[] args) {
         com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc");
-        return compiler.compile(args);
+        return compiler.compile(args).exitCode;
     }
     
     public static int compile(String[] args, PrintWriter writer) {
         com.redhat.ceylon.compiler.java.launcher.Main compiler = new com.redhat.ceylon.compiler.java.launcher.Main("ceylonc", writer);
-        return compiler.compile(args);
+        return compiler.compile(args).exitCode;
     }
 
     /**

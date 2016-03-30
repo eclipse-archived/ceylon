@@ -35,6 +35,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.MissingResourceException;
 
 import com.redhat.ceylon.common.Constants;
@@ -52,10 +55,12 @@ import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
+import com.redhat.ceylon.langtools.tools.javac.main.CommandLine;
 import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions;
-import com.redhat.ceylon.langtools.tools.javac.main.JavacOption.Option;
-import com.redhat.ceylon.langtools.tools.javac.main.RecognizedOptions.OptionHelper;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
+import com.redhat.ceylon.langtools.tools.javac.main.Main.Result;
+
+import static com.redhat.ceylon.langtools.tools.javac.main.Main.Result.*;
 import com.redhat.ceylon.langtools.tools.javac.processing.AnnotationProcessingError;
 import com.redhat.ceylon.langtools.tools.javac.util.ClientCodeException;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
@@ -102,42 +107,8 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             EXIT_SYSERR = 3, // System error or resource exhaustion.
             EXIT_ABNORMAL = 4; // Compiler terminated abnormally
 
-    private Option[] recognizedOptions = RecognizedOptions.getJavaCompilerOptions(new OptionHelper() {
-
-        public void setOut(PrintWriter out) {
-            Main.this.out = out;
-        }
-
-        public void error(String key, Object... args) {
-            Main.this.error(key, args);
-        }
-
-        public void printVersion() {
-            Log.printLines(out, getLocalizedString("version", ownName, JavaCompiler.version()));
-        }
-
-        public void printFullVersion() {
-            Log.printLines(out, getLocalizedString("fullVersion", ownName, JavaCompiler.fullVersion()));
-        }
-
-        public void printHelp() {
-            help();
-        }
-
-        public void printXhelp() {
-            xhelp();
-        }
-
-        public void addFile(File f) {
-            if (!filenames.contains(f))
-                filenames.append(f);
-        }
-
-        public void addClassName(String s) {
-            classnames.append(s);
-        }
-
-    });
+    private Option[] recognizedOptions =
+            Option.getJavaCompilerOptions().toArray(new Option[0]);
 
     /**
      * Construct a compiler instance.
@@ -155,22 +126,9 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
         this.out = out;
     }
 
-    /** A table of all options that's passed to the JavaCompiler constructor. */
-    private Options options = null;
-
     /** A timer used to calculate task execution times times */
     private Timer timer = null;
     
-    /**
-     * The list of source files to process
-     */
-    public ListBuffer<File> filenames = null; // XXX sb protected
-
-    /**
-     * List of class files names passed on the command line
-     */
-    public ListBuffer<String> classnames = null; // XXX sb protected
-
     /**
      * Rich information about the failure (or success) of a compilation.
      * 
@@ -220,7 +178,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             BUG
         }
         
-        public final int javacExitCode;
+        public final Result javacExitCode;
         
         public final CeylonState ceylonState;
         
@@ -243,7 +201,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
 
         public final int nonCeylonErrorCount;
         
-        private ExitState(int javacExitCode, CeylonState ceylonState, int errorCount,
+        private ExitState(Result javacExitCode, CeylonState ceylonState, int errorCount,
                 Throwable abortingException, 
                 JavaCompiler comp) {
             super();
@@ -257,7 +215,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             this.abortingException = abortingException;
         }
         
-        private ExitState(int javacExitCode, CeylonState ceylonState, int errorCount,
+        private ExitState(Result javacExitCode, CeylonState ceylonState, int errorCount,
                 Throwable abortingException) {
             this(javacExitCode, ceylonState, errorCount, abortingException, null); 
         }
@@ -273,9 +231,9 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
         public static ExitState error(JavaCompiler comp) {
             if (hasCeylonCodegenErrors(comp)) {
                 // ceylon codegen generates something which was rejected by javac => BUG
-                return new ExitState(EXIT_ERROR, CeylonState.BUG, comp.errorCount(), null, comp);
+                return new ExitState(ERROR, CeylonState.BUG, comp.errorCount(), null, comp);
             } else {   
-                return new ExitState(EXIT_ERROR, CeylonState.ERROR, comp.errorCount(), null);
+                return new ExitState(ERROR, CeylonState.ERROR, comp.errorCount(), null);
             }
         }
 
@@ -345,14 +303,14 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                     // We also assume our own errors are not abnormal
                     && !ex.getClass().getName().startsWith("com.redhat.ceylon.")
                     // And neither are CCEs from the javac code abnormal
-                    && !(ex instanceof ClassCastException && ex.getMessage().contains("com.redhat.ceylon.langtools."))) {
+                    && !(ex instanceof ClassCastException && ex.getMessage() != null && ex.getMessage().contains("com.redhat.ceylon.langtools."))) {
                 return true;
             }
             return false;
         }
         
         public static ExitState ok() {
-            return new ExitState(EXIT_ERROR, CeylonState.OK, 0, null, null);
+            return new ExitState(ERROR, CeylonState.OK, 0, null, null);
         }
 
         /**
@@ -372,11 +330,11 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                 Options options) {
             if (comp == null || comp.errorCount() == 0 || options == null || options.get("dev") != null) {
                 // This is the heuristic javac uses
-                return new ExitState(EXIT_ABNORMAL, CeylonState.BUG, 0, ex, null);
+                return new ExitState(ABNORMAL, CeylonState.BUG, 0, ex, null);
             } else if (hasCeylonCodegenErrors(comp) || isAbnormalException(ex)) {
-                return new ExitState(EXIT_ABNORMAL, CeylonState.BUG, comp.errorCount(), ex, comp);
+                return new ExitState(ABNORMAL, CeylonState.BUG, comp.errorCount(), ex, comp);
             }
-            return new ExitState(EXIT_ABNORMAL, CeylonState.ERROR, comp.errorCount(), null, null);
+            return new ExitState(ABNORMAL, CeylonState.ERROR, comp.errorCount(), null, null);
         }
         
         public static ExitState systemError(JavaCompiler comp, Throwable ex) {
@@ -384,17 +342,17 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             if (comp instanceof LanguageCompiler && 
                     ((LanguageCompiler)comp).getTreatLikelyBugsAsErrors()) {
                 if (hasCeylonCodegenErrors(comp) ) {
-                    return new ExitState(EXIT_ERROR, CeylonState.BUG, comp.errorCount(), ex, comp);
+                    return new ExitState(ERROR, CeylonState.BUG, comp.errorCount(), ex, comp);
                 } else {
-                    return new ExitState(EXIT_ERROR, CeylonState.ERROR, 0, ex, null);
+                    return new ExitState(ERROR, CeylonState.ERROR, 0, ex, null);
                 }
             }
-            return new ExitState(EXIT_SYSERR, CeylonState.SYS, 0, ex, null);
+            return new ExitState(SYSERR, CeylonState.SYS, 0, ex, null);
         }
 
         public static ExitState cmderror() {
             // icky: We'd prefer this to be handled at the tool API level 
-            return new ExitState(EXIT_CMDERR, CeylonState.BUG, 0, null, null);
+            return new ExitState(CMDERR, CeylonState.BUG, 0, null, null);
         }    
     }
     
@@ -409,14 +367,14 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             throw new PropagatedException(new IllegalStateException(msg));
         }
         warning(key, args);
-        Log.printLines(out, getLocalizedString("msg.usage", ownName));
+        out.println(getLocalizedString("msg.usage", ownName));
     }
 
     /**
      * Report a warning.
      */
     void warning(String key, Object... args) {
-        Log.printLines(out, ownName + ": " + getLocalizedString(key, args));
+        out.println(ownName + ": " + getLocalizedString(key, args));
     }
 
     public Option getOption(String flag) {
@@ -442,7 +400,8 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
      * `options' table and return all source filenames.
      * @param flags The array of command line arguments.
      */
-    public List<File> processArgs(String[] flags) { // XXX sb protected
+    @Override
+    public Collection<File> processArgs(String[] flags, String[] classNames) {
         int ac = 0;
         while (ac < flags.length) {
             String flag = flags[ac];
@@ -470,23 +429,37 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                 }
                 String operand = flags[ac];
                 ac++;
-                if (option.process(options, flag, operand))
+                if (option.process(optionHelper, flag, operand))
                     return null;
             } else {
-                if (option.process(options, flag))
+                if (option.process(optionHelper, flag))
                     return null;
             }
         }
 
+        if (this.classnames != null && classNames != null) {
+            this.classnames.addAll(Arrays.asList(classNames));
+        }
+        
         if (!checkDirectoryOrURL("-d"))
             return null;
         if (!checkDirectory("-s"))
             return null;
 
         String sourceString = options.get("-source");
-        Source source = (sourceString != null) ? Source.lookup(sourceString) : Source.DEFAULT;
         String targetString = options.get("-target");
-        Target target = (targetString != null) ? Target.lookup(targetString) : Target.DEFAULT;
+        if (sourceString == null
+                && targetString == null) {
+            sourceString = "7";
+            options.put(Option.SOURCE, sourceString);
+        }
+        Source source = (sourceString != null) ? Source.lookup(sourceString) : Source.DEFAULT;
+        
+        if (targetString == null) {
+            targetString = "7";
+            options.put(Option.TARGET, targetString);
+        }
+        Target target = (targetString != null) ? Target.lookup(targetString) : Target.JDK1_7;
         // We don't check source/target consistency for CLDC, as J2ME
         // profiles are not aligned with J2SE targets; moreover, a
         // single CLDC target may have many profiles. In addition,
@@ -510,7 +483,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                 }
             }
         }
-        return filenames.toList();
+        return filenames;
     }
 
     // where
@@ -561,12 +534,13 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
      * Programmatic interface for main function.
      * @param args The command line parameters.
      */
-    public int compile(String[] args) {
+    @Override
+    public Result compile(String[] args) {
         Context context = new Context();
         CeyloncFileManager.preRegister(context); // can't create it until Log
                                                  // has been set up
         CeylonLog.preRegister(context);
-        int result = compile(args, context);
+        Result result = compile(args, context);
         if (fileManager instanceof JavacFileManager) {
             // A fresh context was created above, so jfm must be a
             // JavacFileManager
@@ -575,37 +549,50 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
         return result;
     }
 
-    public int compile(String[] args, Context context) {
+    @Override
+    public Result compile(String[] args, Context context) {
         return compile(args, context, List.<JavaFileObject> nil(), null);
     }
 
+    @Override
+    public Result compile(String[] args,
+            Context context,
+            List<JavaFileObject> fileObjects,
+            Iterable<? extends Processor> processors) {
+        return compile(args, null, context, fileObjects, processors);
+    }
+    
     /**
      * Programmatic interface for main function.
      * @param args The command line parameters.
      */
-    public int compile(String[] args, Context context, List<JavaFileObject> fileObjects, Iterable<? extends Processor> processors) {
+    @Override
+    public Result compile(String[] args,
+            String[] classNames,
+            Context context,
+            List<JavaFileObject> fileObjects,
+            Iterable<? extends Processor> processors) {
         if (options == null) {
             options = Options.instance(context); // creates a new one
         }
 
-        filenames = new ListBuffer<File>();
+        filenames = new LinkedHashSet<File>();
         classnames = new ListBuffer<String>();
-        exitState = null;
+        exitState = ExitState.cmderror();
         JavaCompiler comp = null;
         /* TODO: Logic below about what is an acceptable command line should be
          * updated to take annotation processing semantics into account. */
         try {
             if (args.length == 0 && fileObjects.isEmpty()) {
-                help();
+                //super.help();
                 this.exitState = ExitState.cmderror();
-                return EXIT_CMDERR;
+                return CMDERR;
             }
-
-            List<File> filenames = processArgs(args);
+            Collection<File> filenames = processArgs(CommandLine.parse(args), classNames);
             if (filenames == null) {
                 // null signals an error in options, abort
                 this.exitState = ExitState.cmderror();
-                return EXIT_CMDERR;
+                return CMDERR;
             } else if (filenames.isEmpty() && fileObjects.isEmpty() && classnames.isEmpty()) {
                 // it is allowed to compile nothing if just asking for help
                 // or version info
@@ -614,10 +601,10 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                         || options.get("-X") != null 
                         || options.get("-version") != null 
                         || options.get("-fullversion") != null)
-                    return EXIT_OK;
+                    return OK;
                 error("err.no.source.files");
                 this.exitState = ExitState.cmderror();
-                return EXIT_CMDERR;
+                return CMDERR;
             }
 
             // Set up the timer *after* we've processed to options
@@ -638,19 +625,19 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             comp = LanguageCompiler.instance(context);
             if (comp == null) {
                 this.exitState = ExitState.systemError(null, null);
-                return EXIT_SYSERR;
+                return SYSERR;
             }
 
             if(!classnames.isEmpty()) {
-                filenames = addModuleFiles(filenames);
+                this.filenames.addAll(addModuleFiles(filenames));
                 classnames.clear();
             }
             
-            if (!filenames.isEmpty()) {
+            if (!this.filenames.isEmpty()) {
                 // add filenames to fileObjects
                 List<JavaFileObject> otherFiles = List.nil();
                 JavacFileManager dfm = (JavacFileManager) fileManager;
-                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(filenames)) {
+                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(this.filenames)) {
                     otherFiles = otherFiles.append(fo);
                 }
                 fileObjects = fileObjects.prependList(otherFiles);
@@ -658,7 +645,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             if(fileObjects.isEmpty()){
                 error("err.no.source.files");
                 this.exitState = ExitState.cmderror();
-                return EXIT_CMDERR;
+                return CMDERR;
             }
             comp.compile(fileObjects, classnames.toList(), processors);
 
@@ -666,30 +653,30 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             //ceylonBackendErrors = comp.log instanceof CeylonLog ? ((CeylonLog)comp.log).ceylonBackendErrors() : false;
             if (errorCount != 0) {
                 this.exitState = ExitState.error(comp);
-                return EXIT_ERROR;
+                return ERROR;
             }
         } catch (IOException ex) {
             ioMessage(ex);
             this.exitState = ExitState.systemError(null, ex);
-            return EXIT_SYSERR;
+            return SYSERR;
         } catch (OutOfMemoryError ex) {
             resourceMessage(ex);
             this.exitState = ExitState.systemError(null, ex);
-            return EXIT_SYSERR;
+            return SYSERR;
         } catch (StackOverflowError ex) {
             resourceMessage(ex);
             this.exitState = ExitState.systemError(null, ex);
-            return EXIT_SYSERR;
+            return SYSERR;
         } catch (FatalError ex) {
             this.exitState = ExitState.systemError(comp, ex);
-            if (this.exitState.javacExitCode == EXIT_SYSERR) {
+            if (this.exitState.javacExitCode == SYSERR) {
                 feMessage(ex);
             }
             return this.exitState.javacExitCode;
         } catch (AnnotationProcessingError ex) {
             apMessage(ex);
             this.exitState = ExitState.systemError(null, ex);
-            return EXIT_SYSERR;
+            return SYSERR;
         } catch (ClientCodeException ex) {
             // as specified by javax.tools.JavaCompiler#getTask
             // and javax.tools.JavaCompiler.CompilationTask#call
@@ -706,7 +693,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                 bugMessage(ex);
             }
             this.exitState = ExitState.abnormal(comp, ex, options);
-            return EXIT_ABNORMAL;
+            return ABNORMAL;
         } finally {
             if (comp != null)
                 comp.close();
@@ -718,18 +705,20 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             timer = null;
         }
         this.exitState = ExitState.ok();
-        return EXIT_OK;
+        return OK;
     }
 
     // Now add the files for each of the modules that were given on the command line
     @SuppressWarnings("unchecked")
-    private List<File> addModuleFiles(List<File> filenames) throws IOException {
+    private ListBuffer<File> addModuleFiles(Collection<File> f) throws IOException {
         Iterable<File> srcdirs = (Iterable<File>) ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
         Iterable<File> resdirs = (Iterable<File>) ((JavacFileManager)fileManager).getLocation(CeylonLocation.RESOURCE_PATH);
         SourceArgumentsResolver resolver = new SourceArgumentsResolver(srcdirs, resdirs, Constants.CEYLON_SUFFIX, Constants.JAVA_SUFFIX);
         resolver.parse(classnames.toList());
-        filenames = appendAll(filenames, resolver.getSourceFiles());
-        filenames = appendAll(filenames, resolver.getResourceFiles());
+        ListBuffer<File> filenames = new ListBuffer<File>();
+        filenames.addAll(f);
+        filenames.addAll(resolver.getSourceFiles());
+        filenames.addAll(resolver.getResourceFiles());
         return filenames;
     }
     
@@ -744,7 +733,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
      * Print a message reporting an internal error.
      */
     void bugMessage(Throwable ex) {
-        Log.printLines(out, getLocalizedString("msg.bug", JavaCompiler.version()));
+        out.println(getLocalizedString("msg.bug", JavaCompiler.version()));
         ex.printStackTrace(out);
     }
 
@@ -752,14 +741,14 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
      * Print a message reporting an fatal error.
      */
     void feMessage(Throwable ex) {
-        Log.printLines(out, ex.getMessage());
+        out.println(ex.getMessage());
     }
 
     /**
      * Print a message reporting an input/output error.
      */
     void ioMessage(Throwable ex) {
-        Log.printLines(out, getLocalizedString("msg.io"));
+        out.println(getLocalizedString("msg.io"));
         ex.printStackTrace(out);
     }
 
@@ -767,7 +756,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
      * Print a message reporting an out-of-resources error.
      */
     void resourceMessage(Throwable ex) {
-        Log.printLines(out, getLocalizedString("msg.resource"));
+        out.println(getLocalizedString("msg.resource"));
         // System.out.println("(name buffer len = " + Name.names.length + " " +
         // Name.nc);//DEBUG
         ex.printStackTrace(out);
@@ -778,7 +767,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
      * processor.
      */
     void apMessage(AnnotationProcessingError ex) {
-        Log.printLines(out, getLocalizedString("msg.proc.annotation.uncaught.exception"));
+        out.println(getLocalizedString("msg.proc.annotation.uncaught.exception"));
         ex.getCause().printStackTrace();
     }
 

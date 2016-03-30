@@ -93,6 +93,7 @@ public class InvocationGenerator {
         } else {
             gen.out("(");
             Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
+            writeNew(typeArgSource);
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen);
             } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
@@ -142,6 +143,7 @@ public class InvocationGenerator {
             //TODO we lose type args for now
             return;
         } else {
+            writeNew(typeArgSource);
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
                 if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
@@ -703,6 +705,22 @@ public class InvocationGenerator {
             gen.out("[]");
         } else {
             TypeUtils.encodeParameterListForRuntime(true, term, plist, gen);
+        }
+    }
+
+    /**
+     * Emit {@code new} if the invoked function should be invoked with {@code new}.
+     * @see Functional#isJsNew()
+     */
+    void writeNew(Tree.Primary invoked) {
+        if (invoked instanceof Tree.BaseTypeExpression) {
+            Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression)invoked;
+            if (bte.getDeclaration() instanceof Functional) {
+                Functional f = (Functional)bte.getDeclaration();
+                if (f.isJsNew()) {
+                    gen.out("new ");
+                }
+            }
         }
     }
 

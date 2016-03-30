@@ -30,7 +30,6 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import com.redhat.ceylon.langtools.tools.javac.code.Scope;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 

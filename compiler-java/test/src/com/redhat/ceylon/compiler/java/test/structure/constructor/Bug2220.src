@@ -16,7 +16,7 @@ public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         
         final class Baz$baz {
             
-            private Baz$baz() {
+            Baz$baz() {
             }
         }
         private transient Baz $instance$Baz$baz = null;
@@ -32,7 +32,7 @@ public class Bug2220 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         
         class Baz$gee {
             
-            private Baz$gee() {
+            Baz$gee() {
             }
         }
         

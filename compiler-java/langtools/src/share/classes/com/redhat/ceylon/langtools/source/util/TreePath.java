@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -60,12 +60,18 @@ public class TreePath implements Iterable<Tree> {
                 this.path = path;
             }
         }
+
         class PathFinder extends TreePathScanner<TreePath,Tree> {
             public TreePath scan(Tree tree, Tree target) {
-                if (tree == target)
+                if (tree == target) {
                     throw new Result(new TreePath(getCurrentPath(), target));
+                }
                 return super.scan(tree, target);
             }
+        }
+
+        if (path.getLeaf() == target) {
+            return path;
         }
 
         try {
@@ -118,18 +124,25 @@ public class TreePath implements Iterable<Tree> {
         return parent;
     }
 
+    /**
+     *  Iterates from leaves to root.
+     */
+    @Override
     public Iterator<Tree> iterator() {
         return new Iterator<Tree>() {
+            @Override
             public boolean hasNext() {
                 return next != null;
             }
 
+            @Override
             public Tree next() {
                 Tree t = next.leaf;
                 next = next.parent;
                 return t;
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }

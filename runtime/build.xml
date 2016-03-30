@@ -45,6 +45,7 @@
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.cli.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.module-resolver.lib}"/>
@@ -115,7 +116,6 @@
         <copy file="${ceylon.compiler.java.lib}" tofile="${build.dist.repo}/${ceylon.compiler.java.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
-        <copy file="${ceylon.maven-support.lib}" tofile="${build.dist.repo}/${ceylon.maven-support.jar}"/>
         <copy todir="${build.dist}">
             <fileset dir="./testsuite/src/test/resources/"/>
         </copy>
@@ -287,7 +287,7 @@
             <fileset dir="${basedir}/bin">
             </fileset>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.base.version}"/>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
             </filterset>
         </copy>
     </target>

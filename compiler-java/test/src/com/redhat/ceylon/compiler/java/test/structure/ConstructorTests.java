@@ -352,5 +352,11 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorUnusedPartial() {
         compareWithJavaSource("constructor/UnusedPartial");
     }
+    
+    @Test
+    public void testCtorBug6134() {
+        compile("constructor/Bug6134.ceylon");
+        compile("constructor/Bug6134Use.ceylon");
+    }
 
 }

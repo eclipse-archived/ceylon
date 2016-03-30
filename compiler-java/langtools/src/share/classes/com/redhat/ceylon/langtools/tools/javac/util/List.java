@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1999, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -37,7 +37,7 @@ import java.util.NoSuchElementException;
 /** A class for generic linked lists. Links are supposed to be
  *  immutable, the only exception being the incremental construction of
  *  lists via ListBuffers.  List is the main container class in
- *  GJC. Most data structures and algorthms in GJC use lists rather
+ *  GJC. Most data structures and algorithms in GJC use lists rather
  *  than arrays.
  *
  *  <p>Lists are always trailed by a sentinel element, whose head and tail
@@ -74,7 +74,7 @@ public class List<A> extends AbstractCollection<A> implements java.util.List<A> 
         return (List<A>)EMPTY_LIST;
     }
 
-    private static List<?> EMPTY_LIST = new List<Object>(null,null) {
+    private static final List<?> EMPTY_LIST = new List<Object>(null,null) {
         public List<Object> setTail(List<Object> tail) {
             throw new UnsupportedOperationException();
         }
@@ -82,6 +82,52 @@ public class List<A> extends AbstractCollection<A> implements java.util.List<A> 
             return true;
         }
     };
+
+    /** Returns the list obtained from 'l' after removing all elements 'elem'
+     */
+    public static <A> List<A> filter(List<A> l, A elem) {
+        Assert.checkNonNull(elem);
+        List<A> res = List.nil();
+        for (A a : l) {
+            if (a != null && !a.equals(elem)) {
+                res = res.prepend(a);
+            }
+        }
+        return res.reverse();
+    }
+
+    public List<A> intersect(List<A> that) {
+        ListBuffer<A> buf = new ListBuffer<>();
+        for (A el : this) {
+            if (that.contains(el)) {
+                buf.append(el);
+            }
+        }
+        return buf.toList();
+    }
+
+    public List<A> diff(List<A> that) {
+        ListBuffer<A> buf = new ListBuffer<>();
+        for (A el : this) {
+            if (!that.contains(el)) {
+                buf.append(el);
+            }
+        }
+        return buf.toList();
+    }
+
+    /**
+     * Create a new list from the first {@code n} elements of this list
+     */
+    public List<A> take(int n) {
+        ListBuffer<A> buf = new ListBuffer<>();
+        int count = 0;
+        for (A el : this) {
+            if (count++ == n) break;
+            buf.append(el);
+        }
+        return buf.toList();
+    }
 
     /** Construct a list consisting of given element.
      */
@@ -118,6 +164,14 @@ public class List<A> extends AbstractCollection<A> implements java.util.List<A> 
             for (int i = array.length - 1; i >= 0; i--)
                 xs = new List<A>(array[i], xs);
         return xs;
+    }
+
+    public static <A> List<A> from(Iterable<? extends A> coll) {
+        ListBuffer<A> xs = new ListBuffer<>();
+        for (A a : coll) {
+            xs.append(a);
+        }
+        return xs.toList();
     }
 
     /** Construct a list consisting of a given number of identical elements.
@@ -266,7 +320,7 @@ public class List<A> extends AbstractCollection<A> implements java.util.List<A> 
         if (isEmpty()) {
             return "";
         } else {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append(head);
             for (List<A> l = tail; l.nonEmpty(); l = l.tail) {
                 buf.append(sep);
@@ -370,7 +424,7 @@ public class List<A> extends AbstractCollection<A> implements java.util.List<A> 
         return (List<T>)list;
     }
 
-    private static Iterator<?> EMPTYITERATOR = new Iterator<Object>() {
+    private static final Iterator<?> EMPTYITERATOR = new Iterator<Object>() {
             public boolean hasNext() {
                 return false;
             }

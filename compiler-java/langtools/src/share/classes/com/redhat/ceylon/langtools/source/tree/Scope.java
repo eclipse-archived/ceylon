@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2006, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -28,8 +28,6 @@ package com.redhat.ceylon.langtools.source.tree;
 import com.redhat.ceylon.javax.lang.model.element.Element;
 import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
 import com.redhat.ceylon.javax.lang.model.element.TypeElement;
-import com.redhat.ceylon.javax.lang.model.type.DeclaredType;
-import com.redhat.ceylon.langtools.source.tree.Tree;
 
 /**
  * Interface for determining locally available program elements, such as

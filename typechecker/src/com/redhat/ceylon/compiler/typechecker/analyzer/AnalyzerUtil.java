@@ -34,7 +34,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
-import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -469,6 +468,9 @@ public class AnalyzerUtil {
     
     static boolean checkCallable(Type type, Node node, String message) {
         Unit unit = node.getUnit();
+        if (type!=null) {
+            type = type.resolveAliases();
+        }
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return false;
@@ -515,7 +517,6 @@ public class AnalyzerUtil {
     
     static Type checkSupertype(Type type, boolean unary, 
             TypeDeclaration td, Node node, String message) {
-
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return null;
@@ -1194,7 +1195,7 @@ public class AnalyzerUtil {
         return type;
     }
 
-    static Package importedPackage(Tree.ImportPath path) {
+    static Package importedPackage(Tree.ImportPath path, ModuleSourceMapper moduleSourceMapper) {
             if (path!=null && 
                     !path.getIdentifiers().isEmpty()) {
                 String nameToImport = 
@@ -1245,8 +1246,7 @@ public class AnalyzerUtil {
                                 return null;
                             }
                             if (!isForBackend(Backend.Java.asSet(), path.getUnit()) &&
-                                    (JDKUtils.isJDKAnyPackage(nameToImport) ||
-                                     JDKUtils.isOracleJDKAnyPackage(nameToImport))) {
+                                    moduleSourceMapper.getJdkProvider().isJDKPackage(nameToImport)) {
                                 return null;
                             }
                         }

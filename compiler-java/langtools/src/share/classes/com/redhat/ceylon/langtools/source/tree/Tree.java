@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -46,10 +46,19 @@ public interface Tree {
      */
     public enum Kind {
 
+        ANNOTATED_TYPE(AnnotatedTypeTree.class),
+
         /**
-         * Used for instances of {@link AnnotationTree}.
+         * Used for instances of {@link AnnotationTree}
+         * representing declaration annotations.
          */
         ANNOTATION(AnnotationTree.class),
+
+        /**
+         * Used for instances of {@link AnnotationTree}
+         * representing type annotations.
+         */
+        TYPE_ANNOTATION(AnnotationTree.class),
 
         /**
          * Used for instances of {@link ArrayAccessTree}.
@@ -132,6 +141,11 @@ public interface Tree {
         MEMBER_SELECT(MemberSelectTree.class),
 
         /**
+         * Used for instances of {@link MemberReferenceTree}.
+         */
+        MEMBER_REFERENCE(MemberReferenceTree.class),
+
+        /**
          * Used for instances of {@link ForLoopTree}.
          */
         FOR_LOOP(ForLoopTree.class),
@@ -187,6 +201,11 @@ public interface Tree {
         NEW_CLASS(NewClassTree.class),
 
         /**
+         * Used for instances of {@link LambdaExpressionTree}.
+         */
+        LAMBDA_EXPRESSION(LambdaExpressionTree.class),
+
+        /**
          * Used for instances of {@link ParenthesizedTree}.
          */
         PARENTHESIZED(ParenthesizedTree.class),
@@ -235,6 +254,11 @@ public interface Tree {
          * Used for instances of {@link UnionTypeTree}.
          */
         UNION_TYPE(UnionTypeTree.class),
+
+        /**
+         * Used for instances of {@link IntersectionTypeTree}.
+         */
+        INTERSECTION_TYPE(IntersectionTypeTree.class),
 
         /**
          * Used for instances of {@link TypeCastTree}.
@@ -602,7 +626,7 @@ public interface Tree {
      * visitor pattern is used to implement operations on trees.
      *
      * @param <R> result type of this operation.
-     * @param <D> type of additonal data.
+     * @param <D> type of additional data.
      */
     <R,D> R accept(TreeVisitor<R,D> visitor, D data);
 }

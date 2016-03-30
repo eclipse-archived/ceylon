@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -62,8 +63,10 @@ public class ConditionGenerator {
             }
             if (variable != null) {
                 Tree.Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
-                String varName = names.name(variable.getDeclarationModel());
-                if (output) {
+                Value vdecl = variable.getDeclarationModel();
+                String varName = names.name(vdecl);
+                final boolean member = vdecl.getContainer().getContainer() instanceof ClassOrInterface;
+                if (output && !member) {
                     if (first) {
                         first = false;
                         gen.out("var ");
@@ -530,7 +533,15 @@ public class ConditionGenerator {
                 destr = (Tree.Destructure)st;
             }
             term = rhs;
-            name = varName;
+            if (st.getScope() instanceof Tree.Assertion &&
+                    st.getScope().getContainer() instanceof ClassOrInterface) {
+                name = gen.getNames().self((ClassOrInterface)st.getScope().getContainer()) + "." + varName;
+                if (var != null) {
+                    names.forceName(var.getDeclarationModel(), name);
+                }
+            } else {
+                name = varName;
+            }
         }
         void forget() {
             if (var != null) {

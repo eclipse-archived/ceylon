@@ -2,7 +2,7 @@
 
 # Ceylon
 
-This is the 1.2.2 _"In A Galaxy Far Far Away"_ release of the Ceylon 
+This is the 1.2.3 _"Total Internal Reflection"_ release of the Ceylon 
 command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 

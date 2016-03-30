@@ -168,7 +168,7 @@ public class AnnotationInvocation {
             ExpressionTransformer exprGen, 
             AnnotationInvocation ai, 
             com.redhat.ceylon.langtools.tools.javac.util.List<AnnotationFieldName> parameterPath) {
-        ListBuffer<JCExpression> args = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
         for (AnnotationArgument aa : getAnnotationArguments()) {
             Parameter name = aa.getParameter();
             if (!isInstantiation()) {
@@ -211,7 +211,7 @@ public class AnnotationInvocation {
      * (if the annotation constructor calls another annotation constructor)
      */
     public JCAnnotation encode(AbstractTransformer gen, ListBuffer<JCExpression> instantiations) {
-        ListBuffer<JCExpression> arguments = ListBuffer.lb();
+        ListBuffer<JCExpression> arguments = new ListBuffer<JCExpression>();
         for (AnnotationArgument argument : getAnnotationArguments()) {
             arguments.append(gen.make().Literal(
                     argument.getTerm().encode(gen, instantiations)));
@@ -283,10 +283,10 @@ public class AnnotationInvocation {
             group.add(aa);
         }
         // Make a @*Exprs annotation for each type
-        ListBuffer<JCAnnotation> exprsAnnos = ListBuffer.<JCAnnotation>lb();
+        ListBuffer<JCAnnotation> exprsAnnos = new ListBuffer<JCAnnotation>();
         for (List<AnnotationArgument> group : groups.values()) {
             AnnotationTerm factory = null;
-            ListBuffer<JCAnnotation> valueAnnos = ListBuffer.<JCAnnotation>lb();
+            ListBuffer<JCAnnotation> valueAnnos = new ListBuffer<JCAnnotation>();
             for (AnnotationArgument aa : group) {
                 AnnotationTerm term = aa.getTerm();
                 com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> annos = term.makeExprAnnotations(exprGen, this, fieldPath.append(aa));

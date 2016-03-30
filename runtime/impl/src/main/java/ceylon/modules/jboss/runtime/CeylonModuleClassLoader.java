@@ -2,13 +2,17 @@ package ceylon.modules.jboss.runtime;
 
 import org.jboss.modules.ModuleClassLoader;
 import org.jboss.modules.ModuleClassLoaderFactory;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoader;
+
+import com.redhat.ceylon.model.cmr.RuntimeResolver;
 
 /**
  * Class used in the language module to be able to force metamodel registration from the transformer.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class CeylonModuleClassLoader extends ModuleClassLoader implements com.redhat.ceylon.common.runtime.CeylonModuleClassLoader {
+public class CeylonModuleClassLoader extends ModuleClassLoader implements com.redhat.ceylon.model.runtime.CeylonModuleClassLoader {
 
     static {
         boolean parallelOk = true;
@@ -112,6 +116,34 @@ public class CeylonModuleClassLoader extends ModuleClassLoader implements com.re
         @Override
         public ModuleClassLoader create(Configuration configuration) {
             return new CeylonModuleClassLoader(configuration, transformer);
+        }
+    }
+
+    @Override
+    public String getModuleName() {
+        return getModule().getIdentifier().getName();
+    }
+
+    @Override
+    public String getModuleVersion() {
+        return getModule().getIdentifier().getSlot();
+    }
+
+    @Override
+    public RuntimeResolver getRuntimeResolver() {
+        ModuleLoader moduleLoader = getModule().getModuleLoader();
+        return moduleLoader instanceof RuntimeResolver ? (RuntimeResolver)moduleLoader : null;
+    }
+
+    @Override
+    public com.redhat.ceylon.model.runtime.CeylonModuleClassLoader loadModule(String name, String version) throws ModuleLoadException {
+        ModuleLoader moduleLoader = getModule().getModuleLoader();
+        try {
+            ModuleClassLoader classLoader = moduleLoader.loadModule(ModuleIdentifier.create(name, version)).getClassLoader();
+            return classLoader instanceof com.redhat.ceylon.model.runtime.CeylonModuleClassLoader
+                    ? (com.redhat.ceylon.model.runtime.CeylonModuleClassLoader)classLoader : null; 
+        } catch (org.jboss.modules.ModuleLoadException e) {
+            throw new ModuleLoadException(e);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, 2009, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
  *  deletion without notice.</b>
  */
 public class Code_attribute extends Attribute {
-    public class InvalidIndex extends AttributeException {
+    public static class InvalidIndex extends AttributeException {
         private static final long serialVersionUID = -8904527774589382802L;
         InvalidIndex(int index) {
             this.index = index;
@@ -61,9 +61,9 @@ public class Code_attribute extends Attribute {
         code_length = cr.readInt();
         code = new byte[code_length];
         cr.readFully(code);
-        exception_table_langth = cr.readUnsignedShort();
-        exception_table = new Exception_data[exception_table_langth];
-        for (int i = 0; i < exception_table_langth; i++)
+        exception_table_length = cr.readUnsignedShort();
+        exception_table = new Exception_data[exception_table_length];
+        for (int i = 0; i < exception_table_length; i++)
             exception_table[i] = new Exception_data(cr);
         attributes = new Attributes(cr);
     }
@@ -139,11 +139,11 @@ public class Code_attribute extends Attribute {
     public final int max_locals;
     public final int code_length;
     public final byte[] code;
-    public final int exception_table_langth;
+    public final int exception_table_length;
     public final Exception_data[] exception_table;
     public final Attributes attributes;
 
-    public class Exception_data {
+    public static class Exception_data {
         Exception_data(ClassReader cr) throws IOException {
             start_pc = cr.readUnsignedShort();
             end_pc = cr.readUnsignedShort();

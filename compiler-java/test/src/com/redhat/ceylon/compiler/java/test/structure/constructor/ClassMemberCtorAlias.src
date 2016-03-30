@@ -7,7 +7,7 @@ class ClassMemberCtorAlias implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public static final class Member$other {
         
-        private Member$other() {
+        Member$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorAlias.Member$other Member$other = null;

@@ -29,7 +29,7 @@ import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
@@ -202,7 +202,7 @@ public class JavacClass implements ClassMirror {
     public TypeMirror getSuperclass() {
         if (superclass == null) {
             Type supercls = classSymbol.getSuperclass();
-            if (supercls != null && supercls.tag != TypeTags.NONE) {
+            if (supercls != null && supercls.getTag() != TypeTag.NONE) {
                 superclass = new JavacType(supercls);
             }
         }

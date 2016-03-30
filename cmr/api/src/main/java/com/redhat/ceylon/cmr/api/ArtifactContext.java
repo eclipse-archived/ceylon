@@ -52,6 +52,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String INFO = ".info";
     public static final String SCRIPTS_ZIPPED = ".scripts.zip";
     public static final String ZIP = ".zip";
+    public static final String NPM_DESCRIPTOR = "package.json";
 
     // IMPORTANT: Makes sure the elements in this array are ordered in such
     // a way that no ambiguities can occur when matching them one at a time.
@@ -118,8 +119,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // Returns true if the suffix that was passed can have
     // an associated .sha1 suffix
     private static boolean isShaAllowed(String suffix) {
-        if (MODULE_PROPERTIES.equals(suffix) || MODULE_XML.equals(suffix)
-                || suffix.endsWith(SHA1) || isDirectoryName(suffix)) {
+        if (suffix.endsWith(SHA1) || isDirectoryName(suffix)) {
             return false;
         }
         return true;

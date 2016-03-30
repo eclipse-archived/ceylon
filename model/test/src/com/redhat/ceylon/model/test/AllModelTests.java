@@ -8,7 +8,8 @@ import com.redhat.ceylon.model.test.loader.impl.reflect.CachedTOCJarsTest;
 
 @RunWith(Suite.class) 
 @SuiteClasses({
-    CachedTOCJarsTest.class
+    CachedTOCJarsTest.class,
+    ClassFileUtilTest.class
 })
 public class AllModelTests {
 }

@@ -51,6 +51,7 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  */
 public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryManager {
 
+    protected static final String VALIDATING = ".validating";
     protected static final String SHA1 = ".sha1";
     protected static final String LOCAL = ".local";
     protected static final String CACHED = ".cached";
@@ -399,17 +400,6 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         context.toNode(node);
 
         return node;
-    }
-
-    protected Boolean checkSHA(Node artifact) throws IOException {
-        final Node sha = artifact.getChild(SHA1);
-        return (sha != null) ? checkSHA(artifact, sha.getInputStream()) : null;
-    }
-
-    protected boolean checkSHA(Node artifact, InputStream shaStream) throws IOException {
-        final String shaFromSha = IOUtils.readSha1(shaStream);
-        final String shaFromArtifact = IOUtils.sha1(artifact.getInputStream());
-        return shaFromArtifact.equals(shaFromSha);
     }
 
     protected Node getOrCreateParent(ArtifactContext context) {

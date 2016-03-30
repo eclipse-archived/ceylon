@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -38,6 +38,7 @@ import com.redhat.ceylon.javax.lang.model.type.ErrorType;
 import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
+
 import com.redhat.ceylon.langtools.source.tree.CatchTree;
 import com.redhat.ceylon.langtools.source.tree.ClassTree;
 import com.redhat.ceylon.langtools.source.tree.CompilationUnitTree;
@@ -57,7 +58,9 @@ public abstract class Trees {
      * @throws IllegalArgumentException if the task does not support the Trees API.
      */
     public static Trees instance(CompilationTask task) {
-        if (!task.getClass().getName().equals("com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl"))
+        String taskClassName = task.getClass().getName();
+        if (!taskClassName.equals("com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl")
+                && !taskClassName.equals("com.redhat.ceylon.langtools.tools.javac.api.BasicJavacTask"))
             throw new IllegalArgumentException();
         return getJavacTrees(CompilationTask.class, task);
     }
@@ -73,7 +76,7 @@ public abstract class Trees {
         return getJavacTrees(ProcessingEnvironment.class, env);
     }
 
-    private static Trees getJavacTrees(Class<?> argType, Object arg) {
+    static Trees getJavacTrees(Class<?> argType, Object arg) {
         try {
             ClassLoader cl = arg.getClass().getClassLoader();
             Class<?> c = Class.forName("com.redhat.ceylon.langtools.tools.javac.api.JavacTrees", false, cl);
@@ -168,6 +171,7 @@ public abstract class Trees {
     /**
      * Gets the doc comment, if any, for the Tree node identified by a given TreePath.
      * Returns null if no doc comment was found.
+     * @see DocTrees#getDocCommentTree(TreePath)
      */
     public abstract String getDocComment(TreePath path);
 
@@ -192,7 +196,7 @@ public abstract class Trees {
     /**
       * Gets the original type from the ErrorType object.
       * @param errorType The errorType for which we want to get the original type.
-      * @return javax.lang.model.type.TypeMirror corresponding to the original type, replaced by the ErrorType.
+      * @return com.redhat.ceylon.javax.lang.model.type.TypeMirror corresponding to the original type, replaced by the ErrorType.
       */
     public abstract TypeMirror getOriginalType(ErrorType errorType);
 

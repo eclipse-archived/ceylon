@@ -29,24 +29,24 @@ final class javaIterableInFor_ {
         final .java.lang.Iterable<.java.lang.Integer> jints = (.java.lang.Iterable<.java.lang.Integer>).ceylon.language.nothing_.get_();
         long sum = 0L;
         loop_0: for (.ceylon.language.String s$iterator$$1 : strings) {
-            final .java.lang.String s = ((.ceylon.language.String)s$iterator$$1).toString();
+            final .java.lang.String s = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.Util.checkNull(s$iterator$$1)).toString();
             sum += .ceylon.language.String.hashCode(s);
         }
         loop_1: for (.java.lang.String s$iterator$$3 : jstrings) {
-            final .java.lang.String s = (.java.lang.String)s$iterator$$3;
+            final .java.lang.String s = (.java.lang.String).com.redhat.ceylon.compiler.java.Util.checkNull(s$iterator$$3);
             sum += s.hashCode();
         }
         loop_2: for (.ceylon.language.Integer i$iterator$$5 : ints) {
-            final long i = ((.ceylon.language.Integer)i$iterator$$5).longValue();
+            final long i = ((.ceylon.language.Integer).com.redhat.ceylon.compiler.java.Util.checkNull(i$iterator$$5)).longValue();
             sum += i;
         }
         loop_3: for (.java.lang.Integer i$iterator$$7 : jints) {
-            final .java.lang.Integer i = (.java.lang.Integer)i$iterator$$7;
+            final .java.lang.Integer i = (.java.lang.Integer).com.redhat.ceylon.compiler.java.Util.checkNull(i$iterator$$7);
             sum += i.hashCode();
         }
         boolean doforelse$8 = true;
         loop_4: for (.java.lang.Integer i$iterator$$10 : jints) {
-            final .java.lang.Integer i = (.java.lang.Integer)i$iterator$$10;
+            final .java.lang.Integer i = (.java.lang.Integer).com.redhat.ceylon.compiler.java.Util.checkNull(i$iterator$$10);
             if (i.equals(.ceylon.language.Integer.instance(1L))) {
                 doforelse$8 = false;
                 break loop_4;
@@ -63,11 +63,11 @@ final class javaIterableInFor_ {
             sum = 0L;
         }
         loop_5: for (.ceylon.language.String s$iterator$$15 : strings) {
-            final .java.lang.String s = ((.ceylon.language.String)s$iterator$$15).toString();
+            final .java.lang.String s = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.Util.checkNull(s$iterator$$15)).toString();
             sum += .ceylon.language.String.hashCode(s);
         }
         loop_6: for (.java.lang.String s$iterator$$17 : jstrings) {
-            final .java.lang.String s = (.java.lang.String)s$iterator$$17;
+            final .java.lang.String s = (.java.lang.String).com.redhat.ceylon.compiler.java.Util.checkNull(s$iterator$$17);
             sum += s.hashCode();
         }
     }
