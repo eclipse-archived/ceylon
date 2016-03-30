@@ -498,6 +498,14 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testRepeatableAnnotation() {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("JavaRepeatable.java");
+        compareWithJavaSource("RepeatableAnnotation");
+    }
+    
+    @Test
     public void testSealedInterop(){
         compile("access/JavaSealed.java");
         assertErrors("Sealed",
