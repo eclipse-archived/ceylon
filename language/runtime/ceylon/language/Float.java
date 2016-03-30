@@ -114,7 +114,12 @@ public final class Float
     }
     
     @Ignore
-    public static float power(float value, float otherValue) {
+    public static double $power$(double value, double otherValue) {
+        return power(value, otherValue);
+    }
+    
+    @Ignore
+    public static float $power$(float value, float otherValue) {
         if (otherValue==0.0F && 
                 !java.lang.Float.isNaN(value)) {
             return 1.0F;
@@ -312,6 +317,11 @@ public final class Float
     
     @Ignore
     public static double power(double value, long otherValue) {
+        return powerOfInteger(value, otherValue);
+    }
+    
+    @Ignore
+    public static double $power$(double value, long otherValue) {
         return powerOfInteger(value, otherValue);
     }
 

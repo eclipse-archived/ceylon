@@ -214,7 +214,12 @@ public final class Integer
     }
     
     @Ignore
-    public static int power(int value, int otherValue) {
+    public static long $power$(long value, long otherValue) {
+        return power(value, otherValue);
+    }
+    
+    @Ignore
+    public static int $power$(int value, int otherValue) {
         int power = otherValue;
         if (value == -1) {
             return power % 2 == 0 ? 1 : -1;
@@ -287,6 +292,11 @@ public final class Integer
 
     @Ignore
     public static double power(long value, double otherValue) {
+        return Math.pow(value, otherValue); // FIXME: ugly
+    }
+    
+    @Ignore
+    public static double $power$(long value, double otherValue) {
         return Math.pow(value, otherValue); // FIXME: ugly
     }
 

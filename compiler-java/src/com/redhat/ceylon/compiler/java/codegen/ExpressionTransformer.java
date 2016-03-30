@@ -1908,7 +1908,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return transformExpression(term, BoxingStrategy.BOXED, op.getTypeModel());
             }
             ret = make().Apply(null, makeSelect(transformExpression(term, BoxingStrategy.BOXED, expectedType), 
-                    Naming.getGetterName(operator.ceylonMethod)), List.<JCExpression> nil());
+                    Naming.getGetterName(operator.getCeylonMethodName())), List.<JCExpression> nil());
         }
         return ret;
     }
@@ -2494,7 +2494,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 leftType = leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration());
             }
             
-            result = at(opExpr).Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), actualOperator.ceylonMethod), args.prepend(left));
+            result = at(opExpr).Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), actualOperator.getCeylonValueTypeMethodName()), args.prepend(left));
         } else {
             if ((originalOperator == OperatorTranslation.BINARY_LARGE_AS
                     || originalOperator == OperatorTranslation.BINARY_LARGER
@@ -2505,7 +2505,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 left = make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), left);
                 args = List.<JCExpression>of(make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), right));
             }
-            result = at(opExpr).Apply(typeArgs, makeSelect(left, actualOperator.ceylonMethod), args);
+            result = at(opExpr).Apply(typeArgs, makeSelect(left, actualOperator.getCeylonMethodName()), args);
         }
 
         if (loseComparison) {
@@ -2684,7 +2684,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 successor = unAutoPromote(successor, returnType, expr.getSmall());
             }else{
                 successor = make().Apply(null, 
-                                         makeSelect(make().Ident(varName), operator.ceylonMethod), 
+                                         makeSelect(make().Ident(varName), operator.getCeylonMethodName()), 
                                          List.<JCExpression>nil());
                 // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
                 successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
@@ -2740,7 +2740,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 successor = unAutoPromote(successor, returnType, expr.getSmall());
             }else{
                 successor = make().Apply(null, 
-                                         makeSelect(make().Ident(varVName), operator.ceylonMethod), 
+                                         makeSelect(make().Ident(varVName), operator.getCeylonMethodName()), 
                                          List.<JCExpression>nil());
                 //  make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
                 successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
@@ -2798,7 +2798,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return ret;
                 }
                 // make this call: previousValue.getSuccessor() or previousValue.getPredecessor()
-                return make().Apply(null, makeSelect(previousValue, operator.ceylonMethod), List.<JCExpression>nil());
+                return make().Apply(null, makeSelect(previousValue, operator.getCeylonMethodName()), List.<JCExpression>nil());
             }
         });
     }

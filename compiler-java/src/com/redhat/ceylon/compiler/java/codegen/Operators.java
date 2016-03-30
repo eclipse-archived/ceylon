@@ -113,7 +113,11 @@ public class Operators {
         BINARY_DIFFERENCE(Tree.DifferenceOp.class, 2, "minus", JCTree.Tag.MINUS, IntegerFloatByte),
         BINARY_PRODUCT(Tree.ProductOp.class, 2, "times", JCTree.Tag.MUL, IntegerFloat),
         BINARY_QUOTIENT(Tree.QuotientOp.class, 2, "divided", JCTree.Tag.DIV, IntegerFloat),
-        BINARY_POWER(Tree.PowerOp.class, 2, "power", null),
+        BINARY_POWER(Tree.PowerOp.class, 2, "power", null) {
+            public String getCeylonValueTypeMethodName() {
+                return "$power$";
+            }
+        },
         BINARY_REMAINDER(Tree.RemainderOp.class, 2, "remainder", JCTree.Tag.MOD, PrimitiveType.INTEGER),
         
         BINARY_SCALE(Tree.ScaleOp.class, 2, "scale"),
@@ -171,7 +175,7 @@ public class Operators {
         
         int arity;
         /** The name of the method which the boxed transformation invokes */
-        String ceylonMethod;
+        private String ceylonMethod;
         JCTree.Tag javacOperator;
         PrimitiveType[] optimisableTypes;
         /** The name of a top level value from the language module */
@@ -311,6 +315,14 @@ public class Operators {
         
         public int getArity(){
             return arity;
+        }
+        
+        public String getCeylonMethodName() {
+            return ceylonMethod;
+        }
+        
+        public String getCeylonValueTypeMethodName() {
+            return ceylonMethod;
         }
     }
     
