@@ -1,0 +1,18 @@
+
+apply plugin: 'antlr'
+
+dependencies {
+    antlr "org.antlr:antlr:3.4"
+    compile project(':common'),
+        project(':model'),
+        project(':cmr')
+}
+
+sourceSets {
+    main {
+        antlr {
+            srcDir 'treegen'
+        }
+    }
+}   
+
