@@ -3290,6 +3290,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         type.setRaw(isRaw(ModelUtil.getModuleContainer(klass), methodMirror.getReturnType()));
         markDeclaredVoid(method, methodMirror);
         markUnboxed(method, methodMirror, methodMirror.getReturnType());
+        markSmall(method, methodMirror.getReturnType());
         markTypeErased(method, methodMirror, methodMirror.getReturnType());
         markUntrustedType(method, methodMirror, methodMirror.getReturnType());
         method.setDeprecated(isDeprecated(methodMirror));
@@ -3518,6 +3519,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         type.setRaw(isRaw(ModelUtil.getModuleContainer(klass), fieldMirror.getType()));
 
         markUnboxed(value, null, fieldMirror.getType());
+        markSmall(value, fieldMirror.getType());
         markTypeErased(value, fieldMirror, fieldMirror.getType());
         markUntrustedType(value, fieldMirror, fieldMirror.getType());
         value.setDeprecated(isDeprecated(fieldMirror));
@@ -3632,6 +3634,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         type.setRaw(isRaw(ModelUtil.getModuleContainer(klass), methodMirror.getReturnType()));
 
         markUnboxed(value, methodMirror, methodMirror.getReturnType());
+        markSmall(value, methodMirror.getReturnType());
         markTypeErased(value, methodMirror, methodMirror.getReturnType());
         markUntrustedType(value, methodMirror, methodMirror.getReturnType());
         value.setDeprecated(isDeprecated(methodMirror));
@@ -3983,6 +3986,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 markUnboxed(value, null, isVariadic ? 
                         paramMirror.getType().getComponentType()
                         : paramMirror.getType());
+                markSmall(value, paramMirror.getType());
             }
             parameter.setDeclaration((Declaration) decl);
             value.setDeprecated(value.isDeprecated() || isDeprecated(paramMirror));
@@ -4228,6 +4232,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         decl.setUnboxed(unboxed);
     }
+    
+
+    private void markSmall(FunctionOrValue value, TypeMirror type) {
+        if (!(value.isMember() && value.getName().equals("hash"))) {
+            value.setSmall(sameType(type, PRIM_INT_TYPE)
+                    ||sameType(type, PRIM_FLOAT_TYPE));
+        }
+    }
 
     @Override
     public void complete(LazyValue value)  {
@@ -4247,6 +4259,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 setValueTransientLateFlags(value, meth, true);
                 setAnnotations(value, meth, value.isNativeHeader());
                 markUnboxed(value, meth, meth.getReturnType());
+                markSmall(value, meth.getReturnType());
                 markTypeErased(value, meth, meth.getReturnType());
 
                 TypeMirror setterClass = (TypeMirror) getAnnotationValue(value.classMirror, CEYLON_ATTRIBUTE_ANNOTATION, "setterClass");
@@ -4361,6 +4374,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 method.setDeclaredVoid(meth.isDeclaredVoid());
                 markDeclaredVoid(method, meth);
                 markUnboxed(method, meth, meth.getReturnType());
+                markSmall(method, meth.getReturnType());
                 markTypeErased(method, meth, meth.getReturnType());
                 markUntrustedType(method, meth, meth.getReturnType());
 
