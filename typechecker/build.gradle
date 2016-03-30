@@ -16,3 +16,6 @@ sourceSets {
     }
 }   
 
+generateGrammarSource {
+    outputDirectory = new File(rootProject.buildDir, 'typechecker/gensrc')
+}
