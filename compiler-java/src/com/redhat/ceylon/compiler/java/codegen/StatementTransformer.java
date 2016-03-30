@@ -2311,7 +2311,7 @@ public class StatementTransformer extends AbstractTransformer {
         private final Tree.Term length;
 
         SegmentOpIteration(Tree.ForStatement stmt, Tree.SegmentOp op, Tree.Term step, Tree.Term start, Tree.Term length) {
-            super(stmt, op, step, typeFact().getIteratedType(op.getTypeModel()), "start", "length", "i");
+            super(stmt, op, step, start.getTypeModel(), "start", "length", "i");
             this.start = start;
             this.length = length;
             // TODO If length if < 0 we need to not loop at all
@@ -2326,16 +2326,16 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexableType() {
-            return makeJavaType(this.elementType);
+            return makeJavaType(start.getTypeModel());
         }
         
         @Override
         protected JCExpression makeIndexable() {
-            return expressionGen().transformExpression(start, BoxingStrategy.UNBOXED, length.getTypeModel());
+            return expressionGen().transformExpression(start, BoxingStrategy.UNBOXED, start.getTypeModel());
         }
 
         protected JCExpression makeIndexType() {
-            return make().Type(syms().longType);
+            return make().Type(baseIterable.getSmall() ? syms().intType : syms().longType);
         }
         
         protected JCExpression makeIndexInit() {

@@ -92,6 +92,18 @@ public class CodegenUtil {
     static BoxingStrategy getBoxingStrategy(TypedDeclaration decl) {
         return isUnBoxed(decl) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
+    
+    static boolean isSmall(TypedDeclaration decl){
+        return Decl.isSmall(decl);
+    }
+    
+    static void markSmall(Term term){
+        term.setSmall(true);
+    }
+    
+    static boolean isSmall(Term term){
+        return term.getSmall();
+    }
 
     static boolean isRaw(TypedDeclaration decl){
         Type type = decl.getType();

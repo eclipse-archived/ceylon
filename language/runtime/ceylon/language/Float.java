@@ -114,6 +114,87 @@ public final class Float
     }
     
     @Ignore
+    public static double $power$(double value, double otherValue) {
+        return power(value, otherValue);
+    }
+    
+    @Ignore
+    public static float $power$(float value, float otherValue) {
+        if (otherValue==0.0F && 
+                !java.lang.Float.isNaN(value)) {
+            return 1.0F;
+        }
+        else if (otherValue==1.0F) {
+            return value;
+        }
+        else if (otherValue==2.0F) {
+            return value*value;
+        }
+        else if (otherValue==3.0F) {
+            return value*value*value;
+        }
+        else if (otherValue==4.0F) {
+            float sqr = value*value;
+            return sqr*sqr;
+        }
+        else if (otherValue==5.0F) {
+            float sqr = value*value;
+            return sqr*sqr*value;
+        }
+        else if (otherValue==6.0F) {
+            float sqr = value*value;
+            return sqr*sqr*sqr;
+        }
+        //TODO: other positive integer powers for which
+        //      multiplying is faster than pow()
+        else if (otherValue==0.5F) {
+            return (float)Math.sqrt(value);
+        }
+        else if (otherValue==0.25F) {
+            return (float)Math.sqrt(Math.sqrt(value));
+        }
+        else if (otherValue==-1.0F) {
+            return 1.0F/value;
+        }
+        else if (otherValue==-2.0F) {
+            return 1.0F/value/value;
+        }
+        else if (otherValue==-3.0F) {
+            return 1.0F/value/value/value;
+        }
+        else if (otherValue==-4.0F) {
+            float sqr = value*value;
+            return 1/sqr/sqr;
+        }
+        else if (otherValue==-5.0F) {
+            float sqr = value*value;
+            return 1/sqr/sqr/value;
+        }
+        else if (otherValue==-6.0F) {
+            float sqr = value*value;
+            return 1/sqr/sqr/sqr;
+        }
+        else if (otherValue==-0.5F) {
+            return (float)(1.0/Math.sqrt(value));
+        }
+        else if (otherValue==-0.25F) {
+            return (float)(1.0/Math.sqrt(Math.sqrt(value)));
+        }
+        else if (value==1.0F) {
+            return 1.0F;
+        }
+        else if (value==-1.0F && 
+                (otherValue == java.lang.Float.POSITIVE_INFINITY || 
+                 otherValue == java.lang.Float.NEGATIVE_INFINITY)) {
+            return 1.0F;
+        }
+        else {
+            //NOTE: this function is _really_ slow!
+            return (float)Math.pow(value, otherValue);
+        }
+    }
+    
+    @Ignore
     public static double power(double value, double otherValue) {
         if (otherValue==0.0 && 
                 !Double.isNaN(value)) {
@@ -236,6 +317,11 @@ public final class Float
     
     @Ignore
     public static double power(double value, long otherValue) {
+        return powerOfInteger(value, otherValue);
+    }
+    
+    @Ignore
+    public static double $power$(double value, long otherValue) {
         return powerOfInteger(value, otherValue);
     }
 

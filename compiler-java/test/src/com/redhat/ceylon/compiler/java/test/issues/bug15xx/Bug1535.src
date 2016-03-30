@@ -77,7 +77,7 @@ public final class bug1535_ {
                     (
                         let
                         {
-                            Value $ceylontmp$op$6 = ((.ceylon.language.Summable<Value>)(.ceylon.language.Summable)sum).plus((Value)val);
+                            Value $ceylontmp$op$6 = ((Value)sum).plus((Value)val);
                             sum = $ceylontmp$op$6;
                         }
                         returning $ceylontmp$op$6;

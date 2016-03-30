@@ -46,6 +46,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
@@ -1253,6 +1254,22 @@ public class RefinementVisitor extends Visitor {
             		"type of member must be assignable to type of refined member: " + 
     		        message(refined), 
     		        9000);
+            checkSmallRefinement(that, refiningMember.getDeclaration(), refinedMember.getDeclaration());
+        }
+    }
+
+    private void checkSmallRefinement(Node that, Declaration refiningDeclaration, Declaration refinedDeclaration) {
+        if (refiningDeclaration instanceof FunctionOrValue &&
+                refinedDeclaration instanceof FunctionOrValue) {
+            boolean refiningSmall = ((FunctionOrValue)refiningDeclaration).isSmall();
+            boolean refinedSmall = ((FunctionOrValue)refinedDeclaration).isSmall();
+            if (refiningSmall
+                    && !refinedSmall) {
+                that.addUsageWarning(Warning.smallIgnored, "small annotation on actual member " +
+                        message(refiningDeclaration) + " will be ignored: " +
+                        message(refinedDeclaration) + " is not small");
+            }
+            ((FunctionOrValue)refiningDeclaration).setSmall(refinedSmall);
         }
     }
 
@@ -1484,13 +1501,26 @@ public class RefinementVisitor extends Visitor {
                                 rparam, refinedParameterType,
                                 param, parameterType,
                                 typeNode, forNative);
+                        checkRefiningParameterSmall(typeNode, member.getDeclaration(), param, 
+                                refinedMember.getDeclaration(), rparam);
                     }
                 }
             }
         }
     }
 
-	private void handleWrongParameterListLength(
+    private void checkRefiningParameterSmall(Node that, 
+                Declaration member, Parameter param, Declaration refinedMember, Parameter refinedParam) {
+        if (param.getModel().isSmall()
+                && !refinedParam.getModel().isSmall()) {
+            that.addUsageWarning(Warning.smallIgnored, "small annotation on parameter '"+param.getName()+"' of '"+member.getName()+
+                    "' will be ignored: corresponding parameter '"+refinedParam.getName()+
+                    "' of '"+refinedMember.getName()+"' is not small");
+        }
+        param.getModel().setSmall(refinedParam.getModel().isSmall());
+    }
+
+    private void handleWrongParameterListLength(
 	        Tree.Declaration that,
             Reference member, 
             Reference refinedMember,

@@ -227,28 +227,28 @@ public class EqualityAndComparisonOperators implements .com.redhat.ceylon.compil
             {
                 long middle$12 = x;
             }
-            returning 0L < middle$12 && middle$12 < 1L;
+            returning 0 < middle$12 && middle$12 < 1;
         );
         sync = (
             let
             {
                 long middle$13 = x;
             }
-            returning 0L <= middle$13 && middle$13 < 1L;
+            returning 0 <= middle$13 && middle$13 < 1;
         );
         sync = (
             let
             {
                 long middle$14 = x;
             }
-            returning 0L < middle$14 && middle$14 <= 1L;
+            returning 0 < middle$14 && middle$14 <= 1;
         );
         sync = (
             let
             {
                 long middle$15 = x;
             }
-            returning 0L <= middle$15 && middle$15 <= 1L;
+            returning 0 <= middle$15 && middle$15 <= 1;
         );
     }
     

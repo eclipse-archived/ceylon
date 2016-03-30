@@ -424,7 +424,7 @@ shared deprecated</programlisting>
             <itemizedlist>
                 <listitem>
                     <para><literal>small</literal> specifies that a value of type
-                    <literal>Integer</literal>, <literal>Integer</literal> or
+                    <<literal>Integer</literal> or
                     <literal>Float</literal> contains 32-bit values.</para>
                 </listitem>
             </itemizedlist>

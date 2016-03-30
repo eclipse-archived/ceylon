@@ -189,6 +189,61 @@ public final class Integer
             return powerByMultiplying(value, power);
         }
     }
+    
+    private static int powerBySquaring(int base, int power) {
+        int result = 1;
+        int x = base;
+        while (power != 0) {
+            if ((power & 1) == 1) {
+                result *= x;
+                power -= 1;
+            }
+            x *= x;
+            power /= 2;
+        }
+        return result;
+    }
+
+    private static int powerByMultiplying(int base, int power) {
+        int result = 1;
+        while (power > 0) {
+            result *= base;
+            power--;
+        }
+        return result;
+    }
+    
+    @Ignore
+    public static long $power$(long value, long otherValue) {
+        return power(value, otherValue);
+    }
+    
+    @Ignore
+    public static int $power$(int value, int otherValue) {
+        int power = otherValue;
+        if (value == -1) {
+            return power % 2 == 0 ? 1 : -1;
+        }
+        else if (value == 1) {
+            return 1;
+        }
+        else if (power < 0) {
+            throw new AssertionError(value + "^" + power + 
+                    " cannot be represented as an Integer");
+        }
+        else if (power == 0) {
+            return 1;
+        }
+        else if (power == 1) {
+            return value;
+        }
+        else if (power >= POWER_BY_SQUARING_BREAKEVEN) {
+            return powerBySquaring(value, power);
+        }
+        else {
+            return powerByMultiplying(value, power);
+        }
+    }
 
     @Ignore
     public Float plus(Float other) {
@@ -237,6 +292,11 @@ public final class Integer
 
     @Ignore
     public static double power(long value, double otherValue) {
+        return Math.pow(value, otherValue); // FIXME: ugly
+    }
+    
+    @Ignore
+    public static double $power$(long value, double otherValue) {
         return Math.pow(value, otherValue); // FIXME: ugly
     }
 
@@ -368,6 +428,11 @@ public final class Integer
         long y = otherValue;
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
+    }
+    
+    @Ignore
+    public static Comparison compare(int value, int otherValue) {
+        return compare((long)value, (long)otherValue);
     }
 
     @Override

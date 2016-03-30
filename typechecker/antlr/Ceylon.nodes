@@ -245,6 +245,8 @@
 ^(INITIALIZER_PARAMETER:PARAMETER
     IDENTIFIER
     SPECIFIER_EXPRESSION?)
+^(PATTERN_PARAMETER:PARAMETER
+    PATTERN)
 
 "A list of type parameters in a generic declaration."
 ^(TYPE_PARAMETER_LIST 
@@ -497,6 +499,8 @@
 ^(IS_CASE:CASE_ITEM
     TYPE
     VARIABLE?)
+^(PATTERN_CASE:CASE_ITEM
+    PATTERN)
 ^(SATISFIES_CASE:CASE_ITEM
     TYPE type)
 
@@ -568,7 +572,8 @@
     Type typeModel;
     boolean unboxed;
     boolean typeErased;
-    boolean untrustedType;)
+    boolean untrustedType;
+    boolean small;)
 ^(abstract OPERATOR_EXPRESSION:TERM)
 
 ^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION

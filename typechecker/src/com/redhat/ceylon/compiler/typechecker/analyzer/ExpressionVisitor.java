@@ -460,7 +460,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
     private void destructure(Tree.Pattern pattern,
             Tree.SpecifierExpression se, Type type) {
         if (type!=null) {
@@ -2059,6 +2059,18 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
     }
     
+    @Override public void visit(Tree.TypedDeclaration that) {
+        super.visit(that);
+        TypedDeclaration d = that.getDeclarationModel();
+        Type t = d.getType();
+        if (((FunctionOrValue)d).isSmall()
+                && t != null
+                && !t.isInteger()
+                && !t.isFloat()) {
+            that.addError("type cannot be annotated small: " + t.asString(that.getUnit()));
+        }
+    }
+    
     private static VoidModifier fakeVoid(Node that) {
         return new Tree.VoidModifier(that.getToken());
     }
@@ -3085,8 +3097,7 @@ public class ExpressionVisitor extends Visitor {
                             pr, param, anon);
                 }
                 else { 
-                    Type paramType = 
-                            tpr.getFullType();
+                    Type paramType = tpr.getFullType();
                     if (variadic) {
                         paramType = 
                                 unit.getIteratedType(paramType);
@@ -6784,8 +6795,8 @@ public class ExpressionVisitor extends Visitor {
                     isTypeUnknown(fullType)) {
                 that.addError(
                         "could not determine type of function or value reference: '" +
-                        member.getName(unit) + "'" + 
-                        getTypeUnknownError(fullType));
+                                member.getName(unit) + "'" + 
+                                getTypeUnknownError(fullType));
             }
             if (dynamic && 
                     isTypeUnknown(fullType)) {

@@ -144,8 +144,7 @@ public class TypeGenerator {
             genIniter = !gen.stitchInitializer(d);
         }
         if (genIniter) {
-            final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
-            gen.out(gen.getClAlias(), initFuncName, "(", typename, ",'", qns, "'");
+            gen.out(gen.getClAlias(), initFuncName, "(", typename, ",'", d.getQualifiedNameString(), "'");
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size()+1);
 

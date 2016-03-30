@@ -113,8 +113,8 @@ final class bug6143_ {
                 };
             }
         }.sequence();
-        final .ceylon.language.String[] jarray = new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt(1L)];
-        jarray[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = null;
+        final .ceylon.language.String[] jarray = new .ceylon.language.String[1];
+        jarray[0] = null;
         final .ceylon.language.String[] array$9 = jarray;
         loop_3: for (int i$11 = 0; i$11 < array$9.length; i$11++) {
             final .ceylon.language.String element = array$9[i$11];
@@ -223,8 +223,8 @@ final class bug6143_ {
                 };
             }
         }.sequence();
-        final int[] jintarray = new int[.com.redhat.ceylon.compiler.java.Util.toInt(1L)];
-        jintarray[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = .com.redhat.ceylon.compiler.java.Util.toInt(1L);
+        final int[] jintarray = new int[1];
+        jintarray[0] = 1;
         final int[] array$21 = jintarray;
         loop_6: for (int i$23 = 0; i$23 < array$21.length; i$23++) {
             final .ceylon.language.Integer element = .ceylon.language.Integer.instance(array$21[i$23]);
