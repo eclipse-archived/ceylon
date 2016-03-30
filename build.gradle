@@ -3,6 +3,9 @@ subprojects {
 
     compileJava.options.encoding = 'UTF-8'
 
+    // put all the build artifacts in subfolders of the root "build" folder
+    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
+
     repositories {
         flatDir {
             dirs '../dist/dist/repo', '../lib'
