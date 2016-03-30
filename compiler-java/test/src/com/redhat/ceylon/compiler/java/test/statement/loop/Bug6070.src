@@ -9,14 +9,14 @@ public final class bug6070_ {
         final long x;
         long x$0 = 0L;
         boolean doforelse$1 = true;
-        final int start$2 = 0;
-        final int length$3 = 3;
-        loop_0: for (int i$4 = 0; i$4 < length$3; i$4++) {
+        final long start$2 = 0L;
+        final long length$3 = 3L;
+        loop_0: for (long i$4 = 0; i$4 < length$3; i$4++) {
             final long i = i$4 + start$2;
             boolean doforelse$5 = true;
-            final int start$6 = 0;
-            final int length$7 = 3;
-            loop_1: for (int i$8 = 0; i$8 < length$7; i$8++) {
+            final long start$6 = 0L;
+            final long length$7 = 3L;
+            loop_1: for (long i$8 = 0; i$8 < length$7; i$8++) {
                 final long j = i$8 + start$6;
                 if (true || false) {
                     x$0 = i * 10L + j;

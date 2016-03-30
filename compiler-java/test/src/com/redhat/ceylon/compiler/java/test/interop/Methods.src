@@ -433,7 +433,7 @@ final class tupleSpreading_ {
                 .ceylon.language.Character.instance(97),
                 .ceylon.language.String.instance("foo"),
                 java});
-        java.takeAll(true, (byte)1L, .com.redhat.ceylon.compiler.java.Util.toShort(2), 3, 4L, (float)5.0, 6.0, (char)97, "foo", java);
+        java.takeAll(true, (byte)1L, .com.redhat.ceylon.compiler.java.Util.toShort(2L), 3, 4L, (float)5.0, 6.0, (char)97, "foo", java);
         (
             let
             {

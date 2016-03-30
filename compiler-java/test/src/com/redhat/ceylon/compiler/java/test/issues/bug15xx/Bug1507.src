@@ -160,9 +160,9 @@ final class bug1507test3_ {
         final boolean found;
         boolean found$31 = false;
         boolean doforelse$32 = true;
-        final int start$33 = 1;
-        final int length$34 = 2;
-        loop_3: for (int i$35 = 0; i$35 < length$34; i$35++) {
+        final long start$33 = 1L;
+        final long length$34 = 2L;
+        loop_3: for (long i$35 = 0; i$35 < length$34; i$35++) {
             final long i = i$35 + start$33;
             if (i == 0L) {
                 found$31 = true;

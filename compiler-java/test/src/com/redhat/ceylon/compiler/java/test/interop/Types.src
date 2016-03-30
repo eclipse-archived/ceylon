@@ -52,7 +52,7 @@ final class shortTypes_ {
         final long n1 = java.return_short();
         final .ceylon.language.Integer n2 = .ceylon.language.Integer.instance(java.return_short());
         final long n3 = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Short()).longValue();
-        java.shortParams(.com.redhat.ceylon.compiler.java.Util.toShort(1), new .java.lang.Short(.com.redhat.ceylon.compiler.java.Util.toShort(1)));
+        java.shortParams(.com.redhat.ceylon.compiler.java.Util.toShort(1L), new .java.lang.Short(.com.redhat.ceylon.compiler.java.Util.toShort(1L)));
         java.shortParams(.com.redhat.ceylon.compiler.java.Util.toShort(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue()), new .java.lang.Short(.com.redhat.ceylon.compiler.java.Util.toShort(.com.redhat.ceylon.compiler.java.test.interop.box_.<.ceylon.language.Integer>box(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).longValue())));
         java.shortParams(java.return_short(), new .java.lang.Short(java.return_short()));
         java.shortParams(.com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Short()).shortValue(), java.return_Short());
