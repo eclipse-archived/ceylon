@@ -12,7 +12,7 @@ class GetString implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         long h = jgs.hashCode();
         h = jgs.getHash();
         b = jgs.isHash();
-        jgs.setHash(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
+        jgs.setHash(1);
     }
     
     @.java.lang.Override

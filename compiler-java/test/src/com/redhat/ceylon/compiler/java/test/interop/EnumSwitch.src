@@ -10,20 +10,11 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final void exhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
-        switch_0: switch (e) {
-        case ONE: 
-            {
-            }
-            break switch_0;
-        
-        case TWO: 
-            {
-            }
-            break switch_0;
-        
-        default: 
-            throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
-        
+        {
+            .com.redhat.ceylon.compiler.java.test.interop.JavaEnum sel$0 = e;
+            if (sel$0 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE) {
+            } else if (sel$0 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.TWO) {
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
     
@@ -31,16 +22,12 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final void notExhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
-        switch_1: switch (e) {
-        case ONE: 
-            {
+        {
+            .com.redhat.ceylon.compiler.java.test.interop.JavaEnum sel$1 = e;
+            if (sel$1 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE) {
+            } else {
+                final .java.lang.Object e$2 = (.java.lang.Object)sel$1;
             }
-            break switch_1;
-        
-        default: 
-            {
-            }
-        
         }
     }
     
@@ -49,25 +36,11 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum?")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
         {
-            .com.redhat.ceylon.compiler.java.test.interop.JavaEnum sel$0 = e;
-            if (sel$0 == null) {
-            } else {
-                switch_2: switch (sel$0) {
-                case ONE: 
-                    {
-                    }
-                    break switch_2;
-                
-                case TWO: 
-                    {
-                    }
-                    break switch_2;
-                
-                default: 
-                    throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
-                
-                }
-            }
+            .com.redhat.ceylon.compiler.java.test.interop.JavaEnum sel$3 = e;
+            if (sel$3 == null) {
+            } else if (sel$3 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE) {
+            } else if (sel$3 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.TWO) {
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
     
@@ -76,22 +49,10 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum?")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
         {
-            .com.redhat.ceylon.compiler.java.test.interop.JavaEnum sel$1 = e;
-            if (sel$1 == null) {
-            } else {
-                switch_3: switch (sel$1) {
-                case ONE: 
-                
-                case TWO: 
-                    {
-                    }
-                    break switch_3;
-                
-                default: 
-                    throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
-                
-                }
-            }
+            .com.redhat.ceylon.compiler.java.test.interop.JavaEnum sel$4 = e;
+            if (sel$4 == null) {
+            } else if (sel$4 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE || sel$4 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.TWO) {
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
     }
     
@@ -102,14 +63,14 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             erased = true)
     final .java.lang.Object e) {
         {
-            .java.lang.Object sel$2 = e;
-            if (sel$2 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE) {
-            } else if (sel$2 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.TWO) {
-            } else if (sel$2 == .java.lang.Thread.State.NEW) {
-            } else if (sel$2 == .java.lang.Thread.State.RUNNABLE) {
-            } else if (sel$2 == .java.lang.Thread.State.BLOCKED) {
+            .java.lang.Object sel$5 = e;
+            if (sel$5 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.ONE) {
+            } else if (sel$5 == .com.redhat.ceylon.compiler.java.test.interop.JavaEnum.TWO) {
+            } else if (sel$5 == .java.lang.Thread.State.NEW) {
+            } else if (sel$5 == .java.lang.Thread.State.RUNNABLE) {
+            } else if (sel$5 == .java.lang.Thread.State.BLOCKED) {
             } else {
-                final .java.lang.Thread.State e$3 = (.java.lang.Thread.State)sel$2;
+                final .java.lang.Object e$6 = (.java.lang.Object)sel$5;
             }
         }
     }

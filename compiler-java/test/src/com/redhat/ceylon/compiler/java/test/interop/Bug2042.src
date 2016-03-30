@@ -6,7 +6,7 @@ public final class bug2042_ {
     }
     
     public static void bug2042() {
-        final .java.lang.Object[] javaArray = new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt(10L)];
+        final .java.lang.Object[] javaArray = new .java.lang.Object[10];
         final .ceylon.language.Array<.java.lang.Object> ceylonArray = (
             let
             {
@@ -48,7 +48,7 @@ public final class bug2042_ {
                 }
             };
         );
-        final int[] javaIntArray = new int[.com.redhat.ceylon.compiler.java.Util.toInt(10L)];
+        final int[] javaIntArray = new int[10];
         final .ceylon.language.Array<.java.lang.Integer> ceylonIntegerArray = (
             let
             {

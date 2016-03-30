@@ -257,7 +257,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long javaArrayIterationStatic$priv$() {
-        final int[] array = new int[.com.redhat.ceylon.compiler.java.Util.toInt(10L)];
+        final int[] array = new int[10];
         final long $ceylontmp$first$38 = 1L;
         final long $ceylontmp$last$39 = 10L;
         final boolean $ceylontmp$increasing$40 = .ceylon.language.Integer.offset($ceylontmp$last$39, $ceylontmp$first$38) >= 0;
@@ -271,7 +271,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             index$44 = $ceylontmp$element$43;
             final long index = index$44;
             $ceylontmp$continue$37: do {
-                array[.com.redhat.ceylon.compiler.java.Util.toInt(index - 1L)] = .com.redhat.ceylon.compiler.java.Util.toInt(index);
+                array[.com.redhat.ceylon.compiler.java.Util.toInt(index - 1)] = .com.redhat.ceylon.compiler.java.Util.toInt(index);
             }             while (false);
         }         while ($ceylontmp$increasing$40 ? index$44 - $ceylontmp$last$39 != 0L : index$44 - $ceylontmp$last$39 != 0L);
         long sum = 0L;

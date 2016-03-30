@@ -13,8 +13,8 @@ final class bug1559_ {
         final long[] array2 = new long[.com.redhat.ceylon.compiler.java.Util.toInt(size2)];
         final long[] array3 = new long[array1.length];
         final long size3 = .ceylon.language.String.hashCode("");
-        final int[] array4 = .com.redhat.ceylon.compiler.java.Util.fillArray(new int[.com.redhat.ceylon.compiler.java.Util.toInt(size3)], .com.redhat.ceylon.compiler.java.Util.toInt(1L));
-        final long x = a[.com.redhat.ceylon.compiler.java.Util.toInt(1L)];
-        a[.com.redhat.ceylon.compiler.java.Util.toInt(1L)] = .com.redhat.ceylon.compiler.java.Util.toInt(1L);
+        final int[] array4 = .com.redhat.ceylon.compiler.java.Util.fillArray(new int[.com.redhat.ceylon.compiler.java.Util.toInt(size3)], 1);
+        final long x = a[1];
+        a[1] = 1;
     }
 }

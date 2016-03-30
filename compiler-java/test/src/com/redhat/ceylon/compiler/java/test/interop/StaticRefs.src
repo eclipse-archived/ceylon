@@ -50,7 +50,7 @@ final class staticRefs_ {
         final long procs = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.Runtime.getRuntime()).availableProcessors();
         .java.lang.System.out.flush();
         .java.lang.System.err.flush();
-        .java.lang.System.exit(.com.redhat.ceylon.compiler.java.Util.toInt(0L));
+        .java.lang.System.exit(0);
         final long cmp = .java.lang.Boolean.compare(true, false);
         final .java.io.File[] roots = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
         final .java.util.Locale.Builder localeBuilder = new .java.util.Locale.Builder();

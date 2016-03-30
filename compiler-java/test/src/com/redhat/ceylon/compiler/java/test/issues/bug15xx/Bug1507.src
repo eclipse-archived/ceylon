@@ -14,7 +14,7 @@ final class bug1507_ {
             } else {
                 boolean doforelse$2 = true;
                 final long $ceylontmp$first$4 = 0L;
-                final long $ceylontmp$last$5 = new .java.util.Random().nextInt(.com.redhat.ceylon.compiler.java.Util.toInt(10L));
+                final long $ceylontmp$last$5 = new .java.util.Random().nextInt(10);
                 final boolean $ceylontmp$increasing$6 = .ceylon.language.Integer.offset($ceylontmp$last$5, $ceylontmp$first$4) >= 0;
                 final long $ceylontmp$incr$7 = $ceylontmp$increasing$6 ? 1L : -1L;
                 long j$10 = $ceylontmp$first$4;
