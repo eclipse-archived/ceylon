@@ -51,11 +51,11 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("io.cayla.web/0.3.0"));
+                Arrays.asList("--sysrep", "../dist/dist/repo", "io.cayla.web/0.3.0"));
         try{
             tool.run();
         }catch(ToolError err){
-            Assert.assertEquals("Module conflict error prevented classpath generation: try running \"ceylon info --suggest-override io.cayla.web/0.3.0\" to display an override file you can use with \"ceylon classpath --overrides override.xml io.cayla.web/0.3.0\" or try with \"ceylon classpath --force io.cayla.web/0.3.0\" to select the latest versions", err.getMessage());
+            Assert.assertEquals("Module conflict error prevented classpath generation: try running \"ceylon info --print-overrides io.cayla.web/0.3.0\" to display an override file you can use with \"ceylon classpath --overrides override.xml io.cayla.web/0.3.0\" or try with \"ceylon classpath --force io.cayla.web/0.3.0\" to select the latest versions", err.getMessage());
         }
     }
 
