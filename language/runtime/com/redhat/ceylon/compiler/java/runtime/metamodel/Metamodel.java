@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1053,7 +1054,9 @@ public class Metamodel {
         if (jAnnotationType.getName().endsWith("$annotations$")) {
             java.lang.annotation.Annotation[] jAnnotations;
             try {
-                jAnnotations = (java.lang.annotation.Annotation[])jAnnotationType.getMethod("value").invoke(jAnnotation);
+                Method method = jAnnotationType.getMethod("value");
+                method.setAccessible(true);
+                jAnnotations = (java.lang.annotation.Annotation[])method.invoke(jAnnotation);
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {/* aka ReflectiveOperationException */
