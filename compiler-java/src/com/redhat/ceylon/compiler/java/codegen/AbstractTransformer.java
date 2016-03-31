@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
+import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -154,6 +155,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean simpleAnnotationModels;
 
+    private final Target target;
+
     public AbstractTransformer(Context context) {
         this.context = context;
         make = TreeMaker.instance(context);
@@ -164,6 +167,7 @@ public abstract class AbstractTransformer implements Transformation {
         log = CeylonLog.instance(context);
         naming = Naming.instance(context);
         simpleAnnotationModels = Options.instance(context).get(Option.BOOTSTRAPCEYLON) != null;
+        target = Target.instance(context);
     }
 
     Context getContext() {
@@ -180,6 +184,10 @@ public abstract class AbstractTransformer implements Transformation {
     @Override
     public TreeMaker make() {
         return make;
+    }
+    
+    public Target getTarget() {
+        return target;
     }
 
     private static JavaPositionsRetriever javaPositionsRetriever = null;
