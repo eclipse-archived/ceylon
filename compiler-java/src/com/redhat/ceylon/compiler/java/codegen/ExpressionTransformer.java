@@ -79,6 +79,7 @@ import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.FieldValue;
+import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -4596,6 +4597,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (inheritedFrom instanceof Interface) {
             Interface iface = (Interface)inheritedFrom;
             JCExpression qualifier = null;
+            if (inheritedFrom instanceof LazyInterface
+                    && !((LazyInterface)inheritedFrom).isCeylon()) {
+                result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
+            } else 
             if (needDollarThis(superOfQualifiedExpr.getScope())) {
                 qualifier = naming.makeQuotedThis();
                 if (iface.equals(typeFact().getIdentifiableDeclaration())) {
