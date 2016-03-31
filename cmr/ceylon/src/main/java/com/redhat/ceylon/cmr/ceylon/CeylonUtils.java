@@ -578,12 +578,35 @@ public class CeylonUtils {
                 }
                 String path = absolute(repoUrl);
                 if(!avoidRepository(path)){
+                    if (isMaven(path)) {
+                        path = absoluteMavenSettingsPath(path);
+                    }
                     CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
                     builder.addRepository(repo);
                 }
             } catch (Exception e) {
                 log.debug("Failed to add repository as input repository: " + repoUrl + ": " + e.getMessage());
             }
+        }
+
+        private boolean isMaven(String path) {
+            return path.startsWith("aether:") || path.startsWith("mvn:");
+        }
+
+        // Converts any relative settings path to an absolute one
+        // using the configured current working directory
+        private String absoluteMavenSettingsPath(String path) {
+            if (path.startsWith("aether:")) {
+                path = path.substring(7);
+            } else if (path.startsWith("mvn:")) {
+                path = path.substring(4);
+            }
+            File p = new File(path);
+            if (!p.isAbsolute()) {
+                p = new File(cwd, path);
+                path = p.getAbsolutePath();
+            }
+            return "aether:" + path;
         }
 
         private String absolute(String path) {

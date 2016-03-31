@@ -712,6 +712,18 @@ public class CMRTests extends CompilerTests {
     }
 
     @Test
+    public void testMdlAetherDependencyCustomRelative() throws IOException{
+        // Try to compile the ceylon module
+        File settingsFile = new File(getPackagePath(), "modules/aethercustom/settings.xml");
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether:" + settingsFile, "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aethercustom/module.ceylon", "modules/aethercustom/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+        File restletJar = new File("build/test-cars/cmr-repository", "org/restlet/org.restlet/1.1.10/org.restlet-1.1.10.jar");
+        assertTrue(restletJar.exists());
+    }
+
+    @Test
     public void testMdlAetherMissingDependencies() throws IOException{
         CompilerError[] expectedErrors = new CompilerError[]{
         new CompilerError(6, "Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"
