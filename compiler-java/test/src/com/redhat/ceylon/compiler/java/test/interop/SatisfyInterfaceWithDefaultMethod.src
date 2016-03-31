@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class SatisfyInterfaceWithDefaultMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.lang.Iterable<.ceylon.language.String>, .java.io.Serializable {
+    
+    SatisfyInterfaceWithDefaultMethod() {
+    }
+    
+    @.java.lang.Override
+    public final .java.util.Iterator<.ceylon.language.String> iterator() {
+        return (.java.util.Iterator<.ceylon.language.String>).ceylon.language.nothing_.get_();
+    }
+    
+    private final void use$priv$() {
+        forEach((.java.util.function.Consumer<? super .ceylon.language.String>).ceylon.language.nothing_.get_());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.SatisfyInterfaceWithDefaultMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.SatisfyInterfaceWithDefaultMethod.class);
+}

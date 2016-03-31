@@ -735,4 +735,25 @@ public class InteropTests extends CompilerTests {
         compile("Bug6156.ceylon");
         compile("Bug6156b.ceylon");
     }
+    
+    @Test
+    public void testIopCallDefaultInterfaceMethod(){
+        Assume.assumeTrue("Runs on JDK >= 8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("CallDefaultInterfaceMethod");
+    }
+    
+    @Test
+    public void testIopSatisfyInterfaceWithDefaultMethod(){
+        Assume.assumeTrue("Runs on JDK >= 8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("SatisfyInterfaceWithDefaultMethod");
+    }
+    
+    @Test
+    public void testIopRefineDefaultInterfaceMethod(){
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("RefineDefaultInterfaceMethod");
+    }
 }

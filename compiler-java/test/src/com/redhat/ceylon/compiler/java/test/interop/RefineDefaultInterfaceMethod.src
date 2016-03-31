@@ -1,0 +1,24 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class RefineDefaultInterfaceMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.lang.Iterable<.ceylon.language.String>, .java.io.Serializable {
+    
+    RefineDefaultInterfaceMethod() {
+    }
+    
+    @.java.lang.Override
+    public final .java.util.Iterator<.ceylon.language.String> iterator() {
+        return (.java.util.Iterator<.ceylon.language.String>).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public final void forEach(final .java.util.function.Consumer<? super .ceylon.language.String> consumer) {
+        .java.lang.Iterable.super.forEach(consumer);
+        this.forEach(consumer);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.RefineDefaultInterfaceMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.RefineDefaultInterfaceMethod.class);
+}
