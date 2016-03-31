@@ -4236,7 +4236,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void markSmall(FunctionOrValue value, TypeMirror type) {
         if (!(value.isMember() && value.getName().equals("hash"))) {
-            value.setSmall(sameType(type, PRIM_INT_TYPE)
+            value.setSmall(sameType(type, PRIM_INT_TYPE) && !value.getType().isCharacter()
                     ||sameType(type, PRIM_FLOAT_TYPE));
         }
     }
