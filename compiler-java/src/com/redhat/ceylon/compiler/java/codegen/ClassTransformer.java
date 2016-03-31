@@ -72,7 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
+import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
@@ -931,6 +931,16 @@ public class ClassTransformer extends AbstractTransformer {
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
         annoBuilder.annotations(makeAtIgnore());
         annoBuilder.annotations(expressionGen().transformAnnotations(OutputElement.ANNOTATION_TYPE, def));
+        if (isSequencedAnnotation(klass)) { 
+            if (getTarget().compareTo(Target.JDK1_8) >= 0) {
+                annoBuilder.annotations(makeAtRepeatable(klass.getType()));
+                annoBuilder.annotations(transformAnnotationConstraints(klass));
+            } else {
+                annoBuilder.annotations(makeAtAnnotationTarget(EnumSet.noneOf(AnnotationTarget.class)));
+            }
+        } else {
+            annoBuilder.annotations(transformAnnotationConstraints(klass));
+        }
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getParameterModel();
@@ -938,7 +948,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         List<JCTree> result;
         if (isSequencedAnnotation(klass)) {
-            result = annoBuilder.annotations(makeAtAnnotationTarget(EnumSet.noneOf(AnnotationTarget.class))).build();
+            result = annoBuilder.build();
             String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null, false);
             // annotations are never explicitely final in Java
@@ -955,7 +965,7 @@ public class ClassTransformer extends AbstractTransformer {
             result = result.appendList(sequencedAnnotation.build());
             
         } else {
-            result = annoBuilder.annotations(transformAnnotationConstraints(klass)).build();
+            result = annoBuilder.build();
         }
         
         return result;
@@ -966,6 +976,13 @@ public class ClassTransformer extends AbstractTransformer {
                 make().Annotation(
                         make().Type(syms().retentionType), 
                         List.of(naming.makeQuotedQualIdent(make().Type(syms().retentionPolicyType), retentionPolicy.name()))));
+    }
+    
+    private List<JCAnnotation> makeAtRepeatable(Type containerClassLiteral) {
+        return List.of(
+                make().Annotation(
+                        make().Type(syms().repeatableType), 
+                        List.of(makeClassLiteral(containerClassLiteral, JT_ANNOTATIONS))));
     }
     
     /** 
