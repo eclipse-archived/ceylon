@@ -449,6 +449,12 @@ public class StructureTests extends CompilerTests {
     public void testKlsJavaIoSerializable(){
         compareWithJavaSource("klass/JavaIoSerializable");
     }
+    
+    @Test
+    public void testKlsBug6157(){
+        compareWithJavaSource("klass/Bug6157");
+    }
+    
     //
     // Methods
     
