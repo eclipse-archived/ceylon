@@ -2226,6 +2226,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
 
             String constructorName = (String)alias.classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION).getValue("constructor");
+            Declaration extendedTypeDeclaration = alias.getExtendedType().getDeclaration();
             if (constructorName != null 
                     && !constructorName.isEmpty()) {
                 Declaration constructor = alias.getExtendedType().getDeclaration().getMember(constructorName, null, false);
@@ -2234,6 +2235,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     alias.setConstructor(((FunctionOrValue)constructor).getTypeDeclaration());
                 } else {
                     logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedType().getDeclaration().getQualifiedNameString());
+                }
+            } else {
+                if (extendedTypeDeclaration instanceof Class) {
+                    Class theClass = (Class) extendedTypeDeclaration;
+                    if (theClass.hasConstructors()) {
+                        alias.setConstructor(theClass.getDefaultConstructor());
+                    } else if(theClass.getParameterList() != null) {
+                        alias.setConstructor(theClass);
+                    }
                 }
             }
             
