@@ -136,7 +136,7 @@ public class AttributeGenerator {
                     if (isLate) {
                         gen.generateUnitializedAttributeReadCheck(varName, gen.getNames().name(decl));
                     }
-                    if (initVal) {
+                    if (initVal && !isLate) {
                         gen.out("return $valinit$", varName, "();}");
                     } else {
                         gen.out("return ", varName, ";}");
@@ -159,10 +159,16 @@ public class AttributeGenerator {
                     gen.endLine(true);
                 }
                 else {
-                    gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl, false),"(){return ");
+                    gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl, false),"(){");
                     if (initVal) {
-                        gen.out("$valinit$", varName, "();}");
+                        if (isLate) {
+                            gen.generateUnitializedAttributeReadCheck(varName, decl.getName());
+                            gen.out("return ", varName, ";}");
+                        } else {
+                            gen.out("return $valinit$", varName, "();}");
+                        }
                     } else if (stitch) {
+                        gen.out("return ");
                         gen.stitchNative(decl, attributeNode);
                         gen.out(";}");
                         if (verboseStitcher) {
@@ -170,7 +176,7 @@ public class AttributeGenerator {
                                 + ", ignoring Ceylon declaration");
                         }
                     } else {
-                        gen.out(varName, ";}");
+                        gen.out("return ", varName, ";}");
                     }
                     gen.endLine();
                     gen.shareGetter(decl);
@@ -194,7 +200,11 @@ public class AttributeGenerator {
         String paramVarName = gen.getNames().createTempVariable();
         gen.out(GenerateJsVisitor.function, gen.getNames().setter(d), "(", paramVarName, "){");
         gen.generateImmutableAttributeReassignmentCheck(d, varName, gen.getNames().name(d));
-        gen.out("if(", varName, "===undefined||",varName,"===",gen.getClAlias(), "INIT$)$valinit$", varName, "();");
+        if (d.isLate()) {
+            gen.generateImmutableAttributeReassignmentCheck(d, varName, d.getName());
+        } else {
+            gen.out("if(", varName, "===undefined||",varName,"===",gen.getClAlias(), "INIT$)$valinit$", varName, "();");
+        }
         gen.out("return ", varName, "=", paramVarName, ";}");
         gen.endLine(true);
         gen.shareSetter(d);
