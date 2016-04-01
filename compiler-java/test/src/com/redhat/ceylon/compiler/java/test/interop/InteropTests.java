@@ -737,6 +737,11 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopBug6160(){
+        compile("Bug6160.ceylon");
+    }
+    
+    @Test
     public void testIopCallDefaultInterfaceMethod(){
         Assume.assumeTrue("Runs on JDK >= 8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
