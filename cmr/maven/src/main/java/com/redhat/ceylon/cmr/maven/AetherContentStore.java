@@ -42,9 +42,9 @@ public class AetherContentStore extends AbstractContentStore {
 
     private final AetherUtils utils;
 
-    public AetherContentStore(Logger log, boolean offline, int timeout) {
+    public AetherContentStore(Logger log, String settingsXml, boolean offline, int timeout) {
         super(log, offline, timeout);
-        utils = new AetherUtils(log, offline, timeout);
+        utils = new AetherUtils(log, settingsXml, offline, timeout);
     }
 
     AetherUtils getUtils() {

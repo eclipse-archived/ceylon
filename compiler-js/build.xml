@@ -32,6 +32,7 @@
         <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
+        <pathelement path="${ceylon.module-resolver-javascript.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.typechecker.lib}" />
         <pathelement path="${build.classes}" />
@@ -56,6 +57,7 @@
                 <pathelement path="${ceylon.model.lib}" />
                 <pathelement path="${ceylon.typechecker.lib}" />
                 <pathelement path="${ceylon.module-resolver.lib}" />
+                <pathelement path="${ceylon.module-resolver-javascript.lib}" />
                 <pathelement path="${ceylon.compiler.lib}" />
                 <pathelement path="${json.lib}" />
             </classpath>

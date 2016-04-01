@@ -28,9 +28,9 @@
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
-        <module name="org.antlr.runtime" slot="3.4" export="true"/>
-        <!-- This makes sure that the same optional dep in the CMR gets resolved -->
+        <module name="com.redhat.ceylon.module-resolver-javascript" slot="@ceylon-version@"/>
         <module name="net.minidev.json-smart" slot="1.1.1"/>
+        <module name="org.antlr.runtime" slot="3.4" export="true"/>
         <module name="java.base" slot="7" export="true"/>
         <module name="java.logging" slot="7" export="true"/>
         <system export="true">

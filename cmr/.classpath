@@ -16,32 +16,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/commons/logging/1.1.1/org.apache.commons.logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/httpcomponents/httpclient/4.3.2/org.apache.httpcomponents.httpclient-4.3.2.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/httpcomponents/httpcore/4.3.2/org.apache.httpcomponents.httpcore-4.3.2.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/simple/1.6.1/org.slf4j.simple-1.6.1.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/github/lookfirst/sardine/5.1/com.github.lookfirst.sardine-5.1.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/net/minidev/json-smart/1.1.1/net.minidev.json-smart-1.1.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-api/1.1.0/org.eclipse.aether.aether-api-1.1.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-connector-basic/1.1.0/org.eclipse.aether.aether-connector-basic-1.1.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-spi/1.1.0/org.eclipse.aether.aether-spi-1.1.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-transport-file/1.1.0/org.eclipse.aether.aether-transport-file-1.1.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-transport-http/1.1.0/org.eclipse.aether.aether-transport-http-1.1.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-util/1.1.0/org.eclipse.aether.aether-util-1.1.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/aether-impl/1.1.0/org.eclipse.aether.aether-impl-1.1.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/google/guava/guava/18.0/com.google.guava.guava-18.0.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/commons/lang3/3.4/org.apache.commons.lang3-3.4.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-aether-provider/3.3.9/org.apache.maven.maven-aether-provider-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-artifact/3.3.9/org.apache.maven.maven-artifact-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-builder-support/3.3.9/org.apache.maven.maven-builder-support-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-model/3.3.9/org.apache.maven.maven-model-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-model-builder/3.3.9/org.apache.maven.maven-model-builder-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-repository-metadata/3.3.9/org.apache.maven.maven-repository-metadata-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-settings/3.3.9/org.apache.maven.maven-settings-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/maven/maven-settings-builder/3.3.9/org.apache.maven.maven-settings-builder-3.3.9.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/codehaus/plexus/plexus-interpolation/1.22/org.codehaus.plexus.plexus-interpolation-1.22.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/codehaus/plexus/plexus-utils/3.0.22/org.codehaus.plexus.plexus-utils-3.0.22.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver-aether"/>
+	<classpathentry kind="src" path="/ceylon-module-resolver-javascript"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver-webdav"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

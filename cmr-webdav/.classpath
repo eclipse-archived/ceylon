@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/github/lookfirst/sardine/5.1/com.github.lookfirst.sardine-5.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/httpcomponents/httpclient/4.3.2/org.apache.httpcomponents.httpclient-4.3.2.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/httpcomponents/httpcore/4.3.2/org.apache.httpcomponents.httpcore-4.3.2.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/simple/1.6.1/org.slf4j.simple-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/commons/logging/1.1.1/org.apache.commons.logging-1.1.1.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

@@ -19,9 +19,9 @@
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-cli,ceylon-model,ceylon-module-resolver,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon-java-main,ceylon.language,ceylon-runtime" />
-    <property name="moddirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
-    <property name="testdirs" value="common,cli,model,cmr,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
+    <property name="modules" value="ceylon-common,ceylon-cli,ceylon-model,ceylon-module-resolver,ceylon-module-resolver-aether,ceylon-module-resolver-javascript,ceylon-module-resolver-webdav,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon-java-main,ceylon.language,ceylon-runtime" />
+    <property name="moddirs" value="common,cli,model,cmr,cmr-aether,cmr-js,cmr-webdav,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
+    <property name="testdirs" value="common,cli,model,cmr,cmr-aether,cmr-js,cmr-webdav,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
@@ -34,6 +34,9 @@
     <property name="project-spec.dir" location="${projects.base.dir}/typechecker"/>
     <property name="project-language.dir" location="${projects.base.dir}/language"/>
     <property name="project-module-resolver.dir" location="${projects.base.dir}/cmr"/>
+    <property name="project-module-resolver-aether.dir" location="${projects.base.dir}/cmr-aether"/>
+    <property name="project-module-resolver-javascript.dir" location="${projects.base.dir}/cmr-js"/>
+    <property name="project-module-resolver-webdav.dir" location="${projects.base.dir}/cmr-webdav"/>
     <property name="project-runtime.dir" location="${projects.base.dir}/runtime"/>
     <property name="project-tool-provider.dir" value="${projects.base.dir}/tool-provider"/>
     <property name="project-js.dir" location="${projects.base.dir}/compiler-js"/>
@@ -147,6 +150,9 @@ Some super-charged ant tasks:
                 <module name="com.redhat.ceylon.cli" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.model" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.module-resolver-aether" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.module-resolver-javascript" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.module-resolver-webdav" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.langtools.classfile" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.tool.provider" version="${ceylon.version}"/>
@@ -492,7 +498,34 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-cmr" depends="install-common,install-model,install-cmr-nodeps" />
+    <target name="install-cmr-aether" depends="install-cmr-aether-nodeps" />
+    <target name="install-cmr-aether-nodeps">
+        <ant antfile="${project-module-resolver-aether.dir}/build.xml" target="publish" dir="${project-module-resolver-aether.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-cmr-javascript" depends="install-cmr-javascript-nodeps" />
+    <target name="install-cmr-javascript-nodeps">
+        <ant antfile="${project-module-resolver-javascript.dir}/build.xml" target="publish" dir="${project-module-resolver-javascript.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-cmr-webdav" depends="install-cmr-webdav-nodeps" />
+    <target name="install-cmr-webdav-nodeps">
+        <ant antfile="${project-module-resolver-webdav.dir}/build.xml" target="publish" dir="${project-module-resolver-webdav.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-cmr" depends="install-common,install-model,install-cmr-aether,install-cmr-webdav,install-cmr-javascript,install-cmr-nodeps" />
     <target name="install-cmr-nodeps">
         <ant antfile="${project-module-resolver.dir}/build.xml" target="publish" dir="${project-module-resolver.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
