@@ -324,7 +324,7 @@ public class Main {
         private List<File> potentialJars = new LinkedList<File>();
         private Map<String,Module> modules = new HashMap<String,Module>();
         private Overrides overrides;
-        private static DependencyResolver MavenResolver = getResolver(Configuration.MAVEN_RESOLVER_CLASS);
+        private static DependencyResolver MavenResolver = Configuration.getMavenResolver();
         
         private static final Module NO_MODULE = new Module("$$$", "$$$", Type.UNKNOWN, null);
         
@@ -769,10 +769,14 @@ public class Main {
         }
 
         private Module loadMavenJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
+            if(MavenResolver == null)
+                return null;
             return loadFromResolver(file, zipFile, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
         }
 
         private Module loadMavenJar(File file, File moduleDescriptor, String name, String version) throws IOException {
+            if(MavenResolver == null)
+                return null;
             return loadFromResolver(file, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
         }
 
