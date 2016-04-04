@@ -11,6 +11,7 @@ public class Interface extends ClassOrInterface {
     
     private String javaCompanionClassName;
     private Boolean companionClassNeeded;
+    private boolean useDefaultMethods;
     
     @Override
     public boolean isAbstract() {
@@ -116,6 +117,14 @@ public class Interface extends ClassOrInterface {
         this.companionClassNeeded = companionClassNeeded;
     }
     
+    public boolean isUseDefaultMethods() {
+        return useDefaultMethods;
+    }
+
+    public void setUseDefaultMethods(boolean useDefaultMethods) {
+        this.useDefaultMethods = useDefaultMethods;
+    }
+
     @Override
     public boolean isEmptyType() {
         return isEmpty();

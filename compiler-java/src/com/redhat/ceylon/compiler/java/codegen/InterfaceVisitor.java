@@ -26,6 +26,8 @@ import java.util.Set;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
+import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -46,6 +48,12 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class InterfaceVisitor extends Visitor {
 
     private Set<String> localCompanionClasses = new HashSet<String>();
+    
+    Target target;
+    
+    public InterfaceVisitor(Target target) {
+        this.target = target;
+    }
     
     private void collect(Node that, Interface model) {
         if(model != null && !model.isMember()){
@@ -124,8 +132,26 @@ public class InterfaceVisitor extends Visitor {
             localCompanionClasses = old;
         }
         if(model instanceof Interface){
-            ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model));
+            boolean useDefaultMethods = useDefaultMethods(model);
+            ((Interface)model).setUseDefaultMethods(useDefaultMethods);
+            if (!useDefaultMethods) {
+                ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model));
+            }
         }
+    }
+
+    private boolean useDefaultMethods(ClassOrInterface model) {
+        if (model instanceof Interface 
+                && model.isToplevel()
+                && target.compareTo(Target.JDK1_8) >= 0) {
+            for (Declaration member : model.getMembers()) {
+                if (member instanceof ClassOrInterface) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     private boolean isInterfaceWithCode(ClassOrInterface model) {
