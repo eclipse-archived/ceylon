@@ -37,6 +37,7 @@ import com.redhat.ceylon.cmr.impl.Configuration;
 import com.redhat.ceylon.cmr.impl.OSGiDependencyResolver;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
+import com.redhat.ceylon.cmr.maven.MavenBackupDependencyResolver;
 import com.redhat.ceylon.common.Java9ModuleUtil;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleSpec.Option;
@@ -325,6 +326,10 @@ public class Main {
         private Map<String,Module> modules = new HashMap<String,Module>();
         private Overrides overrides;
         private static DependencyResolver MavenResolver = Configuration.getMavenResolver();
+        static{
+            if(MavenResolver == null)
+                MavenResolver = MavenBackupDependencyResolver.INSTANCE;
+        }
         
         private static final Module NO_MODULE = new Module("$$$", "$$$", Type.UNKNOWN, null);
         
@@ -536,7 +541,9 @@ public class Main {
 
                 // try Maven
                 List<ZipEntry> mavenDescriptors = findEntries(zipFile, METAINF_MAVEN, POM_XML);
-                // TODO: we should try to retrieve the module information (name/version) from the pom.xml entry
+                if(mavenDescriptors.size() == 1 && MavenResolver != null) {
+                    return loadMavenJar(file, zipFile, mavenDescriptors.get(0), null, null);
+                }
                 
                 // last OSGi
                 ZipEntry osgiProperties = zipFile.getEntry(JarFile.MANIFEST_NAME);
