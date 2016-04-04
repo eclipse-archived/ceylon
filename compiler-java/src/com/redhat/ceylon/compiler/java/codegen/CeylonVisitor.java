@@ -144,7 +144,12 @@ public class CeylonVisitor extends Visitor {
                 classBuilder.defs(gen.classGen().transform(decl));
             }
         } else {
-            appendList(gen.classGen().transform(decl));
+            if (decl instanceof Tree.InterfaceDefinition
+                    && ((Interface)decl.getDeclarationModel()).isUseDefaultMethods()) {
+                appendList(gen.classGen().transformAsJava8Interface((Tree.InterfaceDefinition)decl));
+            } else {
+                appendList(gen.classGen().transform(decl));
+            }
         }
         gen.resetCompilerAnnotations(annots);
     }

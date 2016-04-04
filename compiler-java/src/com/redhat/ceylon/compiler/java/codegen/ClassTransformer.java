@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag.QUALIFIED;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.ABSTRACT;
+import static com.redhat.ceylon.langtools.tools.javac.code.Flags.DEFAULT;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.INTERFACE;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PRIVATE;
@@ -207,6 +208,48 @@ public class ClassTransformer extends AbstractTransformer {
         super(context);
     }
 
+    public List<JCTree> transformAsJava8Interface(final Tree.InterfaceDefinition def) {
+        final Interface model = def.getDeclarationModel();
+        model.setCompanionClassNeeded(false);
+        naming.clearSubstitutions(model);
+        
+        String ceylonClassName = def.getIdentifier().getText();
+        final String javaClassName = Naming.quoteClassName(ceylonClassName);
+        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
+                .java8Interface(this, javaClassName, ceylonClassName, Decl.isLocal(model))
+                .forDefinition(model)
+                .hasDelegatingConstructors(CodegenUtil.hasDelegatingConstructors(def));
+        
+        classBuilder.annotations(expressionGen().transformAnnotations(OutputElement.TYPE, def));
+        if(def instanceof Tree.InterfaceDefinition){
+            transformInterface(def, (Interface)model, classBuilder);
+        }
+        classBuilder.isDynamic(model.isDynamic());
+        
+        // Transform the class/interface members
+        List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
+
+        classBuilder
+            .modelAnnotations(model.getAnnotations())
+            .annotations(makeAtInterface(model))
+            .modifiers(transformClassDeclFlags(model))
+            .satisfies(model.getSatisfiedTypes())
+            .caseTypes(model.getCaseTypes(), model.getSelfType())
+            .defs((List)childDefs);
+        
+        // aliases and native headers don't need a $getType method
+        
+        // only classes get a $getType method
+        if(supportsReifiedAlias(model))
+            classBuilder.reifiedAlias(model.getType());
+        
+        // reset position before initializer constructor is generated. 
+        at(def);
+        List<JCTree> result = classBuilder.build();
+        
+        return result;
+    }
+    
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         final ClassOrInterface model = def.getDeclarationModel();
         
@@ -2442,6 +2485,9 @@ public class ClassTransformer extends AbstractTransformer {
                     if (!(decl instanceof Interface)) {
                         continue;
                     }
+                    if (((Interface)decl).isUseDefaultMethods()) {
+                        continue;
+                    }
                     // make sure we get the right instantiation of the interface
                     satisfiedType = model.getType().getSupertype(decl);
                     concreteMembersFromSuperinterfaces(model, classBuilder, satisfiedType, satisfiedInterfaces);
@@ -3613,8 +3659,8 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    private int transformMethodDeclFlags(Function def) {
-        int result = 0;
+    private long transformMethodDeclFlags(Function def) {
+        long result = 0;
 
         if (def.isToplevel()) {
             result |= def.isShared() ? PUBLIC : 0;
@@ -3623,7 +3669,7 @@ public class ClassTransformer extends AbstractTransformer {
             result |= def.isShared() ? PUBLIC : 0;
         } else {
             result |= def.isShared() ? PUBLIC : PRIVATE;
-            result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
+            result |= def.isFormal() && !def.isDefault() ? ABSTRACT : def.isInterfaceMember() && ((Interface)def.getContainer()).isUseDefaultMethods() ? Flags.DEFAULT : 0;
             result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
         }
 
@@ -3882,7 +3928,8 @@ public class ClassTransformer extends AbstractTransformer {
         final Function model = def.getDeclarationModel();
         
         List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
-        if (!Decl.withinInterface(model)) {
+        if (!Decl.withinInterface(model)
+                || ((Interface)model.getContainer()).isUseDefaultMethods()) {
             // Transform to the class
             boolean refinedResultType = !model.getType().isExactly(
                     ((TypedDeclaration)model.getRefinedDeclaration()).getType());
@@ -5227,12 +5274,13 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
-        int modifiers = 0;
+        long modifiers = 0;
         if (noBody) {
             modifiers |= PUBLIC | ABSTRACT;
         } else if (container == null
-                || !(container instanceof Class 
-                        && Strategy.defaultParameterMethodStatic(container))) {
+                || !((container instanceof Class 
+                        && Strategy.defaultParameterMethodStatic(container))
+                        || (container.getContainer() instanceof Interface && ((Interface)container.getContainer()).isUseDefaultMethods()))) {
             // initializers can override parameter defaults
             modifiers |= FINAL;
         }
@@ -5241,6 +5289,9 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (container == null || (!container.isToplevel()
                 && !noBody)){
             modifiers |= PRIVATE;
+        }
+        if (container.getContainer() instanceof Interface && ((Interface)container.getContainer()).isUseDefaultMethods()) {
+            modifiers |= DEFAULT;
         }
         boolean staticMethod = Strategy.defaultParameterMethodStatic(container);
         if (staticMethod) {
