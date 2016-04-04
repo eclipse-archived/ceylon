@@ -107,7 +107,17 @@ public class ClassDefinitionBuilder {
     private Type thisType;
 
     private Node at;
+    
+    private boolean java8Interfaces = false;
 
+    public static ClassDefinitionBuilder java8Interface(AbstractTransformer gen, String javaClassName, String ceylonClassName, boolean isLocal) {
+        ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName, isLocal);
+        builder.setContainingClassBuilder(gen.current());
+        gen.replace(builder);
+        builder.java8Interfaces = true;
+        return builder;
+    }
+    
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName, boolean isLocal) {
         ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName, isLocal);
         builder.setContainingClassBuilder(gen.current());
@@ -507,6 +517,9 @@ public class ClassDefinitionBuilder {
     }
 
     public ClassDefinitionBuilder getCompanionBuilder(TypeDeclaration decl) {
+        if (java8Interfaces) {
+            return this;
+        }
         if (concreteInterfaceMemberDefs == null 
                 // if we want a companion build for a class, allow it
                 && (decl instanceof com.redhat.ceylon.model.typechecker.model.Class
@@ -523,7 +536,9 @@ public class ClassDefinitionBuilder {
     
     public ClassDefinitionBuilder getCompanionBuilder2(
             TypeDeclaration decl) {
-        
+        if (java8Interfaces) {
+            return this;
+        }
         ClassDefinitionBuilder companionBuilder = getCompanionBuilder(decl);
         // if the interface has no need of companion, give up
         if(companionBuilder == null)

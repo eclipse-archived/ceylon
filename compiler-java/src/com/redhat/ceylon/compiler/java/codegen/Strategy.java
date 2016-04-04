@@ -160,7 +160,7 @@ class Strategy {
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
                 && !((Function)decl).isParameter()
-                && !Decl.withinInterface(decl);
+                && (!Decl.withinInterface(decl) || ((Interface)decl.getContainer()).isUseDefaultMethods());
     }
     
     public static boolean hasDefaultParameterValueMethod(Parameter param) {

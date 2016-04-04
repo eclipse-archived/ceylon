@@ -3259,6 +3259,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return makeModelAnnotation(syms().ceylonAtClassType, attributes);
     }
+    List<JCAnnotation> makeAtInterface(Interface iface) {
+        return makeModelAnnotation(syms().ceylonAtInterfaceType, 
+                List.<JCExpression>of(make().Assign(naming.makeUnquotedIdent("useDefaultMethods"), makeBoolean(iface.isUseDefaultMethods()))));
+    }
 
     List<JCAnnotation> makeAtSatisfiedTypes(java.util.List<Type> satisfiedTypes) {
         JCExpression attrib = makeTypesListAttr(satisfiedTypes);

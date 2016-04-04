@@ -4617,6 +4617,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 if (iface.equals(typeFact().getIdentifiableDeclaration())) {
                     result = naming.makeQualifiedSuper(qualifier);
+                } else if (((Interface) inheritedFrom).isUseDefaultMethods()) {
+                    result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
                 } else {
                     result = naming.makeCompanionFieldName(iface);
                 }
@@ -5147,7 +5149,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             scope = scope.getContainer();
         }
         if(!needsQualified)
-            return naming.makeQuotedThis();
+            return interf.isUseDefaultMethods() ? naming.makeThis() : naming.makeQuotedThis();
         interf = (Interface) scope;
         return makeQualifiedDollarThis(interf.getType());
     }
