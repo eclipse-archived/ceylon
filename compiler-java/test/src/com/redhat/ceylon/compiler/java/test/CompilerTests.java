@@ -1047,7 +1047,8 @@ public abstract class CompilerTests {
          * (which we could otherwise use to prevent System.exit)  
          */
         ArrayList<String> a = new ArrayList<String>();
-        a.add("java");
+        String java = System.getProperty("java.home")+"/bin/java";
+        a.add(java);
         a.add("-cp");
         a.add(mainApiClasspath(rep, module, extraModules));
         a.add("com.redhat.ceylon.compiler.java.runtime.Main");
@@ -1070,7 +1071,8 @@ public abstract class CompilerTests {
          * (which we could otherwise use to prevent System.exit)  
          */
         ArrayList<String> a = new ArrayList<String>();
-        a.add("java");
+        String java = System.getProperty("java.home")+"/bin/java";
+        a.add(java);
         a.add("-cp");
         a.add(mainApiClasspath(rep, module));
         a.add("com.redhat.ceylon.compiler.java.runtime.Main");
