@@ -1079,7 +1079,10 @@ public class Check {
                     implicit = PUBLIC | ABSTRACT;
                 } else if ((flags & (DEFAULT | STATIC)) != 0) {
                     mask = InterfaceMethodMask;
-                    implicit = PUBLIC;
+                    if (sourceLanguage.isCeylon() && (flags & PRIVATE) != 0)
+                        mask |= PRIVATE;
+                    else
+                        implicit = PUBLIC;
                     if ((flags & DEFAULT) != 0) {
                         implicit |= ABSTRACT;
                     }
