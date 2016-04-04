@@ -1,22 +1,13 @@
 
 dependencies {
     compile project(':common'),
-        project(':cli'),
         project(':langtools-classfile'),
         project(':model'),
+        project(':cmr-aether'),
+        project(':cmr-webdav'),
+        project(':cmr-js'),
         'org.jboss:jandex:2.0.0.Final',
-        'org.jboss.modules:jboss-modules:1.4.4.Final',
-        'net.minidev:json-smart:1.1.1',
-        'com.github.lookfirst:sardine:5.1',
-        'org.apache.maven:maven-model:3.3.9',
-        'org.apache.maven:maven-settings:3.3.9',
-        'org.apache.maven:maven-settings-builder:3.3.9',
-        'org.apache.maven:maven-aether-provider:3.3.9',
-        'org.eclipse.aether:aether-api:1.1.0',
-        'org.eclipse.aether:aether-impl:1.1.0',
-        'org.eclipse.aether:aether-connector-basic:1.1.0',
-        'org.eclipse.aether:aether-transport-file:1.1.0',
-        'org.eclipse.aether:aether-transport-http:1.1.0'
+        'org.jboss.modules:jboss-modules:1.4.4.Final'
 }
 
 sourceSets {
