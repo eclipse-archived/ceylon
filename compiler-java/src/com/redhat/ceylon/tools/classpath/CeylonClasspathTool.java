@@ -15,8 +15,10 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Prints a classpath suitable for passing to Java tools to run a given Ceylon module")
-@Description("Will print a classpath for a given Ceylon module, suitable for use with Java tools to " +
-        "run a given Ceylon module outside of the regular JBoss Modules container used in `ceylon run`.")
+@Description("Will print a classpath for a given set of Ceylon modules, suitable for use with Java tools to " +
+        "run a given Ceylon module outside of the regular JBoss Modules container used in `ceylon run`. " + 
+        "If you need to force inclusion of optional modules, you can specify them as additional modules " + 
+        "after your main module.")
 public class CeylonClasspathTool extends ModuleLoadingTool {
 
     private List<ModuleSpec> modules;
