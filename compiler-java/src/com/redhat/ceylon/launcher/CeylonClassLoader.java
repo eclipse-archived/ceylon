@@ -109,6 +109,9 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.cli", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.model", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-aether", version)); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-webdav", version)); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-javascript", version)); // optional
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.langtools.classfile", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tool.provider", version));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
@@ -142,12 +145,12 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.2.7"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
         // For the --out http:// functionality of the compiler
-        archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8"));
-        archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.6.1"));
+        archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.6.1")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.6.1")); // optional
 
         return archives;

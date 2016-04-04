@@ -4,7 +4,7 @@
    value from the list without losing its static type 
    information.
    
-       value point = Tuple(0.0, Tuple(0.0, Tuple("origin")));
+       value point = Tuple(0.0, Tuple(0.0, Tuple("origin", [])));
        Float x = point.first;
        Float y = point.rest.first;
        String label = point.rest.rest.first;

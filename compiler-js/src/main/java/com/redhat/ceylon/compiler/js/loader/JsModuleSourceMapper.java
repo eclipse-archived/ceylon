@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.impl.JSUtils;
+import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -91,7 +91,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
      * check it's the right version and return the model as a Map. */
     public static Map<String,Object> loadJsonModel(File jsFile) {
         try {
-            Map<String,Object> model = JSUtils.readJsonModel(jsFile);
+            Map<String,Object> model = JavaScriptResolver.readJsonModel(jsFile);
             if (model == null) {
                 throw new CompilerErrorException("Can't find metamodel definition in " + jsFile.getAbsolutePath());
             }

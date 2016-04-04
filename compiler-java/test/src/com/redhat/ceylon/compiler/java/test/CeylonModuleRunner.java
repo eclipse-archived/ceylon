@@ -172,7 +172,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         String moduleSpec = Module.DEFAULT_MODULE_NAME.equals(module) ? module : (module+"/"+version);
 
         CeylonClasspathTool cpTool = new CeylonClasspathTool();
-        cpTool.setModule(moduleSpec);
+        cpTool.setModules(Arrays.asList(moduleSpec));
         cpTool.setRepositoryAsStrings(Arrays.asList(outRepo.getAbsolutePath()));
         cpTool.setSystemRepository("../dist/dist/repo");
         cpTool.setNoDefRepos(true);

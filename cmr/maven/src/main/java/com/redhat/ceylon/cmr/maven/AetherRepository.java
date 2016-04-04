@@ -48,10 +48,8 @@ public class AetherRepository extends MavenRepository {
     }
 
     public static CmrRepository createRepository(Logger log, String settingsXml, boolean offline, int timeout) {
-        AetherContentStore acs = new AetherContentStore(log, offline, timeout);
-        AetherRepository repo = new AetherRepository(acs);
-        repo.utils.overrideSettingsXml(settingsXml);
-        return repo;
+        AetherContentStore acs = new AetherContentStore(log, settingsXml, offline, timeout);
+        return new AetherRepository(acs);
     }
 
     @Override

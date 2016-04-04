@@ -48,7 +48,7 @@ import org.junit.Test;
 public class AetherTestCase extends AbstractAetherTest {
     @Test
     public void testSimpleTest() throws Throwable {
-        StructureBuilder structureBuilder = new AetherContentStore(log, false, 60000);
+        StructureBuilder structureBuilder = new AetherContentStore(log, null, false, 60000);
         CmrRepository repository = MavenRepositoryHelper.getMavenRepository(structureBuilder);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
         File artifact = manager.getArtifact("org.slf4j:slf4j-api", "1.6.4");

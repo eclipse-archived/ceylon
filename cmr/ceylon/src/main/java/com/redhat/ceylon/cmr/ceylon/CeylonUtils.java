@@ -2,6 +2,8 @@ package com.redhat.ceylon.cmr.ceylon;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
@@ -9,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
-import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
@@ -20,7 +22,6 @@ import com.redhat.ceylon.cmr.impl.ResourceArtifactCreatorImpl;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.impl.SourceArtifactCreatorImpl;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
-import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -34,6 +35,7 @@ public class CeylonUtils {
     }
 
     public static class CeylonRepoManagerBuilder {
+        private static final String WEBDAV_CONTENT_STORE_CLASS = "com.redhat.ceylon.cmr.webdav.WebDAVContentStore";
         private CeylonConfig config;
         private File actualCwd;
         private File cwd;
@@ -527,11 +529,24 @@ public class CeylonUtils {
                 File cachingDir = FileUtil.makeTempDir("ceylon-webdav-cache-");
 
                 // HTTP
-                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false, getTimeout(config), getProxy(config));
-                davContentStore.setUsername(user);
-                davContentStore.setPassword(password);
+                try {
+                    Class<?> klass = Class.forName(WEBDAV_CONTENT_STORE_CLASS);
+                    Constructor<?> constructor = klass.getConstructor(String.class, Logger.class, boolean.class, int.class, Proxy.class, 
+                        String.class, String.class);
+                    StructureBuilder contentStore = 
+                        (StructureBuilder) constructor.newInstance(outRepo, log, false, getTimeout(config), getProxy(config), user, password);
 
-                return new CachingRepositoryManager(davContentStore, cachingDir, log);
+                    return new CachingRepositoryManager(contentStore, cachingDir, log);
+                } catch (LinkageError e) {
+                    // missing dependency
+                    throw new RuntimeException("Failed to initialise WebDAV content store: missing Sardine module?", e);
+                } catch (ClassNotFoundException|InstantiationException|IllegalAccessException|
+                        IllegalArgumentException|InvocationTargetException|NoSuchMethodException|
+                        SecurityException e) {
+                    // bug
+                    throw new RuntimeException("Failed to initialise WebDAV content store", e);
+                }
+
             }
         }
 
@@ -578,12 +593,35 @@ public class CeylonUtils {
                 }
                 String path = absolute(repoUrl);
                 if(!avoidRepository(path)){
+                    if (isMaven(path)) {
+                        path = absoluteMavenSettingsPath(path);
+                    }
                     CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
                     builder.addRepository(repo);
                 }
             } catch (Exception e) {
                 log.debug("Failed to add repository as input repository: " + repoUrl + ": " + e.getMessage());
             }
+        }
+
+        private boolean isMaven(String path) {
+            return path.startsWith("aether:") || path.startsWith("mvn:");
+        }
+
+        // Converts any relative settings path to an absolute one
+        // using the configured current working directory
+        private String absoluteMavenSettingsPath(String path) {
+            if (path.startsWith("aether:")) {
+                path = path.substring(7);
+            } else if (path.startsWith("mvn:")) {
+                path = path.substring(4);
+            }
+            File p = new File(path);
+            if (!p.isAbsolute()) {
+                p = new File(cwd, path);
+                path = p.getAbsolutePath();
+            }
+            return "aether:" + path;
         }
 
         private String absolute(String path) {

@@ -64,6 +64,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
+import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -99,6 +100,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
+import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -152,6 +155,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean simpleAnnotationModels;
 
+    private final Target target;
+
     public AbstractTransformer(Context context) {
         this.context = context;
         make = TreeMaker.instance(context);
@@ -162,6 +167,7 @@ public abstract class AbstractTransformer implements Transformation {
         log = CeylonLog.instance(context);
         naming = Naming.instance(context);
         simpleAnnotationModels = Options.instance(context).get(Option.BOOTSTRAPCEYLON) != null;
+        target = Target.instance(context);
     }
 
     Context getContext() {
@@ -178,6 +184,10 @@ public abstract class AbstractTransformer implements Transformation {
     @Override
     public TreeMaker make() {
         return make;
+    }
+    
+    public Target getTarget() {
+        return target;
     }
 
     private static JavaPositionsRetriever javaPositionsRetriever = null;
@@ -2017,6 +2027,7 @@ public abstract class AbstractTransformer implements Transformation {
                     qType = null;
                 }
             }else if(typeDeclaration.isNamed()){ // avoid anonymous types which may pretend that they have a qualifying type
+                Reference oldType = qType;
                 qType = qType.getQualifyingType();
                 if(qType != null && qType.getDeclaration() instanceof ClassOrInterface == false){
                     // sometimes the typechecker throws qualifying intersections at us and
@@ -2025,6 +2036,16 @@ public abstract class AbstractTransformer implements Transformation {
                     // for example. See https://github.com/ceylon/ceylon-compiler/issues/1478
                     qType = ((Type)qType).getSupertype((TypeDeclaration) typeDeclaration.getContainer());
                 }
+                
+                if (qType != null && !qType.equals(ceylonType) &&
+                        //ceylonType.getDeclaration().getContainer() instanceof Interface &&
+                        oldType.getDeclaration().getContainer() instanceof Interface &&
+                        //!ceylonType.getDeclaration().getContainer().equals(ceylonType.getQualifyingType().getDeclaration()) &&
+                        !oldType.getDeclaration().getContainer().equals(oldType.getQualifyingType().getDeclaration()) &&
+                        (flags & JT_EXTENDS) == 0) {
+                    qType = oldType.getQualifyingType().getSupertype(((Interface)(oldType.getDeclaration().getContainer())));
+                }
+                
             }else{
                 // skip local declaration containers
                 qType = null;
@@ -5462,6 +5483,14 @@ public abstract class AbstractTransformer implements Transformation {
         return meta != null && klass.getType().isSubtypeOf(
                 meta.appliedType(null, 
                 Arrays.asList(typeFact().getAnythingType(), typeFact().getNothingType())));
+    }
+    
+    boolean isRepeatableAnnotation(Class klass) {
+        return getRepeatableContainer(klass) != null;
+    }
+    
+    Interface getRepeatableContainer(Class klass) {
+        return loader.getRepeatableContainer(klass);
     }
 
     private Module getLanguageModule() {

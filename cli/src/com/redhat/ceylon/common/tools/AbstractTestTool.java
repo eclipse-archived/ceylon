@@ -1,4 +1,4 @@
-package com.redhat.ceylon.cmr.ceylon;
+package com.redhat.ceylon.common.tools;
 
 import java.io.IOException;
 import java.util.Collection;

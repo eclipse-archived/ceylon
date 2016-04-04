@@ -33,8 +33,9 @@ import com.redhat.ceylon.cmr.ceylon.LegacyImporter;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.DependencyErrors;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.DependencyResults;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.ImporterFeedback;
-import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
@@ -44,8 +45,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
-import com.redhat.ceylon.common.OSUtil;
+import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 
 @Summary("Imports a jar file into a Ceylon module repository")

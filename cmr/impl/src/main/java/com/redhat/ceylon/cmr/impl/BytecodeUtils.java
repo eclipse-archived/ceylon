@@ -30,10 +30,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.ModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
@@ -52,7 +54,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class BytecodeUtils extends AbstractDependencyResolver implements ModuleInfoReader {
+public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfoReader {
     public static BytecodeUtils INSTANCE = new BytecodeUtils();
 
     private BytecodeUtils() {
@@ -109,7 +111,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         
         final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
         if (dependencies == null)
-            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
+            return new ModuleInfo(moduleName, version, null, Collections.<ModuleDependencyInfo>emptySet());
 
         final Set<ModuleDependencyInfo> infos = new LinkedHashSet<ModuleDependencyInfo>();
 
@@ -123,7 +125,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         			asBoolean(moduleInfo, dep, "export"));
         	infos.add(mi);
         }
-        ModuleInfo ret = new ModuleInfo(null, infos);
+        ModuleInfo ret = new ModuleInfo(moduleName, version, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(moduleName, version, ret);
         return ret;
@@ -334,7 +336,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
             result.add(new ModuleDependencyInfo(depName, depVersion, optional, export));
         }
         if(overrides != null)
-            return overrides.applyOverrides(module, version, new ModuleInfo(null, result)).getDependencies();
+            return overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, result)).getDependencies();
         return result;
     }
     

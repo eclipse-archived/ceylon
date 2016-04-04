@@ -38,15 +38,11 @@
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}"/>
-        <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.model.lib}"/>
-        <pathelement path="${jboss-modules.lib}"/>
-        <pathelement path="${sardine.lib}"/>
-        <pathelement path="${httpclient.lib}"/>
-        <pathelement path="${httpcore.lib}"/>
-        <pathelement path="${maven-support.lib}"/>
+        <pathelement path="${ceylon.module-resolver-aether.lib}"/>
+        <pathelement path="${ceylon.module-resolver-webdav.lib}"/>
+        <pathelement path="${ceylon.module-resolver-javascript.lib}"/>
         <pathelement path="${ceylon.classfile.lib}"/>
-        <pathelement path="${json.lib}" />
     </path>
 
     <path id="test.build.classpath">
@@ -59,8 +55,13 @@
         <path refid="test.build.classpath"/>
         <pathelement path="${cmr-testsuite-test.resources}"/>
         <pathelement path="${build.test}"/>
+        <pathelement path="${sardine.lib}"/>
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
+        <pathelement path="${maven-support.lib}"/>
+        <pathelement path="${httpclient.lib}"/>
+        <pathelement path="${httpcore.lib}"/>
+        <pathelement path="${json.lib}" />
         <pathelement path="${commons-logging.lib}"/>
         <pathelement path="${slf4j-api.lib}"/>
         <pathelement path="${slf4j-simple.lib}"/>

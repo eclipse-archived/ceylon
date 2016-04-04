@@ -23,8 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.model.Dependency;
-
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -33,6 +31,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
+import com.redhat.ceylon.cmr.resolver.aether.DependencyDescriptor;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -43,6 +42,9 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  */
 public class MavenDependencyResolver extends AbstractDependencyResolver {
     private static final Logger logger = new CMRJULLogger();
+    
+    // ensures that instantiating this resolver without the cmr-maven module will fail
+    private AetherUtils utils = new AetherUtils(logger, null, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
 
     @Override
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
@@ -78,14 +80,13 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
-        List<org.apache.maven.model.Dependency> dependencies;
+        DependencyDescriptor descriptor;
 		try {
-			dependencies = utils.getDependencies(file, name, version);
+			descriptor = utils.getDependencies(file, name, version);
 		} catch (IOException e) {
 			throw new RepositoryException("Failed to resolve pom", e);
 		}
-        return toModuleInfo(dependencies, name, version, overrides);
+        return toModuleInfo(descriptor, name, version, overrides);
     }
 
     public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
@@ -93,28 +94,33 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        AetherUtils utils = new AetherUtils(logger, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
-        List<org.apache.maven.model.Dependency> dependencies;
+        DependencyDescriptor descriptor;
         try{
-        	dependencies = utils.getDependencies(stream, name, version);
+        	descriptor = utils.getDependencies(stream, name, version);
         } catch (IOException e) {
         	throw new RepositoryException("Failed to resolve pom", e);
         }
-        return toModuleInfo(dependencies, name, version, overrides);
+        return toModuleInfo(descriptor, name, version, overrides);
     }
 
     public Node descriptor(Node artifact) {
         return NodeUtils.firstParent(artifact).getChild("pom.xml");
     }
 
-    private static ModuleInfo toModuleInfo(List<org.apache.maven.model.Dependency> dependencies, String name, String version, Overrides overrides) {
+    private static ModuleInfo toModuleInfo(DependencyDescriptor descriptor, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
-        for (Dependency dep : dependencies) {
+        for (DependencyDescriptor dep : descriptor.getDependencies()) {
             infos.add(new ModuleDependencyInfo(AetherUtils.toCanonicalForm(dep.getGroupId(), dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false));
         }
-        ModuleInfo ret = new ModuleInfo(null, infos);
+        String descrName = descriptor.getGroupId()+":"+descriptor.getArtifactId();
+        // if it's not the descriptor we wanted, let's not return it
+        if(name != null && !name.equals(descrName))
+            return null;
+        if(version != null && !version.equals(descriptor.getVersion()))
+            return null;
+        ModuleInfo ret = new ModuleInfo(descrName, descriptor.getVersion(), null, infos);
         if(overrides != null)
-            ret = overrides.applyOverrides(name, version, ret);
+            ret = overrides.applyOverrides(descrName, descriptor.getVersion(), ret);
         return ret;
     }
 }

@@ -19,7 +19,6 @@ package com.redhat.ceylon.cmr.webdav;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.SocketTimeoutException;
 import java.net.URL;
@@ -28,21 +27,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.http.ProtocolException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.config.Registry;
-import org.apache.http.config.SocketConfig;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-
-import com.github.sardine.DavResource;
-import com.github.sardine.Sardine;
-import com.github.sardine.impl.SardineException;
-import com.github.sardine.impl.SardineImpl;
-import com.github.sardine.impl.io.ContentLengthInputStream;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.impl.URLContentStore;
+import com.redhat.ceylon.cmr.repository.webdav.WebDAVInputStream;
+import com.redhat.ceylon.cmr.repository.webdav.WebDAVRepository;
+import com.redhat.ceylon.cmr.repository.webdav.WebDAVResource;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -59,77 +48,65 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  */
 public class WebDAVContentStore extends URLContentStore {
 
-    private volatile SardineImpl sardine;
     private boolean forcedAuthenticationForPutOnHerd = false;
+    private WebDAVRepository repository;
 
     /**
      * For tests only!!!
      */
     public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy, String apiVersion) {
         super(root, log, offline, timeout, proxy, apiVersion);
+        this.repository = new WebDAVRepository(timeout, null, null);
     }
 
-    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy) {
+    /**
+     * WARNING: used by reflection from CeylonUtils
+     */
+    public WebDAVContentStore(String root, Logger log, boolean offline, int timeout, Proxy proxy, 
+            String username, String password) {
         super(root, log, offline, timeout, proxy);
+        setUsername(username);
+        setPassword(password);
+        this.repository = new WebDAVRepository(timeout, username, password);
     }
 
-    protected SardineImpl getSardine() {
-        if (sardine == null) {
-            synchronized (this) {
-                if (sardine == null) {
-                    sardine = new SardineImpl(username, password, null) {
-                        @Override
-                        protected HttpClientConnectionManager createDefaultConnectionManager(Registry<ConnectionSocketFactory> schemeRegistry) {
-                            HttpClientConnectionManager connMan = super.createDefaultConnectionManager(schemeRegistry);
-                            if (connMan instanceof PoolingHttpClientConnectionManager) {
-                                @SuppressWarnings("resource")
-                                PoolingHttpClientConnectionManager phccm = (PoolingHttpClientConnectionManager)connMan;
-                                SocketConfig config = SocketConfig.custom().setSoTimeout(timeout).build();
-                                phccm.setDefaultSocketConfig(config);
-                            }
-                            return connMan;
-                        }
-                    };
-                }
-            }
-        }
-        return sardine;
-    }
-
+    @Override
     public OpenNode create(Node parent, String child) {
         if (!connectionAllowed()) {
             return null;
         }
         try {
             if (!isHerd())
-                mkdirs(getSardine(), parent);
+                mkdirs(parent);
             return createNode(child);
         } catch (IOException e) {
             throw convertIOException(e);
         }
     }
 
+    @Override
     public ContentHandle peekContent(Node node) {
         if (!connectionAllowed()) {
             return null;
         }
         try {
             final String url = getUrlAsString(node);
-            return (getSardine().exists(url) ? new WebDAVContentHandle(url) : null);
+            return (repository.exists(url) ? new WebDAVContentHandle(url) : null);
         } catch (IOException e) {
             return null;
         }
     }
 
+    @Override
     public ContentHandle getContent(Node node) throws IOException {
         return new WebDAVContentHandle(getUrlAsString(node));
     }
 
+    @Override
     public ContentHandle putContent(Node node, InputStream stream, ContentOptions options) throws IOException {
         if (!connectionAllowed()) {
             return null;
         }
-        final Sardine s = getSardine();
         try {
             /*
              * Most disgusting trick ever. Stef failed to set up Sardine to do preemptive auth on all hosts
@@ -140,20 +117,20 @@ public class WebDAVContentStore extends URLContentStore {
              * Yuk.
              */
             if (isHerd() && !forcedAuthenticationForPutOnHerd) {
-                s.exists(getUrlAsString(node));
+                repository.exists(getUrlAsString(node));
                 forcedAuthenticationForPutOnHerd = true;
             }
             final Node parent = NodeUtils.firstParent(node);
             if (!isHerd())
-                mkdirs(s, parent);
+                mkdirs(parent);
 
             final String pUrl = getUrlAsString(parent);
             String token = null;
             if (!isHerd())
-                token = s.lock(pUrl); // local parent
+                token = repository.lock(pUrl); // local parent
             final String url = getUrlAsString(node);
             try {
-                s.put(url, stream);
+                repository.put(url, stream);
                 return new WebDAVContentHandle(url);
             } catch (SocketTimeoutException x) {
                 SocketTimeoutException ret = new SocketTimeoutException("Timed out writing to "+url);
@@ -161,47 +138,39 @@ public class WebDAVContentStore extends URLContentStore {
                 throw ret;
             } finally {
                 if (!isHerd())
-                    s.unlock(pUrl, token);
+                    repository.unlock(pUrl, token);
             }
         } catch (IOException x) {
             throw convertIOException(x);
         }
     }
 
-    public RepositoryException convertIOException(IOException x) {
-        if (x instanceof SardineException) {
-            // hide this from callers because its getMessage() is borked
-            SardineException sx = (SardineException) x;
-            if(sx.getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN){
-                return new RepositoryException("authentication failed on repository "+this.root);
-            }
-            return new RepositoryException(sx.getMessage() + ": " + sx.getResponsePhrase() + " " + sx.getStatusCode());
-        }
-        if (x instanceof ClientProtocolException) {
-            // in case of protocol exception (invalid response) we get this sort of
-            // chain set up with a null message, so unwrap it for better messages
-            if (x.getCause() != null && x.getCause() instanceof ProtocolException)
-                return new RepositoryException(x.getCause().getMessage());
+    private RepositoryException convertIOException(IOException x) {
+        String msg = repository.getBetterExceptionMessage(x, this.root);
+        if(msg != null){
+            return new RepositoryException(msg);
         }
         return new RepositoryException(x);
     }
 
-    protected void mkdirs(Sardine s, Node parent) throws IOException {
+    private void mkdirs(Node parent) throws IOException {
         if (parent == null)
             return;
 
-        mkdirs(s, NodeUtils.firstParent(parent));
+        mkdirs(NodeUtils.firstParent(parent));
 
         final String url = getUrlAsString(parent);
-        if (s.exists(url) == false) {
-            s.createDirectory(url);
+        if (repository.exists(url) == false) {
+            repository.createDirectory(url);
         }
     }
 
+    @Override
     protected ContentHandle createContentHandle(Node parent, String child, String path, Node node) {
         return new WebDAVContentHandle(root + path);
     }
 
+    @Override
     public Iterable<? extends OpenNode> find(Node parent) {
         if (!connectionAllowed()) {
             return Collections.emptyList();
@@ -209,8 +178,8 @@ public class WebDAVContentStore extends URLContentStore {
         final String url = getUrlAsString(parent);
         try {
             final List<OpenNode> nodes = new ArrayList<>();
-            final List<DavResource> resources = getSardine().list(url);
-            for (DavResource dr : resources) {
+            final List<WebDAVResource> resources = repository.list(url);
+            for (WebDAVResource dr : resources) {
                 final String label = dr.getName();
                 final RemoteNode node = new RemoteNode(label);
                 if (dr.isDirectory())
@@ -232,19 +201,20 @@ public class WebDAVContentStore extends URLContentStore {
             return false;
         }
         try {
-            return getSardine().exists(getUrlAsString(path));
+            return repository.exists(getUrlAsString(path));
         } catch (IOException e) {
             log.debug("Failed to check url: " + path);
             return false;
         }
     }
 
+    @Override
     protected boolean urlExists(URL url) {
         if (!connectionAllowed()) {
             return false;
         }
         try {
-            return getSardine().exists(url.toExternalForm());
+            return repository.exists(url.toExternalForm());
         } catch (IOException e) {
             log.debug("Failed to check url: " + url);
             return false;
@@ -264,12 +234,13 @@ public class WebDAVContentStore extends URLContentStore {
             this.url = url;
         }
 
+        @Override
         public boolean hasBinaries() {
             if (!connectionAllowed()) {
                 return false;
             }
             try {
-                final List<DavResource> list = getSardine().list(url);
+                final List<WebDAVResource> list = repository.list(url);
                 return list.size() == 1 && list.get(0).isDirectory() == false;
             } catch (IOException e) {
                 log.warning("Cannot list resources: " + url + "; error - " + e);
@@ -277,31 +248,35 @@ public class WebDAVContentStore extends URLContentStore {
             }
         }
 
+        @Override
         public InputStream getBinariesAsStream() throws IOException {
             SizedInputStream ret = getBinariesAsSizedStream();
             return ret != null ? ret.getInputStream() : null;
         }
         
+        @Override
         public SizedInputStream getBinariesAsSizedStream() throws IOException {
             if (!connectionAllowed()) {
                 return null;
             }
-            ContentLengthInputStream inputStream = getSardine().get(url);
+            WebDAVInputStream inputStream = repository.get(url);
             Long length = inputStream.getLength();
-            return new SizedInputStream(inputStream, length != null ? length.longValue() : -1);
+            return new SizedInputStream(inputStream.getInputStream(), length != null ? length.longValue() : -1);
         }
 
+        @Override
         public File getContentAsFile() throws IOException {
             return null;
         }
 
+        @Override
         public long getSize() throws IOException {
             if (connectionAllowed()) {
                 if (isHerd()) {
                     return size(new URL(url));
                 }
 
-                final List<DavResource> list = getSardine().list(url);
+                final List<WebDAVResource> list = repository.list(url);
                 if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
                     Long length = list.get(0).getContentLength();
                     if (length != null) {
@@ -312,13 +287,14 @@ public class WebDAVContentStore extends URLContentStore {
             return -1L;
         }
 
+        @Override
         public long getLastModified() throws IOException {
             if (connectionAllowed()) {
                 if (isHerd()) {
                     return lastModified(new URL(url));
                 }
 
-                final List<DavResource> list = getSardine().list(url);
+                final List<WebDAVResource> list = repository.list(url);
                 if (list.isEmpty() == false && list.get(0).isDirectory() == false) {
                     Date modified = list.get(0).getModified();
                     if (modified != null) {
@@ -329,6 +305,7 @@ public class WebDAVContentStore extends URLContentStore {
             return -1L;
         }
 
+        @Override
         public void clean() {
         }
     }

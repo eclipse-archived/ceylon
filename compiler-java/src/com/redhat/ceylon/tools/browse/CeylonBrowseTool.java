@@ -14,11 +14,11 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 
 @Summary("Open module documentation in the browser")
 public class CeylonBrowseTool extends RepoUsingTool {

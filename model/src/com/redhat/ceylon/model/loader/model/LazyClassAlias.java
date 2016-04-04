@@ -77,6 +77,12 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
     }
 
     @Override
+    public com.redhat.ceylon.model.typechecker.model.TypeDeclaration getConstructor() {
+        load();
+        return super.getConstructor();
+    };
+    
+    @Override
     public ParameterList getParameterList() {
         load();
         return super.getParameterList();

@@ -10,6 +10,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.model.OutputElement;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class UnsupportedVisitor extends Visitor {
     
@@ -139,6 +141,21 @@ public class UnsupportedVisitor extends Visitor {
             }
         }
         super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.BaseType that) {
+        super.visit(that);
+        Unit unit = that.getUnit();
+        if (unit.isJavaObjectArrayType(that.getTypeModel())) {
+            Type ta = that.getTypeModel().getSupertype(unit.getJavaObjectArrayDeclaration()).getTypeArgumentList().get(0);
+            if (ta.isNothing()
+                    || ta.isIntersection()
+                    || unit.getDefiniteType(ta).isUnion()) {
+                that.addError("illegal type argument in Java array type: arrays with element type " + ta.asString(unit) + " are not permitted", Backend.Java);
+            }
+        }
+        
     }
     
 

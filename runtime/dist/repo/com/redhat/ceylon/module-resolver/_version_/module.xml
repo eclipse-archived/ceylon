@@ -29,24 +29,11 @@
 
     <dependencies>
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
-        <module name="com.redhat.ceylon.cli" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
-        <module name="org.jboss.modules" slot="1.4.4.Final"/>
-        <module name="com.github.lookfirst.sardine" slot="5.1" export="true"/>
-        <module name="net.minidev.json-smart" slot="1.1.1"/>
-        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
-        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2"/>
-        <!-- Maven support -->
-        <module name="org.eclipse.aether.aether-impl" slot="1.1.0" optional="true"/>
-        <module name="org.eclipse.aether.aether-util" slot="1.1.0" optional="true"/>
-        <module name="org.eclipse.aether.aether-connector-basic" slot="1.1.0" optional="true"/>
-        <module name="org.eclipse.aether.aether-transport-http" slot="1.1.0" optional="true"/>
-        <module name="org.eclipse.aether.aether-transport-file" slot="1.1.0" optional="true"/>
-        <module name="org.apache.maven.maven-aether-provider" slot="3.3.9" optional="true"/>
-        <module name="org.apache.maven.maven-settings" slot="3.3.9" optional="true"/>
-        <module name="org.apache.maven.maven-settings-builder" slot="3.3.9" optional="true"/>
-        <module name="org.codehaus.plexus.plexus-utils" slot="3.0.22" optional="true"/>
+        <module name="com.redhat.ceylon.module-resolver-aether" slot="@ceylon-version@" optional="true"/>
+        <module name="com.redhat.ceylon.module-resolver-webdav" slot="@ceylon-version@" optional="true"/>
+        <module name="com.redhat.ceylon.module-resolver-javascript" slot="@ceylon-version@" optional="true"/>
         <!-- Aka java.xml/9 -->
         <module name="javax.xml" slot="7" export="true"/>
         <module name="java.base" slot="7" export="true"/>

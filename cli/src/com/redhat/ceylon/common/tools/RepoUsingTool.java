@@ -1,4 +1,4 @@
-package com.redhat.ceylon.cmr.ceylon;
+package com.redhat.ceylon.common.tools;
 
 import java.io.File;
 import java.io.Flushable;
@@ -30,6 +30,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentStore;
@@ -523,7 +524,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     protected String getModuleNotFoundErrorMessage(RepositoryManager repoMgr, String name, String version, String msgkeyNotFound) {
         StringBuilder err = new StringBuilder();
-        err.append(Messages.msg(bundle, msgkeyNotFound, name, version));
+        String descr = version == null ? name : name+"/"+version;
+        err.append(Messages.msg(bundle, msgkeyNotFound, descr));
         err.append("\n");
         boolean fullySearchable = true;
         for (CmrRepository repo : repoMgr.getRepositories()) {

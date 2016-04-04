@@ -2226,6 +2226,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
 
             String constructorName = (String)alias.classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION).getValue("constructor");
+            Declaration extendedTypeDeclaration = alias.getExtendedType().getDeclaration();
             if (constructorName != null 
                     && !constructorName.isEmpty()) {
                 Declaration constructor = alias.getExtendedType().getDeclaration().getMember(constructorName, null, false);
@@ -2234,6 +2235,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     alias.setConstructor(((FunctionOrValue)constructor).getTypeDeclaration());
                 } else {
                     logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedType().getDeclaration().getQualifiedNameString());
+                }
+            } else {
+                if (extendedTypeDeclaration instanceof Class) {
+                    Class theClass = (Class) extendedTypeDeclaration;
+                    if (theClass.hasConstructors()) {
+                        alias.setConstructor(theClass.getDefaultConstructor());
+                    } else if(theClass.getParameterList() != null) {
+                        alias.setConstructor(theClass);
+                    }
                 }
             }
             
@@ -4236,7 +4246,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private void markSmall(FunctionOrValue value, TypeMirror type) {
         if (!(value.isMember() && value.getName().equals("hash"))) {
-            value.setSmall(sameType(type, PRIM_INT_TYPE)
+            value.setSmall(sameType(type, PRIM_INT_TYPE) && !value.getType().isCharacter()
                     ||sameType(type, PRIM_FLOAT_TYPE));
         }
     }
@@ -5662,5 +5672,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     public JdkProvider getJdkProvider(){
     	return jdkProvider;
+    }
+    
+    public Interface getRepeatableContainer(Class c) {
+        if (c instanceof AnnotationProxyClass) {
+            AnnotationMirror mirror = ((AnnotationProxyClass)c).iface.classMirror.getAnnotation("java.lang.annotation.Repeatable");
+            if (mirror != null) {
+                TypeMirror m = (TypeMirror)mirror.getValue();
+                Module module = findModuleForClassMirror(m.getDeclaredClass());
+                return (Interface)convertDeclaredTypeToDeclaration(module, m, DeclarationType.TYPE);
+            } 
+        }
+        return null;
     }
 }

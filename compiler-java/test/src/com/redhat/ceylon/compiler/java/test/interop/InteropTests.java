@@ -498,6 +498,14 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testRepeatableAnnotation() {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("JavaRepeatable.java");
+        compareWithJavaSource("RepeatableAnnotation");
+    }
+    
+    @Test
     public void testSealedInterop(){
         compile("access/JavaSealed.java");
         assertErrors("Sealed",
@@ -719,5 +727,38 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testIopBug6143(){
         compareWithJavaSource("Bug6143");
+    }
+    
+    @Test
+    public void testIopBug6156(){
+        compile("Bug6156Document.java");
+        compile("Bug6156.ceylon");
+        compile("Bug6156b.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6160(){
+        compile("Bug6160.ceylon");
+    }
+    
+    @Test
+    public void testIopCallDefaultInterfaceMethod(){
+        Assume.assumeTrue("Runs on JDK >= 8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("CallDefaultInterfaceMethod");
+    }
+    
+    @Test
+    public void testIopSatisfyInterfaceWithDefaultMethod(){
+        Assume.assumeTrue("Runs on JDK >= 8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("SatisfyInterfaceWithDefaultMethod");
+    }
+    
+    @Test
+    public void testIopRefineDefaultInterfaceMethod(){
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("RefineDefaultInterfaceMethod");
     }
 }

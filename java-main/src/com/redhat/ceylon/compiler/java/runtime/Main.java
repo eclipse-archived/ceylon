@@ -37,6 +37,7 @@ import com.redhat.ceylon.cmr.impl.Configuration;
 import com.redhat.ceylon.cmr.impl.OSGiDependencyResolver;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
+import com.redhat.ceylon.cmr.maven.MavenBackupDependencyResolver;
 import com.redhat.ceylon.common.Java9ModuleUtil;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleSpec.Option;
@@ -324,7 +325,11 @@ public class Main {
         private List<File> potentialJars = new LinkedList<File>();
         private Map<String,Module> modules = new HashMap<String,Module>();
         private Overrides overrides;
-        private static DependencyResolver MavenResolver = getResolver(Configuration.MAVEN_RESOLVER_CLASS);
+        private static DependencyResolver MavenResolver = Configuration.getMavenResolver();
+        static{
+            if(MavenResolver == null)
+                MavenResolver = MavenBackupDependencyResolver.INSTANCE;
+        }
         
         private static final Module NO_MODULE = new Module("$$$", "$$$", Type.UNKNOWN, null);
         
@@ -405,14 +410,19 @@ public class Main {
             }
             return null;
         }
-        
-        private static DependencyResolver getResolver(String className) {
-            try {
-                ClassLoader cl = Configuration.class.getClassLoader();
-                return (DependencyResolver) cl.loadClass(className).newInstance();
-            } catch (Throwable t) {
+
+        private ModuleSpec moduleFromCeylonRepoFile(File jar) {
+            // if it's in a ceylon repo, it's com/foo/1.2/com.foo-1.2.jar
+            File parent = jar.getParentFile();
+            if(parent == null)
                 return null;
-            }
+            String version = parent.getName();
+            String jarName = jar.getName();
+            String suffix = "-"+version+".jar";
+            if(!jarName.endsWith(suffix))
+                return null;
+            String modName = jarName.substring(0, jarName.length()-suffix.length());
+            return new ModuleSpec(modName, version);
         }
 
         public Module loadModule(String name, String version) throws ModuleNotFoundException{
@@ -420,7 +430,9 @@ public class Main {
         }
 
         public Module loadModule(String name, String version, boolean allowMissingModules) throws ModuleNotFoundException{
-            String key = name + "/" + version;
+            // classpath does not allow more than one version of a module, and Maven modules may be missing
+            // version info
+            String key = name;
             Module module = modules.get(key);
             if(module != null)
                 return module;
@@ -487,7 +499,9 @@ public class Main {
                 }
                 if(module != null){
                     if (module != NO_MODULE) {
-                        String key = module.name() + "/" + module.version();
+                        // classpath does not allow more than one version of a module, and Maven modules may be missing
+                        // version info
+                        String key = module.name();
                         modules.put(key, module);
                     }
                     iterator.remove();
@@ -527,6 +541,23 @@ public class Main {
                         return loadJBossModulePropertiesJar(file, zipFile, moduleProperties.get(0), mod.getName(), mod.getVersion());
                     }
                 }
+                // For Jars that come from Herd, we only have external descriptors
+                File moduleXmlExternalDescriptor = new File(file.getParentFile(), MODULE_XML);
+                if(moduleXmlExternalDescriptor.exists()){
+                    ModuleSpec mod = moduleFromCeylonRepoFile(file);
+                    if(mod != null){
+                        return loadFromResolver(file, moduleXmlExternalDescriptor, XmlDependencyResolver.INSTANCE, 
+                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES);
+                    }
+                }
+                File modulePropertiesExternalDescriptor = new File(file.getParentFile(), MODULE_PROPERTIES);
+                if(modulePropertiesExternalDescriptor.exists()){
+                    ModuleSpec mod = moduleFromCeylonRepoFile(file);
+                    if(mod != null){
+                        return loadFromResolver(file, modulePropertiesExternalDescriptor, PropertiesDependencyResolver.INSTANCE, 
+                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES);
+                    }
+                }
 
                 // Java 9 module
                 List<ZipEntry> java9Module = findEntries(zipFile, "", JAVA9_MODULE);
@@ -536,7 +567,19 @@ public class Main {
 
                 // try Maven
                 List<ZipEntry> mavenDescriptors = findEntries(zipFile, METAINF_MAVEN, POM_XML);
-                // TODO: we should try to retrieve the module information (name/version) from the pom.xml entry
+                if(mavenDescriptors.size() == 1 && MavenResolver != null) {
+                    Module mod = loadMavenJar(file, zipFile, mavenDescriptors.get(0), null, null);
+                    return mod;
+                }
+                // alternately, try an external pom (for example javax.servlet has no internal pom, but
+                // has crap OSGi metadata, and a valid external pom).
+                // If the jar comes straight out of a Maven repo/cache we may have an external pom file
+                if(file.getName().endsWith(".jar")){
+                    File externalDescriptor = new File(file.getParentFile(), file.getName().substring(0, file.getName().length()-4)+".pom");
+                    if(externalDescriptor.exists()){
+                        return loadMavenJar(file, externalDescriptor, null, null);
+                    }
+                }
                 
                 // last OSGi
                 ZipEntry osgiProperties = zipFile.getEntry(JarFile.MANIFEST_NAME);
@@ -751,14 +794,20 @@ public class Main {
 
         private Module loadFromResolver(File file, InputStream inputStream, DependencyResolver dependencyResolver,
 				String name, String version, Type moduleType) throws IOException {
-    		ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
-    		if (moduleDependencies != null) {
-    			Module module = new Module(name, version, moduleType, file);
-    			for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
+    		ModuleInfo moduleInfo = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
+    		if (moduleInfo != null) {
+    		    if(name != null && moduleInfo.getName() != null && !name.equals(moduleInfo.getName()))
+    		        return null;
+                if(version != null && moduleInfo.getVersion() != null && !version.equals(moduleInfo.getVersion()))
+                    return null;
+    			Module module = new Module(name != null ? name : moduleInfo.getName(), 
+    			        version != null ? version : moduleInfo.getVersion(), 
+    			        moduleType, file);
+    			for(ModuleDependencyInfo dep : moduleInfo.getDependencies()){
     				module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
     			}
-    			if(moduleDependencies.getFilter() != null)
-    				module.setFilter(PathFilterParser.parse(moduleDependencies.getFilter()));
+    			if(moduleInfo.getFilter() != null)
+    				module.setFilter(PathFilterParser.parse(moduleInfo.getFilter()));
     			return module;
     		}
     		return null;
@@ -769,10 +818,14 @@ public class Main {
         }
 
         private Module loadMavenJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
+            if(MavenResolver == null)
+                return null;
             return loadFromResolver(file, zipFile, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
         }
 
         private Module loadMavenJar(File file, File moduleDescriptor, String name, String version) throws IOException {
+            if(MavenResolver == null)
+                return null;
             return loadFromResolver(file, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
         }
 

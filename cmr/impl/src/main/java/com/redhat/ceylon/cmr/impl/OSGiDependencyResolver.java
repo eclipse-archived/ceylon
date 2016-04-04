@@ -103,7 +103,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         for (String bundle : bundles) {
             infos.add(parseModuleInfo(bundle));
         }
-        ModuleInfo ret = new ModuleInfo(null, infos);
+        ModuleInfo ret = new ModuleInfo(name, version, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(name, version, ret);
         return ret;
