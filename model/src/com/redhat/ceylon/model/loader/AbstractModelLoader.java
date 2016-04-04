@@ -5327,7 +5327,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             firstCache = valueDeclarationsByName;
                         }
                     }
-                    if(decl instanceof ClassOrInterface){
+                    if(decl instanceof TypeDeclaration) {
                         firstCache = typeDeclarationsByName;
                     }
 
