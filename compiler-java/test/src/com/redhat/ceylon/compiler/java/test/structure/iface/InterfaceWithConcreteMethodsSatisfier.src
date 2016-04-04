@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InterfaceWithConcreteMethods"})
+class InterfaceWithConcreteMethodsSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods, .java.io.Serializable {
+    
+    InterfaceWithConcreteMethodsSatisfier() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void nonShared$priv$() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object $default() {
+        shared();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.shared();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.$default();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.shared();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.$default();
+        return null;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethodsSatisfier.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethodsSatisfier.class);
+}
