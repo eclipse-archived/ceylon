@@ -137,5 +137,26 @@ public class ClasspathToolTests extends AbstractToolTests {
         Assert.assertTrue(cp.contains("ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"));
         Assert.assertFalse(cp.contains("minidev"));
         Assert.assertFalse(cp.contains("maven"));
+        Assert.assertFalse(cp.contains("aether"));
+        Assert.assertFalse(cp.contains("plexus"));
+    }
+
+    @Test
+    public void testWithOptionalModules() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", 
+                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER,
+                        "com.redhat.ceylon.module-resolver-aether/"+Versions.CEYLON_VERSION_NUMBER));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String cp = b.toString();
+        Assert.assertTrue(cp.contains("ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"));
+        Assert.assertFalse(cp.contains("minidev"));
+        Assert.assertTrue(cp.contains("maven"));
+        Assert.assertTrue(cp.contains("aether"));
+        Assert.assertTrue(cp.contains("plexus"));
     }
 }
