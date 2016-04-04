@@ -64,7 +64,7 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("--overrides", getPackagePath()+"/overrides.xml", "io.cayla.web/0.3.0"));
+                Arrays.asList("--sysrep", "../dist/dist/repo", "--overrides", getPackagePath()+"/overrides.xml", "io.cayla.web/0.3.0"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
@@ -78,7 +78,7 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("--force", "io.cayla.web/0.3.0"));
+                Arrays.asList("--sysrep", "../dist/dist/repo", "--force", "io.cayla.web/0.3.0"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
@@ -91,7 +91,8 @@ public class ClasspathToolTests extends AbstractToolTests {
     public void testMissingModule() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
-        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("naskduhqwedmansd"));
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "naskduhqwedmansd"));
         try{
             tool.run();
             Assert.fail();
@@ -104,7 +105,8 @@ public class ClasspathToolTests extends AbstractToolTests {
     public void testModuleNameAlone() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
-        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language"));
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "net.minidev.json-smart"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
@@ -116,7 +118,8 @@ public class ClasspathToolTests extends AbstractToolTests {
     public void testModuleNameWithBadVersion() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
-        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language/666"));
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "ceylon.language/666"));
         try{
             tool.run();
         }catch(ToolUsageError x){
