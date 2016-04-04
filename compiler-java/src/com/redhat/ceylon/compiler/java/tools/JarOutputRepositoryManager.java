@@ -49,6 +49,7 @@ import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.api.MultiTaskListener;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
@@ -63,9 +64,9 @@ public class JarOutputRepositoryManager {
     private Log log;
     private Options options;
     private CeyloncFileManager ceyloncFileManager;
-    private TaskListener taskListener;
+    private MultiTaskListener taskListener;
     
-    JarOutputRepositoryManager(Log log, Options options, CeyloncFileManager ceyloncFileManager, TaskListener taskListener){
+    JarOutputRepositoryManager(Log log, Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener){
         this.log = log;
         this.options = options;
         this.ceyloncFileManager = ceyloncFileManager;
@@ -155,13 +156,13 @@ public class JarOutputRepositoryManager {
         private boolean writeMavenManifest;
         /** Whether to add a module-info.class file */
         private boolean writeJava9Module;
-        private TaskListener taskListener;
+        private MultiTaskListener taskListener;
         private JarEntryManifestFileObject manifest;
         private Log log;
 		private JdkProvider jdkProvider;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, 
-        		Options options, CeyloncFileManager ceyloncFileManager, TaskListener taskListener) throws IOException{
+        		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
             this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
@@ -308,8 +309,12 @@ public class JarOutputRepositoryManager {
                 else
                     info = module.getNameAsString() + "/" + module.getVersion();
                 cmrLog.info("Created module " + info);
-                if(taskListener instanceof CeylonTaskListener){
-                    ((CeylonTaskListener) taskListener).moduleCompiled(module.getNameAsString(), module.getVersion());
+                if(taskListener != null){
+                    for(TaskListener listener : taskListener.getTaskListeners()){
+                        if(listener instanceof CeylonTaskListener){
+                            ((CeylonTaskListener) listener).moduleCompiled(module.getNameAsString(), module.getVersion());
+                        }
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
