@@ -410,7 +410,21 @@ public class Main {
             }
             return null;
         }
-        
+
+        private ModuleSpec moduleFromCeylonRepoFile(File jar) {
+            // if it's in a ceylon repo, it's com/foo/1.2/com.foo-1.2.jar
+            File parent = jar.getParentFile();
+            if(parent == null)
+                return null;
+            String version = parent.getName();
+            String jarName = jar.getName();
+            String suffix = "-"+version+".jar";
+            if(!jarName.endsWith(suffix))
+                return null;
+            String modName = jarName.substring(0, jarName.length()-suffix.length());
+            return new ModuleSpec(modName, version);
+        }
+
         public Module loadModule(String name, String version) throws ModuleNotFoundException{
             return loadModule(name, version, false);
         }
@@ -527,6 +541,23 @@ public class Main {
                         return loadJBossModulePropertiesJar(file, zipFile, moduleProperties.get(0), mod.getName(), mod.getVersion());
                     }
                 }
+                // For Jars that come from Herd, we only have external descriptors
+                File moduleXmlExternalDescriptor = new File(file.getParentFile(), MODULE_XML);
+                if(moduleXmlExternalDescriptor.exists()){
+                    ModuleSpec mod = moduleFromCeylonRepoFile(file);
+                    if(mod != null){
+                        return loadFromResolver(file, moduleXmlExternalDescriptor, XmlDependencyResolver.INSTANCE, 
+                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES);
+                    }
+                }
+                File modulePropertiesExternalDescriptor = new File(file.getParentFile(), MODULE_PROPERTIES);
+                if(modulePropertiesExternalDescriptor.exists()){
+                    ModuleSpec mod = moduleFromCeylonRepoFile(file);
+                    if(mod != null){
+                        return loadFromResolver(file, modulePropertiesExternalDescriptor, PropertiesDependencyResolver.INSTANCE, 
+                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES);
+                    }
+                }
 
                 // Java 9 module
                 List<ZipEntry> java9Module = findEntries(zipFile, "", JAVA9_MODULE);
@@ -537,7 +568,17 @@ public class Main {
                 // try Maven
                 List<ZipEntry> mavenDescriptors = findEntries(zipFile, METAINF_MAVEN, POM_XML);
                 if(mavenDescriptors.size() == 1 && MavenResolver != null) {
-                    return loadMavenJar(file, zipFile, mavenDescriptors.get(0), null, null);
+                    Module mod = loadMavenJar(file, zipFile, mavenDescriptors.get(0), null, null);
+                    return mod;
+                }
+                // alternately, try an external pom (for example javax.servlet has no internal pom, but
+                // has crap OSGi metadata, and a valid external pom).
+                // If the jar comes straight out of a Maven repo/cache we may have an external pom file
+                if(file.getName().endsWith(".jar")){
+                    File externalDescriptor = new File(file.getParentFile(), file.getName().substring(0, file.getName().length()-4)+".pom");
+                    if(externalDescriptor.exists()){
+                        return loadMavenJar(file, externalDescriptor, null, null);
+                    }
                 }
                 
                 // last OSGi
