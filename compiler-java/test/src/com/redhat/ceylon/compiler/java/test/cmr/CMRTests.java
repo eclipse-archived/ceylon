@@ -69,6 +69,7 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.maven.MavenDependencyResolver;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -853,9 +854,17 @@ public class CMRTests extends CompilerTests {
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
                 "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
-        
+
+        // flat classpath via API
         runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1", 
                 Arrays.asList("--flat-classpath", "--overrides", getPackagePath()+"/modules/sparkframework/overrides-log.xml"));
+        // and via main without aether
+        runInMainApi(destDir, new ModuleSpec("com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework","1"), 
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList());
+        // and via main with aether
+        runInMainApi(destDir, new ModuleSpec("com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework","1"),
+                Arrays.asList(new ModuleSpec("com.redhat.ceylon.module-resolver-aether", Versions.CEYLON_VERSION_NUMBER)),
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList());
     }
 
     @Test
