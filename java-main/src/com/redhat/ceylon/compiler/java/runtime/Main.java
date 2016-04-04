@@ -411,21 +411,14 @@ public class Main {
             return null;
         }
         
-        private static DependencyResolver getResolver(String className) {
-            try {
-                ClassLoader cl = Configuration.class.getClassLoader();
-                return (DependencyResolver) cl.loadClass(className).newInstance();
-            } catch (Throwable t) {
-                return null;
-            }
-        }
-
         public Module loadModule(String name, String version) throws ModuleNotFoundException{
             return loadModule(name, version, false);
         }
 
         public Module loadModule(String name, String version, boolean allowMissingModules) throws ModuleNotFoundException{
-            String key = name + "/" + version;
+            // classpath does not allow more than one version of a module, and Maven modules may be missing
+            // version info
+            String key = name;
             Module module = modules.get(key);
             if(module != null)
                 return module;
@@ -492,7 +485,9 @@ public class Main {
                 }
                 if(module != null){
                     if (module != NO_MODULE) {
-                        String key = module.name() + "/" + module.version();
+                        // classpath does not allow more than one version of a module, and Maven modules may be missing
+                        // version info
+                        String key = module.name();
                         modules.put(key, module);
                     }
                     iterator.remove();
