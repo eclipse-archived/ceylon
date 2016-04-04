@@ -363,12 +363,12 @@ class AetherUtils {
         		Document doc = dBuilder.parse(is);
         		doc.getDocumentElement().normalize();
         		Element root = doc.getDocumentElement();
-        		collectText(root, description, "name", "description", "url");
-        		Element licenses = getFirstElement(root, "licenses");
+        		MavenUtils.collectText(root, description, "name", "description", "url");
+        		Element licenses = MavenUtils.getFirstElement(root, "licenses");
         		if(licenses != null){
-        			Element license = getFirstElement(licenses, "license");
+        			Element license = MavenUtils.getFirstElement(licenses, "license");
         			if(license != null){
-        				collectText(license, licenseBuilder, "name", "url");
+        			    MavenUtils.collectText(license, licenseBuilder, "name", "url");
         			}
         		}
         	} catch (IOException e) {
@@ -384,33 +384,6 @@ class AetherUtils {
         };
     }
 
-    private String getText(Element element, String childName){
-        NodeList elems = element.getElementsByTagName(childName);
-        if(elems != null && elems.getLength() > 0){
-            return elems.item(0).getTextContent();
-        }
-        return null;
-    }
-
-    private Element getFirstElement(Element element, String childName){
-        NodeList elems = element.getElementsByTagName(childName);
-        if(elems != null && elems.getLength() > 0 && elems.item(0) instanceof Element){
-            return (Element) elems.item(0);
-        }
-        return null;
-    }
-
-    private void collectText(Element element, StringBuilder builder, String... tags){
-        for(String tag : tags){
-            String desc = getText(element, tag);
-            if(desc != null){
-                if(builder.length() > 0)
-                    builder.append("\n");
-                builder.append(desc);
-            }
-        }
-    }
-    
     private ArtifactContext getArtifactContext(String groupId, String artifactId, String version, String packaging, String classifier){
         if(classifier != null && classifier.isEmpty())
             classifier = null;
