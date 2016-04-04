@@ -535,11 +535,11 @@ class AetherUtils {
         }
     }
 
-    public List<DependencyDescriptor> getDependencies(InputStream stream, String name, String version) throws IOException {
+    public DependencyDescriptor getDependencies(InputStream stream, String name, String version) throws IOException {
         return impl.getDependencies(stream, name, version);
     }
 
-    public List<DependencyDescriptor> getDependencies(File pomXml, String name, String version) throws IOException {
+    public DependencyDescriptor getDependencies(File pomXml, String name, String version) throws IOException {
         return impl.getDependencies(pomXml, name, version);
     }
 }

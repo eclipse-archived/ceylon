@@ -111,7 +111,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         
         final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
         if (dependencies == null)
-            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
+            return new ModuleInfo(moduleName, version, null, Collections.<ModuleDependencyInfo>emptySet());
 
         final Set<ModuleDependencyInfo> infos = new LinkedHashSet<ModuleDependencyInfo>();
 
@@ -125,7 +125,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         			asBoolean(moduleInfo, dep, "export"));
         	infos.add(mi);
         }
-        ModuleInfo ret = new ModuleInfo(null, infos);
+        ModuleInfo ret = new ModuleInfo(moduleName, version, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(moduleName, version, ret);
         return ret;
@@ -336,7 +336,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
             result.add(new ModuleDependencyInfo(depName, depVersion, optional, export));
         }
         if(overrides != null)
-            return overrides.applyOverrides(module, version, new ModuleInfo(null, result)).getDependencies();
+            return overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, result)).getDependencies();
         return result;
     }
     

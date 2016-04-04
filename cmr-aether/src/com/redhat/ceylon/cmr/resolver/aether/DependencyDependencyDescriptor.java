@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.apache.maven.model.Dependency;
 
-public class DependencyModelDescriptor implements DependencyDescriptor {
+public class DependencyDependencyDescriptor implements DependencyDescriptor {
 
 	private Dependency model;
 
-	DependencyModelDescriptor(Dependency model) {
+	DependencyDependencyDescriptor(Dependency model) {
 		this.model = model;
 	}
 

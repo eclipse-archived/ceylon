@@ -6,11 +6,16 @@ import java.util.List;
 
 import org.eclipse.aether.graph.DependencyNode;
 
-public class DependencyNodeDescriptor implements DependencyDescriptor {
+public class DependencyNodeDependencyDescriptor implements DependencyDescriptor {
 	private DependencyNode node;
-
-	DependencyNodeDescriptor(DependencyNode node){
-		this.node = node;
+	private List<DependencyDescriptor> deps;
+	
+	DependencyNodeDependencyDescriptor(DependencyNode node){
+	    this.node = node;
+	    deps = new ArrayList<>(node.getChildren().size());
+	    for(DependencyNode dep : node.getChildren()){
+	        deps.add(new DependencyNodeDependencyDescriptor(dep));
+	    }
 	}
 
 	@Override
@@ -20,11 +25,7 @@ public class DependencyNodeDescriptor implements DependencyDescriptor {
 
 	@Override
 	public List<DependencyDescriptor> getDependencies() {
-		List<DependencyDescriptor> ret = new ArrayList<>(node.getChildren().size());
-		for(DependencyNode dep : node.getChildren()){
-			ret.add(new DependencyNodeDescriptor(dep));
-		}
-		return ret;
+		return deps;
 	}
 
 	@Override

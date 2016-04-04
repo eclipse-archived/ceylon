@@ -236,7 +236,7 @@ public class Overrides {
                         add.isShared()));
             }
         }
-        return new ModuleInfo(filter, result);
+        return new ModuleInfo(module, version, filter, result);
     }
 
     private static Overrides parse(String overridesFileName, Overrides overrides) throws FileNotFoundException, Exception{

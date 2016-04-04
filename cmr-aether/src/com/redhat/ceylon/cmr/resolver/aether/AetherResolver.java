@@ -16,7 +16,7 @@ public interface AetherResolver {
     
     public List<String> resolveVersionRange(String groupId, String artifactId, String versionRange) throws AetherException;
 
-    public List<DependencyDescriptor> getDependencies(File pomXml, String name, String version) throws IOException;
+    public DependencyDescriptor getDependencies(File pomXml, String name, String version) throws IOException;
 
-    public List<DependencyDescriptor> getDependencies(InputStream pomXml, String name, String version) throws IOException;
+    public DependencyDescriptor getDependencies(InputStream pomXml, String name, String version) throws IOException;
 }

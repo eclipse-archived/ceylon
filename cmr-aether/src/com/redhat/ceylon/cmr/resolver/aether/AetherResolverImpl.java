@@ -298,7 +298,7 @@ public class AetherResolverImpl implements AetherResolver {
         	ret = new DefaultDependencyNode(resultArtifact);
         }
         
-        return ret == null ? null : new DependencyNodeDescriptor(ret);
+        return ret == null ? null : new DependencyNodeDependencyDescriptor(ret);
     }
 
     @Override
@@ -326,7 +326,7 @@ public class AetherResolverImpl implements AetherResolver {
     }
 
     @Override
-    public List<DependencyDescriptor> getDependencies(File pomXml, String name, String version) throws IOException {
+    public DependencyDescriptor getDependencies(File pomXml, String name, String version) throws IOException {
     	MavenXpp3Reader reader = new MavenXpp3Reader();
     	Model model;
     	try(FileReader fileReader = new FileReader(pomXml)){
@@ -334,15 +334,11 @@ public class AetherResolverImpl implements AetherResolver {
     	} catch (XmlPullParserException e) {
     		throw new IOException(e);
 		}
-    	List<DependencyDescriptor> ret = new ArrayList<>(model.getDependencies().size());
-    	for(org.apache.maven.model.Dependency dep : model.getDependencies()){
-    		ret.add(new DependencyModelDescriptor(dep));
-    	}
-    	return ret;
+    	return new ModelDependencyDescriptor(model);
     }
 
     @Override
-    public List<DependencyDescriptor> getDependencies(InputStream pomXml, String name, String version) throws IOException {
+    public DependencyDescriptor getDependencies(InputStream pomXml, String name, String version) throws IOException {
     	MavenXpp3Reader reader = new MavenXpp3Reader();
     	Model model;
 		try {
@@ -350,10 +346,6 @@ public class AetherResolverImpl implements AetherResolver {
 		} catch (XmlPullParserException e) {
 			throw new IOException(e);
 		}
-    	List<DependencyDescriptor> ret = new ArrayList<>(model.getDependencies().size());
-    	for(org.apache.maven.model.Dependency dep : model.getDependencies()){
-    		ret.add(new DependencyModelDescriptor(dep));
-    	}
-    	return ret;
+        return new ModelDependencyDescriptor(model);
     }
 }

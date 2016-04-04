@@ -60,7 +60,7 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
                 }
                 infos.add(new ModuleDependencyInfo(name, version, optional, shared));
             }
-            ModuleInfo ret = new ModuleInfo(null, infos);
+            ModuleInfo ret = new ModuleInfo(moduleName, moduleVersion, null, infos);
             if(overrides != null)
                 ret = overrides.applyOverrides(moduleName, moduleVersion, ret);
             return ret;

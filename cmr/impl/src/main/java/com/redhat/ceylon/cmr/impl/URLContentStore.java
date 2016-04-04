@@ -594,7 +594,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 if(!authors.isEmpty())
                     newVersion.getAuthors().addAll(authors);
                 if(overrides != null)
-                    dependencies = overrides.applyOverrides(module, version, new ModuleInfo(null, dependencies)).getDependencies();
+                    dependencies = overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, dependencies)).getDependencies();
                 if(!dependencies.isEmpty())
                     newVersion.getDependencies().addAll(dependencies);
                 if(!types.isEmpty())

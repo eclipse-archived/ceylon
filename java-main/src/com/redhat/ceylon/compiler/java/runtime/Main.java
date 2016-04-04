@@ -751,14 +751,20 @@ public class Main {
 
         private Module loadFromResolver(File file, InputStream inputStream, DependencyResolver dependencyResolver,
 				String name, String version, Type moduleType) throws IOException {
-    		ModuleInfo moduleDependencies = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
-    		if (moduleDependencies != null) {
-    			Module module = new Module(name, version, moduleType, file);
-    			for(ModuleDependencyInfo dep : moduleDependencies.getDependencies()){
+    		ModuleInfo moduleInfo = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
+    		if (moduleInfo != null) {
+    		    if(name != null && moduleInfo.getName() != null && !name.equals(moduleInfo.getName()))
+    		        return null;
+                if(version != null && moduleInfo.getVersion() != null && !version.equals(moduleInfo.getVersion()))
+                    return null;
+    			Module module = new Module(name != null ? name : moduleInfo.getName(), 
+    			        version != null ? version : moduleInfo.getVersion(), 
+    			        moduleType, file);
+    			for(ModuleDependencyInfo dep : moduleInfo.getDependencies()){
     				module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
     			}
-    			if(moduleDependencies.getFilter() != null)
-    				module.setFilter(PathFilterParser.parse(moduleDependencies.getFilter()));
+    			if(moduleInfo.getFilter() != null)
+    				module.setFilter(PathFilterParser.parse(moduleInfo.getFilter()));
     			return module;
     		}
     		return null;

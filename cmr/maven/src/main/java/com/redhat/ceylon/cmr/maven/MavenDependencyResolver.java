@@ -80,13 +80,13 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        List<DependencyDescriptor> dependencies;
+        DependencyDescriptor descriptor;
 		try {
-			dependencies = utils.getDependencies(file, name, version);
+			descriptor = utils.getDependencies(file, name, version);
 		} catch (IOException e) {
 			throw new RepositoryException("Failed to resolve pom", e);
 		}
-        return toModuleInfo(dependencies, name, version, overrides);
+        return toModuleInfo(descriptor, name, version, overrides);
     }
 
     public ModuleInfo resolveFromInputStream(InputStream stream, String name, String version, Overrides overrides) {
@@ -94,25 +94,31 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         }
 
-        List<DependencyDescriptor> dependencies;
+        DependencyDescriptor descriptor;
         try{
-        	dependencies = utils.getDependencies(stream, name, version);
+        	descriptor = utils.getDependencies(stream, name, version);
         } catch (IOException e) {
         	throw new RepositoryException("Failed to resolve pom", e);
         }
-        return toModuleInfo(dependencies, name, version, overrides);
+        return toModuleInfo(descriptor, name, version, overrides);
     }
 
     public Node descriptor(Node artifact) {
         return NodeUtils.firstParent(artifact).getChild("pom.xml");
     }
 
-    private static ModuleInfo toModuleInfo(List<DependencyDescriptor> dependencies, String name, String version, Overrides overrides) {
+    private static ModuleInfo toModuleInfo(DependencyDescriptor descriptor, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
-        for (DependencyDescriptor dep : dependencies) {
+        for (DependencyDescriptor dep : descriptor.getDependencies()) {
             infos.add(new ModuleDependencyInfo(AetherUtils.toCanonicalForm(dep.getGroupId(), dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false));
         }
-        ModuleInfo ret = new ModuleInfo(null, infos);
+        String descrName = descriptor.getGroupId()+":"+descriptor.getArtifactId();
+        // if it's not the descriptor we wanted, let's not return it
+        if(name != null && !name.equals(descrName))
+            return null;
+        if(version != null && !version.equals(descriptor.getVersion()))
+            return null;
+        ModuleInfo ret = new ModuleInfo(descrName, descriptor.getVersion(), null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(name, version, ret);
         return ret;
