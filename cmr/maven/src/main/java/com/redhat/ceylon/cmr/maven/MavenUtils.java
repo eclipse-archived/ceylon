@@ -72,6 +72,12 @@ public class MavenUtils {
         doc.getDocumentElement().normalize();
         Element root = doc.getDocumentElement();
         String modGroupId = getText(root, "groupId");
+        // can be null, inherited from parent
+        if(modGroupId == null){
+            Element parent = getFirstElement(root, "parent");
+            if(parent != null)
+                modGroupId = getText(parent, "groupId");
+        }
         String modArtifactId = getText(root, "artifactId");
         String modVersion = getText(root, "version");
         String modName = modGroupId + ":" + modArtifactId;

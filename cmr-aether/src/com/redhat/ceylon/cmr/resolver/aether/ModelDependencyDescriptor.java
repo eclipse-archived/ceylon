@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 
 public class ModelDependencyDescriptor implements DependencyDescriptor {
 
@@ -16,6 +17,11 @@ public class ModelDependencyDescriptor implements DependencyDescriptor {
 		this.model = model;
 	    deps = new ArrayList<>(model.getDependencies().size());
 	    for(Dependency dep : model.getDependencies()){
+	        String depScope = dep.getScope();
+            // keep compile, runtime, provided
+            if(depScope != null 
+                    && (depScope.equals("test") || depScope.equals("system")))
+                continue;
 	        deps.add(new DependencyDependencyDescriptor(dep));
 	    }
 	}
@@ -32,7 +38,13 @@ public class ModelDependencyDescriptor implements DependencyDescriptor {
 
 	@Override
 	public String getGroupId() {
-		return model.getGroupId();
+		String ret = model.getGroupId();
+		if(ret == null){
+		    Parent parent = model.getParent();
+		    if(parent != null)
+		        ret = parent.getGroupId();
+		}
+		return ret;
 	}
 
 	@Override
