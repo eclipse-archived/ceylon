@@ -111,6 +111,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
     public static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
+    private static final String CEYLON_INTERFACE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Interface";
     private static final String CEYLON_JPA_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Jpa";
     private static final String CEYLON_ENUMERATED_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Enumerated";
     //private static final String CEYLON_CONSTRUCTOR_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Constructor";
@@ -1632,7 +1633,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         iface.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
         iface.setDynamic(classMirror.getAnnotation(CEYLON_DYNAMIC_ANNOTATION) != null);
         iface.setStaticallyImportable(!iface.isCeylon());
-        
+        iface.setUseDefaultMethods(
+                classMirror.getAnnotation(CEYLON_INTERFACE_ANNOTATION) != null
+                && classMirror.getAnnotation(CEYLON_INTERFACE_ANNOTATION).getValue("useDefaultMethods") == Boolean.TRUE);
         manageNativeBackend(iface, classMirror, isNativeHeader);
         
         return iface;
