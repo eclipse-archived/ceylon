@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.runtime.tools.impl;
+package com.redhat.ceylon.module.loader;
 
 import java.io.IOException;
 
@@ -15,6 +15,9 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
         this(null);
     }
 
+    /*
+     * Used by reflection in com.redhat.ceylon.common.tool.ToolLoader
+     */
     public JBossModuleLoader(ClassLoader delegateClassLoader) {
         this(null, delegateClassLoader, false);
     }
@@ -26,18 +29,18 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
     class JBossModuleLoaderContext extends ModuleLoaderContext {
         ModuleLoader modLoader;
 
-        JBossModuleLoaderContext(String module, String version) {
+        JBossModuleLoaderContext(String module, String version) throws ModuleNotFoundException {
             super(module, version);
         }
 
         @Override
-        void initialise() {
+        void initialise() throws ModuleNotFoundException {
             preloadModules();
             initialiseMetamodel();
             moduleClassLoader = setupClassLoader();
         }
         
-        private void preloadModules() {
+        private void preloadModules() throws ModuleNotFoundException{
             try {
                 loadModule(module, modver, false, false, null);
             } catch (IOException e) {
@@ -62,7 +65,7 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
     }
 
     @Override
-    ModuleLoaderContext createModuleLoaderContext(String name, String version) {
+    ModuleLoaderContext createModuleLoaderContext(String name, String version) throws ModuleNotFoundException {
         return new JBossModuleLoaderContext(name, version);
     }
 }

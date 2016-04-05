@@ -35,28 +35,26 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.Repositories;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import com.redhat.ceylon.javax.tools.StandardLocation;
-import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
-import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.api.MultiTaskListener;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.file.RegularFileObject;
 import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeFile;
@@ -89,7 +87,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     
     private JarOutputRepositoryManager getJarRepository(){
         if(jarRepository == null)
-            jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this, context.get(TaskListener.class));
+            jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this, MultiTaskListener.instance(context));
         return jarRepository;
     }
     

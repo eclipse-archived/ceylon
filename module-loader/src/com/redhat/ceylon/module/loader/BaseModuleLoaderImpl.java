@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.runtime.tools.impl;
+package com.redhat.ceylon.module.loader;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,12 +16,10 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.java.runtime.tools.ModuleLoader;
-import com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
-import com.redhat.ceylon.compiler.java.runtime.tools.impl.ModuleGraph.Module;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.loader.JdkProvider;
+import com.redhat.ceylon.module.loader.ModuleGraph.Module;
 
 public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     final RepositoryManager repositoryManager;
@@ -39,15 +37,17 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         
         ClassLoader moduleClassLoader;
         
-        ModuleLoaderContext(String module, String version) {
+        ModuleLoaderContext(String module, String version) throws ModuleNotFoundException {
             this.module = module;
             this.modver = version;
             initialise();
         }
 
-        abstract void initialise();
+        abstract void initialise() throws ModuleNotFoundException;
         
-        void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) throws IOException {
+        void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
+        		throws IOException, ModuleNotFoundException  {
+        	
             ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){
@@ -220,7 +220,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     }
     
     @Override
-    public ClassLoader loadModule(String name, String version) {
+    public ClassLoader loadModule(String name, String version) throws ModuleNotFoundException {
         if (contexts == null) {
             throw new ceylon.language.AssertionError("Cannot get load module after cleanup is called");
         }
@@ -233,7 +233,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         return ctx.moduleClassLoader;
     }
     
-    abstract ModuleLoaderContext createModuleLoaderContext(String name, String version);
+    abstract ModuleLoaderContext createModuleLoaderContext(String name, String version) throws ModuleNotFoundException;
     
     public void cleanup() {
         if (contexts != null) {

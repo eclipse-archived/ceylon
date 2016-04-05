@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.runtime.tools.impl;
+package com.redhat.ceylon.module.loader;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -10,10 +10,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
-import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
     final Map<String, String> extraModules;
@@ -22,6 +20,9 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
         this(null);
     }
 
+    /*
+     * Used by reflection in com.redhat.ceylon.common.tool.ToolLoader
+     */
     public FlatpathModuleLoader(ClassLoader delegateClassLoader) {
         this(null, delegateClassLoader, null, false);
     }
@@ -34,18 +35,18 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
 
     class FlatpathModuleLoaderContext extends ModuleLoaderContext {
 
-        FlatpathModuleLoaderContext(String module, String version) {
+        FlatpathModuleLoaderContext(String module, String version) throws ModuleNotFoundException {
             super(module, version);
         }
 
         @Override
-        void initialise() {
+        void initialise() throws ModuleNotFoundException {
             preloadModules();
             moduleClassLoader = setupClassLoader();
             initialiseMetamodel();
         }
 
-        private void preloadModules() {
+        private void preloadModules() throws ModuleNotFoundException {
             try {
                 loadModule(module, modver, false, false, null);
                 if(extraModules != null){
@@ -98,7 +99,7 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
     }
 
     @Override
-    ModuleLoaderContext createModuleLoaderContext(String name, String version) {
+    ModuleLoaderContext createModuleLoaderContext(String name, String version) throws ModuleNotFoundException {
         return new FlatpathModuleLoaderContext(name, version);
     }
 }
