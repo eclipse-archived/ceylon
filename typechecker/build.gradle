@@ -1,4 +1,26 @@
 
+dependencies {
+    compile project(':common'),
+        project(':model'),
+        project(':cmr'),
+        'org.antlr:antlr:3.4'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src', 'gensrc'
+        }
+    }
+}   
+
+ant.importBuild('build.xml') { antTargetName ->
+    'ant-' + antTargetName
+}
+
+compileJava.dependsOn 'ant-tree'
+
+/*
 apply plugin: 'antlr'
 
 dependencies {
@@ -19,3 +41,5 @@ sourceSets {
 generateGrammarSource {
     outputDirectory = new File(rootProject.buildDir, 'typechecker/gensrc')
 }
+*/
+
