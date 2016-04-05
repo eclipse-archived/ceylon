@@ -4563,7 +4563,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return isSuper(primary) || isSuperOf(primary);
     }
     
-    private JCExpression transformSuperOf(Node node, Tree.Primary superPrimary, String forMemberName) {
+    private JCExpression transformSuperOf(Tree.Term node, Tree.Primary superPrimary, String forMemberName) {
         Tree.Term superOf = eliminateParens(superPrimary);
         if (!(superOf instanceof Tree.OfOp)) {
             throw new BugException();
@@ -4580,7 +4580,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression widenSuper(
-            Node superOfQualifiedExpr,
+            Tree.Term superOfQualifiedExpr,
             TypeDeclaration inheritedFrom) {
         JCExpression result;
         if (inheritedFrom instanceof Class) {
@@ -4606,8 +4606,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (inheritedFrom instanceof LazyInterface
                     && !((LazyInterface)inheritedFrom).isCeylon()) {
                 result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
-            } else 
-            if (needDollarThis(superOfQualifiedExpr.getScope())) {
+            } else if (needDollarThis(superOfQualifiedExpr.getScope())) {
                 qualifier = naming.makeQuotedThis();
                 if (iface.equals(typeFact().getIdentifiableDeclaration())) {
                     result = naming.makeQualifiedSuper(qualifier);
@@ -4620,7 +4619,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (((Interface) inheritedFrom).isUseDefaultMethods()) {
                     result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
                 } else {
-                    result = naming.makeCompanionFieldName(iface);
+                    if (useMethod(superOfQualifiedExpr, iface)) {
+                        result = make().Apply(null, naming.makeUnquotedIdent(naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
+                    } else {
+                        result = naming.makeCompanionFieldName(iface);
+                    }
                 }
             }
             
@@ -4634,12 +4637,38 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
+    protected boolean useMethod(Tree.Term superOfQualifiedExpr, Interface iface) {
+        Scope s = superOfQualifiedExpr.getScope();
+        while (s instanceof TypeDeclaration == false) {
+            s = s.getContainer();
+        }
+        // search the class hiararchy from s to find whether any interface intervening between s
+        // and iface is Java 8, if so we use the method.
+        return useMethod(iface, (TypeDeclaration)s, false);
+    }
+
+    protected boolean useMethod(Interface iface, TypeDeclaration t, boolean seen8) {
+        for (Type x : t.getSatisfiedTypes()) {
+            boolean s8 = t instanceof Interface && ((Interface)t).isUseDefaultMethods();
+            if (x.getDeclaration().equals(iface)) {
+                return s8;
+            } else if (useMethod(iface, x.getDeclaration(), seen8 || s8)) {
+                return true;
+            }
+        }
+        Type extendedType = t.getExtendedType();
+        if (extendedType != null) {
+            return useMethod(iface, extendedType.getDeclaration(), seen8);
+        }
+        return false;
+    }
+
     public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression expression) {
         TypeDeclaration inheritedFrom = (TypeDeclaration)expression.getDeclaration().getContainer();
         return transformSuper(expression, inheritedFrom);
     }
     
-    public JCExpression transformSuper(Node node, TypeDeclaration superDeclaration) {
+    public JCExpression transformSuper(Tree.Term node, TypeDeclaration superDeclaration) {
         return widenSuper(node, superDeclaration);
     }
     
@@ -5062,7 +5091,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 scope = scope.getContainer();
             }
             if (scope instanceof Interface) {
-                qualExpr = naming.makeQuotedThis();
+                if (((Interface)scope).isUseDefaultMethods()) {
+                    qualExpr = naming.makeThis();
+                } else {
+                    qualExpr = naming.makeQuotedThis();
+                }
             }
         }
         return qualExpr;
@@ -5176,7 +5209,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             Scope scope = expr.getScope();
             while (scope != null){
                 // Is it being used in an interface (=> impl)
-                if(scope instanceof Interface && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
+                if(scope instanceof Interface
+                        && !((Interface) scope).isUseDefaultMethods()
+                        && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
                     return decl.isShared();
                 }
                 scope = scope.getContainer();
@@ -5189,7 +5224,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         while (Decl.isLocalNotInitializerScope(scope)) {
             scope = scope.getContainer();
         }
-        return scope instanceof Interface;
+        return scope instanceof Interface && !((Interface)scope).isUseDefaultMethods();
     }
 
     /** 
