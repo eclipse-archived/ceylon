@@ -10,6 +10,9 @@ import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunner;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions;
+import com.redhat.ceylon.module.loader.BaseModuleLoaderImpl;
+import com.redhat.ceylon.module.loader.FlatpathModuleLoader;
+import com.redhat.ceylon.module.loader.ModuleNotFoundException;
 
 public class JavaRunnerImpl implements JavaRunner {
     private String module;
@@ -36,7 +39,14 @@ public class JavaRunnerImpl implements JavaRunner {
         }
         
         moduleLoader = new FlatpathModuleLoader(repositoryManager, delegateClassLoader, options.getExtraModules(), options.isVerbose("cmr"));
-        moduleClassLoader = moduleLoader.loadModule(module, version);
+        try {
+            moduleClassLoader = moduleLoader.loadModule(module, version);
+        } catch (ModuleNotFoundException e) {
+            if(e.getCause() != null)
+                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e.getCause());
+            else
+                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e);
+        }
         run = options.getRun();
     }
 

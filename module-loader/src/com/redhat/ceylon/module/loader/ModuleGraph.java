@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.runtime.tools.impl;
+package com.redhat.ceylon.module.loader;
 
 import java.util.HashSet;
 import java.util.Set;
