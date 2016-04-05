@@ -1,4 +1,7 @@
 
+// By default projects use a flat source hierarchy
+subprojects.each { project.ext.defaultSources = false }
+
 subprojects {
     apply plugin: 'java'
     version='1.2.3'
@@ -19,24 +22,28 @@ subprojects {
         testCompile 'junit:junit:4.11'
     }
 
-    if (!['compiler-js'].contains(project.name)) {
-        sourceSets {
-            main {
-                java {
-                    srcDir 'src'
+    // Override the default Maven-like source hierarchy for
+    // any projects where `defaultSources == false`
+    afterEvaluate { project ->
+        if (!project.defaultSources) {
+            sourceSets {
+                main {
+                    java {
+                        srcDir 'src'
+                    }
+                    resources {
+                        srcDir 'src'
+                        exclude '**/*.java'
+                    }
                 }
-                resources {
-                    srcDir 'src'
-                    exclude '**/*.java'
-                }
-            }
-            test {
-                java {
-                    srcDir 'test/src'
-                }
-                resources {
-                    srcDir 'test/src'
-                    exclude '**/*.java'
+                test {
+                    java {
+                        srcDir 'test/src'
+                    }
+                    resources {
+                        srcDir 'test/src'
+                        exclude '**/*.java'
+                    }
                 }
             }
         }

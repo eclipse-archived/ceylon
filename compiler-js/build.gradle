@@ -1,4 +1,7 @@
 
+// This project uses the default Maven-like source layout
+ext.defaultSources = true
+
 dependencies {
     compile project(':common'),
         project(':cli'),
