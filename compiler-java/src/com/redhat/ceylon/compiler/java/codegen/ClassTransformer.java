@@ -228,6 +228,49 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (def.getSatisfiedTypes() != null) {
             sat(model, def.getSatisfiedTypes().getTypes(), classBuilder);
+            for (Tree.StaticType st : def.getSatisfiedTypes().getTypes()) {
+                Type satisfiedType = st.getTypeModel();
+                Interface satisfied = (Interface)satisfiedType.getDeclaration();
+                if (!satisfied.isUseDefaultMethods()
+                        && !satisfied.equals(typeFact().getIdentifiableType().getDeclaration())){
+                        //&& model.isCompanionClassNeeded()){
+                    // A superinterface uses companion classes. 
+                    // So some expressions will expect there to be a companion field
+                    // But we're stateless, so we have to generate a method instead.
+                    MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
+                            this, naming.getCompanionAccessorName(satisfied));
+                    thisMethod.noModelAnnotations();
+                    thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
+                    thisMethod.ignoreModelAnnotations();
+                    thisMethod.modifiers(PUBLIC | DEFAULT);
+                    
+                    List<JCExpression> state = List.nil();
+                    
+                    // pass all reified type info to the constructor
+                    for(JCExpression t : makeReifiedTypeArguments(satisfiedType)){
+                        state = state.append(t);
+                    }
+                    // pass the instance of this
+                    state = state.append( expressionGen().applyErasureAndBoxing(naming.makeThis(), 
+                            model.getType(), false, true, BoxingStrategy.BOXED, 
+                            satisfiedType, ExpressionTransformer.EXPR_FOR_COMPANION));
+                    
+                    final JCExpression 
+                        ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_CLASS_NEW);
+                    
+                    JCExpression newInstance = make().NewClass(null, 
+                            null,
+                            ifaceImplType,
+                            state,
+                            null);
+                    
+                    thisMethod.body(make().Return(newInstance));
+                    classBuilder.method(thisMethod);
+                    // Then any class which (indirectly) satisfies a Java8 interface 
+                    // which (directly) satisfies Companion interface will need to 
+                    // generate an accessor (TODO)
+                }
+            }
         }
         
         
