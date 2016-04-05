@@ -367,7 +367,7 @@ public class AttributeDefinitionBuilder {
         if (javaClassName != null) {
             mods |= Flags.PUBLIC;
         }
-        return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
+        return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC | Flags.DEFAULT);
     }
 
     private JCTree generateField() {

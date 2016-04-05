@@ -574,11 +574,13 @@ public class CeylonVisitor extends Visitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
-            AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
-            if (decl.getDeclarationModel().isShared()) {
-                adb.ignoreAnnotations();
+            if (!gen.classGen().useDefaultMethod(decl.getDeclarationModel())) {
+                AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
+                if (decl.getDeclarationModel().isShared()) {
+                    adb.ignoreAnnotations();
+                }
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
             }
-            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
         } else {
@@ -605,11 +607,13 @@ public class CeylonVisitor extends Visitor {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
-            AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
-            if (decl.getDeclarationModel().isShared()) {
-                adb.ignoreAnnotations();
+            if (!gen.classGen().useDefaultMethod(decl.getDeclarationModel())) {
+                AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
+                if (decl.getDeclarationModel().isShared()) {
+                    adb.ignoreAnnotations();
+                }
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
             }
-            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
         } else {
