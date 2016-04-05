@@ -659,13 +659,18 @@ public class CeylonVisitor extends Visitor {
         // Handled in AbstractTransformer.makeAtAnnotations
     }
 
-    // FIXME: also support Tree.SequencedTypeParameter
     public void visit(Tree.TypeParameterDeclaration param) {
         TypeDeclaration container = (TypeDeclaration)param.getDeclarationModel().getContainer();
         classBuilder.typeParameter(param);
-        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(container);
-        if(companionBuilder != null)
-            companionBuilder.typeParameter(param);
+        if (container instanceof Interface) {
+            if (((Interface)container).isUseDefaultMethods()) {
+                classBuilder.method(gen.classGen().makeInterfaceReifiedTypeParameter(param.getDeclarationModel()));
+            } else {
+                ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(container);
+                if(companionBuilder != null)
+                    companionBuilder.typeParameter(param);
+            }
+        }
     }
 
     public void visit(Tree.ExtendedType extendedType) {

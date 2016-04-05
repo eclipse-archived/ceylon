@@ -226,6 +226,11 @@ public class ClassTransformer extends AbstractTransformer {
         }
         classBuilder.isDynamic(model.isDynamic());
         
+        if (def.getSatisfiedTypes() != null) {
+            sat(model, def.getSatisfiedTypes().getTypes(), classBuilder);
+        }
+        
+        
         // Transform the class/interface members
         List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
 
@@ -248,6 +253,38 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCTree> result = classBuilder.build();
         
         return result;
+    }
+
+    protected void sat(final ClassOrInterface model, java.util.List<Tree.StaticType> satisfiedTypes, ClassDefinitionBuilder classBuilder) {
+        for (Tree.StaticType st : satisfiedTypes) {
+            Type satType  = st.getTypeModel();
+            if (((Interface)satType.getDeclaration()).isUseDefaultMethods()) {
+                for (Map.Entry<TypeParameter, Type> tas : satType.getTypeArguments().entrySet()) {
+                    TypeParameter tp = tas.getKey();
+                    Type ta = tas.getValue();
+                    MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getTypeArgumentMethodName(tp));
+                    mdb.isOverride(true);
+                    long mods = PUBLIC;
+                    if (model instanceof Interface) {
+                        mods |= DEFAULT;
+                    }
+                    mdb.modifiers(mods);
+                    mdb.resultType(null, make().QualIdent(syms().ceylonTypeDescriptorType.tsym));
+                    mdb.body(make().Return(makeReifiedTypeArgument(ta)));
+                    if (model.equals(ta.getDeclaration().getContainer())) {
+                        // Foo<X> satisfies Bar<X> so define 
+                        // default $reified$Bar$X() { return $reified$Foo$X();}
+                        
+                        
+                    } else if (ta.getDeclaration() instanceof ClassOrInterface) {
+                        // Foo satisfies Bar<String> so define
+                        // default $reified$Bar$X() { return String.TypeDescriptor(); }
+                        //mdb.body(make().Return(makeReifiedTypeArgument(ta)));
+                    }
+                    classBuilder.method(mdb);
+                }
+            } 
+        }
     }
     
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
@@ -2478,6 +2515,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         // now satisfy each new interface
         if (satisfied != null) {
+            sat(model, satisfied.getTypes(), classBuilder);
             for (Tree.StaticType type : satisfied.getTypes()) {
                 try {
                     Type satisfiedType = type.getTypeModel();
@@ -2485,12 +2523,13 @@ public class ClassTransformer extends AbstractTransformer {
                     if (!(decl instanceof Interface)) {
                         continue;
                     }
-                    if (((Interface)decl).isUseDefaultMethods()) {
-                        continue;
-                    }
                     // make sure we get the right instantiation of the interface
                     satisfiedType = model.getType().getSupertype(decl);
-                    concreteMembersFromSuperinterfaces(model, classBuilder, satisfiedType, satisfiedInterfaces);
+                    if (((Interface)decl).isUseDefaultMethods()) {
+                        continue;
+                    } else {
+                        concreteMembersFromSuperinterfaces(model, classBuilder, satisfiedType, satisfiedInterfaces);
+                    }
                 } catch (BugException e) {
                     e.addError(type);
                 }
@@ -5789,6 +5828,22 @@ public class ClassTransformer extends AbstractTransformer {
         } else {
             classBuilder.defs(ctorNameClassDecl);
         }
+    }
+
+    /**
+     * Return an {@code abstract $refied$..$T} method for obtaining a 
+     * reified type parameter within a (Java 8) interface.  
+     */
+    public MethodDefinitionBuilder makeInterfaceReifiedTypeParameter(TypeParameter tp) {
+        Scope container = tp.getContainer();
+        assert(container instanceof Interface)
+            && ((Interface)container).isUseDefaultMethods();
+        Interface iface = (Interface)container;
+        MethodDefinitionBuilder systemMethod = MethodDefinitionBuilder.systemMethod(this, ("$reified$"+iface.getQualifiedNameString()+"."+tp.getName()).replace('.', '$').replace("::", "$"));
+        systemMethod.modifiers(PUBLIC | ABSTRACT);
+        systemMethod.resultType(null, make().QualIdent(syms().ceylonTypeDescriptorType.tsym));
+        
+        return systemMethod;
     }
 
 }

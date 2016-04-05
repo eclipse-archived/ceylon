@@ -5288,10 +5288,14 @@ public abstract class AbstractTransformer implements Transformation {
             }
         } else if(pt.isTypeParameter()){
             TypeParameter tp = (TypeParameter) declaration;
+            Scope container = tp.getContainer();
+            if(container instanceof Interface
+                    && ((Interface)container).isUseDefaultMethods()){
+                return make().Apply(null, naming.makeUnquotedIdent(naming.getTypeArgumentMethodName(tp)), List.<JCExpression>nil()); 
+            }
             String name = naming.getTypeArgumentDescriptorName(tp);
             if(!qualified || isTypeParameterSubstituted(tp))
                 return makeUnquotedIdent(name);
-            Scope container = tp.getContainer();
             JCExpression qualifier = null;
             if(container instanceof Class){
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
