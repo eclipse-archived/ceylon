@@ -43,9 +43,9 @@ public class JavaRunnerImpl implements JavaRunner {
             moduleClassLoader = moduleLoader.loadModule(module, version);
         } catch (ModuleNotFoundException e) {
             if(e.getCause() != null)
-                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e.getCause());
+                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e.getMessage(), e.getCause());
             else
-                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e);
+                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e.getMessage(), e);
         }
         run = options.getRun();
     }

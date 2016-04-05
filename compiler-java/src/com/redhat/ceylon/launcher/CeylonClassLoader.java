@@ -108,6 +108,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.common", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.cli", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.model", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-loader", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-aether", version)); // optional
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-webdav", version)); // optional
