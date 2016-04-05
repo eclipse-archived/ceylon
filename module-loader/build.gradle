@@ -1,0 +1,8 @@
+
+dependencies {
+    compile project(':common'),
+        project(':model'),
+        project(':cmr'),
+        project(':language'),
+        'org.jboss.modules:jboss-modules:1.4.4.Final'
+}
