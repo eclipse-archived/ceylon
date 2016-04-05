@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.test;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -1150,6 +1151,24 @@ public abstract class CompilerTests {
             Assert.assertTrue("ceylon classpath " + module + " produced more than a single line of output", r.readLine() == null);
             Assert.assertEquals(expectedSc, sc);
             return cp;
+        }
+    }
+    
+    protected void assertFileContainsLine(File err, String expectedLine) throws IOException, FileNotFoundException {
+        boolean found = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(err))) {
+            String line = reader.readLine();
+            while(line != null) {
+                System.err.println(line);
+                if (line.equals(expectedLine)) {
+                    found = true;
+                    break;
+                }
+                line = reader.readLine();
+            }
+            if (!found) {
+                Assert.fail("missing expected line");
+            }
         }
     }
 }

@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -65,5 +66,35 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6129() {
         compareWithJavaSource("bug60xx/Bug6129");
+    }
+
+
+    @Test
+    public void testBug6153() throws Throwable {
+        compile("bug61xx/Bug6153.ceylon");
+        File err = File.createTempFile("compattest", "out");
+        try {
+            String expectedLine = "ceylon run: HAH";
+
+            // normal
+            int sc = runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.issues/1", 
+                    Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug61xx::bug6153"),
+                    Arrays.<String>asList(),
+                    err, null);
+            // Check it returned an error status code
+            Assert.assertEquals(2, sc);
+            assertFileContainsLine(err, expectedLine);
+
+            // flat
+            sc = runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.issues/1", 
+                    Arrays.asList("--flat-classpath", "--run", "com.redhat.ceylon.compiler.java.test.issues.bug61xx::bug6153"),
+                    Arrays.<String>asList(),
+                    err, null);
+            // Check it returned an error status code
+            Assert.assertEquals(2, sc);
+            assertFileContainsLine(err, expectedLine);
+        } finally {
+            err.delete();
+        }
     }
 }
