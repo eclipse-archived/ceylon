@@ -9,3 +9,16 @@ dependencies {
         'org.apache.ant:ant:1.8.2',
         'com.github.rjeschke:txtmark:0.13'
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src', 'langtools/src/share/classes'
+        }
+        resources {
+            srcDirs 'src', 'langtools/src/share/classes'
+            exclude '**/*.java'
+        }
+    }
+}
+
