@@ -21,18 +21,19 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
-import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Setter;
@@ -132,12 +133,25 @@ public class InterfaceVisitor extends Visitor {
             localCompanionClasses = old;
         }
         if(model instanceof Interface){
-            boolean useDefaultMethods = useDefaultMethods(model);
+            boolean useDefaultMethods = !hasCompilerAnnotation(that.getCompilerAnnotations(), "compileUsing", "companion") && useDefaultMethods(model);
             ((Interface)model).setUseDefaultMethods(useDefaultMethods);
             if (!useDefaultMethods) {
                 ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model));
             }
         }
+    }
+    
+    
+
+    private boolean hasCompilerAnnotation(List<CompilerAnnotation> compilerAnnotations, String name, String value) {
+        for (Tree.CompilerAnnotation ca : compilerAnnotations) {
+            if (name.equals(ca.getIdentifier().getText())) {
+                if (value.equals(ca.getStringLiteral().getText())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean useDefaultMethods(ClassOrInterface model) {
