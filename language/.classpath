@@ -8,6 +8,5 @@
 	<classpathentry kind="src" path="runtime-js"/>
 	<classpathentry kind="lib" path="ide-dist/ceylon.language-1.2.3.car" sourcepath=""/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
