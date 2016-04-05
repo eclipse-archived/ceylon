@@ -926,7 +926,7 @@ public class Attr extends JCTree.Visitor {
             }
             chk.checkOverride(tree, m);
 
-            if (isDefaultMethod && types.overridesObjectMethod(m.enclClass(), m)) {
+            if (!sourceLanguage.isCeylon() && isDefaultMethod && types.overridesObjectMethod(m.enclClass(), m)) {
                 log.error(tree, "default.overrides.object.member", m.name, Kinds.kindName(m.location()), m.location());
             }
 
