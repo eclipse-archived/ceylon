@@ -65,7 +65,7 @@ public class OSUtil {
             String res = System.getProperty("com.redhat.ceylon.common.tool.terminal.color.reset");
             if (col == null || col.isEmpty() || res == null || res.isEmpty()) {
                 String term = System.getenv("TERM");
-                if (term.startsWith("xterm")
+                if (term != null && term.startsWith("xterm")
                         || term.startsWith("screen")
                         || term.startsWith("linux")
                         || term.startsWith("ansi")) {
