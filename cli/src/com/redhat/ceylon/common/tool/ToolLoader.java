@@ -76,10 +76,10 @@ public abstract class ToolLoader {
             if (loader.getClass().getName().equals("org.jboss.modules.ModuleClassLoader")
                     || loader.getClass().getName().equals("ceylon.modules.jboss.runtime.CeylonModuleClassLoader")) {
                 // If we run using the Ceylon runtime
-                loaderClassName = "com.redhat.ceylon.compiler.java.runtime.tools.impl.JBossModuleLoader";
+                loaderClassName = "com.redhat.ceylon.module.loader.JBossModuleLoader";
             } else {
                 // If we run in a normal Java environment
-                loaderClassName = "com.redhat.ceylon.compiler.java.runtime.tools.impl.FlatpathModuleLoader";
+                loaderClassName = "com.redhat.ceylon.module.loader.FlatpathModuleLoader";
             }
             Class<?> loaderClass = loader.loadClass(loaderClassName);
             Constructor<?> loaderConstr = loaderClass.getConstructor(ClassLoader.class);

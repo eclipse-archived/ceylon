@@ -241,6 +241,9 @@ public class Stitcher {
             System.exit(1);
             return;
         }
+        // Force coloring of output if not already set
+        String useColors = System.getProperty(Constants.PROP_CEYLON_TERM_COLORS, "yes");
+        System.setProperty(Constants.PROP_CEYLON_TERM_COLORS, useColors);
         int exitCode = 0;
         tmpDir = Files.createTempDirectory("ceylon-jsstitcher-");
         try {

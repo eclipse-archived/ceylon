@@ -19,6 +19,8 @@ public abstract class Constants {
     public static final String ENV_CEYLON_HOME_DIR = "CEYLON_HOME";
     public static final String ENV_CEYLON_VERSION = "CEYLON_VERSION";
 
+    public static final String ENV_CEYLON_TERM_COLORS = "CEYLON_TERM_COLORS";
+
     public static final String PROP_CEYLON_SYSTEM_VERSION = "ceylon.system.version";
 
     public static final String PROP_CEYLON_HOME_DIR = "ceylon.home";
@@ -30,6 +32,8 @@ public abstract class Constants {
     public static final String PROP_CEYLON_SYSTEM_REPO = "ceylon.system.repo";
     public static final String PROP_CEYLON_USER_REPO = "ceylon.user.repo";
     public static final String PROP_CEYLON_CACHE_REPO = "ceylon.cache.repo";
+    
+    public static final String PROP_CEYLON_TERM_COLORS = "ceylon.terminal.usecolors";
     
     public static final String DEFAULT_SOURCE_DIR = "source";
     public static final String DEFAULT_RESOURCE_DIR = "resource";

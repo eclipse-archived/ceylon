@@ -35,6 +35,7 @@
         <module name="com.redhat.ceylon.cli" slot="@ceylon-version@" export="true"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
+        <module name="com.redhat.ceylon.module-loader" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.typechecker" slot="@ceylon-version@"/>
         <module name="org.jboss.modules" slot="1.4.4.Final"/>
         <module name="java.base" slot="7" export="true"/>

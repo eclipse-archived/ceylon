@@ -142,25 +142,6 @@ public class CompatTests extends CompilerTests {
                 new ModuleSpec("depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER));
     }
     
-    
-    protected void assertFileContainsLine(File err, String expectedLine) throws IOException, FileNotFoundException {
-        boolean found = false;
-        try (BufferedReader reader = new BufferedReader(new FileReader(err))) {
-            String line = reader.readLine();
-            while(line != null) {
-                System.err.println(line);
-                if (line.equals(expectedLine)) {
-                    found = true;
-                    break;
-                }
-                line = reader.readLine();
-            }
-            if (!found) {
-                Assert.fail("missing expected line");
-            }
-        }
-    }
-    
     @Test
     public void runCompiled1299CarIn121() throws Throwable {
         File err = File.createTempFile("compattest", "out");

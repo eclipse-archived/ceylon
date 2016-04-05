@@ -154,12 +154,12 @@ public class VisibilityVisitor extends Visitor {
                     if (that instanceof Tree.Declaration) {
                         if (!isCompletelyVisible(td, st)) {
                             // temporarily disable error for https://github.com/ceylon/ceylon/issues/5882
-//                            that.addError("supertype is not visible everywhere type '" + 
-//                                    td.getName() + 
-//                                    "' is visible: '" + 
-//                                    st.asString(that.getUnit()) +
-//                                    "' involves an unshared type declaration", 
-//                                    713);
+                            that.addError("supertype is not visible everywhere type '" + 
+                                    td.getName() + 
+                                    "' is visible: '" + 
+                                    st.asString(that.getUnit()) +
+                                    "' involves an unshared type declaration", 
+                                    713);
                         }
                         if (!checkModuleVisibility(td, st)) {
                             that.addError("supertype of type '" + 

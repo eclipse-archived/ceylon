@@ -7,6 +7,7 @@ import java.net.URL;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunner;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions;
@@ -43,9 +44,9 @@ public class JavaRunnerImpl implements JavaRunner {
             moduleClassLoader = moduleLoader.loadModule(module, version);
         } catch (ModuleNotFoundException e) {
             if(e.getCause() != null)
-                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e.getCause());
+                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e.getMessage(), e.getCause());
             else
-                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e);
+                throw new com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException(e.getMessage(), e);
         }
         run = options.getRun();
     }
@@ -94,7 +95,10 @@ public class JavaRunnerImpl implements JavaRunner {
 
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Cannot find main class for module "+module+": "+className, e);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException 
+        } catch (InvocationTargetException e) {
+            // if the invocation threw, be transparent about it
+            Util.rethrow(e.getCause());
+        } catch (IllegalAccessException | IllegalArgumentException 
                 | NoSuchMethodException | SecurityException e) {
             throw new RuntimeException("Failed to invoke main method for module "+module+": "+className, e);
         }

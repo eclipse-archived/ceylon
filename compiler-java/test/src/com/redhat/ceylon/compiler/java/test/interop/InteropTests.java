@@ -354,10 +354,7 @@ public class InteropTests extends CompilerTests {
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported declaration is not shared: 'JavaDefaultAccessClass'"),
                 new CompilerError(22, "imported declaration is not shared: 'JavaDefaultAccessClass2'"),
-                // temporarily disabled due to https://github.com/ceylon/ceylon/issues/5882
-//                new CompilerError(27, "supertype is not visible everywhere type 'ExtendsDefaultAccessClassInAnotherPkg' is visible: 'JavaDefaultAccessClass' involves an unshared type declaration"),
                 new CompilerError(27, "type is not visible: 'JavaDefaultAccessClass'"),
-//                new CompilerError(29, "supertype is not visible everywhere type 'ExtendsDefaultAccessClassInAnotherPkg2' is visible: 'JavaDefaultAccessClass2' involves an unshared type declaration"),
                 new CompilerError(29, "type is not visible: 'JavaDefaultAccessClass2'"),
                 new CompilerError(31, "package private constructor is not visible: 'JavaDefaultAccessClass3'")
         );
