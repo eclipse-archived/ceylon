@@ -36,6 +36,7 @@ import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.util.FileUtils;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.launcher.CeylonClassLoader;
 import com.redhat.ceylon.launcher.ClassLoaderSetupException;
 import com.redhat.ceylon.launcher.Launcher;
@@ -347,6 +348,12 @@ public abstract class CeylonAntTask extends Task {
                     appendOption(cmd, "--define=" + encodeProperty(arg));
                 }
             }
+        }
+        if (getFork() && System.console() != null) {
+            // Force coloring of output if not already set
+            String useColors = System.getProperty(Constants.PROP_CEYLON_TERM_COLORS, "yes");
+            String arg = Constants.PROP_CEYLON_TERM_COLORS + "=" + useColors;
+            appendOption(cmd, "--define=" + arg);
         }
         for (Define d : defines) {
             String arg = (d.key != null) ? d.key + "=" + d.value : d.value;
