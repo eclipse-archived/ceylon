@@ -2272,7 +2272,10 @@ public class ModelUtil {
 
     static boolean isVisible(Declaration member, 
             TypeDeclaration type) {
-        return type instanceof TypeParameter || 
+        // do not check for visibility of Java supertypes, 
+        // see https://github.com/ceylon/ceylon/issues/5882
+        return  (type instanceof LazyElement && !((LazyElement) type).isCeylon()) ||
+                type instanceof TypeParameter || 
                 type.isVisible(member.getVisibleScope()) &&
                 (member.getVisibleScope()!=null || 
                 !member.getUnit().getPackage().isShared() || 
