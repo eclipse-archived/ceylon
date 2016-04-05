@@ -1,3 +1,4 @@
+
 subprojects {
     apply plugin: 'java'
     version='1.2.3'
@@ -18,23 +19,25 @@ subprojects {
         testCompile 'junit:junit:4.11'
     }
 
-    sourceSets {
-        main {
-            java {
-                srcDir 'src'
+    if (!['compiler-js'].contains(project.name)) {
+        sourceSets {
+            main {
+                java {
+                    srcDir 'src'
+                }
+                resources {
+                    srcDir 'src'
+                    exclude '**/*.java'
+                }
             }
-            resources {
-                srcDir 'src'
-                exclude '**/*.java'
-            }
-        }
-        test {
-            java {
-                srcDir 'test/src'
-            }
-            resources {
-                srcDir 'test/src'
-                exclude '**/*.java'
+            test {
+                java {
+                    srcDir 'test/src'
+                }
+                resources {
+                    srcDir 'test/src'
+                    exclude '**/*.java'
+                }
             }
         }
     }
