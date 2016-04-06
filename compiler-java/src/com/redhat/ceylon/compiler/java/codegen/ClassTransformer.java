@@ -293,6 +293,7 @@ public class ClassTransformer extends AbstractTransformer {
         Type satisfiedType = st.getTypeModel();
         Interface satisfied = (Interface)satisfiedType.getDeclaration();
         if (!satisfied.isUseDefaultMethods()
+                && (satisfied instanceof LazyInterface == false || ((LazyInterface)satisfied).isCeylon())
                 && !satisfied.equals(typeFact().getIdentifiableType().getDeclaration())){
                 //&& model.isCompanionClassNeeded()){
             // A superinterface uses companion classes. 
