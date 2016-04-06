@@ -299,6 +299,8 @@ public class ArtifactContext implements Serializable, ContentOptions {
                 return suffix;
             else if (RepositoryManager.DEFAULT_MODULE.equals(name))
                 return name + suffix;
+            else if (NPM_DESCRIPTOR.equals(suffix))
+                return NPM_DESCRIPTOR;
             else
                 return name + "-" + version + suffix;
         }
@@ -405,6 +407,9 @@ public class ArtifactContext implements Serializable, ContentOptions {
 
     @Override
     public String toString() {
+        if (NPM_DESCRIPTOR.equals(getSingleSuffix())) {
+            return NPM_DESCRIPTOR;
+        }
         StringBuilder str = new StringBuilder();
         str.append(getName()).append("-").append(getVersion());
         if (suffixes.length == 1 && !isDirectoryName(suffixes[0]) && !isFullName(suffixes[0])) {
