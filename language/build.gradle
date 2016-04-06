@@ -1,0 +1,12 @@
+
+dependencies {
+    compile project(':common'),
+        project(':model')
+}
+
+ant.importBuild('build.xml') { antTargetName ->
+    'ant-' + antTargetName
+}
+
+// compileJava.dependsOn 'ant-xxx'
+
