@@ -203,7 +203,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     protected void loadStaticMetamodel() {
         InputStream is = JvmBackendUtil.getStaticMetamodelInputStream(getClass());
         if(is != null){
-        	List<String> dexEntries = AndroidUtil.getDexEntries();
+        	List<String> dexEntries = AndroidUtil.isRunningAndroid() ? AndroidUtil.getDexEntries() : JvmBackendUtil.getCurrentJarEntries();
         	JvmBackendUtil.loadStaticMetamodel(is, dexEntries, this);
         }
     }

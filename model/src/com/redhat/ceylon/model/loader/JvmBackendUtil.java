@@ -8,8 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -21,6 +24,7 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.ModuleSpec;
@@ -437,24 +441,42 @@ public class JvmBackendUtil {
         meta.mkdirs();
         File metamodel = new File(meta, "metamodel");
         try(FileWriter ret = new FileWriter(metamodel)){
-        
-            if(jdkProvider.isAlternateJdk()){
-                for (String jdkModule : jdkProvider.getJDKModuleNames()) {
-                    ret.write("="+jdkModule+"/"+jdkProvider.getJDKVersion()+"\n");
-                    for (String pkg : jdkProvider.getJDKPackages(jdkModule)) {
-                        ret.write("@"+pkg+"\n");
-                    }
-                }
-            }
-            
-            for(ArtifactResult entry : entries){
-                writeStaticMetamodel(ret, entry, jdkProvider);
-            }
-            ret.flush();
+            writeStaticMetamodel(ret, entries, jdkProvider);
         }
     }
 
-    private static void writeStaticMetamodel(FileWriter metamodelOs, ArtifactResult entry, JdkProvider jdkProvider) throws IOException {
+    public static void writeStaticMetamodel(ZipOutputStream outputZip, Set<String> added, List<ArtifactResult> entries, JdkProvider jdkProvider) throws IOException {
+        if(added.add("META-INF/")){
+            ZipEntry entry = new ZipEntry("META-INF/");
+            outputZip.putNextEntry(entry);
+        }
+        if(added.add("META-INF/ceylon/")){
+            ZipEntry entry = new ZipEntry("META-INF/ceylon/");
+            outputZip.putNextEntry(entry);
+        }
+        outputZip.putNextEntry(new ZipEntry("META-INF/ceylon/metamodel"));
+        Writer ret = new OutputStreamWriter(outputZip);
+
+        writeStaticMetamodel(ret, entries, jdkProvider);
+    }
+
+    private static void writeStaticMetamodel(Writer ret, List<ArtifactResult> entries, JdkProvider jdkProvider) throws IOException {
+        if(jdkProvider.isAlternateJdk()){
+            for (String jdkModule : jdkProvider.getJDKModuleNames()) {
+                ret.write("="+jdkModule+"/"+jdkProvider.getJDKVersion()+"\n");
+                for (String pkg : jdkProvider.getJDKPackages(jdkModule)) {
+                    ret.write("@"+pkg+"\n");
+                }
+            }
+        }
+
+        for(ArtifactResult entry : entries){
+            writeStaticMetamodel(ret, entry, jdkProvider);
+        }
+        ret.flush();
+    }
+
+    private static void writeStaticMetamodel(Writer metamodelOs, ArtifactResult entry, JdkProvider jdkProvider) throws IOException {
         metamodelOs.write("="+entry.name()+"/"+entry.version()+"\n");
         for (ArtifactResult dep : entry.dependencies()) {
             switch(dep.importType()){
@@ -470,7 +492,7 @@ public class JvmBackendUtil {
         listPackages(metamodelOs, entry.name(), entry.artifact(), jdkProvider);
     }
 
-    private static void listPackages(FileWriter metamodelOs, String name, File artifact, JdkProvider jdkProvider) throws ZipException, IOException {
+    private static void listPackages(Writer metamodelOs, String name, File artifact, JdkProvider jdkProvider) throws ZipException, IOException {
         List<String> jdkPackageList = null;
         if(name.equals(jdkProvider.getJdkContainerModuleName())){
             jdkPackageList = jdkProvider.getJDKPackageList();
@@ -699,5 +721,21 @@ public class JvmBackendUtil {
 
     public static InputStream getStaticMetamodelInputStream(java.lang.Class<?> fromClass) {
         return fromClass.getResourceAsStream("/META-INF/ceylon/metamodel");
+    }
+
+    public static List<String> getCurrentJarEntries() {
+        String path = JvmBackendUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        try(ZipFile zipFile = new ZipFile(new File(path))){
+            List<String> ret = new ArrayList<>(zipFile.size());
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while(entries.hasMoreElements()){
+                ZipEntry entry = entries.nextElement();
+                if(!entry.isDirectory())
+                    ret.add(entry.getName());
+            }
+            return ret;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read current fat jar list of entries", e);
+        }
     }
 }
