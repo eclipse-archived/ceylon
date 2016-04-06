@@ -121,7 +121,7 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
             FileUtil.delete(out);
         }
         File outputJar = out != null ? out : new File(module+"-"+version+".jar");
-        if(!out.getParentFile().exists()){
+        if(out.getParentFile() != null && !out.getParentFile().exists()){
             FileUtil.mkdirs(out.getParentFile());
         }
         Set<String> added = new HashSet<>();
