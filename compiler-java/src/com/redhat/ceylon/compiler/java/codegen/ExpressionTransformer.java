@@ -5183,7 +5183,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             scope = scope.getContainer();
         }
         if(!needsQualified)
-            return interf.isUseDefaultMethods() ? naming.makeThis() : naming.makeQuotedThis();
+            return interf.isUseDefaultMethods() && scope instanceof Interface && ((Interface)scope).isUseDefaultMethods() ? naming.makeThis() : naming.makeQuotedThis();
         interf = (Interface) scope;
         return makeQualifiedDollarThis(interf.getType());
     }
