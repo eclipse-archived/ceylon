@@ -68,7 +68,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     };
     
     private static final String fileNames[] = {
-        MODULE_PROPERTIES, MODULE_XML
+        MODULE_PROPERTIES, MODULE_XML, NPM_DESCRIPTOR
     };
     
     private static final String directoryNames[] = {
