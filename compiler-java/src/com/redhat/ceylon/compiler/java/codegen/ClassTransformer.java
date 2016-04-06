@@ -227,49 +227,9 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.isDynamic(model.isDynamic());
         
         if (def.getSatisfiedTypes() != null) {
-            sat(model, def.getSatisfiedTypes().getTypes(), classBuilder);
+            makeReifiedTypeDescriptorAccessors(model, def.getSatisfiedTypes().getTypes(), classBuilder);
             for (Tree.StaticType st : def.getSatisfiedTypes().getTypes()) {
-                Type satisfiedType = st.getTypeModel();
-                Interface satisfied = (Interface)satisfiedType.getDeclaration();
-                if (!satisfied.isUseDefaultMethods()
-                        && !satisfied.equals(typeFact().getIdentifiableType().getDeclaration())){
-                        //&& model.isCompanionClassNeeded()){
-                    // A superinterface uses companion classes. 
-                    // So some expressions will expect there to be a companion field
-                    // But we're stateless, so we have to generate a method instead.
-                    MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
-                            this, naming.getCompanionAccessorName(satisfied));
-                    thisMethod.noModelAnnotations();
-                    thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
-                    thisMethod.ignoreModelAnnotations();
-                    thisMethod.modifiers(PUBLIC | DEFAULT);
-                    
-                    List<JCExpression> state = List.nil();
-                    
-                    // pass all reified type info to the constructor
-                    for(JCExpression t : makeReifiedTypeArguments(satisfiedType)){
-                        state = state.append(t);
-                    }
-                    // pass the instance of this
-                    state = state.append( expressionGen().applyErasureAndBoxing(naming.makeThis(), 
-                            model.getType(), false, true, BoxingStrategy.BOXED, 
-                            satisfiedType, ExpressionTransformer.EXPR_FOR_COMPANION));
-                    
-                    final JCExpression 
-                        ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_CLASS_NEW);
-                    
-                    JCExpression newInstance = make().NewClass(null, 
-                            null,
-                            ifaceImplType,
-                            state,
-                            null);
-                    
-                    thisMethod.body(make().Return(newInstance));
-                    classBuilder.method(thisMethod);
-                    // Then any class which (indirectly) satisfies a Java8 interface 
-                    // which (directly) satisfies Companion interface will need to 
-                    // generate an accessor (TODO)
-                }
+                makeCompanionAccessor(model, classBuilder, st);
             }
         }
         
@@ -297,37 +257,138 @@ public class ClassTransformer extends AbstractTransformer {
         
         return result;
     }
+    private Set<Interface> multiplyInheritedInterfaces(TypeDeclaration model) {
+        HashSet<Interface> multiplyInherited = new HashSet<>();
+        HashSet<Interface> singlyInherited = new HashSet<>();
+        multiplyInheritedInterfaces(model, multiplyInherited, singlyInherited);
+        return multiplyInherited;
+    }
+    private void multiplyInheritedInterfaces(TypeDeclaration model, HashSet<Interface> multiplyInherited, HashSet<Interface> singlyInherited) {
+        for (Type t : model.getSatisfiedTypes()) {
+            TypeDeclaration d = t.getDeclaration();
+            if (d instanceof Interface) {
+                if (singlyInherited.contains(d)) {
+                    singlyInherited.remove(d);
+                    multiplyInherited.add((Interface)d);
+                } else if (!multiplyInherited.contains(d)) {
+                    singlyInherited.add((Interface)d);
+                }
+            }
+            multiplyInheritedInterfaces(d, multiplyInherited, singlyInherited);
+        }
+        if (model.getExtendedType() != null) {
+            multiplyInheritedInterfaces(model.getExtendedType().getDeclaration(), multiplyInherited, singlyInherited);
+        }
+    }
 
-    protected void sat(final ClassOrInterface model, java.util.List<Tree.StaticType> satisfiedTypes, ClassDefinitionBuilder classBuilder) {
+    /** 
+     * Add to the class builder a companion accessor if 
+     * the given satisfied type (st) used the companion 
+     * interface transformation. This is necessary because some 
+     * expressions (super ones) in the Java8 interface default methods
+     * of this interface (model) require a companion.
+     */
+    protected void makeCompanionAccessor(final Interface model, ClassDefinitionBuilder classBuilder,
+            Tree.StaticType st) {
+        Type satisfiedType = st.getTypeModel();
+        Interface satisfied = (Interface)satisfiedType.getDeclaration();
+        if (!satisfied.isUseDefaultMethods()
+                && !satisfied.equals(typeFact().getIdentifiableType().getDeclaration())){
+                //&& model.isCompanionClassNeeded()){
+            // A superinterface uses companion classes. 
+            // So some expressions will expect there to be a companion field
+            // But we're stateless, so we have to generate a method instead.
+            MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
+                    this, naming.getCompanionAccessorName(satisfied));
+            thisMethod.noModelAnnotations();
+            thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
+            thisMethod.ignoreModelAnnotations();
+            thisMethod.modifiers(PUBLIC | DEFAULT);
+            
+            List<JCExpression> state = List.nil();
+            
+            // pass all reified type info to the constructor
+            for(JCExpression t : makeReifiedTypeArguments(satisfiedType)){
+                state = state.append(t);
+            }
+            // pass the instance of this
+            state = state.append( expressionGen().applyErasureAndBoxing(naming.makeThis(), 
+                    model.getType(), false, true, BoxingStrategy.BOXED, 
+                    satisfiedType, ExpressionTransformer.EXPR_FOR_COMPANION));
+            
+            final JCExpression 
+                ifaceImplType = makeJavaType(satisfiedType, JT_COMPANION | JT_CLASS_NEW);
+            
+            JCExpression newInstance = make().NewClass(null, 
+                    null,
+                    ifaceImplType,
+                    state,
+                    null);
+            
+            thisMethod.body(make().Return(newInstance));
+            classBuilder.method(thisMethod);
+            // Then any class which (indirectly) satisfies a Java8 interface 
+            // which (directly) satisfies Companion interface will need to 
+            // generate an accessor (TODO)
+        }
+    }
+
+    /**
+     * Generate {@code default} accessor methods in a Java 8 interface 
+     * for obtaining reified type parameters.
+     * 
+     * Such methods implements the methods generated by 
+     * {@link #makeInterfaceReifiedTypeParameter(TypeParameter)}.
+     */
+    protected void makeReifiedTypeDescriptorAccessors(final ClassOrInterface model, java.util.List<Tree.StaticType> satisfiedTypes, ClassDefinitionBuilder classBuilder) {
+        Set<Interface> done = new HashSet<>();
+        for (Interface i : multiplyInheritedInterfaces(model)) {
+            // TODO it's not model.getType(), is it?
+            if (i.isUseDefaultMethods()) {
+                done.add(i);
+                for (Map.Entry<TypeParameter, Type> tas : model.getType().getSupertype(i).getTypeArguments().entrySet()) {
+                    TypeParameter tp = tas.getKey();
+                    Type ta = tas.getValue();
+                    makeReifiedTypeDescriptorAccessor(model, classBuilder, tp, ta);
+                }
+            }
+        }
         for (Tree.StaticType st : satisfiedTypes) {
             Type satType  = st.getTypeModel();
-            if (((Interface)satType.getDeclaration()).isUseDefaultMethods()) {
+            Interface iface = (Interface)satType.getDeclaration();
+            if (!done.contains(iface) && iface.isUseDefaultMethods()) {
                 for (Map.Entry<TypeParameter, Type> tas : satType.getTypeArguments().entrySet()) {
                     TypeParameter tp = tas.getKey();
                     Type ta = tas.getValue();
-                    MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getTypeArgumentMethodName(tp));
-                    mdb.isOverride(true);
-                    long mods = PUBLIC;
-                    if (model instanceof Interface) {
-                        mods |= DEFAULT;
-                    }
-                    mdb.modifiers(mods);
-                    mdb.resultType(null, make().QualIdent(syms().ceylonTypeDescriptorType.tsym));
-                    mdb.body(make().Return(makeReifiedTypeArgument(ta)));
-                    if (model.equals(ta.getDeclaration().getContainer())) {
-                        // Foo<X> satisfies Bar<X> so define 
-                        // default $reified$Bar$X() { return $reified$Foo$X();}
-                        
-                        
-                    } else if (ta.getDeclaration() instanceof ClassOrInterface) {
-                        // Foo satisfies Bar<String> so define
-                        // default $reified$Bar$X() { return String.TypeDescriptor(); }
-                        //mdb.body(make().Return(makeReifiedTypeArgument(ta)));
-                    }
-                    classBuilder.method(mdb);
+                    makeReifiedTypeDescriptorAccessor(model, classBuilder, tp, ta);
                 }
-            } 
+            }
         }
+    }
+
+    protected void makeReifiedTypeDescriptorAccessor(final ClassOrInterface model, 
+            ClassDefinitionBuilder classBuilder,
+            TypeParameter tp, Type ta) {
+        MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getTypeArgumentMethodName(tp));
+        mdb.isOverride(true);
+        long mods = PUBLIC;
+        if (model instanceof Interface) {
+            mods |= DEFAULT;
+        }
+        mdb.modifiers(mods);
+        mdb.resultType(null, make().QualIdent(syms().ceylonTypeDescriptorType.tsym));
+        mdb.body(make().Return(makeReifiedTypeArgument(ta)));
+        if (model.equals(ta.getDeclaration().getContainer())) {
+            // Foo<X> satisfies Bar<X> so define 
+            // default $reified$Bar$X() { return $reified$Foo$X();}
+            
+            
+        } else if (ta.getDeclaration() instanceof ClassOrInterface) {
+            // Foo satisfies Bar<String> so define
+            // default $reified$Bar$X() { return String.TypeDescriptor(); }
+            //mdb.body(make().Return(makeReifiedTypeArgument(ta)));
+        }
+        classBuilder.method(mdb);
     }
     
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
@@ -2558,7 +2619,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         // now satisfy each new interface
         if (satisfied != null) {
-            sat(model, satisfied.getTypes(), classBuilder);
+            makeReifiedTypeDescriptorAccessors(model, satisfied.getTypes(), classBuilder);
             for (Tree.StaticType type : satisfied.getTypes()) {
                 try {
                     Type satisfiedType = type.getTypeModel();
@@ -5875,14 +5936,17 @@ public class ClassTransformer extends AbstractTransformer {
 
     /**
      * Return an {@code abstract $refied$..$T} method for obtaining a 
-     * reified type parameter within a (Java 8) interface.  
+     * reified type parameter within a (Java 8) interface.
+     * 
+     * These methods will be implemented by the methods generated by 
+     * {@link #makeReifiedTypeDescriptorAccessors(ClassOrInterface, java.util.List, ClassDefinitionBuilder)}.
      */
     public MethodDefinitionBuilder makeInterfaceReifiedTypeParameter(TypeParameter tp) {
         Scope container = tp.getContainer();
         assert(container instanceof Interface)
             && ((Interface)container).isUseDefaultMethods();
         Interface iface = (Interface)container;
-        MethodDefinitionBuilder systemMethod = MethodDefinitionBuilder.systemMethod(this, ("$reified$"+iface.getQualifiedNameString()+"."+tp.getName()).replace('.', '$').replace("::", "$"));
+        MethodDefinitionBuilder systemMethod = MethodDefinitionBuilder.systemMethod(this, (naming.getTypeArgumentMethodName(tp)));
         systemMethod.modifiers(PUBLIC | ABSTRACT);
         systemMethod.resultType(null, make().QualIdent(syms().ceylonTypeDescriptorType.tsym));
         
