@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
@@ -29,6 +30,7 @@ import com.redhat.ceylon.compiler.js.loader.JsModuleSourceMapper;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
+import com.redhat.ceylon.compiler.js.util.NpmDescriptorGenerator;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.MissingNativeVisitor;
@@ -529,9 +531,23 @@ public class JsCompiler {
                             opts.hasVerboseFlag("cmr"), logger);
                     sac.copy(FileUtil.filesToPathList(filterForModule(resFiles, opts.getResourceDirs(), moduleName)));
                 }
+                if (!entry.getKey().isDefault()) {
+                    String npmdesc = new NpmDescriptorGenerator(entry.getKey(),
+                            opts.isGenerateSourceArchive(), resFiles != null && !resFiles.isEmpty())
+                            .generateDescriptor();
+                    File npmfile = File.createTempFile("npm", "json");
+                    try (FileWriter fw = new FileWriter(npmfile)) {
+                        fw.write(npmdesc);
+                    }
+                    final ArtifactContext npmArtifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.NPM_DESCRIPTOR);
+                    npmArtifact.setForceOperation(true);
+                    outRepo.putArtifact(npmArtifact, npmfile);
+                }
             }
             FileUtil.deleteQuietly(jsart);
-            if (modart!=null) FileUtil.deleteQuietly(modart);
+            if (modart!=null) {
+                FileUtil.deleteQuietly(modart);
+            }
         }
         return result;
     }
