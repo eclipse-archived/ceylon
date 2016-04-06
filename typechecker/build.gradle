@@ -19,6 +19,7 @@ ant.importBuild('build.xml') { antTargetName ->
 }
 
 compileJava.dependsOn 'ant-tree'
+clean.dependsOn 'ant-clean'
 
 /*
 apply plugin: 'antlr'
