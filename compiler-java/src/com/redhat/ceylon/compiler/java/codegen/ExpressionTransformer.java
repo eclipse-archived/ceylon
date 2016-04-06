@@ -4573,7 +4573,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             throw new BugException();
         }
         TypeDeclaration inheritedFrom = superType.getTypeModel().getDeclaration();
-        if (inheritedFrom instanceof Interface) {
+        if (inheritedFrom instanceof Interface
+                && !((Interface)inheritedFrom).isUseDefaultMethods()) {
             inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(forMemberName, null, false).getContainer();
         }
         return widenSuper(node, inheritedFrom);
