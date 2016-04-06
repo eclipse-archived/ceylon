@@ -173,7 +173,7 @@
     </target>
 
     <target name="dist"
-            depends="build"
+            depends="build,ide-backup"
             description="Create Ceylon language distribution">
         <delete file="${build.dist.repo}/${ceylon.language.src}"/>
         <delete file="${build.dist.repo}/${ceylon.language.src}.sha1"/>
@@ -544,7 +544,10 @@
 
     <!-- Rule to compile and test -->
     <target name="build" depends="ceylon.language.java,ceylon.language.js">
-        <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
+    </target>
+    
+    <!-- Temporary hack to prevent problems in the IDE when the compilation fails -->
+    <target name="ide-backup">
         <mkdir dir="${ide.dist}"/>
         <copy todir="${ide.dist}">
             <fileset dir="${build.dist.repo}/${ceylon.language.dir}">
