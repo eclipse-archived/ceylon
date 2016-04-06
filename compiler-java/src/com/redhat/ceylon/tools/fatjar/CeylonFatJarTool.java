@@ -117,12 +117,12 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
         if(!force)
             errorOnConflictingModule(module, version);
         
-        if(out != null && out.exists()){
-            FileUtil.delete(out);
-        }
         File outputJar = applyCwd(out != null ? out : new File(module+"-"+version+".jar"));
-        if(out.getParentFile() != null && !out.getParentFile().exists()){
-            FileUtil.mkdirs(out.getParentFile());
+        if(outputJar.getParentFile() != null && !outputJar.getParentFile().exists()){
+            FileUtil.mkdirs(outputJar.getParentFile());
+        }
+        if(outputJar.exists()){
+            FileUtil.delete(outputJar);
         }
         Set<String> added = new HashSet<>();
 
