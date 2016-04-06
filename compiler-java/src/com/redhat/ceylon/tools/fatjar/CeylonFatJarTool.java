@@ -168,6 +168,7 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
                             }
                             continue;
                         }
+                        srcEntry.setCompressedSize(-1);
                         zipFile.putNextEntry(srcEntry);
                         if(!srcEntry.isDirectory())
                             IOUtils.copyStream(src.getInputStream(srcEntry), zipFile, true, false);
