@@ -40,6 +40,7 @@ import com.redhat.ceylon.tools.version.VersionToolTests;
     CopyToolTests.class,
     DocToolTests.class,
     DocToolToolTests.class,
+    FatJarToolTests.class,
     HelpToolTests.class,
     ImportJarToolTests.class,
     InfoToolTests.class,
