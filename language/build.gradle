@@ -8,5 +8,9 @@ ant.importBuild('build.xml') { antTargetName ->
     'ant-' + antTargetName
 }
 
-// compileJava.dependsOn 'ant-xxx'
+ant.properties['build.dir'] = buildDir
+
+// We're not building ourselves but delegating to Ant
+assemble.dependsOn = ['ant-build']
+clean.dependsOn = ['ant-clean']
 
