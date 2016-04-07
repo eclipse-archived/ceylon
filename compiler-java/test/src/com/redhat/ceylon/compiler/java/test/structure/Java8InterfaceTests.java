@@ -47,4 +47,24 @@ public class Java8InterfaceTests extends CompilerTests {
         compareWithJavaSource("iface/InterfaceWithConcreteMethods");
         compareWithJavaSource("iface/InterfaceWithConcreteMethodsSatisfier");
     }
+    
+    @Test
+    public void genericIface() {
+        compareWithJavaSource("iface/GenericInterface");
+    }
+    
+    @Test
+    public void defaultSatisfyCompanion() {
+        compareWithJavaSource("iface/DefaultSatisfyCompanion");
+    }
+    
+    @Test
+    public void companionSatisfyDefault() {
+        compareWithJavaSource("iface/CompanionSatisfyDefault");
+    }
+    
+    @Test
+    public void interfaceWithTypeMembers() {
+        compareWithJavaSource("iface/InterfaceWithTypeMembers");
+    }
 }

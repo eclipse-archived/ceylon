@@ -1,4 +1,6 @@
 class InterfaceWithConcreteMethodsSatisfier() satisfies InterfaceWithConcreteMethods {
+    shared actual variable Integer formalAttribute = 1;
+    
     void nonShared(Integer i, Integer j) {}
     shared actual void default(Integer i, Integer j) {
         // TODO Don't need to implement overloads for default parameters
