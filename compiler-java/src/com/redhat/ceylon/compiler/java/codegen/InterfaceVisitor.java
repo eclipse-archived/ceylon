@@ -38,6 +38,7 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -51,6 +52,8 @@ public class InterfaceVisitor extends Visitor {
     private Set<String> localCompanionClasses = new HashSet<String>();
     
     Target target;
+
+    private ClassOrInterface declaration;
     
     public InterfaceVisitor(Target target) {
         this.target = target;
@@ -120,28 +123,52 @@ public class InterfaceVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassOrInterface that){
         ClassOrInterface model = that.getDeclarationModel();
+        
+        if (model instanceof Interface &&
+                model.isToplevel() &&
+                target.compareTo(Target.JDK1_8) >= 0 && 
+                !hasCompilerAnnotation(that.getCompilerAnnotations(), "compileUsing", "companion")) {
+            ((Interface)model).setUseDefaultMethods(true);
+        }
+        if (!model.isToplevel()
+                && declaration instanceof Interface) {
+            ((Interface)declaration).setUseDefaultMethods(false);
+        }
+        
         // stop at aliases, do not collect them since we can never create any instance of them
         // and they are useless at runtime
         if(!model.isAlias()){
             // we never need to collect other local declaration names since only interfaces compete in the $impl name range
             if(model instanceof Interface)
                 collect(that, (Interface) model);
-
+            
+            ClassOrInterface oldDeclaration = this.declaration;
+            this.declaration = model;
             Set<String> old = localCompanionClasses;
             localCompanionClasses = new HashSet<String>();
             super.visit(that);
             localCompanionClasses = old;
-        }
+            this.declaration = oldDeclaration;
+        } 
         if(model instanceof Interface){
-            boolean useDefaultMethods = !hasCompilerAnnotation(that.getCompilerAnnotations(), "compileUsing", "companion") && useDefaultMethods(model);
-            ((Interface)model).setUseDefaultMethods(useDefaultMethods);
-            if (!useDefaultMethods) {
-                ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model));
-            }
+            ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model));
         }
     }
     
-    
+    @Override
+    public void visit(Tree.TypedDeclaration that){
+        Declaration declarationModel = that.getDeclarationModel();
+        if (declarationModel.isParameter()
+                && declarationModel.getContainer() instanceof Declaration) {
+            declarationModel = (Declaration)declarationModel.getContainer();
+        }
+        if (!(that instanceof Tree.Variable) 
+                && !declarationModel.getContainer().equals(declaration)
+                && declaration instanceof Interface) {
+            ((Interface)declaration).setUseDefaultMethods(false);
+        }
+        super.visit(that);
+    }
 
     private boolean hasCompilerAnnotation(List<CompilerAnnotation> compilerAnnotations, String name, String value) {
         for (Tree.CompilerAnnotation ca : compilerAnnotations) {
