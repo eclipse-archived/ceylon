@@ -3168,7 +3168,7 @@ public class ClassTransformer extends AbstractTransformer {
             arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
         }
         if(includeBody){
-            JCExpression qualifierThis = makeUnquotedIdent(getCompanionFieldName(iface));
+            JCExpression qualifierThis = naming.makeCompanionFieldName(iface);
             // if the best satisfied type is not the one we think we implement, we may need to cast
             // our impl accessor to get the expected bounds of the qualifying type
             if(explicitReturn){
@@ -3323,9 +3323,8 @@ public class ClassTransformer extends AbstractTransformer {
                     containerInstance = makeSelect(containerType, "this");
                 }else{
                     // it's a class: find the right field used for the interface container impl
-                    String containerFieldName = getCompanionFieldName((Interface)interfaceContainer);
                     JCExpression containerType = makeJavaType(modelContainer.getType(), JT_SATISFIES);
-                    containerInstance = makeSelect(makeSelect(containerType, "this"), containerFieldName);
+                    containerInstance = naming.makeCompanionFieldName(makeSelect(containerType, "this"), (Interface)interfaceContainer);
                 }
             }
         }
@@ -3356,7 +3355,7 @@ public class ClassTransformer extends AbstractTransformer {
                 null);
         
         JCExpressionStatement companionInstanceAssign = make().Exec(make().Assign(
-                makeSelect("this", getCompanionFieldName(iface)),// TODO Use qualified name for quoting? 
+                naming.makeCompanionFieldName(naming.makeThis(), iface),// TODO Use qualified name for quoting? 
                 newInstance));
         return companionInstanceAssign;
     }

@@ -1334,7 +1334,17 @@ public class Naming extends NamingBase implements LocalId {
      * instance.
      */
     JCExpression makeCompanionFieldName(Interface def) {
-        return makeUnquotedIdent(getCompanionFieldName(def));
+        return makeCompanionFieldName(null, def);
+    }
+    
+    JCExpression makeCompanionFieldName(JCExpression qualifier, Interface def) {
+        JCExpression result;
+        if (qualifier == null) {
+            result = makeUnquotedIdent(getCompanionFieldName(def));
+        } else {
+            result = makeSelect(qualifier, getCompanionFieldName(def));
+        }
+        return result;
     }
     
     /** 
