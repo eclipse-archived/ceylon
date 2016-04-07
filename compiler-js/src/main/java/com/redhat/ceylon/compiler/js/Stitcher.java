@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.js.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsJULLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
+import com.redhat.ceylon.compiler.js.util.NpmDescriptorGenerator;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -206,6 +207,11 @@ public class Stitcher {
             JsCompiler.endWrapper(writer);
         } finally {
             ShaSigner.sign(file, new JsJULLogger(), true);
+        }
+        final File npmFile = new File(moduleFile.getParentFile(), ArtifactContext.NPM_DESCRIPTOR);
+        try (FileWriter writer = new FileWriter(npmFile)) {
+            String npmdesc = new NpmDescriptorGenerator(mod, true, false).generateDescriptor();
+            writer.write(npmdesc);
         }
         return 0;
     }
