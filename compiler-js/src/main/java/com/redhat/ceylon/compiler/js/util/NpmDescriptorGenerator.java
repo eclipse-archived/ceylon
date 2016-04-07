@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -52,7 +53,7 @@ public class NpmDescriptorGenerator {
             for (ModuleImport imp : mod.getImports()) {
                 if (imp.isOptional()) {
                     opts.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
-                } else {
+                } else if (!imp.isNative() || imp.getNativeBackends().supports(Backend.JavaScript)) {
                     deps.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
                 }
             }
