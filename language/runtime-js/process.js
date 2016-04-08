@@ -8,12 +8,11 @@ if (typeof navigator !== "undefined") {
         properties["os.name"] = $_String(navigator.platform);
     }
     if (navigator.languages||navigator.userLanguage||navigator.browserLanguage||navigator.language) {
-        var $lang;
         // work around a cordova bug https://github.com/ceylon/ceylon/issues/6182
-        if(navigator.languages && navigator.languages != "")
-            $lang = navigator.languages[0];
-        else
+        var $lang=navigator.languages && navigator.languages[0];
+        if(!$lang) {
             $lang = navigator.userLanguage || navigator.browserLanguage || navigator.language;
+        }
         properties["user.locale"]=$_String($lang);
     }
     if (navigator.appVersion !== undefined) {
