@@ -67,4 +67,14 @@ public class Java8InterfaceTests extends CompilerTests {
     public void interfaceWithTypeMembers() {
         compareWithJavaSource("iface/InterfaceWithTypeMembers");
     }
+    
+    @Test
+    public void mixed() {
+        compareWithJavaSource("iface/Mixed");
+    }
+    
+    @Test
+    public void invokingObjectMethods() {
+        compareWithJavaSource("iface/InvokingObjectMethods");
+    }
 }
