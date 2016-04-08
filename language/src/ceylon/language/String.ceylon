@@ -253,7 +253,7 @@ shared native final class String(characters)
      
      Using the [[span operator|Ranged.span]], 
      `string.span(to, from)` may be written as 
-     `string[from...to]`."
+     `string[from..to]`."
     shared actual native String span(Integer from, Integer to);
     
     "A string containing the characters of this string from 
