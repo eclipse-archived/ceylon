@@ -1369,7 +1369,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     me.addError(desc + 
                             " already specified: '" + 
-                                d.getName(unit) + "'");
+                            d.getName(unit) + "'");
                 }
                 else if (d instanceof Value && 
                         ((Value) d).isInferred()) {

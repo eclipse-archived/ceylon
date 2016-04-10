@@ -58,7 +58,9 @@ public class ModelUtil {
     
     /**
      * Get the nearest containing scope that is not a
-     * ConditionScope. 
+     * ConditionScope. Often needed because things
+     * defined in ConditionScopes are actually visible
+     * outside the ConditionScope.
      */
     public static Scope getRealScope(Scope scope) {
         while (!(scope instanceof Package)) {

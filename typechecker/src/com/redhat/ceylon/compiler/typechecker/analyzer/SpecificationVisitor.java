@@ -681,7 +681,7 @@ public class SpecificationVisitor extends Visitor {
             return "declaration";
         }
     }
-
+    
     @Override
     public void visit(Tree.SpecifierStatement that) {
         Tree.Term term = that.getBaseMemberExpression();
@@ -703,11 +703,11 @@ public class SpecificationVisitor extends Visitor {
                 if (!isForwardReferenceable()) {
                     if (declaration.isFormal()) {
                         bme.addError("member is formal and may not be specified: '" +
-                                member.getName() + "' is declared formal");
+                                declaration.getName() + "' is declared formal");
                     }
                     else if (declaration.isDefault()) {
                         bme.addError("member is default and may not be specified except in its declaration: '" +
-                                member.getName() + "' is declared default");
+                                declaration.getName() + "' is declared default");
                     }
                 }
                 if (that.getRefinement()) {
@@ -717,101 +717,17 @@ public class SpecificationVisitor extends Visitor {
                         that.getSpecifierExpression();
                 boolean lazy = se instanceof 
                         Tree.LazySpecifierExpression;
-                if (declaration instanceof Value) {
-                    Value value = (Value) declaration;
-                    if (!value.isVariable() &&
-                            lazy!=value.isTransient()) {
-                        // check that all assignments to a non-variable, in
-                        // different paths of execution, all use the same
-                        // kind of specifier, all =>, or all =
-                        // TODO: sometimes this error appears only because 
-                        //       of a later line which illegally reassigns
-                        se.addError("value must be specified using => lazy specifier: '" +
-                                member.getName() + "'");
-                    }
-                    if (lazy) {
-                        if (value.isVariable()) {
-                            se.addError("variable value may not be specified using => lazy specifier: '" +
-                                    member.getName() + "'");
-                        }
-                        else if (value.isLate()) {
-                            se.addError("late reference may not be specified using => lazy specifier: '" +
-                                    member.getName() + "'");
-                        }
-                    }
-                }
+                checkSpecifiedValue(se);
                 if (!lazy || !parameterized) {
                     se.visit(this);
                 }
-                boolean constant = 
-                        !isVariable() && !isLate();
-                Scope scope = that.getScope();
-                if (constant && 
-                        !declaration.isDefinedInScope(scope)) {
-                    //this error is added by ExpressionVisitor
-//                    that.addError("inherited member is not variable and may not be specified here: '" + 
-//                            member.getName() + "'");
-                }
-                else if (!declared && constant) {
-                    bme.addError(shortdesc() + 
-                            " is not yet declared: '" + 
-                            member.getName() + "'");
-                }
-                else if (loopDepth>0 && constant && 
-                        !(endsInReturnThrow && 
-                                lastContinue==null ||
-                          endsInBreak && allOuterLoopsBreak &&
-                                  lastContinue==null)) {
-                    if (specified.definitely) {
-                        bme.addError(longdesc() + 
-                                " is aready definitely specified: '" + 
-                                member.getName() + "'", 
-                                803);
-                    }
-                    else {
-                        bme.addError(longdesc() + 
-                                " is not definitely unspecified in loop: '" + 
-                                member.getName() + "'", 
-                                803);
-                        specify(); //to eliminate dupe error
-                    }
-                }
-                else if (withinDeclaration && constant && 
-                        !that.getRefinement()) {
-                    Declaration dec = 
-                            getContainingDeclarationOfScope(scope);
-                    if (dec!=null && dec.equals(member)) {
-                        bme.addError("cannot specify " + 
-                                shortdesc() + 
-                                " from within its own body: '" + 
-                                member.getName() + "'");
-                    }
-                    else {
-                        bme.addError("cannot specify " + 
-                                shortdesc() + 
-                                " declared in outer scope: '" + 
-                                member.getName() + "'", 
-                                803);
-                    }
-                }
-                else if (specified.possibly && constant) {
-                    if (specified.definitely) {
-                        bme.addError(longdesc() + 
-                                " is aready definitely specified: '" + 
-                                member.getName() + "'", 
-                                803);
-                    }
-                    else {
-                        bme.addError(longdesc() + 
-                                " is not definitely unspecified: '" + 
-                                member.getName() + "'", 
-                                803);
-                        specify(); //to eliminate dupe error
-                    }
-                }
-                else {
+                
+                if (that.getRefinement()) {
                     specify();
                     term.visit(this);
+                }
+                else {
+                    specification(that, bme);
                 }
                 if (lazy && parameterized) {
                     se.visit(this);
@@ -824,6 +740,109 @@ public class SpecificationVisitor extends Visitor {
         }
         else {
             super.visit(that);
+        }
+    }
+    
+    private void checkSpecifiedValue(Tree.SpecifierExpression se) {
+        if (declaration instanceof Value) {
+            boolean lazy = se instanceof 
+                    Tree.LazySpecifierExpression;
+            Value value = (Value) declaration;
+            if (!value.isVariable() &&
+                    lazy!=value.isTransient()) {
+                // check that all assignments to a non-variable, in
+                // different paths of execution, all use the same
+                // kind of specifier, all =>, or all =
+                // TODO: sometimes this error appears only because 
+                //       of a later line which illegally reassigns
+                se.addError("value must be specified using => lazy specifier: '" +
+                        declaration.getName() + "'");
+            }
+            if (lazy) {
+                if (value.isVariable()) {
+                    se.addError("variable value may not be specified using => lazy specifier: '" +
+                            declaration.getName() + "'");
+                }
+                else if (value.isLate()) {
+                    se.addError("late reference may not be specified using => lazy specifier: '" +
+                            declaration.getName() + "'");
+                }
+            }
+        }
+    }
+    
+    private void specification(Tree.SpecifierStatement that, 
+            Tree.StaticMemberOrTypeExpression bme) {
+        boolean constant = !isVariable() && !isLate();
+        Scope scope = that.getScope();
+        if (constant && 
+                (!declaration.isDefinedInScope(scope) ||
+                declaration instanceof FunctionOrValue &&
+                ((FunctionOrValue) declaration).isShortcutRefinement() &&
+                declaration.getScope() == scope.getContainer())) {
+            //this error is added by ExpressionVisitor
+//          that.addError("inherited member is not variable and may not be specified here: '" + 
+//                  member.getName() + "'");
+        }
+        else if (!declared && constant) {
+            bme.addError(shortdesc() + 
+                    " is not yet declared: '" + 
+                    declaration.getName() + "'");
+        }
+        else if (loopDepth>0 && constant  && 
+                !(endsInReturnThrow && 
+                        lastContinue==null ||
+                  endsInBreak && allOuterLoopsBreak &&
+                          lastContinue==null)) {
+            if (specified.definitely) {
+                bme.addError(longdesc() + 
+                        " is aready definitely specified: '" + 
+                        declaration.getName() + "'", 
+                        803);
+            }
+            else {
+                bme.addError(longdesc() + 
+                        " is not definitely unspecified in loop: '" + 
+                        declaration.getName() + "'", 
+                        803);
+                specify(); //to eliminate dupe error
+            }
+        }
+        else if (withinDeclaration && constant) {
+            Declaration dec = 
+                    getContainingDeclarationOfScope(scope);
+            if (dec!=null && dec.equals(declaration)) {
+                bme.addError("cannot specify " + 
+                        shortdesc() + 
+                        " from within its own body: '" + 
+                        declaration.getName() + "'");
+            }
+            else {
+                bme.addError("cannot specify " + 
+                        shortdesc() + 
+                        " declared in outer scope: '" + 
+                        declaration.getName() + "'", 
+                        803);
+            }
+        }
+        else if (specified.possibly && constant) {
+            if (specified.definitely) {
+                bme.addError(longdesc() + 
+                        " is aready definitely specified: '" + 
+                        declaration.getName() + "'", 
+                        803);
+            }
+            else {
+                bme.addError(longdesc() + 
+                        " is not definitely unspecified: '" + 
+                        declaration.getName() + "'", 
+                        803);
+                specify(); //to eliminate dupe error
+            }
+        }
+        else {
+            specify();
+            bme.visit(this);
         }
     }
     
@@ -1162,8 +1181,9 @@ public class SpecificationVisitor extends Visitor {
 
             if (!declaration.isAnonymous()) {
                 if (isSharedDeclarationUninitialized()) {
-                    getDeclaration(that)
-                        .addError("must be definitely specified by class initializer: " + 
+                    Node d = getDeclaration(that);
+                    if (d==null) d = that;
+                    d.addError("must be definitely specified by class initializer: " + 
                                 message(declaration) + " is shared", 
                                 1401);
                 }
