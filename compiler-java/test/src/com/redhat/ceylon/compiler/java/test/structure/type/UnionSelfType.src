@@ -34,7 +34,7 @@ public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     public final .ceylon.language.Comparison compare(final .ceylon.language.Comparable other) {
-        return (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Comparison)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {
@@ -82,7 +82,7 @@ public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     public final .ceylon.language.Comparison compare(final .ceylon.language.Comparable other) {
-        return (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Comparison)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public static void main(.java.lang.String[] args) {

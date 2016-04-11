@@ -17,7 +17,7 @@ class Bug1313 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug13xx::Bug1313")
     final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313 other) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1313)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

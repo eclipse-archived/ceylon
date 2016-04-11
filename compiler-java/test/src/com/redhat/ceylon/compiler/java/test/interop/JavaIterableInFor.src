@@ -23,10 +23,10 @@ final class javaIterableInFor_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void javaIterableInFor() {
-        final .java.lang.Iterable<.ceylon.language.String> strings = (.java.lang.Iterable<.ceylon.language.String>).ceylon.language.nothing_.get_();
-        final .java.lang.Iterable<.ceylon.language.Integer> ints = (.java.lang.Iterable<.ceylon.language.Integer>).ceylon.language.nothing_.get_();
-        final .java.lang.Iterable<.java.lang.String> jstrings = (.java.lang.Iterable<.java.lang.String>).ceylon.language.nothing_.get_();
-        final .java.lang.Iterable<.java.lang.Integer> jints = (.java.lang.Iterable<.java.lang.Integer>).ceylon.language.nothing_.get_();
+        final .java.lang.Iterable<.ceylon.language.String> strings = (.java.lang.Iterable<.ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .java.lang.Iterable<.ceylon.language.Integer> ints = (.java.lang.Iterable<.ceylon.language.Integer>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .java.lang.Iterable<.java.lang.String> jstrings = (.java.lang.Iterable<.java.lang.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .java.lang.Iterable<.java.lang.Integer> jints = (.java.lang.Iterable<.java.lang.Integer>)(.java.lang.Object).ceylon.language.nothing_.get_();
         long sum = 0L;
         loop_0: for (.ceylon.language.String s$iterator$$1 : strings) {
             final .java.lang.String s = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.Util.checkNull(s$iterator$$1)).toString();

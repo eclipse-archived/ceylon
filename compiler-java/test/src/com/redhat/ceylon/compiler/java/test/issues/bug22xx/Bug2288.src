@@ -15,7 +15,7 @@ public final class bug2288_ {
                     if (sel$1 == true) {
                         $ceylontmp$ifResult$0 = .ceylon.language.Integer.instance(42L);
                     } else if (sel$1 == false) {
-                        $ceylontmp$ifResult$0 = (.ceylon.language.Integer).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$0 = (.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
                         $ceylontmp$ifResult$0 = .ceylon.language.Integer.instance(0L);

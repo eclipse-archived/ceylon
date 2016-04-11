@@ -44,6 +44,6 @@ public final class i$impl_ implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void m() {
-        final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_ a = (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_ a = (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$m$mi_)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }

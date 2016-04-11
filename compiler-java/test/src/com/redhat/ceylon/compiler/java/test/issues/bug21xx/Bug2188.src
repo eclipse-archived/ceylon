@@ -12,7 +12,7 @@ final class bug2188_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+            value = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
             $initException$ = null;
             $init$value = true;
         } catch (.java.lang.Throwable x) {

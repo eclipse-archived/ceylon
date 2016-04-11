@@ -703,7 +703,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             value = "ceylon.language::Iterator<ceylon.language::Integer->ceylon.language::String|T>",
             erased = true)
     public final .ceylon.language.Iterator iterator() {
-        return (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -712,7 +712,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::Integer>")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getKeys() {
-        return (.ceylon.language.Set<? extends .ceylon.language.Integer>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -723,7 +723,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .ceylon.language.Collection getItems() {
-        return (.ceylon.language.Collection).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Collection)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -4,12 +4,12 @@ public class Bug844_Top<Element> implements .com.redhat.ceylon.compiler.java.run
     
     public Bug844_Top(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
         this.$reified$Element = $reified$Element;
-        this.firstAttribute = (Element).ceylon.language.nothing_.get_();
+        this.firstAttribute = (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
     
     public Element first() {
-        return (Element).ceylon.language.nothing_.get_();
+        return (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final Element firstAttribute;
     
@@ -47,7 +47,7 @@ public class Bug844_Bottom<Element, First extends Element> extends .com.redhat.c
     
     @.java.lang.Override
     public final First first() {
-        return (First).ceylon.language.nothing_.get_();
+        return (First)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final First firstAttribute;
     
@@ -664,12 +664,12 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanFrom(final .ceylon.language.Integer from) {
-        return (.ceylon.language.Sequential<? extends Element>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends Element> spanTo(final .ceylon.language.Integer to) {
-        return (.ceylon.language.Sequential<? extends Element>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequential<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

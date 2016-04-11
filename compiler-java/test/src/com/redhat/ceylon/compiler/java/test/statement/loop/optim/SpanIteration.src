@@ -12,7 +12,7 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     IntegerSpans(final long first, final long last) {
         this.first = first;
         this.last = last;
-        this.a = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        this.a = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     private final long first;
     
@@ -160,7 +160,7 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
         this.first = first;
         this.last = last;
         this.step = step;
-        this.a = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        this.a = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     private final long first;
     
@@ -326,7 +326,7 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
     CharacterSpans(final int first, final int last) {
         this.first = first;
         this.last = last;
-        this.a = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        this.a = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     private final int first;
     
@@ -479,7 +479,7 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
         this.first = first;
         this.last = last;
         this.step = step;
-        this.a = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        this.a = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     private final int first;
     

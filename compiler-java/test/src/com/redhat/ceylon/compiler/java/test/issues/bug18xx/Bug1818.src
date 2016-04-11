@@ -20,7 +20,7 @@ class Bug1818 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         loop_0: while (isTuple$7 || isArray$6 ? i$8 < length$9 : !((elem$2 = arg$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
             if (isArray$6 || isTuple$7) elem$2 = iterable$5.getFromFirst(i$8++);
             final .java.lang.Object arg = elem$2;
-            s$0 = ((.ceylon.language.String)arg).toString();
+            s$0 = ((.ceylon.language.String)(.java.lang.Object)arg).toString();
             .java.lang.String s$4 = s$0;
             doforelse$1 = false;
             break loop_0;

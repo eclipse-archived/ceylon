@@ -6,7 +6,7 @@ final class bug1227_ifBreak_returnElse_ {
     }
     
     static long bug1227_ifBreak_returnElse(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$0 = 0L;
         boolean doforelse$1 = true;
@@ -56,7 +56,7 @@ final class bug1227_ifBreak_returnElse_opt_ {
     }
     
     static long bug1227_ifBreak_returnElse_opt() {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$11 = 0L;
         boolean doforelse$12 = true;
@@ -94,7 +94,7 @@ final class bug1227_ifBreak_specifiedElse_ {
     }
     
     static long bug1227_ifBreak_specifiedElse(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$23 = 0L;
         boolean doforelse$24 = true;
@@ -135,7 +135,7 @@ final class bug1227_ifBreak_specifiedElse_opt_ {
     }
     
     static long bug1227_ifBreak_specifiedElse_opt() {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$35 = 0L;
         boolean doforelse$36 = true;
@@ -175,7 +175,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_ {
     }
     
     static long bug1227_ifBreak_elseBreak_specifiedElse(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$48 = 0L;
         boolean doforelse$49 = true;
@@ -243,7 +243,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
     }
     
     static long bug1227_ifBreak_elseBreak_specifiedElse_opt() {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$61 = 0L;
         boolean doforelse$62 = true;
@@ -310,7 +310,7 @@ final class bug1227_ifReturn_specifiedElse_ {
     }
     
     static long bug1227_ifReturn_specifiedElse(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$75 = 0L;
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$80 = l;
@@ -357,7 +357,7 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
     }
     
     static long bug1227_ifReturn_specifiedElse_opt() {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$86 = 0L;
         final long $ceylontmp$first$88 = 1L;
@@ -403,7 +403,7 @@ final class bug1227_ifThrow_specifiedElse_ {
     }
     
     static long bug1227_ifThrow_specifiedElse(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$98 = 0L;
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$103 = l;
@@ -439,7 +439,7 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
     }
     
     static long bug1227_ifThrow_specifiedElse_opt() {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$109 = 0L;
         final long $ceylontmp$first$111 = 1L;
@@ -474,7 +474,7 @@ final class bug1227_for2_ifReturn_specifiedElse_ {
     }
     
     static long bug1227_for2_ifReturn_specifiedElse(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$121 = 0L;
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$133 = l;
@@ -526,7 +526,7 @@ final class bug1227_declaredInside_ {
     }
     
     static long bug1227_declaredInside(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         boolean doforelse$139 = true;
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$143 = l;
         final boolean isArray$144 = iterable$143 instanceof .ceylon.language.Array;
@@ -573,7 +573,7 @@ final class bug1227_onlySpecifiedElse_ {
     }
     
     static long bug1227_onlySpecifiedElse(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$150 = l;
         final boolean isArray$151 = iterable$150 instanceof .ceylon.language.Array;
@@ -602,7 +602,7 @@ final class bug1227_function_ {
     }
     
     static long bug1227_function(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
-        final boolean someBoolean = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         
         final class from_ {
             

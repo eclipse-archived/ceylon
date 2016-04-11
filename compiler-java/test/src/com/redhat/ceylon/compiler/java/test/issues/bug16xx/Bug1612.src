@@ -40,7 +40,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final <G>G $default$Bar1$j(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
-        return (G).ceylon.language.nothing_.get_();
+        return (G)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)

@@ -11,9 +11,9 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     @.java.lang.Override
     public final .java.lang.Object m(final .ceylon.language.Integer xboxed, final .ceylon.language.Integer yboxed, final .ceylon.language.Integer zboxed) {
-        final long x = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
-        final long y = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
-        final long z = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        final long x = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
+        final long y = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
+        final long z = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
         boolean b = false;
         b = (
             let
@@ -199,9 +199,9 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.java.lang.Override
     public final .java.lang.Object m(final .ceylon.language.Float xboxed, final .ceylon.language.Float yboxed, final .ceylon.language.Float zboxed) {
-        final double x = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
-        final double y = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
-        final double z = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
+        final double x = ((.ceylon.language.Float)(.java.lang.Object).ceylon.language.nothing_.get_()).doubleValue();
+        final double y = ((.ceylon.language.Float)(.java.lang.Object).ceylon.language.nothing_.get_()).doubleValue();
+        final double z = ((.ceylon.language.Float)(.java.lang.Object).ceylon.language.nothing_.get_()).doubleValue();
         boolean b = false;
         b = (
             let
@@ -389,9 +389,9 @@ class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>>
     
     @.java.lang.Override
     public final .java.lang.Object m(final Element xboxed, final Element yboxed, final Element zboxed) {
-        final Element x = (Element).ceylon.language.nothing_.get_();
-        final Element y = (Element).ceylon.language.nothing_.get_();
-        final Element z = (Element).ceylon.language.nothing_.get_();
+        final Element x = (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final Element y = (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final Element z = (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
         boolean b = false;
         b = (
             let

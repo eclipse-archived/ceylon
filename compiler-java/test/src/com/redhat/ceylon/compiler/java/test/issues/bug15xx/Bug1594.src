@@ -131,7 +131,7 @@ class Bug1594OptimizedIs<X extends .ceylon.language.List<? extends .java.lang.Ob
             final Z o$44 = (Z)o$43;
             .ceylon.language.print_.print(.ceylon.language.String.instance("Z"));
         }
-        final .java.lang.String s = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+        final .java.lang.String s = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
         .java.lang.Object s$46;
         if (.com.redhat.ceylon.compiler.java.Util.isReified(s$46 = .ceylon.language.String.instance(s), $reified$X)) {
             final .java.lang.Object s$47 = s$46;

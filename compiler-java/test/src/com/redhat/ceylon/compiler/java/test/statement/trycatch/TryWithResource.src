@@ -123,7 +123,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     private final .ceylon.language.Obtainable $getResource$priv$() {
-        return (.ceylon.language.Obtainable).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Obtainable)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

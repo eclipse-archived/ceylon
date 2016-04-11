@@ -110,7 +110,7 @@ class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.java.lang.Override
     public final <M>M methodTypeParamMethod(final M b) {
-        return (M).ceylon.language.nothing_.get_();
+        return (M)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
