@@ -1,8 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
-
+ // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
 @.ceylon.language.SharedAnnotation$annotation$ // line 1
-@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true) // line 1
 public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
      // line 1
     @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 1
@@ -74,13 +74,13 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper.class);
-}
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+} // line 19
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
 @.ceylon.language.SharedAnnotation$annotation$ // line 19
-@.com.redhat.ceylon.compiler.java.metadata.Class(
-        constructors = true,
-        extendsType = "com.redhat.ceylon.compiler.java.test.fordebug.lines::CtorSuper")
-public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper {
+@.com.redhat.ceylon.compiler.java.metadata.Class( // line 19
+        constructors = true, // line 19
+        extendsType = "com.redhat.ceylon.compiler.java.test.fordebug.lines::CtorSuper") // line 19
+public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper { // line 19
      // line 19
     @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 19
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
