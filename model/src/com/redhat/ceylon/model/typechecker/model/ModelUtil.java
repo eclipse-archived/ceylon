@@ -1666,7 +1666,7 @@ public class ModelUtil {
                     (pstds.size()+qstds.size());
         set.addAll(pstds); 
         set.retainAll(qstds);
-        for (TypeDeclaration std: pstds) {
+        for (TypeDeclaration std: set) {
             Type pst = null;
             Type qst = null;
             for (TypeParameter tp: std.getTypeParameters()) {
