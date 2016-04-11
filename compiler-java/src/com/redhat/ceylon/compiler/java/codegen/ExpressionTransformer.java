@@ -4786,9 +4786,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (mustUseField || mustUseParameter){
                     if(decl instanceof FieldValue) {
                         selector = ((FieldValue)decl).getRealName();
-                    } else if (isWithinSuperInvocation()
-                            && ((Value)decl).isVariable()
-                            && ((Value)decl).isCaptured()) {
+                    } else if (decl.isParameter()) {
                         selector = Naming.getAliasedParameterName(((Value)decl).getInitializerParameter());
                     } else {
                         selector = decl.getName();
