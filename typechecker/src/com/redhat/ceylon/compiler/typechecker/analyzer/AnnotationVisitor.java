@@ -1053,7 +1053,7 @@ public class AnnotationVisitor extends Visitor {
     public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
         Unit unit = that.getUnit();
-        Type type = that.getTypeModel();
+        Type type = (Type) that.getTarget();
         if (type!=null && unit.isJavaObjectArrayType(type)) {
             Type ta = unit.getJavaArrayElementType(type);
             if (!ModelUtil.isTypeUnknown(ta) && 
@@ -1061,8 +1061,8 @@ public class AnnotationVisitor extends Visitor {
                      ta.isIntersection() || 
                      unit.getDefiniteType(ta).isUnion())) {
                 that.addError(
-                        "illegal Java array element type: arrays with element type " 
-                                + ta.asString(unit) + " may not be instantiated");
+                        "illegal Java array element type: arrays with element type '" 
+                                + ta.asString(unit) + "' may not be instantiated");
             }
         }
         
