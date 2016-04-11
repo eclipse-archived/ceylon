@@ -27,6 +27,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -1031,6 +1032,40 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
         }
+    }
+    
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+        if (sts != null) {
+            Unit unit = that.getUnit();
+            for (Tree.StaticType t: sts.getTypes()) {
+                Type type = t.getTypeModel();
+                if (type!=null && unit.isJavaArrayType(type)) {
+                    t.addError("type parameter upper bound is a Java array type");
+                }
+            }
+        }
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.BaseTypeExpression that) {
+        super.visit(that);
+        Unit unit = that.getUnit();
+        Type type = that.getTypeModel();
+        if (type!=null && unit.isJavaObjectArrayType(type)) {
+            Type ta = unit.getJavaArrayElementType(type);
+            if (!ModelUtil.isTypeUnknown(ta) && 
+                    (ta.isNothing() || 
+                     ta.isIntersection() || 
+                     unit.getDefiniteType(ta).isUnion())) {
+                that.addError(
+                        "illegal Java array element type: arrays with element type " 
+                                + ta.asString(unit) + " may not be instantiated");
+            }
+        }
+        
     }
     
 }
