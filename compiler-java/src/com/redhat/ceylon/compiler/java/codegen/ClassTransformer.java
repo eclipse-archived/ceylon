@@ -337,6 +337,7 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
                 if (Strategy.useSerializationProxy(c)
                         && noValueConstructorErrors((Tree.ClassDefinition)def)) {
+                    at(def);
                     addWriteReplace(c, classBuilder);
                 }
             }
