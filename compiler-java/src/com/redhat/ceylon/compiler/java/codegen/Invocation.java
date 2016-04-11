@@ -1691,7 +1691,7 @@ class NamedArgumentInvocation extends Invocation {
                 && !gen.expressionGen().isWithinSyntheticClassBody()) {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
-                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
+                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0));
                 defaultedParameterInstance = gen.naming.makeThis();
             } else {
                 // a local or toplevel function
