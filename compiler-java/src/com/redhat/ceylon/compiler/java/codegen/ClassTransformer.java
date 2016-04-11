@@ -5270,6 +5270,7 @@ public class ClassTransformer extends AbstractTransformer {
             visitor.classBuilder = prevClassBuilder;
             visitor.inInitializer = prevInInitializer;
             visitor.defs = prevDefs;
+            naming.closeScopedSubstitutions(def.getScope());
         }
  
         addMissingUnrefinedMembers(def, klass, objectClassBuilder);
