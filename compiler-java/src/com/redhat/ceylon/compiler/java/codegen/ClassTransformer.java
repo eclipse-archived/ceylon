@@ -345,6 +345,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // reset position before initializer constructor is generated. 
         at(def);
+        classBuilder.at(def);
         List<JCTree> result;
         if (Decl.isAnnotationClass(def)) {
             ListBuffer<JCTree> trees = new ListBuffer<JCTree>();
