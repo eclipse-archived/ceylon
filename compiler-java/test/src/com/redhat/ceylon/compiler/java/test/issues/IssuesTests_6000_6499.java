@@ -97,4 +97,9 @@ public class IssuesTests_6000_6499 extends CompilerTests {
             err.delete();
         }
     }
+    
+    @Test
+    public void testBug6180() {
+        compareWithJavaSource("bug61xx/Bug6180");
+    }
 }
