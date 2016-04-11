@@ -1759,20 +1759,24 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 Type t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    String name = "'" + dec.getName(unit) + "'";
-                    if (dec.isClassOrInterfaceMember()) {
-                        Declaration c = 
-                                (Declaration) 
-                                    dec.getContainer();
-                        name += " of '" + c.getName(unit) + "'";
-                    }
                     checkAssignable(t, declaredType, sie, 
                             "specified expression must be assignable to declared type of " + 
-                                    name,
+                                    decdesc(dec),
                             code);
                 }
             }
         }
+    }
+
+    private String decdesc(Declaration dec) {
+        String name = "'" + dec.getName(unit) + "'";
+        if (dec.isClassOrInterfaceMember()) {
+            Declaration c = 
+                    (Declaration) 
+                        dec.getContainer();
+            name += " of '" + c.getName(unit) + "'";
+        }
+        return name;
     }
 
     private void checkFunctionType(Type et, 
@@ -2649,23 +2653,15 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setDeclaration(returnDeclaration);
             Tree.Expression e = that.getExpression();
-            String name = returnDeclaration.getName();
-            if (name==null || 
-                    returnDeclaration.isAnonymous()) {
-                name = "anonymous function";
-            }
-            else {
-                name = "'" + name + "'";
-            }
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
                 	if (returnDeclaration instanceof Function) {
 	                    that.addError("function must return a value: " +
-	                    		name + " is not a 'void' function", 12000);
+	                    		returndesc() + " is not a 'void' function", 12000);
                 	}
                 	else {
 	                    that.addError("getter must return a value: " +
-	                            name + " is a getter");
+	                            returndesc() + " is a getter");
                 	}
                 }
             }
@@ -2675,11 +2671,11 @@ public class ExpressionVisitor extends Visitor {
                 if (returnType instanceof Tree.VoidModifier) {
                 	if (returnDeclaration instanceof Function) {
                         that.addError("function may not return a value: " +
-                                name + " is a 'void' function", 13000);
+                                returndesc() + " is a 'void' function", 13000);
                 	}
                 	else if (returnDeclaration instanceof TypedDeclaration) {
 	                    that.addError("setter may not return a value: " +
-	                            name + " is a setter");
+	                            returndesc() + " is a setter");
                 	}
                 	else {
 	                    that.addError("class initializer may not return a value");
@@ -2693,11 +2689,23 @@ public class ExpressionVisitor extends Visitor {
                             !isTypeUnknown(at)) {
                         checkAssignable(at, et, e, 
                                 "returned expression must be assignable to return type of " +
-                                        name, 2100);
+                                        returndesc(), 2100);
                     }
                 }
             }
         }
+    }
+
+    private String returndesc() {
+        String name = returnDeclaration.getName();
+        if (name==null || 
+                returnDeclaration.isAnonymous()) {
+            name = "anonymous function";
+        }
+        else {
+            name = "'" + name + "'";
+        }
+        return name;
     }
 
     private void inferReturnType(Type et, Type at) {
@@ -8389,8 +8397,9 @@ public class ExpressionVisitor extends Visitor {
         }
         if (receiver==null && 
                 dec.isClassOrInterfaceMember()) {
-            receiver = parent.getScope()
-                    .getDeclaringType(dec);
+            receiver = 
+                    parent.getScope()
+                        .getDeclaringType(dec);
         }
         int max = params.size();
         int args = typeArguments.size();
