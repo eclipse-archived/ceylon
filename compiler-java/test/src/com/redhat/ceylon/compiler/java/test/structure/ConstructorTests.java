@@ -358,5 +358,11 @@ public class ConstructorTests extends CompilerTests {
         compile("constructor/Bug6134.ceylon");
         compile("constructor/Bug6134Use.ceylon");
     }
+    
+    @Test
+    public void testCtorBug6192() {
+        compareWithJavaSource("constructor/Bug6192");
+        run("com.redhat.ceylon.compiler.java.test.structure.constructor.bug6192");
+    }
 
 }
