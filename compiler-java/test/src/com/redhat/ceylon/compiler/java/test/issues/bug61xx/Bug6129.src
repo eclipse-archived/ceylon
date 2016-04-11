@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.issues.bug60xx;
+package com.redhat.ceylon.compiler.java.test.issues.bug61xx;
 
 final class Bug6129<T> {
     
@@ -42,7 +42,7 @@ final class bug6129Ignored_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = .com.redhat.ceylon.compiler.java.test.issues.bug60xx.bug6129_.get_().$call$((.java.lang.Object).ceylon.language.String.instance("Adfasd"));
+            value = .com.redhat.ceylon.compiler.java.test.issues.bug61xx.bug6129_.get_().$call$((.java.lang.Object).ceylon.language.String.instance("Adfasd"));
             $initException$ = null;
             $init$value = true;
         } catch (.java.lang.Throwable x) {
