@@ -485,6 +485,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // type param erasure
                     JCExpression targetType = makeJavaType(expectedType, 
                             AbstractTransformer.JT_NO_PRIMITIVES | companionFlags);
+                    result = make().TypeCast(make().QualIdent(syms().objectType.tsym), result);
                     result = make().TypeCast(targetType, result);
                 }else if(// expression was forcibly erased
                          exprErased
