@@ -165,10 +165,10 @@ public class Operators {
         BINARY_COMPARE(Tree.CompareOp.class, 2, "compare"),
 
         // Binary operators that act on intermediary Comparison objects
-        BINARY_LARGER(Tree.LargerOp.class, 2, JCTree.Tag.EQ, "larger", JCTree.Tag.GT, IntegerFloatCharacter),
-        BINARY_SMALLER(Tree.SmallerOp.class, 2, JCTree.Tag.EQ, "smaller", JCTree.Tag.LT, IntegerFloatCharacter),
-        BINARY_LARGE_AS(Tree.LargeAsOp.class, 2, JCTree.Tag.NE, "smaller",  JCTree.Tag.GE, IntegerFloatCharacter),
-        BINARY_SMALL_AS(Tree.SmallAsOp.class, 2, JCTree.Tag.NE, "larger", JCTree.Tag.LE, IntegerFloatCharacter);
+        BINARY_LARGER(Tree.LargerOp.class, 2, "largerThan", JCTree.Tag.GT, IntegerFloatCharacter),
+        BINARY_SMALLER(Tree.SmallerOp.class, 2, "smallerThan", JCTree.Tag.LT, IntegerFloatCharacter),
+        BINARY_LARGE_AS(Tree.LargeAsOp.class, 2, "notSmallerThan",  JCTree.Tag.GE, IntegerFloatCharacter),
+        BINARY_SMALL_AS(Tree.SmallAsOp.class, 2, "notLargerThan", JCTree.Tag.LE, IntegerFloatCharacter);
 
         // we can have either a mapping from Tree operator class
         Class<? extends Tree.OperatorExpression> operatorClass;
@@ -201,16 +201,6 @@ public class Operators {
                 int arity, String ceylonMethod, 
                 JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
             this(arity, ceylonMethod, javacOperator, optimisableTypes);
-            this.operatorClass = operatorClass;
-        }
-        OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, 
-                int arity, JCTree.Tag javacOperator1, String ceylonValue, 
-                JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
-            this.ceylonValue = ceylonValue;
-            this.javacValueOperator = javacOperator1;
-            this.javacOperator = javacOperator;
-            this.optimisableTypes = optimisableTypes;
-            this.arity = arity;
             this.operatorClass = operatorClass;
         }
         OperatorTranslation(Class<? extends Tree.BinaryOperatorExpression> operatorClass, 

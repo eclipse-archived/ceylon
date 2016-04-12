@@ -2450,7 +2450,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private JCExpression transformOverridableBinaryOperator(
             Tree.Term opExpr,
-            OperatorTranslation originalOperator,
+            OperatorTranslation operator,
             OptimisationStrategy optimisationStrategy, 
             JCExpression left, JCExpression right,
             Tree.Term leftTerm, Type leftType, Tree.Term rightTerm, Type expectedType) {
@@ -2458,32 +2458,20 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         // optimise if we can
         if(optimisationStrategy.useJavaOperator()){
-            result = make().Binary(originalOperator.javacOperator, left, right);
+            result = make().Binary(operator.javacOperator, left, right);
             if (rightTerm != null) {
                 result = unAutoPromote(result, expectedType, opExpr.getSmall());
             }
             return result;
         }
-
-        boolean loseComparison = 
-                originalOperator == OperatorTranslation.BINARY_SMALLER 
-                || originalOperator == OperatorTranslation.BINARY_SMALL_AS 
-                || originalOperator == OperatorTranslation.BINARY_LARGER
-                || originalOperator == OperatorTranslation.BINARY_LARGE_AS;
-
-        // for comparisons we need to invoke compare()
-        OperatorTranslation actualOperator = originalOperator;
-        if (loseComparison) {
-            actualOperator = Operators.OperatorTranslation.BINARY_COMPARE;
-        }
-
+        
         List<JCExpression> args = List.of(right);
         List<JCExpression> typeArgs = null;
         
         // Set operators need reified generics
-        if(originalOperator == OperatorTranslation.BINARY_UNION 
-                || originalOperator == OperatorTranslation.BINARY_INTERSECTION
-                || originalOperator == OperatorTranslation.BINARY_COMPLEMENT){
+        if(operator == OperatorTranslation.BINARY_UNION 
+                || operator == OperatorTranslation.BINARY_INTERSECTION
+                || operator == OperatorTranslation.BINARY_COMPLEMENT){
             Type otherSetElementType = typeFact().getIteratedType(rightTerm.getTypeModel());
             args = args.prepend(makeReifiedTypeArgument(otherSetElementType));
             typeArgs = List.<JCExpression>of(makeJavaType(otherSetElementType, JT_TYPE_ARGUMENT));
@@ -2496,26 +2484,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                 leftType = leftType.getTypeArguments().get(leftType.getDeclaration().getSelfType().getDeclaration());
             }
             
-            result = at(opExpr).Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), actualOperator.getCeylonValueTypeMethodName()), args.prepend(left));
+            result = at(opExpr).Apply(typeArgs, naming.makeQualIdent(makeJavaType(leftType, flags), operator.getCeylonValueTypeMethodName()), args.prepend(left));
         } else {
-            if ((originalOperator == OperatorTranslation.BINARY_LARGE_AS
-                    || originalOperator == OperatorTranslation.BINARY_LARGER
-                    || originalOperator == OperatorTranslation.BINARY_SMALL_AS
-                    || originalOperator == OperatorTranslation.BINARY_SMALLER
-                    || originalOperator == OperatorTranslation.BINARY_COMPARE)
+            if ((operator == OperatorTranslation.BINARY_COMPARE
+                    || operator == OperatorTranslation.BINARY_SMALL_AS
+                    || operator == OperatorTranslation.BINARY_LARGE_AS
+                    || operator == OperatorTranslation.BINARY_SMALLER
+                    || operator == OperatorTranslation.BINARY_LARGER)
                     && willEraseToObject(leftType)) {
                 left = make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), left);
                 args = List.<JCExpression>of(make().TypeCast(makeJavaType(typeFact().getComparableDeclaration().getType(), JT_RAW), right));
             }
-            result = at(opExpr).Apply(typeArgs, makeSelect(left, actualOperator.getCeylonMethodName()), args);
+            result = at(opExpr).Apply(typeArgs, makeSelect(left, operator.getCeylonMethodName()), args);
         }
-
-        if (loseComparison) {
-            // We cheat slightly bu using == instead of equals, but since those values
-            // don't override equals the effect is the same
-            result = at(opExpr).Binary(originalOperator.javacValueOperator, result, makeLanguageValue(originalOperator.ceylonValue));
-        }
-
         return result;
     }
 
