@@ -22,15 +22,13 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.eclipse.aether.aether-transport-http" slot="1.1.0">
+<module xmlns="urn:jboss:module:1.0" name="org.eclipse.aether.util" slot="1.1.0">
     <resources>
-        <resource-root path="org.eclipse.aether.aether-transport-http-1.1.0.jar"/>
+        <resource-root path="org.eclipse.aether.util-1.1.0.jar"/>
     </resources>
     <dependencies>
         <module name="java.base" slot="7" export="true"/>
-        <module name="org.eclipse.aether.aether-api" slot="1.1.0" export="true"/>
-        <module name="org.eclipse.aether.aether-spi" slot="1.1.0" export="true"/>
-        <module name="org.eclipse.aether.aether-util" slot="1.1.0"/>
-        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
+        <module name="java.tls" slot="7" export="true"/>
+        <module name="org.eclipse.aether.api" slot="1.1.0" export="true"/>
     </dependencies>
 </module>

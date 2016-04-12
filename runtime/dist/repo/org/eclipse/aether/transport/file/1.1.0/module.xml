@@ -22,22 +22,13 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.eclipse.aether.aether-impl" slot="1.1.0">
+<module xmlns="urn:jboss:module:1.0" name="org.eclipse.aether.transport.file" slot="1.1.0">
     <resources>
-        <resource-root path="org.eclipse.aether.aether-impl-1.1.0.jar"/>
+        <resource-root path="org.eclipse.aether.transport.file-1.1.0.jar"/>
     </resources>
     <dependencies>
         <module name="java.base" slot="7" export="true"/>
-	<module name="org.eclipse.aether.aether-api" slot="1.1.0" export="true"/>
-        <module name="org.eclipse.aether.aether-spi" slot="1.1.0" export="true"/>
-        <module name="org.eclipse.aether.aether-util" slot="1.1.0"/>
-        <module name="org.slf4j.api" slot="1.6.1" export="true"/>
+        <module name="org.eclipse.aether.api" slot="1.1.0" export="true"/>
+        <module name="org.eclipse.aether.spi" slot="1.1.0" export="true"/>
     </dependencies>
-    <exports>
-        <!-- Uses Guice -->
-        <exclude path="org/eclipse/aether/impl/guice/AetherModule*"/>
-        <exclude path="org/eclipse/aether/impl/AetherModule*"/>
-        <!-- Uses javax.inject -->
-        <exclude path="org/eclipse/aether/internal/impl/LoggerFactoryProvider*"/>
-    </exports>
 </module>

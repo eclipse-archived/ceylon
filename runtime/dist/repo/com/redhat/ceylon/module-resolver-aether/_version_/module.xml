@@ -28,11 +28,13 @@
     </resources>
 
     <dependencies>
-        <module name="org.eclipse.aether.aether-impl" slot="1.1.0"/>
-        <module name="org.eclipse.aether.aether-util" slot="1.1.0"/>
-        <module name="org.eclipse.aether.aether-connector-basic" slot="1.1.0"/>
-        <module name="org.eclipse.aether.aether-transport-http" slot="1.1.0"/>
-        <module name="org.eclipse.aether.aether-transport-file" slot="1.1.0"/>
+        <module name="org.eclipse.aether.api" slot="1.1.0"/>
+        <module name="org.eclipse.aether.spi" slot="1.1.0"/>
+        <module name="org.eclipse.aether.impl" slot="1.1.0"/>
+        <module name="org.eclipse.aether.util" slot="1.1.0"/>
+        <module name="org.eclipse.aether.connector.basic" slot="1.1.0"/>
+        <module name="org.eclipse.aether.transport.http" slot="1.1.0"/>
+        <module name="org.eclipse.aether.transport.file" slot="1.1.0"/>
         <module name="org.apache.maven.maven-aether-provider" slot="3.3.9"/>
         <module name="org.apache.maven.maven-settings" slot="3.3.9"/>
         <module name="org.apache.maven.maven-settings-builder" slot="3.3.9"/>
