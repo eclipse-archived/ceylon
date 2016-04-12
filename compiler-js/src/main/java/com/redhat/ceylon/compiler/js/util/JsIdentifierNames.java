@@ -54,6 +54,8 @@ public class JsIdentifierNames {
                 "with", "abstract", "process", "require", "class", "extends", "import",
                 //These are only in strict mode and supposedly break something in the SDK or something
                 //"interface", "let", "package", "yield",
+                "await", "break", "case", "catch", "continue", "else", "finally", "for",
+                "function", "if", "in", "return", "switch", "this", "throw", "try", "while", "with",
                 "super"));
         //Types
         reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number", "RegExp"));
@@ -307,7 +309,7 @@ public class JsIdentifierNames {
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
-            } else if (!forGetterSetter && reservedWords.contains(name)) {
+            } else if (!forGetterSetter && !TypeUtils.isConstructor(decl) && reservedWords.contains(name)) {
                 // JavaScript keyword
                 name = "$_" + name;
             }
