@@ -207,7 +207,7 @@ public class NamingBase {
         if (decl instanceof FieldValue){
             return ((FieldValue)decl).getRealName();
         }
-        if (decl instanceof JavaBeanValue) {
+        if (decl instanceof JavaBeanValue && !indirect) {
             return ((JavaBeanValue)decl).getGetterName();
         }
         
