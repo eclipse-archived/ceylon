@@ -126,10 +126,10 @@ public abstract class Node {
     
     /**
      * The index of the last character belonging to this node.
+     * 
+     * @returns an index one less than the end index of the node!
      * @see #getEndIndex()
-     * @deprecated
      */
-    @Deprecated
     public Integer getStopIndex() {
     	Token token = getEndToken();
     	if (token==null) {
