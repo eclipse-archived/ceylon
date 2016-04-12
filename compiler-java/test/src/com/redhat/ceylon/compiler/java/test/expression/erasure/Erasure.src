@@ -511,7 +511,7 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         boolean sync = false;
         sync = erasedTest == erasedTest;
         sync = p1.equals(p1);
-        sync = ((.ceylon.language.Comparable)(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1).compare((.ceylon.language.Comparable)(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1) == .ceylon.language.smaller_.get_();
+        sync = ((.ceylon.language.Comparable)(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1).smallerThan((.ceylon.language.Comparable)(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
         final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1).compare((.ceylon.language.Comparable)(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
         sync = (
             let
