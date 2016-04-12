@@ -27,6 +27,6 @@ class Bug2414 {
                     throw new RepositoryException(e);
                 }
             }
-        };
+        });
     }
 }
