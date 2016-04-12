@@ -27,9 +27,9 @@ class ClassContainer1998(){
         }
         shared void test(ClassContainer1998 other){
             Attribute<\Inested,Integer,Nothing> v = `\Inested.attribute`;
-            print(v(other.nestee.nested).get());
+            assert(2 == v(other.nestee.nested).get());
             Method<\Inested,Integer,[]> f = `\Inested.method`;
-            print(f(other.nestee.nested)());
+            assert(2 == f(other.nestee.nested)());
             MemberClass<\Inested,\Inested.Klass,[]> c = `\Inested.Klass`;
             print(c(other.nestee.nested)());
             assert(is MemberClass<\Inested,\Inested.Klass,[]> xx=typeLiteral<\Inested.Klass>());
@@ -48,12 +48,12 @@ class ClassContainer1998(){
     }
     shared void test(ClassContainer1998 other){
         Attribute<\ImemberObject,Integer,Nothing> v = `\ImemberObject.attribute`;
-        print(v(other.memberObject).get());
+        assert(2 == v(other.memberObject).get());
         assert(is MemberClass<ClassContainer1998,\ImemberObject,Nothing> mo = typeLiteral<\ImemberObject>());
         assert(exists a = mo.getAttribute<ClassContainer1998.\ImemberObject,Integer>("attribute"));
         a(other.memberObject);
         Method<\ImemberObject,Integer,[]> f = `\ImemberObject.method`;
-        print(f(other.memberObject)());
+        assert(2 == f(other.memberObject)());
         MemberClass<\ImemberObject,\ImemberObject.Klass,[]> c = `\ImemberObject.Klass`;
         print(c(other.memberObject)());
         nestee.test(other);
@@ -76,9 +76,9 @@ object toplevel1998 {
         }
         shared void test(Member other){
             Attribute<\ImemberObject,Integer,Nothing> v = `\ImemberObject.attribute`;
-            print(v(other.memberObject).get());
+            assert(2 == v(other.memberObject).get());
             Method<\ImemberObject,Integer,[]> f = `\ImemberObject.method`;
-            print(f(other.memberObject)());
+            assert(2 == f(other.memberObject)());
             MemberClass<\ImemberObject,\ImemberObject.Klass,[]> c = `\ImemberObject.Klass`;
             print(c(other.memberObject)());
         }
@@ -96,9 +96,9 @@ object toplevel1998 {
         }
         shared void test(){
             Attribute<\Iy,Integer,Nothing> v = `\Iy.attribute`;
-            print(v(y).get());
+            assert(2 == v(y).get());
             Method<\Iy,Integer,[]> f = `\Iy.method`;
-            print(f(y)());
+            assert(2 == f(y)());
             MemberClass<\Iy,\Iy.Klass,[]> c = `\Iy.Klass`;
             print(c(y)());
         }
