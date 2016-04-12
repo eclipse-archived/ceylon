@@ -3,7 +3,9 @@
 //t is the tuple with parameters to pass
 function validate$params(ps,t,msg,nothrow) {
   if (t.t===Nothing)return true;
-  if (!ps || ps.length==0) {
+  if (!ps) {
+    if (t.t===Empty||(t.t===Sequential&&t.a&&t.a.Element$Sequential&&t.a.Element$Sequential.t===Anything))return true;
+  } else if (ps.length==0) {
     if (t.t===Empty)return true;
   } else if (t.t==='T') {
     if (ps.length==t.l.length) {
