@@ -4119,10 +4119,10 @@ public class ClassTransformer extends AbstractTransformer {
             // but only if it's shared
             if (Decl.isShared(model)) {
                 result = transformMethod(def.getDeclarationModel(), 
-                def,
-                true, true, true, null,
-                daoAbstract,
-                !Strategy.defaultParameterMethodOnSelf(model));
+                    def,
+                    true, true, true, null,
+                    daoAbstract,
+                    !Strategy.defaultParameterMethodOnSelf(model));
             }
         } else if (Decl.withinInterface(model)
                 && ((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
@@ -4151,25 +4151,43 @@ public class ClassTransformer extends AbstractTransformer {
             DaoBody daoTransformation, 
             boolean defaultValuesBody) {
         
-        Tree.ParameterList parameterList = method.getParameterLists().get(0);
-        
         ListBuffer<MethodDefinitionBuilder> lb = new ListBuffer<MethodDefinitionBuilder>();
+        boolean hasOverloads = transformParameterMethods(methodModel, method, body, daoTransformation,
+                defaultValuesBody, method.getParameterLists().get(0), lb);
+        
+        if (transformMethod) {
+            transformMethodItself(methodModel, method, actual, includeAnnotations, body, daoTransformation,
+                    method.getParameterLists().get(0), lb, hasOverloads);
+        }
+        return lb.toList();
+    }
+
+    protected boolean transformParameterMethods(final Function methodModel, Tree.AnyMethod method,
+            List<JCStatement> body, DaoBody daoTransformation, boolean defaultValuesBody,
+            Tree.ParameterList parameterList, ListBuffer<MethodDefinitionBuilder> lb) {
         Declaration refinedDeclaration = methodModel.getRefinedDeclaration();
         
         boolean hasOverloads = false;
-        
+        boolean noBody = body != null;
         for (final Tree.Parameter parameter : parameterList.getParameters()) {
             Parameter parameterModel = parameter.getParameterModel();
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
                 if (Decl.equal(refinedDeclaration, methodModel)
-                        || (!Decl.withinInterface(methodModel) && body != null)
+                        || (!Decl.withinInterface(methodModel) && noBody)
                         || Decl.withinInterface(methodModel) && daoTransformation instanceof DaoCompanion == false) {
                     
                     if (daoTransformation != null && 
                             (daoTransformation instanceof DaoCompanion == false || 
-                                body != null)) {
-                        lb.append(makeDefaultParameterOverload(methodModel, method, body,
+                            noBody)) {
+                        DaoBody daoBody;
+                        if (!noBody) {
+                            daoBody = daoAbstract;
+                        } else {
+                            daoBody = new DaoThis(method, parameterList);
+                        }
+                        lb.append(makeDefaultParameterOverload(daoBody,
+                                methodModel, 
                                 parameterList, parameter));
                         hasOverloads = true;
                     }
@@ -4181,91 +4199,91 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
+        return hasOverloads;
+    }
+
+    protected void transformMethodItself(final Function methodModel, Tree.AnyMethod method, boolean actual,
+            boolean includeAnnotations, List<JCStatement> body, DaoBody daoTransformation,
+            Tree.ParameterList parameterList, ListBuffer<MethodDefinitionBuilder> lb, boolean hasOverloads) {
+        // Determine if we need to generate a "canonical" method
+        boolean createCanonical = hasOverloads
+                && Decl.withinClassOrInterface(methodModel)
+                && body != null;
         
-        if (transformMethod) {
-            // Determine if we need to generate a "canonical" method
-            boolean createCanonical = hasOverloads
-                    && Decl.withinClassOrInterface(methodModel)
-                    && body != null;
-            
-            if (createCanonical) {
-                // Creates the private "canonical" method containing the actual body
-                MethodDefinitionBuilder canonicalMethod = new CanonicalMethod(daoTransformation, methodModel, body)
-                    .makeOverload(
-                        parameterList.getModel(),
-                        null,
-                        methodModel.getTypeParameters());
-                lb.append(canonicalMethod);
-            }
-            
-            final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
-            
-            // do the reified type param arguments
-            if (gen().supportsReified(methodModel)) {
-                methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
-            }
-            
-            if (methodModel.getParameterLists().size() > 1) {
-                methodBuilder.mpl(methodModel.getParameterLists());
-            }
-            int flags = 0;
-            if (rawParameters(methodModel)) {
-                flags |= JT_RAW;
-            }
-            for (final Tree.Parameter parameter : parameterList.getParameters()) {
-                Parameter parameterModel = parameter.getParameterModel();
-                List<JCAnnotation> annotations = null;
-                if (includeAnnotations){
-                    Tree.TypedDeclaration typedDeclaration = Decl.getMemberDeclaration(method, parameter);
-                    // it can be null in the case of specifier refinement with no param list, but which we still optimise
-                    // to a real method
-                    // f = function(Integer param) => 2;
-                    if(typedDeclaration != null)
-                        annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
-                }
-                methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
-            }
-            methodBuilder.modifiers(transformMethodDeclFlags(methodModel));
-            if (actual) {
-                methodBuilder.isOverride(methodModel.isActual());
-            }
-            if (includeAnnotations) {
-                methodBuilder.userAnnotations(expressionGen().transformAnnotations(OutputElement.METHOD, method));
-                methodBuilder.modelAnnotations(methodModel.getAnnotations());
-            } else {
-                methodBuilder.ignoreModelAnnotations();
-            }
-            methodBuilder.resultType(methodModel, 0);
-            copyTypeParameters(methodModel, methodBuilder);
-            
-            if (createCanonical) {
-                // Creates method that redirects to the "canonical" method containing the actual body
-                MethodDefinitionBuilder bridgeToCanonical = new BridgeToCanonicalMethod(method, parameterList, methodBuilder, methodModel)
-                    .makeOverload(
-                        parameterList.getModel(),
-                        null,
-                        methodModel.getTypeParameters());
-                lb.append(bridgeToCanonical);
-            } else {
-                if (body != null) {
-                    // Construct the outermost method using the body we've built so far
-                    methodBuilder.body(body);
-                } else {
-                    methodBuilder.noBody();
-                }
-                lb.append(methodBuilder);
-            }
+        if (createCanonical) {
+            // Creates the private "canonical" method containing the actual body
+            MethodDefinitionBuilder canonicalMethod = new CanonicalMethod(daoTransformation, methodModel, body)
+                .makeOverload(
+                    parameterList.getModel(),
+                    null,
+                    methodModel.getTypeParameters());
+            lb.append(canonicalMethod);
         }
-        return lb.toList();
+        
+        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
+        
+        // do the reified type param arguments
+        if (gen().supportsReified(methodModel)) {
+            methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
+        }
+        
+        if (methodModel.getParameterLists().size() > 1) {
+            methodBuilder.mpl(methodModel.getParameterLists());
+        }
+        int flags = 0;
+        if (rawParameters(methodModel)) {
+            flags |= JT_RAW;
+        }
+        for (final Tree.Parameter parameter : parameterList.getParameters()) {
+            Parameter parameterModel = parameter.getParameterModel();
+            List<JCAnnotation> annotations = null;
+            if (includeAnnotations){
+                Tree.TypedDeclaration typedDeclaration = Decl.getMemberDeclaration(method, parameter);
+                // it can be null in the case of specifier refinement with no param list, but which we still optimise
+                // to a real method
+                // f = function(Integer param) => 2;
+                if(typedDeclaration != null)
+                    annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
+            }
+            methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
+        }
+        methodBuilder.modifiers(transformMethodDeclFlags(methodModel));
+        if (actual) {
+            methodBuilder.isOverride(methodModel.isActual());
+        }
+        if (includeAnnotations) {
+            methodBuilder.userAnnotations(expressionGen().transformAnnotations(OutputElement.METHOD, method));
+            methodBuilder.modelAnnotations(methodModel.getAnnotations());
+        } else {
+            methodBuilder.ignoreModelAnnotations();
+        }
+        methodBuilder.resultType(methodModel, 0);
+        copyTypeParameters(methodModel, methodBuilder);
+        
+        if (createCanonical) {
+            // Creates method that redirects to the "canonical" method containing the actual body
+            MethodDefinitionBuilder bridgeToCanonical = new BridgeToCanonicalMethod(method, parameterList, methodBuilder, methodModel)
+                .makeOverload(
+                    parameterList.getModel(),
+                    null,
+                    methodModel.getTypeParameters());
+            lb.append(bridgeToCanonical);
+        } else {
+            if (body != null) {
+                // Construct the outermost method using the body we've built so far
+                methodBuilder.body(body);
+            } else {
+                methodBuilder.noBody();
+            }
+            lb.append(methodBuilder);
+        }
     }
 
     protected MethodDefinitionBuilder makeDefaultParameterOverload(
-            final Function methodModel, 
-            Tree.AnyMethod node,
-            List<JCStatement> body, 
+            DaoBody daoTrans,
+            final Function methodModel,
             Tree.ParameterList parameterList, 
             final Tree.Parameter parameter) {
-        DaoBody daoTrans = (body == null) ? daoAbstract : new DaoThis(node, parameterList);
         
         MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTrans, MethodDefinitionBuilder.method(this, methodModel), methodModel)
             .makeOverload(
