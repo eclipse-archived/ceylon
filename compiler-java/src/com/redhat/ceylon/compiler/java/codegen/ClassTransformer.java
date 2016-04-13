@@ -4085,10 +4085,10 @@ public class ClassTransformer extends AbstractTransformer {
             boolean refinedResultType = !model.getType().isExactly(
                     ((TypedDeclaration)model.getRefinedDeclaration()).getType());
             result = transformMethod(def.getDeclarationModel(), 
-            def,
-            true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
-            refinedResultType 
-                                && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+                    def,
+                    true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
+                    refinedResultType 
+                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
             !Strategy.defaultParameterMethodOnSelf(model));
         } else if (Decl.withinInterface(model)
             && !((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
@@ -4100,16 +4100,16 @@ public class ClassTransformer extends AbstractTransformer {
                 // formal or abstract 
                 // (still need overloads and DPMs on the companion)
                 companionDefs = transformMethod(def.getDeclarationModel(), 
-                def,
-                false, true, true, null,
-                new DaoCompanion(def, def.getParameterLists().get(0)),
-                false);   
+                        def,
+                        false, true, true, null,
+                        new DaoCompanion(def, def.getParameterLists().get(0)),
+                        false);
             } else {
                 companionDefs = transformMethod(def.getDeclarationModel(), 
-                def,
-                true, false, !model.isShared(), transformMplBodyUnlessSpecifier(def, model, body),
-                new DaoCompanion(def, def.getParameterLists().get(0)),
-                false);
+                        def,
+                        true, false, !model.isShared(), transformMplBodyUnlessSpecifier(def, model, body),
+                        new DaoCompanion(def, def.getParameterLists().get(0)),
+                        false);
             }
             if(!companionDefs.isEmpty())
                 classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer())
@@ -4119,10 +4119,10 @@ public class ClassTransformer extends AbstractTransformer {
             // but only if it's shared
             if (Decl.isShared(model)) {
                 result = transformMethod(def.getDeclarationModel(), 
-                    def,
-                    true, true, true, null,
-                    daoAbstract,
-                    !Strategy.defaultParameterMethodOnSelf(model));
+                            def,
+                            true, true, true, null,
+                            daoAbstract,
+                            !Strategy.defaultParameterMethodOnSelf(model));
             }
         } else if (Decl.withinInterface(model)
                 && ((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
@@ -4130,10 +4130,10 @@ public class ClassTransformer extends AbstractTransformer {
             boolean refinedResultType = !model.getType().isExactly(
                     ((TypedDeclaration)model.getRefinedDeclaration()).getType());
             result = transformMethod(def.getDeclarationModel(), 
-            def,
-            true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
-            refinedResultType 
-                                && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+                    def,
+                    true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
+                    refinedResultType 
+                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
             !Strategy.defaultParameterMethodOnSelf(model));
         }
         return result;
