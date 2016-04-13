@@ -4084,14 +4084,12 @@ public class ClassTransformer extends AbstractTransformer {
             // Transform to the class
             boolean refinedResultType = !model.getType().isExactly(
                     ((TypedDeclaration)model.getRefinedDeclaration()).getType());
-            result = transformMethod(def, 
-                    true,
-                    true,
-                    true,
-                    transformMplBodyUnlessSpecifier(def, model, body),
-                    refinedResultType 
-                    && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-                    !Strategy.defaultParameterMethodOnSelf(model));
+            result = transformMethod(def.getDeclarationModel(), 
+            def,
+            true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
+            refinedResultType 
+                                && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+            !Strategy.defaultParameterMethodOnSelf(model));
         } else if (Decl.withinInterface(model)
             && !((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
             // Transform the definition to the companion class, how depends
@@ -4099,24 +4097,19 @@ public class ClassTransformer extends AbstractTransformer {
             List<MethodDefinitionBuilder> companionDefs;
             if (def instanceof Tree.MethodDeclaration
                     && ((Tree.MethodDeclaration) def).getSpecifierExpression() == null) {
-                
-                    // formal or abstract 
-                    // (still need overloads and DPMs on the companion)
-                    companionDefs = transformMethod(def,  
-                            false,
-                            true,
-                            true,
-                            null,
-                            new DaoCompanion(def, def.getParameterLists().get(0)),
-                            false);   
+                // formal or abstract 
+                // (still need overloads and DPMs on the companion)
+                companionDefs = transformMethod(def.getDeclarationModel(), 
+                def,
+                false, true, true, null,
+                new DaoCompanion(def, def.getParameterLists().get(0)),
+                false);   
             } else {
-                companionDefs = transformMethod(def,
-                        true,
-                        false,
-                        !model.isShared(),
-                        transformMplBodyUnlessSpecifier(def, model, body),
-                        new DaoCompanion(def, def.getParameterLists().get(0)),
-                        false);
+                companionDefs = transformMethod(def.getDeclarationModel(), 
+                def,
+                true, false, !model.isShared(), transformMplBodyUnlessSpecifier(def, model, body),
+                new DaoCompanion(def, def.getParameterLists().get(0)),
+                false);
             }
             if(!companionDefs.isEmpty())
                 classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer())
@@ -4125,56 +4118,27 @@ public class ClassTransformer extends AbstractTransformer {
             // Transform the declaration to the target interface
             // but only if it's shared
             if (Decl.isShared(model)) {
-                result = transformMethod(def, 
-                        true,
-                        true,
-                        true,
-                        null,
-                        daoAbstract,
-                        !Strategy.defaultParameterMethodOnSelf(model));
+                result = transformMethod(def.getDeclarationModel(), 
+                def,
+                true, true, true, null,
+                daoAbstract,
+                !Strategy.defaultParameterMethodOnSelf(model));
             }
         } else if (Decl.withinInterface(model)
                 && ((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
             // Transform to the class
             boolean refinedResultType = !model.getType().isExactly(
                     ((TypedDeclaration)model.getRefinedDeclaration()).getType());
-            result = transformMethod(def, 
-                    true,
-                    true,
-                    true,
-                    transformMplBodyUnlessSpecifier(def, model, body),
-                    refinedResultType 
-                    && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-                    !Strategy.defaultParameterMethodOnSelf(model));
+            result = transformMethod(def.getDeclarationModel(), 
+            def,
+            true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
+            refinedResultType 
+                                && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+            !Strategy.defaultParameterMethodOnSelf(model));
         }
         return result;
     }
 
-    
-    /**
-     * Transforms a method, generating default argument overloads and 
-     * default value methods
-     * @param def The method
-     * @param model The method model
-     * @param methodName The method name
-     * @param transformMethod Whether the method itself should be transformed.
-     * @param actualAndAnnotations Whether the method itself is actual and has 
-     * model annotations
-     * @param body The body of the method (or null for an abstract method)
-     * @param daoTransformation The default argument overload transformation
-     * @param transformDefaultValues Whether to generate default value methods
-     * @param defaultValuesBody Whether the default value methods should have a body
-     */
-    private List<MethodDefinitionBuilder> transformMethod(Tree.AnyMethod def,
-            boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
-            DaoBody daoTransformation, 
-            boolean defaultValuesBody) {
-        return transformMethod(def.getDeclarationModel(), 
-                def,
-                transformMethod, actual, includeAnnotations, body,
-                daoTransformation,
-                defaultValuesBody);
-    }
     
     /**
      * Generates the method (+declaration), default parameter methods, 
