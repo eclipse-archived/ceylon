@@ -12,7 +12,7 @@ shared native class AppliedMemberInterface<in Container, out Type=Anything>()
   shared actual native Interface<Type> bind(Object container);
   shared actual native ClosedType<Anything> declaringType;
   shared actual native InterfaceDeclaration declaration;
-  shared actual native Map<TypeParameter, ClosedType> typeArguments;
+  shared actual native Map<TypeParameter, ClosedType<>> typeArguments;
   shared actual native ClosedType<Anything>[] typeArgumentList;
   shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
   shared actual native TypeArgument[] typeArgumentWithVarianceList;
@@ -23,7 +23,7 @@ shared native class AppliedMemberInterface<in Container, out Type=Anything>()
   shared actual native Boolean exactly(ClosedType<Anything> type);
   shared actual native ClosedType<Anything>? container;
 
-  shared actual native Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
+  shared actual native Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType<>* types)
     given Kind satisfies ClassOrInterface<Anything>;
   shared actual native MemberClass<Container, Type, Arguments>[] getClasses<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[];
   shared actual native MemberClass<Container, Type, Arguments>[] getDeclaredClasses<Container=Nothing, Type=Anything, Arguments=Nothing>(ClosedType<Annotation>* annotationTypes) given Arguments satisfies Anything[];
