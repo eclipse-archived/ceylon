@@ -4256,35 +4256,34 @@ public class ClassTransformer extends AbstractTransformer {
             lb.append(canonicalMethod);
         }
         
-        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
-        
-        // do the reified type param arguments
-        if (gen().supportsReified(methodModel)) {
-            methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
-        }
-        
-        if (methodModel.getParameterLists().size() > 1) {
-            methodBuilder.mpl(methodModel.getParameterLists());
-        }
-        int flags = 0;
-        if (rawParameters(methodModel)) {
-            flags |= JT_RAW;
-        }
-        for (final Tree.Parameter parameter : parameterList.getParameters()) {
-            Parameter parameterModel = parameter.getParameterModel();
-            List<JCAnnotation> annotations = null;
-            if (includeAnnotations){
-                Tree.TypedDeclaration typedDeclaration = Decl.getMemberDeclaration(annotated, parameter);
-                // it can be null in the case of specifier refinement with no param list, but which we still optimise
-                // to a real method
-                // f = function(Integer param) => 2;
-                if(typedDeclaration != null)
-                    annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
-            }
-            methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
-        }
-        
         if (transformMethod) {
+            final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
+            
+            // do the reified type param arguments
+            if (gen().supportsReified(methodModel)) {
+                methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
+            }
+            
+            if (methodModel.getParameterLists().size() > 1) {
+                methodBuilder.mpl(methodModel.getParameterLists());
+            }
+            int flags = 0;
+            if (rawParameters(methodModel)) {
+                flags |= JT_RAW;
+            }
+            for (final Tree.Parameter parameter : parameterList.getParameters()) {
+                Parameter parameterModel = parameter.getParameterModel();
+                List<JCAnnotation> annotations = null;
+                if (includeAnnotations){
+                    Tree.TypedDeclaration typedDeclaration = Decl.getMemberDeclaration(annotated, parameter);
+                    // it can be null in the case of specifier refinement with no param list, but which we still optimise
+                    // to a real method
+                    // f = function(Integer param) => 2;
+                    if(typedDeclaration != null)
+                        annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
+                }
+                methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
+            }
             methodBuilder.modifiers(transformMethodDeclFlags(methodModel));
             if (actual) {
                 methodBuilder.isOverride(methodModel.isActual());
