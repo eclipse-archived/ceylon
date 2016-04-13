@@ -4219,16 +4219,12 @@ public class ClassTransformer extends AbstractTransformer {
                         || (!Decl.withinInterface(methodModel) && body != null)
                         || Decl.withinInterface(methodModel) && daoTransformation instanceof DaoCompanion == false) {
                     
-                    if (daoTransformation != null && (daoTransformation instanceof DaoCompanion == false || body != null)) {
-                        DaoBody daoTrans = (body == null) ? daoAbstract : new DaoThis(node, parameterList);
-                        
-                        MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTrans, MethodDefinitionBuilder.method(this, methodModel), methodModel)
-                            .makeOverload(
-                                parameterList.getModel(),
-                                parameter.getParameterModel(),
-                                methodModel.getTypeParameters());
-                        overloadedMethod.location(null);
-                        lb.append(overloadedMethod);
+                    if (daoTransformation != null && 
+                            (daoTransformation instanceof DaoCompanion == false || 
+                                body != null)) {
+                        lb.append(makeDefaultParameterOverload(methodModel, node, body,
+                                parameterList, parameter));
+                        hasOverloads = true;
                     }
                     
                     if (Decl.equal(refinedDeclaration, methodModel)
@@ -4236,27 +4232,25 @@ public class ClassTransformer extends AbstractTransformer {
                         lb.append(makeParamDefaultValueMethod(defaultValuesBody, methodModel, parameterList, parameter));
                     }
                 }
-                
-                hasOverloads = true;
             }
-        }
-
-        // Determine if we need to generate a "canonical" method
-        boolean createCanonical = hasOverloads
-                && Decl.withinClassOrInterface(methodModel)
-                && body != null;
-        
-        if (createCanonical) {
-            // Creates the private "canonical" method containing the actual body
-            MethodDefinitionBuilder canonicalMethod = new CanonicalMethod(daoTransformation, methodModel, body)
-                .makeOverload(
-                    parameterList.getModel(),
-                    null,
-                    methodModel.getTypeParameters());
-            lb.append(canonicalMethod);
         }
         
         if (transformMethod) {
+            // Determine if we need to generate a "canonical" method
+            boolean createCanonical = hasOverloads
+                    && Decl.withinClassOrInterface(methodModel)
+                    && body != null;
+            
+            if (createCanonical) {
+                // Creates the private "canonical" method containing the actual body
+                MethodDefinitionBuilder canonicalMethod = new CanonicalMethod(daoTransformation, methodModel, body)
+                    .makeOverload(
+                        parameterList.getModel(),
+                        null,
+                        methodModel.getTypeParameters());
+                lb.append(canonicalMethod);
+            }
+            
             final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
             
             // do the reified type param arguments
@@ -4316,6 +4310,23 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         return lb.toList();
+    }
+
+    protected MethodDefinitionBuilder makeDefaultParameterOverload(
+            final Function methodModel, 
+            Tree.AnyMethod node,
+            List<JCStatement> body, 
+            Tree.ParameterList parameterList, 
+            final Tree.Parameter parameter) {
+        DaoBody daoTrans = (body == null) ? daoAbstract : new DaoThis(node, parameterList);
+        
+        MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTrans, MethodDefinitionBuilder.method(this, methodModel), methodModel)
+            .makeOverload(
+                parameterList.getModel(),
+                parameter.getParameterModel(),
+                methodModel.getTypeParameters());
+        overloadedMethod.location(null);
+        return overloadedMethod;
     }
 
     List<JCStatement> transformMplBodyUnlessSpecifier(Tree.AnyMethod def,
