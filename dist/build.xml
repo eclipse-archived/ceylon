@@ -675,7 +675,6 @@ Use this when NOT doing a release!">
         <if>
             <not>
                 <or>
-                    <contains string="${module.dir.relative}" substring="logmanager"/>
                     <contains string="${module.dir.relative}" substring="ceylon"/>
                 </or>
             </not>
