@@ -269,6 +269,20 @@ public class MethodDefinitionBuilder
         this.modifiers = mods;
         return this;
     }
+    
+    public MethodDefinitionBuilder addModifiers(long modifiers) {
+        this.modifiers |= modifiers;
+        return this;
+    }
+    
+    public MethodDefinitionBuilder removeModifiers(long modifiers) {
+        this.modifiers &= ~modifiers;
+        return this;
+    }
+    
+    public long getModifiers() {
+        return this.modifiers;
+    }
 
     /** 
      * {@code @Ignore} and no model annotations.
@@ -326,6 +340,11 @@ public class MethodDefinitionBuilder
     
     public MethodDefinitionBuilder parameter(ParameterDefinitionBuilder pdb) {
         params.append(pdb);
+        return this;
+    }
+    
+    public MethodDefinitionBuilder prependParameter(ParameterDefinitionBuilder pdb) {
+        params.prepend(pdb);
         return this;
     }
 

@@ -2319,7 +2319,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             classBuilder.methods(transformMethod(method, methodDecl,
                     true, method.isActual(), true, 
-                    List.of(body), new DaoThis(methodDecl, methodDecl.getParameterLists().get(0)), false));
+                    List.of(body), new DaoThis(methodDecl, methodDecl.getParameterLists().get(0)), false).toList());
         }
     }
     
@@ -4089,7 +4089,7 @@ public class ClassTransformer extends AbstractTransformer {
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
                         && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-            !Strategy.defaultParameterMethodOnSelf(model));
+            !Strategy.defaultParameterMethodOnSelf(model)).toList();
         } else if (Decl.withinInterface(model)
             && !((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
             // Transform the definition to the companion class, how depends
@@ -4103,13 +4103,13 @@ public class ClassTransformer extends AbstractTransformer {
                         def,
                         false, true, true, null,
                         new DaoCompanion(def, def.getParameterLists().get(0)),
-                        false);
+                        false).toList();
             } else {
                 companionDefs = transformMethod(def.getDeclarationModel(), 
                         def,
                         true, false, !model.isShared(), transformMplBodyUnlessSpecifier(def, model, body),
                         new DaoCompanion(def, def.getParameterLists().get(0)),
-                        false);
+                        false).toList();
             }
             if(!companionDefs.isEmpty())
                 classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer())
@@ -4122,19 +4122,36 @@ public class ClassTransformer extends AbstractTransformer {
                             def,
                             true, true, true, null,
                             daoAbstract,
-                            !Strategy.defaultParameterMethodOnSelf(model));
+                            !Strategy.defaultParameterMethodOnSelf(model)).toList();
             }
         } else if (Decl.withinInterface(model)
                 && ((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
             // Transform to the class
             boolean refinedResultType = !model.getType().isExactly(
                     ((TypedDeclaration)model.getRefinedDeclaration()).getType());
-            result = transformMethod(def.getDeclarationModel(), 
+            ListBuffer<MethodDefinitionBuilder> lb = transformMethod(def.getDeclarationModel(), 
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
                         && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-            !Strategy.defaultParameterMethodOnSelf(model));
+                    !Strategy.defaultParameterMethodOnSelf(model));
+            
+            for (MethodDefinitionBuilder m :  transformMethod(def.getDeclarationModel(), 
+                    def,
+                    true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
+                    refinedResultType 
+                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+                    !Strategy.defaultParameterMethodOnSelf(model))) {
+                if ((m.getModifiers() & DEFAULT) != 0) {
+                    m.addModifiers(STATIC);
+                    m.removeModifiers(DEFAULT);
+                    ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "this");
+                    pdb.type(makeJavaType(((Interface)model.getContainer()).getType(), 0), null);
+                    m.prependParameter(pdb);
+                    lb.add(m);
+                }
+            }
+            result = lb.toList();
         }
         return result;
     }
@@ -4144,7 +4161,7 @@ public class ClassTransformer extends AbstractTransformer {
      * Generates the method (+declaration), default parameter methods, 
      * default parameter overloads, canonical methods.
      */
-    private List<MethodDefinitionBuilder> transformMethod(
+    private ListBuffer<MethodDefinitionBuilder> transformMethod(
             final Function methodModel,
             Tree.AnyMethod method,
             boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
@@ -4159,7 +4176,7 @@ public class ClassTransformer extends AbstractTransformer {
             transformMethodItself(methodModel, method, actual, includeAnnotations, body, daoTransformation,
                     method.getParameterLists().get(0), lb, hasOverloads);
         }
-        return lb.toList();
+        return lb;
     }
 
     protected boolean transformParameterMethods(final Function methodModel, Tree.AnyMethod method,
@@ -4835,10 +4852,20 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        protected abstract void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
-                ListBuffer<JCExpression> args);
-        protected abstract void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
-                ListBuffer<JCExpression> args);
+        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
+                ListBuffer<JCExpression> args) {
+            if(typeParameterList != null){
+                // we pass the reified type parameters along
+                for(TypeParameter tp : typeParameterList){
+                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
+                }
+            }
+        }
+        
+        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
+                ListBuffer<JCExpression> args) {
+            appendImplicitArgumentsDelegate(typeParameterList, args);
+        }
         
         protected Type parameterType(Parameter parameterModel) {
             NonWideningParam nonWideningParam = overloadBuilder.getNonWideningParam(parameterModel.getModel(), getWideningRules(parameterModel));
@@ -4959,22 +4986,6 @@ public class ClassTransformer extends AbstractTransformer {
         @Override
         protected void typeParameters() {
             copyTypeParameters(method, overloadBuilder);
-        }
-
-        @Override
-        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
-                ListBuffer<JCExpression> args) {
-            if(typeParameterList != null){
-                // we pass the reified type parameters along
-                for(TypeParameter tp : typeParameterList){
-                    args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
-                }
-            }
-        }
-        @Override
-        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
-                ListBuffer<JCExpression> args) {
-            appendImplicitArgumentsDelegate(typeParameterList, args);
         }
 
         @Override
