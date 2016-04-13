@@ -23,6 +23,7 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.compiler.js.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.js.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
@@ -32,6 +33,7 @@ import com.redhat.ceylon.compiler.js.util.NpmDescriptorGenerator;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
@@ -60,6 +62,8 @@ public class Stitcher {
         FileUtil.mkdirs(tmpout);
         final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
                 .outRepo(tmpout.getAbsolutePath()).modulify(false).minify(true)
+                .suppressWarnings(EnumUtil.enumsFromStrings(Warning.class,
+                        Arrays.asList("unusedDeclaration", "ceylonNamespace", "unusedImport")))
                 .addSrcDir(clSrcDir).addSrcDir(LANGMOD_JS_SRC);
 
         //Typecheck the whole language module
@@ -70,6 +74,7 @@ public class Stitcher {
                     .encoding("UTF-8");
             langmodtc.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                     .userRepos(opts.getRepos()).outRepo(opts.getOutRepo()).buildManager());
+            langmodtc.usageWarnings(false);
         }
         final File mod2 = new File(clJsFileDir, "module.ceylon");
         if (!mod2.exists()) {
