@@ -1398,7 +1398,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         if (!Decl.withinInterface(cls)
                 || !cls.isFormal()) {
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? new DaoThis(node, pl) : daoAbstract, 
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? new DaoBody(DaoKind.THIS, node, pl) : daoAbstract, 
                     cls, ctor, instantiatorImplCb.isCompanionBuilder());
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
                     parameterList,
@@ -1636,7 +1636,7 @@ public class ClassTransformer extends AbstractTransformer {
                         instantiatorDeclCb.method(instBuilder);
                     }
                     if (!Decl.withinInterface(cls) || !cls.isFormal()) {
-                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(new DaoThis(node, paramList), cls, constructor,
+                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(new DaoBody(DaoKind.THIS, node, paramList), cls, constructor,
                                 instantiatorImplCb.isCompanionBuilder()).makeOverload(
                                 paramList.getModel(),
                                 param.getParameterModel(),
@@ -2319,7 +2319,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             classBuilder.methods(transformMethod(method, methodDecl,
                     true, method.isActual(), true, 
-                    List.of(body), new DaoThis(methodDecl, methodDecl.getParameterLists().get(0)), false).toList());
+                    List.of(body), new DaoBody(DaoKind.THIS, methodDecl, methodDecl.getParameterLists().get(0)), false).toList());
         }
     }
     
@@ -2787,7 +2787,7 @@ public class ClassTransformer extends AbstractTransformer {
                             if (Strategy.hasDefaultParameterOverload(param)) {
                                 if ((method.isDefault() || method.isShared() && !method.isFormal())
                                         && Decl.equal(method, subMethod)) {
-                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(new DaoThis((Tree.AnyMethod)null, null), MethodDefinitionBuilder.method(this, subMethod), typedMember, true)
+                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(new DaoBody(DaoKind.THIS, (Tree.AnyMethod)null, null), MethodDefinitionBuilder.method(this, subMethod), typedMember, true)
                                         .makeOverload(
                                             subMethod.getFirstParameterList(),
                                             param,
@@ -4088,7 +4088,7 @@ public class ClassTransformer extends AbstractTransformer {
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
-                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoBody(DaoKind.SUPER, null, null) : new DaoBody(DaoKind.THIS, def, def.getParameterLists().get(0)),
             !Strategy.defaultParameterMethodOnSelf(model)).toList();
         } else if (Decl.withinInterface(model)
             && !((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
@@ -4102,13 +4102,13 @@ public class ClassTransformer extends AbstractTransformer {
                 companionDefs = transformMethod(def.getDeclarationModel(), 
                         def,
                         false, true, true, null,
-                        new DaoCompanion(def, def.getParameterLists().get(0)),
+                        new DaoBody(DaoKind.COMPANION, def, def.getParameterLists().get(0)),
                         false).toList();
             } else {
                 companionDefs = transformMethod(def.getDeclarationModel(), 
                         def,
                         true, false, !model.isShared(), transformMplBodyUnlessSpecifier(def, model, body),
-                        new DaoCompanion(def, def.getParameterLists().get(0)),
+                        new DaoBody(DaoKind.COMPANION, def, def.getParameterLists().get(0)),
                         false).toList();
             }
             if(!companionDefs.isEmpty())
@@ -4192,16 +4192,16 @@ public class ClassTransformer extends AbstractTransformer {
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
                 if (Decl.equal(refinedDeclaration, methodModel)
                         || (!Decl.withinInterface(methodModel) && noBody)
-                        || Decl.withinInterface(methodModel) && daoTransformation instanceof DaoCompanion == false) {
+                        || Decl.withinInterface(methodModel) && daoTransformation.kind != DaoKind.COMPANION) {
                     
                     if (daoTransformation != null && 
-                            (daoTransformation instanceof DaoCompanion == false || 
+                            (daoTransformation.kind != DaoKind.COMPANION || 
                             noBody)) {
                         DaoBody daoBody;
                         if (!noBody) {
                             daoBody = daoAbstract;
                         } else {
-                            daoBody = new DaoThis(method, parameterList);
+                            daoBody = new DaoBody(DaoKind.THIS, method, parameterList);
                         }
                         lb.append(makeDefaultParameterOverload(daoBody,
                                 methodModel, 
@@ -4609,43 +4609,12 @@ public class ClassTransformer extends AbstractTransformer {
      */ 
     private static int OL_DELEGATE_INTERFACE_INSTANCE = 1<<2;
     
-    /** 
-     * Abstraction over possible transformations for the body of an overloaded
-     * declaration which supplies a defaulted argument.
-     * @see DefaultedArgumentOverload 
-     */
-    abstract class DaoBody {
-        
-        protected List<JCExpression> makeTypeArguments(DefaultedArgumentOverload ol) {
-            if (ol.defaultParameterMethodOnSelf() 
-                    || ol.defaultParameterMethodOnOuter()) {
-                return List.<JCExpression>nil();
-            } else if (ol.defaultParameterMethodStatic()){
-                Functional f = (Functional)ol.getModel();
-                return typeArguments(f instanceof Constructor ? (Class)((Constructor)f).getContainer() : f);
-            } else {
-                return List.<JCExpression>nil();
-            }
-        }
-
-        abstract void makeBody(DefaultedArgumentOverload overloaded,
-                MethodDefinitionBuilder overloadBuilder,
-                ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList);
-
-        JCExpression makeMethodNameQualifier() {
-            return null;
-        }
-        
-    }
-    
-    
     enum DaoKind {
         THIS,
         ABSTRACT,
         SUPER,
         COMPANION,
+        STATIC
     }
     /**
      * a transformation for an overloaded 
@@ -4653,28 +4622,35 @@ public class ClassTransformer extends AbstractTransformer {
      * method/constructor using a {@code let} expresssion
      * to substitute defaulted arguments
      */
-    private class DaoThis2 extends DaoBody {
+    private class DaoBody {
         private final Tree.Declaration declTree;
         private final Token firstExecutable;
         private final Tree.ParameterList pl;
-        private final DaoKind kind;
+        public final DaoKind kind;
 
-        private DaoThis2(DaoKind kind, Tree.Declaration invocation, Tree.ParameterList pl) {
+        private DaoBody(DaoKind kind, Tree.Declaration invocation, Tree.ParameterList pl) {
             this.kind = kind;
             this.declTree = invocation;
             this.firstExecutable = pl != null ? pl.getEndToken() : null;
             this.pl = pl;
         }
-        @Override
+        
         protected final List<JCExpression> makeTypeArguments(DefaultedArgumentOverload ol) {
             if (kind == DaoKind.COMPANION) {
                 return List.<JCExpression>nil();
             } else {
-                return super.makeTypeArguments(ol);
+                if (ol.defaultParameterMethodOnSelf() 
+                        || ol.defaultParameterMethodOnOuter()) {
+                    return List.<JCExpression>nil();
+                } else if (ol.defaultParameterMethodStatic()){
+                    Functional f = (Functional)ol.getModel();
+                    return typeArguments(f instanceof Constructor ? (Class)((Constructor)f).getContainer() : f);
+                } else {
+                    return List.<JCExpression>nil();
+                }
             }
         }
         
-        @Override
         JCExpression makeMethodNameQualifier() {
             if (kind == DaoKind.SUPER) {
                 return naming.makeSuper();
@@ -4683,7 +4659,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        @Override
         public void makeBody(DefaultedArgumentOverload overloaded,
                 MethodDefinitionBuilder overloadBuilder,
                 ParameterList parameterList,
@@ -4694,6 +4669,7 @@ public class ClassTransformer extends AbstractTransformer {
                 overloadBuilder.noBody();
                 overloadBuilder.addModifiers(ABSTRACT);
                 break;
+            case STATIC:
             case THIS:
             case COMPANION:
                 ListBuffer<JCExpression> delegateArgs = new ListBuffer<JCExpression>();
@@ -4794,173 +4770,9 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
     }
-    
-    /** 
-     * a body-less (i.e. abstract) transformation.
-     */
-    private class DaoAbstract extends DaoBody {
-        @Override
-        public void makeBody(DefaultedArgumentOverload overloaded,
-                MethodDefinitionBuilder overloadBuilder,
-                ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
-            overloadBuilder.noBody();
-        }
-    };
-    final DaoBody daoAbstract = new DaoThis2(DaoKind.ABSTRACT, null, null);
-    /**
-     * a transformation for an overloaded 
-     * default parameter body which delegates to the "canonical"
-     * method/constructor using a {@code let} expresssion
-     * to substitute defaulted arguments
-     */
-    private class DaoThis extends DaoBody {
-        private final Tree.Declaration declTree;
-        private final Token firstExecutable;
-        private final Tree.ParameterList pl;
+   
+    final DaoBody daoAbstract = new DaoBody(DaoKind.ABSTRACT, null, null);
 
-        public DaoThis(Tree.Declaration invocation, Tree.ParameterList pl) {
-            this.declTree = invocation;
-            this.firstExecutable = pl != null ? pl.getEndToken() : null;
-            this.pl = pl;
-        }
-        @Override
-        public void makeBody(DefaultedArgumentOverload overloaded,
-                MethodDefinitionBuilder overloadBuilder,
-                ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
-            ListBuffer<JCExpression> delegateArgs = new ListBuffer<JCExpression>();
-            overloaded.appendImplicitArgumentsDelegate(typeParameterList, delegateArgs);
-            ListBuffer<JCExpression> dpmArgs = new ListBuffer<JCExpression>();
-            overloaded.appendImplicitArgumentsDpm(typeParameterList, dpmArgs);
-            
-            ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
-            
-            boolean initedVars = false;
-            boolean useDefault = false;
-            for (Parameter parameterModel : parameterList.getParameters()) {
-                if (currentParameter != null && Decl.equal(parameterModel, currentParameter)) {
-                    useDefault = true;
-                }
-                if (useDefault) {
-                    at(parameterLocation(parameterModel));
-                    JCExpression defaultArgument;
-                    if (Strategy.hasDefaultParameterValueMethod(parameterModel)) {
-                        if (!initedVars) {
-                            // Only call init vars if we actually invoke a defaulted param method
-                            overloaded.initVars(currentParameter, vars);
-                        }
-                        initedVars = true;
-                        JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeDefaultArgumentValueMethodQualifier(), parameterModel);
-                        defaultArgument = make().Apply(makeTypeArguments(overloaded), 
-                                defaultValueMethodName, 
-                                new ListBuffer<JCExpression>().appendList(dpmArgs).toList());
-                    } else if (Strategy.hasEmptyDefaultArgument(parameterModel)) {
-                        defaultArgument = makeEmptyAsSequential(true);
-                    } else {
-                        defaultArgument = makeErroneous(null, "compiler bug: parameter " + parameterModel.getName() + " has an unsupported default value");
-                    }
-                    Naming.SyntheticName varName = naming.temp(parameterModel.getName());
-                    Type paramType = overloaded.parameterType(parameterModel);
-                    vars.append(makeVar(varName, 
-                            makeJavaType(paramType, CodegenUtil.isUnBoxed(parameterModel.getModel()) ? 0 : JT_NO_PRIMITIVES), 
-                            defaultArgument));
-                    at(null);
-                    delegateArgs.add(varName.makeIdent());
-                    dpmArgs.add(varName.makeIdent());
-                } else {
-                    delegateArgs.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
-                    dpmArgs.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
-                }
-            }
-            makeBody(overloaded, overloadBuilder, delegateArgs, vars);
-        }
-        
-        private Node parameterLocation(Parameter parameterModel) {
-            if (this.pl != null) {
-                for (Tree.Parameter p : pl.getParameters()) {
-                    if (p.getParameterModel().equals(parameterModel)) {
-                        return p;
-                    }
-                }
-            }
-            return null;
-        }
-        protected final void makeBody(DefaultedArgumentOverload overloaded, 
-                MethodDefinitionBuilder overloadBuilder, 
-                ListBuffer<JCExpression> args, 
-                ListBuffer<JCStatement> vars) {
-            at(pl, firstExecutable);
-            JCExpression invocation = overloaded.makeInvocation(args);
-            Declaration model = overloaded.getModel();// TODO Yuk
-            if (!isVoid(model)
-                    // MPL overloads always return a Callable
-                    || (model instanceof Functional && Decl.isMpl((Functional) model))
-                    || (model instanceof Function && !(Decl.isUnboxedVoid(model)))
-                    || (model instanceof Function && Strategy.useBoxedVoid((Function)model)) 
-                    || Strategy.generateInstantiator(model) && overloaded instanceof DefaultedArgumentInstantiator) {
-                if (!vars.isEmpty()) {
-                    invocation = at(declTree).LetExpr(vars.toList(), invocation);
-                }
-                overloadBuilder.body(make().Return(invocation));
-            } else {
-                vars.append(at(pl, firstExecutable).Exec(invocation));
-                invocation = at(declTree).LetExpr(vars.toList(), makeNull());
-                overloadBuilder.body(make().Exec(invocation));
-            }
-        }
-    }
-    
-    /**
-     * specialises {@link DaoThis} for transforming declarations for companion classes
-     */
-    private class DaoCompanion extends DaoThis {
-        DaoCompanion(Tree.AnyMethod invocation, Tree.ParameterList pl) {
-            super(invocation, pl);
-        }
-        @Override
-        protected final List<JCExpression> makeTypeArguments(DefaultedArgumentOverload ol) {
-            return List.<JCExpression>nil();
-        }
-    }
-    
-    /**
-     * a transformation for an overloaded 
-     * default parameter method body which delegates
-     * to the super class. This is used when we need to refine the return 
-     * type of a DPM. 
-     */
-    private class DaoSuper extends DaoBody {
-
-        JCExpression makeMethodNameQualifier() {
-            return naming.makeSuper();
-        }
-        
-        @Override
-        void makeBody(
-                DefaultedArgumentOverload overloaded,
-                MethodDefinitionBuilder overloadBuilder,
-                ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
-            
-            ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
-            for (Parameter parameter : parameterList.getParameters()) {
-                if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
-                    break;
-                }
-                args.add(naming.makeUnquotedIdent(parameter.getName()));
-            }
-            JCExpression superCall = overloaded.makeInvocation(args);
-            /*JCMethodInvocation superCall = make().Apply(null,
-                    naming.makeQualIdent(naming.makeSuper(), ((Function)overloaded.getModel()).getName()),
-                    args.toList());*/
-            JCExpression refinedType = makeJavaType(((Function)overloaded.getModel()).getType(), JT_NO_PRIMITIVES);
-            overloadBuilder.body(make().Return(make().TypeCast(refinedType, superCall)));
-        }
-    }
     
     /**
      * A base class for transformations used for Ceylon declarations
@@ -5115,10 +4927,10 @@ public class ClassTransformer extends AbstractTransformer {
         @Override
         protected long getModifiers() {
             long mods = transformMethodDeclFlags(method);
-            if (daoBody instanceof DaoAbstract == false) {
+            if (daoBody == null || daoBody.kind != DaoKind.ABSTRACT) {
                 mods &= ~ABSTRACT;
             }
-            if (daoBody instanceof DaoCompanion) {
+            if (daoBody != null && daoBody.kind == DaoKind.COMPANION) {
                 mods |= FINAL;
             }
             return mods;
@@ -5271,7 +5083,7 @@ public class ClassTransformer extends AbstractTransformer {
     class BridgeToCanonicalMethod extends DefaultedArgumentMethod {
         
         BridgeToCanonicalMethod(Tree.AnyMethod node, Tree.ParameterList parameterList, MethodDefinitionBuilder mdb, Function method) {
-            super(new DaoThis(node, parameterList), mdb, method);
+            super(new DaoBody(DaoKind.THIS, node, parameterList), mdb, method);
         }
         
         /**
@@ -5375,7 +5187,7 @@ public class ClassTransformer extends AbstractTransformer {
                     return naming.makeUnquotedIdent("$this");
                 return null;
             }else if (defaultParameterMethodOnSelf() 
-                    || daoBody instanceof DaoCompanion) {
+                    || daoBody.kind == DaoKind.COMPANION) {
                 return null;
             } else if (defaultParameterMethodStatic()){
                 return null;
@@ -5392,11 +5204,11 @@ public class ClassTransformer extends AbstractTransformer {
     class DefaultedArgumentConstructor extends DefaultedArgumentClass {
 
         DefaultedArgumentConstructor(MethodDefinitionBuilder mdb, Class klass, Tree.Declaration node, Tree.ParameterList pl, boolean delegationConstructor) {
-            super(new DaoThis(node, pl), mdb, klass, null, delegationConstructor);
+            super(new DaoBody(DaoKind.THIS, node, pl), mdb, klass, null, delegationConstructor);
         }
         
         DefaultedArgumentConstructor(MethodDefinitionBuilder mdb, Constructor constructor, Tree.Declaration node, Tree.ParameterList pl, boolean delegationConstructor) {
-            super(new DaoThis(node, pl), mdb, (Class)constructor.getContainer(), constructor, delegationConstructor);
+            super(new DaoBody(DaoKind.THIS, node, pl), mdb, (Class)constructor.getContainer(), constructor, delegationConstructor);
         }
         
         @Override
