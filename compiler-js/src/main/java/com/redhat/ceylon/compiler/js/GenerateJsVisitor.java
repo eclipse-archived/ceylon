@@ -3095,7 +3095,7 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             ContinueBreakVisitor top=continues.peek();
             if (top.belongs(that)) {
-                out(top.getBreakName(), "=true; return;");
+                out(top.getBreakName(), "=true;return;");
             } else {
                 out("break;");
             }
@@ -3107,7 +3107,7 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             ContinueBreakVisitor top=continues.peek();
             if (top.belongs(that)) {
-                out(top.getContinueName(), "=true; return;");
+                out(top.getContinueName(), "=true;return;");
             } else {
                 out("continue;");
             }
