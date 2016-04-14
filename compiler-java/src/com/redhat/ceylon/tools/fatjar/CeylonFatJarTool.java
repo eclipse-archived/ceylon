@@ -22,7 +22,7 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
-import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -41,16 +41,20 @@ import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 )
 public class CeylonFatJarTool extends ModuleLoadingTool {
 
-    private String moduleNameOptVersion;
+    private List<ModuleSpec> modules;
     private boolean force;
 	private File out;
     private final List<String> excludedModules = new ArrayList<>();
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
 
-    @Argument(order = 1, argumentName="module", multiplicity = "1")
-    public void setModule(String module) {
-        this.moduleNameOptVersion = module;
+    @Argument(order = 1, argumentName="module", multiplicity="+")
+    public void setModules(List<String> modules) {
+        setModuleSpecs(ModuleSpec.parseEachList(modules));
+    }
+
+    public void setModuleSpecs(List<ModuleSpec> modules) {
+        this.modules = modules;
     }
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
@@ -100,24 +104,30 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
 
     @Override
     public void run() throws Exception {
-        String module = ModuleUtil.moduleName(moduleNameOptVersion);
-        String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(),
-                module,
-                ModuleUtil.moduleVersion(moduleNameOptVersion),
-                ModuleQuery.Type.JVM,
-                Versions.JVM_BINARY_MAJOR_VERSION,
-                Versions.JVM_BINARY_MINOR_VERSION,
-                null, null, // JS binary but don't care since JVM
-                null);
-        if(version == null)
-            return;
-        loadModule(module, version);
-
-        if(!force)
-            errorOnConflictingModule(module, version);
+        String firstModuleName = null, firstModuleVersion = null;
+        for (ModuleSpec module : modules) {
+            String moduleName = module.getName();
+            String version = checkModuleVersionsOrShowSuggestions(
+                    getRepositoryManager(),
+                    moduleName,
+                    module.isVersioned() ? module.getVersion() : null,
+                    ModuleQuery.Type.JVM,
+                    Versions.JVM_BINARY_MAJOR_VERSION,
+                    Versions.JVM_BINARY_MINOR_VERSION,
+                    null, null, // JS binary but don't care since JVM
+                    null);
+            if(version == null)
+                return;
+            if(firstModuleName == null){
+                firstModuleName = moduleName;
+                firstModuleVersion = version;
+            }
+            loadModule(moduleName, version);
+            if(!force)
+                errorOnConflictingModule(moduleName, version);
+        }
         
-        File outputJar = applyCwd(out != null ? out : new File(module+"-"+version+".jar"));
+        File outputJar = applyCwd(out != null ? out : new File(firstModuleName+"-"+firstModuleVersion+".jar"));
         if(outputJar.getParentFile() != null && !outputJar.getParentFile().exists()){
             FileUtil.mkdirs(outputJar.getParentFile());
         }
@@ -128,10 +138,10 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
 
         Manifest manifest = new Manifest();
         Attributes mainAttributes = manifest.getMainAttributes();
-        String className = JVMModuleUtil.javaClassNameFromCeylon(module, run != null ? run : (module + "::run"));
+        String className = JVMModuleUtil.javaClassNameFromCeylon(firstModuleName, run != null ? run : (firstModuleName + "::run"));
         mainAttributes.putValue("Main-Class", className);
         mainAttributes.putValue("Manifest-Version", "1.0");
-        mainAttributes.putValue("Created-By", "Ceylon fat-jar for module "+module+"/"+version);
+        mainAttributes.putValue("Created-By", "Ceylon fat-jar for module "+firstModuleName+"/"+firstModuleVersion);
         added.add("META-INF/");
         added.add("META-INF/MANIFEST.MF");
 
@@ -146,7 +156,7 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
                     continue;
                 // on duplicate, let's only keep the last version
                 SortedSet<String> versions = loadedModuleVersions.get(entry.name());
-                if(version != null && !versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
+                if(!versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
                     continue;
                 if(isVerbose()){
                     append(file.getAbsolutePath());

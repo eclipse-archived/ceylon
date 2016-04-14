@@ -58,7 +58,8 @@ public class FatJarToolTests extends AbstractToolTests {
                 Arrays.asList(
                         "--rep", "../dist/dist/repo",
                         "--out", out.getAbsolutePath(),
-                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER,
+                        "com.redhat.ceylon.module-resolver/"+Versions.CEYLON_VERSION_NUMBER));
         tool.run();
         
         Assert.assertTrue(out.exists());
@@ -66,6 +67,8 @@ public class FatJarToolTests extends AbstractToolTests {
             Assert.assertNotNull(zf.getEntry("ceylon/language/true_.class"));
             // dependency
             Assert.assertNotNull(zf.getEntry("com/redhat/ceylon/common/log/Logger.class"));
+            // extra jar
+            Assert.assertNotNull(zf.getEntry("com/redhat/ceylon/cmr/api/Overrides.class"));
             Assert.assertNull(zf.getEntry("META-INF/INDEX.LIST"));
             Assert.assertNull(zf.getEntry("META-INF/mapping.txt"));
             ZipEntry manifestEntry = zf.getEntry("META-INF/MANIFEST.MF");
