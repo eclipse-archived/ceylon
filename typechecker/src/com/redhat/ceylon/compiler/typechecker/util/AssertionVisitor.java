@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.util;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,7 +154,7 @@ public class AssertionVisitor extends Visitor {
 //        }
 //    }
 
-    protected void out(String level, String message, String at, String of) {
+    protected void out(PrintStream ps, String level, String message, String at, String of) {
         StringBuffer buf = new StringBuffer();
         if (level != null) {
             if (level.contains("error")) {
@@ -179,41 +180,41 @@ public class AssertionVisitor extends Visitor {
             buf.append(" of ");
             buf.append(OSUtil.color(of, OSUtil.Color.blue));
         }
-        System.out.println(buf.toString());
+        ps.println(buf.toString());
     }
 
-    protected void out(String level, AnalysisMessage err) {
-        out(level, err.getMessage(),
+    protected void out(PrintStream ps, String level, AnalysisMessage err) {
+        out(ps, level, err.getMessage(),
                 err.getTreeNode().getLocation(), file(err.getTreeNode()));
     }
 
     protected void out(Node that, String message) {
-        out(null, message, that.getLocation(), file(that));
+        out(System.err, null, message, that.getLocation(), file(that));
     }
 
     protected void out(Node that, LexError err) {
         errors++;
-        out("lex error", err.getMessage(), err.getHeader(), file(that));
+        out(System.err, "lex error", err.getMessage(), err.getHeader(), file(that));
     }
 
     protected void out(Node that, ParseError err) {
         errors++;
-        out("parse error", err.getMessage(), err.getHeader(), file(that));
+        out(System.err, "parse error", err.getMessage(), err.getHeader(), file(that));
     }
 
     protected void out(UnexpectedError err) {
         errors++;
-        out("unexpected error", err);
+        out(System.err, "unexpected error", err);
     }
 
     protected void out(AnalysisError err) {
         errors++;
-        out("error", err);
+        out(System.err, "error", err);
     }
 
     protected void out(UnsupportedError err) {
         warnings++;
-        out("warning", err);
+        out(System.out, "warning", err);
     }
 
     /**
@@ -222,7 +223,7 @@ public class AssertionVisitor extends Visitor {
      * @param err error message
      */
     protected void out(UsageWarning err) {
-        out("warning", err);
+        out(System.out, "warning", err);
     }
 
 	private String file(Node that) {
