@@ -1012,7 +1012,7 @@ public abstract class CompilerTests {
         	CeylonJigsawTool jigsawTool = new CeylonJigsawTool();
         	jigsawTool.setOut(mlib);
         	jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
-        	jigsawTool.setModule(module.getName());
+        	jigsawTool.setModules(Arrays.asList(module.getName()));
         	jigsawTool.run();
 
         	ArrayList<String> a = new ArrayList<String>();
