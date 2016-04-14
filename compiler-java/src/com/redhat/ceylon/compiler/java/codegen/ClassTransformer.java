@@ -2319,7 +2319,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             classBuilder.methods(transformMethod(method, methodDecl,
                     true, method.isActual(), true, 
-                    List.of(body), new DaoBody(DaoKind.THIS, methodDecl, methodDecl.getParameterLists().get(0)), false).toList());
+                    List.of(body), DaoKind.THIS, false).toList());
         }
     }
     
@@ -4088,7 +4088,7 @@ public class ClassTransformer extends AbstractTransformer {
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
-                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoBody(DaoKind.SUPER, def, def.getParameterLists().get(0)) : new DaoBody(DaoKind.THIS, def, def.getParameterLists().get(0)),
+                        && !Decl.withinInterface(model.getRefinedDeclaration())? DaoKind.SUPER: DaoKind.THIS,
             !Strategy.defaultParameterMethodOnSelf(model)).toList();
         } else if (Decl.withinInterface(model)
             && !((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
@@ -4102,13 +4102,13 @@ public class ClassTransformer extends AbstractTransformer {
                 companionDefs = transformMethod(def.getDeclarationModel(), 
                         def,
                         false, true, true, null,
-                        new DaoBody(DaoKind.COMPANION, def, def.getParameterLists().get(0)),
+                        DaoKind.COMPANION,
                         false).toList();
             } else {
                 companionDefs = transformMethod(def.getDeclarationModel(), 
                         def,
                         true, false, !model.isShared(), transformMplBodyUnlessSpecifier(def, model, body),
-                        new DaoBody(DaoKind.COMPANION, def, def.getParameterLists().get(0)),
+                        DaoKind.COMPANION,
                         false).toList();
             }
             if(!companionDefs.isEmpty())
@@ -4121,7 +4121,7 @@ public class ClassTransformer extends AbstractTransformer {
                 result = transformMethod(def.getDeclarationModel(), 
                             def,
                             true, true, true, null,
-                            new DaoBody(DaoKind.ABSTRACT, null, null),
+                            DaoKind.ABSTRACT,
                             !Strategy.defaultParameterMethodOnSelf(model)).toList();
             }
         } else if (Decl.withinInterface(model)
@@ -4168,7 +4168,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<MethodDefinitionBuilder> lb = transformMethod(model,
                 def,
                 true, true, true, List.<JCStatement>of(bridgingStmt),
-                new DaoBody(DaoKind.STATIC, def, def.getParameterLists().get(0)),
+                DaoKind.STATIC,
                 !Strategy.defaultParameterMethodOnSelf(model));
         
         // Transform the methods again, and them adjust them to make them static
@@ -4179,7 +4179,7 @@ public class ClassTransformer extends AbstractTransformer {
                 def,
                 true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                 refinedResultType 
-                    && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoBody(DaoKind.SUPER, null, null) : new DaoBody(DaoKind.THIS, def, def.getParameterLists().get(0)),
+                    && !Decl.withinInterface(model.getRefinedDeclaration())? DaoKind.SUPER: DaoKind.THIS,
                 !Strategy.defaultParameterMethodOnSelf(model))) {
             if ((m.getModifiers() & DEFAULT) != 0) {
                 m.addModifiers(STATIC);
@@ -4217,9 +4217,9 @@ public class ClassTransformer extends AbstractTransformer {
             final Function methodModel,
             Tree.AnyMethod method,
             boolean transformMethod, boolean actual, boolean includeAnnotations, List<JCStatement> body, 
-            DaoBody daoTransformation, 
+            DaoKind daoKind, 
             boolean defaultValuesBody) {
-        
+        DaoBody daoTransformation = new DaoBody(daoKind, method, method.getParameterLists().get(0));
         ListBuffer<MethodDefinitionBuilder> lb = new ListBuffer<MethodDefinitionBuilder>();
         boolean hasOverloads = transformParameterMethods(methodModel, method, body, daoTransformation,
                 defaultValuesBody, method.getParameterLists().get(0), lb);
