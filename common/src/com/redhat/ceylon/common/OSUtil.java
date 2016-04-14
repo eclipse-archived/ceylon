@@ -5,7 +5,43 @@ public class OSUtil {
     private static final String RESET = ESCAPE + "[0m";
 
     public static enum Color {
-        red, green, yellow, blue;
+        reset, red, green, yellow, blue;
+        
+        public String escape() {
+            if (!supportsColors()) {
+                return null;
+            }
+            String esc = System.getProperty("com.redhat.ceylon.common.tool.terminal.color." + name());
+            if (esc == null || esc.isEmpty()) {
+                String term = System.getenv("TERM");
+                if (term != null && (term.startsWith("xterm")
+                        || term.startsWith("screen")
+                        || term.startsWith("linux")
+                        || term.startsWith("ansi"))) {
+                    switch (this) {
+                    case red:
+                        esc = ESCAPE + "[31m";
+                        break;
+                    case green:
+                        esc = ESCAPE + "[32m";
+                        break;
+                    case yellow:
+                        esc = ESCAPE + "[33m";
+                        break;
+                    case blue:
+                        esc = ESCAPE + "[34m";
+                        break;
+                    case reset:
+                        esc = RESET;
+                        break;
+                    default:
+                        esc = null;
+                        break;
+                    }
+                }
+            }
+            return esc;
+        }
     }
     
     private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
@@ -23,15 +59,18 @@ public class OSUtil {
         return !IS_WINDOWS && !IS_MAC;
     }
     
-    private static boolean useColors() {
-        boolean colorSupported = isUnix() || isMac();
+    public static boolean supportsColors() {
+        return isUnix() || isMac();
+    }
+    
+    public static boolean useColors() {
         String use = System.getenv(Constants.ENV_CEYLON_TERM_COLORS);
         if (use == null) {
             use = System.getProperty(Constants.PROP_CEYLON_TERM_COLORS);
         }
         if (use != null && !use.isEmpty()) {
             if (use.equalsIgnoreCase("true") || use.equalsIgnoreCase("on") || use.equalsIgnoreCase("yes")) {
-                return colorSupported;
+                return supportsColors();
             } else if (!use.equalsIgnoreCase("auto")) {
                 // `use` is "false", "off", "no" or any other unknown value
                 return false;
@@ -39,7 +78,7 @@ public class OSUtil {
         }
         // `use` is undefined or "auto"
         boolean haveConsole = System.console() != null;
-        return colorSupported && haveConsole;
+        return supportsColors() && haveConsole;
     }
     
     /**
@@ -61,34 +100,8 @@ public class OSUtil {
      */
     public static String color(String txt, Color color) {
         if (useColors()) {
-            String col = System.getProperty("com.redhat.ceylon.common.tool.terminal.color." + color.name());
-            String res = System.getProperty("com.redhat.ceylon.common.tool.terminal.color.reset");
-            if (col == null || col.isEmpty() || res == null || res.isEmpty()) {
-                String term = System.getenv("TERM");
-                if (term != null && (term.startsWith("xterm")
-                        || term.startsWith("screen")
-                        || term.startsWith("linux")
-                        || term.startsWith("ansi"))) {
-                    switch (color) {
-                    case red:
-                        col = ESCAPE + "[31m";
-                        break;
-                    case green:
-                        col = ESCAPE + "[32m";
-                        break;
-                    case yellow:
-                        col = ESCAPE + "[33m";
-                        break;
-                    case blue:
-                        col = ESCAPE + "[34m";
-                        break;
-                    default:
-                        col = null;
-                        break;
-                    }
-                    res = RESET;
-                }
-            }
+            String col = color.escape();
+            String res = Color.reset.escape();
             if (col != null && !col.isEmpty() && res != null && !res.isEmpty()) {
                 txt = col + txt + res;
             }
