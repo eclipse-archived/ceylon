@@ -1700,7 +1700,9 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Body that) {
-        addGuardedVariables(that);
+        if (!(that instanceof Tree.ClassBody)) {
+            addGuardedVariables(that);
+        }
         
         int oid=id;
         id=0;
