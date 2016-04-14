@@ -200,12 +200,21 @@ class C6206 {
     fail("#6206 never happen 2");
   }
 }
+class C6206_2 {
+  shared new() {}
+  if (2==2) {
+    return;
+  }
+  fail("#6206 never happen 3");
+}
 
 void test6206() {
   variable Object? o = I6206();
   check(o exists, "#6206.1");
   o = C6206();
   check(o exists, "#6206.2");
+  o = C6206_2();
+  check(o exists, "#6206.3");
 }
 
 shared void test() {
