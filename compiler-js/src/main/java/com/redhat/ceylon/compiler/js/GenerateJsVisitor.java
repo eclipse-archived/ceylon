@@ -2604,7 +2604,7 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.Return that) {
         if (that.getExpression() == null) {
             final Declaration contDecl = ModelUtil.getContainingDeclarationOfScope(that.getScope());
-            if (contDecl instanceof Class && !((Class)contDecl).hasConstructors()) {
+            if (contDecl instanceof Class) {
                 out("return ", names.self((Class)contDecl), ";");
             } else {
                 out("return;");
