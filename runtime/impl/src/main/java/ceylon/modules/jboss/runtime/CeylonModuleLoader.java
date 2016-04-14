@@ -123,14 +123,14 @@ public class CeylonModuleLoader extends ModuleLoader
         CLI = ModuleIdentifier.create("com.redhat.ceylon.cli", defaultVersion);
 
         // Maven support
-        AETHER_API = ModuleIdentifier.create("org.eclipse.aether.aether-api", "1.1.0");
-        AETHER_SPI = ModuleIdentifier.create("org.eclipse.aether.aether-spi", "1.1.0");
-        AETHER_UTIL = ModuleIdentifier.create("org.eclipse.aether.aether-util", "1.1.0");
-        AETHER_IMPL = ModuleIdentifier.create("org.eclipse.aether.aether-impl", "1.1.0");
-        AETHER_CONNECTOR_BASIC = ModuleIdentifier.create("org.eclipse.aether.aether-connector-basic", "1.1.0");
-        AETHER_TRANSPORT_FILE = ModuleIdentifier.create("org.eclipse.aether.aether-transport-file", "1.1.0");
-        AETHER_TRANSPORT_HTTP = ModuleIdentifier.create("org.eclipse.aether.aether-transport-http", "1.1.0");
-        GUAVA = ModuleIdentifier.create("com.google.guava.guava", "18.0");
+        AETHER_API = ModuleIdentifier.create("org.eclipse.aether.api", "1.1.0");
+        AETHER_SPI = ModuleIdentifier.create("org.eclipse.aether.spi", "1.1.0");
+        AETHER_UTIL = ModuleIdentifier.create("org.eclipse.aether.util", "1.1.0");
+        AETHER_IMPL = ModuleIdentifier.create("org.eclipse.aether.impl", "1.1.0");
+        AETHER_CONNECTOR_BASIC = ModuleIdentifier.create("org.eclipse.aether.connector.basic", "1.1.0");
+        AETHER_TRANSPORT_FILE = ModuleIdentifier.create("org.eclipse.aether.transport.file", "1.1.0");
+        AETHER_TRANSPORT_HTTP = ModuleIdentifier.create("org.eclipse.aether.transport.http", "1.1.0");
+        GUAVA = ModuleIdentifier.create("com.google.guava", "18.0");
         COMMONS_LANG3 = ModuleIdentifier.create("org.apache.commons.lang3", "3.4");
         MAVEN_ARTIFACT = ModuleIdentifier.create("org.apache.maven.maven-artifact", "3.3.9");
         MAVEN_MODEL = ModuleIdentifier.create("org.apache.maven.maven-model", "3.3.9");

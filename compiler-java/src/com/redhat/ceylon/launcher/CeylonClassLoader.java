@@ -118,14 +118,14 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION));
         // Maven support for CMR
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.aether-api", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.aether-spi", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.aether-util", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.aether-impl", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.aether-connector-basic", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.aether-transport-file", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.aether-transport-http", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "com.google.guava.guava", "18.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.api", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.spi", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.util", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.impl", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.connector.basic", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.file", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.http", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.google.guava", "18.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.4")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-artifact", "3.3.9")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model", "3.3.9")); // optional

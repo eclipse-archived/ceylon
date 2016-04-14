@@ -49,6 +49,7 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.JdkProvider;
+import com.redhat.ceylon.tools.p2.ModuleInfo.Dependency;
 
 @Summary("Generates p2 repository metadata suitable for Eclipse")
 @Description("This is EXPERIMENTAL" +
@@ -495,22 +496,28 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
 
         {
             writer.writeStartElement("requires");
-            List<ModuleSpec> importedPackages = moduleInfo.getImportedPackages();
-            List<ModuleSpec> importedModules = moduleInfo.getImportedModules();
+            List<Dependency> importedPackages = moduleInfo.getImportedPackages();
+            List<Dependency> importedModules = moduleInfo.getImportedModules();
             writer.writeAttribute("size", String.valueOf(importedModules.size() + importedPackages.size()));
 
-            for(ModuleSpec mod : importedModules){
+            for(Dependency mod : importedModules){
                 writer.writeEmptyElement("required");
                 writer.writeAttribute("namespace", "osgi.bundle");
                 writer.writeAttribute("name", mod.getName());
                 writer.writeAttribute("range", mod.getVersion());
+                if (mod.isOptional()) {
+                    writer.writeAttribute("optional", "true");
+                }
             }
 
-            for(ModuleSpec pkg : importedPackages){
+            for(Dependency pkg : importedPackages){
                 writer.writeEmptyElement("required");
                 writer.writeAttribute("namespace", "java.package");
                 writer.writeAttribute("name", pkg.getName());
                 writer.writeAttribute("range", pkg.isVersioned() ? pkg.getVersion() : "0.0.0");
+                if (pkg.isOptional()) {
+                    writer.writeAttribute("optional", "true");
+                }
             }
 
             writer.writeEndElement();
