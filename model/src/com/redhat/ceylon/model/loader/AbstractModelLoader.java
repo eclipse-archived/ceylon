@@ -1958,6 +1958,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public boolean loadCompiledModule(Module module)  {
+        return loadCompiledModule(module, true);
+    }
+    
+    public boolean loadCompiledModule(Module module, boolean loadModuleImports)  {
         synchronized(getLock()){
             if(module.isDefault())
                 return false;
@@ -1978,14 +1982,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             if(moduleClass != null){
                 // load its module annotation
-                return loadCompiledModule(module, moduleClass, moduleClassName);
+                return loadCompiledModule(module, moduleClass, moduleClassName, loadModuleImports);
             }
             // give up
             return false;
         }
     }
 
-    private boolean loadCompiledModule(Module module, ClassMirror moduleClass, String moduleClassName) {
+    private boolean loadCompiledModule(Module module, ClassMirror moduleClass, String moduleClassName, boolean loadModuleImports) {
         String name = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "name");
         String version = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "version");
         if(name == null || name.isEmpty()){
@@ -2012,28 +2016,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // no need to load the "nativeBackends" annotation value, it's loaded from annotations
         setAnnotations(module, moduleClass, false);
         
-        List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
-        if(imports != null){
-            for (AnnotationMirror importAttribute : imports) {
-                String dependencyName = (String) importAttribute.getValue("name");
-                if (dependencyName != null) {
-                    String dependencyVersion = (String) importAttribute.getValue("version");
+        if(loadModuleImports){
+            List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
+            if(imports != null){
+                for (AnnotationMirror importAttribute : imports) {
+                    String dependencyName = (String) importAttribute.getValue("name");
+                    if (dependencyName != null) {
+                        String dependencyVersion = (String) importAttribute.getValue("version");
 
-                    Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
 
-                    Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
+                        Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
 
-                    Boolean exportVal = (Boolean) importAttribute.getValue("export");
+                        Boolean exportVal = (Boolean) importAttribute.getValue("export");
 
-                    List<String> nativeBackends = (List<String>) importAttribute.getValue("nativeBackends");
-                    Backends backends = nativeBackends == null ? Backends.ANY : Backends.fromAnnotations(nativeBackends);
+                        List<String> nativeBackends = (List<String>) importAttribute.getValue("nativeBackends");
+                        Backends backends = nativeBackends == null ? Backends.ANY : Backends.fromAnnotations(nativeBackends);
 
-                    ModuleImport moduleImport = moduleManager.findImport(module, dependency);
-                    if (moduleImport == null) {
-                        boolean optional = optionalVal != null && optionalVal;
-                        boolean export = exportVal != null && exportVal;
-                        moduleImport = new ModuleImport(dependency, optional, export, backends);
-                        module.addImport(moduleImport);
+                        ModuleImport moduleImport = moduleManager.findImport(module, dependency);
+                        if (moduleImport == null) {
+                            boolean optional = optionalVal != null && optionalVal;
+                            boolean export = exportVal != null && exportVal;
+                            moduleImport = new ModuleImport(dependency, optional, export, backends);
+                            module.addImport(moduleImport);
+                        }
                     }
                 }
             }
@@ -2044,31 +2050,34 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         modules.getListOfModules().add(module);
         Module languageModule = modules.getLanguageModule();
         module.setLanguageModule(languageModule);
-        if(!ModelUtil.equalModules(module, languageModule)){
-            boolean found = false;
-            for (ModuleImport mi : module.getImports()) {
-                if ("ceylon.language".equals(mi.getModule().getNameAsString())) {
-                    found = true;
-                    break;
+        
+        if(loadModuleImports){
+            if(!ModelUtil.equalModules(module, languageModule)){
+                boolean found = false;
+                for (ModuleImport mi : module.getImports()) {
+                    if (Module.LANGUAGE_MODULE_NAME.equals(mi.getModule().getNameAsString())) {
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if (!found) {
-                // It's not really a LazyModule because we're not loading 
-                // it lazily. It's only here for module version analysis.
-                // But other stuff expects non-source modules to be lazy.
-                LazyModule oldLangMod = new LazyModule() {
-                    @Override
-                    protected AbstractModelLoader getModelLoader() {
-                        return AbstractModelLoader.this;
-                    }};
-                oldLangMod.setLanguageModule(oldLangMod);
-                oldLangMod.setName(Arrays.asList("ceylon", "language"));
-                oldLangMod.setVersion(Versions.getJvmLanguageModuleVersion(major, minor));
-                oldLangMod.setNativeBackends(Backends.JAVA);
-                oldLangMod.setJvmMajor(major);
-                oldLangMod.setJvmMinor(minor);
-                ModuleImport moduleImport = new ModuleImport(oldLangMod, false, false);
-                module.addImport(moduleImport);
+                if (!found) {
+                    // It's not really a LazyModule because we're not loading 
+                    // it lazily. It's only here for module version analysis.
+                    // But other stuff expects non-source modules to be lazy.
+                    LazyModule oldLangMod = new LazyModule() {
+                        @Override
+                        protected AbstractModelLoader getModelLoader() {
+                            return AbstractModelLoader.this;
+                        }};
+                    oldLangMod.setLanguageModule(oldLangMod);
+                    oldLangMod.setName(Arrays.asList(Module.LANGUAGE_MODULE_NAME));
+                    oldLangMod.setVersion(Versions.getJvmLanguageModuleVersion(major, minor));
+                    oldLangMod.setNativeBackends(Backends.JAVA);
+                    oldLangMod.setJvmMajor(major);
+                    oldLangMod.setJvmMinor(minor);
+                    ModuleImport moduleImport = new ModuleImport(oldLangMod, false, false);
+                    module.addImport(moduleImport);
+                }
             }
         }
         
