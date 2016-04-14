@@ -112,11 +112,11 @@ public class CeylonTestJsTool extends AbstractTestTool {
         String red = OSUtil.Color.red.escape();
         if (reset != null && green != null && red != null) {
             args.add("--" + COLOR_RESET);
-            args.add(System.getProperty(COLOR_RESET));
+            args.add(reset);
             args.add("--" + COLOR_GREEN);
-            args.add(System.getProperty(COLOR_GREEN));
+            args.add(green);
             args.add("--" + COLOR_RED);
-            args.add(System.getProperty(COLOR_RED));
+            args.add(red);
         }
     }
 
