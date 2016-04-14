@@ -601,10 +601,12 @@ public class JvmBackendUtil {
     }
 
     private static void finishLoadingModule(final ModuleSpec module, 
-            final SortedSet<String> packages, 
-            final List<ArtifactResult> dependencies, 
+            SortedSet<String> packages, 
+            List<ArtifactResult> dependencies, 
             final List<String> dexEntries, 
             StaticMetamodelLoader staticMetamodelLoader) {
+        final SortedSet<String> packagesCopy = new TreeSet<>(packages);
+        final List<ArtifactResult> dependenciesCopy = new ArrayList<>(dependencies);
         
         ArtifactResult artifact = new ContentAwareArtifactResult() {
             
@@ -650,7 +652,7 @@ public class JvmBackendUtil {
             
             @Override
             public List<ArtifactResult> dependencies() throws RepositoryException {
-                return dependencies;
+                return dependenciesCopy;
             }
             
             @Override
@@ -660,7 +662,7 @@ public class JvmBackendUtil {
             
             @Override
             public Collection<String> getPackages() {
-                return packages;
+                return packagesCopy;
             }
             
             @Override
@@ -690,7 +692,7 @@ public class JvmBackendUtil {
             private Collection<String> getAndroidEntries() {
                 List<String> ret = new LinkedList<>();
                 for(String entry : dexEntries){
-                    for (String pkg : packages) {
+                    for (String pkg : packagesCopy) {
                         String path = pkg.replace('.', '/')+"/";
                         if(entry.startsWith(path)){
                             ret.add(entry);
