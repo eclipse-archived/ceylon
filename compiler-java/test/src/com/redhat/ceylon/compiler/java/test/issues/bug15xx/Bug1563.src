@@ -38,24 +38,13 @@ final class bug1563_helper_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array2 is ObjectArray<ObjectArray<Integer>>"));
         }
         final .ceylon.language.List<? extends T>[] array3 = (.ceylon.language.List<? extends T>[])new .ceylon.language.List[0];
-        final .java.lang.Object[] array4 = .com.redhat.ceylon.compiler.java.Util.makeArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$T, $reified$U), 0);
-        if ((
-            let
-            {
-                .java.lang.Object $ceylontmp$5 = array4;
-            }
-            returning (.java.lang.Object)$ceylontmp$5 instanceof .ceylon.language.Integer[];
-        )) {
-        } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array4 is ObjectArray<Integer>"));
-        }
         final .java.lang.Object array5 = new int[0][];
         if ((
             let
             {
-                .java.lang.Object $ceylontmp$7 = array5;
+                .java.lang.Object $ceylontmp$5 = array5;
             }
-            returning $ceylontmp$7 instanceof int[][];
+            returning $ceylontmp$5 instanceof int[][];
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array5 is ObjectArray<IntArray>"));
@@ -64,13 +53,12 @@ final class bug1563_helper_ {
         if ((
             let
             {
-                .java.lang.Object $ceylontmp$9 = array6;
+                .java.lang.Object $ceylontmp$7 = array6;
             }
-            returning $ceylontmp$9 instanceof int[][][];
+            returning $ceylontmp$7 instanceof int[][][];
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "array6 is ObjectArray<ObjectArray<IntArray>>"));
         }
-        final .java.lang.Object[] array7 = new .java.lang.Object[0];
     }
 }
