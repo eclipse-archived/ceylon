@@ -8,6 +8,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -106,9 +107,10 @@ public class CeylonTestJsTool extends AbstractTestTool {
     }
 
     private void processColors(final List<String> args) {
-        if (System.getProperties().containsKey(COLOR_RESET)
-                && System.getProperties().containsKey(COLOR_GREEN)
-                && System.getProperties().containsKey(COLOR_RED)) {
+        String reset = OSUtil.Color.reset.escape();
+        String green = OSUtil.Color.green.escape();
+        String red = OSUtil.Color.red.escape();
+        if (reset != null && green != null && red != null) {
             args.add("--" + COLOR_RESET);
             args.add(System.getProperty(COLOR_RESET));
             args.add("--" + COLOR_GREEN);
