@@ -4640,6 +4640,161 @@ public class ClassTransformer extends AbstractTransformer {
         
     }
     
+    
+    enum DaoKind {
+        THIS,
+        ABSTRACT,
+        SUPER,
+        COMPANION,
+    }
+    /**
+     * a transformation for an overloaded 
+     * default parameter body which delegates to the "canonical"
+     * method/constructor using a {@code let} expresssion
+     * to substitute defaulted arguments
+     */
+    private class DaoThis2 extends DaoBody {
+        private final Tree.Declaration declTree;
+        private final Token firstExecutable;
+        private final Tree.ParameterList pl;
+        private final DaoKind kind;
+
+        private DaoThis2(DaoKind kind, Tree.Declaration invocation, Tree.ParameterList pl) {
+            this.kind = kind;
+            this.declTree = invocation;
+            this.firstExecutable = pl != null ? pl.getEndToken() : null;
+            this.pl = pl;
+        }
+        @Override
+        protected final List<JCExpression> makeTypeArguments(DefaultedArgumentOverload ol) {
+            if (kind == DaoKind.COMPANION) {
+                return List.<JCExpression>nil();
+            } else {
+                return super.makeTypeArguments(ol);
+            }
+        }
+        
+        @Override
+        JCExpression makeMethodNameQualifier() {
+            if (kind == DaoKind.SUPER) {
+                return naming.makeSuper();
+            } else {
+                return null;
+            }
+        }
+        
+        @Override
+        public void makeBody(DefaultedArgumentOverload overloaded,
+                MethodDefinitionBuilder overloadBuilder,
+                ParameterList parameterList,
+                Parameter currentParameter,
+                java.util.List<TypeParameter> typeParameterList) {
+            switch (kind) {
+            case ABSTRACT:
+                overloadBuilder.noBody();
+                overloadBuilder.addModifiers(ABSTRACT);
+                break;
+            case THIS:
+            case COMPANION:
+                ListBuffer<JCExpression> delegateArgs = new ListBuffer<JCExpression>();
+                overloaded.appendImplicitArgumentsDelegate(typeParameterList, delegateArgs);
+                ListBuffer<JCExpression> dpmArgs = new ListBuffer<JCExpression>();
+                overloaded.appendImplicitArgumentsDpm(typeParameterList, dpmArgs);
+                
+                ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
+                
+                boolean initedVars = false;
+                boolean useDefault = false;
+                for (Parameter parameterModel : parameterList.getParameters()) {
+                    if (currentParameter != null && Decl.equal(parameterModel, currentParameter)) {
+                        useDefault = true;
+                    }
+                    if (useDefault) {
+                        at(parameterLocation(parameterModel));
+                        JCExpression defaultArgument;
+                        if (Strategy.hasDefaultParameterValueMethod(parameterModel)) {
+                            if (!initedVars) {
+                                // Only call init vars if we actually invoke a defaulted param method
+                                overloaded.initVars(currentParameter, vars);
+                            }
+                            initedVars = true;
+                            JCExpression defaultValueMethodName = naming.makeDefaultedParamMethod(overloaded.makeDefaultArgumentValueMethodQualifier(), parameterModel);
+                            defaultArgument = make().Apply(makeTypeArguments(overloaded), 
+                                    defaultValueMethodName, 
+                                    new ListBuffer<JCExpression>().appendList(dpmArgs).toList());
+                        } else if (Strategy.hasEmptyDefaultArgument(parameterModel)) {
+                            defaultArgument = makeEmptyAsSequential(true);
+                        } else {
+                            defaultArgument = makeErroneous(null, "compiler bug: parameter " + parameterModel.getName() + " has an unsupported default value");
+                        }
+                        Naming.SyntheticName varName = naming.temp(parameterModel.getName());
+                        Type paramType = overloaded.parameterType(parameterModel);
+                        vars.append(makeVar(varName, 
+                                makeJavaType(paramType, CodegenUtil.isUnBoxed(parameterModel.getModel()) ? 0 : JT_NO_PRIMITIVES), 
+                                defaultArgument));
+                        at(null);
+                        delegateArgs.add(varName.makeIdent());
+                        dpmArgs.add(varName.makeIdent());
+                    } else {
+                        delegateArgs.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
+                        dpmArgs.add(naming.makeName(parameterModel.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
+                    }
+                }
+                makeBody(overloaded, overloadBuilder, delegateArgs, vars);
+                break;
+            case SUPER:
+                ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
+                for (Parameter parameter : parameterList.getParameters()) {
+                    if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
+                        break;
+                    }
+                    args.add(naming.makeUnquotedIdent(parameter.getName()));
+                }
+                JCExpression superCall = overloaded.makeInvocation(args);
+                /*JCMethodInvocation superCall = make().Apply(null,
+                        naming.makeQualIdent(naming.makeSuper(), ((Function)overloaded.getModel()).getName()),
+                        args.toList());*/
+                JCExpression refinedType = makeJavaType(((Function)overloaded.getModel()).getType(), JT_NO_PRIMITIVES);
+                overloadBuilder.body(make().Return(make().TypeCast(refinedType, superCall)));
+                break;
+            }
+        }
+        
+        private Node parameterLocation(Parameter parameterModel) {
+            if (this.pl != null) {
+                for (Tree.Parameter p : pl.getParameters()) {
+                    if (p.getParameterModel().equals(parameterModel)) {
+                        return p;
+                    }
+                }
+            }
+            return null;
+        }
+        protected final void makeBody(DefaultedArgumentOverload overloaded, 
+                MethodDefinitionBuilder overloadBuilder, 
+                ListBuffer<JCExpression> args, 
+                ListBuffer<JCStatement> vars) {
+            at(pl, firstExecutable);
+            JCExpression invocation = overloaded.makeInvocation(args);
+            Declaration model = overloaded.getModel();// TODO Yuk
+            if (!isVoid(model)
+                    // MPL overloads always return a Callable
+                    || (model instanceof Functional && Decl.isMpl((Functional) model))
+                    || (model instanceof Function && !(Decl.isUnboxedVoid(model)))
+                    || (model instanceof Function && Strategy.useBoxedVoid((Function)model)) 
+                    || Strategy.generateInstantiator(model) && overloaded instanceof DefaultedArgumentInstantiator) {
+                if (!vars.isEmpty()) {
+                    invocation = at(declTree).LetExpr(vars.toList(), invocation);
+                }
+                overloadBuilder.body(make().Return(invocation));
+            } else {
+                vars.append(at(pl, firstExecutable).Exec(invocation));
+                invocation = at(declTree).LetExpr(vars.toList(), makeNull());
+                overloadBuilder.body(make().Exec(invocation));
+            }
+        }
+    }
+    
     /** 
      * a body-less (i.e. abstract) transformation.
      */
@@ -4653,7 +4808,7 @@ public class ClassTransformer extends AbstractTransformer {
             overloadBuilder.noBody();
         }
     };
-    final DaoAbstract daoAbstract = new DaoAbstract();
+    final DaoBody daoAbstract = new DaoThis2(DaoKind.ABSTRACT, null, null);
     /**
      * a transformation for an overloaded 
      * default parameter body which delegates to the "canonical"
