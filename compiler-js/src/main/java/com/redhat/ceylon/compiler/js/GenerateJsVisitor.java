@@ -2603,7 +2603,12 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.Return that) {
         if (that.getExpression() == null) {
-            out("return;");
+            final Declaration contDecl = ModelUtil.getContainingDeclarationOfScope(that.getScope());
+            if (contDecl instanceof Class && !((Class)contDecl).hasConstructors()) {
+                out("return ", names.self((Class)contDecl), ";");
+            } else {
+                out("return;");
+            }
             endLine();
             return;
         }
