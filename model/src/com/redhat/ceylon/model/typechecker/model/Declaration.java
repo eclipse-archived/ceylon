@@ -295,7 +295,7 @@ public abstract class Declaration
                 // i.e. this declaration might
                 // be visible from outside its
                 // own ConditionScope
-                getRealScope(getContainer()), 
+                getRealScope(getContainer()),
                 scope);
     }
     

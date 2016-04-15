@@ -69,7 +69,7 @@ public class ModelUtil {
             }
             scope = scope.getContainer();
         }
-        return null;
+        return scope;
     }
     
     /**

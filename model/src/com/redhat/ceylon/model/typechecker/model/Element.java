@@ -41,7 +41,8 @@ public abstract class Element {
     /**
      * The "real" scope of the element, ignoring that
      * conditions (in an assert, if, or while) each have
-     * their own "fake" scope.
+     * their own "fake" scope that does not apply to regular
+     * declarations that occur within the fake scope.
      * 
      * @see ConditionScope
      */

@@ -671,7 +671,7 @@ public abstract class DeclarationVisitor extends Visitor {
 
     /**
      * Get the containing scope, skipping any condition
-     * scopes. 
+     * scopes in the case of a regular declaration. 
      * 
      * @see com.redhat.ceylon.model.typechecker.model.ConditionScope
      */
