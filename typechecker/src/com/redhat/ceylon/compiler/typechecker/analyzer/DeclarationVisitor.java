@@ -1700,9 +1700,8 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Body that) {
-        if (!(that instanceof Tree.ClassBody)) {
-            addGuardedVariables(that);
-        }
+        addGuardedVariables(that, 
+                that instanceof Tree.ClassBody);
         
         int oid=id;
         id=0;
@@ -1710,7 +1709,8 @@ public abstract class DeclarationVisitor extends Visitor {
         id=oid;
     }
 
-    private static void addGuardedVariables(Tree.Body that) {
+    private static void addGuardedVariables(Tree.Body that, 
+            boolean isInitializer) {
         List<Tree.Statement> originals = 
                 that.getStatements();
         List<Tree.Statement> result = 
@@ -1734,7 +1734,7 @@ public abstract class DeclarationVisitor extends Visitor {
                             Tree.Statement last = 
                                     statements.get(
                                             statements.size()-1);
-                            if (definitelyReturns(last)) {
+                            if (definitelyReturns(last, isInitializer)) {
                                 Tree.Variable v = 
                                        guardedVariable(
                                                ifcl.getConditionList());
@@ -1751,8 +1751,10 @@ public abstract class DeclarationVisitor extends Visitor {
         originals.addAll(result);
     }
 
-    public static boolean definitelyReturns(Tree.Statement last) {
-        if (last instanceof Tree.Directive) {
+    public static boolean definitelyReturns(Tree.Statement last, 
+            boolean isInitializer) {
+        if (!isInitializer && last instanceof Tree.Return ||
+                last instanceof Tree.Throw) {
             return true;
         }
         else if (last instanceof Tree.IfStatement) {
@@ -1772,15 +1774,18 @@ public abstract class DeclarationVisitor extends Visitor {
                                 ists.get(ists.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
-                        return definitelyReturns(ilast) &&
-                                definitelyReturns(elast);
+                        return definitelyReturns(ilast, 
+                                        isInitializer) &&
+                                definitelyReturns(elast, 
+                                        isInitializer);
                     }
                 }
             }
             return false;
         }
         else if (last instanceof Tree.SwitchStatement) {
-            Tree.SwitchStatement ss = (Tree.SwitchStatement) last;
+            Tree.SwitchStatement ss = 
+                    (Tree.SwitchStatement) last;
             Tree.SwitchCaseList scl = ss.getSwitchCaseList();
             if (scl!=null) {
                 for (Tree.CaseClause cc: scl.getCaseClauses()) {
@@ -1797,7 +1802,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         else {
                             Tree.Statement clast =
                                     csts.get(csts.size()-1);
-                            if (!definitelyReturns(clast)) {
+                            if (!definitelyReturns(clast, 
+                                    isInitializer)) {
                                 return false;
                             }
                         }
@@ -1818,7 +1824,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         else {
                             Tree.Statement elast =
                                     ests.get(ests.size()-1);
-                            if (!definitelyReturns(elast)) {
+                            if (!definitelyReturns(elast, 
+                                    isInitializer)) {
                                 return false;
                             }
                         }
@@ -1831,15 +1838,24 @@ public abstract class DeclarationVisitor extends Visitor {
         else if (last instanceof Tree.ForStatement) {
             Tree.ForStatement is = (Tree.ForStatement) last;
             Tree.ElseClause ec = is.getElseClause();
-            if (ec!=null) {
+            Tree.ForClause fc = is.getForClause();
+            if (ec!=null && fc!=null) {
                 Tree.Block ecb = ec.getBlock();
-                if (ecb!=null) {
+                Tree.Block fcb = fc.getBlock();
+                if (ecb!=null && ecb!=null) {
+                    List<Tree.Statement> fsts = 
+                            fcb.getStatements();
                     List<Tree.Statement> ests = 
                             ecb.getStatements();
-                    if (!ests.isEmpty()) {
+                    if (!ests.isEmpty() && !fsts.isEmpty()) {
+                        Tree.Statement flast =
+                                fsts.get(ests.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
-                        return definitelyReturns(elast);
+                        return definitelyReturns(flast, 
+                                        isInitializer) &&
+                                definitelyReturns(elast, 
+                                        isInitializer);
                     }
                 }
             }
