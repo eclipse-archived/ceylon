@@ -1849,7 +1849,7 @@ public abstract class DeclarationVisitor extends Visitor {
                             ecb.getStatements();
                     if (!ests.isEmpty() && !fsts.isEmpty()) {
                         Tree.Statement flast =
-                                fsts.get(ests.size()-1);
+                                fsts.get(fsts.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
                         return definitelyReturns(flast, 
