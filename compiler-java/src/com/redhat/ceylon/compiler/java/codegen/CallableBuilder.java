@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.DaoKind;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -1518,7 +1519,7 @@ public class CallableBuilder {
         }
         for(Tree.Parameter p : parameterListTree.getParameters()){
             if(Decl.getDefaultArgument(p) != null){
-                MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(false, null, parameterListTree, p);
+                MethodDefinitionBuilder methodBuilder = gen.classGen().makeParamDefaultValueMethod(DaoKind.THIS, null, parameterListTree, p);
                 this.parameterDefaultValueMethods.append(methodBuilder);
             }
         }
