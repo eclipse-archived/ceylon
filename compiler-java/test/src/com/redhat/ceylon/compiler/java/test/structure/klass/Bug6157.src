@@ -4,13 +4,13 @@ public interface Bug6157Int$I<Foo> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.I$impl $com$redhat$ceylon$compiler$java$test$structure$klass$Bug6157Int$impl$I$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.I$impl.IC IC$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.I$impl.IC IC$new$();
 }
 interface Bug6157Int<Foo> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo> $com$redhat$ceylon$compiler$java$test$structure$klass$Bug6157Int$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.C C$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.Bug6157Int$impl<Foo>.C C$new$();
 }
 final class Bug6157Int$impl<Foo> implements .java.io.Serializable {
     

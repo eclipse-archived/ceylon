@@ -21,7 +21,7 @@ public interface Bug2305InvocationCompletion {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2305InvocationCompletion$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl.Proposal Proposal$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion$impl.Proposal Proposal$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2305InvocationCompletion.class);
 }
 public final class Bug2305InvocationCompletion$impl implements .java.io.Serializable {

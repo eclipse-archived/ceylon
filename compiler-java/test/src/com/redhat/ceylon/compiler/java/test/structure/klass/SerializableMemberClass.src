@@ -4,9 +4,9 @@ interface SerializableMemberClassOfInterface {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableMemberClassOfInterface$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Shared Shared$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Shared Shared$new$();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Default Default$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Default Default$new$();
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface$impl.Formal Formal$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.SerializableMemberClassOfInterface.class);

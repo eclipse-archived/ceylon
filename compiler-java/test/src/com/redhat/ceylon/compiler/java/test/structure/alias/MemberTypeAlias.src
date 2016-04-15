@@ -169,7 +169,7 @@ public interface MemberTypeAliasInterface {
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl $com$redhat$ceylon$compiler$java$test$structure$alias$MemberTypeAliasInterface$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass TypeAliasClass$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass TypeAliasClass$new$();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class);
 }

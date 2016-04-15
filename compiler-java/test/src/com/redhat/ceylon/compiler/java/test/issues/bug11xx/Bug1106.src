@@ -8,7 +8,7 @@ public interface Bug1106_Resource {
     
     public abstract .java.lang.String getContents();
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl.Bug1106_Stub Bug1106_Stub$new$(final .java.lang.String path, final .java.lang.String contents);
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource$impl.Bug1106_Stub Bug1106_Stub$new$(final .java.lang.String path, final .java.lang.String contents);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1106_Resource.class);
 }
 public final class Bug1106_Resource$impl implements .java.io.Serializable {

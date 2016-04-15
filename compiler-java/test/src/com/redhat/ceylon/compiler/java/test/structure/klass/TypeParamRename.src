@@ -4,13 +4,13 @@ interface TypeParamRename<T, U> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename$impl<T, U> $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$impl();
     
-    public U m(final T t1);
+    public abstract U m(final T t1);
     
     public abstract T m$t2(final T t1);
     
     public U m(final T t1, final T t2);
     
-    public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W);
+    public abstract <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W);
     
     public abstract <V, W>V m2$v(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W);
     

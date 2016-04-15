@@ -40,7 +40,7 @@ import com.redhat.ceylon.compiler.java.test.ModuleSpecifier;
     modulesUsingCheckModule={"jvm", "annotations", "resmod", "serialization"},
     dependencies={"check", "modules.imported", "modules.optional", "modules.required"},
     options={"-suppress-warnings", "unusedDeclaration,unusedImport,compilerAnnotation,expressionTypeNothing",
-            "-target", "8", "-source", "8"},
+            /*"-target", "8", "-source", "8"*/},
     removeAtRuntime={"modules.optional"},
     runModulesInNewJvm = { 
             @ModuleSpecifier(module = "default", runClass = "run_"), 

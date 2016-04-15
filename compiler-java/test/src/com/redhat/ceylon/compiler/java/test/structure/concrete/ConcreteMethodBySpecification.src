@@ -17,7 +17,7 @@ interface ConcreteMethodBySpecification {
     
     public long mSharedFn();
     
-    public long mSharedMem();
+    public abstract long mSharedMem();
     
     public abstract long mSharedMem$i();
     
@@ -25,7 +25,7 @@ interface ConcreteMethodBySpecification {
     
     public long mDefaultFn();
     
-    public long mDefaultMem();
+    public abstract long mDefaultMem();
     
     public abstract long mDefaultMem$i();
     
@@ -95,13 +95,13 @@ interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.j
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteMethodBySpecificationSub$impl();
     
-    public long mSharedSup();
+    public abstract long mSharedSup();
     
     public abstract long mSharedSup$i();
     
     public long mSharedSup(final long i);
     
-    public long mDefaultSup();
+    public abstract long mDefaultSup();
     
     public abstract long mDefaultSup$i();
     

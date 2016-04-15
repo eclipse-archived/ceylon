@@ -26,7 +26,7 @@ interface Bug1649Subinterface extends .com.redhat.ceylon.compiler.java.test.issu
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface$impl $com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1649Subinterface$impl();
     
-    public .java.lang.Object defaultedVar();
+    public abstract .java.lang.Object defaultedVar();
     
     @.java.lang.Override
     public .java.lang.Object defaultedVar(final .java.lang.Object var);
@@ -41,12 +41,8 @@ final class Bug1649Subinterface$impl implements .java.io.Serializable {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface $this;
     
-    private .java.lang.Object defaultedVar$canonical$(final .java.lang.Object var) {
-        return $this.refinedDelegate();
-    }
-    
     public .java.lang.Object defaultedVar(final .java.lang.Object var) {
-        return defaultedVar$canonical$(var);
+        return $this.refinedDelegate();
     }
 }
 class Bug1649Clazz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface, .java.io.Serializable {

@@ -4,31 +4,31 @@ interface InstantiatorDelegates<X> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X> $com$redhat$ceylon$compiler$java$test$structure$mcr$InstantiatorDelegates$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Nullary Nullary$new$();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new$(final boolean b);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Unary Unary$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b, final long i);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b, final long i);
     
     public abstract long $default$Binary$i(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary Binary$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b, final long i);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b, final long i);
     
     public abstract boolean $default$Binary2$b();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$();
     
     public abstract long $default$Binary2$i(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Binary2 Binary2$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.Sequenced Sequenced$new$(final boolean b);
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new$(final X x);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InstantiatorDelegates$impl<X>.TypeArg TypeArg$new$(final X x);
 }
 final class InstantiatorDelegates$impl<X> implements .java.io.Serializable {
     

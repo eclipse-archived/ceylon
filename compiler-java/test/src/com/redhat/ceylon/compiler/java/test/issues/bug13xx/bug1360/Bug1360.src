@@ -43,7 +43,7 @@ interface I<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$impl();
     
-    public void $main();
+    public abstract void $main();
     
     public abstract T[] main$s();
     

@@ -4,11 +4,11 @@ interface Concrete<A> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete$impl<A> $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$impl();
     
-    public void mShared();
+    public abstract void mShared();
     
     public abstract A mShared$a();
     
-    public void mShared(final A a);
+    public abstract void mShared(final A a);
     
     public void mShared(final A a, final .ceylon.language.Sequential<? extends A> aseq);
     
@@ -20,11 +20,11 @@ interface Concrete<A> {
     
     public abstract .java.lang.Object mFormal(final A a, final .ceylon.language.Sequential<? extends A> aseq);
     
-    public .java.lang.Object mDefault();
+    public abstract .java.lang.Object mDefault();
     
     public abstract A mDefault$a();
     
-    public .java.lang.Object mDefault(final A a);
+    public abstract .java.lang.Object mDefault(final A a);
     
     public .java.lang.Object mDefault(final A a, final .ceylon.language.Sequential<? extends A> aseq);
 }

@@ -4,7 +4,7 @@ interface InterfaceDefaultMemberClass {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClass$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl.Member Member$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass$impl.Member Member$new$();
     
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass qual);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClass.class);

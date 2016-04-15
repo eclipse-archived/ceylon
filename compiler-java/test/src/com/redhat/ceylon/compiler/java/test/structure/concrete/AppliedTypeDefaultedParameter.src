@@ -4,11 +4,11 @@ interface AppliedTypeDefaultedParameter<T, U> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U> $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$(final T t);
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$(final T t);
     
     public abstract T $default$Member$t();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$();
 }
 final class AppliedTypeDefaultedParameter$impl<T, U> implements .java.io.Serializable {
     

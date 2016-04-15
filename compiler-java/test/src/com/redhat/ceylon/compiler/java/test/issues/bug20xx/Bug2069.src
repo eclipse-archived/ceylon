@@ -4,7 +4,7 @@ public interface Bug2069Bar {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar$impl $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2069Bar$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar$impl.Baz Baz$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar$impl.Baz Baz$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2069Bar.class);
 }
 public final class Bug2069Bar$impl implements .java.io.Serializable {

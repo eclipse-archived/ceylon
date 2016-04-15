@@ -190,7 +190,7 @@ public interface Bug1879_Y2 extends .com.redhat.ceylon.compiler.java.test.issues
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl $com$redhat$ceylon$compiler$java$test$issues$bug18xx$Bug1879_Y2$impl();
     
-    public .java.lang.Object f0();
+    public abstract .java.lang.Object f0();
     
     @.java.lang.Override
     public .java.lang.Object f0(final .ceylon.language.Sequential p);
@@ -202,7 +202,7 @@ public interface Bug1879_Y2 extends .com.redhat.ceylon.compiler.java.test.issues
     public void setV(final .ceylon.language.Iterable v);
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl.MemberClass MemberClass$new$(final .ceylon.language.Iterable g);
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2$impl.MemberClass MemberClass$new$(final .ceylon.language.Iterable g);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2.class);
 }
 public final class Bug1879_Y2$impl implements .java.io.Serializable {
@@ -212,12 +212,8 @@ public final class Bug1879_Y2$impl implements .java.io.Serializable {
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y2 $this;
     
-    private .java.lang.Object f0$canonical$(final .ceylon.language.Sequential p) {
-        return null;
-    }
-    
     public .java.lang.Object f0(final .ceylon.language.Sequential p) {
-        return f0$canonical$(p);
+        return null;
     }
     
     public final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getV() {

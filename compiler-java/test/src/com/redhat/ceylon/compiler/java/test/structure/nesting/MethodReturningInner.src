@@ -4,7 +4,7 @@ interface MethodReturningInner$CI<T> {
     
     public .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$MethodReturningInner$CI$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC CIC$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC CIC$new$();
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC m3();
 }

@@ -6,11 +6,11 @@ interface This {
     
     public abstract long m1();
     
-    public long m2();
+    public abstract long m2();
     
     public abstract long m2$i1();
     
-    public long m2(final long i1);
+    public abstract long m2(final long i1);
     
     public abstract long m2$i2(final long i1);
     

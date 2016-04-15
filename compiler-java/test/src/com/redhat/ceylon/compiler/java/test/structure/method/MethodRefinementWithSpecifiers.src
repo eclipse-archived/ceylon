@@ -269,7 +269,7 @@ interface Bug891_Interface2 extends .com.redhat.ceylon.compiler.java.test.struct
     
     public .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl $com$redhat$ceylon$compiler$java$test$structure$method$Bug891_Interface2$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.InnerShared InnerShared$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.method.Bug891_Interface2$impl.InnerShared InnerShared$new$();
     
     @.java.lang.Override
     public .java.lang.Object f2();

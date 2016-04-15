@@ -348,17 +348,17 @@ interface EC_ErasedMember<Element, Absent> {
     
     public .java.lang.Object m();
     
-    public .java.lang.Object defaultedParams();
+    public abstract .java.lang.Object defaultedParams();
     
     public abstract .java.lang.Object defaultedParams$p();
     
     public .java.lang.Object defaultedParams(final .java.lang.Object p);
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p);
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p);
     
     public abstract .java.lang.Object $default$Class$p();
     
-    public .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$();
 }
 final class EC_ErasedMember$impl<Element, Absent> implements .java.io.Serializable {
     

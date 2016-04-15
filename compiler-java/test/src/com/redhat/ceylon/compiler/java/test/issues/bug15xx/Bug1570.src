@@ -6,7 +6,7 @@ interface Bug1570<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$impl();
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$();
 }
 final class Bug1570$impl<T> implements .java.io.Serializable {
     

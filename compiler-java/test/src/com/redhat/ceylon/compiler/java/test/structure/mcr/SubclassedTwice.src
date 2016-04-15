@@ -41,7 +41,7 @@ interface SubclassedTwiceFirst extends .com.redhat.ceylon.compiler.java.test.str
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$SubclassedTwiceFirst$impl();
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new$();
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst$impl.Member Member$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceFirst.class);
 }
 final class SubclassedTwiceFirst$impl implements .java.io.Serializable {
