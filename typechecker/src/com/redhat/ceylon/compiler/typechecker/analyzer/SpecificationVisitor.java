@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
@@ -253,8 +254,11 @@ public class SpecificationVisitor extends Visitor {
             return;
         }
 
+        Scope scope = that.getScope();
         if (member==declaration && 
-                member.isDefinedInScope(that.getScope())) {
+                declaration.isDefinedInScope(scope) &&
+                //TODO: THIS IS TERRIBLE!!!!!
+                !isReferenceToNativeHeaderMember(scope)) {
             if (!declared) {
                 //you are allowed to refer to later 
                 //declarations in a class declaration
@@ -266,12 +270,12 @@ public class SpecificationVisitor extends Visitor {
                             declaration.getContainer();
                     if (container instanceof Class) {
                         that.addError("forward reference to class member in initializer: '" + 
-                                member.getName() + 
+                                declaration.getName() + 
                                 "' is not yet declared (forward references must occur in declaration section)");
                     }
                     else {
                         that.addError("forward reference to local declaration: '" + 
-                                member.getName() + 
+                                declaration.getName() + 
                                 "' is not yet declared");
                     }
                 }
@@ -292,31 +296,45 @@ public class SpecificationVisitor extends Visitor {
                         (!isLate() || !isForwardReferenceable())) {
                     if (isVariable()) {
                         that.addError("not definitely initialized: '" + 
-                                member.getName() + "'");                    
+                                declaration.getName() + "'");                    
                     }
                     else {
                         that.addError("not definitely specified: '" + 
-                                member.getName() + "'");
+                                declaration.getName() + "'");
                     }
                 }
             }
             else if (parameter!=null && 
                     isConstructor(parameter.getDeclaration())) {
-                if (parameter.getDeclaration().getContainer().equals(declaration.getContainer())) {
+                if (parameter.getDeclaration().getContainer()
+                        .equals(declaration.getContainer())) {
                     that.addError("default argument to constructor parameter is a member of the constructed class");
                 }
             }
-            if (!assigned && member.isDefault() && 
+            if (!assigned && declaration.isDefault() && 
                     !isForwardReferenceable()) {
                 that.addError("default member may not be used in initializer: '" + 
-                        member.getName() + "'"); 
+                        declaration.getName() + "'"); 
             }
             if (inAnonFunctionOrComprehension && 
                 specified.definitely && 
                 isVariable()) {
                 that.addError("variable member may not be captured by comprehension or function in extends clause: '"+
-                        member.getName() + "'");
+                        declaration.getName() + "'");
             }
+        }
+    }
+    
+    private boolean isReferenceToNativeHeaderMember(Scope scope) {
+        if (declaration.isClassOrInterfaceMember()) {
+            ClassOrInterface container = 
+                    (ClassOrInterface) 
+                        declaration.getContainer();
+            return container.isNativeHeader() && 
+                    !scope.getScopedBackends().none();
+        }
+        else {
+            return false;
         }
     }
 
@@ -420,8 +438,6 @@ public class SpecificationVisitor extends Visitor {
         if (isEffectivelyBaseMemberExpression(lt)) {
             Tree.StaticMemberOrTypeExpression m = 
                     (Tree.StaticMemberOrTypeExpression) lt;
-//            Declaration member = getTypedDeclaration(m.getScope(), 
-//                    name(m.getIdentifier()), null, false, m.getUnit());
             Declaration member = m.getDeclaration();
             if (member==declaration) {
                 if (that.getRightTerm()!=null) {
@@ -654,8 +670,13 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private static boolean isNonPartialConstructor(Scope scope) {
-        return scope instanceof Constructor &&
-                !((Constructor) scope).isAbstract();
+        if (scope instanceof Constructor) {
+            Constructor constructor = (Constructor) scope;
+            return !constructor.isAbstract();
+        }
+        else {
+            return false;
+        }
     }
     
     private String longdesc() {
@@ -696,8 +717,6 @@ public class SpecificationVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression bme = 
                     (Tree.StaticMemberOrTypeExpression) 
                         term;
-//            Declaration member = getTypedDeclaration(bme.getScope(), 
-//                    name(bme.getIdentifier()), null, false, bme.getUnit());
             Declaration member = bme.getDeclaration();
             if (member==declaration) {
                 if (!isForwardReferenceable()) {
@@ -778,8 +797,7 @@ public class SpecificationVisitor extends Visitor {
         if (constant && 
                 (!declaration.isDefinedInScope(scope) ||
                 declaration instanceof FunctionOrValue &&
-                ((FunctionOrValue) declaration).isShortcutRefinement() &&
-                declaration.getScope() == scope.getContainer())) {
+                ((FunctionOrValue) declaration).isShortcutRefinement())) {
             //this error is added by ExpressionVisitor
 //          that.addError("inherited member is not variable and may not be specified here: '" + 
 //                  member.getName() + "'");

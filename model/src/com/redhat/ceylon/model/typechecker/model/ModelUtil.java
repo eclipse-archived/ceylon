@@ -2745,13 +2745,16 @@ public class ModelUtil {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 // In the rest of the cases we go look in the declaration's container
                 nat = getNativeDeclaration(dec.getContainer(), dec.getName(), backends);
                 
                 if (dec instanceof Setter && nat instanceof Value) {
-                    nat = ((Value)nat).getSetter();
-                } else if (dec instanceof ClassOrInterface && 
+                    Value value = (Value) nat;
+                    nat = value.getSetter();
+                }
+                else if (dec instanceof ClassOrInterface && 
                         nat instanceof Value) {
                     // In case of objects make sure we return the same type of
                     // declaration we were called with
@@ -2759,7 +2762,8 @@ public class ModelUtil {
                     if (isObject(value)) {
                         nat = value.getType().getDeclaration();
                     }
-                } else if (dec instanceof Constructor
+                }
+                else if (dec instanceof Constructor
                         && nat instanceof FunctionOrValue
                         && isConstructor(nat)) {
                     // In case of constructors we make sure we return the same
@@ -2769,7 +2773,8 @@ public class ModelUtil {
             }
             
             return nat;
-        } else {
+        }
+        else {
             return dec;
         }
     }
@@ -2932,11 +2937,12 @@ public class ModelUtil {
     }
 
     public static void setVisibleScope(Declaration model) {
-        Scope s=model.getContainer();
+        Scope s = model.getContainer();
         while (s!=null) {
             if (s instanceof Declaration) {
+                Declaration d = (Declaration) s;
                 if (model.isShared()) {
-                    if (!((Declaration) s).isShared()) {
+                    if (!d.isShared()) {
                         model.setVisibleScope(s.getContainer());
                         break;
                     }
@@ -2988,8 +2994,13 @@ public class ModelUtil {
     }
 
     public static boolean isNonTransientValue(Declaration decl) {
-        return (decl instanceof Value)
-                && !((Value)decl).isTransient();
+        if (decl instanceof Value) {
+            Value value = (Value)decl;
+            return !value.isTransient();
+        }
+        else {
+            return false;
+        }
     }
 
     /**

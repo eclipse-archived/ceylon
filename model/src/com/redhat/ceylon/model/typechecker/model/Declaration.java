@@ -284,28 +284,19 @@ public abstract class Declaration
 
     /**
      * Determine if this declaration is directly defined in 
-     * a containing scope of the given scope.
+     * the given scope or in a containing scope of the given 
+     * scope (and is not visible only due to inheritance). 
      */
     public boolean isDefinedInScope(Scope scope) {
-        // need this separate check because of call 
-        // to getRealScope() below
-        if (ModelUtil.contains(scope, getScope())) {
-            return false;
-        }
-        Scope container =
+        return contains(
+                // call getRealScope() to
                 // account for weird visibility 
                 // rules for ConditionScopes, 
                 // i.e. this declaration might
                 // be visible from outside its
                 // own ConditionScope
-                getRealScope(getContainer());
-        while (scope!=null) {
-            if (container==scope) {
-                return true;
-            }
-            scope = scope.getContainer();
-        }
-        return false;
+                getRealScope(getContainer()), 
+                scope);
     }
     
     public boolean isCaptured() {

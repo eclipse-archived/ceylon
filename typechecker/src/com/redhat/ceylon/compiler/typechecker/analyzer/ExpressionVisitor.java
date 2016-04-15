@@ -1368,7 +1368,7 @@ public class ExpressionVisitor extends Visitor {
                         desc = "function";
                     }
                     me.addError(desc + 
-                            " already specified: '" + 
+                            " already specified by shortcut refinement: '" + 
                             d.getName(unit) + "'");
                 }
                 else if (d instanceof Value && 
@@ -9396,9 +9396,9 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec, 
             Tree.MemberOrTypeExpression that, 
             boolean error) {
-        dec = handleNativeHeader(dec, that, error);
-        dec = handleAbstraction(dec, that);
-        return dec;
+        return handleAbstraction(
+                handleNativeHeader(dec, that, error), 
+                that);
     }
     
     private Declaration handleNativeHeader(
