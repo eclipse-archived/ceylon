@@ -437,7 +437,35 @@ class TestGuards() {
                 return 0;
             }
         }
+        //TODO: relax this by detecting that 
+        //      the body of the loop never breaks
+        @error return int;
+    }
+    
+    Integer j2(Integer? int) {
+        if (!exists int) {
+            for (i in 0:10) {
+                print(i);
+                return 0;
+            }
+            else {
+                return 0;
+            }
+        }
         return int;
+    }
+    
+    Integer j3(Integer? int) {
+        if (!exists int) {
+            for (i in 0:10) {
+                print(i);
+                break;
+            }
+            else {
+                return 0;
+            }
+        }
+        @error return int;
     }
     
     Integer g1(Integer? int) {

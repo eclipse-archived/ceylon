@@ -1847,12 +1847,14 @@ public abstract class DeclarationVisitor extends Visitor {
                             fcb.getStatements();
                     List<Tree.Statement> ests = 
                             ecb.getStatements();
+                    //TODO: detect the case where the body
+                    //      of the for loop never breaks
                     if (!ests.isEmpty() && !fsts.isEmpty()) {
                         Tree.Statement flast =
                                 fsts.get(fsts.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
-                        return definitelyReturns(flast, 
+                        return definitelyReturns(flast, //|| definitelyDoesNotBreak(flast)
                                         isInitializer) &&
                                 definitelyReturns(elast, 
                                         isInitializer);
