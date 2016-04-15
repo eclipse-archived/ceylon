@@ -286,7 +286,16 @@ public class MetamodelGenerator {
             return m;
         }
         final TypeDeclaration d = pt.getDeclaration();
-        m.put(KEY_NAME, d.getName());
+        if (d.isToplevel()) {
+            m.put(KEY_NAME, d.getName());
+        } else {
+            String qname = d.getQualifiedNameString();
+            final int pkgidx = qname.indexOf("::");
+            if (pkgidx >=0) {
+                qname = qname.substring(pkgidx + 2);
+            }
+            m.put(KEY_NAME, qname);
+        }
         if (d.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
             //Don't add package, etc
             return m;
