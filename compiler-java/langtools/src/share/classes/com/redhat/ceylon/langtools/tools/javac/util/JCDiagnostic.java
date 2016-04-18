@@ -590,11 +590,7 @@ public class JCDiagnostic implements Diagnostic<JavaFileObject> {
     }
 
     public String getMessage(Locale locale) {
-        String result = defaultFormatter.formatMessage(this, locale);
-        if (!key.contains("ceylon")) {
-            result = "Ceylon backend error: " + result;
-        }
-        return result;
+        return defaultFormatter.formatMessage(this, locale);
     }
 
     public void setFlag(DiagnosticFlag flag) {

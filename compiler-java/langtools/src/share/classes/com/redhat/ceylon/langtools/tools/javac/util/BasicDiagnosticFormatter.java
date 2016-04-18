@@ -110,6 +110,10 @@ public class BasicDiagnosticFormatter extends AbstractDiagnosticFormatter {
         StringBuilder buf = new StringBuilder();
         Collection<String> args = formatArguments(d, l);
         String msg = localize(l, d.getCode(), args.toArray());
+        if (d.getType() != JCDiagnostic.DiagnosticType.FRAGMENT
+                && !d.getCode().contains("ceylon")) {
+            msg = "Ceylon backend error: " + msg;
+        }
         String[] lines = msg.split("\n");
         if (getConfiguration().getVisible().contains(DiagnosticPart.SUMMARY)) {
             currentIndentation += getConfiguration().getIndentation(DiagnosticPart.SUMMARY);
