@@ -2554,7 +2554,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             if (member instanceof Function) {
                 Function method = (Function)member;
-                final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
+                final TypedReference typedMember = satisfiedType.getTypedMember(method, typesOfTypeParameters(method.getTypeParameters()));
                 Declaration sub = (Declaration)model.getMember(method.getName(), getSignatureIfRequired(typedMember), false, true);
                 if (sub instanceof Function/* && !sub.isAbstraction()*/) {
                     Function subMethod = (Function)sub;
@@ -2710,6 +2710,14 @@ public class ClassTransformer extends AbstractTransformer {
             concreteMembersFromSuperinterfaces(model, classBuilder, sat, satisfiedInterfaces);
         }
         
+    }
+    
+    private java.util.List<Type> typesOfTypeParameters(java.util.List<TypeParameter> list) {
+        ArrayList<Type> result = new ArrayList<Type>(list.size());
+        for (TypeParameter tp : list) {
+            result.add(tp.getType());
+        }
+        return result;
     }
     
     private Iterable<Declaration> sortedMembers(java.util.List<Declaration> members) {
