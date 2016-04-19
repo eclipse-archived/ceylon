@@ -1601,6 +1601,13 @@ shared interface Iterable<out Element=Anything,
      distinct if they are not [[equal|Object.equals]]. Null 
      elements of this stream are simply discarded.
      
+     For example:
+     
+         \"helloworld\".frequencies()
+     
+     produces the map 
+     `{ r->1, d->1, e->1, w->1, h->1, l->3, o->2 }`.
+     
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
     shared Map<Element&Object,Integer> frequencies()
@@ -1615,8 +1622,15 @@ shared interface Iterable<out Element=Anything,
      distinct if they are not [[equal|Object.equals]]. Null 
      elements of this stream are simply discarded.
      
+     For example:
+     
+         (1..5).tabulate(2.divides)
+     
+     produces the map 
+     `{ 1->false, 2->true, 3->false, 4->true, 5->false }`.
+     
      This is an eager operation, and the resulting map does
-     not reflect changes to the given stream."
+     not reflect changes to this stream."
     shared Map<Element&Object,Result> tabulate<Result>(
         "A function that produces an item for the given
          [[key]], an element of this stream."
@@ -1638,7 +1652,7 @@ shared interface Iterable<out Element=Anything,
      
      For example:
      
-     (0..10).group((i) => i.even then \"even\" else \"odd\")
+         (0..10).group((i) => i.even then \"even\" else \"odd\")
      
      produces the map 
      `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`.
