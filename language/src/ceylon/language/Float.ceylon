@@ -130,7 +130,16 @@ shared native final class Float(Float float)
     "A platform-dependent hash code for this `Float`."
     shared actual native Integer hash;
     
+    "Compare this value to the given value, where 
+     [[infinity]] is considered greater than every defined, 
+     finite value, and `-infinity` is considered smaller 
+     than every defined, finite value, and [[undefined]] 
+     values are considered incomparable."
+    throws (`class Exception`, 
+            "if either this value, the given value, or both 
+             are [[undefined]]")
     shared actual native Comparison compare(Float other);
+    
     shared actual native Float plus(Float other);
     shared actual native Float minus(Float other);
     shared actual native Float times(Float other);
@@ -207,8 +216,35 @@ shared native final class Float(Float float)
     see (`function formatFloat`)
     shared actual native String string;
     
-    shared actual native Boolean largerThan(Float other); 
+    "Determines if this value is strictly larger than the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]."
+    shared actual native Boolean largerThan(Float other);
+    
+    "Determines if this value is strictly smaller than the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]." 
     shared actual native Boolean smallerThan(Float other); 
-    shared actual native Boolean notSmallerThan(Float other); 
+    
+    "Determines if this value is larger than or equal to the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]."
+    shared actual native Boolean notSmallerThan(Float other);
+    
+    "Determines if this value is smaller than or equal to the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]." 
     shared actual native Boolean notLargerThan(Float other); 
 }

@@ -470,6 +470,9 @@ public final class Float
     public Comparison compare(@Name("other") Float other) {
         double x = value;
         double y = other.value;
+        if (Double.isNaN(x) || Double.isNaN(y)) {
+            throw new Exception(new String("NaN is not comparable"));
+        }
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
     }
@@ -478,6 +481,9 @@ public final class Float
     public static Comparison compare(double value, double otherValue) {
         double x = value;
         double y = otherValue;
+        if (Double.isNaN(x) || Double.isNaN(y)) {
+            throw new Exception(new String("NaN is not comparable"));
+        }
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
     }
