@@ -177,13 +177,13 @@ public interface MethodInterface {
     public .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
+    public <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract <T>long methodWithOverloads$a(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long a);
+    public <T>void methodWithOverloads(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long a);
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract <T>long methodWithOverloads$b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long a);

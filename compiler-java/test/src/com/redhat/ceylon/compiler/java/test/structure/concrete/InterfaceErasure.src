@@ -8,25 +8,25 @@ interface InterfaceErasure<Element, Absent> {
     
     public .java.lang.Object m();
     
-    public abstract .java.lang.Object defaultedParams();
+    public .java.lang.Object defaultedParams();
     
     public abstract .java.lang.Object defaultedParams$p();
     
-    public abstract .java.lang.Object defaultedParams(final .java.lang.Object p);
+    public .java.lang.Object defaultedParams(final .java.lang.Object p);
     
     public abstract .java.lang.Object defaultedParams$p2(final .java.lang.Object p);
     
     public .java.lang.Object defaultedParams(final .java.lang.Object p, final .java.lang.Object p2);
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p, final .java.lang.Object p2);
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p, final .java.lang.Object p2);
     
     public abstract .java.lang.Object $default$Class$p();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new$();
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new$();
     
     public abstract .java.lang.Object $default$Class$p2(final .java.lang.Object p);
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p);
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.InterfaceErasure$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p);
 }
 final class InterfaceErasure$impl<Element, Absent> implements .java.io.Serializable {
     

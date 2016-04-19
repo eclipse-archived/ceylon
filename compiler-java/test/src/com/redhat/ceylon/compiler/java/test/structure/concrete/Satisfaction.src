@@ -6,7 +6,7 @@ interface I1 {
     
     public abstract long i1();
     
-    public abstract long m1();
+    public long m1();
     
     public abstract long m1$n();
     
@@ -96,7 +96,7 @@ interface I2 {
     
     public abstract long i2();
     
-    public abstract long m2();
+    public long m2();
     
     public abstract long m2$n();
     
@@ -141,7 +141,7 @@ interface I4 {
     
     public abstract long i4();
     
-    public abstract long m4();
+    public long m4();
     
     public abstract long m4$n();
     

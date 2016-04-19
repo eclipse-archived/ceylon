@@ -4,11 +4,11 @@ interface InterfaceDefaultMemberClassWithMemberSubclass {
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClassWithMemberSubclass$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Default Default$new$(final long i);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Default Default$new$(final long i);
     
     public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Formal Formal$new$(final long i);
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared Shared$new$(final long i);
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared Shared$new$(final long i);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.class);
 }
 final class InterfaceDefaultMemberClassWithMemberSubclass$impl implements .java.io.Serializable {

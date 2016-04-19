@@ -4,7 +4,7 @@ public interface Bug803_Interface {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug803_Interface$impl $com$redhat$ceylon$compiler$java$test$issues$bug08xx$Bug803_Interface$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug803_Interface$impl.MemberClass MemberClass$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug803_Interface$impl.MemberClass MemberClass$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug803_Interface.class);
 }
 public final class Bug803_Interface$impl implements .java.io.Serializable {

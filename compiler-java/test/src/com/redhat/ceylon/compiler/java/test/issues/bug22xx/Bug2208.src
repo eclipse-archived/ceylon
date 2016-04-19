@@ -59,11 +59,11 @@ public interface I<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22x
     
     public abstract .java.lang.Object toT(final S s, final S s2);
     
-    public abstract .java.lang.Object toT2();
+    public .java.lang.Object toT2();
     
     public abstract S toT2$s();
     
-    public abstract .java.lang.Object toT2(final S s);
+    public .java.lang.Object toT2(final S s);
     
     public abstract S toT2$s2(final S s);
     
@@ -79,15 +79,15 @@ public interface I<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22x
     
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner Inner$new$(final S s);
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s, final S s2);
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s, final S s2);
     
     public abstract S $default$Inner2$s();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$();
     
     public abstract S $default$Inner2$s2(final S s);
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s);
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s);
 }
 public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup> implements .java.io.Serializable {
     
@@ -455,7 +455,7 @@ public interface Completion<Element, T extends .ceylon.language.Sequential<? ext
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Completion$impl<Element, ? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$Completion$impl();
     
-    public abstract .java.lang.Object completed();
+    public .java.lang.Object completed();
     
     public abstract .ceylon.language.Callable<? extends .java.lang.Object> completed$onRejected();
     
@@ -546,7 +546,7 @@ interface FormalMethods<A, B> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.FormalMethods$impl<A, B> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$FormalMethods$impl();
     
-    public abstract .java.lang.Object tpMethodBUnary();
+    public .java.lang.Object tpMethodBUnary();
     
     public abstract B tpMethodBUnary$arg();
     
@@ -670,11 +670,11 @@ public interface InterfaceConstructors<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$(final T t$param$);
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$(final T t$param$);
     
     public abstract T Member$t();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.InterfaceConstructors$impl<T>.Member Member$new$();
 }
 public final class InterfaceConstructors$impl<T> implements .java.io.Serializable {
     

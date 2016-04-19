@@ -4,7 +4,7 @@ interface Bug1549In<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549In$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super T>.In In$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549In$impl<? super T>.In In$new$();
 }
 final class Bug1549In$impl<T> implements .java.io.Serializable {
     
@@ -39,7 +39,7 @@ interface Bug1549InSub extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549InSub$impl();
     
     @.java.lang.Override
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl.In In$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub$impl.In In$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549InSub.class);
 }
 final class Bug1549InSub$impl implements .java.io.Serializable {
@@ -69,7 +69,7 @@ interface Bug1549Out<T> {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549Out$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends T>.Out Out$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549Out$impl<? extends T>.Out Out$new$();
 }
 final class Bug1549Out$impl<T> implements .java.io.Serializable {
     
@@ -104,7 +104,7 @@ interface Bug1549OutSub extends .com.redhat.ceylon.compiler.java.test.issues.bug
     public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1549OutSub$impl();
     
     @.java.lang.Override
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl.Out Out$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub$impl.Out Out$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1549OutSub.class);
 }
 final class Bug1549OutSub$impl implements .java.io.Serializable {

@@ -4,7 +4,7 @@ interface SuperInterfaceTypeMember {
     
     public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new$();
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember.class);
 }
 final class SuperInterfaceTypeMember$impl implements .java.io.Serializable {

@@ -4,7 +4,7 @@ public interface Bug1151_A {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_A$impl $com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1151_A$impl();
     
-    public abstract .java.lang.Object methodA();
+    public .java.lang.Object methodA();
     
     public abstract long methodA$a();
     

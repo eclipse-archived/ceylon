@@ -4,17 +4,17 @@ public interface Bug2375 {
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2375$impl();
     
-    public abstract .java.lang.Object writeStringAsynchronous();
+    public .java.lang.Object writeStringAsynchronous();
     
     public abstract .ceylon.language.Callable<? extends .java.lang.Object> writeStringAsynchronous$onCompletion();
     
     public .java.lang.Object writeStringAsynchronous(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion);
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion);
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$(final .ceylon.language.Callable<? extends .java.lang.Object> onCompletion);
     
     public abstract .ceylon.language.Callable<? extends .java.lang.Object> $default$CWithPl$onCompletion();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375$impl.CWithPl CWithPl$new$();
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2375.class);
 }
 public final class Bug2375$impl implements .java.io.Serializable {

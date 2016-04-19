@@ -4,7 +4,7 @@ interface bug2281$Bar_ {
     
     public .java.lang.Object Bar$impl();
     
-    abstract .java.lang.Object C$new$();
+    .java.lang.Object C$new$();
 }
 public final class bug2281_ {
     

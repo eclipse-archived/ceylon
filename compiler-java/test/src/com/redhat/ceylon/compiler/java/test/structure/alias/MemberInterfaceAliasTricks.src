@@ -13,7 +13,7 @@ public interface MemberInterfaceAliasTricks_Foo$MemberInterface {
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberInterface$impl $com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$impl$MemberInterface$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass MemberClassAliasToEnclosingMemberClass$new$();
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass MemberClassAliasToEnclosingMemberClass$new$();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
@@ -28,7 +28,7 @@ public interface MemberInterfaceAliasTricks_Foo {
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl $com$redhat$ceylon$compiler$java$test$structure$alias$MemberInterfaceAliasTricks_Foo$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass MemberClass$new$();
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass MemberClass$new$();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo.class);
 }
@@ -198,7 +198,7 @@ public interface A {
     public .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl $com$redhat$ceylon$compiler$java$test$structure$alias$A$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl.Foo Foo$new$();
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.A$impl.Foo Foo$new$();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.A.class);
 }

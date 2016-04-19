@@ -42,7 +42,7 @@ public interface Bug1481Heap<Key, Item> {
     public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl<Key, Item> $com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1481Heap$impl();
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$new$();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo H2$new$();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable {

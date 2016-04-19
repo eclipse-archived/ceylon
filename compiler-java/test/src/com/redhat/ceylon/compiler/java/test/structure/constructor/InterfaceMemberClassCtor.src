@@ -4,17 +4,17 @@ interface InterfaceMemberClassCtor {
     
     public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl $com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i$param$);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(final long i$param$);
     
     public abstract long SharedMember$i();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$();
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i$param$);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$, final long i$param$);
     
     public abstract long SharedMember$other$i();
     
-    public abstract .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$);
+    public .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other $name$);
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor.class);
 }
 final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
