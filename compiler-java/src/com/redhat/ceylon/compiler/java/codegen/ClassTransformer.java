@@ -4178,38 +4178,12 @@ public class ClassTransformer extends AbstractTransformer {
                 true, true, true, List.<JCStatement>of(bridgingStmt),
                 DaoKind.BRIDGE_TO_STATIC);
         
-        // Transform the methods again, and them adjust them to make them static
-        // and add the extra parameters, type parameters etc. 
-        // Note this requires that the given body was generated using explicit 
-        // $this
-        for (MethodDefinitionBuilder m :  transformMethod(model, 
+        // Transform the methods again, but at static methods with an explicit
+        // $this parameter (and captured reified type parameters)
+        lb.addAll(transformMethod(model, 
                 def,
                 true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
-                DaoKind.STATIC)) {
-            if ((m.getModifiers() & DEFAULT) != 0) {
-                m.addModifiers(STATIC);
-                m.removeModifiers(DEFAULT);
-                
-                if (gen().supportsReified(iface)) {
-                    java.util.List<TypeParameter> typeParameters = new ArrayList<>(iface.getTypeParameters());
-                    Collections.reverse(typeParameters);
-                    for (TypeParameter tp : typeParameters) {
-                        // TODO Collisions between interface TPs and method TPs
-                        //m.prependParameter(m.makeReifiedTypeParameter(tp));
-                        // TODO actually I don't need to add parameters for the iface
-                        // because they're accessible via the type argument 
-                        // methods accessible from $this anyway!
-                        m.prependTypeParameter(tp, null);
-                    }
-                }
-                
-                // Add this
-                ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "this");
-                pdb.type(makeJavaType(iface.getType(), 0), null);
-                m.prependParameter(pdb);
-                lb.add(m);
-            }
-        }
+                DaoKind.STATIC));
         return lb;
     }
 
@@ -4293,8 +4267,12 @@ public class ClassTransformer extends AbstractTransformer {
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
         
+        if (daoKind == DaoKind.STATIC) {
+            appendImplicitParameters(methodBuilder, (Interface)methodModel.getContainer());
+        }
+        
         // do the reified type param arguments
-        if (gen().supportsReified(methodModel)) {
+        if (AbstractTransformer.supportsReified(methodModel)) {
             methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
         }
         
@@ -4318,7 +4296,14 @@ public class ClassTransformer extends AbstractTransformer {
             }
             methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
         }
-        methodBuilder.modifiers(transformMethodDeclFlags(methodModel));
+        long transformMethodDeclFlags = transformMethodDeclFlags(methodModel);
+        if (daoKind == DaoKind.STATIC) {
+            transformMethodDeclFlags |= STATIC;
+            transformMethodDeclFlags &= ~DEFAULT;
+        } else if (daoKind == DaoKind.BRIDGE_TO_STATIC) {
+            transformMethodDeclFlags |= DEFAULT;
+        }
+        methodBuilder.modifiers(transformMethodDeclFlags);
         if (actual) {
             methodBuilder.isOverride(methodModel.isActual());
         }
@@ -4333,7 +4318,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         if (createCanonical) {
             // Creates method that redirects to the "canonical" method containing the actual body
-            MethodDefinitionBuilder bridgeToCanonical = new BridgeToCanonicalMethod(methodModel)
+            MethodDefinitionBuilder bridgeToCanonical = new BridgeToCanonicalMethod(
+                    daoKind == DaoKind.STATIC ? daoKind : DaoKind.THIS, methodModel)
                 .makeOverload(
                     methodBuilder,
                     method,
@@ -4678,6 +4664,25 @@ public class ClassTransformer extends AbstractTransformer {
         STATIC
     }
     
+    public void appendImplicitParameters(MethodDefinitionBuilder methodBuilder, Interface iface) {
+        // Add this
+        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(ClassTransformer.this, "this");
+        pdb.type(makeJavaType(iface.getType(), 0), null);
+        methodBuilder.parameter(pdb);
+        if (AbstractTransformer.supportsReified(iface)) {
+            java.util.List<TypeParameter> typeParameters = new ArrayList<>(iface.getTypeParameters());
+            Collections.reverse(typeParameters);
+            for (TypeParameter tp : typeParameters) {
+                // TODO Collisions between interface TPs and method TPs
+                //m.prependParameter(m.makeReifiedTypeParameter(tp));
+                // TODO actually I don't need to add parameters for the iface
+                // because they're accessible via the type argument 
+                // methods accessible from $this anyway!
+                methodBuilder.typeParameter(tp, null);
+            }
+        }
+    }
+    
     /**
      * A base class for transformations used for Ceylon declarations
      * which have defaulted parameters. We generate an overloaded 
@@ -4862,6 +4867,11 @@ public class ClassTransformer extends AbstractTransformer {
          * parameter from {@link #getTypeParameters()}.
          */
         protected void appendImplicitParameters(MethodDefinitionBuilder overloadBuilder) {
+            if (kind == DaoKind.STATIC) {
+                Interface iface = (Interface)getModel().getContainer(); 
+                ClassTransformer.this.appendImplicitParameters(overloadBuilder, iface);
+            }
+            
             if(getTypeParameters() != null){
                 overloadBuilder.reifiedTypeParameters(getTypeParameters());
             }
@@ -5008,6 +5018,13 @@ public class ClassTransformer extends AbstractTransformer {
             }
             if (kind == DaoKind.COMPANION) {
                 mods |= FINAL;
+            }
+            if (kind == DaoKind.STATIC) {
+                mods |= STATIC;
+                mods &= ~DEFAULT;
+            }
+            if (kind == DaoKind.BRIDGE_TO_STATIC) {
+                mods |= DEFAULT;
             }
             return mods;
         }
@@ -5162,8 +5179,8 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class BridgeToCanonicalMethod extends DefaultedArgumentMethod {
         
-        BridgeToCanonicalMethod(Function method) {
-            super(DaoKind.THIS, method);
+        BridgeToCanonicalMethod(DaoKind daoKind, Function method) {
+            super(daoKind, method);
         }
         
         /**
@@ -5520,7 +5537,18 @@ public class ClassTransformer extends AbstractTransformer {
             modifiers &= ~PRIVATE;
             modifiers |= STATIC | PUBLIC;
         }
+        if (daoKind == DaoKind.STATIC) {
+            modifiers |= STATIC;
+            modifiers &= ~DEFAULT;
+            
+        } else if (daoKind == DaoKind.BRIDGE_TO_STATIC) {
+            modifiers |= DEFAULT;
+        }
         methodBuilder.modifiers(modifiers);
+        
+        if (daoKind == DaoKind.STATIC) {
+            appendImplicitParameters(methodBuilder, (Interface)container.getContainer());
+        }
         
         if (container instanceof Constructor) {
             copyTypeParameters((Class)container.getContainer(), methodBuilder);
