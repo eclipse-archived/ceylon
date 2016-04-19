@@ -11,4 +11,4 @@ see (`interface Comparable`,
 tagged("Comparisons")
 shared Element largest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> 
-        => if (x==x && x>y) then x else y;
+        => if (x!=x || y>x) then y else x;
