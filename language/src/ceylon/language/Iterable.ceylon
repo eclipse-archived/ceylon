@@ -1472,13 +1472,15 @@ shared interface Iterable<out Element=Anything,
                 => let (elements=outer)
                 object satisfies Iterator<Element> {
             
+            alias MaybeEntry => ElementEntry<Element>?;
+            
             value it = elements.iterator();
             variable value count = 0;
             
             variable value store 
                     = Array.ofSize {
                 size = 16;
-                element = null of ElementEntry<Element>?;
+                element = null of MaybeEntry;
             };
             
             function hash(Element element, Integer size) 
@@ -1486,18 +1488,19 @@ shared interface Iterable<out Element=Anything,
                     then element.hash.magnitude % size
                     else 0;
             
-            function rebuild(Array<ElementEntry<Element>?> store) {
+            function rebuild(Array<MaybeEntry> store) {
                 value newStore 
                         = Array.ofSize {
                     size = store.size*2;
-                    element = null of ElementEntry<Element>?;
+                    element = null of MaybeEntry;
                 };
                 for (entries in store) {
                     variable value entry = entries;
                     while (exists e = entry) {
-                        value index = 
-                                hash(e.element, 
-                                    newStore.size);
+                        value index = hash {
+                            element = e.element;
+                            size = newStore.size;
+                        };
                         newStore.set(index, 
                             ElementEntry {
                                 next = newStore[index];
@@ -1516,7 +1519,10 @@ shared interface Iterable<out Element=Anything,
                         return element;
                     }
                     else {
-                        value index = hash(element, store.size);
+                        value index = hash {
+                            element = element;
+                            size = store.size;
+                        };
                         value entry = store[index];
                         if (exists entry, entry.has(element)) {
                             //keep iterating
@@ -1712,27 +1718,30 @@ shared interface Iterable<out Element=Anything,
             => object extends Object() 
                       satisfies Map<Group,Result> {
         
+        alias MaybeEntry => GroupEntry<Group,Result>?;
+        
         variable value store 
                 = Array.ofSize {
             size = 16;
-            element = null of GroupEntry<Group,Result>?;
+            element = null of MaybeEntry;
         };
         
         function hash(Object group, Integer size) 
                 => group.hash.magnitude % size;
         
-        function rebuild
-            (Array<GroupEntry<Group,Result>?> store) {
+        function rebuild(Array<MaybeEntry> store) {
             value newStore 
                     = Array.ofSize {
                 size = store.size*2;
-                element = null of GroupEntry<Group,Result>?;
+                element = null of MaybeEntry;
             };
             for (groups in store) {
                 variable value group = groups;
                 while (exists g = group) {
-                    value index = 
-                            hash(g.group, newStore.size);
+                    value index = hash {
+                        group = g.group;
+                        size = newStore.size;
+                    };
                     newStore.set(index,
                         GroupEntry { 
                             next = newStore[index]; 
@@ -1748,13 +1757,17 @@ shared interface Iterable<out Element=Anything,
         variable value count = 0;
         for (element in outer) {
             value group = grouping(element);
-            value index = hash(group, store.size);
+            value index = hash {
+                group = group;
+                size = store.size;
+            };
             value entries = store[index];
             if (exists entries, 
                 exists entry = entries.get(group)) {
-                entry.elements 
-                        = accumulating(entry.elements, 
-                            element);
+                entry.elements = accumulating {
+                    partial = entry.elements;
+                    element = element;
+                };
                 //keep iterating
             }
             else {
@@ -1762,7 +1775,10 @@ shared interface Iterable<out Element=Anything,
                     GroupEntry {
                         next = entries;
                         group = group;
-                        elements = accumulating(null, element);
+                        elements = accumulating {
+                            partial = null;
+                            element = element;
+                        };
                     });
                 count++;
                 if (count>store.size*2) {
