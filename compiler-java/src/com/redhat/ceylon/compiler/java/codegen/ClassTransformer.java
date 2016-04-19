@@ -4151,39 +4151,53 @@ public class ClassTransformer extends AbstractTransformer {
         // Transform to the class
         boolean refinedResultType = !model.getType().isExactly(
                 ((TypedDeclaration)model.getRefinedDeclaration()).getType());
-        // TODO parameter naming
-        List<JCExpression> bridgingArgs = List.of(naming.makeThis());
-        //for (TypeParameter t : iface.getTypeParameters()) {
-        //    bridgingArgs = bridgingArgs.append(makeReifiedTypeArgument(t.getType()));
-        //}
-        for (TypeParameter t : model.getTypeParameters()) {
-            bridgingArgs = bridgingArgs.append(makeReifiedTypeArgument(t.getType()));
-        }
-        for (Parameter p : model.getParameterLists().get(0).getParameters()) {
-            bridgingArgs = bridgingArgs.append(naming.makeUnquotedIdent(p.getName()));
-        }
-        // TODO bridges for DPMs and DAOs
-        
-        JCMethodInvocation bridgingCall = make().Apply(null, naming.makeName(model, Naming.NA_MEMBER), bridgingArgs);
-        JCStatement bridgingStmt;
-        if (model.isDeclaredVoid()) {
-            bridgingStmt = make().Exec(bridgingCall);
+        ListBuffer<MethodDefinitionBuilder> lb;
+        if (model.isFormal() || !model.isShared()) {
+            lb = transformMethod(model,
+                    def,
+                    true, true, true, body,
+                    DaoKind.DEFAULT);
         } else {
-            bridgingStmt = make().Return(bridgingCall);
-        }
-        // Transform the method to a set of `default` methods
-        // using the bridging call as the body
-        ListBuffer<MethodDefinitionBuilder> lb = transformMethod(model,
-                def,
-                true, true, true, List.<JCStatement>of(bridgingStmt),
-                DaoKind.BRIDGE_TO_STATIC);
+            // We need to generate static methods with default bridges
+            
+            // TODO parameter naming
+            List<JCExpression> bridgingArgs = List.of(naming.makeThis());
+            //for (TypeParameter t : iface.getTypeParameters()) {
+            //    bridgingArgs = bridgingArgs.append(makeReifiedTypeArgument(t.getType()));
+            //}
+            for (TypeParameter t : model.getTypeParameters()) {
+                bridgingArgs = bridgingArgs.append(makeReifiedTypeArgument(t.getType()));
+            }
+            for (Parameter p : model.getParameterLists().get(0).getParameters()) {
+                bridgingArgs = bridgingArgs.append(naming.makeUnquotedIdent(p.getName()));
+            }
+            
+            
+            // TODO bridges for DPMs and DAOs
+            
+            JCMethodInvocation bridgingCall = make().Apply(null, naming.makeName(model, Naming.NA_MEMBER), bridgingArgs);
+            JCStatement bridgingStmt;
+            if (model.isDeclaredVoid()) {
+                bridgingStmt = make().Exec(bridgingCall);
+            } else {
+                bridgingStmt = make().Return(bridgingCall);
+            }
         
-        // Transform the methods again, but at static methods with an explicit
-        // $this parameter (and captured reified type parameters)
-        lb.addAll(transformMethod(model, 
-                def,
-                true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
-                DaoKind.STATIC));
+            // Transform the method to a set of `default` methods
+            // using the bridging call as the body
+            lb = transformMethod(model,
+                    def,
+                    true, true, true, List.<JCStatement>of(bridgingStmt),
+                    DaoKind.BRIDGE_TO_STATIC);
+            
+            // Transform the methods again, but at static methods with an explicit
+            // $this parameter (and captured reified type parameters)
+            lb.addAll(transformMethod(model, 
+                    def,
+                    true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
+                    DaoKind.STATIC));
+        
+        }
         return lb;
     }
 
@@ -4226,9 +4240,9 @@ public class ClassTransformer extends AbstractTransformer {
                     
                     if (daoKind != DaoKind.COMPANION || 
                             haveBody) {
-                        lb.append(makeDefaultParameterOverload(!haveBody ? DaoKind.ABSTRACT : 
+                        lb.append(makeDefaultParameterOverload( 
                             daoKind == DaoKind.BRIDGE_TO_STATIC || daoKind == DaoKind.STATIC ? daoKind 
-                                    : DaoKind.THIS,
+                                    : !haveBody ? DaoKind.ABSTRACT : DaoKind.THIS,
                                 methodModel, 
                                 method, parameter));
                         hasOverloads = true;
@@ -4253,7 +4267,8 @@ public class ClassTransformer extends AbstractTransformer {
                 && Decl.withinClassOrInterface(methodModel)
                 && body != null;
         
-        if (createCanonical) {
+        if (createCanonical
+                && daoKind != DaoKind.BRIDGE_TO_STATIC) {
             // Creates the private "canonical" method containing the actual body
             MethodDefinitionBuilder canonicalMethod = new CanonicalMethod(daoKind, methodModel, body)
                 .makeOverload(
@@ -4301,7 +4316,9 @@ public class ClassTransformer extends AbstractTransformer {
             transformMethodDeclFlags |= STATIC;
             transformMethodDeclFlags &= ~DEFAULT;
         } else if (daoKind == DaoKind.BRIDGE_TO_STATIC) {
-            transformMethodDeclFlags |= DEFAULT;
+            if (!methodModel.isFormal()) { 
+                transformMethodDeclFlags |= DEFAULT;
+            }
         }
         methodBuilder.modifiers(transformMethodDeclFlags);
         if (actual) {
@@ -4319,7 +4336,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (createCanonical) {
             // Creates method that redirects to the "canonical" method containing the actual body
             MethodDefinitionBuilder bridgeToCanonical = new BridgeToCanonicalMethod(
-                    daoKind == DaoKind.STATIC ? daoKind : DaoKind.THIS, methodModel)
+                    daoKind == DaoKind.STATIC || daoKind == DaoKind.BRIDGE_TO_STATIC ? daoKind : DaoKind.THIS, methodModel)
                 .makeOverload(
                     methodBuilder,
                     method,
@@ -4660,7 +4677,27 @@ public class ClassTransformer extends AbstractTransformer {
         ABSTRACT,
         SUPER,
         COMPANION,
+        
+        /** 
+         * Transform to {@code default} methods (implementation in the method).
+         * This is used for non-shared interface methods and formal 
+         * interface methods.
+         */
+        DEFAULT,
+        
+        /** 
+         * Transform a a {@code default} method which delegates to 
+         * the methods generated for {@link #STATIC}. 
+         * 
+         * This is used for non-formal (concrete) interface methods. 
+         */
         BRIDGE_TO_STATIC,
+        
+        /** 
+         * Transform to a {@code static} method (with explicit $this 
+         * parameter etc). A {@code static} method is needed in order to 
+         * be able to handle {@code super.method()} calls. 
+         */
         STATIC
     }
     
@@ -4736,10 +4773,11 @@ public class ClassTransformer extends AbstractTransformer {
             switch (kind) {
             case ABSTRACT:
                 overloadBuilder.noBody();
-                overloadBuilder.addModifiers(ABSTRACT);
+                //overloadBuilder.addModifiers(ABSTRACT);
                 break;
             case BRIDGE_TO_STATIC:
             case STATIC:
+            case DEFAULT:
             case THIS:
             case COMPANION:
                 ListBuffer<JCExpression> delegateArgs = new ListBuffer<JCExpression>();
@@ -5024,6 +5062,9 @@ public class ClassTransformer extends AbstractTransformer {
                 mods &= ~DEFAULT;
             }
             if (kind == DaoKind.BRIDGE_TO_STATIC) {
+                mods |= DEFAULT;
+            }
+            if (kind == DaoKind.DEFAULT) {
                 mods |= DEFAULT;
             }
             return mods;
