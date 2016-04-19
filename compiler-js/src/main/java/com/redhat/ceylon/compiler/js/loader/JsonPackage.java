@@ -24,6 +24,7 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -965,6 +966,12 @@ public class JsonPackage extends LazyPackage {
                 }
             }
         }
+        //From 1.2.3 we stored type arguments in maps
+        final Type newType = loadTypeArguments(m, td, container, typeParams);
+        if (newType != null) {
+            return newType;
+        }
+        //This is the old pre 1.2.3 stuff
         @SuppressWarnings("unchecked")
         final List<Map<String,Object>> modelParms = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
         if (td != null && modelParms != null) {
@@ -1000,9 +1007,7 @@ public class JsonPackage extends LazyPackage {
                 }
             }
             if (!concretes.isEmpty()) {
-                Type rval = td.getType()
-                        .substitute(concretes, variances);
-                return rval;
+                return td.getType().substitute(concretes, variances);
             }
         }
         if (td == null) {
@@ -1015,6 +1020,60 @@ public class JsonPackage extends LazyPackage {
             }
         }
         return td.getType();
+    }
+
+    /** Load the type arguments from a map where keys are the type argument names (including their types,
+     * e.g. List.Element) and the keys are maps suitable for decoding with getTypeFromJson) */
+    Type loadTypeArguments(Map<String, Object> m, final TypeDeclaration td,
+            final Declaration container, final List<TypeParameter> typeParams) {
+        if (td == null) {
+            return null;
+        }
+        @SuppressWarnings("unchecked")
+        final Map<String,Map<String,Object>> targs = (Map<String,Map<String,Object>>)m.get(
+                MetamodelGenerator.KEY_TYPE_ARGS);
+        if (targs == null) {
+            return null;
+        }
+        //Substitute type parameters
+        final HashMap<TypeParameter, Type> concretes = new HashMap<TypeParameter, Type>(targs.size());
+        HashMap<TypeParameter,SiteVariance> variances = null;
+        Declaration d = td;
+        while (d != null) {
+            if (d instanceof Generic) {
+                for (TypeParameter tparm : ((Generic)d).getTypeParameters()) {
+                    Map<String,Object> targMap = targs.get(MetamodelGenerator.partiallyQualifiedName(d) + "." + tparm.getName());
+                    if (targMap == null) {
+                        //TODO error I guess
+                        continue;
+                    }
+                    if (targMap.containsKey(MetamodelGenerator.KEY_PACKAGE) || targMap.containsKey(MetamodelGenerator.KEY_TYPES)) {
+                        //Substitute for proper type
+                        final Type _pt = getTypeFromJson(targMap, container, typeParams);
+                        concretes.put(tparm, _pt);
+                    } else if (targMap.containsKey(MetamodelGenerator.KEY_NAME) && typeParams != null) {
+                        //Look for type parameter with same name
+                        for (TypeParameter typeParam : typeParams) {
+                            if (typeParam.getName().equals(targMap.get(MetamodelGenerator.KEY_NAME))) {
+                                concretes.put(tparm, typeParam.getType());
+                            }
+                        }
+                    }
+                    Integer usv = (Integer)targMap.get(MetamodelGenerator.KEY_US_VARIANCE);
+                    if (usv != null) {
+                        if (variances == null) {
+                            variances = new HashMap<>();
+                        }
+                        variances.put(tparm, SiteVariance.values()[usv]);
+                    }
+                }
+            }
+            d = ModelUtil.getContainingDeclaration(d);
+        }
+        if (!concretes.isEmpty()) {
+            return td.getType().substitute(concretes, variances);
+        }
+        return null;
     }
 
     /** Load a top-level declaration with the specified name, by parsing its model data. */

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +47,7 @@ public class MetamodelGenerator {
     public static final String KEY_RETURN_TYPE  = "$rt";
     public static final String KEY_TYPES        = "l";
     public static final String KEY_TYPE_PARAMS  = "tp";
+    public static final String KEY_TYPE_ARGS    = "ta";
     public static final String KEY_METATYPE     = "mt";
     public static final String KEY_MODULE       = "md";
     public static final String KEY_NAME         = "nm";
@@ -239,7 +239,7 @@ public class MetamodelGenerator {
             final String modname = pkg.getModule().getNameAsString();
             m.put(KEY_MODULE, Module.LANGUAGE_MODULE_NAME.equals(modname)?"$":modname);
         }
-        putTypeParameters(m, pt, from);
+        putTypeArguments(m, pt, from);
         return m;
     }
 
@@ -267,70 +267,41 @@ public class MetamodelGenerator {
         return map;
     }
 
-    /** Create a map for the Type, as a type parameter.
-     * Includes name, package, module and type parameters, unless it's a union or intersection
-     * type, in which case it will contain a "comp" key with an "i" or "u", and a list of the types
-     * that compose it. */
-    private Map<String, Object> typeParameterMap(Type pt, Declaration from) {
-        if (pt == null)return null;
-        final Map<String, Object> m = new HashMap<>();
-        m.put(KEY_METATYPE, METATYPE_TYPE_PARAMETER);
-        if (pt.isUnion() || pt.isIntersection()) {
-            List<Type> subtipos = pt.isUnion() ? pt.getCaseTypes() : pt.getSatisfiedTypes();
-            List<Map<String,Object>> subs = new ArrayList<>(subtipos.size());
-            for (Type sub : subtipos) {
-                subs.add(typeMap(sub, from));
+    private void putTypeArguments(Map<String, Object> container, Type pt, Declaration from) {
+        int tparmSize = 0;
+        Type t = pt;
+        while (t != null) {
+            tparmSize += t.getTypeArgumentList() == null ? 0 : t.getTypeArgumentList().size();
+            t = t.getQualifyingType();
+        }
+        if (tparmSize > 0) {
+            final Map<String,Map<String, Object>> targs = new HashMap<>(tparmSize);
+            t = pt;
+            while (t != null) {
+                final Map<TypeParameter, SiteVariance> usv = t.getVarianceOverrides();
+                if (t.getTypeArgumentList() != null && !t.getTypeArgumentList().isEmpty()) {
+                    for (Map.Entry<TypeParameter, Type> targ : t.getTypeArguments().entrySet()) {
+                        final Map<String, Object> tpmap = typeMap(targ.getValue(), from);
+                        final SiteVariance variance = usv.get(targ.getKey());
+                        if (variance != null) {
+                            tpmap.put(MetamodelGenerator.KEY_US_VARIANCE, variance.ordinal());
+                        }
+                        targs.put(partiallyQualifiedName(targ.getKey().getDeclaration()) + "." + targ.getKey().getName(), tpmap);
+                    }
+                }
+                t = t.getQualifyingType();
             }
-            m.put("comp", pt.isUnion() ? "u" : "i");
-            m.put(KEY_TYPES, subs);
-            return m;
+            container.put(KEY_TYPE_ARGS, targs);
         }
-        final TypeDeclaration d = pt.getDeclaration();
-        if (d.isToplevel()) {
-            m.put(KEY_NAME, d.getName());
-        } else {
-            String qname = d.getQualifiedNameString();
-            final int pkgidx = qname.indexOf("::");
-            if (pkgidx >=0) {
-                qname = qname.substring(pkgidx + 2);
-            }
-            m.put(KEY_NAME, qname);
-        }
-        if (d.getDeclarationKind()==DeclarationKind.TYPE_PARAMETER) {
-            //Don't add package, etc
-            return m;
-        }
-        com.redhat.ceylon.model.typechecker.model.Package pkg = d.getUnit().getPackage();
-        if (pkg.equals(from.getUnit().getPackage())) {
-            addPackage(m, ".");
-        } else {
-            addPackage(m, pkg.getNameAsString());
-        }
-        if (!pkg.getModule().equals(module)) {
-            final String modname = d.getUnit().getPackage().getModule().getNameAsString();
-            m.put(KEY_MODULE, Module.LANGUAGE_MODULE_NAME.equals(modname)?"$":modname);
-        }
-        putTypeParameters(m, pt, from);
-        return m;
     }
 
-    private void putTypeParameters(Map<String, Object> container, Type pt, Declaration from) {
-        if (pt.getTypeArgumentList() != null && !pt.getTypeArgumentList().isEmpty()) {
-            final List<Map<String, Object>> list = new ArrayList<>(pt.getTypeArgumentList().size());
-            final Map<TypeParameter, SiteVariance> usv = pt.getVarianceOverrides();
-            final Iterator<TypeParameter> typeParameters = usv == null || usv.isEmpty() ?
-                    null : pt.getDeclaration().getTypeParameters().iterator();
-            for (Type targ : pt.getTypeArgumentList()) {
-                final Map<String, Object> tpmap = typeParameterMap(targ, from);
-                final TypeParameter typeParam = typeParameters == null ? null : typeParameters.next();
-                final SiteVariance variance = typeParam == null ? null : usv.get(typeParam);
-                if (variance != null) {
-                    tpmap.put(MetamodelGenerator.KEY_US_VARIANCE, variance.ordinal());
-                }
-                list.add(tpmap);
-            }
-            container.put(KEY_TYPE_PARAMS, list);
+    public static String partiallyQualifiedName(Declaration d) {
+        String qname = d.getQualifiedNameString();
+        int idx = qname.indexOf("::");
+        if (idx >= 0) {
+            qname = qname.substring(idx+2);
         }
+        return qname;
     }
 
     /** Create a list of maps from the list of type parameters.
