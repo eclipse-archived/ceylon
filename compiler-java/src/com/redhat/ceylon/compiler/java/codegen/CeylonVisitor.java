@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.AttrTx;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
@@ -571,11 +572,11 @@ public class CeylonVisitor extends Visitor {
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
-            classBuilder.attribute(gen.classGen().transform(decl, false));
-        } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
-            classBuilder.attribute(gen.classGen().transform(decl, false));
+            classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
+        } else if (Decl.withinInterface(decl)) {
+            classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
             if (!gen.classGen().useDefaultMethod(decl.getDeclarationModel())) {
-                AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
+                AttributeDefinitionBuilder adb = gen.classGen().transform(decl, AttrTx.COMPANION);
                 if (decl.getDeclarationModel().isShared()) {
                     adb.ignoreAnnotations();
                 }
@@ -604,11 +605,11 @@ public class CeylonVisitor extends Visitor {
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
-            classBuilder.attribute(gen.classGen().transform(decl, false));
+            classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
         } else if (Decl.withinInterface(decl)) {
-            classBuilder.attribute(gen.classGen().transform(decl, false));
+            classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
             if (!gen.classGen().useDefaultMethod(decl.getDeclarationModel())) {
-                AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
+                AttributeDefinitionBuilder adb = gen.classGen().transform(decl, AttrTx.COMPANION);
                 if (decl.getDeclarationModel().isShared()) {
                     adb.ignoreAnnotations();
                 }
