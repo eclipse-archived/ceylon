@@ -280,7 +280,7 @@ $specialiseForNumber$(Float, 'equals', function(){return {mod:$CCMM$,$t:{t:$_Boo
 JSNum$proto.compare = function(other) {
     if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
     var value = this.valueOf();
-    if (Number.isNan(value) || Number.isNan(other)) throw Exception("NaN is not comparable");
+    if (Number.isNaN(value) || Number.isNaN(other)) throw Exception("NaN is not comparable");
     return value==other ? equal() : (value<other ? smaller():larger());
 }
 $addnm$('compare',Comparable.$$.prototype.compare);
