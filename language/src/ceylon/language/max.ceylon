@@ -32,7 +32,7 @@ shared native("js") Absent|Value max<Value,Absent>
     value it = values.iterator();
     if (!is Finished first = it.next()) {
         variable value max = first;
-        while (max != max, //quick test for NaN
+        while (max!=max, //quick test for NaN
               !is Finished val = it.next()) {
             max = val;
         }
