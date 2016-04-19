@@ -72,7 +72,7 @@ shared native("jvm") Absent|Value max<Value,Absent>
     case (is Float) {
         variable Float max = first;
         while (max.undefined,
-              !is Finished val = it.next()) {
+               is Float val = it.next()) {
             max = val;
         }
         while (is Float val = it.next()) {

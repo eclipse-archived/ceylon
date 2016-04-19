@@ -67,8 +67,8 @@ shared native("jvm") Absent|Value min<Value,Absent>
     }
     case (is Float) {
         variable Float min = first;
-        while (min.undefined,
-              !is Finished val = it.next()) {
+        while (min.undefined, 
+               is Float val = it.next()) {
             min = val;
         }
         while (is Float val = it.next()) {
