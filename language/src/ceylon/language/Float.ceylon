@@ -61,7 +61,14 @@ shared native final class Float(Float float)
      consequence the undefined value cannot sensibly be used 
      in most collections.
      
+     If `x` is an undefined `Float`, then:
+     
+     - `x==x` evaluates to `false`
+     - `x!=x` evaluates to `true`, and
+     - `x>x`, `x<x`, `x>=x`, `x<=x` all evaluate to `false`.
+     
      [NaN]: http://en.wikipedia.org/wiki/NaN"
+    see (`function compare`)
     aliased("notANumber")
     shared Boolean undefined => this!=this;
     
@@ -134,7 +141,14 @@ shared native final class Float(Float float)
      [[infinity]] is considered greater than every defined, 
      finite value, and `-infinity` is considered smaller 
      than every defined, finite value, and [[undefined]] 
-     values are considered incomparable."
+     values are considered incomparable.
+     
+     Note that if `x` is an undefined `Float` and `y` is any 
+     `Float` that is not undefined, then:
+     
+     - `x<=>y` produces an exception when evaluated, but
+     - `x>y`, `x<y`, `x>=y`, `x<=y`, and `x==y` all evaluate 
+       to `false`."
     throws (`class Exception`, 
             "if either this value, the given value, or both 
              are [[undefined]]")
