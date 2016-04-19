@@ -280,6 +280,7 @@ $specialiseForNumber$(Float, 'equals', function(){return {mod:$CCMM$,$t:{t:$_Boo
 JSNum$proto.compare = function(other) {
     if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
     var value = this.valueOf();
+    if (Number.isNan(value) || Number.isNan(other)) throw Exception("NaN is not comparable");
     return value==other ? equal() : (value<other ? smaller():larger());
 }
 $addnm$('compare',Comparable.$$.prototype.compare);
@@ -288,7 +289,7 @@ $specialiseForNumber$(Float, 'compare', function(){return {mod:$CCMM$,$t:{t:Comp
 
 JSNum$proto.smallerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
-  return Comparable.$$.prototype.smallerThan.call(this,o);
+  return this<o;
 }
 $addnm$('smallerThan',Comparable.$$.prototype.smallerThan);
 $specialiseForNumber$(Integer, 'smallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','smallerThan']};})
@@ -296,7 +297,7 @@ $specialiseForNumber$(Float, 'smallerThan', function(){return {mod:$CCMM$,$t:{t:
 
 JSNum$proto.largerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
-  return Comparable.$$.prototype.largerThan.call(this,o);
+  return this>o;
 }
 $addnm$('largerThan',Comparable.$$.prototype.largerThan);
 $specialiseForNumber$(Integer, 'largerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','largerThan']};})
@@ -304,7 +305,7 @@ $specialiseForNumber$(Float, 'largerThan', function(){return {mod:$CCMM$,$t:{t:$
 
 JSNum$proto.notSmallerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
-  return Comparable.$$.prototype.notSmallerThan.call(this,o);
+  return this>=o;
 }
 $addnm$('notSmallerThan',Comparable.$$.prototype.notSmallerThan);
 $specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','notSmallerThan']};})
@@ -312,7 +313,7 @@ $specialiseForNumber$(Float, 'notSmallerThan', function(){return {mod:$CCMM$,$t:
 
 JSNum$proto.notLargerThan=function(o) {
   if (typeof(o)!=='number'&&o.constructor!==Number)throw new TypeError("Number expected");
-  return Comparable.$$.prototype.notLargerThan.call(this,o);
+  return this<=o;
 }
 $addnm$('notLargerThan',Comparable.$$.prototype.notLargerThan);
 $specialiseForNumber$(Integer, 'notSmallerThan', function(){return {mod:$CCMM$,$t:{t:$_Boolean},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','notSmallerThan']};})
