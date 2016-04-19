@@ -4,7 +4,11 @@
  
  For any nonempty stream `it`, `min(it)` evaluates to the 
  first element of `it` such that for every element `e` of 
- `it`, `min(it) <= e`."
+ `it`, `min(it) <= e`.
+ 
+ For a stream of [[Float]]s, `min()` will not return an
+ [[undefined value|Float.undefined]] unless every element of
+ the stream is undefined."
 see (`interface Comparable`, 
      `function max`,
      `function smallest`)
@@ -21,6 +25,10 @@ shared native("js") Absent|Value min<Value,Absent>
     value it = values.iterator();
     if (!is Finished first = it.next()) {
         variable value min = first;
+        while (is Float float = min, float.undefined,
+              !is Finished val = it.next()) {
+            min = val;
+        }
         while (!is Finished val = it.next()) {
             if (val<min) {
                 min = val;
@@ -59,6 +67,10 @@ shared native("jvm") Absent|Value min<Value,Absent>
     }
     case (is Float) {
         variable Float min = first;
+        while (min.undefined,
+              !is Finished val = it.next()) {
+            min = val;
+        }
         while (is Float val = it.next()) {
             if ((val of Float) < min) {
                 min = val;

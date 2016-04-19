@@ -10,5 +10,4 @@ tagged("Comparisons")
 shared Element largest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> 
         => if (is Float x, x.undefined) then y
-      else if (is Float y, y.undefined) then x
       else if (x>y) then x else y;
