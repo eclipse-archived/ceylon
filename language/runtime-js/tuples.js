@@ -52,7 +52,8 @@ function tpl$(elems,spread){
   } else {
     that.$$targs$$.Rest$Tuple={t:'T',l:_t.l.slice(1)};
   }
-  that.$bn_=elems[0];
+  //This is awful as well. When you start getting weird undefined refs calling tuple.first, update this (check Tuple.first)
+  that.$c3_=elems[0];
   that.elem$=elems;
   if (spread!==undefined) {
     that.sp$=spread;
