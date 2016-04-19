@@ -2,49 +2,70 @@ package com.redhat.ceylon.compiler.java.test.structure.iface;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
-interface InterfaceWithConcreteMethods {
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface InterfaceWithConcreteMethods<T> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default void nonShared$priv$() {
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithConcreteMethods$T();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default <U>void nonShared$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
         (
             let
             {
-                long $ceylontmp$i$0 = nonShared$i();
-                long $ceylontmp$j$1 = nonShared$j($ceylontmp$i$0);
-                nonShared$priv$$canonical$($ceylontmp$i$0, $ceylontmp$j$1);
+                // delegating to static canonical: correct
+                long $ceylontmp$i$0 = nonShared$i(this, $reified$U);
+                long $ceylontmp$j$1 = nonShared$j(this, $reified$U, $ceylontmp$i$0);
+                // delegating to static canonical: correct
+                nonShared$priv$$canonical$(this, $reified$U, $ceylontmp$i$0, $ceylontmp$j$1);
             }
             returning null;
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default long nonShared$i() {
+    private default <U>long nonShared$i(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        // should delegate to static DPM
         return 0L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default void nonShared$priv$(final long i) {
+    private default <U>void nonShared$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         (
             let
             {
-                long $ceylontmp$j$2 = nonShared$j(i);
-                nonShared$priv$$canonical$(i, $ceylontmp$j$2);
+                long $ceylontmp$j$2 = nonShared$j(this, $reified$U, i);
+                // static canonical
+                nonShared$priv$$canonical$(this, $reified$U, i, $ceylontmp$j$2);
             }
             returning null;
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default long nonShared$j(final long i) {
+    private default <U>long nonShared$j(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
+        // should delegate to static DPM
         return i;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default void nonShared$priv$$canonical$(final long i, final long j) {
+    private default <U>void nonShared$priv$$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final long j) {
+        // should delegate to the static canonical
+        nonShared$priv$(this, $reified$U, i, j);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    private default void nonShared$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "U",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    private default <U>void nonShared$priv$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
@@ -54,54 +75,67 @@ interface InterfaceWithConcreteMethods {
         (
             let
             {
-                nonShared$priv$$canonical$(i, j);
+                // this should delegate to the static canonical
+                nonShared$priv$$canonical$($reified$U, i, j);
             }
             returning null;
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default void shared() {
+    private static <U, T>void nonShared$priv$(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
         (
             let
             {
-                long $ceylontmp$i$3 = shared$i();
-                long $ceylontmp$j$4 = shared$j($ceylontmp$i$3);
-                shared$canonical$($ceylontmp$i$3, $ceylontmp$j$4);
+                long $ceylontmp$i$3 = nonShared$i($this, $reified$U);
+                long $ceylontmp$j$4 = nonShared$j($this, $reified$U, $ceylontmp$i$3);
+                nonShared$priv$$canonical$($this, $reified$U, $ceylontmp$i$3, $ceylontmp$j$4);
             }
             returning null;
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default long shared$i() {
+    private static <T, U>long nonShared$i(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
         return 0L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default void shared(final long i) {
+    private static <U, T>void nonShared$priv$(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         (
             let
             {
-                long $ceylontmp$j$5 = shared$j(i);
-                shared$canonical$(i, $ceylontmp$j$5);
+                long $ceylontmp$j$5 = nonShared$j($this, $reified$U, i);
+                nonShared$priv$$canonical$($this, $reified$U, i, $ceylontmp$j$5);
             }
             returning null;
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default long shared$j(final long i) {
+    private static <T, U>long nonShared$j(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
         return i;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default void shared$canonical$(final long i, final long j) {
+    private static <U, T>void nonShared$priv$$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final long j) {
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    public default void shared(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "T",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "U",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {})})
+    private static <T, U>void nonShared$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
@@ -111,93 +145,9 @@ interface InterfaceWithConcreteMethods {
         (
             let
             {
-                shared$canonical$(i, j);
+                nonShared$priv$$canonical$($this, $reified$U, i, j);
             }
             returning null;
         );
     }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default .java.lang.Object $default() {
-        return (
-            let
-            {
-                long $ceylontmp$i$6 = default$i();
-                long $ceylontmp$j$7 = default$j($ceylontmp$i$6);
-            }
-            returning $default$canonical$($ceylontmp$i$6, $ceylontmp$j$7);
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default long default$i() {
-        return 0L;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default .java.lang.Object $default(final long i) {
-        return (
-            let
-            {
-                long $ceylontmp$j$8 = default$j(i);
-            }
-            returning $default$canonical$(i, $ceylontmp$j$8);
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default long default$j(final long i) {
-        return i;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default .java.lang.Object $default$canonical$(final long i, final long j) {
-        return null;
-    }
-    
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.DefaultAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Anything",
-            declaredVoid = true)
-    public default .java.lang.Object $default(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long j) {
-        return $default$canonical$(i, j);
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract .java.lang.Object formal();
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default long formal$i() {
-        return 0L;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public abstract .java.lang.Object formal(final long i);
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default long formal$j(final long i) {
-        return i;
-    }
-    
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Anything",
-            declaredVoid = true)
-    public abstract .java.lang.Object formal(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long j);
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.class);
 }

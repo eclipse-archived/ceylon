@@ -5588,7 +5588,29 @@ public class ClassTransformer extends AbstractTransformer {
                         addTypeParameterSubstitution(copiedTypeParameters);
                 }
                 try{
-                    JCExpression expr = expressionGen().transform(currentParam);
+                    at(currentParam);
+                    JCExpression expr;
+                    if (daoKind == DaoKind.BRIDGE_TO_STATIC) {
+                        List<JCExpression> targs = List.nil();
+                        List<JCExpression> args = List.of(naming.makeThis());
+                        for (TypeParameter tp : ((Generic)container.getContainer()).getTypeParameters()) {
+                            targs = targs.append(makeUnquotedIdent(tp.getName()));
+                        }
+                        for (TypeParameter tp : ((Generic)container).getTypeParameters()) {
+                            args = args.append(makeReifiedTypeArgument(tp.getType()));
+                            targs = targs.append(makeUnquotedIdent(tp.getName()));
+                        }
+                        for (Tree.Parameter p : params.getParameters()) {
+                            if (p == currentParam) {
+                                break;
+                            }
+                            args = args.append(naming.makeName(p.getParameterModel().getModel(), Naming.NA_IDENT));
+                        }
+                        expr = make().Apply(targs, naming.makeDefaultedParamMethod(null, currentParam.getParameterModel()), 
+                                args);
+                    } else {
+                        expr = expressionGen().transform(currentParam);
+                    }
                     JCBlock body = at(currentParam).Block(0, List.<JCStatement> of(at(currentParam).Return(expr)));
                     methodBuilder.block(body);
                 }finally{
