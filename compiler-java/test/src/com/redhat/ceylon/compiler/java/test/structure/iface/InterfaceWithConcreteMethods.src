@@ -325,20 +325,4 @@ interface InterfaceWithConcreteMethods<T> {
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j);
-    
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    @.com.redhat.ceylon.compiler.java.metadata.Transient
-    private default long getNonSharedAttribute$priv$() {
-        return 1L;
-    }
-    
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.FormalAnnotation$annotation$
-    @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    public abstract long getFormalAttribute();
-    
-    public abstract void setFormalAttribute(@.com.redhat.ceylon.compiler.java.metadata.Name("formalAttribute")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long formalAttribute);
 }

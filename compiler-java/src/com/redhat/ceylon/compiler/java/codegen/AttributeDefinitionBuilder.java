@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.AttrTx;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
@@ -37,6 +38,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
@@ -99,7 +101,8 @@ public class AttributeDefinitionBuilder {
     private JCExpression getterClass;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
-            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect) {
+            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect,
+            ClassTransformer.AttrTx attrTx) {
         int typeFlags = 0;
         TypedReference typedRef = owner.getTypedReference(attrType);
         TypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
@@ -139,6 +142,9 @@ public class AttributeDefinitionBuilder {
             .isTransient(Decl.isTransient(attrType))
             .modelAnnotations(attrType.getAnnotations())
             .resultType(attrType(), attrType);
+        if (attrTx == AttrTx.STATIC) {
+            owner.classGen().appendImplicitParameters(getterBuilder, (Interface)attrType.getContainer());
+        }
         
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
         pdb.at(node);
@@ -156,20 +162,23 @@ public class AttributeDefinitionBuilder {
             .setter(owner, attrType)
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
-            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
-            .parameter(pdb);
+            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
+        if (attrTx == AttrTx.STATIC) {
+            owner.classGen().appendImplicitParameters(setterBuilder, (Interface)attrType.getContainer());
+        }
+        setterBuilder.parameter(pdb);
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false, ClassTransformer.AttrTx.THIS);
     }
     
     public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false);
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false, ClassTransformer.AttrTx.BRIDGE_TO_STATIC.THIS);
         adb.getterBuilder.realName(attrType.getName());
         return adb;
     }
@@ -177,14 +186,14 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 
             String javaClassName, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true, ClassTransformer.AttrTx.THIS);
     }
     
-    public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
-            String attrAndFieldName, TypedDeclaration attrType) {
+    public static AttributeDefinitionBuilder getter(AbstractTransformer owner,
+            String attrAndFieldName, TypedDeclaration attrType, ClassTransformer.AttrTx attrTx) {
         String getterName = Naming.getGetterName(attrType, false);
         AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, null, null,
-                        attrAndFieldName, attrAndFieldName, false, false);
+                        attrAndFieldName, attrAndFieldName, false, false, attrTx);
         if (!"ref".equals(getterName)
                 && !"get_".equals(getterName)
                 && !attrType.getName().equals(NamingBase.getJavaAttributeName(getterName))
@@ -199,9 +208,9 @@ public class AttributeDefinitionBuilder {
     
     public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
             Node node, 
-            String attrAndFieldName, TypedDeclaration attrType) {
+            String attrAndFieldName, TypedDeclaration attrType, AttrTx attrTx) {
         return new AttributeDefinitionBuilder(owner, node, attrType, null, null,
-                attrAndFieldName, attrAndFieldName, false, false)
+                attrAndFieldName, attrAndFieldName, false, false, attrTx)
             .skipField()
             .skipGetter();
     }
@@ -641,6 +650,14 @@ public class AttributeDefinitionBuilder {
         skipField();
         getterBuilder.block(getterBlock);
         return this;
+    }
+    
+    public MethodDefinitionBuilder getGetter() {
+        return getterBuilder;
+    }
+    
+    public MethodDefinitionBuilder getSetter() {
+        return setterBuilder;
     }
 
     /**

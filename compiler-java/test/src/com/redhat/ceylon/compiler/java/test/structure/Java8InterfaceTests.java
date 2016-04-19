@@ -49,6 +49,12 @@ public class Java8InterfaceTests extends CompilerTests {
     }
     
     @Test
+    public void ifaceWithConcreteAttributes() {
+        compareWithJavaSource("iface/InterfaceWithConcreteAttributes");
+        compareWithJavaSource("iface/InterfaceWithConcreteAttributesSatisfier");
+    }
+    
+    @Test
     public void genericIface() {
         compareWithJavaSource("iface/GenericInterface");
     }

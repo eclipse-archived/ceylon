@@ -875,13 +875,13 @@ public class ClassTransformer extends AbstractTransformer {
             Node node,
             ClassOrInterface classModel, Value formalAttribute) {
         Value refined = refineValue(formalAttribute, formalAttribute.appliedTypedReference(null, null), classModel, classModel.getUnit());
-        AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder.getter(this, refined.getName(), refined);
+        AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder.getter(this, refined.getName(), refined, AttrTx.THIS);
         getterBuilder.skipField();
         getterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, AttrTx.THIS));
         getterBuilder.getterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
         classBuilder.attribute(getterBuilder);
         if (formalAttribute.isVariable()) {
-            AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, node, refined.getName(), refined);
+            AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, node, refined.getName(), refined, AttrTx.THIS);
             setterBuilder.skipField();
             setterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, AttrTx.THIS));
             setterBuilder.setterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
@@ -1426,12 +1426,12 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (parameterTree instanceof Tree.ValueParameterDeclaration
                 && (value.isShared() || value.isCaptured())) {
             makeFieldForParameter(classBuilder, decl, memberTree);
-            AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
+            AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel(), AttrTx.THIS);
             adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), AttrTx.THIS));
             adb.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, memberTree));
             classBuilder.attribute(adb);
             if (value.isVariable()) {
-                AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, parameterTree, decl.getName(), decl.getModel());
+                AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, parameterTree, decl.getName(), decl.getModel(), AttrTx.THIS);
                 setter.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), AttrTx.THIS));
                 //setter.userAnnotations(expressionGen().transform(AnnotationTarget.SETTER, memberTree.getAnnotationList()));
                 classBuilder.attribute(setter);
@@ -3700,7 +3700,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         boolean withinInterface = Decl.withinInterface(decl);
         if (useField || withinInterface || lazy) {
-            if (!withinInterface || model.isShared()) {
+            if (!withinInterface || model.isShared() && !useDefaultMethod(model)) {
                 // Generate getter in main class or interface (when shared)
                 at(decl.getType());
                 AttributeDefinitionBuilder getter = makeGetter(decl, AttrTx.THIS, lazy);
@@ -3709,22 +3709,37 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 classBuilder.attribute(getter);
             }
-            if (withinInterface && !useDefaultMethod(model) && lazy) {
-                // Generate getter in companion class
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, AttrTx.COMPANION, lazy));
-            }
-            if (withinInterface && useDefaultMethod(model) && !model.isShared()) {
+            if (withinInterface) {
                 at(decl.getType());
-                classBuilder.attribute(makeGetter(decl, AttrTx.THIS, lazy));
+                if (!useDefaultMethod(model) && lazy) {
+                    // Generate getter in companion class
+                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, AttrTx.COMPANION, lazy));
+                } else if (useDefaultMethod(model)) {
+                    if (model.isFormal() || !model.isShared()) {
+                        classBuilder.attribute(makeGetter(decl, AttrTx.DEFAULT, lazy));
+                    } else {
+                        classBuilder.attribute(makeGetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
+                        classBuilder.attribute(makeGetter(decl, AttrTx.STATIC, lazy));
+                    }
+                }
             }
             if (Decl.isVariable(decl) || Decl.isLate(decl)) {
-                if (!withinInterface || model.isShared()) {
+                if (!withinInterface || model.isShared() && !useDefaultMethod(model)) {
                     // Generate setter in main class or interface (when shared)
                     classBuilder.attribute(makeSetter(decl, AttrTx.THIS, lazy));
                 }
-                if (withinInterface && !useDefaultMethod(model) && lazy) {
-                    // Generate setter in companion class
-                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, AttrTx.COMPANION, lazy));
+                if (withinInterface) {
+                    if (!useDefaultMethod(model) && lazy) {
+                        // Generate setter in companion class
+                        classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, AttrTx.COMPANION, lazy));
+                    } else if (useDefaultMethod(model)) {
+                        if (model.isFormal() || !model.isShared()) {
+                            classBuilder.attribute(makeSetter(decl, AttrTx.DEFAULT, lazy));
+                        } else {
+                            classBuilder.attribute(makeSetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
+                            classBuilder.attribute(makeSetter(decl, AttrTx.STATIC, lazy));
+                        }
+                    }
                 }
             }
         }
@@ -3740,14 +3755,19 @@ public class ClassTransformer extends AbstractTransformer {
                  * We use the getter as TypedDeclaration here because this is the same type but has a refined
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
-            .setter(this, decl, name, decl.getDeclarationModel().getGetter())
+            .setter(this, decl, name, decl.getDeclarationModel().getGetter(), attrTx)
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), attrTx));
         
         // companion class members are never actual no matter what the Declaration says
         if(attrTx == AttrTx.COMPANION)
             builder.notActual();
         
-        if (Decl.withinClass(decl) || attrTx == AttrTx.COMPANION || useDefaultMethod(decl.getDeclarationModel())) {
+        if (attrTx == AttrTx.BRIDGE_TO_STATIC) {
+            JCStatement bridgeStmt = make().Exec(make().Apply(null, 
+                    naming.makeUnquotedIdent(Naming.getSetterName(decl.getDeclarationModel())), 
+                    List.<JCExpression>of(naming.makeThis(), makeQuotedIdent(decl.getDeclarationModel().getName()))));
+            builder.setterBlock(make().Block(0, List.<JCStatement>of(bridgeStmt)));
+        } else  if (Decl.withinClass(decl) || attrTx == AttrTx.COMPANION || useDefaultMethod(decl.getDeclarationModel())) {
             JCBlock setterBlock = makeSetterBlock(decl.getDeclarationModel(), decl.getBlock(), decl.getSpecifierExpression());
             builder.setterBlock(setterBlock);
         } else {
@@ -3772,14 +3792,19 @@ public class ClassTransformer extends AbstractTransformer {
         String name = decl.getIdentifier().getText();
         //expressionGen().transform(decl.getAnnotationList());
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .getter(this, name, decl.getDeclarationModel())
+            .getter(this, name, decl.getDeclarationModel(), attrTx)
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), attrTx));
         
         // companion class members are never actual no matter what the Declaration says
         if(attrTx == AttrTx.COMPANION)
             builder.notActual();
         
-        if (Decl.withinClass(decl) || attrTx == AttrTx.COMPANION || useDefaultMethod(decl.getDeclarationModel())) {
+        if (attrTx == AttrTx.BRIDGE_TO_STATIC) {
+            JCStatement bridgeStmt = make().Return(make().Apply(null, 
+                    naming.makeUnquotedIdent(Naming.getGetterName(decl.getDeclarationModel(), false)), 
+                    List.<JCExpression>of(naming.makeThis())));
+            builder.getterBlock(make().Block(0, List.<JCStatement>of(bridgeStmt)));
+        } else if (Decl.withinClass(decl) || attrTx == AttrTx.COMPANION || useDefaultMethod(decl.getDeclarationModel())) {
             JCBlock body = statementGen().transform(decl.getBlock());
             builder.getterBlock(body);
         } else {
@@ -3885,6 +3910,11 @@ public class ClassTransformer extends AbstractTransformer {
         result |= ((tdecl.isFormal() && !tdecl.isDefault()) && attrTx != AttrTx.COMPANION) ? ABSTRACT : useDefaultMethod(tdecl) ? DEFAULT : 0;
         result |= (!(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || attrTx == AttrTx.COMPANION) && !useDefaultMethod(tdecl) ? FINAL : 0;
 
+        if (attrTx == AttrTx.STATIC) {
+            result |= STATIC;
+            result &= ~DEFAULT;
+        }
+        
         return result;
     }
 
@@ -3900,7 +3930,7 @@ public class ClassTransformer extends AbstractTransformer {
     private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, AttrTx attrTx, boolean lazy, 
                                                           AttributeDefinitionBuilder builder, boolean isGetter) {
         at(decl);
-        if (attrTx == AttrTx.COMPANION || useDefaultMethod(decl.getDeclarationModel()) || lazy) {
+        if (attrTx == AttrTx.COMPANION || attrTx == AttrTx.DEFAULT || lazy) {
             SpecifierOrInitializerExpression specOrInit = decl.getSpecifierOrInitializerExpression();
             if (specOrInit != null) {
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(specOrInit.getExpression());
@@ -3941,6 +3971,14 @@ public class ClassTransformer extends AbstractTransformer {
                 
             }
         }
+        
+        if (attrTx == AttrTx.BRIDGE_TO_STATIC) {
+            JCStatement bridgeStmt = make().Return(make().Apply(null, 
+                    naming.makeUnquotedIdent(Naming.getGetterName(decl.getDeclarationModel(), false)), 
+                    List.<JCExpression>of(naming.makeThis())));
+            builder.getterBlock(make().Block(0, List.<JCStatement>of(bridgeStmt)));
+        }
+        
         if(attrTx == AttrTx.COMPANION)
             builder.notActual();
         return builder
@@ -3953,7 +3991,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-            .getter(this, attrName, decl.getDeclarationModel());
+            .getter(this, attrName, decl.getDeclarationModel(), attrTx);
         if(!decl.getDeclarationModel().isInterfaceMember()
                 || (decl.getDeclarationModel().isShared() ^ attrTx == AttrTx.COMPANION))
             getter.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, decl));
@@ -3980,7 +4018,7 @@ public class ClassTransformer extends AbstractTransformer {
     private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, AttrTx attrTx, boolean lazy) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
-        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl, attrName, decl.getDeclarationModel());
+        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl, attrName, decl.getDeclarationModel(), attrTx);
         setter.userAnnotationsSetter(expressionGen().transformAnnotations(OutputElement.SETTER, decl));
         return makeGetterOrSetter(decl, attrTx, lazy, setter, false);
     }
@@ -5804,7 +5842,7 @@ public class ClassTransformer extends AbstractTransformer {
                 JCExpression initialValue = makeNull();
                 containingClassBuilder.field(modifiers, name, type, initialValue, false);
                 AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-                .getter(this, name, model)
+                .getter(this, name, model, AttrTx.THIS)
                 .modifiers(transformAttributeGetSetDeclFlags(model, AttrTx.THIS));
                 if (def instanceof Tree.ObjectDefinition) {
                     getter.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, ((Tree.ObjectDefinition)def)));

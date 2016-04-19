@@ -57,6 +57,7 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -574,13 +575,21 @@ public class CeylonVisitor extends Visitor {
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
         } else if (Decl.withinInterface(decl)) {
-            classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
-            if (!gen.classGen().useDefaultMethod(decl.getDeclarationModel())) {
+            Value model = decl.getDeclarationModel();
+            if (!gen.classGen().useDefaultMethod(model)) {
+                classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
                 AttributeDefinitionBuilder adb = gen.classGen().transform(decl, AttrTx.COMPANION);
-                if (decl.getDeclarationModel().isShared()) {
+                if (model.isShared()) {
                     adb.ignoreAnnotations();
                 }
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
+                classBuilder.getCompanionBuilder((Interface)model.getContainer()).attribute(adb);
+            } else {
+                if (model.isFormal() || !model.isShared()) {
+                    classBuilder.attribute(gen.classGen().transform(decl, AttrTx.DEFAULT));
+                } else {
+                    classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
+                    classBuilder.attribute(gen.classGen().transform(decl, AttrTx.STATIC));
+                }
             }
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
@@ -607,13 +616,21 @@ public class CeylonVisitor extends Visitor {
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
         } else if (Decl.withinInterface(decl)) {
-            classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
-            if (!gen.classGen().useDefaultMethod(decl.getDeclarationModel())) {
+            Setter model = decl.getDeclarationModel();
+            if (!gen.classGen().useDefaultMethod(model)) {
+                classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
                 AttributeDefinitionBuilder adb = gen.classGen().transform(decl, AttrTx.COMPANION);
                 if (decl.getDeclarationModel().isShared()) {
                     adb.ignoreAnnotations();
                 }
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
+            } else {
+                if (model.isFormal() || !model.isShared()) {
+                    classBuilder.attribute(gen.classGen().transform(decl, AttrTx.DEFAULT));
+                } else {
+                    classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
+                    classBuilder.attribute(gen.classGen().transform(decl, AttrTx.STATIC));
+                }
             }
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
