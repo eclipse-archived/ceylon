@@ -4730,8 +4730,8 @@ public class StatementTransformer extends AbstractTransformer {
         return getLabel(loop.getControlBlock());
     }
     
-    public List<JCVariableDecl> transformVariableOrDestructure(Tree.Statement varOrDes) {
-        List<JCVariableDecl> vars = List.<JCVariableDecl>nil();
+    public List<JCStatement> transformVariableOrDestructure(Tree.Statement varOrDes) {
+        List<JCStatement> vars = List.<JCStatement>nil();
         if (varOrDes instanceof Tree.Variable) {
             Tree.Variable var = (Tree.Variable)varOrDes;
             Expression expr = var.getSpecifierExpression().getExpression();
@@ -4752,8 +4752,8 @@ public class StatementTransformer extends AbstractTransformer {
      * @param stmt The Ceylon destructure
      * @return The Java tree
      */
-    List<JCVariableDecl> transform(Tree.Destructure stmt) {
-        List<JCVariableDecl> result = List.nil();
+    List<JCStatement> transform(Tree.Destructure stmt) {
+        List<JCStatement> result = List.nil();
         
         // Create temp var to hold result of expression
         Tree.Pattern pat = stmt.getPattern();
@@ -4766,8 +4766,20 @@ public class StatementTransformer extends AbstractTransformer {
         result = result.append(tmpVar);
         
         // Now add the destructured variables
-        List<JCVariableDecl> vars = VarDefBuilder.buildAll(transformPattern(pat, tmpVarName.makeIdent()));
-        result = result.appendList(vars);
+        List<VarDefBuilder> destructured = transformPattern(pat, tmpVarName.makeIdent());
+        for (VarDefBuilder vdb : destructured) {
+            Value v = vdb.var.getDeclarationModel();
+            at(vdb.var);
+            if (v.isClassMember() && v.isCaptured()) {
+                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, v.getName(), v);
+                adb.immutable();
+                classGen().current().attribute(adb);
+                classGen().current().defs(vdb.buildDefOnly());
+                result = result.append(make().Exec(make().Assign(vdb.name().makeIdentWithThis(), vdb.expr())));
+            } else {
+                result = result.append(vdb.build());
+            }
+        }
         
         return result;
     }
@@ -4855,14 +4867,6 @@ public class StatementTransformer extends AbstractTransformer {
             return def;
         }
         
-        static List<JCVariableDecl> buildAll(List<VarDefBuilder> vars) {
-            List<JCVariableDecl> result = List.nil();
-            for (VarDefBuilder vdb : vars) {
-                result = result.append(vdb.build());
-            }
-            return result;
-        }
-
         @Override
         public String toString() {
             return "VarDefBuilder [build()=" + buildInternal() + "]";
