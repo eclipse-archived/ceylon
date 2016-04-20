@@ -243,6 +243,7 @@ public class Operators {
 
     static void largeAs(Tree.LargeAsOp that, GenerateJsVisitor gen) {
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+            //Try to use largeAs if it exists
             //Try to use compare() if it exists
             nativeBinaryOp(that, "compare", ">=", "!==" + gen.getClAlias() + "smaller()", gen);
         } else {
@@ -250,9 +251,7 @@ public class Operators {
             if (usenat) {
                 simpleBinaryOp(that, "(", ">=", ")", gen);
             } else {
-                gen.out("(");
-                simpleBinaryOp(that, null, ".compare(", ")", gen);
-                gen.out("!==", gen.getClAlias(), "smaller())");
+                simpleBinaryOp(that, null, ".notSmallerThan(", ")", gen);
             }
         }
     }
@@ -266,10 +265,7 @@ public class Operators {
             if (usenat) {
                 simpleBinaryOp(that, "(", "<=", ")", gen);
             } else {
-                gen.out("(");
-                simpleBinaryOp(that, null, ".compare(", ")", gen);
-                gen.out("!==", gen.getClAlias(), "larger()");
-                gen.out(")");
+                simpleBinaryOp(that, null, ".notLargerThan(", ")", gen);
             }
         }
     }
@@ -283,8 +279,7 @@ public class Operators {
             if (usenat) {
                 simpleBinaryOp(that, "(", ">", ")", gen);
             } else {
-                simpleBinaryOp(that, null, ".compare(", ")", gen);
-                gen.out(".equals(", gen.getClAlias(), "larger())");
+                simpleBinaryOp(that, null, ".largerThan(", ")", gen);
             }
         }
     }
@@ -298,8 +293,7 @@ public class Operators {
             if (usenat) {
                 simpleBinaryOp(that, "(", "<", ")", gen);
             } else {
-                simpleBinaryOp(that, null, ".compare(", ")", gen);
-                gen.out(".equals(", gen.getClAlias(), "smaller())");
+                simpleBinaryOp(that, null, ".smallerThan(", ")", gen);
             }
         }
     }
