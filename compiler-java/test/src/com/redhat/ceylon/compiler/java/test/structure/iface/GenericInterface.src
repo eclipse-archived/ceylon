@@ -1,0 +1,200 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface GenericInterface<T> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface$T();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    public default T produce() {
+        return produce(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static <T>T produce(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<T> $this) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public default void consume(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t) {
+        consume(this, t);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static <T>void consume(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<T> $this, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t) {
+        .ceylon.language.print_.print(t);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default void f(final T t) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$0 = f$ts(this, t);
+                f$canonical$(this, t, $ceylontmp$ts$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default .ceylon.language.Sequential<? extends T> f$ts(final T t) {
+        return <T>f$ts(this, t);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public default void f(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t, @.com.redhat.ceylon.compiler.java.metadata.Name("ts")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
+    final .ceylon.language.Sequential<? extends T> ts) {
+        (
+            let
+            {
+                f$canonical$(this, t, ts);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <T>void f(.com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<T> $this, final T t) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$1 = f$ts($this, t);
+                f$canonical$($this, t, $ceylontmp$ts$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static <T>.ceylon.language.Sequential<? extends T> f$ts(.com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<T> $this, final T t) {
+        return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance($this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface$T(), new .java.lang.Object[]{t});
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static <T>void f$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<T> $this, final T t, final .ceylon.language.Sequential<? extends T> ts) {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static <T>void f(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<T> $this, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t, @.com.redhat.ceylon.compiler.java.metadata.Name("ts")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
+    final .ceylon.language.Sequential<? extends T> ts) {
+        (
+            let
+            {
+                f$canonical$($this, t, ts);
+            }
+            returning null;
+        );
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface<Y>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Y",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface GenericInterface2<Y> extends .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<Y> {
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface$T() {
+        return this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface2$Y();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface2$Y();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface<ceylon.language::String>"})
+interface GenericInterface3 extends .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<.ceylon.language.String> {
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface$T() {
+        return .ceylon.language.String.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface3.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
+        "com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface2<ceylon.language::String>",
+        "com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface3"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "X",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class GenericInterfaceSatisfier<X> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface2<.ceylon.language.String>, .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface3, .java.io.Serializable {
+    
+    GenericInterfaceSatisfier(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        this.$reified$X = $reified$X;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface$T() {
+        return .ceylon.language.String.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface2$Y() {
+        return .ceylon.language.String.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterfaceSatisfier.class, $reified$X);
+    }
+}

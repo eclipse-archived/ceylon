@@ -1,0 +1,130 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+interface Qualifiers {
+    
+    private default long getX$priv$() {
+        return 1L;
+    }
+    
+    public default long getY() {
+        return getY(this);
+    }
+    
+    public static long getY(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
+        return 2L;
+    }
+    
+    public abstract long getZ();
+    
+    public default long getSum() {
+        return getSum(this);
+    }
+    
+    public static long getSum(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
+        return $this.getX$priv$() + $this.getY() + $this.getZ();
+    }
+    
+    private default long getSum2$priv$() {
+        return getX$priv$() + getY() + getZ();
+    }
+    
+    public default long i() {
+        return i(this);
+    }
+    
+    public static long i(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
+        return 1L;
+    }
+    
+    public default long j() {
+        return j(this);
+    }
+    
+    public static long j(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
+        return $this.i();
+    }
+    
+    public default long k() {
+        return (
+            let
+            {
+                long $ceylontmp$n$0 = k$n(this);
+            }
+            returning k$canonical$(this, $ceylontmp$n$0);
+        );
+    }
+    
+    public default long k$n() {
+        return k$n(this);
+    }
+    
+    public default long k(final long n) {
+        return k$canonical$(this, n);
+    }
+    
+    public static long k(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
+        return (
+            let
+            {
+                long $ceylontmp$n$1 = k$n($this);
+            }
+            returning k$canonical$($this, $ceylontmp$n$1);
+        );
+    }
+    
+    public static long k$n(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
+        return $this.j();
+    }
+    
+    private static long k$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this, final long n) {
+        return n;
+    }
+    
+    public static long k(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this, final long n) {
+        return k$canonical$($this, n);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers.class);
+}
+interface QualifiersSub extends .com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers {
+    
+    public default long n() {
+        return (
+            let
+            {
+                long $ceylontmp$m$2 = n$m(this);
+            }
+            returning n$canonical$(this, $ceylontmp$m$2);
+        );
+    }
+    
+    public default long n$m() {
+        return n$m(this);
+    }
+    
+    public default long n(final long m) {
+        return n$canonical$(this, m);
+    }
+    
+    public static long n(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this) {
+        return (
+            let
+            {
+                long $ceylontmp$m$3 = n$m($this);
+            }
+            returning n$canonical$($this, $ceylontmp$m$3);
+        );
+    }
+    
+    public static long n$m(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this) {
+        return $this.k();
+    }
+    
+    private static long n$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this, final long m) {
+        return $this.i() + $this.j() + m;
+    }
+    
+    public static long n(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this, final long m) {
+        return n$canonical$($this, m);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub.class);
+}

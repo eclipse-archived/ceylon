@@ -1,14 +1,64 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
-@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InterfaceWithConcreteMethods"})
-class InterfaceWithConcreteMethodsSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods, .java.io.Serializable {
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InterfaceWithConcreteMethods<ceylon.language::Integer>"})
+class InterfaceWithConcreteMethodsSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<.ceylon.language.Integer>, .java.io.Serializable {
     
     InterfaceWithConcreteMethodsSatisfier() {
     }
     
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithConcreteMethods$T() {
+        return .ceylon.language.Integer.$TypeDescriptor$;
+    }
+    
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    private final void nonShared$priv$() {
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "U",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    private final <U>void nonShared$priv$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long j) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.Object $default() {
+        return (
+            let
+            {
+                long $ceylontmp$i$0 = default$i();
+                long $ceylontmp$j$1 = default$j($ceylontmp$i$0);
+            }
+            returning $default$canonical$($ceylontmp$i$0, $ceylontmp$j$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.Object $default(final long i) {
+        return (
+            let
+            {
+                long $ceylontmp$j$2 = default$j(i);
+            }
+            returning $default$canonical$(i, $ceylontmp$j$2);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object $default$canonical$(final long i, final long j) {
+        <.ceylon.language.String>nonShared$priv$(.ceylon.language.String.$TypeDescriptor$, 0L, 0L);
+        shared();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.shared();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.$default();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.shared();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.$default();
+        return null;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -17,13 +67,58 @@ class InterfaceWithConcreteMethodsSatisfier implements .com.redhat.ceylon.compil
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
-    public final .java.lang.Object $default() {
-        shared();
-        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.shared();
-        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.$default();
-        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.shared();
-        .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods.super.$default();
+    public final .java.lang.Object $default(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long j) {
+        return $default$canonical$(i, j);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.Object formal() {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = formal$i();
+                long $ceylontmp$j$4 = formal$j($ceylontmp$i$3);
+            }
+            returning formal$canonical$($ceylontmp$i$3, $ceylontmp$j$4);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.Object formal(final long i) {
+        return (
+            let
+            {
+                long $ceylontmp$j$5 = formal$j(i);
+            }
+            returning formal$canonical$(i, $ceylontmp$j$5);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object formal$canonical$(final long i, final long j) {
         return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object formal(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long j) {
+        return formal$canonical$(i, j);
     }
     
     @.java.lang.Override

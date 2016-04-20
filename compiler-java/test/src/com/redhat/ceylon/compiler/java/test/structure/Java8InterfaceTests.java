@@ -60,6 +60,11 @@ public class Java8InterfaceTests extends CompilerTests {
     }
     
     @Test
+    public void qualifiers() {
+        compareWithJavaSource("iface/Qualifiers");
+    }
+    
+    @Test
     public void defaultSatisfyCompanion() {
         compareWithJavaSource("iface/DefaultSatisfyCompanion");
     }

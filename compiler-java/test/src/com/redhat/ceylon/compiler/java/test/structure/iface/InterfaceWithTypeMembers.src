@@ -1,0 +1,120 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("I")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.class)
+public interface InterfaceWithTypeMembers$I {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.I$impl $com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$impl$I$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public .java.lang.Object m();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Members({
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.CSatisfiesI.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$I.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.C.class)})
+interface InterfaceWithTypeMembers {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl $com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$impl();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+final class InterfaceWithTypeMembers$impl implements .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    InterfaceWithTypeMembers$impl(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers $this) {
+        this.$this = $this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.class)
+    class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        C() {
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+        public final void m() {
+            .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.this.$this.$com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$impl().m$priv$();
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.C.class));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final class I$impl implements .java.io.Serializable {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public I$impl(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$I $this) {
+            this.$this = $this;
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$I $this;
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .java.lang.Object m() {
+            .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.this.$this.$com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$impl().m$priv$();
+            return null;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.class)
+    @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InterfaceWithTypeMembers.I"})
+    class CSatisfiesI implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$I, .java.io.Serializable {
+        
+        CSatisfiesI() {
+            this.$com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$I$this$ = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.this.new I$impl(this);
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        protected final .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.I$impl $com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$I$this$;
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.I$impl $com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$impl$I$impl() {
+            return $com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$I$this$;
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.ceylon.language.ActualAnnotation$annotation$
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                value = "ceylon.language::Anything",
+                declaredVoid = true)
+        public final .java.lang.Object m() {
+            $com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$I$this$.m();
+            .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.this.$this.$com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithTypeMembers$impl().m$priv$();
+            return null;
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.CSatisfiesI.class));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.CSatisfiesI().m();
+        final .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.C c = new .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.C();
+        c.m();
+    }
+}
