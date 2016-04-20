@@ -40,6 +40,11 @@ public abstract class EqualityAndComparisonInteger extends .java.lang.Object imp
     }
     
     @.java.lang.Override
+    public .ceylon.language.Comparison compare(final .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger other) {
+        return $ceylon$language$Number$this$.compare(other);
+    }
+    
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger getMagnitude() {
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.EqualityAndComparisonInteger)$ceylon$language$Number$this$.getMagnitude();
     }

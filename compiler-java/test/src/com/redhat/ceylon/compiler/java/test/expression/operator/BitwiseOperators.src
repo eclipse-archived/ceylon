@@ -51,6 +51,11 @@ abstract class BWMyInteger extends .java.lang.Object implements .com.redhat.ceyl
     }
     
     @.java.lang.Override
+    public .ceylon.language.Comparison compare(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger other) {
+        return $ceylon$language$Number$this$.compare(other);
+    }
+    
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger getMagnitude() {
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)$ceylon$language$Number$this$.getMagnitude();
     }
