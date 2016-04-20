@@ -87,5 +87,18 @@ shared interface Number<Other> of Other
              an integral numeric type")
     shared formal Other powerOfInteger(Integer integer);
     
+    "Compares this number with the given number, returning:
+     
+     - [[larger]], if the [[difference|minus]] `this-other`
+       between the numbers is [[positive]],
+     - [[smaller]], if the difference `this-other` between 
+       the numbers is [[negative]], or
+     - [[equal]] otherwise."
+    shared actual default Comparison compare(Other other) 
+            => let (diff = this - other)
+                if (diff.positive) then larger
+           else if (diff.negative) then smaller
+           else equal;
+    
 }
 
