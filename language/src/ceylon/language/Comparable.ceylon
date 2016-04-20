@@ -58,7 +58,14 @@ tagged("Comparisons")
 shared interface Comparable<in Other> of Other 
         given Other satisfies Comparable<Other> {
     
-    "Compares this value with the given value.
+    "Compares this value with the given value, returning:
+     
+     - [[larger]], if this value is strictly larger than the 
+       given value,
+     - [[smaller]], if this value is strictly smaller than 
+       the given value, or
+     - [[equal]], if this value is [[equal|equals]] to the 
+       given value.
      
      For any two values `x` and `y` such that the expression
      `x.compare(y)` is well-typed, the expression may be
