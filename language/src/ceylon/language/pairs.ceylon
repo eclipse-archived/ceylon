@@ -35,8 +35,8 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
                 value firstIter = firstIterable.iterator();
                 value secondIter = secondIterable.iterator();
                 shared actual Result|Finished next() {
-                    if (!is Finished first=firstIter.next(),
-                        !is Finished second=secondIter.next()) {
+                    if (!is Finished first = firstIter.next(),
+                        !is Finished second = secondIter.next()) {
                         return collecting(first,second);
                     }
                     else {
@@ -71,8 +71,8 @@ shared [First,Second]? findPair<First,Second>(
     {First*} firstIterable, {Second*} secondIterable) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
-    while (!is Finished first=firstIter.next(),
-           !is Finished second=secondIter.next()) {
+    while (!is Finished first = firstIter.next(),
+           !is Finished second = secondIter.next()) {
         if (selecting(first,second)) {
             return [first,second];
         }
@@ -102,8 +102,8 @@ shared Boolean everyPair<First,Second>(
     {First*} firstIterable, {Second*} secondIterable) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
-    while (!is Finished first=firstIter.next(),
-        !is Finished second=secondIter.next()) {
+    while (!is Finished first = firstIter.next(),
+           !is Finished second = secondIter.next()) {
         if (!selecting(first,second)) {
             return false;
         }
@@ -132,8 +132,8 @@ shared Boolean anyPair<First,Second>(
     {First*} firstIterable, {Second*} secondIterable) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
-    while (!is Finished first=firstIter.next(),
-           !is Finished second=secondIter.next()) {
+    while (!is Finished first = firstIter.next(),
+           !is Finished second = secondIter.next()) {
         if (selecting(first,second)) {
             return true;
         }
@@ -164,8 +164,8 @@ shared Result foldPairs<Result,First,Second>(
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     variable value partial = initial;
-    while (!is Finished first=firstIter.next(),
-           !is Finished second=secondIter.next()) {
+    while (!is Finished first = firstIter.next(),
+           !is Finished second = secondIter.next()) {
         partial = accumulating(partial, first, second);
     }
     return partial;
