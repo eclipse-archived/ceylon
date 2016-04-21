@@ -168,7 +168,7 @@ shared native final class String(characters)
     shared native {String*} linesWithBreaks
             => split('\n'.equals, false, false)
             .partition(2)
-            .map(([line, rest])
+            .map(([line, *rest])
                     => if (nonempty rest)
                     then line + rest[0]
                     else line);
