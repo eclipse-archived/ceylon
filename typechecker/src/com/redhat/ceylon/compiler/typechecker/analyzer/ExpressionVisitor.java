@@ -82,6 +82,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -456,26 +457,28 @@ public class ExpressionVisitor extends Visitor {
         if (se != null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                destructure(pattern, se, e.getTypeModel());
+                destructure(pattern, e.getTypeModel());
             }
         }
     }
     
-    private void destructure(Tree.Pattern pattern,
-            Tree.SpecifierExpression se, Type type) {
+    private void destructure(Tree.Pattern pattern, Type type) {
         if (type!=null) {
             type = type.resolveAliases();
             if (pattern instanceof Tree.TuplePattern) {
-                destructure(se, type, 
-                        (Tree.TuplePattern) pattern);
+                destructure(type, 
+                        (Tree.TuplePattern) 
+                            pattern);
             }
             else if (pattern instanceof Tree.KeyValuePattern) {
-                destructure(se, type, 
-                        (Tree.KeyValuePattern) pattern);
+                destructure(type, 
+                        (Tree.KeyValuePattern) 
+                            pattern);
             }
             else {
                 Tree.VariablePattern vp = 
-                        (Tree.VariablePattern) pattern;
+                        (Tree.VariablePattern) 
+                            pattern;
                 Tree.Variable var = vp.getVariable();
                 Tree.Type varType = var.getType();
                 if (varType!=null) {
@@ -485,8 +488,7 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         inferValueType(var, type);
                     }
-                    Type declaredType = 
-                            varType.getTypeModel();
+                    Type declaredType = varType.getTypeModel();
                     checkAssignable(type, declaredType, var, 
                             "type of element of assigned value must be a subtype of declared type of pattern variable");
                 }
@@ -507,92 +509,96 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void destructure(Tree.SpecifierExpression se, 
-            Type entryType,
+    private void destructure(Type entryType,
             Tree.KeyValuePattern keyValuePattern) {
         Tree.Pattern key = keyValuePattern.getKey();
         Tree.Pattern value = keyValuePattern.getValue();
         if (entryType.isExactlyNothing()) {
-            se.addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            keyValuePattern
+                .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
         }
         else if (!unit.isEntryType(entryType)) {
-            se.addError("assigned expression is not an entry type, so may not be destructured: '"
+            keyValuePattern
+                .addError("assigned expression is not an entry type, so may not be destructured: '"
                     + entryType.asString(unit) + 
                     "' is not an entry type");
         }
         else {
-            destructure(key, se, unit.getKeyType(entryType));
-            destructure(value, se, unit.getValueType(entryType));
+            destructure(key, unit.getKeyType(entryType));
+            destructure(value, unit.getValueType(entryType));
         }
     }
 
-    private void destructure(Tree.SpecifierExpression se, 
-            Type sequenceType,
+    private void destructure(Type sequenceType, 
             Tree.TuplePattern tuplePattern) {
         List<Tree.Pattern> patterns = 
                 tuplePattern.getPatterns();
         int length = patterns.size();
         if (length==0) {
-            tuplePattern.addError("tuple pattern must have at least one variable");
+            tuplePattern
+                .addError("tuple pattern must have at least one variable");
         }
         else if (sequenceType.isExactlyNothing()) {
-            se.addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            tuplePattern
+                .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
         }
         else {
             for (int i=0; i<length-1; i++) {
-                Tree.Pattern p = patterns.get(i);
-                if (p instanceof Tree.VariablePattern) {
+                Tree.Pattern pattern = patterns.get(i);
+                if (pattern instanceof Tree.VariablePattern) {
                     Tree.VariablePattern vp = 
-                            (Tree.VariablePattern) p;
+                            (Tree.VariablePattern) 
+                                pattern;
                     Tree.Type t = 
-                            vp.getVariable().getType();
+                            vp.getVariable()
+                                .getType();
                     if (t instanceof Tree.SequencedType) {
                         t.addError("variadic pattern element must occur as last element of tuple pattern");
                     }
                 }
             }
-            Tree.Pattern lastPattern = 
-                    patterns.get(length-1);
             if (!unit.isSequentialType(sequenceType)) {
-                se.addError("assigned expression is not a sequence type, so may not be destructured: '" + 
+                tuplePattern
+                    .addError("assigned expression is not a sequence type, so may not be destructured: '" + 
                         sequenceType.asString(unit) + 
                         "' is not a subtype of 'Sequential'");
             }
             else if (unit.isEmptyType(sequenceType)) {
-                se.addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
+                tuplePattern
+                    .addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
                         sequenceType.asString(unit) + 
                         "' is a subtype of 'Empty'");
             }
             else if (unit.isTupleType(sequenceType)) {
-                destructureTuple(se, sequenceType, patterns, 
-                        length, lastPattern);
+                destructureTuple(sequenceType, tuplePattern);
             }
             else {
-                destructureSequence(se, sequenceType, patterns, 
-                        length, lastPattern);
+                destructureSequence(sequenceType, tuplePattern);
             }
         }
     }
 
     private boolean isVariadicPattern(Tree.Pattern lastPattern) {
-        boolean variadic = false;
-//      boolean nonempty = false;
         if (lastPattern instanceof Tree.VariablePattern) {
             Tree.VariablePattern variablePattern = 
-                    (Tree.VariablePattern) lastPattern;
+                    (Tree.VariablePattern) 
+                        lastPattern;
             Tree.Type type = 
-                    variablePattern.getVariable().getType();
+                    variablePattern.getVariable()
+                        .getType();
             if (type instanceof Tree.SequencedType) {
-                variadic = true;
-//              nonempty = ((Tree.SequencedType) type).getAtLeastOne();
+                return true;
             }
         }
-        return variadic;
+        return false;
     }
 
-    private void destructureTuple(Tree.SpecifierExpression se,
-            Type sequenceType, List<Tree.Pattern> patterns, 
-            int length, Tree.Pattern lastPattern) {
+    private void destructureTuple(Type sequenceType, 
+            Tree.TuplePattern tuplePattern) {
+        List<Tree.Pattern> patterns = 
+                tuplePattern.getPatterns();
+        int length = patterns.size();
+        Tree.Pattern lastPattern = patterns.get(length-1);
         boolean variadic = isVariadicPattern(lastPattern);
         List<Type> types = 
                 unit.getTupleElementTypes(sequenceType);
@@ -603,25 +609,28 @@ public class ExpressionVisitor extends Visitor {
         int minimumLength = 
                 unit.getTupleMinimumLength(sequenceType);
         if (!variadic && types.size()>length) {
-            se.addError("assigned tuple has too many elements");
+            tuplePattern
+                .addError("assigned tuple has too many elements");
         }
         if (!variadic && tupleLengthUnbounded) {
-            se.addError("assigned tuple has unbounded length");
+            tuplePattern
+                .addError("assigned tuple has unbounded length");
         }
         if (!variadic && minimumLength<types.size()) {
-            se.addError("assigned tuple has variadic length");
+            tuplePattern
+                .addError("assigned tuple has variadic length");
         }
         int fixedLength = variadic ? length-1 : length;
         for (int i=0; i<types.size() && i<fixedLength; i++) {
             Type type = types.get(i);
             Tree.Pattern pattern = patterns.get(i);
-            destructure(pattern, se, type);
+            destructure(pattern, type);
         }
         if (variadic) {
             Type tail = 
                     unit.getTailType(sequenceType, 
                             fixedLength);
-            destructure(lastPattern, se, tail);
+            destructure(lastPattern, tail);
         }
         for (int i=types.size(); i<length; i++) {
             Tree.Pattern pattern = patterns.get(i);
@@ -638,24 +647,31 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void destructureSequence(Tree.SpecifierExpression se,
-            Type sequenceType, List<Tree.Pattern> patterns, 
-            int length, Tree.Pattern lastPattern) {
-        boolean variadic = isVariadicPattern(lastPattern);
-        
-        if (!variadic) {
-            se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
+    private void destructureSequence(Type sequenceType, 
+            TuplePattern tuplePattern) {
+        List<Tree.Pattern> patterns = 
+                tuplePattern.getPatterns();
+        int length = patterns.size();
+        Tree.Pattern lastPattern = patterns.get(length-1);
+        if (!isVariadicPattern(lastPattern)) {
+            Pattern pattern = lastPattern;
+            if (pattern==null) pattern = tuplePattern;
+            pattern.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
         else if (/*nonempty && length>1 ||*/ length>2) {
-            se.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
+            Pattern pattern = patterns.get(2);
+            if (pattern==null) pattern = tuplePattern;
+            pattern.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
         else if ((/*nonempty ||*/ length>1) && 
                 !unit.isSequenceType(sequenceType)) {
-            se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
+            Pattern pattern = patterns.get(1);
+            if (pattern==null) pattern = tuplePattern;
+            pattern.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a subtype of 'Sequence'");
         }
@@ -663,12 +679,12 @@ public class ExpressionVisitor extends Visitor {
         if (length>1) {
             Type elementType = 
                     unit.getSequentialElementType(sequenceType);
-            destructure(patterns.get(0), se, elementType);
-            destructure(lastPattern, se, 
+            destructure(patterns.get(0), elementType);
+            destructure(lastPattern, 
                     unit.getSequentialType(elementType));
         }
         else {
-            destructure(lastPattern, se, sequenceType);
+            destructure(lastPattern, sequenceType);
         }
     }
     
@@ -916,8 +932,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                         if (!isTypeUnknown(type) && 
                                 !type.isNothing()) {
-                            Pattern pattern = d.getPattern();
-                            destructure(pattern, se, type);
+                            destructure(d.getPattern(), type);
                         }
                         /*else {
                             d.getPattern().addError("cannot be destructured: '" + 
@@ -1139,7 +1154,7 @@ public class ExpressionVisitor extends Visitor {
                 if (!isTypeUnknown(et)) {
                     Type it = unit.getIteratedType(et);
                     if (it!=null && !isTypeUnknown(it)) {
-                        destructure(that.getPattern(), se, it);
+                        destructure(that.getPattern(), it);
                     }
                 }
             }
