@@ -398,13 +398,10 @@ shared native final class String(characters)
     shared native String replaceLast(String substring, 
                                      String replacement);
     
-    function charsUnequal(Character x, Character y) 
-            => x!=y;
-    
-    function charsUnequalIgnoringCase(Character x, Character y) 
-            => x!=y 
-            && x.uppercased!=y.uppercased
-            && x.lowercased!=y.lowercased;
+    function charsEqualIgnoringCase(Character x, Character y) 
+            => x==y 
+            || x.uppercased==y.uppercased
+            || x.lowercased==y.lowercased;
     
     "Compare this string with the given string 
      lexicographically, according to the Unicode code points
@@ -413,10 +410,8 @@ shared native final class String(characters)
      This defines a locale-independent collation that is
      incorrect in some locales."
     shared actual native Comparison compare(String other)
-            => if (exists [thisChar, thatChar] 
-                = findPair(charsUnequal, this, other))
-            then thisChar.lowercased <=> thatChar.lowercased
-            else this.size <=> other.size;
+            => compareCorresponding(this, other, 
+                (Character x, Character y) => x<=>y);
     
     "Compare this string with the given string 
      lexicographically, ignoring the case of the characters.
@@ -432,10 +427,10 @@ shared native final class String(characters)
     see (`value Character.lowercased`, 
          `value Character.uppercased`)
     shared native Comparison compareIgnoringCase(String other)
-            => if (exists [thisChar, thatChar] 
-                = findPair(charsUnequalIgnoringCase, this, other))
-            then thisChar.lowercased <=> thatChar.lowercased
-            else this.size <=> other.size;
+            => compareCorresponding(this, other, 
+                (Character x, Character y) 
+                        => charsEqualIgnoringCase(x, y) 
+                        then equal else x<=>y);
     
     "Determines if this string is longer than the given
      [[length]]. This is a more efficient operation than
@@ -455,7 +450,8 @@ shared native final class String(characters)
      given [[string|that]]."
     shared actual native Boolean equals(Object that)
             => if (is String that)
-            then corresponding(this, that, charsUnequal)
+            then corresponding(this, that, 
+                    (Character x, Character y) => x==y)
             else false;
     
     "Compare this string with the given string, ignoring the 
@@ -469,7 +465,7 @@ shared native final class String(characters)
          `value Character.uppercased`)
     shared native Boolean equalsIgnoringCase(String that)
             => corresponding(this, that, 
-                             charsUnequalIgnoringCase);
+                charsEqualIgnoringCase);
     
     "A hash code for this `String`, computed from its UTF-16 
      code units."
