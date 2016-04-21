@@ -168,10 +168,10 @@ shared native final class String(characters)
     shared native {String*} linesWithBreaks
             => split('\n'.equals, false, false)
             .partition(2)
-            .map((lineWithBreak)
-                    => let (line = lineWithBreak[0], 
-                            br = lineWithBreak[1])
-                    if (exists br) then line+br else line);
+            .map(([line, rest])
+                    => if (nonempty rest)
+                    then line + rest[0]
+                    else line);
     
     "A string containing the characters of this string, 
      after discarding [[whitespace|Character.whitespace]] 
@@ -398,23 +398,25 @@ shared native final class String(characters)
     shared native String replaceLast(String substring, 
                                      String replacement);
     
+    function charsUnequal(Character x, Character y) 
+            => x!=y;
+    
+    function charsUnequalIgnoringCase(Character x, Character y) 
+            => x!=y 
+            && x.uppercased!=y.uppercased
+            && x.lowercased!=y.lowercased;
+    
     "Compare this string with the given string 
      lexicographically, according to the Unicode code points
      of the characters.
      
      This defines a locale-independent collation that is
      incorrect in some locales."
-    shared actual native Comparison compare(String other) {
-        value min = smallest(size, other.size);
-        for (i in 0:min) {
-            assert (exists thisChar = this.getFromFirst(i),
-                    exists thatChar = other.getFromFirst(i));
-            if (thisChar!=thatChar) {
-                return thisChar <=> thatChar;
-            }
-        }
-        return size <=> other.size;
-    }
+    shared actual native Comparison compare(String other)
+            => if (exists [thisChar, thatChar] 
+                = findPair(charsUnequal, this, other))
+            then thisChar.lowercased <=> thatChar.lowercased
+            else this.size <=> other.size;
     
     "Compare this string with the given string 
      lexicographically, ignoring the case of the characters.
@@ -429,19 +431,11 @@ shared native final class String(characters)
      incorrect in some locales."
     see (`value Character.lowercased`, 
          `value Character.uppercased`)
-    shared native Comparison compareIgnoringCase(String other) {
-        value min = smallest(size, other.size);
-        for (i in 0:min) {
-            assert (exists thisChar = this.getFromFirst(i),
-                    exists thatChar = other.getFromFirst(i));
-            if (thisChar!=thatChar && 
-                thisChar.uppercased!=thatChar.uppercased &&
-                thisChar.lowercased!=thatChar.lowercased) {
-                return thisChar.lowercased <=> thatChar.lowercased;
-            }
-        }
-        return size <=> other.size;
-    }
+    shared native Comparison compareIgnoringCase(String other)
+            => if (exists [thisChar, thatChar] 
+                = findPair(charsUnequalIgnoringCase, this, other))
+            then thisChar.lowercased <=> thatChar.lowercased
+            else this.size <=> other.size;
     
     "Determines if this string is longer than the given
      [[length]]. This is a more efficient operation than
@@ -459,25 +453,10 @@ shared native final class String(characters)
      so, if this string has the same [[length|size]], and 
      the same [[characters]], in the same order, as the 
      given [[string|that]]."
-    shared actual native Boolean equals(Object that) {
-        if (is String that) {
-            if (size!=that.size) {
-                return false;
-            }
-            value min = smallest(size, that.size);
-            for (i in 0:min) {
-                assert (exists thisChar = this.getFromFirst(i),
-                        exists thatChar = that.getFromFirst(i));
-                if (thisChar!=thatChar) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+    shared actual native Boolean equals(Object that)
+            => if (is String that)
+            then corresponding(this, that, charsUnequal)
+            else false;
     
     "Compare this string with the given string, ignoring the 
      case of the characters. That is, by considering two 
@@ -488,25 +467,12 @@ shared native final class String(characters)
      - `x.lowercased == y.lowercased`."
     see (`value Character.lowercased`, 
          `value Character.uppercased`)
-    shared native Boolean equalsIgnoringCase(String that) {
-        if (size!=that.size) {
-            return false;
-        }
-        value min = smallest(size, that.size);
-        for (i in 0:min) {
-            assert (exists thisChar = this.getFromFirst(i),
-                    exists thatChar = that.getFromFirst(i));
-            if (thisChar!=thatChar && 
-                thisChar.uppercased!=thatChar.uppercased &&
-                thisChar.lowercased!=thatChar.lowercased) {
-                return false;
-            }
-        }
-        return true;
-    }
+    shared native Boolean equalsIgnoringCase(String that)
+            => corresponding(this, that, 
+                             charsUnequalIgnoringCase);
     
-    "A hash code for this `String`, computed from its
-     UTF-16 code units."
+    "A hash code for this `String`, computed from its UTF-16 
+     code units."
     shared actual native Integer hash;
     
     "This string."
