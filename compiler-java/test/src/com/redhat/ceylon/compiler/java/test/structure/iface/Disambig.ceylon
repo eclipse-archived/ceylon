@@ -3,4 +3,5 @@ interface Disambig {
 }
 void use(Disambig d) {
     d.m(null);
+    d.m();
 }

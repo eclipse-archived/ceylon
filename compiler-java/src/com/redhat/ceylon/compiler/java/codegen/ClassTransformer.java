@@ -4235,7 +4235,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             // TODO bridges for DPMs and DAOs
             
-            JCMethodInvocation bridgingCall = make().Apply(null, naming.makeName(model, Naming.NA_MEMBER), bridgingArgs);
+            JCMethodInvocation bridgingCall = make().Apply(null, naming.makeName(model, Naming.NA_MEMBER|Naming.NA_STATIC_METHOD), bridgingArgs);
             JCStatement bridgingStmt;
             if (model.isDeclaredVoid() && !Strategy.useBoxedVoid(model)) {
                 bridgingStmt = make().Exec(bridgingCall);
@@ -4343,7 +4343,7 @@ public class ClassTransformer extends AbstractTransformer {
             lb.append(canonicalMethod);
         }
         
-        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
+        final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel, daoKind == DaoKind.STATIC ? Naming.NA_STATIC_METHOD : 0);
         
         if (daoKind == DaoKind.STATIC) {
             appendImplicitParameters(methodBuilder, (Interface)methodModel.getContainer());
@@ -4428,7 +4428,7 @@ public class ClassTransformer extends AbstractTransformer {
                 daoKind,  
                 methodModel)
             .makeOverload(
-                    MethodDefinitionBuilder.method(this, methodModel),
+                    MethodDefinitionBuilder.method(this, methodModel, daoKind == DaoKind.STATIC ? Naming.NA_STATIC_METHOD : 0),
                     method,
                     parameterList,
                     parameterList.getModel(),
@@ -5138,6 +5138,9 @@ public class ClassTransformer extends AbstractTransformer {
             int flags = Naming.NA_MEMBER;
             if (Decl.withinClassOrInterface(method)) {
                 flags |= Naming.NA_CANONICAL_METHOD;
+            }
+            if (kind == DaoKind.STATIC) {
+                flags |= Naming.NA_STATIC_METHOD;
             }
             return naming.makeQualifiedName(makeMethodNameQualifier(), method, flags);
         }

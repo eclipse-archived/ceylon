@@ -81,6 +81,7 @@ public class NamingBase {
         $argthis$,
         $callable$,
         $canonical$,
+        $static$,
         $element$,
         $exhausted$,
         $getter$,
