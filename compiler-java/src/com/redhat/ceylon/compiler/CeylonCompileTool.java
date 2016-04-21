@@ -199,6 +199,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
     private ModuleSpec jdkProvider;
+    {
+        String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
+        this.jdkProvider = jdkProvider != null ? ModuleSpec.parse(jdkProvider) : null;
+    }
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);

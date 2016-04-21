@@ -32,6 +32,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_GENERATE_MODULE_INFO = "compiler.generatemoduleinfo";
     public final static String COMPILER_PACK200 = "compiler.pack200";
     public final static String COMPILER_PROGRESS = "compiler.progress";
+    public final static String COMPILER_JDKPROVIDER = "compiler.jdkprovider";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
     public final static String TESTTOOL_COMPILE = "testtool.compile";
@@ -112,7 +113,15 @@ public class DefaultToolOptions {
     public static boolean getDefaultAutoExportMavenDependencies(CeylonConfig config) {
         return config.getBoolOption(DEFAULTS_AUTO_EPORT_MAVEN_DEPENDENCIES, false);
     }
+
+    public static String getCompilerJdkProvider() {
+        return getCompilerJdkProvider(CeylonConfig.get());
+    }
     
+    public static String getCompilerJdkProvider(CeylonConfig config) {
+        return config.getOption(COMPILER_JDKPROVIDER);
+    }
+
     public static List<File> getCompilerSourceDirs() {
         return getCompilerSourceDirs(CeylonConfig.get());
     }
