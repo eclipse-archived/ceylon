@@ -1415,7 +1415,7 @@ public class ClassTransformer extends AbstractTransformer {
                             java.util.List<Parameter> parameters = paramList.getModel().getParameters();
                             MethodDefinitionBuilder mdb = 
                             makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
-                                    paramModel.getModel().appliedTypedReference(cls.getType(), null),
+                                    constructor != null ? constructor.getReference() : cls.getReference(),
                                     ((TypeDeclaration)cls.getContainer()).getType(),
                                     FINAL | (transformClassDeclFlags(cls) & ~ABSTRACT), 
                                     List.<TypeParameter>nil(), Collections.<java.util.List<Type>>emptyList(),
@@ -1424,7 +1424,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     parameters.subList(0, parameters.indexOf(paramModel)), 
                                     false, 
                                     Naming.getDefaultedParamMethodName(cls, paramModel),
-                                    DelegateType.FOR_DEFAULT_VALUE);
+                                    param.getParameterModel());
                             cbForDevaultValues.method(mdb);
                         }
                     }
@@ -2296,7 +2296,7 @@ public class ClassTransformer extends AbstractTransformer {
                     method.getFirstParameterList().getParameters(),
                     ((Function) member).getTypeErased(),
                     null,
-                    DelegateType.OTHER,
+                    null,
                     false);
             classBuilder.method(concreteMemberDelegate);
         } else if (member instanceof Value
@@ -2315,7 +2315,7 @@ public class ClassTransformer extends AbstractTransformer {
                         Collections.<Parameter>emptyList(),
                         attr.getTypeErased(),
                         null,
-                        DelegateType.OTHER,
+                        null,
                         false);
                 classBuilder.method(getterDelegate);
             }
@@ -2331,7 +2331,7 @@ public class ClassTransformer extends AbstractTransformer {
                         Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                         ((Setter) member).getTypeErased(),
                         null,
-                        DelegateType.OTHER,
+                        null,
                         false);
                 classBuilder.method(setterDelegate);
             }
@@ -2481,10 +2481,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
     }
-
-    enum DelegateType {
-        FOR_DEFAULT_VALUE, OTHER;
-    }
     
     /**
      * Generates companion fields ($Foo$impl) and methods
@@ -2577,7 +2573,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 // we need to generate a default value method
                                 // which also delegates to the $impl
                                 final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
-                                        typedParameter,
+                                        typedMember,
                                         model.getType(),
                                         PUBLIC | FINAL, 
                                         typeParameters, producedTypeParameterBounds,
@@ -2586,7 +2582,7 @@ public class ClassTransformer extends AbstractTransformer {
                                         parameters.subList(0, parameters.indexOf(param)),
                                         param.getModel().getTypeErased(),
                                         null,
-                                        DelegateType.FOR_DEFAULT_VALUE);
+                                        param);
                                 classBuilder.method(defaultValueDelegate);
                             }
 
@@ -2621,7 +2617,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
                                 null,
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(concreteMemberDelegate);
                     }
 
@@ -2639,7 +2635,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
                                 naming.selector(method),
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(canonicalMethod);
                     }
                 }
@@ -2664,7 +2660,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 Collections.<Parameter>emptyList(),
                                 attr.getTypeErased(),
                                 null,
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(getterDelegate);
                     }
                     if (setter != null) {
@@ -2679,7 +2675,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 Collections.<Parameter>singletonList(setter.getParameter()),
                                 setter.getTypeErased(),
                                 null,
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(setterDelegate);
                     }
                     if (Decl.isValue(member) 
@@ -2769,7 +2765,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // we need to generate a default value method
                 // which also delegates to the $impl
                 final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
-                        typedParameter,
+                        typeMember,
                         currentType,
                         flags, 
                         typeParameters, 
@@ -2779,7 +2775,7 @@ public class ClassTransformer extends AbstractTransformer {
                         parameters.subList(0, parameters.indexOf(param)),
                         param.getModel().getTypeErased(),
                         null,
-                        DelegateType.FOR_DEFAULT_VALUE,
+                        param,
                         includeBody);
                 classBuilder.method(defaultValueDelegate);
             }
@@ -2795,7 +2791,7 @@ public class ClassTransformer extends AbstractTransformer {
                         parameters.subList(0, parameters.indexOf(param)),
                         false,
                         null,
-                        DelegateType.OTHER,
+                        null,
                         includeBody);
                 classBuilder.method(overload);
             }
@@ -2811,7 +2807,7 @@ public class ClassTransformer extends AbstractTransformer {
                 parameters,
                 false,
                 null,
-                DelegateType.OTHER,
+                null,
                 includeBody);
         classBuilder.method(overload);
     }
@@ -2865,9 +2861,9 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<Parameter> parameters, 
             boolean typeErased,
             final String targetMethodName, 
-            DelegateType delegateType) {
+            Parameter param) {
         return makeDelegateToCompanion(iface, typedMember, currentType, mods, typeParameters,
-                producedTypeParameterBounds, methodType, methodName, parameters, typeErased, targetMethodName, delegateType, true);
+                producedTypeParameterBounds, methodType, methodName, parameters, typeErased, targetMethodName, param, true);
     }
     
     /**
@@ -2884,7 +2880,7 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<Parameter> parameters, 
             boolean typeErased,
             final String targetMethodName,
-            DelegateType delegateType, 
+            Parameter defaultedParam, 
             boolean includeBody) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
@@ -2903,7 +2899,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         boolean explicitReturn = false;
-        Declaration member = typedMember.getDeclaration();
+        Declaration member = (defaultedParam != null ? typedMember.getTypedParameter(defaultedParam) : typedMember).getDeclaration();
         Type returnType = null;
         if (!isAnything(methodType) 
                 || ((member instanceof Function || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
@@ -2913,31 +2909,31 @@ public class ClassTransformer extends AbstractTransformer {
                 // delegates for hash attributes are int
                 concreteWrapper.resultType(null, make().Type(syms().intType));
                 returnType = typedMember.getType();
-            }else if (typedMember instanceof TypedReference) {
+            }else if (typedMember instanceof TypedReference
+                    && defaultedParam == null) {
                 TypedReference typedRef = (TypedReference) typedMember;
-                if(delegateType == DelegateType.OTHER){
-                    // This is very much like for method refinement: if the supertype is erased -> go raw.
-                    // Except for some reason we only need to do it with multiple inheritance with different type
-                    // arguments, so let's not go overboard
-                    int flags = 0;
-                    if(CodegenUtil.hasTypeErased((TypedDeclaration)member.getRefinedDeclaration()) ||
-                            CodegenUtil.hasTypeErased((TypedDeclaration)member)
-                            && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
-                        flags |= AbstractTransformer.JT_RAW;
-                    }
-                    concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
-                    // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
-                    TypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
-                    returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
-                }else{
-                    // for default value
-                    NonWideningParam nonWideningParam = concreteWrapper.getNonWideningParam(typedRef, 
-                            currentType.getDeclaration() instanceof Class ? WideningRules.FOR_MIXIN : WideningRules.NONE);
-                    returnType = nonWideningParam.nonWideningType;
-                    if(member instanceof Function)
-                        returnType = typeFact().getCallableType(returnType);
-                    concreteWrapper.resultType(null, makeJavaType(returnType, nonWideningParam.flags));
+                
+                // This is very much like for method refinement: if the supertype is erased -> go raw.
+                // Except for some reason we only need to do it with multiple inheritance with different type
+                // arguments, so let's not go overboard
+                int flags = 0;
+                if(CodegenUtil.hasTypeErased((TypedDeclaration)member.getRefinedDeclaration()) ||
+                        CodegenUtil.hasTypeErased((TypedDeclaration)member)
+                        && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
+                    flags |= AbstractTransformer.JT_RAW;
                 }
+                concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
+                // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
+                TypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
+                returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
+            } else if (defaultedParam != null) {
+                TypedReference typedParameter = typedMember.getTypedParameter(defaultedParam);
+                NonWideningParam nonWideningParam = concreteWrapper.getNonWideningParam(typedParameter, 
+                        currentType.getDeclaration() instanceof Class ? WideningRules.FOR_MIXIN : WideningRules.NONE);
+                returnType = nonWideningParam.nonWideningType;
+                if(member instanceof Function)
+                    returnType = typeFact().getCallableType(returnType);
+                concreteWrapper.resultType(null, makeJavaType(returnType, nonWideningParam.flags));
             } else {
                 concreteWrapper.resultType(null, makeJavaType((Type)typedMember));
                 returnType = (Type) typedMember;
@@ -2950,13 +2946,25 @@ public class ClassTransformer extends AbstractTransformer {
                 arguments.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
             }
         }
-        if (typedMember.getDeclaration() instanceof Constructor
-                && !Decl.isDefaultConstructor((Constructor)typedMember.getDeclaration())) {
-            concreteWrapper.parameter(makeConstructorNameParameter((Constructor)typedMember.getDeclaration()));
+        Declaration declaration = typedMember.getDeclaration();
+        if (declaration instanceof Constructor
+                && !Decl.isDefaultConstructor((Constructor)declaration)
+                && defaultedParam == null) {
+            concreteWrapper.parameter(makeConstructorNameParameter((Constructor)declaration));
             arguments.add(naming.makeUnquotedIdent(Unfix.$name$));
         }
+        int ii = 0;
         for (Parameter param : parameters) {
-            final TypedReference typedParameter = typedMember.getTypedParameter(param);
+            Parameter parameter;
+            if (declaration instanceof Functional) {
+                parameter = ((Functional)declaration).getFirstParameterList().getParameters().get(ii++);
+            } else if (declaration instanceof Setter){
+                parameter = ((Setter)declaration).getParameter();
+            } else {
+                throw BugException.unhandledCase(declaration);
+            }
+            
+            final TypedReference typedParameter = typedMember.getTypedParameter(parameter);
             concreteWrapper.parameter(null, param, typedParameter, null, FINAL, WideningRules.FOR_MIXIN);
             arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
         }
@@ -2983,7 +2991,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (isUnimplementedMemberClass(currentType, typedMember)) {
                 concreteWrapper.body(makeThrowUnresolvedCompilationError(
                         // TODO encapsulate the error message
-                        "formal member '"+typedMember.getDeclaration().getName()+"' of '"+iface.getName()+"' not implemented in class hierarchy"));
+                        "formal member '"+declaration.getName()+"' of '"+iface.getName()+"' not implemented in class hierarchy"));
                 current().broken();
             } else if (!explicitReturn) {
                 concreteWrapper.body(gen().make().Exec(expr));
@@ -3988,6 +3996,8 @@ public class ClassTransformer extends AbstractTransformer {
                 if(typedDeclaration != null)
                     annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
             }
+            //methodModel.getTypedReference().getTypedParameter(parameterModel).getType()
+            //parameterModel.getModel().getTypedReference().getType()
             methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
