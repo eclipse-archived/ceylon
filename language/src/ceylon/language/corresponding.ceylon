@@ -22,7 +22,7 @@
  
  both evaluate to `true`."
 see (`function everyPair`, 
-     `function package.compareCorresponding`)
+     `function compareCorresponding`)
 tagged("Comparisons", "Streams")
 shared Boolean corresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,

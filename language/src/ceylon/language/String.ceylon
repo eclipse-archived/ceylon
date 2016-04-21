@@ -408,7 +408,13 @@ shared native final class String(characters)
      of the characters.
      
      This defines a locale-independent collation that is
-     incorrect in some locales."
+     incorrect in some locales.
+     
+     For more specialized lexicographic comparisons between 
+     strings, use [[compareIgnoringCase]] or 
+     [[compareCorresponding]]."
+    see (`function compareIgnoringCase`,
+         `function compareCorresponding`)
     shared actual native Comparison compare(String other)
             => compareCorresponding(this, other, 
                 (Character x, Character y) => x<=>y);
@@ -423,9 +429,13 @@ shared native final class String(characters)
      - `x.lowercased == y.lowercased`.
      
      This defines a locale-independent collation that is
-     incorrect in some locales."
+     incorrect in some locales.
+     
+     For more specialized lexicographic comparisons between 
+     strings, use [[compareCorresponding]]."
     see (`value Character.lowercased`, 
-         `value Character.uppercased`)
+         `value Character.uppercased`,
+         `function compareCorresponding`)
     shared native Comparison compareIgnoringCase(String other)
             => compareCorresponding(this, other, 
                 (Character x, Character y) 
@@ -447,7 +457,13 @@ shared native final class String(characters)
     "Determines if the given object is a `String`, and if 
      so, if this string has the same [[length|size]], and 
      the same [[characters]], in the same order, as the 
-     given [[string|that]]."
+     given [[string|that]].
+     
+     For more specialized character-wise comparisons between 
+     strings, use [[equalsIgnoringCase]] or 
+     [[corresponding]]."
+    see (`function equalsIgnoringCase`,
+         `function corresponding`)
     shared actual native Boolean equals(Object that)
             => if (is String that)
             then corresponding(this, that, 
@@ -460,9 +476,13 @@ shared native final class String(characters)
      
      - `x == y`,
      - `x.uppercased == y.uppercased`, or
-     - `x.lowercased == y.lowercased`."
+     - `x.lowercased == y.lowercased`.
+     
+     For more specialized character-wise comparisons between 
+     strings, use [[corresponding]]."
     see (`value Character.lowercased`, 
-         `value Character.uppercased`)
+         `value Character.uppercased`,
+         `function corresponding`)
     shared native Boolean equalsIgnoringCase(String that)
             => corresponding(this, that, 
                 charsEqualIgnoringCase);
