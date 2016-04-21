@@ -93,6 +93,10 @@ NB: To be able to sign packages the user running the docker command for generati
 
  - See [this README](https://github.com/ceylon/ceylon-lang.org/blob/master/RELEASE.md)
 
+# Update GitHub Release Notes
+
+ - Copy the blog entry created for the web site (see previous bullet point) to the release notes and add the release zip as well: https://github.com/ceylon/ceylon/tags
+
 # Update the brew formula for ceylon
 
 1. Fork it on https://github.com/mxcl/homebrew
