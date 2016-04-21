@@ -61,22 +61,13 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         } else if (token.equals("jdk") || token.equals("jdk:")) {
             return new JDKRepository();
         } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
-            Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
-            return (CmrRepository) createRepository.invoke(null, log, null, offline, timeout);
+            return createMavenRepository(token, null);
         } else if (token.startsWith("aether:")) {
             return createMavenRepository(token, "aether:");
         } else if (token.startsWith("mvn:")) {
             return createMavenRepository(token, "mvn:");
         } else if (token.startsWith("flat:")) {
-            final File file = new File(token.substring(5));
-            if (file.exists() == false)
-                throw new IllegalArgumentException("Directory does not exist: " + token);
-            if (file.isDirectory() == false)
-                throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
-
-            structureBuilder = new FileContentStore(file);
-            return new FlatRepository(structureBuilder.createRoot());
+            return createFlatRepository(token);
         } else {
             final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
             if (file.exists() == false)
@@ -89,18 +80,31 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         return new DefaultRepository(structureBuilder.createRoot());
     }
 
-    protected CmrRepository createMavenRepository(String token, String prefix) throws Exception {
-        String config = token.substring(prefix.length());
-        // backwards compat: ignore overrides from here, previously located after | symbol
-        int p = config.indexOf("|");
+    private CmrRepository createMavenRepository(String token, String prefix) throws Exception {
         String settingsXml = null;
-        if (p < 0) {
-            settingsXml = config;
-        } else {
-            settingsXml = config.substring(0, p);
+        if (prefix != null) {
+            String config = token.substring(prefix.length());
+            // backwards compat: ignore overrides from here, previously located after | symbol
+            int p = config.indexOf("|");
+            if (p < 0) {
+                settingsXml = config;
+            } else {
+                settingsXml = config.substring(0, p);
+            }
         }
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
         Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
         return (CmrRepository) createRepository.invoke(null, log, settingsXml, offline, timeout);
+    }
+
+    private CmrRepository createFlatRepository(String token) {
+        final File file = new File(token.substring(5));
+        if (file.exists() == false)
+            throw new IllegalArgumentException("Directory does not exist: " + token);
+        if (file.isDirectory() == false)
+            throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
+
+        FileContentStore cs = new FileContentStore(file);
+        return new FlatRepository(cs.createRoot());
     }
 }
