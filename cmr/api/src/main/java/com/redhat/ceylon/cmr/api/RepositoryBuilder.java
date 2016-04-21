@@ -16,18 +16,57 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.net.Proxy;
+
+import com.redhat.ceylon.common.log.Logger;
+
 /**
  * Build repository from token.
+ * 
+ * All implementations of this interface (except for 2 built-in classes) should be registered in
+ * <code>api/src/main/resources/META-INF/services/com.redhat.ceylon.cmr.api.RepositoryBuilder</code>.
+ * The must also do their work only when encountering their specific prefix in the token passed to
+ * <code>buildRespository()</code> and return <code>null</code> in all other cases. Exceptions may
+ * only be thrown when the token prefix matches but some other error condition is encountered.
+ * Care must be taken to choose a unique prefix.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ * @author Tako Schotanus (tako@ceylon-lang.org)
  */
 public interface RepositoryBuilder {
+    
+    static class RepositoryBuilderConfig {
+        public final Logger log;
+        public final boolean offline;
+        public final int timeout;
+        public final Proxy proxy;
+        
+        public RepositoryBuilderConfig(Logger log, boolean offline, int timeout, Proxy proxy) {
+            this.log = log;
+            this.offline = offline;
+            this.timeout = timeout;
+            this.proxy = proxy;
+        }
+    }
+    
+    public static final RepositoryBuilderConfig EMPTY_CONFIG = new RepositoryBuilderConfig(null, false, 0, null);
+    
     /**
      * Build repository.
      *
-     * @param token the token
-     * @return repository
+     * @param token the token used to create the repository
+     * @return repository or null if this builder doesn't support the given token
      * @throws Exception for any error
      */
     CmrRepository buildRepository(String token) throws Exception;
+    
+    /**
+     * Build repository.
+     *
+     * @param token the token used to create the repository
+     * @param config additional configuration that can be used to create the repository
+     * @return repository or null if this builder doesn't support the given token
+     * @throws Exception for any error
+     */
+    CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception;
 }

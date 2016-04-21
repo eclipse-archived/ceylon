@@ -29,7 +29,7 @@
     <dependencies>
         <module name="ceylon.language" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true" services="export"/>
-        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true"/>
+        <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true" services="export"/>
         <module name="com.redhat.ceylon.langtools.classfile" slot="@ceylon-version@" export="true"/>
         <module name="java.base" slot="7" export="true"/>
     </dependencies>
