@@ -1147,7 +1147,7 @@ public final class String
     public static java.lang.String getTrimmed(java.lang.String value) {
         // Don't use value.trim() because that has a definition of ws that is 
         // inconsistent with ceylon.language::Character.whitespace
-        return internalTrim(value, WHITESPACE);
+        return trim(value, WHITESPACE);
     }
     
     @Override
@@ -1203,12 +1203,6 @@ public final class String
     @Ignore
     public static java.lang.String trim(java.lang.String value, 
             Callable<? extends Boolean> characters) {
-        return internalTrim(value, characters);
-    }
-    
-    @Ignore
-    private static java.lang.String internalTrim(java.lang.String value,
-            Callable<? extends Boolean> characters) {
         int from = 0;
         while (from < value.length()) {
             int c = java.lang.Character.codePointAt(value, from);
@@ -1236,7 +1230,7 @@ public final class String
     public static java.lang.String getNormalized(java.lang.String value) {
         java.lang.StringBuilder result = 
                 new java.lang.StringBuilder(value.length());
-        boolean previousWasWhitespace=false;
+        boolean previousWasWhitespace = false;
         for (int i=0;i<value.length();) {
             int c = java.lang.Character.codePointAt(value, i);
             boolean isWhitespace = java.lang.Character.isWhitespace(c);
