@@ -3019,14 +3019,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Implicit arguments
         // except for Java array constructors
         Declaration primaryDeclaration = invocation.getPrimaryDeclaration();
-        if (invocation.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
-                && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)invocation.getPrimary()).getPrimary())) {
+        
+        if (useStaticSuper(invocation.getPrimary())) {
             Scope container = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration().getContainer();
-            if (container instanceof Interface
-                    && ((Interface)container).isUseDefaultMethods()) {
                 result.add(new ExpressionAndType(receiver.qualifier(),
                         makeJavaType(((Interface)container).getType(), JT_RAW)));
-            }
         }
         Tree.Term primary = invocation.getPrimary();
         if(primaryDeclaration instanceof Class == false
@@ -4890,14 +4887,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                if (expr instanceof Tree.QualifiedMemberOrTypeExpression
-                        && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary())
-                        && ((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer() instanceof Interface
-                        && ((Interface)((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer()).isUseDefaultMethods()) {
-                    selector = naming.selector((Function)decl, Naming.NA_STATIC_METHOD);
-                } else {
-                    selector = naming.selector((Function)decl);
-                }
+                selector = naming.selector((Function)decl, useStaticSuper(expr) ? Naming.NA_STATIC_METHOD : 0);
             }
         }
         boolean isCtor = decl instanceof Function && ((Function)decl).getTypeDeclaration() instanceof Constructor;
@@ -4992,18 +4982,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     result = makeQualIdent(qualExpr, selector);
                     if (useGetter) {
-                        if (expr instanceof Tree.QualifiedMemberOrTypeExpression
-                                && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary())
-                                && ((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer() instanceof Interface
-                                && ((Interface)((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer()).isUseDefaultMethods()) {
-                            result = make().Apply(List.<JCTree.JCExpression>nil(),
-                                    result,
-                                    List.<JCTree.JCExpression>of(receiver.qualifier()));
-                        } else {
-                            result = make().Apply(List.<JCTree.JCExpression>nil(),
-                                    result,
-                                    List.<JCTree.JCExpression>nil());
-                        }
+                        List<JCExpression> args = List.<JCTree.JCExpression>nil();
+                        if (useStaticSuper(expr)) {
+                            args = args.append(receiver.qualifier());
+                        } 
+                        result = make().Apply(List.<JCTree.JCExpression>nil(),
+                                result,
+                                args);
                     }
                 }
             }
@@ -5822,21 +5807,28 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         if (result == null) {
-            if (leftTerm instanceof Tree.QualifiedMemberOrTypeExpression
-                    && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)leftTerm).getPrimary())
-                    && ((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer() instanceof Interface
-                    && ((Interface)((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer()).isUseDefaultMethods()) {
-                result = make().Apply(List.<JCTree.JCExpression>nil(),
-                        makeQualIdent(lhs, selector),
-                        List.<JCTree.JCExpression>of(receiver.qualifier(), rhs));
-            } else {
-                result = make().Apply(List.<JCTree.JCExpression>nil(),
-                        makeQualIdent(lhs, selector),
-                        List.<JCTree.JCExpression>of(rhs));
+            List<JCExpression> args = List.<JCExpression>nil();
+            if (useStaticSuper(leftTerm)) {
+                args = args.append(receiver.qualifier());
             }
+            args = args.append(rhs);
+            result = make().Apply(List.<JCTree.JCExpression>nil(),
+                    makeQualIdent(lhs, selector),
+                    args);
         }
         
         return result;
+    }
+    
+    /** The given term is like {@code super.foo} or 
+     * {@code (super of Foo).foo} and the super interface uses 
+     * default+static methods. 
+     */
+    protected boolean useStaticSuper(Tree.Term leftTerm) {
+        return leftTerm instanceof Tree.QualifiedMemberOrTypeExpression
+                && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)leftTerm).getPrimary())
+                && ((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer() instanceof Interface
+                && ((Interface)((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer()).isUseDefaultMethods();
     }
 
     /** Creates an anonymous class that extends Iterable and implements the specified comprehension.
