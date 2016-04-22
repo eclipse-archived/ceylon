@@ -3019,6 +3019,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Implicit arguments
         // except for Java array constructors
         Declaration primaryDeclaration = invocation.getPrimaryDeclaration();
+        if (invocation.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
+                && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)invocation.getPrimary()).getPrimary())) {
+            Scope container = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration().getContainer();
+            if (container instanceof Interface
+                    && ((Interface)container).isUseDefaultMethods()) {
+                result.add(new ExpressionAndType(receiver.qualifier(),
+                        makeJavaType(((Interface)container).getType(), JT_RAW)));
+            }
+        }
         Tree.Term primary = invocation.getPrimary();
         if(primaryDeclaration instanceof Class == false
                 || !isJavaArray(((Class) primaryDeclaration).getType())){
@@ -4604,6 +4613,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (inheritedFrom instanceof Interface) {
             Interface iface = (Interface)inheritedFrom;
             JCExpression qualifier = null;
+            if (iface.isUseDefaultMethods()) {
+                return makeJavaType(iface.getType(), JT_RAW);
+            }
             if (inheritedFrom instanceof LazyInterface
                     && !((LazyInterface)inheritedFrom).isCeylon()) {
                 result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
@@ -4878,7 +4890,14 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else {
                 // not toplevel, not within method, must be a class member
-                selector = naming.selector((Function)decl);
+                if (expr instanceof Tree.QualifiedMemberOrTypeExpression
+                        && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary())
+                        && ((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer() instanceof Interface
+                        && ((Interface)((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer()).isUseDefaultMethods()) {
+                    selector = naming.selector((Function)decl, Naming.NA_STATIC_METHOD);
+                } else {
+                    selector = naming.selector((Function)decl);
+                }
             }
         }
         boolean isCtor = decl instanceof Function && ((Function)decl).getTypeDeclaration() instanceof Constructor;
