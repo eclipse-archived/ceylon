@@ -138,7 +138,7 @@ public class AttributeDefinitionBuilder {
         getterBuilder = MethodDefinitionBuilder
             .getter(owner, attrType, indirect)
             .block(generateDefaultGetterBlock())
-            .isOverride(attrType.isActual())
+            .isOverride(attrType.isActual() && attrTx != AttrTx.STATIC)
             .isTransient(Decl.isTransient(attrType))
             .modelAnnotations(attrType.getAnnotations())
             .resultType(attrType(), attrType);
@@ -162,7 +162,7 @@ public class AttributeDefinitionBuilder {
             .setter(owner, attrType)
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
-            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
+            .isOverride(attrType.isActual() && attrTx != AttrTx.STATIC && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
         if (attrTx == AttrTx.STATIC) {
             owner.classGen().appendImplicitParameters(setterBuilder, (Interface)attrType.getContainer());
         }
