@@ -1244,7 +1244,7 @@ public final class String
                 result.appendCodePoint(c);
             }
             else if (!previousWasWhitespace) {
-                result.append(" ");
+                result.append(' ');
             }
             previousWasWhitespace = isWhitespace;
             i+=java.lang.Character.charCount(c);
@@ -1679,7 +1679,6 @@ public final class String
         if (len < 2) {
             return value;
         }
-        // FIXME: this would be better to directly build the Sequence<Character>
         java.lang.StringBuilder builder 
             = new java.lang.StringBuilder(value.length());
         int offset = value.length();
