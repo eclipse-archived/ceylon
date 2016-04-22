@@ -1766,7 +1766,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (isWithinSyntheticClassBody()) {
             return naming.makeQualifiedThis(makeJavaType(expr.getTypeModel()));
         } 
-        return naming.makeThis();
+        return receiver.qualifier();
     }
 
     public JCTree transform(Tree.Super expr) {
