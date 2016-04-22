@@ -4992,9 +4992,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else {
                     result = makeQualIdent(qualExpr, selector);
                     if (useGetter) {
-                        result = make().Apply(List.<JCTree.JCExpression>nil(),
-                                result,
-                                List.<JCTree.JCExpression>nil());
+                        if (expr instanceof Tree.QualifiedMemberOrTypeExpression
+                                && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary())
+                                && ((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer() instanceof Interface
+                                && ((Interface)((Tree.QualifiedMemberOrTypeExpression)expr).getDeclaration().getContainer()).isUseDefaultMethods()) {
+                            result = make().Apply(List.<JCTree.JCExpression>nil(),
+                                    result,
+                                    List.<JCTree.JCExpression>of(receiver.qualifier()));
+                        } else {
+                            result = make().Apply(List.<JCTree.JCExpression>nil(),
+                                    result,
+                                    List.<JCTree.JCExpression>nil());
+                        }
                     }
                 }
             }
@@ -5813,9 +5822,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         if (result == null) {
-            result = make().Apply(List.<JCTree.JCExpression>nil(),
-                    makeQualIdent(lhs, selector),
-                    List.<JCTree.JCExpression>of(rhs));
+            if (leftTerm instanceof Tree.QualifiedMemberOrTypeExpression
+                    && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)leftTerm).getPrimary())
+                    && ((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer() instanceof Interface
+                    && ((Interface)((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer()).isUseDefaultMethods()) {
+                result = make().Apply(List.<JCTree.JCExpression>nil(),
+                        makeQualIdent(lhs, selector),
+                        List.<JCTree.JCExpression>of(receiver.qualifier(), rhs));
+            } else {
+                result = make().Apply(List.<JCTree.JCExpression>nil(),
+                        makeQualIdent(lhs, selector),
+                        List.<JCTree.JCExpression>of(rhs));
+            }
         }
         
         return result;
