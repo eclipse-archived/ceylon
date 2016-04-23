@@ -491,6 +491,17 @@ public class GenerateJsVisitor extends Visitor {
         currentStatements = prevStatements;
     }
 
+    public void visitSingleExpression(Tree.Expression that) {
+        List<String> oldRetainedVars = retainedVars.reset(null);
+        final int boxType = boxStart(that.getTerm());
+        that.visit(this);
+        if (boxType == 4) out("/*TODO: callable targs 3*/");
+        boxUnboxEnd(boxType);
+        endLine(true);
+        retainedVars.emitRetainedVars(this);
+        retainedVars.reset(oldRetainedVars);
+    }
+
     @Override
     public void visit(final Tree.Body that) {
         visitStatements(that.getStatements());
@@ -1621,12 +1632,9 @@ public class GenerateJsVisitor extends Visitor {
                 if (genatr) {
                     out("return ");
                     if (!isNaturalLiteral(specInitExpr.getExpression().getTerm())) {
-                        int boxType = boxStart(specInitExpr.getExpression().getTerm());
-                        specInitExpr.getExpression().visit(this);
-                        if (boxType == 4) out("/*TODO: callable targs 1*/");
-                        boxUnboxEnd(boxType);
+                        visitSingleExpression(specInitExpr.getExpression());
                     }
-                    out(";}");
+                    out("}");
                     if (asprop) {
                         Tree.AttributeSetterDefinition setterDef = null;
                         if (d.isVariable()) {
@@ -3469,4 +3477,5 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(Tree.SequenceType that) {
         //This is just to avoid the NaturalLiteral from being visited
     }
+
 }

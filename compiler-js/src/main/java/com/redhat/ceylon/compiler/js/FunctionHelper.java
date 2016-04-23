@@ -57,9 +57,9 @@ public class FunctionHelper {
                         null, scope instanceof Function ? (Function)scope : null);
                 gen.out("return ");
                 if (!gen.isNaturalLiteral(expr.getTerm())) {
-                    expr.visit(gen);
+                    gen.visitSingleExpression(expr);
                 }
-                gen.out(";}");
+                gen.out("}");
             }
         }, emitFunctionKeyword, gen);
     }
@@ -121,9 +121,8 @@ public class FunctionHelper {
         if (specExpr != null) {
             gen.out("return ");
             if (!gen.isNaturalLiteral(specExpr.getExpression().getTerm())) {
-                specExpr.getExpression().visit(gen);
+                gen.visitSingleExpression(specExpr.getExpression());
             }
-            gen.out(";");
         }
         else if (block != null) {
             gen.visitStatements(block.getStatements());
@@ -373,8 +372,8 @@ public class FunctionHelper {
             first=false;
         }
         gen.out(";return ");
-        that.getLetClause().getExpression().visit(gen);
-        gen.out(";}()");
+        gen.visitSingleExpression(that.getLetClause().getExpression());
+        gen.out("}()");
         directs.removeAll(decs2);
     }
 
