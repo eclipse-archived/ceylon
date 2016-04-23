@@ -111,7 +111,7 @@ shared final serializable class Singleton<out Element>
             => length>0 then this else [];
     
     shared actual 
-    [[], Singleton<Element>]|[Singleton<Element>, []] 
+    [[],Singleton<Element>] | [Singleton<Element>,[]]
     slice(Integer index) 
             => index>0 then [this,[]] else [[],this];
     
