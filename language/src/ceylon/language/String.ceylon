@@ -176,7 +176,8 @@ shared native final class String(characters)
     "A string containing the characters of this string, 
      after discarding [[whitespace|Character.whitespace]] 
      from the beginning and end of the string."
-    shared native String trimmed => trim(Character.whitespace);
+    shared native String trimmed
+            => trim(Character.whitespace);
     
     "A string containing the characters of this string, 
      after discarding the characters matching the given 
@@ -195,7 +196,13 @@ shared native final class String(characters)
     shared actual native String trim(
             "The predicate function that determines whether
              a character should be trimmed"
-            Boolean trimming(Character element));
+            Boolean trimming(Character element))
+            => if (exists from
+                    = firstIndexWhere(not(trimming)),
+                   exists to
+                    = lastIndexWhere(not(trimming))) 
+            then this[from..to]
+            else "";
     
     "A string containing the characters of this string, 
      after discarding the characters matching the given 
@@ -208,7 +215,11 @@ shared native final class String(characters)
     shared actual native String trimLeading(
             "The predicate function that determines whether
              a character should be trimmed"
-            Boolean trimming(Character element));
+            Boolean trimming(Character element))
+            => if (exists from
+                    = firstIndexWhere(not(trimming))) 
+            then this[from...]
+            else "";
     
     "A string containing the characters of this string, 
      after discarding the characters matching the given 
@@ -221,21 +232,44 @@ shared native final class String(characters)
     shared actual native String trimTrailing(
             "The predicate function that determines whether
              a character should be trimmed"
-            Boolean trimming(Character element));
+            Boolean trimming(Character element))
+            => if (exists to
+                    = lastIndexWhere(not(trimming))) 
+            then this[...to]
+            else "";
 
     "A string containing the characters of this string after 
      collapsing strings of [[whitespace|Character.whitespace]] 
      into single space characters and discarding whitespace 
      from the beginning and end of the string."
-    shared native String normalized;
+    shared native String normalized {
+        value result = StringBuilder();
+        variable value previousWasWs = false;
+        for (ch in this) {
+            value currentIsWs = ch.whitespace;
+            if (!currentIsWs) {
+                result.appendCharacter(ch);
+            }
+            else if (!previousWasWs) {
+                result.appendCharacter(' ');
+            }
+            previousWasWs = currentIsWs;
+        }
+        return result.string.trimmed;
+    }
     
     "A string containing the characters of this string, with
      the characters in reverse order."
-    shared native actual String reversed;
+    shared native actual String reversed 
+            => StringBuilder()
+                .append(this)
+                .reverseInPlace()
+                .string;
     
     "Determines if this string contains a character at the
      given [[index]], that is, if `0<=index<size`."
-    shared native actual Boolean defines(Integer index);
+    shared native actual Boolean defines(Integer index)
+            => 0<=index<size;
     
     "A string containing the characters of this string 
      between the given indexes. If the [[start index|from]] 
@@ -249,7 +283,7 @@ shared native final class String(characters)
      the first index in the string, return the empty string. 
      Otherwise, if the last index is larger than the last 
      index in the string, return all characters from the 
-     start index to last character of the string..
+     start index to last character of the string.
      
      Using the [[span operator|Ranged.span]], 
      `string.span(to, from)` may be written as 
@@ -260,7 +294,7 @@ shared native final class String(characters)
      the given [[start index|from]] inclusive to the end of 
      the string. If the start index is larger than the last 
      index of the string, return the empty string. If the
-     start index is negative, return this string..
+     start index is negative, return this string.
      
      Using the [[span operator|Ranged.spanFrom]], 
      `string.spanFrom(from)` may be written as 
@@ -299,20 +333,23 @@ shared native final class String(characters)
      string no longer than the given [[length]]. If this 
      string is shorter than the given length, return this 
      string. Otherwise, return a string of the given length."
-    shared native actual String initial(Integer length);
+    shared native actual String initial(Integer length)
+            => this[0:length];
     
     "Select the last characters of the string, returning a 
      string no longer than the given [[length]]. If this 
      string is shorter than the given length, return this 
      string. Otherwise, return a string of the given length."
-    shared native actual String terminal(Integer length);
+    shared native actual String terminal(Integer length)
+            => this[size-length:length];
     
     "Return two strings, the first containing the characters
      that occur before the given [[index]], the second with
      the characters that occur after the given `index`. If 
      the given `index` is outside the range of indices of 
      this string, one of the returned strings will be empty."
-    shared native actual [String,String] slice(Integer index);
+    shared native actual String[2] slice(Integer index)
+            => [this[...index-1], this[index...]];
     
     "The length of the string (the number of characters it 
      contains). In the case of the empty string, the string 
