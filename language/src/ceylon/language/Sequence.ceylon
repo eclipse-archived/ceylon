@@ -178,7 +178,7 @@ shared sealed interface Sequence<out Element=Anything>
             => (super of List<Element>).findLast(selecting);
     
     shared actual default 
-    [Element[],Element[]] slice(Integer index)
+    Element[][2] slice(Integer index)
             => [this[...index-1], this[index...]];
     
     shared actual default 

@@ -537,7 +537,7 @@ shared interface List<out Element=Anything>
      
      This is an eager operation."
     shared default 
-    [List<Element>,List<Element>] slice(Integer index)
+    List<Element>[2] slice(Integer index)
             => [this[...index-1], this[index...]];
     
     "Select the first elements of this list, returning a 

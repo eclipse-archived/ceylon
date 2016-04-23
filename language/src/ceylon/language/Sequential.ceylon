@@ -100,7 +100,7 @@ shared interface Sequential<out Element=Anything>
      given `index` is outside the range of indices of this
      list, one of the returned sequences will be empty."
     shared actual default 
-    [Element[],Element[]] slice(Integer index)
+    Element[][2] slice(Integer index)
             => [this[...index-1], this[index...]];
     
     "Returns a new sequence that starts with the specified
