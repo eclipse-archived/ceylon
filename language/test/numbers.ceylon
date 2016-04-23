@@ -996,6 +996,22 @@ void checkFormatFloat() {
     check(formatFloat(-1.234e+25)=="-12340000000000000000000000.0", "formatFloat(-1.234e+25)");
     check(formatFloat(-1.234e+30)=="-1234000000000000000000000000000.0", "formatFloat(-1.234e+30)");
     
+    void checkNanComparisons<T>(T nan, T zero) 
+            given T satisfies Comparable<T> {
+        check(!nan == zero, "generic nan comparison");
+        check(nan != zero, "generic nan comparison");
+        check(!nan == nan, "generic nan comparison");
+        check(nan != nan, "generic nan comparison");
+        check(!nan < zero, "generic nan comparison");
+        check(!nan > zero, "generic nan comparison");
+        check(!nan <= zero, "generic nan comparison");
+        check(!nan >= zero, "generic nan comparison");
+        check(!nan < nan, "generic nan comparison");
+        check(!nan > nan, "generic nan comparison");
+        check(!nan <= nan, "generic nan comparison");
+        check(!nan >= nan, "generic nan comparison");
+    }
+    
     value nan = 0.0/0.0;
     
     check(!0.0<nan, "nan comparison");
@@ -1020,4 +1036,6 @@ void checkFormatFloat() {
     check(max { nan, 0.0, nan, 1.0 }==1.0, "max nan");
     check(min { nan, nan }.undefined, "min nan");
     check(max { nan, nan }.undefined, "max nan");
+    checkNanComparisons(nan, 0.0);
+    
 }
