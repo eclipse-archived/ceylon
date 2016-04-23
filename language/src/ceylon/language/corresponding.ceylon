@@ -74,11 +74,13 @@ shared Boolean corresponding<First,Second>(
  
  For example:
  
-     compareCorresponding({ 1, 2, 2, 5 }, 1:4)
+     compareCorresponding({ 1, 2, 2, 5 }, 1:4,
+            (Integer i, Integer j) => i<=>j)
  
  and:
  
-     compareCorresponding({ 1, 2, 3 }, 1:4)
+     compareCorresponding({ 1, 2, 3 }, 1:4,
+            (Integer i, Integer j) => i<=>j)
  
  both evaluate to `smaller`."
 see (`function corresponding`)
