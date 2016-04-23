@@ -477,7 +477,8 @@ shared native final class String(characters)
             => compareCorresponding(this, other, 
                 (Character x, Character y) 
                         => charsEqualIgnoringCase(x, y) 
-                        then equal else x<=>y);
+                        then equal 
+                        else x.lowercased <=> y.lowercased);
     
     "Determines if this string is longer than the given
      [[length]]. This is a more efficient operation than
