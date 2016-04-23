@@ -995,4 +995,29 @@ void checkFormatFloat() {
     check(formatFloat(-1.234e+20)=="-123400000000000000000.0", "formatFloat(-1.234e+20)");
     check(formatFloat(-1.234e+25)=="-12340000000000000000000000.0", "formatFloat(-1.234e+25)");
     check(formatFloat(-1.234e+30)=="-1234000000000000000000000000000.0", "formatFloat(-1.234e+30)");
+    
+    value nan = 0.0/0.0;
+    
+    check(!0.0<nan, "nan comparison");
+    check(!0.0>nan, "nan comparison");
+    check(!0.0<=nan, "nan comparison");
+    check(!0.0>=nan, "nan comparison");
+    check(!0.0==nan, "nan equality");
+    check(0.0!=nan, "nan equality");
+    check(!nan<nan, "nan comparison");
+    check(!nan>nan, "nan comparison");
+    check(!nan<=nan, "nan comparison");
+    check(!nan>=nan, "nan comparison");
+    check(!nan==nan, "nan equality");
+    check(nan!=nan, "nan equality");
+    check(largest(nan,0.0)==0.0, "largest nan");
+    check(largest(0.0,nan)==0.0, "largest nan");
+    check(largest(nan,nan).undefined, "largest nan");
+    check(smallest(nan,0.0)==0.0, "smallest nan");
+    check(smallest(0.0,nan)==0.0, "smallest nan");
+    check(smallest(nan,nan).undefined, "largest nan");
+    check(min { nan, 0.0, nan, 1.0 }==0.0, "min nan");
+    check(max { nan, 0.0, nan, 1.0 }==1.0, "max nan");
+    check(min { nan, nan }.undefined, "min nan");
+    check(max { nan, nan }.undefined, "max nan");
 }
