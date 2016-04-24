@@ -1206,7 +1206,11 @@ shared interface Iterable<out Element=Anything,
          every { for ([x, y] in nums.paired) x < y }
      
      For any stable `stream`, this operation is equivalent 
-     to `zipPairs(stream,stream.rest)`."
+     to `zipPairs(stream,stream.rest)`.
+     
+     For a stream with an unstable iteration order, a 
+     different stream might be produced each time `paired` 
+     is evaluated."
     shared default 
     {Element[2]*} paired 
             => object satisfies {Element[]*} {
