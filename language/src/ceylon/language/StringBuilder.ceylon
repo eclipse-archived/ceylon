@@ -494,7 +494,7 @@ shared native("js") final class StringBuilder()
     
     shared actual native("js") 
     String measure(Integer from, Integer length)
-            => str[index:length];
+            => str[from:length];
     
     shared actual native("js")
     Character? getFromFirst(Integer index) 
