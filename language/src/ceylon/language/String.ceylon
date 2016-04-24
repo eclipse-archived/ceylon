@@ -636,7 +636,7 @@ shared native final class String(characters)
      code written in other languages. It is more idiomatic 
      to use [[measure]] or [[span]] where reasonable._"
     see (`function measure`, `function span`)
-    shared String substring(
+    shared native String substring(
         "The inclusive start index"
         Integer from = 0,
         "The exclusive end index" 
