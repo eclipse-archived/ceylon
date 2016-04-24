@@ -151,7 +151,13 @@ shared native final class String(characters)
     
     "Join the [[string representations|Object.string]] of 
      the given [[objects]], using this string as a separator."
-    shared native String join({Object*} objects);
+    shared native String join({Object*} objects) {
+        value result = StringBuilder();
+        objects.map(Object.string)
+               .interpose(this)
+               .each(result.append);
+        return result.string;
+    }
     
     "Split the string into lines of text, discarding line
      breaks. Recognized line break sequences are `\\n` and 
