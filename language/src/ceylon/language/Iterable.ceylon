@@ -119,15 +119,16 @@
    streams. For some streams&mdash;for example, 
    `List`s&mdash;order is significant; for others&mdash;for 
    example, `Set`s&mdash;order is not significant. Therefore, 
-   unlike [[Collection]], `Iterable` does not define or 
-   require any form of [[value equality|Object.equals]], and 
-   some streams do not support value equality. It follows 
-   that the `==` operator should not be used to compare 
-   generic streams, unless the streams are known to share
-   some additional structure.
+   unlike [[Collection]] and its subtypes, `Iterable` does 
+   not define nor require any form of 
+   [[value equality|Object.equals]], and some streams simply
+   do not support value equality. It follows that the `==` 
+   operator should not be used to compare generic streams, 
+   unless the streams are known to share some additional 
+   structure.
    
-   To compare two streams, taking order into account, use
-   the function [[corresponding]].
+   To compare the elements of two streams, taking order into 
+   account, use the function [[corresponding]].
    
        {Float*} xs = ... ;
        {Float*} ys = ... ;
