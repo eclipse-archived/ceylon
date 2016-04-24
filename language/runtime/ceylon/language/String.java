@@ -1388,21 +1388,15 @@ public final class String
     @Ignore
     public static java.lang.String spanFrom(java.lang.String value, 
             long from) {
+        if (from <= 0) {
+            return value;
+        }
         long len = getSize(value);
-        if (len == 0) {
+        if (len == 0 || from >= len) {
             return "";
-        }
-        if (from >= len) {
-            return "";
-        }
-        long toIndex = len - 1;
-        if (from < 0) {
-            from = 0;
         }
         int start = value.offsetByCodePoints(0, Util.toInt(from));
-        int end = value.offsetByCodePoints(start, 
-                Util.toInt(toIndex - from + 1));
-        return value.substring(start, end);
+        return value.substring(start);
     }
     
     @Ignore
@@ -1598,19 +1592,14 @@ public final class String
     public static java.lang.String spanTo(java.lang.String value, 
             final long to) {
         long len = getSize(value);
-        if (len == 0) {
+        if (len == 0 || to < 0) {
             return "";
         }
-        long toIndex = to;
-        if (toIndex < 0) {
-            return "";
+        if (to >= len) {
+            return value;
         }
-        if (toIndex >= len) {
-            toIndex = len - 1;
-        }
-        int start = 0;
-        int end = value.offsetByCodePoints(start, Util.toInt(toIndex + 1));
-        return value.substring(start, end);
+        int end = value.offsetByCodePoints(0, Util.toInt(to+1));
+        return value.substring(0, end);
     }
     
 
@@ -1630,16 +1619,16 @@ public final class String
         if (to < 0 || from >= len) {
             return "";
         }
+        long begin = from < 0 ? 0 : from;
+        int start = value.offsetByCodePoints(0, Util.toInt(begin));
+        java.lang.String result;
         if (to >= len) {
-            to = len - 1;
+            result = value.substring(start);
         }
-        if (from < 0) {
-            from = 0;
+        else {
+            int end = value.offsetByCodePoints(start, Util.toInt(to+1 - begin));
+            result = value.substring(start, end);
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(from));
-        int end = value.offsetByCodePoints(start, 
-                Util.toInt(to - from + 1));
-        java.lang.String result = value.substring(start, end);
         return reverse ? getReversed(result) : result;
     }
     
