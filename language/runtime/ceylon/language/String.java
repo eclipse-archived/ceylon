@@ -2729,11 +2729,12 @@ public final class String
     
     @Ignore
     public static java.lang.String pad(java.lang.String value, long size, int character) {
-        int length = value.codePointCount(0, value.length());
+        long length = getSize(value);
         if (size<=length) return value;
         long leftPad = (size-length)/2;
         long rightPad = leftPad + (size-length)%2;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder();
+        java.lang.StringBuilder builder = 
+                new java.lang.StringBuilder();
         for (int i=0;i<leftPad;i++) {
             builder.appendCodePoint(character);
         }
@@ -2771,10 +2772,11 @@ public final class String
     
     @Ignore
     public static java.lang.String padLeading(java.lang.String value, long size, int character) {
-        int length = value.codePointCount(0, value.length());
+        long length = getSize(value);
         if (size<=length) return value;
         long leftPad = size-length;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder();
+        java.lang.StringBuilder builder = 
+                new java.lang.StringBuilder();
         for (int i=0;i<leftPad;i++) {
             builder.appendCodePoint(character);
         }
@@ -2809,10 +2811,11 @@ public final class String
     
     @Ignore
     public static java.lang.String padTrailing(java.lang.String value, long size, int character) {
-        int length = value.codePointCount(0, value.length());
+        long length = getSize(value);
         if (size<=length) return value;
         long rightPad = size-length;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder(value);
+        java.lang.StringBuilder builder = 
+                new java.lang.StringBuilder(value);
         for (int i=0;i<rightPad;i++) {
             builder.appendCodePoint(character);
         }

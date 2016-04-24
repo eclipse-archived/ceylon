@@ -562,22 +562,65 @@ shared native final class String(characters)
     
     "Pad this string with the given [[character]], producing 
      a string of the given minimum [[size]], centering the
-     string."
+     string. If this string is not smaller than the given 
+     `size`, return this string."
     shared native String pad(Integer size, 
         "The padding character"
-        Character character=' ');
+        Character character=' ') {
+        value length = this.size;
+        if (size<=length) {
+            return this;
+        }
+        value left = (size-length)/2;
+        value right = left + (size-length)%2;
+        value builder = StringBuilder();
+        for (_ in 0:left) {
+            builder.appendCharacter(character);
+        }
+        builder.append(this);
+        for (_ in 0:right) {
+            builder.appendCharacter(character);
+        }
+        return builder.string;
+    }
     
     "Left pad this string with the given [[character]], 
-     producing a string of the given minimum [[size]]."
+     producing a string of the given minimum [[size]]. If 
+     this string is not smaller than the given `size`, 
+     return this string."
     shared native String padLeading(Integer size, 
         "The padding character"
-        Character character=' ');
+        Character character=' ') {
+        value length = this.size;
+        if (size<=length) {
+            return this;
+        }
+        value builder = StringBuilder();
+        for (_ in 0:size-length) {
+            builder.appendCharacter(character);
+        }
+        builder.append(this);
+        return builder.string;
+    }
     
     "Right pad this string with the given [[character]], 
-     producing a string of the given minimum [[size]]."
+     producing a string of the given minimum [[size]].  If 
+     this string is not smaller than the given `size`, 
+     return this string."
     shared native String padTrailing(Integer size, 
         "The padding character"
-        Character character=' ');
+        Character character=' ') {
+        value length = this.size;
+        if (size<=length) {
+            return this;
+        }
+        value builder = StringBuilder();
+        builder.append(this);
+        for (_ in 0:size-length) {
+            builder.appendCharacter(character);
+        }
+        return builder.string;
+    }
     
     "Efficiently copy the characters in the segment
      `sourcePosition:length` of this string to the segment 
