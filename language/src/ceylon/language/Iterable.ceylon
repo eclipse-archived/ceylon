@@ -1213,7 +1213,7 @@ shared interface Iterable<out Element=Anything,
      is evaluated."
     shared default 
     {Element[2]*} paired 
-            => object satisfies {Element[]*} {
+            => object satisfies {Element[2]*} {
         size => let (size = outer.size-1) 
                 if (size<0) then 0 else size;
         empty => outer.size<2;
