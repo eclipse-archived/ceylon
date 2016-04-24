@@ -228,6 +228,17 @@ public class FunctionHelper {
             }
             gen.out(gen.getNames().name(m));
             if (!m.isToplevel())gen.out("=");
+            if (!(gen.opts.isOptimize() && m.isClassOrInterfaceMember()) && TypeUtils.isNativeExternal(m)) {
+                if (gen.stitchNative(m, that)) {
+                    if (verboseStitcher) {
+                        gen.spitOut("Stitching in native method " + m.getQualifiedNameString() + ", ignoring Ceylon declaration");
+                    }
+                    if (m.isShared()) {
+                        gen.share(m);
+                    }
+                    return;
+                }
+            }
             singleExprFunction(that.getParameterLists(),
                     that.getSpecifierExpression().getExpression(), m, true, !m.isToplevel(), gen);
             gen.endLine(true);
