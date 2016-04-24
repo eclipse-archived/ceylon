@@ -355,33 +355,29 @@ shared interface List<out Element=Anything>
      start of this list."
     see (`function endsWith`)
     shared default 
-    Boolean startsWith(List<> sublist) {
-        if (sublist.size>size) {
-            return false;
-        }
-        return everyPair<Element,Anything>(
+    Boolean startsWith(List<> sublist) 
+            => !shorterThan(sublist.size) 
+            && everyPair<Element,Anything>(
                 (first, second)
-                => if (exists first, exists second)
-                    then first==second
-                    else first exists == second exists, 
-                this, sublist);
-    }
+                    => if (exists first, exists second)
+                        then first==second
+                        else first exists == second exists, 
+                this, 
+                sublist);
     
     "Determine if the given [[list|sublist]] occurs at the 
      end of this list."
     see (`function startsWith`)
     shared default 
-    Boolean endsWith(List<> sublist) {
-        if (sublist.size>size) {
-            return false;
-        }
-        return everyPair<Element,Anything>(
+    Boolean endsWith(List<> sublist)
+            => !shorterThan(sublist.size) 
+            && everyPair<Element,Anything>(
                 (first, second)
-                => if (exists first, exists second)
-                    then first==second
-                    else first exists == second exists, 
-                skip(size-sublist.size), sublist);
-    }
+                    => if (exists first, exists second)
+                        then first==second
+                        else first exists == second exists, 
+                skip(size-sublist.size), 
+                sublist);
     
     "The indexes in this list for which the element is not
      null and satisfies the given 
