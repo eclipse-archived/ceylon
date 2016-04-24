@@ -447,23 +447,76 @@ shared native final class String(characters)
     }
     
     "Returns a string formed by replacing every occurrence 
-     in this string of the given [[substring]] with the 
-     given [[replacement]] string, working from the start of
-     this string to the end."
+     in this string of the given nonempty [[substring]] with 
+     the given [[replacement]] string, working from the 
+     start of this string to the end."
+    throws (`class AssertionError`,
+            "if the given [[substring]] is empty")
     shared native String replace(String substring, 
-                                 String replacement);
+                                 String replacement) {
+        "string to replace must be nonempty"
+        assert (!substring.empty);
+        value firstIndex = firstInclusion(substring);
+        if (!exists firstIndex) {
+            return this;
+        }
+        value substringLength = substring.size;
+        value replacementLength = replacement.size;
+        value result = StringBuilder().append(this);
+        variable value index = firstIndex;
+        while (true) {
+            result.replace {
+                index = index;
+                length = substringLength;
+                string = replacement;
+            };
+            if (exists nextIndex
+                = result.firstInclusion(substring, 
+                        index + replacementLength)) {
+                index = nextIndex;
+            }
+            else {
+                break;
+            }
+        }
+        return result.string;
+    }
     
     "Returns a string formed by replacing the first 
-     occurrence in this string of the given [[substring]], 
-     if any, with the given [[replacement]] string."
+     occurrence in this string of the given nonempty 
+     [[substring]], if any, with the given [[replacement]] 
+     string."
+    throws (`class AssertionError`,
+            "if the given [[substring]] is empty")
     shared native String replaceFirst(String substring, 
-                                      String replacement);
+                                      String replacement) {
+        "string to replace must be nonempty"
+        assert (!substring.empty);
+        return 
+            if (exists index = firstInclusion(substring)) 
+            then initial(index)
+                    + replacement
+                    + spanFrom(index+substring.size) 
+            else this;
+    }
     
     "Returns a string formed by replacing the last 
-     occurrence in this string of the given [[substring]], 
-     if any, with the given [[replacement]] string."
+     occurrence in this string of the given nonempty 
+     [[substring]], if any, with the given [[replacement]] 
+     string."
+    throws (`class AssertionError`,
+            "if the given [[substring]] is empty")
     shared native String replaceLast(String substring, 
-                                     String replacement);
+                                     String replacement) {
+        "string to replace must be nonempty"
+        assert (!substring.empty);
+        return 
+            if (exists index = lastInclusion(substring)) 
+            then initial(index)
+                    + replacement
+                    + spanFrom(index+substring.size) 
+            else this;
+    }
     
     function charsEqualIgnoringCase(Character x, Character y) 
             => x==y 

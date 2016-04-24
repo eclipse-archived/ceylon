@@ -1712,6 +1712,9 @@ public final class String
     @Ignore
     public static java.lang.String replace(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
+        if (value.isEmpty()) {
+            throw new AssertionError("string to replace must be nonempty");
+        }
         int index = value.indexOf(substring);
         if (index<0) return value;
         java.lang.StringBuilder builder = 
@@ -1732,6 +1735,9 @@ public final class String
     @Ignore
     public static java.lang.String replaceFirst(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
+        if (value.isEmpty()) {
+            throw new AssertionError("string to replace must be nonempty");
+        }
         int index = value.indexOf(substring);
         if (index<0) {
             return value;
@@ -1751,6 +1757,9 @@ public final class String
     @Ignore
     public static java.lang.String replaceLast(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
+        if (value.isEmpty()) {
+            throw new AssertionError("string to replace must be nonempty");
+        }
         int index = value.lastIndexOf(substring);
         if (index<0) {
             return value;
