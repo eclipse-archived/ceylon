@@ -317,11 +317,18 @@ public class JsonPackage extends LazyPackage {
         //Attributes
         Map<String, Map<String,Object>> sub = (Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_ATTRIBUTES);
         if (sub != null) {
+            //Only add aliases in the first pass
             for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
                 if (d.getDirectMember(e.getKey(), null, false) == null) {
                     if (MetamodelGenerator.METATYPE_ALIAS.equals(e.getValue().get(MetamodelGenerator.KEY_METATYPE))) {
                         d.getMembers().add(loadTypeAlias(e.getKey(), e.getValue(), (Scope)d, tparms));
-                    } else {
+                    }
+                }
+            }
+            //Then the attributes
+            for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
+                if (d.getDirectMember(e.getKey(), null, false) == null) {
+                    if (!MetamodelGenerator.METATYPE_ALIAS.equals(e.getValue().get(MetamodelGenerator.KEY_METATYPE))) {
                         d.getMembers().add(loadAttribute(e.getKey(), e.getValue(), (Scope)d, tparms));
                     }
                 }
