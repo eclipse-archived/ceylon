@@ -181,6 +181,10 @@ shared native final class StringBuilder()
     shared actual native 
     String measure(Integer from, Integer length);
     
+    shared actual native String span(Integer from, Integer to);
+    shared actual native String spanTo(Integer to);
+    shared actual native String spanFrom(Integer from);
+    
     shared actual native Boolean equals(Object that);
     shared actual native Integer hash;
 }
@@ -460,6 +464,63 @@ shared native("jvm") final class StringBuilder()
         return builder.substring(start, end);
     }
     
+    shared actual native("jvm") 
+    String span(Integer from, Integer to) {
+        value len = size;
+        if (len == 0) {
+            return "";
+        }
+        value reverse = to < from;
+        Integer _to;
+        Integer _from;
+        if (reverse) {
+            _to = from;
+            _from = to;
+        }
+        else {
+            _to = to;
+            _from = from;
+        }
+        if (_to < 0 || _from >= len) {
+            return "";
+        }
+        value begin = _from < 0 then 0 else _from;
+        value start = startIndex(begin);
+        String result;
+        if (_to >= len) {
+            result = builder.substring(start);
+        }
+        else {
+            value end = endIndex(start, _to+1 - begin);
+            result = builder.substring(start, end);
+        }
+        return reverse then result.reversed else result;
+    }
+    
+    shared actual native("jvm") 
+    String spanFrom(Integer from) {
+        if (from <= 0) {
+            return string;
+        }
+        value len = size;
+        if (len == 0 || from >= len) {
+            return "";
+        }
+        return builder.substring(startIndex(from));
+    }
+    
+    shared actual native("jvm") 
+    String spanTo(Integer to) {
+        value len = size;
+        if (len == 0 || to < 0) {
+            return "";
+        }
+        if (to >= len) {
+            return string;
+        }
+        return builder.substring(0, startIndex(to+1));
+    }
+    
     shared actual native("jvm") Boolean equals(Object that) 
             => builder.equals(that);
     
@@ -492,9 +553,18 @@ shared native("js") final class StringBuilder()
     Iterator<Character> iterator() 
             => str.iterator();
     
-    shared actual native("js") 
+    shared actual native("js")
     String measure(Integer from, Integer length)
             => str[from:length];
+    
+    shared actual native("js")
+    String span(Integer from, Integer to) => str[from:to];
+    
+    shared actual native("js")
+    String spanTo(Integer to) => str[...to];
+    
+    shared actual native("js")
+    String spanFrom(Integer from) => str[from...];
     
     shared actual native("js")
     Character? getFromFirst(Integer index) 
