@@ -17,7 +17,7 @@ import java.lang {
        String hello = builder.string; //hello world"""
 tagged("Strings")
 shared native final class StringBuilder() 
-        satisfies List<Character> { //TODO: SearchableList<Character>
+        satisfies SearchableList<Character> { 
     
     "The number characters in the current content, that is, 
      the [[size|String.size]] of the produced [[string]]."
@@ -33,8 +33,10 @@ shared native final class StringBuilder()
     
     "Returns a string of the given [[length]] containing
      the characters beginning at the given [[index]]."
-    shared native 
-    String substring(Integer index, Integer length);
+    deprecated ("use [[measure]]")
+    shared 
+    String substring(Integer index, Integer length)
+            => measure(index, length);
     
     shared actual native
     Character? getFromFirst(Integer index);
@@ -130,9 +132,9 @@ shared native final class StringBuilder()
      [[list of characters|sublist]] occurs as a sublist, 
      that is greater than or equal to the optional 
      [[starting index|from]]."
-    shared native
+    shared actual native
     Integer? firstInclusion(List<Character> sublist,
-        Integer from = 0);
+        Integer from);
     
     "The last index at which the given 
      [[list of characters|sublist]] occurs as a sublist, 
@@ -140,31 +142,51 @@ shared native final class StringBuilder()
      defined by the optional [[starting index|from]], 
      interpreted as a reverse index counting from the _end_
      of the list."
-    shared native
+    shared actual native
     Integer? lastInclusion(List<Character> sublist,
-        Integer from = 0);
+        Integer from);
     
     "The first index at which the given [[character]] occurs, 
      that is greater than or equal to the optional 
      [[starting index|from]]."
-    shared native
+    shared actual native
     Integer? firstOccurrence(Character character,
-        Integer from = 0);
+        Integer from, Integer length);
     
     "The last index at which the given [[character]] occurs, 
      that falls within the range `0:size-from` defined by 
      the optional [[starting index|from]], interpreted as a 
      reverse index counting from the _end_ of the list."
-    shared native
+    shared actual native
     Integer? lastOccurrence(Character character,
-        Integer from = 0);
+        Integer from, Integer length);
+    
+    shared actual native
+    {Integer*} inclusions(List<Character> sublist, 
+        Integer from);
+    
+    shared actual native
+    {Integer*} occurrences(Character character, 
+        Integer from, Integer length);
+    
+    shared actual 
+    Boolean occursAt(Integer index, Character character) 
+            => if (exists ch = getFromFirst(index))
+                then ch == character else false;
+    
+    shared actual 
+    Boolean includesAt(Integer index, List<Character> sublist)
+            => this[index:sublist.size] == sublist;
+    
+    shared actual native 
+    String measure(Integer from, Integer length);
     
     shared actual native Boolean equals(Object that);
     shared actual native Integer hash;
 }
 
 shared native("jvm") final class StringBuilder() 
-        satisfies List<Character> {
+        satisfies SearchableList<Character> {
     
     value builder = JStringBuilder();
     
@@ -199,29 +221,12 @@ shared native("jvm") final class StringBuilder()
         return stringBuilderIterator;
     }
     
-    shared native("jvm") 
-    String substring(Integer index, Integer length) {
-        "index must not be negative"
-        assert (index>=0);
-        "index must not be greater than size"
-        assert(index<=size);
-        "index+length must not be greater than size"
-        assert (index+length<=size);
-        if (length>0) {
-            Integer start = startIndex(index);
-            Integer end = endIndex(start, length);
-            return builder.substring(start, end);
-        }
-        else {
-            return "";
-        }
-    }
-    
     shared actual native("jvm")
     Character? getFromFirst(Integer index) 
             => if (index<0 || index>size)
             then null
-            else builder.codePointAt(startIndex(index)).character;
+            else builder.codePointAt(startIndex(index))
+                        .character;
     
     shared native("jvm") 
     StringBuilder append(String string) {
@@ -334,9 +339,9 @@ shared native("jvm") final class StringBuilder()
         return this;
     }
     
-    shared native("jvm")
+    shared actual native("jvm")
     Integer? firstInclusion(List<Character> sublist,
-        Integer from = 0) {
+        Integer from) {
         try {
             value start 
                     = builder.offsetByCodePoints(0, 
@@ -353,9 +358,9 @@ shared native("jvm") final class StringBuilder()
         }
     }
     
-    shared native("jvm")
+    shared actual native("jvm")
     Integer? lastInclusion(List<Character> sublist,
-        Integer from = 0) {
+        Integer from) {
         try {
             value start 
                     = builder.offsetByCodePoints(
@@ -373,15 +378,87 @@ shared native("jvm") final class StringBuilder()
         }
     }
     
-    shared native("jvm")
+    shared actual native("jvm")
     Integer? firstOccurrence(Character character,
-        Integer from = 0) 
-            => firstInclusion(character.string, from);
+        Integer from, Integer length) {
+        if (length<=0) { return null; }
+        try {
+            value start 
+                    = builder.offsetByCodePoints(0, 
+                            from>0 then from else 0);
+            value index 
+                    = builder.indexOf(character.string, 
+                            start);
+            if (index>=0) {
+                value count  //TODO: wrong if from<0
+                        = builder.codePointCount(start, index);
+                return count < length
+                    then from + count 
+                    else null;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (IndexOutOfBoundsException ioe) {
+            return null;
+        }
+    }
     
-    shared native("jvm")
+    shared actual native("jvm")
     Integer? lastOccurrence(Character character,
-        Integer from = 0) 
-            => lastInclusion(character.string, from);
+        Integer from, Integer length) {
+        if (length<=0) { return null; }
+        try {
+            value start 
+                    = builder.offsetByCodePoints(
+                            builder.length(), 
+                            (from>0 then -from else 0) - 1);
+            value index 
+                    = builder.lastIndexOf(character.string, 
+                            start);
+            if (index>=0) {
+                value count = //TODO: wrong if from<0
+                        builder.codePointCount(index, start);
+                return count < length 
+                    then builder.codePointCount(0, index)
+                    else null;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (IndexOutOfBoundsException ioe) {
+            return null;
+        }
+    }
+    
+    shared actual native("jvm")
+    {Integer*} inclusions(List<Character> sublist, 
+        Integer from)
+            //TODO: optimize this!
+            => string.inclusions(sublist, from);
+    
+    shared actual native("jvm")
+    {Integer*} occurrences(Character character, 
+        Integer from, Integer length)
+            //TODO: optimize this!
+            => string.occurrences(character, from, length);
+    
+    shared actual native("jvm")
+    String measure(Integer from, Integer length) {
+        value len = size;
+        if (from >= len || length <= 0) {
+            return "";
+        }
+        value resultLength 
+                = if (from + length > len) 
+                then len - from 
+                else length;
+        value start = startIndex(from);
+        value end = endIndex(start, resultLength);
+        return builder.substring(start, end);
+    }
     
     shared actual native("jvm") Boolean equals(Object that) 
             => builder.equals(that);
@@ -398,7 +475,7 @@ shared native("jvm") final class StringBuilder()
 }
 
 shared native("js") final class StringBuilder() 
-        satisfies List<Character> {
+        satisfies SearchableList<Character> {
     
     variable String str = "";
     
@@ -415,16 +492,9 @@ shared native("js") final class StringBuilder()
     Iterator<Character> iterator() 
             => str.iterator();
     
-    shared native("js") 
-    String substring(Integer index, Integer length) {
-        "index must not be negative"
-        assert (index>=0);
-        "index must not be greater than size"
-        assert(index<=size);
-        "index+length must not be greater than size"
-        assert (index+length<=size);
-        return if (length>0) then str[index..length] else "";
-    }
+    shared actual native("js") 
+    String measure(Integer from, Integer length)
+            => str[index:length];
     
     shared actual native("js")
     Character? getFromFirst(Integer index) 
@@ -531,25 +601,35 @@ shared native("js") final class StringBuilder()
         return this;
     }
     
-    shared native("js")
+    shared actual native("js")
     Integer? firstInclusion(List<Character> sublist,
-        Integer from = 0) 
+        Integer from) 
             => str.firstInclusion(sublist, from);
     
-    shared native("js")
+    shared actual native("js")
     Integer? lastInclusion(List<Character> sublist,
-        Integer from = 0) 
+        Integer from) 
             => str.lastInclusion(sublist, from);
     
-    shared native("js")
+    shared actual native("js")
     Integer? firstOccurrence(Character character,
-        Integer from = 0) 
-            => str.firstOccurrence(character, from);
+        Integer from, Integer length) 
+            => str.firstOccurrence(character, from, length);
     
-    shared native("js")
+    shared actual native("js")
     Integer? lastOccurrence(Character character,
-        Integer from = 0) 
-            => str.lastOccurrence(character, from);
+        Integer from, Integer length) 
+            => str.lastOccurrence(character, from, length);
+    
+    shared actual native("js")
+    {Integer*} inclusions(List<Character> sublist, 
+        Integer from)
+            => str.inclusions(sublist, from);
+    
+    shared actual native("js")
+    {Integer*} occurrences(Character character, 
+        Integer from, Integer length)
+            => str.occurrences(character, from, length);
     
     shared actual native("js") Boolean equals(Object that) 
             => str.equals(that);
