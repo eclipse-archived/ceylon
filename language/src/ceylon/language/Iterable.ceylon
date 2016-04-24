@@ -1190,7 +1190,8 @@ shared interface Iterable<out Element=Anything,
     "A stream containing whose elements are pairs (2-tuples)
      comprising an element of this stream paired with the 
      next element in the stream. The resulting stream has
-     one fewer elements than this stream.
+     one fewer elements than this stream. If this stream has
+     exactly one element, the resulting stream is empty.
      
      For example, the expression
      
@@ -1207,16 +1208,16 @@ shared interface Iterable<out Element=Anything,
      For any stable `stream`, this operation is equivalent 
      to `zipPairs(stream,stream.rest)`."
     shared default 
-    {[Element,Element]*} paired 
-            => object satisfies {[Element,Element]*} {
+    {Element[2]*} paired 
+            => object satisfies {Element[]*} {
         size => let (size = outer.size-1) 
                 if (size<0) then 0 else size;
         empty => outer.size<2;
         iterator() 
                 => let (iter = outer.iterator()) 
-            object satisfies Iterator<[Element,Element]> {
+            object satisfies Iterator<Element[2]> {
                 variable value previous = iter.next();
-                shared actual [Element,Element]|Finished next() {
+                shared actual Element[2]|Finished next() {
                     if (!is Finished head = previous,
                         !is Finished tip = iter.next()) {
                         previous = tip;
