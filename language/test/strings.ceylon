@@ -623,6 +623,16 @@ shared void strings() {
     check(("hello world".firstOccurrence('d',0,11) else -1)==10, "string firstOccurrence 3");
     check(!"hello world".firstOccurrence('d',0,10) exists, "string firstOccurrence 4");
     
+    check(!"ab".firstOccurrence('a', 0, 0) exists, "string firstOccurrence");
+    check("ab".firstOccurrence('a', 0, 1) exists, "string firstOccurrence");
+    check(!"ab".firstOccurrence('b', 0, 1) exists, "string firstOccurrence");
+    check("ab".firstOccurrence('b', 0, 2) exists, "string firstOccurrence");
+    
+    check(!"ab".lastOccurrence('b', 0, 0) exists, "string lastOccurrence");
+    check("ab".lastOccurrence('b', 0, 1) exists, "string lastOccurrence");
+    check(!"ab".lastOccurrence('a', 0, 1) exists, "string lastOccurrence");
+    check("ab".lastOccurrence('a', 0, 2) exists, "string lastOccurrence");
+    
     check("yoyoyoyoyo".inclusions("yoy").size==4, "string overlapping inclusions");
     check("yoyoyoyoyo".inclusions("yoy").sequence()==[0, 2, 4, 6], "string overlapping inclusions");
     check("hello".inclusions("").size==6, "string empty inclusions");

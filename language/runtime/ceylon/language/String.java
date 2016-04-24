@@ -942,9 +942,8 @@ public final class String
         int index = value.lastIndexOf(element, start);
         if (index >= 0) {
             int dist = 
-                    value.codePointCount(start, 
-                            value.length());
-            if (dist>length) {
+                    value.codePointCount(index, start);
+            if (dist>=length) {
                 return null;
             }
             return Integer.instance( 
@@ -1333,19 +1332,18 @@ public final class String
     @Ignore
     public static java.lang.String measure(java.lang.String value, 
             final long from, final long length) {
-        long fromIndex = from;
         long len = getSize(value);
-        if (fromIndex >= len || length <= 0) {
+        if (from >= len || length <= 0) {
             return "";
         }
         long resultLength;
-        if (fromIndex + length > len) {
-            resultLength = len - fromIndex;
+        if (from + length > len) {
+            resultLength = len - from;
         }
         else {
             resultLength = length;
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(fromIndex));
+        int start = value.offsetByCodePoints(0, Util.toInt(from));
         int end = value.offsetByCodePoints(start, Util.toInt(resultLength));
         return value.substring(start, end);
     }
@@ -1712,7 +1710,7 @@ public final class String
     @Ignore
     public static java.lang.String replace(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
-        if (value.isEmpty()) {
+        if (substring.isEmpty()) {
             throw new AssertionError("string to replace must be nonempty");
         }
         int index = value.indexOf(substring);
@@ -1735,7 +1733,7 @@ public final class String
     @Ignore
     public static java.lang.String replaceFirst(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
-        if (value.isEmpty()) {
+        if (substring.isEmpty()) {
             throw new AssertionError("string to replace must be nonempty");
         }
         int index = value.indexOf(substring);
@@ -1757,7 +1755,7 @@ public final class String
     @Ignore
     public static java.lang.String replaceLast(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
-        if (value.isEmpty()) {
+        if (substring.isEmpty()) {
             throw new AssertionError("string to replace must be nonempty");
         }
         int index = value.lastIndexOf(substring);
