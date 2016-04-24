@@ -261,9 +261,9 @@ function $init$tpl$(){
         return tpl$(e2);
       }
       tuple.withTrailing.$crtmm$=Sequential.$$.prototype.withTrailing.$crtmm$;
-      tuple.longerThan=function(i){return this.elem$.length>i;}
+      tuple.longerThan=function(i){return (this.sp$?this.size:this.elem$.length)>i;}
       tuple.longerThan.$crtmm$=Iterable.$$.prototype.longerThan.$crtmm$;
-      tuple.shorterThan=function(i){return this.elem$.length<i;}
+      tuple.shorterThan=function(i){return (this.sp$?this.size:this.elem$.length)<i;}
       tuple.shorterThan.$crtmm$=Iterable.$$.prototype.shorterThan.$crtmm$;
       atr$(tuple,'hash',function(){
         return $arr$(this.elem$,this.t$).hash+(this.sp$?this.sp$.hash:0);
