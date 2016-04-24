@@ -90,10 +90,29 @@ shared final serializable native class Array<Element>
         "The new element."
         Element element);
     
-    "Efficiently copy the elements in the segment
-     `sourcePosition:length` of this array to the segment 
+    "Efficiently copy the elements in the measure
+     `sourcePosition:length` of this array to the measure 
      `destinationPosition:length` of the given 
-     [[array|destination]], which may be this array."
+     [[array|destination]], which may be this array.
+     
+     The given [[sourcePosition]] and [[destinationPosition]] 
+     must be non-negative and, together with the given 
+     [[length]], must identify meaningful ranges within the 
+     two arrays, satisfying:
+     
+     - `size >= sourcePosition+length`, and 
+     - `destination.size >= destinationPosition+length`.
+     
+     If the given `length` is not strictly positive, no
+     elements are copied."
+    throws (`class AssertionError`, 
+        "if the arguments do not identify meaningful ranges 
+         within the two arrays:
+         
+         - if the given [[sourcePosition]] or 
+           [[destinationPosition]] is negative, 
+         - if `size < sourcePosition+length`, or 
+         - if `destination.size < destinationPosition+length`.")
     shared native 
     void copyTo(
         "The array into which to copy the elements, which 

@@ -582,7 +582,26 @@ shared native final class String(characters)
     "Efficiently copy the characters in the segment
      `sourcePosition:length` of this string to the segment 
      `destinationPosition:length` of the given 
-     [[character array|destination]]."
+     [[character array|destination]].
+     
+     The given [[sourcePosition]] and [[destinationPosition]] 
+     must be non-negative and, together with the given 
+     [[length]], must identify meaningful ranges within the 
+     two lists, satisfying:
+     
+     - `size >= sourcePosition+length`, and 
+     - `destination.size >= destinationPosition+length`.
+     
+     If the given `length` is not strictly positive, no
+     elements are copied."
+    throws (`class AssertionError`, 
+        "if the arguments do not identify meaningful ranges 
+         within the two lists:
+         
+         - if the given [[sourcePosition]] or 
+           [[destinationPosition]] is negative, 
+         - if `size < sourcePosition+length`, or 
+         - if `destination.size < destinationPosition+length`.")
     shared native 
     void copyTo(
         "The array into which to copy the elements."

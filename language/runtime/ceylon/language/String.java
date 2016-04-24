@@ -2892,13 +2892,20 @@ public final class String
             long destinationPosition, 
             long length){
         int count = 0;
+        int src = Util.toInt(sourcePosition);
         int dest = Util.toInt(destinationPosition);
-        for (int index = value.offsetByCodePoints(0,Util.toInt(sourcePosition)); 
-                count<length;) {
-            int codePoint = value.codePointAt(index);
-            ((int[])destination.toArray())[count+dest] = codePoint;
-            index += java.lang.Character.charCount(codePoint);
-            count++;
+        int[] array = (int[]) destination.toArray();
+        try {
+            for (int index = value.offsetByCodePoints(0,src); 
+                    count<length;) {
+                int codePoint = value.codePointAt(index);
+                array[count+dest] = codePoint;
+                index += java.lang.Character.charCount(codePoint);
+                count++;
+            }
+        }
+        catch (IndexOutOfBoundsException iob) {
+            throw new AssertionError(iob.getMessage());
         }
     }
 

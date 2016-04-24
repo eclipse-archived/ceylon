@@ -1960,8 +1960,13 @@ public final class Array<Element>
                        @Name("destinationPosition") @Defaulted long destinationPosition, 
                        @Name("length") @Defaulted long length) {
         if (length>0) {
-            arraycopy(array, Util.toInt(sourcePosition), destination.array, 
-                    Util.toInt(destinationPosition), Util.toInt(length));
+            try {
+                arraycopy(array, Util.toInt(sourcePosition), destination.array, 
+                        Util.toInt(destinationPosition), Util.toInt(length));
+            }
+            catch (IndexOutOfBoundsException iob) {
+                throw new AssertionError(iob.getMessage());
+            }
         }
     }
     
