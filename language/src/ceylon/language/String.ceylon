@@ -429,11 +429,7 @@ shared native final class String(characters)
      Using the [[addition operator|Summable.plus]], 
      `string.plus(otherString)` may be written as
      `string + otherString`."
-    shared actual native String plus(String other)
-            => StringBuilder()
-                .append(this)
-                .append(other)
-                .string;
+    shared actual native String plus(String other);
     
     "Returns a string formed by repeating this string the 
      given number of [[times]], or the empty string if
