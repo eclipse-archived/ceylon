@@ -399,9 +399,19 @@ shared native final class String(characters)
      `element in string`."
     shared actual native Boolean contains(Object element);
     
-    shared actual native Boolean startsWith(List<Anything> substring);
+    "Determines if this string begins with the characters of
+     the given string."
+    shared actual native Boolean startsWith(List<> substring)
+            => if (is String substring) 
+            then includesAt(0, substring)
+            else super.startsWith(substring);
     
-    shared actual native Boolean endsWith(List<Anything> substring);
+    "Determines if this string ends with the characters of
+     the given string."
+    shared actual native Boolean endsWith(List<> substring)
+            => if (is String substring)
+            then includesAt(size-substring.size, substring)
+            else super.endsWith(substring);
     
     "Returns the concatenation of this string with the
      given string.
