@@ -403,7 +403,11 @@ shared native final class String(characters)
      Using the [[`in` operator|Category.contains]],
      `string.contains(element)` may be written as
      `element in string`."
-    shared actual native Boolean contains(Object element);
+    shared actual native Boolean contains(Object element)
+            => switch (element)
+            case (is String) includes(element)
+            case (is Character) occurs(element)
+            else false;
     
     "Determines if this string begins with the characters of
      the given string."
@@ -425,12 +429,22 @@ shared native final class String(characters)
      Using the [[addition operator|Summable.plus]], 
      `string.plus(otherString)` may be written as
      `string + otherString`."
-    shared actual native String plus(String other);
+    shared actual native String plus(String other)
+            => StringBuilder()
+                .append(this)
+                .append(other)
+                .string;
     
     "Returns a string formed by repeating this string the 
      given number of [[times]], or the empty string if
      `times<=0`."
-    shared actual native String repeat(Integer times);
+    shared actual native String repeat(Integer times) {
+        value result = StringBuilder();
+        for (_ in 0:times) {
+            result.append(this);
+        }
+        return result.string;
+    }
     
     "Returns a string formed by replacing every occurrence 
      in this string of the given [[substring]] with the 
