@@ -91,19 +91,20 @@ shared native final class StringBuilder()
     "Insert a [[character]] at the specified [[index]]."
     shared native 
     StringBuilder insertCharacter
-    (Integer index, Character character) ;
+            (Integer index, Character character);
     
     "Replaces the specified [[number of characters|length]] 
      from the current content, starting at the specified 
-     [[index]], with the given [[string]]. If `length` is 
-     nonpositive, nothing is replaced."
+     [[index]], with the given [[string]]. If [[length]] is 
+     nonpositive, nothing is replaced, and the `string` is
+     simply inserted at the specified `index`."
     shared native 
     StringBuilder replace
-    (Integer index, Integer length, String string);
+            (Integer index, Integer length, String string);
     
     "Deletes the specified [[number of characters|length]] 
      from the current content, starting at the specified 
-     [[index]]. If `length` is nonpositive, nothing is 
+     [[index]]. If [[length]] is nonpositive, nothing is 
      deleted."
     shared native 
     StringBuilder delete(Integer index, Integer length/*=1*/);
@@ -249,12 +250,10 @@ shared native("jvm") final class StringBuilder()
         assert(index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
-        if (!string.empty) {
-            Integer len = (length<0) then 0 else length;
-            Integer start = startIndex(index);
-            Integer end = endIndex(start, len);
-            builder.replace(start, end, string);
-        }
+        Integer len = length<0 then 0 else length;
+        Integer start = startIndex(index);
+        Integer end = endIndex(start, len);
+        builder.replace(start, end, string);
         return this;
     }
     
@@ -404,9 +403,8 @@ shared native("js") final class StringBuilder()
         assert(index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
-        if (!string.empty) {
-            str = str[0:index] + string + str[index+length...];
-        }
+        value len = length<0 then 0 else length;
+        str = str[0:index] + string + str[index+len...];
         return this;
     }
     
