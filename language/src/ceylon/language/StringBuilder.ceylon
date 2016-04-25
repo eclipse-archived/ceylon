@@ -27,7 +27,7 @@ shared native final class StringBuilder()
     
     "The resulting string. If no characters have been
      appended, the empty string."
-    shared actual native String string;
+    shared actual native variable String string;
     
     shared actual native Iterator<Character> iterator();
     
@@ -204,6 +204,9 @@ shared native("jvm") final class StringBuilder()
     
     shared actual native("jvm") String string 
             => builder.string;
+    
+    native("jvm") assign string 
+            => builder.replace(0, builder.length(), string);
     
     shared actual native("jvm") 
     Iterator<Character> iterator() {
@@ -538,67 +541,65 @@ shared native("jvm") final class StringBuilder()
 shared native("js") final class StringBuilder() 
         satisfies SearchableList<Character> {
     
-    variable String str = "";
-    
-    shared actual native("js") Integer size => str.size;
+    shared actual native("js") variable String string = "";
+        
+    shared actual native("js") Integer size => string.size;
     
     shared actual native("js") Integer? lastIndex 
-            => if (str.size == 0)
+            => if (string.size == 0)
             then null
-            else str.size - 1;
-    
-    shared actual native("js") String string => str;
+            else string.size - 1;
     
     shared actual native("js") 
     Iterator<Character> iterator() 
-            => str.iterator();
+            => string.iterator();
     
     shared actual native("js")
     String measure(Integer from, Integer length)
-            => str[from:length];
+            => string[from:length];
     
     shared actual native("js")
-    String span(Integer from, Integer to) => str[from:to];
+    String span(Integer from, Integer to) => string[from:to];
     
     shared actual native("js")
-    String spanTo(Integer to) => str[...to];
+    String spanTo(Integer to) => string[...to];
     
     shared actual native("js")
-    String spanFrom(Integer from) => str[from...];
+    String spanFrom(Integer from) => string[from...];
     
     shared actual native("js")
     Character? getFromFirst(Integer index) 
             => if (index<0 || index>size) 
             then null 
-            else str.getFromFirst(index);
+            else string.getFromFirst(index);
     
     shared native("js") 
     StringBuilder append(String string) {
-        str = str + string;
+        this.string = this.string + string;
         return this;
     }
     
     shared native("js") 
     StringBuilder prepend(String string) {
-        str = string + str;
+        this.string = string + this.string;
         return this;
     }
     
     shared native("js") 
     StringBuilder appendCharacter(Character character) {
-        str = str + character.string;
+        string = string + character.string;
         return this;
     }
     
     shared native("js") 
     StringBuilder prependCharacter(Character character) {
-        str = character.string + str;
+        string = character.string + string;
         return this;
     }
     
     shared native("js") 
     StringBuilder clear() {
-        str = "";
+        string = "";
         return this;
     }
     
@@ -608,7 +609,10 @@ shared native("js") final class StringBuilder()
         assert (index>=0);
         "index must not be greater than size"
         assert(index<=size);
-        str = str[0:index] + string + str[index...];
+        this.string 
+                = this.string[0:index] 
+                + string 
+                + this.string[index...];
         return this;
     }
     
@@ -627,7 +631,10 @@ shared native("js") final class StringBuilder()
         "index+length must not be greater than size"
         assert (index+length<=size);
         value len = length<0 then 0 else length;
-        str = str[0:index] + string + str[index+len...];
+        this.string 
+                = this.string[0:index] 
+                + string + 
+                this.string[index+len...];
         return this;
     }
     
@@ -640,7 +647,8 @@ shared native("js") final class StringBuilder()
         "index+length must not be greater than size"
         assert (index+length<=size);
         if (length>0) {
-            str = str[0:index] + str[index+length...];
+            string = string[0:index] 
+                    + string[index+length...];
         }
         return this;
     }
@@ -650,7 +658,7 @@ shared native("js") final class StringBuilder()
         "length must not be greater than size"
         assert (length<=size);
         if (length>0) {
-            str = str[length...];
+            string = string[length...];
         }
         return this;
     }
@@ -660,49 +668,49 @@ shared native("js") final class StringBuilder()
         "length must not be greater than size"
         assert (length<=size);
         if (length>0) {
-            str = str[0:size-length];
+            string = string[0:size-length];
         }
         return this;
     }
     
     shared native("js") 
     StringBuilder reverseInPlace() {
-        str = str.reversed;
+        string = string.reversed;
         return this;
     }
     
     shared actual native("js")
     Integer? firstInclusion(List<Character> sublist,
         Integer from) 
-            => str.firstInclusion(sublist, from);
+            => string.firstInclusion(sublist, from);
     
     shared actual native("js")
     Integer? lastInclusion(List<Character> sublist,
         Integer from) 
-            => str.lastInclusion(sublist, from);
+            => string.lastInclusion(sublist, from);
     
     shared actual native("js")
     Integer? firstOccurrence(Character character,
         Integer from, Integer length) 
-            => str.firstOccurrence(character, from, length);
+            => string.firstOccurrence(character, from, length);
     
     shared actual native("js")
     Integer? lastOccurrence(Character character,
         Integer from, Integer length) 
-            => str.lastOccurrence(character, from, length);
+            => string.lastOccurrence(character, from, length);
     
     shared actual native("js")
     {Integer*} inclusions(List<Character> sublist, 
         Integer from)
-            => str.inclusions(sublist, from);
+            => string.inclusions(sublist, from);
     
     shared actual native("js")
     {Integer*} occurrences(Character character, 
         Integer from, Integer length)
-            => str.occurrences(character, from, length);
+            => string.occurrences(character, from, length);
     
     shared actual native("js") Boolean equals(Object that) 
-            => str.equals(that);
+            => string.equals(that);
     
-    shared actual native("js") Integer hash => str.hash;
+    shared actual native("js") Integer hash => string.hash;
 }
