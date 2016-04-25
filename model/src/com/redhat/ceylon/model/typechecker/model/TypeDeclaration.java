@@ -926,8 +926,7 @@ public abstract class TypeDeclaration extends Declaration
                                 scope, startingWith, 
                                 proximity+1));
         }
-        Type et = 
-                getExtendedType();
+        Type et = getExtendedType();
         if (et!=null) {
             mergeMembers(result, 
                     et.getDeclaration()
@@ -946,7 +945,7 @@ public abstract class TypeDeclaration extends Declaration
                             new DeclarationWithProximity(
                                     member, proximity));
                 }
-                for (String alias : member.getAliases()) {
+                for (String alias: member.getAliases()) {
                     if (isNameMatching(startingWith, alias)) {
                         result.put(alias, 
                                 new DeclarationWithProximity(
