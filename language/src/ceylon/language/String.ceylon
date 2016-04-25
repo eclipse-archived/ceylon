@@ -749,7 +749,31 @@ shared native final class String(characters)
         Integer from = 0,
         "The exclusive end index" 
         Integer end = size)
-            => measure(from, end-from);
+            => this[from:end-from];
+    
+    "Determines if this string occurs after the given string
+     in lexicographic order, returning `false` if the two
+     strings are equal."
+    shared actual native Boolean largerThan(String other)
+            => super.largerThan(other);
+    
+    "Determines if this string occurs before the given string
+     in lexicographic order, returning `false` if the two
+     strings are equal."
+    shared actual native Boolean smallerThan(String other)
+            => super.smallerThan(other);
+    
+    "Determines if this string occurs after the given string
+     in lexicographic order, returning `true` if the two
+     strings are equal."
+    shared actual native Boolean notSmallerThan(String other)
+            => super.notSmallerThan(other);
+    
+    "Determines if this string occurs before the given string
+     in lexicographic order, returning `true` if the two
+     strings are equal."
+    shared actual native Boolean notLargerThan(String other)
+            => super.notLargerThan(other);
     
     shared actual native List<Character> sublistFrom(Integer from);
     shared actual native List<Character> sublistTo(Integer to);
@@ -771,11 +795,6 @@ shared native final class String(characters)
     shared actual native Integer? firstInclusion(List<Character> sublist, Integer from);
     shared actual native Integer? lastInclusion(List<Character> sublist, Integer from);
         
-    shared actual native Boolean largerThan(String other); 
-    shared actual native Boolean smallerThan(String other); 
-    shared actual native Boolean notSmallerThan(String other); 
-    shared actual native Boolean notLargerThan(String other);
-    
     shared actual native void each(void step(Character element));
     shared actual native Integer count(Boolean selecting(Character element));
     shared actual native Boolean every(Boolean selecting(Character element));
