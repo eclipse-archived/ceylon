@@ -65,56 +65,97 @@ shared native final class Byte(congruent)
          x.byte == y.byte"
     Integer congruent;
     
-    //shared [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean] bits;
-    
-    "Whether this byte is even."
-    shared native Boolean even;
-    
-    "Whether this byte is zero."
-    shared native Boolean zero;
-    
-    "Whether this byte is one."
-    shared native Boolean unit;
+    "This byte interpreted as a signed integer in the range 
+     `-128..127`."
+    shared native Integer signed = congruent % #100;
     
     "This byte interpreted as an unsigned integer in the
      range `0..255`."
-    shared native Integer unsigned;
+    shared native Integer unsigned => signed.and(#FF);
     
-    "This byte interpreted as a signed integer in the range 
-     `-128..127`."
-    shared native Integer signed;
+    //shared Boolean[8] bits;
+    
+    "Whether this byte is even."
+    shared native Boolean even => and(1.byte).zero;
+    
+    "Whether this byte is zero."
+    shared native Boolean zero => this == 0.byte;
+    
+    "Whether this byte is one."
+    shared native Boolean unit => this == 1.byte;
     
     "The additive inverse of this byte. For any integer `x`:
      
          (-x.byte).signed = -x.byte.signed"
-    shared actual native Byte negated;
+    shared actual native Byte negated => (-signed).byte;
     
     "The modulo 256 sum of this byte and the given byte."
-    shared actual native Byte plus(Byte other);
+    shared actual native Byte plus(Byte other)
+            => (this.signed + other.signed).byte;
     
-    shared actual native Byte and(Byte other);
-    shared actual native Byte flip(Integer index);
-    shared actual native Boolean get(Integer index);
-    shared actual native Byte leftLogicalShift(Integer shift);
-    shared actual native Byte not;
-    shared actual native Byte or(Byte other);
-    shared actual native Byte rightArithmeticShift(Integer shift);
-    shared actual native Byte rightLogicalShift(Integer shift);
-    shared actual native Byte set(Integer index, Boolean bit);
-    shared actual native Byte xor(Byte other);
+    shared actual native Boolean get(Integer index) 
+            => 0 <= index <= 7
+            then !and(1.byte.leftLogicalShift(index)).zero 
+            else false;
     
-    shared actual native Byte predecessor;
-    shared actual native Byte successor;
+    shared actual native Byte flip(Integer index)
+            => 0 <= index <= 7
+            then xor(1.byte.leftLogicalShift(index)) 
+            else this;
     
-    shared actual native Byte neighbour(Integer offset);
-    shared actual native Integer offset(Byte other);
-    shared actual native Integer offsetSign(Byte other);
+    shared actual native Byte set(Integer index, Boolean bit)
+            => 0 <= index <= 7
+            then (bit then or(1.byte.leftLogicalShift(index)) 
+                      else and(1.byte.leftLogicalShift(index).not))
+            else this;
     
-    shared actual native Boolean equals(Object that);
-    shared actual native Integer hash;
+    shared actual native Byte clear(Integer index) 
+            => 0 <= index <= 7
+            then and(1.byte.leftLogicalShift(index).not) 
+            else this;
+    
+    shared actual native Byte not 
+            => (signed.not).byte;
+    
+    shared actual native Byte and(Byte other) 
+            => (signed.and(other.signed)).byte;
+    
+    shared actual native Byte or(Byte other)
+            => (signed.or(other.signed)).byte;
+    
+    shared actual native Byte xor(Byte other)
+            => (signed.xor(other.signed)).byte;
+    
+    shared actual native Byte leftLogicalShift(Integer shift)
+            => signed.leftLogicalShift(shift).byte;
+    
+    shared actual native Byte rightArithmeticShift(Integer shift)
+            => signed.rightArithmeticShift(shift).byte;
+    
+    shared actual native Byte rightLogicalShift(Integer shift)
+            => unsigned.rightLogicalShift(shift).byte;
+    
+    shared actual native Byte predecessor => (signed-1).byte;
+    shared actual native Byte successor => (signed+1).byte;
+    
+    shared actual native Byte neighbour(Integer offset) 
+            => (signed + offset).byte;
+    
+    shared actual native Integer offset(Byte other)
+            => minus(other).unsigned;
+    
+    shared actual native Integer offsetSign(Byte other)
+            => this==other then 0 else 1;
+    
+    shared actual native Boolean equals(Object that) 
+            => if (is Byte that) 
+            then this.signed == that.signed
+            else false;
+    
+    shared actual native Integer hash => signed;
     
     "The [[unsigned]] interpretation of this byte as a 
      string."
-    shared actual native String string;
+    shared actual native String string => unsigned.string;
     
 }
