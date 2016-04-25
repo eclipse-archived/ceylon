@@ -44,39 +44,12 @@ public final class Integer
         value = integer;
     }
 
-    public TypeDescriptor $reified$ceylon$language$Number$Other() {
-        return Integer.$TypeDescriptor$;
-    }
-    
-    public TypeDescriptor $reified$ceylon$language$Numeric$Other() {
-        return Integer.$TypeDescriptor$;
-    }
-    
-    public TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
-        return Integer.$TypeDescriptor$;
-    }
-    
-    public TypeDescriptor $reified$ceylon$language$Binary$Other() {
-        return Integer.$TypeDescriptor$;
-    }
-    
-    public TypeDescriptor $reified$ceylon$language$Exponentiable$Other() {
-        return Integer.$TypeDescriptor$;
-    }
-    
-    public TypeDescriptor $reified$ceylon$language$Exponentiable$This() {
-        return Integer.$TypeDescriptor$;
-    }
-    
-    
-    /*
     @Ignore
     @Override
     public Number$impl<Integer> $ceylon$language$Number$impl(){
         // drags Numeric<Integer> Comparable<Integer>
         throw Util.makeUnimplementedMixinAccessException();
     }
-    
 
     @Ignore
     @Override
@@ -89,14 +62,14 @@ public final class Integer
     public Comparable$impl<Integer> $ceylon$language$Comparable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
-    */
+    
     @Ignore
     @Override
     public Integral$impl<Integer> $ceylon$language$Integral$impl(){
         // drags Numeric<Integer> Enumerable<Integer>
         throw Util.makeUnimplementedMixinAccessException();
     }
-    /*
+
     @Ignore
     @Override
     public Enumerable$impl<Integer> $ceylon$language$Enumerable$impl(){
@@ -109,7 +82,7 @@ public final class Integer
     public Binary$impl<Integer> $ceylon$language$Binary$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
-    */
+
     @Ignore
     public static Integer instance(long l) {
         return new Integer(l);

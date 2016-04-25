@@ -57,30 +57,10 @@ public final class String
     @Ignore
     public final java.lang.String value;
     
-    public TypeDescriptor $reified$ceylon$language$Comparable$Other() {
-        return String.$TypeDescriptor$;
-    }
-    
-    public TypeDescriptor $reified$ceylon$language$Category$Element() {
-        return Character.$TypeDescriptor$;
-    }
-    public TypeDescriptor $reified$ceylon$language$Ranged$Subrange() {
-        return String.$TypeDescriptor$;
-    }
-    public TypeDescriptor $reified$ceylon$language$Ranged$Element() {
-        return Character.$TypeDescriptor$;
-    }
-    public TypeDescriptor $reified$ceylon$language$Ranged$Index() {
-        return Integer.$TypeDescriptor$;
-    }
-    public TypeDescriptor $reified$ceylon$language$Summable$Other() {
-        return String.$TypeDescriptor$;
-    }
-    /*
     @Ignore @Override
     public Comparable$impl<String> $ceylon$language$Comparable$impl() {
         return new Comparable$impl<String>(String.$TypeDescriptor$, this);
-    }*/
+    }
 
     @SuppressWarnings("rawtypes")
     public String(@Name("characters")
@@ -3224,12 +3204,12 @@ public final class String
         return $ceylon$language$Iterable$impl().takeWhile(arg0);
     }
 
-    /*@Override @Ignore
+    @Override @Ignore
     public Category$impl<? super java.lang.Object> $ceylon$language$Category$impl() {
         return new Category$impl<java.lang.Object>(Object.$TypeDescriptor$, this);
-    }*/
+    }
 
-    /*@Override @Ignore
+    @Override @Ignore
     public boolean containsAny(Iterable<? extends java.lang.Object, ? extends java.lang.Object> arg0) {
         return $ceylon$language$Category$impl().containsAny(arg0);
     }
@@ -3237,7 +3217,7 @@ public final class String
     @Override @Ignore
     public boolean containsEvery(Iterable<? extends java.lang.Object, ? extends java.lang.Object> arg0) {
         return $ceylon$language$Category$impl().containsEvery(arg0);
-    }*/
+    }
 
     @Override @Ignore
     public Correspondence$impl<? super Integer, ? extends Character> $ceylon$language$Correspondence$impl() {
