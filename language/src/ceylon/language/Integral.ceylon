@@ -67,7 +67,8 @@ shared interface Integral<Other> of Other
     shared formal Boolean unit;
     
     "Determine if this number is a factor of the given 
-     number."
+     number, that is, if `remainder(other).zero` evaluates
+     to `true`."
     shared default Boolean divides(Other other) 
             => (other % (this of Other)).zero;
     

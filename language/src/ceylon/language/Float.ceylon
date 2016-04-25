@@ -91,27 +91,32 @@ shared native final class Float(Float float)
      number or `infinity`. Produces `-1` for a negative
      number or `-infinity`. Produces `0.0` for `+0.0`, 
      `-0.0`, or undefined."
-    shared actual native Integer sign;
+    shared actual native Integer sign
+            =>   if (this < 0.0) then -1
+            else if (this > 0.0) then 1
+            else 0;
     
     "Determines if this value is a positive number or
      `infinity`. Produces `false` for a negative number, 
      `+0.0`, `-0.0`, or undefined."
-    shared actual native Boolean positive;
+    shared actual native Boolean positive => this > 0.0;
     
     "Determines if this value is a negative number or
      `-infinity`. Produces `false` for a positive number, 
      `+0.0`, `-0.0`, or undefined."
-    shared actual native Boolean negative;
+    shared actual native Boolean negative => this > 0.0;
     
     "Determines if this value is a positive number, `+0.0`, 
      or `infinity`. Produces `false` for a negative number, 
      `-0.0`, or undefined."
-    shared native Boolean strictlyPositive;
+    shared native Boolean strictlyPositive 
+            => this > 0.0 || 1.0/this > 0.0;
     
     "Determines if this value is a negative number, `-0.0`, 
      or `-infinity`. Produces `false` for a positive number, 
      `+0.0`, or undefined."
-    shared native Boolean strictlyNegative;
+    shared native Boolean strictlyNegative 
+            => this < 0.0 || 1.0/this < 0.0;
     
     "Determines if the given object is equal to this `Float`,
      that is, if:
@@ -152,7 +157,12 @@ shared native final class Float(Float float)
     throws (`class Exception`, 
             "if either this value, the given value, or both 
              are [[undefined]]")
-    shared actual native Comparison compare(Float other);
+    shared actual native Comparison compare(Float other)
+            =>   if (this < other) then smaller
+            else if (this > other) then larger
+            else equal;
+    
+    shared actual native Float negated;
     
     shared actual native Float plus(Float other);
     shared actual native Float minus(Float other);
@@ -189,9 +199,8 @@ shared native final class Float(Float float)
     shared actual native Float fractionalPart;
     
     aliased("absolute")
-    shared actual native Float magnitude;
-    
-    shared actual native Float negated;
+    shared actual native Float magnitude 
+            => this <= 0.0 then 0.0-this else this;
     
     "This value, represented as an [[Integer]], after 
      truncation of its fractional part, if such a 
@@ -201,8 +210,11 @@ shared native final class Float(Float float)
          or too small to be represented as an `Integer`")
     shared native Integer integer;
     
-    shared actual native Float timesInteger(Integer integer);    
-    shared actual native Float plusInteger(Integer integer);
+    shared actual native Float timesInteger(Integer integer)
+            => times(integer.float);
+    
+    shared actual native Float plusInteger(Integer integer)
+            => plus(integer.float);
     
     "The result of raising this number to the given integer
      power, where the following indeterminate forms evaluate 
