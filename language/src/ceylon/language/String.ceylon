@@ -729,10 +729,10 @@ shared native final class String(characters)
      beginning at the given [[start index|from]], up to, but
      not including, the given [[end index|end]]. If the 
      given end index is greater than the last index of this
-     string, return the portion of the string from the 
-     given start index until the end of the string. If the 
-     start index is larger than the last index of the string, 
-     or if the end index is less than one or less than the 
+     string, return the portion of the string from the given 
+     start index until the end of the string. If the start 
+     index is larger than the last index of the string, or 
+     if the end index is less than one or less than the 
      start index, return the empty string.
      
      For every pair of indexes, `start`, and `end`, and for
