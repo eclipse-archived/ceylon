@@ -72,7 +72,7 @@ shared native final class Byte(congruent)
     
     "This byte interpreted as a signed integer in the range 
      `-128..127`."
-    shared native Integer signed => unsigned - 128;
+    shared native Integer signed => unsigned - #80;
     
     //shared Boolean[8] bits;
     
