@@ -83,10 +83,10 @@ shared native final class Byte(congruent)
     shared native Boolean even => and(1.byte).zero;
     
     "Whether this byte is zero."
-    shared native Boolean zero => this == 0.byte;
+    shared native Boolean zero => unsigned == 0;
     
     "Whether this byte is one."
-    shared native Boolean unit => this == 1.byte;
+    shared native Boolean unit => unsigned == 1;
     
     "The additive inverse of this byte. For any integer `x`:
      
