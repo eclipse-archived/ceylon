@@ -484,10 +484,12 @@ public final class Integer
         if (value>other) {
             return 1;
         }
-        if (value<other) {
+        else if (value<other) {
             return -1;
         }
-        return 0;
+        else {
+            return 0;
+        }
     }
 
     @Override
@@ -531,7 +533,7 @@ public final class Integer
 
     @TypeInfo("ceylon.language::Character")
     public int getCharacter() {
-        return getCharacter(value);
+        return codepoint(value);
     }
 
     @Ignore
