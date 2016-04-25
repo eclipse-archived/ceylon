@@ -65,13 +65,14 @@ shared native final class Byte(congruent)
          x.byte == y.byte"
     Integer congruent;
     
-    "This byte interpreted as a signed integer in the range 
-     `-128..127`."
-    shared native Integer signed = congruent % #100;
-    
     "This byte interpreted as an unsigned integer in the
      range `0..255`."
-    shared native Integer unsigned => signed.and(#FF);
+    shared native Integer unsigned 
+            = (congruent % #100).and(#FF);
+    
+    "This byte interpreted as a signed integer in the range 
+     `-128..127`."
+    shared native Integer signed => unsigned - 128;
     
     //shared Boolean[8] bits;
     
