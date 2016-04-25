@@ -72,7 +72,10 @@ shared native final class Byte(congruent)
     
     "This byte interpreted as a signed integer in the range 
      `-128..127` (that is, `-#80..#7F`)."
-    shared native Integer signed => unsigned - #80;
+    shared native Integer signed 
+            => unsigned > #7F 
+            then unsigned - #100 
+            else unsigned;
     
     //shared Boolean[8] bits;
     
@@ -92,7 +95,7 @@ shared native final class Byte(congruent)
     
     "The modulo 256 sum of this byte and the given byte."
     shared actual native Byte plus(Byte other)
-            => (this.signed + other.signed).byte;
+            => (this.unsigned + other.unsigned).byte;
     
     shared actual native Boolean get(Integer index) 
             => 0 <= index <= 7
@@ -115,31 +118,31 @@ shared native final class Byte(congruent)
             then and(1.byte.leftLogicalShift(index).not) 
             else this;
     
-    shared actual native Byte not => signed.not.byte;
+    shared actual native Byte not => unsigned.not.byte;
     
     shared actual native Byte and(Byte other) 
-            => signed.and(other.signed).byte;
+            => unsigned.and(other.unsigned).byte;
     
     shared actual native Byte or(Byte other)
-            => signed.or(other.signed).byte;
+            => unsigned.or(other.unsigned).byte;
     
     shared actual native Byte xor(Byte other)
-            => signed.xor(other.signed).byte;
+            => unsigned.xor(other.unsigned).byte;
     
     shared actual native Byte leftLogicalShift(Integer shift)
-            => signed.leftLogicalShift(shift).byte;
-    
-    shared actual native Byte rightArithmeticShift(Integer shift)
-            => signed.rightArithmeticShift(shift).byte;
+            => unsigned.leftLogicalShift(shift).byte;
     
     shared actual native Byte rightLogicalShift(Integer shift)
             => unsigned.rightLogicalShift(shift).byte;
     
-    shared actual native Byte predecessor => (signed-1).byte;
-    shared actual native Byte successor => (signed+1).byte;
+    shared actual native Byte rightArithmeticShift(Integer shift)
+            => signed.rightArithmeticShift(shift).byte;
+    
+    shared actual native Byte predecessor => (unsigned-1).byte;
+    shared actual native Byte successor => (unsigned+1).byte;
     
     shared actual native Byte neighbour(Integer offset) 
-            => (signed + offset).byte;
+            => (unsigned + offset).byte;
     
     shared actual native Integer offset(Byte other)
             => minus(other).unsigned;
@@ -149,7 +152,7 @@ shared native final class Byte(congruent)
     
     shared actual native Boolean equals(Object that) 
             => if (is Byte that) 
-            then this.signed == that.signed
+            then this.unsigned == that.unsigned
             else false;
     
     shared actual native Integer hash => signed;
