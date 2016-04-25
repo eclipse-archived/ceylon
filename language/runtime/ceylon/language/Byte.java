@@ -30,7 +30,19 @@ public final class Byte implements
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Byte.class);
 
-
+    public TypeDescriptor $reified$ceylon$language$Binary$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$Invertible$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    /*
     @Ignore
     @Override
     public Invertible$impl<Byte> $ceylon$language$Invertible$impl() {
@@ -48,7 +60,7 @@ public final class Byte implements
     public Enumerable$impl<Byte> $ceylon$language$Enumerable$impl() {
         throw Util.makeUnimplementedMixinAccessException();
     }
-
+*/
     @Ignore
     final byte value;
     

@@ -36,6 +36,13 @@ public final class Character
         this.codePoint = character;
     }
 
+    public TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return Comparable.$TypeDescriptor$;
+    }
+    public TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return Comparable.$TypeDescriptor$;
+    }
+    /*
     @Ignore
     @Override
     public Enumerable$impl<Character> $ceylon$language$Enumerable$impl(){
@@ -47,7 +54,7 @@ public final class Character
     public Comparable$impl<Character> $ceylon$language$Comparable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
     }
-
+*/
     @Ignore
     public static Character instance(int c) {
         return new Character(c);

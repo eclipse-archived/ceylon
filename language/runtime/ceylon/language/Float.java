@@ -39,6 +39,19 @@ public final class Float
         value = f;
     }
     
+    public TypeDescriptor $reified$ceylon$language$Number$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    public TypeDescriptor $reified$ceylon$language$Numeric$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    public TypeDescriptor $reified$ceylon$language$Exponentiable$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    public TypeDescriptor $reified$ceylon$language$Exponentiable$This() {
+        return Float.$TypeDescriptor$;
+    }
+    /*
     @Ignore
     @Override
     public Number$impl<Float> $ceylon$language$Number$impl(){
@@ -56,7 +69,7 @@ public final class Float
     @Override
     public Comparable$impl<Float> $ceylon$language$Comparable$impl(){
         throw Util.makeUnimplementedMixinAccessException();
-    }
+    }*/
     
     @Ignore
     public static Float instance(double d) {
