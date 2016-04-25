@@ -662,6 +662,52 @@ interface DefiniteSpecification {
     @error class Sub() extends Super(name) {
         String name = "gavin";
     }
+    
+    class Foo0() {
+        String? name;
+        if (1==1) {
+            name = null;
+            return;
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
+    class Foo1() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                name = null;
+                break;
+            }
+        }
+        @error name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
+    class Foo2() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                name = null;
+                break;
+            }
+            @error name = "Gavin";
+        }
+        shared void bar() => print(name);
+    }
+    
+    class Foo3() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                name = null;
+                return;
+            }
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
 
 }
 
