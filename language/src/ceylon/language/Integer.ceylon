@@ -168,6 +168,7 @@ shared native final class Integer(Integer integer)
      with zero extension. Otherwise shift the addressable 
      bits to the right by `(bits + (shift % bits)) % bits` 
      where `bits=runtime.integerAddressableSize`."
+    aliased ("rightShift")
     shared actual native Integer rightLogicalShift(Integer shift);
     
     "If shift is in the range of addressable bits 

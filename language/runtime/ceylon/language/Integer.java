@@ -633,6 +633,7 @@ public final class Integer
     }
 
     @Override
+    @AliasesAnnotation$annotation$(aliases = "leftShift")
     public Integer leftLogicalShift(@Name("shift") long shift) {
         return instance(value << shift);
     }
@@ -643,6 +644,7 @@ public final class Integer
     }
 
     @Override
+    @AliasesAnnotation$annotation$(aliases = "rightShift")
     public Integer rightLogicalShift(@Name("shift") long shift) {
         return instance(value >>> shift);
     }

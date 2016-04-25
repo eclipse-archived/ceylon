@@ -175,6 +175,7 @@ public final class Byte implements
     }
     
     @Override
+    @AliasesAnnotation$annotation$(aliases = "leftShift")
     public Byte leftLogicalShift(@Name("shift") long shift) {
         return new Byte((byte) (value<<shift));
     }
@@ -195,6 +196,7 @@ public final class Byte implements
     }
 
     @Override
+    @AliasesAnnotation$annotation$(aliases = "rightShift")
     public Byte rightLogicalShift(@Name("shift") long shift) {
         return new Byte((byte) ((0xff&value)>>>shift));
     }

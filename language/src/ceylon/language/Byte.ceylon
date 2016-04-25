@@ -129,9 +129,11 @@ shared native final class Byte(congruent)
     shared actual native Byte xor(Byte other)
             => unsigned.xor(other.unsigned).byte;
     
+    aliased ("leftShift")
     shared actual native Byte leftLogicalShift(Integer shift)
             => unsigned.leftLogicalShift(shift).byte;
     
+    aliased ("rightShift")
     shared actual native Byte rightLogicalShift(Integer shift)
             => unsigned.rightLogicalShift(shift).byte;
     
