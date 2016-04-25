@@ -115,17 +115,16 @@ shared native final class Byte(congruent)
             then and(1.byte.leftLogicalShift(index).not) 
             else this;
     
-    shared actual native Byte not 
-            => (signed.not).byte;
+    shared actual native Byte not => signed.not.byte;
     
     shared actual native Byte and(Byte other) 
-            => (signed.and(other.signed)).byte;
+            => signed.and(other.signed).byte;
     
     shared actual native Byte or(Byte other)
-            => (signed.or(other.signed)).byte;
+            => signed.or(other.signed).byte;
     
     shared actual native Byte xor(Byte other)
-            => (signed.xor(other.signed)).byte;
+            => signed.xor(other.signed).byte;
     
     shared actual native Byte leftLogicalShift(Integer shift)
             => signed.leftLogicalShift(shift).byte;
