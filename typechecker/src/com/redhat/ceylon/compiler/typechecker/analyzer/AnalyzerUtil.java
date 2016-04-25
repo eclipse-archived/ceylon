@@ -19,7 +19,6 @@ import static java.lang.Character.isUpperCase;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -37,6 +36,7 @@ import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -179,17 +179,20 @@ public class AnalyzerUtil {
         return null;
     }
     
-    private static String best(final String name, 
-            Collection<String> names) {
-        if (names.isEmpty()) {
+    private static DeclarationWithProximity best(final String name, 
+            Map<String,DeclarationWithProximity> suggestions) {
+        if (suggestions.isEmpty()) {
             return null;
         }
         final boolean ucase = isUpperCase(name.charAt(0));
-        String best = Collections.max(
-                names, 
-                new Comparator<String>() {
+        Map.Entry<String,DeclarationWithProximity> best = 
+                Collections.max(suggestions.entrySet(), 
+                new Comparator<Map.Entry<String,DeclarationWithProximity>>() {
             @Override
-            public int compare(String x, String y) {
+            public int compare(Map.Entry<String,DeclarationWithProximity> xe, 
+                               Map.Entry<String,DeclarationWithProximity> ye) {
+                String x = xe.getKey();
+                String y = ye.getKey();
                 boolean xucase = isUpperCase(x.charAt(0));
                 boolean yucase = isUpperCase(y.charAt(0));
                 if (ucase==xucase && ucase!=yucase) {
@@ -198,24 +201,35 @@ public class AnalyzerUtil {
                 if (ucase==yucase && ucase!=xucase) {
                     return -1;
                 }
-                return Double.compare(
+                int comp = Double.compare(
                         distance.similarity(name, x),
                         distance.similarity(name, y));
+                if (comp==0) {
+                    comp = - Integer.compare(
+                        xe.getValue().getProximity(), 
+                        ye.getValue().getProximity());
+                }
+                return comp;
             }
         });
-        return distance.similarity(name, best)>0.6 ? best : null;
+        return distance.similarity(name, best.getKey()) > 0.5 ? 
+                best.getValue() : null;
+    }
+    
+    private static String realName(DeclarationWithProximity dwp, Unit unit) {
+        return dwp==null ? null : dwp.getDeclaration().getName(unit);
     }
     
     public static String correct(Scope scope, Unit unit, String name) {
-        return best(name, 
-                scope.getMatchingDeclarations(unit, "", 0, null)
-                    .keySet());
+        return realName(best(name, 
+                scope.getMatchingDeclarations(unit, "", 0, null)),
+                unit);
     }
     
     public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name) {
-        return best(name, 
-                type.getMatchingMemberDeclarations(unit, scope, "", 0)
-                    .keySet());
+        return realName(best(name, 
+                type.getMatchingMemberDeclarations(unit, scope, "", 0)),
+                unit);
     }
     
     /**
