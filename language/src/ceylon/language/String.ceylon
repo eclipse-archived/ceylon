@@ -424,7 +424,9 @@ shared native final class String(characters)
             else super.endsWith(substring);
     
     "Returns the concatenation of this string with the
-     given string.
+     given string. The resulting string contains the 
+     characters of this string followed by the characters of
+     the given string.
      
      Using the [[addition operator|Summable.plus]], 
      `string.plus(otherString)` may be written as
