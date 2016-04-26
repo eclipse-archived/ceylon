@@ -138,7 +138,7 @@ shared native final class Byte(congruent)
     "If [[shift]] is in the range `0..$111`, shift the bits 
      to the left by `shift` positions, using zero extension 
      to fill in the least significant bits. Otherwise shift 
-     the addressable bits to the right by `shift.and($111)`
+     the addressable bits to the left by `shift.and($111)`
      positions, using zero extension."
     aliased ("leftShift")
     shared actual native Byte leftLogicalShift(Integer shift)
