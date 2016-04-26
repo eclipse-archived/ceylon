@@ -41,11 +41,13 @@ shared void bytes() {
   check(Byte(255).string=="255", "byte.string 255");
   check(Byte(0).leftLogicalShift(3) == Byte(0), "0<<3");
   check(Byte(1).leftLogicalShift(3) == Byte(8), "1<<3");
-  check(Byte(255).leftLogicalShift(9) == Byte(0), "255<<9");
+  check(Byte(255).leftLogicalShift(9) == Byte(254), 
+      "255<<9 " + Byte(255).leftLogicalShift(9).string);
   check(Byte(0).rightLogicalShift(3) == Byte(0), "0>>>3");
   check(Byte(8).rightLogicalShift(3) == Byte(1), "8>>>3");
   check(Byte(128).rightLogicalShift(1)==Byte(64), "128>>>1");
-  check(Byte(255).rightLogicalShift(9) == Byte(0), "255>>>9");
+  check(Byte(255).rightLogicalShift(9) == Byte(127), 
+      "255>>>9 " + Byte(255).rightLogicalShift(9).string);
   check(Byte(255).rightLogicalShift(4) == Byte(15), "255>>>4");
   check(Byte(0).rightArithmeticShift(3) == Byte(0), "0>>3");
   check(Byte(64).rightArithmeticShift(1)==Byte(32), "64>>1");

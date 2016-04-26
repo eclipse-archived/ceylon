@@ -177,33 +177,33 @@ public final class Byte implements
     @Override
     @AliasesAnnotation$annotation$(aliases = "leftShift")
     public Byte leftLogicalShift(@Name("shift") long shift) {
-        return new Byte((byte) (value<<shift));
+        return new Byte((byte) (value<<(shift&7)));
     }
 
     @Ignore
     public static byte leftLogicalShift(byte value, long shift) {
-        return (byte) (value<<shift);
+        return (byte) (value<<(shift&7));
     }
 
     @Override
     public Byte rightArithmeticShift(@Name("shift") long shift) {
-        return new Byte((byte) (value>>shift));
+        return new Byte((byte) (value>>(shift&7)));
     }
 
     @Ignore
     public static byte rightArithmeticShift(byte value, long shift) {
-        return (byte) (value>>shift);
+        return (byte) (value>>(shift&7));
     }
 
     @Override
     @AliasesAnnotation$annotation$(aliases = "rightShift")
     public Byte rightLogicalShift(@Name("shift") long shift) {
-        return new Byte((byte) ((0xff&value)>>>shift));
+        return new Byte((byte) ((0xff&value)>>>(shift&7)));
     }
 
     @Ignore
     public static byte rightLogicalShift(byte value, long shift) {
-        return (byte) ((0xff&value)>>>shift);
+        return (byte) ((0xff&value)>>>(shift&7));
     }
 
     @Ignore

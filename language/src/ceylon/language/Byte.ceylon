@@ -97,25 +97,31 @@ shared native final class Byte(congruent)
     shared actual native Byte plus(Byte other)
             => (this.unsigned + other.unsigned).byte;
     
+    function indexInRange(Integer index)
+            => 0 <= index < 8;
+    
+    function mask(Integer index) 
+            => 1.byte.leftLogicalShift(index);
+    
     shared actual native Boolean get(Integer index) 
-            => 0 <= index <= 7
-            then !and(1.byte.leftLogicalShift(index)).zero 
+            => indexInRange(index)
+            then !and(mask(index)).zero 
             else false;
     
     shared actual native Byte flip(Integer index)
-            => 0 <= index <= 7
-            then xor(1.byte.leftLogicalShift(index)) 
+            => indexInRange(index)
+            then xor(mask(index)) 
             else this;
     
     shared actual native Byte set(Integer index, Boolean bit)
-            => 0 <= index <= 7
-            then (bit then or(1.byte.leftLogicalShift(index)) 
-                      else and(1.byte.leftLogicalShift(index).not))
+            => indexInRange(index)
+            then (bit then or(mask(index)) 
+                      else and(mask(index).not))
             else this;
     
     shared actual native Byte clear(Integer index) 
-            => 0 <= index <= 7
-            then and(1.byte.leftLogicalShift(index).not) 
+            => indexInRange(index)
+            then and(mask(index).not) 
             else this;
     
     shared actual native Byte not => unsigned.not.byte;
@@ -131,14 +137,14 @@ shared native final class Byte(congruent)
     
     aliased ("leftShift")
     shared actual native Byte leftLogicalShift(Integer shift)
-            => unsigned.leftLogicalShift(shift).byte;
+            => unsigned.leftLogicalShift(shift.and($111)).byte;
     
     aliased ("rightShift")
     shared actual native Byte rightLogicalShift(Integer shift)
-            => unsigned.rightLogicalShift(shift).byte;
+            => unsigned.rightLogicalShift(shift.and($111)).byte;
     
     shared actual native Byte rightArithmeticShift(Integer shift)
-            => signed.rightArithmeticShift(shift).byte;
+            => signed.rightArithmeticShift(shift.and($111)).byte;
     
     shared actual native Byte predecessor => (unsigned-1).byte;
     shared actual native Byte successor => (unsigned+1).byte;
