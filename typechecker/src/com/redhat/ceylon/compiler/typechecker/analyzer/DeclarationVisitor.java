@@ -1713,13 +1713,13 @@ public abstract class DeclarationVisitor extends Visitor {
             boolean isInitializer) {
         List<Tree.Statement> originals = 
                 that.getStatements();
+        int originalSize = originals.size();
         List<Tree.Statement> result = 
-                new ArrayList<Tree.Statement>
-                    (originals.size());
-        for (int i=0; i<originals.size(); i++) {
+                new ArrayList<Tree.Statement>(originalSize);
+        for (int i=0; i<originalSize; i++) {
             Tree.Statement st = originals.get(i);
             result.add(st);
-            if (i<originals.size()-1 &&
+            if (i<originalSize-1 &&
                     st instanceof Tree.IfStatement) {
                 Tree.IfStatement ifst =
                         (Tree.IfStatement) st;
@@ -1731,13 +1731,15 @@ public abstract class DeclarationVisitor extends Visitor {
                         List<Tree.Statement> statements = 
                                 block.getStatements();
                         if (!statements.isEmpty()) {
+                            int size = statements.size();
                             Tree.Statement last = 
-                                    statements.get(
-                                            statements.size()-1);
-                            if (definitelyReturns(last, isInitializer)) {
+                                    statements.get(size-1);
+                            if (definitelyReturns(last, 
+                                    isInitializer, false)) {
+                                Tree.ConditionList cl = 
+                                        ifcl.getConditionList();
                                 Tree.Variable v = 
-                                       guardedVariable(
-                                               ifcl.getConditionList());
+                                       guardedVariable(cl);
                                 if (v!=null) {
                                     result.add(v);
                                 }                                
@@ -1752,9 +1754,11 @@ public abstract class DeclarationVisitor extends Visitor {
     }
 
     public static boolean definitelyReturns(Tree.Statement last, 
-            boolean isInitializer) {
-        if (!isInitializer && last instanceof Tree.Return ||
-                last instanceof Tree.Throw) {
+            boolean isInitializer, boolean withinInnerLoop) {
+        if (last instanceof Tree.Throw ||
+            !isInitializer && last instanceof Tree.Return ||
+            !withinInnerLoop && (last instanceof Tree.Break 
+                              || last instanceof Tree.Continue)) {
             return true;
         }
         else if (last instanceof Tree.IfStatement) {
@@ -1774,10 +1778,12 @@ public abstract class DeclarationVisitor extends Visitor {
                                 ists.get(ists.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
-                        return definitelyReturns(ilast, 
-                                        isInitializer) &&
-                                definitelyReturns(elast, 
-                                        isInitializer);
+                        return definitelyReturns(ilast,
+                                        isInitializer,
+                                        withinInnerLoop) &&
+                                definitelyReturns(elast,
+                                        isInitializer,
+                                        withinInnerLoop);
                     }
                 }
             }
@@ -1803,7 +1809,8 @@ public abstract class DeclarationVisitor extends Visitor {
                             Tree.Statement clast =
                                     csts.get(csts.size()-1);
                             if (!definitelyReturns(clast, 
-                                    isInitializer)) {
+                                    isInitializer,
+                                    withinInnerLoop)) {
                                 return false;
                             }
                         }
@@ -1825,7 +1832,8 @@ public abstract class DeclarationVisitor extends Visitor {
                             Tree.Statement elast =
                                     ests.get(ests.size()-1);
                             if (!definitelyReturns(elast, 
-                                    isInitializer)) {
+                                    isInitializer,
+                                    withinInnerLoop)) {
                                 return false;
                             }
                         }
@@ -1835,10 +1843,13 @@ public abstract class DeclarationVisitor extends Visitor {
             }
             return false;
         }
+        //TODO: do something with try/catch/finally
+        //      detect try and every catch definitely
+        //      return, or that finally definitely returns
         else if (last instanceof Tree.ForStatement) {
-            Tree.ForStatement is = (Tree.ForStatement) last;
-            Tree.ElseClause ec = is.getElseClause();
-            Tree.ForClause fc = is.getForClause();
+            Tree.ForStatement fs = (Tree.ForStatement) last;
+            Tree.ElseClause ec = fs.getElseClause();
+            Tree.ForClause fc = fs.getForClause();
             if (ec!=null && fc!=null) {
                 Tree.Block ecb = ec.getBlock();
                 Tree.Block fcb = fc.getBlock();
@@ -1849,15 +1860,20 @@ public abstract class DeclarationVisitor extends Visitor {
                             ecb.getStatements();
                     //TODO: detect the case where the body
                     //      of the for loop never breaks
+                    //TODO: detect the case where we are
+                    //      iterating something known to be
+                    //      nonempty
                     if (!ests.isEmpty() && !fsts.isEmpty()) {
                         Tree.Statement flast =
                                 fsts.get(fsts.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
                         return definitelyReturns(flast, //|| definitelyDoesNotBreak(flast)
-                                        isInitializer) &&
+                                        isInitializer,
+                                        true) &&
                                 definitelyReturns(elast, 
-                                        isInitializer);
+                                        isInitializer,
+                                        true);
                     }
                 }
             }

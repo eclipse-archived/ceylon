@@ -1026,3 +1026,47 @@ shared void run24() {
     }
     print(x);
 }
+
+shared void run26() {
+    for (i in 0:1) {
+        String? s = "";
+        if (!exists s) {
+            break; // or continue;
+        }
+        print(s.size);
+    }
+}
+
+shared void run27() {
+    for (i in 0:1) {
+        String? s = "";
+        if (!exists s) {
+            for (j in 0:0) {
+                break; // or continue;
+            }
+        }
+        @error print(s.size);
+    }
+}
+
+shared void run28() {
+    for (i in 0:1) {
+        String? s = "";
+        if (!exists s) {
+            while (false) {
+                break; // or continue;
+            }
+        }
+        @error print(s.size);
+    }
+}
+
+shared void run29() {
+    while (false) {
+        String? s = "";
+        if (!exists s) {
+            break; // or continue;
+        }
+        print(s.size);
+    }
+}
