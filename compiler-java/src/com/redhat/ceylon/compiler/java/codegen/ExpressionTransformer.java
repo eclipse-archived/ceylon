@@ -6681,8 +6681,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
                 JCExpression rightExpr = transformExpression(right, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
-                if (operator.valueMask != 0) {
-                    leftExpr = make().Binary(JCTree.Tag.BITAND, leftExpr, makeInteger(operator.valueMask));
+                if (operator.leftValueMask != 0) {
+                    leftExpr = make().Binary(JCTree.Tag.BITAND, leftExpr, makeInteger(operator.leftValueMask));
+                }
+                if (operator.rightValueMask != 0) {
+                    rightExpr = make().Binary(JCTree.Tag.BITAND, rightExpr, makeInteger(operator.rightValueMask));
                 }
                 
                 result =  make().Binary(operator.javacOperator, leftExpr, rightExpr);
@@ -6697,8 +6700,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 
                 JCExpression leftExpr = transformExpression(left, optimisationStrategy.getBoxingStrategy(), binaryType, EXPR_WIDEN_PRIM);
 
-                if (operator.valueMask != 0) {
-                    leftExpr = make().Binary(JCTree.Tag.BITAND, leftExpr, makeInteger(operator.valueMask));
+                if (operator.leftValueMask != 0) {
+                    leftExpr = make().Binary(JCTree.Tag.BITAND, leftExpr, makeInteger(operator.leftValueMask));
                 }
                 
                 result = make().Unary(operator.javacOperator, leftExpr);

@@ -125,10 +125,12 @@ public class Operators {
         BINARY_BITWISE_AND(2, "and", JCTree.Tag.BITAND, IntegerByte),
         BINARY_BITWISE_OR(2, "or", JCTree.Tag.BITOR, IntegerByte),
         BINARY_BITWISE_XOR(2, "xor", JCTree.Tag.BITXOR, IntegerByte),
-        BINARY_BITWISE_LOG_LEFT_SHIFT(2, "leftLogicalShift", JCTree.Tag.SL, IntegerByte),
-        BINARY_BITWISE_LOG_RIGHT_SHIFT_INT(2, "rightLogicalShift", 0, JCTree.Tag.USR, PrimitiveType.INTEGER),
-        BINARY_BITWISE_LOG_RIGHT_SHIFT_BYTE(2, "rightLogicalShift", 0xff, JCTree.Tag.USR, PrimitiveType.BYTE),
-        BINARY_BITWISE_ARI_RIGHT_SHIFT(2, "rightArithmeticShift", JCTree.Tag.SR, IntegerByte),
+        BINARY_BITWISE_LOG_LEFT_SHIFT_INT(2, "leftLogicalShift", JCTree.Tag.SL, PrimitiveType.INTEGER),
+        BINARY_BITWISE_LOG_LEFT_SHIFT_BYTE(2, "leftLogicalShift", 0, 0b111, JCTree.Tag.SL, PrimitiveType.BYTE),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT_INT(2, "rightLogicalShift", JCTree.Tag.USR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT_BYTE(2, "rightLogicalShift", 0xff, 0b111, JCTree.Tag.USR, PrimitiveType.BYTE),
+        BINARY_BITWISE_ARI_RIGHT_SHIFT_INT(2, "rightArithmeticShift", JCTree.Tag.SR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_ARI_RIGHT_SHIFT_BYTE(2, "rightArithmeticShift", 0, 0b111, JCTree.Tag.SR, PrimitiveType.BYTE),
 
         BINARY_AND(Tree.AndOp.class, 2, "<not-used>", JCTree.Tag.AND, PrimitiveType.BOOLEAN),
         BINARY_OR(Tree.OrOp.class, 2, "<not-used>", JCTree.Tag.OR, PrimitiveType.BOOLEAN),
@@ -183,7 +185,9 @@ public class Operators {
         /** The operator with which to compare against {@link #ceylonValue} */
         JCTree.Tag javacValueOperator;
         /** A mask to apply to the LHS before applying the operator */
-        int valueMask;
+        int leftValueMask;
+        /** A mask to apply to the RHS before applying the operator */
+        int rightValueMask;
         
         OperatorTranslation(int arity, String ceylonMethod, 
                 JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
@@ -192,10 +196,11 @@ public class Operators {
             this.optimisableTypes = optimisableTypes;
             this.arity = arity;
         }
-        OperatorTranslation(int arity, String ceylonMethod, int valueMask,
+        OperatorTranslation(int arity, String ceylonMethod, int leftValueMask, int rightValueMask,
                 JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
             this(arity, ceylonMethod, javacOperator, optimisableTypes);
-            this.valueMask = valueMask;
+            this.leftValueMask = leftValueMask;
+            this.rightValueMask = rightValueMask;
         }
         OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, 
                 int arity, String ceylonMethod, 
