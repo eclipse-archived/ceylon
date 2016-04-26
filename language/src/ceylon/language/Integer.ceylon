@@ -160,29 +160,53 @@ shared native final class Integer(Integer integer)
     shared actual native Integer xor(Integer other);
     shared actual native Integer and(Integer other);
     
-    "If shift is in the range of addressable bits 
-     (`0..runtime.integerAddressableSize-1`), shift the 
-     addressable bits to the right by `shift` positions, 
-     with sign extension. Otherwise shift the addressable 
-     bits to the right by `(bits + (shift % bits)) % bits` 
-     where `bits=runtime.integerAddressableSize`."
+    "If the given [[shift]] is in the range of 
+     [[addressable bits|runtime.integerAddressableSize]]
+     given by
+     
+         0..runtime.integerAddressableSize-1
+     
+     shift the addressable bits to the right by `shift` 
+     positions, using sign extension to fill in the most
+     significant bits. Otherwise shift the 
+     addressable bits to the right by 
+     
+         shift.and(runtime.integerAddressableSize-1)
+     
+     positions, using sign extension."
     shared actual native Integer rightArithmeticShift(Integer shift);
     
-    "If shift is in the range of addressable bits 
-     (`0..runtime.integerAddressableSize-1`), shift the 
-     addressable bits to the right by `shift` positions, 
-     with zero extension. Otherwise shift the addressable 
-     bits to the right by `(bits + (shift % bits)) % bits` 
-     where `bits=runtime.integerAddressableSize`."
+    "If the given [[shift]] is in the range of 
+     [[addressable bits|runtime.integerAddressableSize]]
+     given by
+     
+         0..runtime.integerAddressableSize-1
+     
+     shift the addressable bits to the right by `shift` 
+     positions, using zero extension to fill in the most
+     significant bits. Otherwise shift the addressable bits 
+     to the right by 
+     
+         shift.and(runtime.integerAddressableSize-1)
+     
+     positions, using zero extension."
     aliased ("rightShift")
     shared actual native Integer rightLogicalShift(Integer shift);
     
-    "If shift is in the range of addressable bits 
-     (`0..runtime.integerAddressableSize-1`), shift the 
-     addressable bits to the left by `shift` positions.
-     Otherwise shift the addressable bits to the left by 
-     `(bits + (shift % bits)) % bits` where 
-     `bits=runtime.integerAddressableSize`."
+    "If the given [[shift]] is in the range of 
+     [[addressable bits|runtime.integerAddressableSize]]
+     given by
+     
+         0..runtime.integerAddressableSize-1
+     
+     shift the addressable bits to the left by `shift` 
+     positions, using zero extension to fill in the least
+     significant bits. Otherwise shift the addressable bits 
+     to the left by 
+     
+         shift.and(runtime.integerAddressableSize-1)
+     
+     positions, using zero extension."
     aliased ("leftShift")
     shared actual native Integer leftLogicalShift(Integer shift);
     
