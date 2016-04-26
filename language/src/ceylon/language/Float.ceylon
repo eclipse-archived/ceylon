@@ -211,7 +211,7 @@ shared native final class Float(Float float)
     shared native Integer integer;
     
     shared actual native Float timesInteger(Integer integer)
-            => times(integer.float);
+            => times(integer.nearestFloat);
     
     shared actual native Float plusInteger(Integer integer)
             => plus(integer.float);

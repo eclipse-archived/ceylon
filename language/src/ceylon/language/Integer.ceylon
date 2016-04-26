@@ -66,7 +66,7 @@ shared native final class Integer(Integer integer)
     "Determines if this integer is a factor of the given 
      integer, that is, if `remainder(other)==0 `."
     shared actual native Boolean divides(Integer other)
-            => this % other == 0;
+            => other % this == 0;
     
     "The result of raising this number to the given 
      non-negative integer power, where `0^0` evaluates to 
