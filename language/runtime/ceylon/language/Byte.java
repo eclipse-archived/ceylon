@@ -7,6 +7,7 @@ import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -76,6 +77,7 @@ public final class Byte implements
         return $TypeDescriptor$;
     }
     
+    @Transient
     public boolean getEven() {
         return (value & 1) == 0;
     }
@@ -85,6 +87,7 @@ public final class Byte implements
         return (value & 1) == 0;
     }
 
+    @Transient
     public boolean getZero() {
         return value == 0;
     }
@@ -94,6 +97,7 @@ public final class Byte implements
         return value == 0;
     }
 
+    @Transient
     public boolean getUnit() {
         return value == 1;
     }
@@ -103,6 +107,7 @@ public final class Byte implements
         return value == 1;
     }
 
+    @Transient
     @Override
     public Byte getNegated() {
         return new Byte((byte)-value);
@@ -165,6 +170,7 @@ public final class Byte implements
     }
 
     @Override
+    @Transient
     public Byte getNot() {
         return new Byte((byte) ~value);
     }
@@ -206,7 +212,6 @@ public final class Byte implements
         return (byte) ((0xff&value)>>>(shift&7));
     }
 
-    @Ignore
     @Override
     public Byte clear(@Name("index") long index) {
         if (index < 0 || index > 7) {
@@ -311,7 +316,8 @@ public final class Byte implements
     public static long getUnsigned(byte value) {
         return 0xff&value;
     }
-    
+
+    @Transient
     public long getSigned() {
         return value;
     }
@@ -342,6 +348,7 @@ public final class Byte implements
     }
     
     @Override
+    @Transient
     public Byte getPredecessor() {
         return new Byte((byte) (value-1));
     }
@@ -352,6 +359,7 @@ public final class Byte implements
     }
     
     @Override
+    @Transient
     public Byte getSuccessor() {
         return new Byte((byte) (value+1));
     }
@@ -362,6 +370,7 @@ public final class Byte implements
     }
     
     @Override
+    @Transient
     public int hashCode() {
         return value;
     }
@@ -372,6 +381,7 @@ public final class Byte implements
     }
     
     @Override
+    @Transient
     public java.lang.String toString() {
         return Integer.toString(0xff&value);
     }

@@ -302,6 +302,7 @@ public final class Integer
 
     @AliasesAnnotation$annotation$(aliases = "absolute")
     @Override
+    @Transient
     public Integer getMagnitude() {
         return instance(Math.abs(value));
     }
@@ -312,6 +313,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getFractionalPart() {
         return instance(0);
     }
@@ -322,6 +324,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getWholePart() {
         return this;
     }
@@ -332,6 +335,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getPositive() {
         return value > 0;
     }
@@ -342,6 +346,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getNegative() {
         return value < 0;
     }
@@ -352,6 +357,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public long getSign() {
         if (value > 0)
             return 1;
@@ -522,6 +528,7 @@ public final class Integer
         return (double) value;
     }
 
+    @Transient
     public byte getByte() {
         return getByte(value);
     }
@@ -553,6 +560,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getUnit() {
         return value==1;
     }
@@ -563,6 +571,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getZero() {
         return value==0;
     }
@@ -573,6 +582,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getPredecessor() {
         return Integer.instance(value - 1);
     }
@@ -583,6 +593,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getSuccessor() {
         return Integer.instance(value + 1);
     }

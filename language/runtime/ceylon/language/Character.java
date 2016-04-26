@@ -58,6 +58,7 @@ public final class Character
         return codePoint;
     }
 
+    @Transient
     public java.lang.String toString() {
         return java.lang.String.valueOf(java.lang.Character.toChars(codePoint));
     }
@@ -208,6 +209,7 @@ public final class Character
     }
 
     @Override
+    @Transient
     public Character getPredecessor() {
     	return new Character(getPredecessor(codePoint));
     }
@@ -218,6 +220,7 @@ public final class Character
     }
 
     @Override
+    @Transient
     public Character getSuccessor() {
     	return new Character(getSuccessor(codePoint));
     }

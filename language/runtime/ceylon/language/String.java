@@ -1221,6 +1221,7 @@ public final class String
         return value.substring(from, to);
     }
 
+    @Transient
     public java.lang.String getNormalized() {
         return getNormalized(value);
     }
@@ -1650,6 +1651,7 @@ public final class String
     }
     
     @Override
+    @Transient
     public String getReversed() {
         return instance(getReversed(value));
     }
