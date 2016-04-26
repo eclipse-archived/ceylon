@@ -104,7 +104,7 @@ shared native final class Float(Float float)
     "Determines if this value is a negative number or
      `-infinity`. Produces `false` for a positive number, 
      `+0.0`, `-0.0`, or undefined."
-    shared actual native Boolean negative => this > 0.0;
+    shared actual native Boolean negative => this < 0.0;
     
     "Determines if this value is a positive number, `+0.0`, 
      or `infinity`. Produces `false` for a negative number, 
