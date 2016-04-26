@@ -114,11 +114,17 @@ shared native final class Integer(Integer integer)
             else if (this > other) then larger
             else equal;
     
+    function indexInRange(Integer index)
+            => 0 <= index < runtime.integerAddressableSize;
+    
+    function mask(Integer index) 
+            => 1.leftLogicalShift(index);
+    
     "If the `index` is for an addressable bit, the value of 
      that bit. Otherwise false."
     shared actual native Boolean get(Integer index) 
-            => 0 <= index <= 63
-            then and(1.leftLogicalShift(index)) != 0 
+            => indexInRange(index)
+            then and(mask(index)) != 0 
             else false;
     
     "If the `index` is for an addressable bit, an instance 
@@ -126,8 +132,8 @@ shared native final class Integer(Integer integer)
      with that bit cleared. Otherwise an instance with the 
      same addressable bits as this instance."
     shared actual native Integer clear(Integer index) 
-            => 0 <= index <= 63
-            then and(1.leftLogicalShift(index).not) 
+            => indexInRange(index)
+            then and(mask(index).not) 
             else this;
     
     "If the `index` is for an addressable bit, an instance 
@@ -135,8 +141,8 @@ shared native final class Integer(Integer integer)
      with that bit flipped. Otherwise an instance with the 
      same addressable bits as this instance."
     shared actual native Integer flip(Integer index)
-            => 0 <= index <= 63
-            then xor(1.leftLogicalShift(index)) 
+            => indexInRange(index)
+            then xor(mask(index)) 
             else this;
     
     "If the `index` is for an addressable bit, an instance 
@@ -144,9 +150,9 @@ shared native final class Integer(Integer integer)
      with that bit set to `bit`. Otherwise an instance with 
      the same addressable bits as this instance."
     shared actual native Integer set(Integer index, Boolean bit)
-            => 0 <= index <= 63
-            then (bit then or(1.leftLogicalShift(index)) 
-                      else and(1.leftLogicalShift(index).not))
+            => indexInRange(index)
+            then (bit then or(mask(index)) 
+                      else and(mask(index).not))
             else this;
     
     shared actual native Integer not;
