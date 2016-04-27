@@ -2280,8 +2280,8 @@ public class GenerateJsVisitor extends Visitor {
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
-                                    Type ps = moval.getType().getTypeArgumentList().get(1);
-                                    if (ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
+                                    final Type ps = moval.getUnit().getCallableTuple(moval.getType());
+                                    if (ps == null || ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
                                         out("[],");
                                     } else {
                                         out("[/*VALUE Callable params ", ps.asQualifiedString()+"*/],");
