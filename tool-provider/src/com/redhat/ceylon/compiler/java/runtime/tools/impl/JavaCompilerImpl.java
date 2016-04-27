@@ -23,16 +23,17 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.tools.javac.api.ClientCodeWrapper.Trusted;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 
 public class JavaCompilerImpl implements Compiler {
 
     // if this is not here, this task will be wrapped into a TaskListener that does not implement CeylonTaskListener
     @Trusted
-    public static class CompilationListenerAdapter implements DiagnosticListener<JavaFileObject>, CeylonTaskListener {
+    private static class CompilationListenerAdapter implements DiagnosticListener<JavaFileObject>, CeylonTaskListener {
 
         private CompilationListener listener;
 
-        public CompilationListenerAdapter(CompilationListener listener) {
+        CompilationListenerAdapter(CompilationListener listener) {
             this.listener = listener;
         }
 
@@ -113,34 +114,52 @@ public class JavaCompilerImpl implements Compiler {
     private List<String> translateOptions(CompilerOptions options) {
         List<String> translatedOptions = new ArrayList<String>();
         // FIXME: translate every option
-        if(options.isVerbose())
-            translatedOptions.add("-verbose");
+        if(options.isVerbose()) {
+            translatedOptions.add(Option.VERBOSE.getText());
+        }
         for(File sourcePath : options.getSourcePath()){
-            translatedOptions.add("-src");
+            translatedOptions.add(Option.CEYLONSOURCEPATH.getText());
             translatedOptions.add(sourcePath.getPath());
         }
+        for(File resourcePath : options.getResourcePath()){
+            translatedOptions.add(Option.CEYLONRESOURCEPATH.getText());
+            translatedOptions.add(resourcePath.getPath());
+        }
         for(String rep : options.getUserRepositories()){
-            translatedOptions.add("-rep");
+            translatedOptions.add(Option.CEYLONREPO.getText());
             translatedOptions.add(rep);
         }
         if(options.getOutputRepository() != null){
-            translatedOptions.add("-out");
+            translatedOptions.add(Option.CEYLONOUT.getText());
             translatedOptions.add(options.getOutputRepository());
         }
         if(options.getSystemRepository() != null){
-            translatedOptions.add("-sysrep");
+            translatedOptions.add(Option.CEYLONSYSTEMREPO.getText());
             translatedOptions.add(options.getSystemRepository());
         }
         if(options.getOverrides() != null){
-            translatedOptions.add("-overrides");
+            translatedOptions.add(Option.CEYLONOVERRIDES.getText());
             translatedOptions.add(options.getOverrides());
+        }
+        if (options.getWorkingDirectory() != null) {
+            translatedOptions.add(Option.CEYLONCWD.getText());
+            translatedOptions.add(options.getWorkingDirectory());
+        }
+        if (options.isOffline()) {
+            translatedOptions.add(Option.CEYLONOFFLINE.getText());
         }
         if(options instanceof JavaCompilerOptions){
             JavaCompilerOptions javaOptions = (JavaCompilerOptions) options;
-            if(javaOptions.isFlatClasspath())
-                translatedOptions.add("-flat-classpath");
-            if(javaOptions.isAutoExportMavenDependencies())
-                translatedOptions.add("-auto-export-maven-dependencies");
+            if(javaOptions.isFlatClasspath()) {
+                translatedOptions.add(Option.CEYLONFLATCLASSPATH.getText());
+            }
+            if(javaOptions.isAutoExportMavenDependencies()) {
+                translatedOptions.add(Option.CEYLONAUTOEXPORTMAVENDEPENDENCIES.getText());
+            }
+            if (javaOptions.getJdkProvider() != null) {
+                translatedOptions.add(Option.CEYLONJDKPROVIDER.getText());
+                translatedOptions.add(javaOptions.getJdkProvider());
+            }
         }
         return translatedOptions;
     }
