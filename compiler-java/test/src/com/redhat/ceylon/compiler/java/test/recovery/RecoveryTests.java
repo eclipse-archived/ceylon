@@ -239,6 +239,16 @@ public class RecoveryTests extends CompilerTests {
     }
     
     @Test
+    public void testRcvDeclarationUnknownAnnotations(){
+        compileAndRunWithUnresolvedCompilationError(
+                "declaration/UnknownAnnotations.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration.unknownAnnotations",
+                null, 1, 2);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.UnknownAnnotation");
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.unknownAnnotations_");
+    }
+    
+    @Test
     public void testRcvDeclarationClassNoPlOrCtor(){
         compileAndRunWithUnresolvedCompilationError(
                 "declaration/ClassNoPlOrCtor.ceylon",
