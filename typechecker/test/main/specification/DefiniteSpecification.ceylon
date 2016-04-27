@@ -1070,3 +1070,37 @@ shared void run29() {
         print(s.size);
     }
 }
+
+class ClassWithReturn1() {
+    String name;
+    if (1==1) {
+        @error return;
+    }
+    name = "Gavin";
+    shared void bar() => print(name);
+}
+
+class ClassWithReturn2() {
+    if (1==1) {
+        @error return;
+    }
+    value name = "Gavin";
+    shared void bar() => print(name);
+}
+
+void funWithReturn1() {
+    String name;
+    if (1==1) {
+        return;
+    }
+    name = "Gavin";
+    void bar() => print(name);
+}
+
+void funWithReturn2() {
+    if (1==1) {
+        return;
+    }
+    value name = "Gavin";
+    void bar() => print(name);
+}

@@ -8,7 +8,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNev
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isSelfReference;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingDeclarationOfScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 
@@ -47,6 +46,7 @@ public class SpecificationVisitor extends Visitor {
     
     private SpecificationState specified = 
             new SpecificationState(false, false);
+    private boolean specificationDisabled = false;
     private boolean withinDeclaration = false;
     private int loopDepth = 0;
     private int brokenLoopDepth = 0;
@@ -61,6 +61,8 @@ public class SpecificationVisitor extends Visitor {
     private boolean inExtends = false;
     private boolean inAnonFunctionOrComprehension = false;
     private Parameter parameter = null;
+    private boolean usedInDeclarationSection = false;
+    private boolean definedInDeclarationSection = false;
     
     @Override
     public void visit(Tree.ExtendedType that) {
@@ -128,13 +130,13 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean beginDisabledSpecificationScope() {
-        boolean ca = withinDeclaration;
-        withinDeclaration = true;
+        boolean ca = specificationDisabled;
+        specificationDisabled = true;
         return ca;
     }
     
     private void endDisabledSpecificationScope(boolean ca) {
-        withinDeclaration = ca;
+        specificationDisabled = ca;
     }
     
     private void specify() {
@@ -828,10 +830,8 @@ public class SpecificationVisitor extends Visitor {
                 specify(); //to eliminate dupe error
             }
         }
-        else if (withinDeclaration && constant) {
-            Declaration dec = 
-                    getContainingDeclarationOfScope(scope);
-            if (dec!=null && dec.equals(declaration)) {
+        else if (specificationDisabled && constant) {
+            if (withinDeclaration) {
                 bme.addError("cannot specify " + 
                         shortdesc() + 
                         " from within its own body: '" + 
@@ -878,8 +878,10 @@ public class SpecificationVisitor extends Visitor {
             loopDepth = 0;
             brokenLoopDepth = 0;
             beginDisabledSpecificationScope();
+            withinDeclaration = true;
             declare();
             super.visit(that);
+            withinDeclaration = false;
             endDisabledSpecificationScope(false);
             loopDepth = 0;
             brokenLoopDepth = 0;
@@ -961,8 +963,10 @@ public class SpecificationVisitor extends Visitor {
             loopDepth = 0;
             brokenLoopDepth = 0;
             beginDisabledSpecificationScope();
+            withinDeclaration = true;
             super.visit(that);
             declare();
+            withinDeclaration = false;
             endDisabledSpecificationScope(false);
             loopDepth = 0;
             brokenLoopDepth = 0;
@@ -1185,7 +1189,7 @@ public class SpecificationVisitor extends Visitor {
         }
         return null;
     }
-    
+        
     @Override
     public void visit(Tree.ClassBody that) {
         if (that.getScope()==declaration.getContainer()) {
@@ -1194,6 +1198,38 @@ public class SpecificationVisitor extends Visitor {
             declarationSection = les==null;
             lastExecutableStatement = les;
             lastConstructor = lc;
+            
+            new Visitor() {
+                boolean declarationSection = false;
+                @Override
+                public void visit(Tree.ExecutableStatement that) {
+                    super.visit(that);
+                    if (that==lastExecutableStatement) {
+                        declarationSection = true;
+                    }
+                }
+                @Override
+                public void visit(Tree.Declaration that) {
+                    super.visit(that);
+                    if (declarationSection &&
+                            that.getDeclarationModel()==declaration) {
+                        definedInDeclarationSection = true;
+                    }
+                    if (that==lastExecutableStatement) {
+                        declarationSection = true;
+                    }
+                }
+                @Override
+                public void visit(Tree.StaticMemberOrTypeExpression that) {
+                    super.visit(that);
+                    if (declarationSection &&
+                            declaration instanceof FunctionOrValue &&
+                            that.getDeclaration()==declaration) {
+                        usedInDeclarationSection = true;;
+                    }
+                }
+            }.visit(that);
+            
             super.visit(that);        
             declarationSection = false;
             lastExecutableStatement = null;
@@ -1204,7 +1240,10 @@ public class SpecificationVisitor extends Visitor {
                     Node d = getDeclaration(that);
                     if (d==null) d = that;
                     d.addError("must be definitely specified by class initializer: " + 
-                                message(declaration) + " is shared", 
+                                message(declaration) + 
+                                (declaration.isShared() ? 
+                                        " is shared" : 
+                                        " is captured"), 
                                 1401);
                 }
             }
@@ -1246,11 +1285,21 @@ public class SpecificationVisitor extends Visitor {
     
     public void visit(Tree.Return that) {
         super.visit(that);
-        if (!withinDeclaration) {
-            if (isSharedDeclarationUninitialized()) {
-                that.addError("must be definitely specified by class initializer: '" +
-                        message(declaration) + " is shared'");
-            }
+        if (!specificationDisabled && 
+                isSharedDeclarationUninitialized()) {
+            that.addError("must be definitely specified by class initializer: " +
+                    message(declaration) + 
+                    (declaration.isShared() ? 
+                            " is shared" : 
+                            " is captured"));
+        }
+        else if (that.getDeclaration()==declaration.getContainer() &&
+                isCapturedDeclarationUninitialized()) {
+            that.addError("must be definitely specified by class initializer: " +
+                    message(declaration) + 
+                    (declaration.isShared() ? 
+                            " is shared" : 
+                            " is captured"));
         }
         exit();
     }
@@ -1258,6 +1307,17 @@ public class SpecificationVisitor extends Visitor {
     private boolean isSharedDeclarationUninitialized() {
         return (declaration.isShared() || 
                 declaration.getOtherInstanceAccess()) && 
+                !declaration.isFormal() && 
+                !isNativeHeader(declaration) &&
+                !isLate() &&
+                !specified.definitely;
+    }
+    
+    private boolean isCapturedDeclarationUninitialized() {
+        return (declaration.isShared() || 
+                declaration.getOtherInstanceAccess() ||
+                usedInDeclarationSection) &&
+                !definedInDeclarationSection &&
                 !declaration.isFormal() && 
                 !isNativeHeader(declaration) &&
                 !isLate() &&
