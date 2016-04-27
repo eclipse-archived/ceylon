@@ -115,3 +115,26 @@ final class bug1676_2_B_ {
         return new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B();
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.CompileTimeError
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class Bug1676_2_site implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected Bug1676_2_site() {
+        super();
+    }
+    
+    Bug1676_2_site(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1676_2_B")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B()")
+    final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B> bug1676_2_B) {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_site.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_site.class);
+}
