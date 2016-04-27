@@ -51,12 +51,12 @@ that should fix it.)
 <!-- lang: bash -->
     $ ant clean dist
 
-After this you'll have a newly built distribution in the `dist` 
+After this you'll have a newly built distribution in the `dist/dist` 
 folder of your current directory. You can run the `ceylon` command 
 without any further setup or installation by simply running
 
 <!-- lang: bash -->
-    $ dist/bin/ceylon
+    $ dist/dist/bin/ceylon
 
 But it's advisable to add the `ceylon` command to your `PATH` 
 environment variable (either by adding the `bin` folder to your 
