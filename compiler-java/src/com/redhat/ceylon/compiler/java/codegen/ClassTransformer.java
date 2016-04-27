@@ -55,6 +55,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Generate;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.java.codegen.recovery.PrivateConstructorOnly;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerCatchallConstructor;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
@@ -303,8 +304,12 @@ public class ClassTransformer extends AbstractTransformer {
             pdb.modifiers(VARARGS);
             pdb.type(make().TypeArray(make().Type(syms().objectType)), null);
             initBuilder.parameter(pdb);
-        } 
-        
+        } else if (plan instanceof PrivateConstructorOnly) {
+            classBuilder.broken();
+            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor();
+            initBuilder.body(statementGen().makeThrowUnresolvedCompilationError(plan.getErrorMessage().getMessage()));
+            initBuilder.modifiers(PRIVATE);
+        }
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
             // ... then add a main() method

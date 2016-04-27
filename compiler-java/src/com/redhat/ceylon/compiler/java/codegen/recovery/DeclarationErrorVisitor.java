@@ -114,7 +114,11 @@ class DeclarationErrorVisitor extends Visitor {
                         && (model instanceof Class 
                             || (model instanceof Value
                                     && ((Value)model).getTypeDeclaration().isAnonymous()))) {
-                    plan = new ThrowerCatchallConstructor(that, message);
+                    if (message.getCode() == NO_CONSTRUCTORS) {
+                        plan = new PrivateConstructorOnly(that, message);
+                    } else {
+                        plan = new ThrowerCatchallConstructor(that, message);
+                    }
                 } 
                 else {
                     plan = new Drop(that, message);
