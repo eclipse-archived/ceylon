@@ -38,6 +38,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -757,15 +758,14 @@ public class CeylonVisitor extends Visitor {
         append(gen.expressionGen().transform(expr));
     }
 
-    public void visit(Tree.QualifiedMemberExpression access) {
-        append(gen.expressionGen().transform(access));
+    public void visit(Tree.QualifiedMemberOrTypeExpression access) {
+        if(TreeUtil.isQualifiedTypeExpression(access))
+            append(gen.expressionGen().transformQualifiedTypeExpression(access));
+        else
+            append(gen.expressionGen().transformQualifiedMemberExpression(access));
     }
 
     public void visit(Tree.BaseMemberExpression access) {
-        append(gen.expressionGen().transform(access));
-    }
-
-    public void visit(Tree.QualifiedTypeExpression access) {
         append(gen.expressionGen().transform(access));
     }
 

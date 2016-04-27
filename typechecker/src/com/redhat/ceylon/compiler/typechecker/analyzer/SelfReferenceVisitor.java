@@ -7,6 +7,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Parameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Super;
@@ -240,16 +241,7 @@ public class SelfReferenceVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.QualifiedMemberExpression that) {
-        super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
-            checkMemberReference(that);
-        }
-        checkReference(that);
-    }
-
-    @Override
-    public void visit(Tree.QualifiedTypeExpression that) {
+    public void visit(Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
         if (isSelfReference(that.getPrimary())) {
             checkMemberReference(that);
@@ -459,9 +451,9 @@ public class SelfReferenceVisitor extends Visitor {
         }
         if (typeDeclaration.isObjectClass() && 
                 mayNotLeakAnonymousClass() && 
-                t instanceof Tree.QualifiedMemberExpression) {
-        	Tree.QualifiedMemberExpression qme = 
-        	        (Tree.QualifiedMemberExpression) t;
+                TreeUtil.isQualifiedMemberExpression(t)) {
+        	Tree.QualifiedMemberOrTypeExpression qme = 
+        	        (Tree.QualifiedMemberOrTypeExpression) t;
         	if (qme.getPrimary() instanceof Tree.Outer) {
         		Declaration declaration = qme.getDeclaration();
         		if (declaration instanceof TypedDeclaration) {

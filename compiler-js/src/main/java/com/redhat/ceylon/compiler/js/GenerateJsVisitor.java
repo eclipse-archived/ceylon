@@ -46,12 +46,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
@@ -1819,13 +1820,17 @@ public class GenerateJsVisitor extends Visitor {
         return (d instanceof FunctionOrValue) && !(d instanceof Function)
                 && !AttributeGenerator.defineAsProperty(d);
     }
-    
+
     void supervisit(final Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
     }
-
+    
     @Override
-    public void visit(final Tree.QualifiedMemberExpression that) {
+    public void visit(final Tree.QualifiedMemberOrTypeExpression that) {
+        if(TreeUtil.isQualifiedTypeExpression(that)){
+            BmeGenerator.generateQte(that, this);
+            return;
+        }
         if (errVisitor.hasErrors(that))return;
         //Big TODO: make sure the member is actually
         //          refined by the current class!
@@ -2010,11 +2015,6 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.BaseTypeExpression that) {
         BmeGenerator.generateBte(that, this, false);
-    }
-
-    @Override
-    public void visit(final Tree.QualifiedTypeExpression that) {
-        BmeGenerator.generateQte(that, this);
     }
 
     public void visit(final Tree.Dynamic that) {
@@ -2407,8 +2407,8 @@ public class GenerateJsVisitor extends Visitor {
                 returnValue = memberAccess(bme, null);
             }
 
-        } else if (that.getLeftTerm() instanceof QualifiedMemberExpression) {
-            QualifiedMemberExpression qme = (QualifiedMemberExpression)that.getLeftTerm();
+        } else if (TreeUtil.isQualifiedMemberExpression(that.getLeftTerm())) {
+            QualifiedMemberOrTypeExpression qme = (QualifiedMemberOrTypeExpression)that.getLeftTerm();
             lhsExpr = qme;
             boolean simpleSetter = hasSimpleGetterSetter(qme.getDeclaration());
             String lhsVar = null;
@@ -2796,8 +2796,8 @@ public class GenerateJsVisitor extends Visitor {
             if (!hasSimpleGetterSetter(lhsDecl)) { out(",", getLHS); }
             out(")");
 
-        } else if (lhs instanceof QualifiedMemberExpression) {
-            QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
+        } else if (TreeUtil.isQualifiedMemberExpression(lhs)) {
+            QualifiedMemberOrTypeExpression lhsQME = (QualifiedMemberOrTypeExpression) lhs;
             if (TypeUtils.isNativeJs(lhsQME)) {
                 // ($1.foo = Box($1.foo).operator($2))
                 final String tmp = names.createTempVariable();
@@ -2862,7 +2862,7 @@ public class GenerateJsVisitor extends Visitor {
     @Override public void visit(final Tree.NotOp that) {
         final Term t = that.getTerm();
         final boolean omitParens = t instanceof BaseMemberExpression
-                || t instanceof QualifiedMemberExpression
+                || TreeUtil.isQualifiedMemberExpression(t)
                 || t instanceof Tree.IsOp || t instanceof Tree.Exists || t instanceof Tree.IdenticalOp
                 || t instanceof Tree.InOp || t instanceof Tree.Nonempty
                 || (t instanceof Tree.InvocationExpression && ((Tree.InvocationExpression)t).getNamedArgumentList() == null);

@@ -11,6 +11,7 @@ import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
@@ -80,8 +81,8 @@ public class InvocationGenerator {
             final String fname = names.createTempVariable();
             gen.out("(", fname, "=");
             //Call a native js constructor passing a native js object as parameter
-            if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
+            if (TreeUtil.isQualifiedTypeExpression(typeArgSource)) {
+                BmeGenerator.generateQte((Tree.QualifiedMemberOrTypeExpression)typeArgSource, gen);
             } else {
                 typeArgSource.visit(gen);
             }
@@ -96,8 +97,8 @@ public class InvocationGenerator {
             writeNew(typeArgSource);
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen);
-            } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
+            } else if (TreeUtil.isQualifiedTypeExpression(typeArgSource)) {
+                BmeGenerator.generateQte((Tree.QualifiedMemberOrTypeExpression)typeArgSource, gen);
             } else {
                 typeArgSource.visit(gen);
             }
@@ -129,8 +130,8 @@ public class InvocationGenerator {
             }
             final String fname = names.createTempVariable();
             gen.out(fname,"=");
-            if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
+            if (TreeUtil.isQualifiedTypeExpression(typeArgSource)) {
+                BmeGenerator.generateQte((Tree.QualifiedMemberOrTypeExpression)typeArgSource, gen);
             } else {
                 typeArgSource.visit(gen);
             }
@@ -157,8 +158,8 @@ public class InvocationGenerator {
                     }
                 }
                 BmeGenerator.generateBme(_bme, gen);
-            } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
+            } else if (TreeUtil.isQualifiedTypeExpression(typeArgSource)) {
+                BmeGenerator.generateQte((Tree.QualifiedMemberOrTypeExpression)typeArgSource, gen);
             } else {
                 typeArgSource.visit(gen);
             }

@@ -37,6 +37,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
@@ -1528,8 +1529,8 @@ public class StatementTransformer extends AbstractTransformer {
         if (iterableTerm instanceof Tree.InvocationExpression) {
             // check for `iterable.by(step)`
             Tree.InvocationExpression invocation = (Tree.InvocationExpression)iterableTerm;
-            if (invocation.getPrimary() instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression)invocation.getPrimary();
+            if (TreeUtil.isQualifiedMemberExpression(invocation.getPrimary())) {
+                Tree.QualifiedMemberOrTypeExpression qme = (Tree.QualifiedMemberOrTypeExpression)invocation.getPrimary();
                 Type primaryType = qme.getPrimary().getTypeModel();
                 Type iterableType = primaryType.getSupertype(typeFact().getIterableDeclaration());
                 if (iterableType != null) {
@@ -2071,7 +2072,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeIndexable() {
             if (dotIterable) {
-                Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)getIterable();
+                Tree.QualifiedMemberOrTypeExpression expr = (Tree.QualifiedMemberOrTypeExpression)getIterable();
                 return expressionGen().transformExpression(expr.getPrimary());
             }
             return expressionGen().transformExpression(getIterable());
@@ -2117,8 +2118,8 @@ public class StatementTransformer extends AbstractTransformer {
         if (elementType == null) {
             // Check for "for (x in javaArray.iterable)" where javaArray is e.g. IntArray
             
-            if (baseIterable instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression expr = (Tree.QualifiedMemberExpression)baseIterable;
+            if (TreeUtil.isQualifiedMemberExpression(baseIterable)) {
+                Tree.QualifiedMemberOrTypeExpression expr = (Tree.QualifiedMemberOrTypeExpression)baseIterable;
                 if ("iterable".equals(expr.getIdentifier().getText())) {
                     if (Decl.isJavaArray(expr.getPrimary().getTypeModel().getDeclaration())) {// What's this for
                         if (isOptimizationDisabled(stmt, Optimization.JavaArrayIterationStatic)) {
@@ -2235,8 +2236,8 @@ public class StatementTransformer extends AbstractTransformer {
             range = (Tree.RangeOp)term;
         } else if (term instanceof Tree.InvocationExpression) {
             Tree.InvocationExpression inv = (Tree.InvocationExpression)term;
-            if (inv.getPrimary() instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression prim = (Tree.QualifiedMemberExpression)inv.getPrimary();
+            if (TreeUtil.isQualifiedMemberExpression(inv.getPrimary())) {
+                Tree.QualifiedMemberOrTypeExpression prim = (Tree.QualifiedMemberOrTypeExpression)inv.getPrimary();
                 if ("by".equals(prim.getIdentifier().getText())
                         && prim.getPrimary() instanceof Tree.Expression
                         && (((Tree.Expression)(prim.getPrimary())).getTerm() instanceof Tree.RangeOp)) {

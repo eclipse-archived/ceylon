@@ -589,8 +589,8 @@ public class TreeUtil {
 
     public static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
         return term instanceof Tree.BaseMemberExpression ||
-                term instanceof Tree.QualifiedMemberExpression &&
-                isSelfReference(((Tree.QualifiedMemberExpression) term)
+                isQualifiedMemberExpression(term) &&
+                isSelfReference(((Tree.QualifiedMemberOrTypeExpression) term)
                         .getPrimary());
     }
 
@@ -602,11 +602,20 @@ public class TreeUtil {
                     (Tree.InvocationExpression) term;
             Tree.Primary p = ie.getPrimary();
             if (p instanceof Tree.BaseTypeExpression || 
-                p instanceof Tree.QualifiedTypeExpression) {
+                isQualifiedTypeExpression(p)) {
                 return true;
             }
         }
         return false;
     }
 
+    public static boolean isQualifiedMemberExpression(Tree.Term p){
+        return p instanceof Tree.QualifiedMemberOrTypeExpression
+                && ((Tree.QualifiedMemberOrTypeExpression) p).getIsMember();
+    }
+
+    public static boolean isQualifiedTypeExpression(Tree.Term p){
+        return p instanceof Tree.QualifiedMemberOrTypeExpression
+                && ((Tree.QualifiedMemberOrTypeExpression) p).getIsType();
+    }
 }

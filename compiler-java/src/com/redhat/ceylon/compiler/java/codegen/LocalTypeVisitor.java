@@ -26,6 +26,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -183,8 +184,9 @@ public class LocalTypeVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.QualifiedMemberExpression that) {
-        if(that.getMemberOperator() instanceof Tree.SpreadOp){
+    public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+        if(TreeUtil.isQualifiedMemberExpression(that)
+                && that.getMemberOperator() instanceof Tree.SpreadOp){
             String prefix = this.prefix;
             enterAnonymousClass();
             super.visit(that);

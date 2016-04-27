@@ -9,6 +9,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -186,21 +187,21 @@ public class BmeGenerator {
         }, lhs, gen);
     }
 
-    static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen) {
+    static void generateQte(final Tree.QualifiedMemberOrTypeExpression that, final GenerateJsVisitor gen) {
         Tree.Primary prim = that.getPrimary();
         final boolean dyncall = gen.isInDynamicBlock() && that.getDeclaration() == null;
         if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, gen);
         } else if ((that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false
                 && prim instanceof Tree.BaseTypeExpression == false) || dyncall) {
-            final boolean isQte = prim instanceof Tree.QualifiedTypeExpression;
+            final boolean isQte = TreeUtil.isQualifiedTypeExpression(prim);
             if (dyncall && that.getDirectlyInvoked() && !isQte) {
                 gen.out("new ");
             }
             if (prim instanceof Tree.BaseMemberExpression) {
                 generateBme((Tree.BaseMemberExpression)prim, gen);
             } else if (isQte) {
-                generateQte((Tree.QualifiedTypeExpression)prim, gen);
+                generateQte((Tree.QualifiedMemberOrTypeExpression)prim, gen);
             } else {
                 prim.visit(gen);
             }

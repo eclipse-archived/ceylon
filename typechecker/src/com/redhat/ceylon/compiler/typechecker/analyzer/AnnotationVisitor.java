@@ -19,6 +19,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -237,9 +238,9 @@ public class AnnotationVisitor extends Visitor {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
                 }
             }
-            else if (term instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression qme = 
-                        (Tree.QualifiedMemberExpression) term;
+            else if (TreeUtil.isQualifiedMemberExpression(term)) {
+                Tree.QualifiedMemberOrTypeExpression qme = 
+                        (Tree.QualifiedMemberOrTypeExpression) term;
                 Declaration d = qme.getDeclaration();
                 if (d!=null && !d.isStaticallyImportable()) {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
@@ -248,9 +249,9 @@ public class AnnotationVisitor extends Visitor {
                 else {
                     Tree.Primary p = qme.getPrimary();
                     while (!(p instanceof Tree.BaseTypeExpression)) {
-                        if (p instanceof Tree.QualifiedTypeExpression) {
-                            Tree.QualifiedTypeExpression qte = 
-                                    (Tree.QualifiedTypeExpression) p;
+                        if (TreeUtil.isQualifiedTypeExpression(p)) {
+                            Tree.QualifiedMemberOrTypeExpression qte = 
+                                    (Tree.QualifiedMemberOrTypeExpression) p;
                             p = qte.getPrimary();
                         }
                         else {

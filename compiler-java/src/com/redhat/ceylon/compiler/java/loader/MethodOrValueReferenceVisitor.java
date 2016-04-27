@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
@@ -104,7 +105,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     }
                     
                     // Accessing another instance's member passed to a class initializer
-                    if (that instanceof Tree.QualifiedMemberExpression) {
+                    if (TreeUtil.isQualifiedMemberExpression(that)) {
                         if (d instanceof TypedDeclaration
                                 && ((TypedDeclaration)d).getOtherInstanceAccess()) {
                             ((FunctionOrValue)d).setCaptured(true);
@@ -192,7 +193,11 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.QualifiedMemberExpression that) {
+    public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+        if(!TreeUtil.isQualifiedMemberExpression(that)){
+            super.visit(that);
+            return;
+        }
         boolean cs = false;
         boolean isCallableReference = !invocationPrimary && that.getDeclaration() instanceof Functional;
         if (isCallableReference) {

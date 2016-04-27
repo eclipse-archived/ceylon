@@ -79,6 +79,7 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -1190,7 +1191,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Tree.Term primary = that.getPrimary();
         if (!hasError(that)) {
-            if (primary instanceof Tree.QualifiedMemberExpression ||
+            if (TreeUtil.isQualifiedMemberExpression(primary) ||
                 primary instanceof Tree.BaseMemberExpression) {
                 Tree.MemberOrTypeExpression mte = 
                         (Tree.MemberOrTypeExpression) primary;
@@ -3434,9 +3435,9 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        else if (reference instanceof Tree.QualifiedTypeExpression) {
-            Tree.QualifiedTypeExpression qte = 
-                    (Tree.QualifiedTypeExpression) 
+        else if (TreeUtil.isQualifiedTypeExpression(reference)) {
+            Tree.QualifiedMemberOrTypeExpression qte = 
+                    (Tree.QualifiedMemberOrTypeExpression) 
                         reference;
             TypeDeclaration type = 
                     resolveQualifiedTypeExpression(qte, true);
@@ -3480,9 +3481,9 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         
-        else if (reference instanceof Tree.QualifiedMemberExpression) {
-            Tree.QualifiedMemberExpression qme = 
-                    (Tree.QualifiedMemberExpression) 
+        else if (TreeUtil.isQualifiedMemberExpression(reference)) {
+            Tree.QualifiedMemberOrTypeExpression qme = 
+                    (Tree.QualifiedMemberOrTypeExpression) 
                         reference;
             TypedDeclaration member = 
                     resolveQualifiedMemberExpression(qme, 
@@ -6069,7 +6070,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkQualifiedTypeAndConstructorVisibility(
-            Tree.QualifiedTypeExpression that, 
+            Tree.QualifiedMemberOrTypeExpression that, 
             TypeDeclaration type, String name, 
             String container) {
         //Note: the handling of "protected" here looks
@@ -6267,9 +6268,9 @@ public class ExpressionVisitor extends Visitor {
         }
         return member;
     }
-    
-    @Override public void visit(
-            Tree.QualifiedMemberExpression that) {
+
+    private void visitQualifiedMemberExpression(
+            Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
         boolean notIndirectlyInvoked = 
                 !that.getIndirectlyInvoked();
@@ -6278,6 +6279,21 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member = 
                 resolveQualifiedMemberExpression(that, 
                         notIndirectlyInvoked);
+        // we did not find a member
+        if(member == null){
+            // perhaps it's a type?
+            TypeDeclaration type = resolveQualifiedTypeExpression(that, false);
+            if(type != null){
+                // yes!, deal with a member then
+                that.setIsMember(false);
+                that.setIsType(true);
+                visitQualifiedTypeExpression(that);
+                return;
+            }else if(notIndirectlyInvoked)
+                // no, if we wanted to add an error, do it now
+                resolveQualifiedMemberExpression(that, 
+                        true);
+        }
         if (member!=null && notDirectlyInvoked) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -6344,7 +6360,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitGenericQualifiedMemberReference(
-            Tree.QualifiedMemberExpression that,
+            Tree.QualifiedMemberOrTypeExpression that,
             Type receiverType,
             TypedDeclaration member) {
         if (isGeneric(member) && member instanceof Function) {
@@ -6425,7 +6441,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private TypedDeclaration resolveQualifiedMemberExpression(
-            Tree.QualifiedMemberExpression that, 
+            Tree.QualifiedMemberOrTypeExpression that, 
             boolean error) {
         Tree.Identifier id = that.getIdentifier();
         boolean nameNonempty = 
@@ -6554,7 +6570,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitQualifiedMemberExpression(
-            Tree.QualifiedMemberExpression that,
+            Tree.QualifiedMemberOrTypeExpression that,
             Type receivingType, 
             TypedDeclaration member, 
             List<Type> typeArgs, 
@@ -6563,7 +6579,7 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary primary = that.getPrimary();
         if (isConstructor(member) &&
                 !(primary instanceof Tree.BaseTypeExpression ||
-                  primary instanceof Tree.QualifiedTypeExpression)) {
+                  TreeUtil.isQualifiedTypeExpression(primary))) {
             primary.addError("constructor reference must be qualified by a type expression");
         }
         Type receiverType =
@@ -6649,7 +6665,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkSpread(TypedDeclaration member, 
-            Tree.QualifiedMemberExpression that) {
+            Tree.QualifiedMemberOrTypeExpression that) {
         if (!(that.getMemberOperator() 
                 instanceof Tree.MemberOp)) {
             if (member instanceof Functional) {
@@ -6722,7 +6738,7 @@ public class ExpressionVisitor extends Visitor {
                                 primary;
                     Tree.Primary pp = qmte.getPrimary();
                     if (!(pp instanceof Tree.BaseTypeExpression) &&
-                        !(pp instanceof Tree.QualifiedTypeExpression) &&
+                        !TreeUtil.isQualifiedTypeExpression(pp) &&
                         !(pp instanceof Tree.Package)) {
                         pp.addError("non-static type expression qualifies static member reference");   
                     }
@@ -7079,6 +7095,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(
             Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
+        if(TreeUtil.isQualifiedMemberExpression(that))
+            visitQualifiedMemberExpression(that);
+        else
+            visitQualifiedTypeExpression(that);
+        // common
         Tree.Term p = that.getPrimary();
         while (p instanceof Tree.Expression &&
                 p.getMainToken()==null) { //this hack allows actual parenthesized expressions through
@@ -7115,16 +7136,33 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    @Override public void visit(
-            Tree.QualifiedTypeExpression that) {
-        super.visit(that);
+    private void visitQualifiedTypeExpression(
+            Tree.QualifiedMemberOrTypeExpression that) {
         boolean notIndirectlyInvoked = 
                 !that.getIndirectlyInvoked();
         boolean notDirectlyInvoked = 
                 !that.getDirectlyInvoked();
+//        TypeDeclaration type = 
+//                resolveQualifiedTypeExpression(that, 
+//                        notIndirectlyInvoked);
         TypeDeclaration type = 
                 resolveQualifiedTypeExpression(that, 
-                        notIndirectlyInvoked);
+                        false);
+        // we did not find a type
+        if(type == null){
+            // perhaps it's a member?
+            TypedDeclaration member = resolveQualifiedMemberExpression(that, false);
+            if(member != null){
+                // yes!, deal with a member then
+                that.setIsMember(true);
+                that.setIsType(false);
+                visitQualifiedMemberExpression(that);
+                return;
+            }else if(notIndirectlyInvoked)
+                // no, if we wanted to add an error, do it now
+                resolveQualifiedTypeExpression(that, 
+                        true);
+        }
         if (type!=null && notDirectlyInvoked) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
@@ -7180,7 +7218,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitGenericQualifiedTypeReference(
-            Tree.QualifiedTypeExpression that,
+            Tree.QualifiedMemberOrTypeExpression that,
             Type outerType,
             TypeDeclaration type) {
         if (isGeneric(type) && type instanceof Class) {
@@ -7200,7 +7238,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private TypeDeclaration resolveQualifiedTypeExpression(
-            Tree.QualifiedTypeExpression that,
+            Tree.QualifiedMemberOrTypeExpression that,
             boolean error) {
         if (checkMember(that)) {
             Tree.Primary primary = that.getPrimary();
@@ -7427,7 +7465,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitQualifiedTypeExpression(
-            Tree.QualifiedTypeExpression that,
+            Tree.QualifiedMemberOrTypeExpression that,
             Type receivingType, 
             TypeDeclaration memberType, 
             List<Type> typeArgs, 

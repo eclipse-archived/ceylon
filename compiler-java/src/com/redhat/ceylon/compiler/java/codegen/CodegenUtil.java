@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -334,7 +335,7 @@ public class CodegenUtil {
             Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)p;
             Tree.Term q = unwrapExpressionUntilTerm(primary.getPrimary());
             if (q instanceof Tree.BaseTypeExpression
-                    || q instanceof Tree.QualifiedTypeExpression) {
+                    || TreeUtil.isQualifiedTypeExpression(q)) {
                 return true;
             }
         }

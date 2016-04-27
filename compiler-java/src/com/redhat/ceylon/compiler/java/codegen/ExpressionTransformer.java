@@ -52,6 +52,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -1868,8 +1869,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return e.makeErroneous(this);
             }
         }
-        if(op.getTerm() instanceof Tree.QualifiedMemberExpression){
-            JCExpression ret = checkForByteLiterals((Tree.QualifiedMemberExpression)op.getTerm());
+        if(TreeUtil.isQualifiedMemberExpression(op.getTerm())){
+            JCExpression ret = checkForByteLiterals((Tree.QualifiedMemberOrTypeExpression)op.getTerm());
             if(ret != null)
                 return at(op).Unary(JCTree.Tag.NEG, ret);
         }
@@ -2642,13 +2643,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         // (let $tmp = attr; attr = $tmp.getSuccessor(); $tmp;)
         if(term instanceof Tree.BaseMemberExpression
                 // special case for java statics Foo.attr where Foo does not need to be evaluated
-                || (term instanceof Tree.QualifiedMemberExpression
-                        && ((Tree.QualifiedMemberExpression)term).getStaticMethodReference())){
+                || (TreeUtil.isQualifiedMemberExpression(term)
+                        && ((Tree.QualifiedMemberOrTypeExpression)term).getStaticMethodReference())){
             JCExpression getter;
             if(term instanceof Tree.BaseMemberExpression)
                 getter = transform((Tree.BaseMemberExpression)term, null);
             else
-                getter = transformMemberExpression((Tree.QualifiedMemberExpression)term, null, null);
+                getter = transformMemberExpression((Tree.QualifiedMemberOrTypeExpression)term, null, null);
             at(expr);
             // Type $tmp = attr
             JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
@@ -2678,10 +2679,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             // $tmp
             result = make().Ident(varName);
         }
-        else if(term instanceof Tree.QualifiedMemberExpression){
+        else if(TreeUtil.isQualifiedMemberExpression(term)){
             // e.attr++
             // (let $tmpE = e, $tmpV = $tmpE.attr; $tmpE.attr = $tmpV.getSuccessor(); $tmpV;)
-            Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
+            Tree.QualifiedMemberOrTypeExpression qualified = (Tree.QualifiedMemberOrTypeExpression) term;
             boolean isSuper = isSuperOrSuperOf(qualified.getPrimary());
             boolean isPackage = isPackageQualified(qualified);
             // transform the primary, this will get us a boxed primary 
@@ -2804,13 +2805,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         // (let $tmp = OP(attr); attr = $tmp; $tmp)
         if(term instanceof Tree.BaseMemberExpression
             // special case for java statics Foo.attr where Foo does not need to be evaluated
-            || (term instanceof Tree.QualifiedMemberExpression
-                    && ((Tree.QualifiedMemberExpression)term).getStaticMethodReference())){
+            || (TreeUtil.isQualifiedMemberExpression(term)
+                    && ((Tree.QualifiedMemberOrTypeExpression)term).getStaticMethodReference())){
             JCExpression getter;
             if(term instanceof Tree.BaseMemberExpression)
                 getter = transform((Tree.BaseMemberExpression)term, null);
             else
-                getter = transformMemberExpression((Tree.QualifiedMemberExpression)term, null, null);
+                getter = transformMemberExpression((Tree.QualifiedMemberOrTypeExpression)term, null, null);
             at(operator);
             // Type $tmp = OP(attr);
             JCExpression exprType = makeJavaType(returnType, boxResult ? JT_NO_PRIMITIVES : 0);
@@ -2834,10 +2835,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             // return, with the box type we asked for
             result = make().Ident(varName);
         }
-        else if(term instanceof Tree.QualifiedMemberExpression){
+        else if(TreeUtil.isQualifiedMemberExpression(term)){
             // e.attr
             // (let $tmpE = e, $tmpV = OP($tmpE.attr); $tmpE.attr = $tmpV; $tmpV;)
-            Tree.QualifiedMemberExpression qualified = (Tree.QualifiedMemberExpression) term;
+            Tree.QualifiedMemberOrTypeExpression qualified = (Tree.QualifiedMemberOrTypeExpression) term;
             boolean isSuper = isSuperOrSuperOf(qualified.getPrimary());
             // transform the primary, this will get us a boxed primary 
             JCExpression e = transformQualifiedMemberPrimary(qualified);
@@ -3015,8 +3016,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             invocation.addReifiedArguments(result);
         }
         if (!(primary instanceof Tree.BaseTypeExpression)
-                && !(primary instanceof Tree.QualifiedTypeExpression)
-                && (!(primary instanceof Tree.QualifiedMemberExpression) || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp))
+                && !TreeUtil.isQualifiedTypeExpression(primary)
+                && (!TreeUtil.isQualifiedMemberExpression(primary) || !(((Tree.QualifiedMemberOrTypeExpression)primary).getMemberOperator() instanceof Tree.SpreadOp))
                 && Invocation.onValueType(this, primary, primaryDeclaration) 
                 && transformedPrimary != null) {
             result.add(new ExpressionAndType(transformedPrimary.expr,
@@ -3253,8 +3254,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !invocation.isArgumentComprehension(argIndex)){
             Expression argumentExpression = invocation.getArgumentExpression(argIndex);
             Term argument = Decl.unwrapExpressionsUntilTerm(argumentExpression);
-            if (argument instanceof Tree.QualifiedMemberExpression) {
-                Tree.QualifiedMemberExpression qualifiedMemberArgument = (Tree.QualifiedMemberExpression)argument;
+            if (TreeUtil.isQualifiedMemberExpression(argument)) {
+                Tree.QualifiedMemberOrTypeExpression qualifiedMemberArgument = (Tree.QualifiedMemberOrTypeExpression)argument;
                 if ("iterable".equals(qualifiedMemberArgument.getIdentifier().getText())
                     && isJavaArray(qualifiedMemberArgument.getPrimary().getTypeModel())) {
                     // just pass the array as-is
@@ -3497,7 +3498,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             resultExpr = transformInvocation(invocation, callBuilder, transformedPrimary);
         } else if (invocation.getPrimary() instanceof Tree.BaseTypeExpression) {
             resultExpr = transformBaseInstantiation(invocation, callBuilder, transformedPrimary);
-        } else if (invocation.getPrimary() instanceof Tree.QualifiedTypeExpression) {
+        } else if (TreeUtil.isQualifiedTypeExpression(invocation.getPrimary())) {
             resultExpr = transformQualifiedInstantiation(invocation, callBuilder, transformedPrimary);
         } else {   
             resultExpr = transformInvocation(invocation, callBuilder, transformedPrimary);
@@ -3581,7 +3582,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformQualifiedInstantiation(Invocation invocation, CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         
-        Tree.QualifiedTypeExpression qte = (Tree.QualifiedTypeExpression)invocation.getPrimary();
+        Tree.QualifiedMemberOrTypeExpression qte = (Tree.QualifiedMemberOrTypeExpression)invocation.getPrimary();
         Declaration declaration = qte.getDeclaration();
         invocation.location(callBuilder);
         if (Decl.isJavaStaticOrInterfacePrimary(invocation.getPrimary())) {
@@ -4022,7 +4023,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     // Qualified members
     
-    public JCExpression transform(Tree.QualifiedMemberExpression expr) {
+    public JCExpression transformQualifiedMemberExpression(Tree.QualifiedMemberOrTypeExpression expr) {
         // check for an optim
         JCExpression ret = checkForQualifiedMemberExpressionOptimisation(expr);
         if(ret != null)
@@ -4030,11 +4031,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
             return transformMemberReference(expr, primary);
-        } else if (expr.getPrimary() instanceof Tree.QualifiedTypeExpression) {
-            Tree.QualifiedTypeExpression primary = (Tree.QualifiedTypeExpression)expr.getPrimary();
+        } else if (TreeUtil.isQualifiedTypeExpression(expr.getPrimary())) {
+            Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)expr.getPrimary();
             return transformMemberReference(expr, primary);
         }
-        return transform(expr, null);
+        return transformQualifiedMemberExpression(expr, null);
     }
 
     JCExpression transformMemberReference(
@@ -4151,7 +4152,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private JCExpression transform(Tree.QualifiedMemberExpression expr, TermTransformer transformer) {
+    private JCExpression transformQualifiedMemberExpression(Tree.QualifiedMemberOrTypeExpression expr, TermTransformer transformer) {
         JCExpression result;
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
             result = transformSafeMemberOperator(expr, transformer);
@@ -4629,22 +4630,22 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     // Type members
     
-    public JCExpression transform(Tree.QualifiedTypeExpression expr) {
+    public JCExpression transformQualifiedTypeExpression(Tree.QualifiedMemberOrTypeExpression expr) {
         if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
             return transformMemberReference(expr, primary);            
-        } else if (expr.getPrimary() instanceof Tree.QualifiedTypeExpression) {
-            Tree.QualifiedTypeExpression primary = (Tree.QualifiedTypeExpression)expr.getPrimary();
+        } else if (TreeUtil.isQualifiedTypeExpression(expr.getPrimary())) {
+            Tree.QualifiedMemberOrTypeExpression primary = (Tree.QualifiedMemberOrTypeExpression)expr.getPrimary();
             return transformMemberReference(expr, primary);
         }
-        return transform(expr, null);
+        return transformQualifiedTypeExpression(expr, null);
     }
     
     public JCExpression transform(Tree.BaseTypeExpression expr) {
         return transform(expr, null);
     }
     
-    private JCExpression transform(Tree.QualifiedTypeExpression expr, TermTransformer transformer) {
+    private JCExpression transformQualifiedTypeExpression(Tree.QualifiedMemberOrTypeExpression expr, TermTransformer transformer) {
         if (expr.getMemberOperator() instanceof Tree.SafeMemberOp) {
             return transformSafeMemberOperator(expr, transformer);
         }
@@ -4658,14 +4659,14 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Generic code for all primaries
     
     public JCExpression transformTermForInvocation(Tree.Term term, TermTransformer transformer) {
-        if (term instanceof Tree.QualifiedMemberExpression) {
-            return transform((Tree.QualifiedMemberExpression)term, transformer);
+        if (TreeUtil.isQualifiedMemberExpression(term)) {
+            return transformQualifiedMemberExpression((Tree.QualifiedMemberOrTypeExpression)term, transformer);
         } else if (term instanceof Tree.BaseMemberExpression) {
             return transform((Tree.BaseMemberExpression)term, transformer);
         } else if (term instanceof Tree.BaseTypeExpression) {
             return transform((Tree.BaseTypeExpression)term, transformer);
-        } else if (term instanceof Tree.QualifiedTypeExpression) {
-            return transform((Tree.QualifiedTypeExpression)term, transformer);
+        } else if (TreeUtil.isQualifiedTypeExpression(term)) {
+            return transformQualifiedTypeExpression((Tree.QualifiedMemberOrTypeExpression)term, transformer);
         } else {
             // do not consider our term to be part of an invocation, we want it to be a Callable
             boolean oldWi = withinInvocation(false);
@@ -4886,8 +4887,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (expr instanceof Tree.QualifiedMemberOrTypeExpression) {
                     qmePrimary = ((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary();
                 }
-                boolean safeMemberJavaArray = expr instanceof Tree.QualifiedMemberExpression 
-                        && ((Tree.QualifiedMemberExpression)expr).getMemberOperator() instanceof Tree.SafeMemberOp
+                boolean safeMemberJavaArray = TreeUtil.isQualifiedMemberExpression(expr) 
+                        && ((Tree.QualifiedMemberOrTypeExpression)expr).getMemberOperator() instanceof Tree.SafeMemberOp
                         && isJavaArray(qmePrimary.getTypeModel());
                 
                 if ((safeMemberJavaArray || Decl.isValueTypeDecl(qmePrimary))
@@ -5086,8 +5087,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && declContainer instanceof Interface
                 // we only ever need the $impl if the declaration is not shared
                 && !decl.isShared()
-                && (!(expr instanceof Tree.QualifiedMemberExpression)
-                || !isSuperOrSuperOf(((Tree.QualifiedMemberExpression)expr).getPrimary()))){
+                && (!TreeUtil.isQualifiedMemberExpression(expr)
+                || !isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)expr).getPrimary()))){
             Interface declaration = (Interface) declContainer;
             // access the interface $impl instance
             qualExpr = naming.makeCompanionAccessorCall(qualExpr, declaration);
@@ -5592,8 +5593,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
                 expr = naming.makeQuotedThis();
             }
-        } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
-            Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
+        } else if(TreeUtil.isQualifiedMemberExpression(leftTerm)) {
+            Tree.QualifiedMemberOrTypeExpression qualified = ((Tree.QualifiedMemberOrTypeExpression)leftTerm);
             if (isPackageQualified(qualified)) {
                 expr = null;
             } else if (isSuper(qualified.getPrimary())) {
@@ -6487,7 +6488,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     //
     // Optimisations
 
-    private JCExpression checkForQualifiedMemberExpressionOptimisation(Tree.QualifiedMemberExpression expr) {
+    private JCExpression checkForQualifiedMemberExpressionOptimisation(Tree.QualifiedMemberOrTypeExpression expr) {
         JCExpression ret = checkForBitwiseOperators(expr, expr, null);
         if(ret != null)
             return ret;
@@ -6533,7 +6534,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
-    private JCExpression checkForByteLiterals(Tree.QualifiedMemberExpression expr) {
+    private JCExpression checkForByteLiterals(Tree.QualifiedMemberOrTypeExpression expr) {
         // must be a call on Integer
         Tree.Term left = expr.getPrimary();
         if(left == null || !isCeylonInteger(left.getTypeModel()))
@@ -6609,7 +6610,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
-    private JCExpression checkForCharacterAsInteger(Tree.QualifiedMemberExpression expr) {
+    private JCExpression checkForCharacterAsInteger(Tree.QualifiedMemberOrTypeExpression expr) {
         // must be a call on Character
         Tree.Term left = expr.getPrimary();
         if(left == null || !isCeylonCharacter(left.getTypeModel()))
@@ -6631,9 +6632,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression checkForBitwiseOperators(Tree.InvocationExpression ce) {
-        if(!(ce.getPrimary() instanceof Tree.QualifiedMemberExpression))
+        if(!TreeUtil.isQualifiedMemberExpression(ce.getPrimary()))
             return null;
-        Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) ce.getPrimary();
+        Tree.QualifiedMemberOrTypeExpression qme = (Tree.QualifiedMemberOrTypeExpression) ce.getPrimary();
         // must be a positional arg (FIXME: why?)
         if(ce.getPositionalArgumentList() == null
                 || ce.getPositionalArgumentList().getPositionalArguments() == null
@@ -6646,7 +6647,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return checkForBitwiseOperators(ce, qme, right);
     }
     
-    private JCExpression checkForBitwiseOperators(Tree.Term node, Tree.QualifiedMemberExpression qme, Tree.Term right) {
+    private JCExpression checkForBitwiseOperators(Tree.Term node, Tree.QualifiedMemberOrTypeExpression qme, Tree.Term right) {
         // must be a call on Integer
         Tree.Term left = qme.getPrimary();
         if(left == null) {

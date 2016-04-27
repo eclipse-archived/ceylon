@@ -40,9 +40,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
@@ -51,7 +51,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -124,7 +123,8 @@ abstract class Invocation {
             this.qmePrimary = null;
         }
         this.onValueType = onValueType(gen, primary, primaryDeclaration)
-                && (!(primary instanceof Tree.QualifiedMemberExpression) || !(((Tree.QualifiedMemberExpression)primary).getMemberOperator() instanceof Tree.SpreadOp));
+                && (!TreeUtil.isQualifiedMemberExpression(primary) 
+                        || !(((Tree.QualifiedMemberOrTypeExpression)primary).getMemberOperator() instanceof Tree.SpreadOp));
     }
     
     public String toString() {
@@ -237,8 +237,8 @@ abstract class Invocation {
         }
             
         JCExpression actualPrimExpr;
-        if (getPrimary() instanceof Tree.QualifiedTypeExpression
-                && ((Tree.QualifiedTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression
+        if (TreeUtil.isQualifiedTypeExpression(getPrimary())
+                && ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getPrimary() instanceof Tree.BaseTypeExpression
                 && !Decl.isConstructor(getPrimaryDeclaration())) {
             actualPrimExpr = gen.naming.makeQualifiedThis(primaryExpr);
         } else {
@@ -1699,7 +1699,7 @@ class NamedArgumentInvocation extends Invocation {
                 defaultedParameterInstance = gen.naming.makeName((TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
             }
         } else if (getPrimary() instanceof Tree.BaseTypeExpression
-                || getPrimary() instanceof Tree.QualifiedTypeExpression) {
+                || TreeUtil.isQualifiedTypeExpression(getPrimary())) {
             TypeDeclaration declaration = (TypeDeclaration)((Tree.MemberOrTypeExpression) getPrimary()).getDeclaration();
             thisType = gen.makeJavaType(declaration.getType(), JT_COMPANION);
             defaultedParameterInstance = gen.make().NewClass(
@@ -1742,7 +1742,7 @@ class NamedArgumentInvocation extends Invocation {
                 varType = gen.makeJavaType(getQmePrimary().getTypeModel());
             } else {
                 int jtFlags = JT_NO_PRIMITIVES;
-                if (getPrimary() instanceof QualifiedTypeExpression
+                if (TreeUtil.isQualifiedTypeExpression(getPrimary())
                         && !getPrimaryDeclaration().isShared()
                         && type.getDeclaration() instanceof Interface) {
                     jtFlags |= JT_COMPANION;
@@ -1752,8 +1752,8 @@ class NamedArgumentInvocation extends Invocation {
                     jtFlags |= JT_COMPANION;
                 }
                 if (ExpressionTransformer.isSuperOrSuperOf(this.getQmePrimary())
-                        && (!(this.getPrimary() instanceof Tree.QualifiedMemberExpression)
-                        || ((Tree.QualifiedMemberExpression)this.getPrimary()).getMemberOperator() instanceof Tree.MemberOp)) {
+                        && !(TreeUtil.isQualifiedMemberExpression(this.getPrimary())
+                        || ((Tree.QualifiedMemberOrTypeExpression)this.getPrimary()).getMemberOperator() instanceof Tree.MemberOp)) {
                     jtFlags |= JT_COMPANION;
                 }
                 varType = gen.makeJavaType(type, jtFlags);

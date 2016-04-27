@@ -218,15 +218,7 @@ public class SpecificationVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.QualifiedMemberExpression that) {
-        super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
-            visitReference(that);
-        }
-    }
-
-    @Override
-    public void visit(Tree.QualifiedTypeExpression that) {
+    public void visit(Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);

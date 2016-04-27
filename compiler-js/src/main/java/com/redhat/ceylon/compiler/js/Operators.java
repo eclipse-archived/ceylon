@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -84,8 +85,8 @@ public class Operators {
             if (!simpleSetter) { gen.out(",", getMember); }
             gen.out(")");
             
-        } else if (term instanceof Tree.QualifiedMemberExpression) {
-            Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
+        } else if (TreeUtil.isQualifiedMemberExpression(term)) {
+            Tree.QualifiedMemberOrTypeExpression qme = (Tree.QualifiedMemberOrTypeExpression) term;
             String primaryVar = gen.createRetainedTempVar();
             String getMember = gen.memberAccess(qme, primaryVar);
             String applyFunc = String.format("%s.%s", getMember, functionName);
@@ -113,8 +114,8 @@ public class Operators {
             BmeGenerator.generateMemberAccess(bme, applyFunc, null, gen);
             gen.out(",", oldValueVar, ")");
 
-        } else if (term instanceof Tree.QualifiedMemberExpression) {
-            Tree.QualifiedMemberExpression qme = (Tree.QualifiedMemberExpression) term;
+        } else if (TreeUtil.isQualifiedMemberExpression(term)) {
+            Tree.QualifiedMemberOrTypeExpression qme = (Tree.QualifiedMemberOrTypeExpression) term;
             if (qme.getDeclaration() == null && gen.isInDynamicBlock()) {
                 gen.out(qme.getIdentifier().getText(), "successor".equals(functionName) ? "++" : "--");
                 return;

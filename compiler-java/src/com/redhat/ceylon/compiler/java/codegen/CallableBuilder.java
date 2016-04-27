@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -853,8 +854,8 @@ public class CallableBuilder {
         @Override
         protected boolean isValueTypeCall(Parameter param, Type parameterType) {
             if(!param.isSequenced()
-                    && forwardCallTo instanceof Tree.QualifiedMemberExpression){
-                Tree.Primary primary = ((Tree.QualifiedMemberExpression) forwardCallTo).getPrimary();
+                    && TreeUtil.isQualifiedMemberExpression(forwardCallTo)){
+                Tree.Primary primary = ((Tree.QualifiedMemberOrTypeExpression) forwardCallTo).getPrimary();
                 return Decl.isValueTypeDecl(primary.getTypeModel())
                         && Decl.isValueTypeDecl(parameterType);
             }

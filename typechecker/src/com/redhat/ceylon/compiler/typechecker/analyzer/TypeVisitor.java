@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -1543,7 +1544,8 @@ public class TypeVisitor extends Visitor {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) primary;
             if (mte instanceof Tree.BaseTypeExpression || 
-                mte instanceof Tree.QualifiedTypeExpression) {
+                    TreeUtil.isQualifiedTypeExpression(mte)) {
+                // FIXME: this may apply to lower-case types too?
                 that.setStaticMethodReference(true);
                 mte.setStaticMethodReferencePrimary(true);
                 if (that.getDirectlyInvoked()) {

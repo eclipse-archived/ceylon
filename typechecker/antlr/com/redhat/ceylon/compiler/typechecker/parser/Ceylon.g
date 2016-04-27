@@ -1592,9 +1592,10 @@ expressionOrSpecificationStatement returns [Statement statement]
             Term lt = a.getLeftTerm();
             if (lt instanceof BaseMemberExpression ||
                 lt instanceof ParameterizedExpression ||
-                lt instanceof QualifiedMemberExpression &&
-                    ((QualifiedMemberExpression) lt).getPrimary() instanceof This &&
-                    ((QualifiedMemberExpression) lt).getMemberOperator() instanceof MemberOp) {
+                lt instanceof QualifiedMemberOrTypeExpression &&
+                    ((QualifiedMemberOrTypeExpression) lt).getIsMember() &&
+                    ((QualifiedMemberOrTypeExpression) lt).getPrimary() instanceof This &&
+                    ((QualifiedMemberOrTypeExpression) lt).getMemberOperator() instanceof MemberOp) {
                 Expression e = new Expression(null);
                 e.setTerm(a.getRightTerm());
                 SpecifierExpression se = new SpecifierExpression(a.getMainToken());
@@ -1786,7 +1787,8 @@ baseReferenceOrParameterized returns [Primary primary]
       (
         (MEMBER_OP LIDENTIFIER typeParameters? specifierParametersStart) => 
         memberSelectionOperator
-        { qe = new QualifiedMemberExpression(null); 
+        { qe = new QualifiedMemberOrTypeExpression(null); 
+          qe.setIsMember(true);
           qe.setMemberOperator($memberSelectionOperator.operator);
           qe.setTypeArguments(new InferredTypeArguments(null)); }
         memberName
@@ -1827,11 +1829,11 @@ primary returns [Primary primary]
       { $primary=$base.primary; }
     (
       qualifiedReference
-      { QualifiedMemberOrTypeExpression qe;
+      { QualifiedMemberOrTypeExpression qe = new QualifiedMemberOrTypeExpression(null);
         if ($qualifiedReference.isMember)
-            qe = new QualifiedMemberExpression(null);
+            qe.setIsMember(true);
         else
-            qe = new QualifiedTypeExpression(null);
+            qe.setIsType(true);
         qe.setPrimary($primary);
         qe.setMemberOperator($qualifiedReference.operator);
         qe.setIdentifier($qualifiedReference.identifier);

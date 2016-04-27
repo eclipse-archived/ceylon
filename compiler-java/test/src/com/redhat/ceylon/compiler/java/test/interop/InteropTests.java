@@ -758,4 +758,10 @@ public class InteropTests extends CompilerTests {
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         compareWithJavaSource("RefineDefaultInterfaceMethod");
     }
+    
+    @Test
+    public void testIopBug6099(){
+        compile("Bug6099Java.java");
+        compile("Bug6099.ceylon");
+    }
 }

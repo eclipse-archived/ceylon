@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.js;
 
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -71,13 +72,15 @@ public class ValueVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.QualifiedMemberExpression that) {
+    public void visit(Tree.QualifiedMemberOrTypeExpression that) {
         super.visit(that);
-        if (isSelfReference(that.getPrimary())) {
-            visitReference(that);
-        }
-        else {
-            capture(that);
+        if(TreeUtil.isQualifiedMemberExpression(that)){
+            if (isSelfReference(that.getPrimary())) {
+                visitReference(that);
+            }
+            else {
+                capture(that);
+            }
         }
     }
 
