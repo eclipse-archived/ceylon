@@ -140,13 +140,7 @@ class DeclarationErrorVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Annotation that) {
-        // Unlike declaration bodies or specifiers, 
-        // we *do* care about errors in expressions in annotations: Those are
-        // considered part of the declaration
-        HasErrorException error = expressionVisitor.getFirstErrorMessage(that);
-        if (error != null) {
-            newplan(new Drop(error.getNode(), error.getErrorMessage()));
-        }
+        // don't go there
     }
     
     @Override

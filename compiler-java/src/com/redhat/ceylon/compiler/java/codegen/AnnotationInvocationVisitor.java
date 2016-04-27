@@ -201,6 +201,9 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public static JCAnnotation transformConstructor(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
         AnnotationInvocation ai = annoCtorModel(invocation);
+        if (ai == null) {
+            return null;
+        }
         return transformConstructor(exprGen, invocation, ai, com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>nil());
     }
 

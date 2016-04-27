@@ -6920,14 +6920,17 @@ public class ExpressionTransformer extends AbstractTransformer {
     void transformAnnotation(Tree.Annotation invocation, 
             Map<Class, ListBuffer<JCAnnotation>> annotationSet) {
         at(invocation);
-        try {
-            JCAnnotation annotation = AnnotationInvocationVisitor.transformConstructor(this, invocation);
-            if (annotation != null) {
-                Class annotationClass = AnnotationInvocationVisitor.annoClass(invocation);
-                putAnnotation(annotationSet, annotation, annotationClass);
+        HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(invocation);
+        if (error == null) {
+            try {
+                JCAnnotation annotation = AnnotationInvocationVisitor.transformConstructor(this, invocation);
+                if (annotation != null) {
+                    Class annotationClass = AnnotationInvocationVisitor.annoClass(invocation);
+                    putAnnotation(annotationSet, annotation, annotationClass);
+                }
+            } catch (BugException e) {
+                e.addError(invocation);
             }
-        } catch (BugException e) {
-            e.addError(invocation);
         }
     }
 
