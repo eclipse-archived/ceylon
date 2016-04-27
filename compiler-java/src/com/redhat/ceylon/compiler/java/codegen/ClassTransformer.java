@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
+import com.redhat.ceylon.compiler.java.codegen.recovery.Generate;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerCatchallConstructor;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
@@ -290,7 +291,8 @@ public class ClassTransformer extends AbstractTransformer {
         at(null);
         TransformationPlan plan = errors().hasDeclarationError(def);
         if (plan instanceof ThrowerCatchallConstructor) {
-            MethodDefinitionBuilder initBuilder = classBuilder.addConstructor();
+            classBuilder.broken();
+            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor();
             initBuilder.body(statementGen().makeThrowUnresolvedCompilationError(plan.getErrorMessage().getMessage()));
             // Although we have the class pl which we could use we don't know 
             // that it won't collide with the default named constructor's pl
@@ -326,12 +328,13 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Now, once all the fields have been added,
         // we can add things which depend on knowing all the fields
-        if (Strategy.generateJpaCtor(def)) {
+        if (Strategy.generateJpaCtor(def) && plan instanceof Generate) {
             buildJpaConstructor((Class)def.getDeclarationModel(), classBuilder);
         }
         
         if (model instanceof Class
-                && !(model instanceof ClassAlias)) {
+                && !(model instanceof ClassAlias)
+                && plan instanceof Generate) {
             Class c = (Class)model;
             if (Strategy.introduceJavaIoSerializable(c, typeFact().getJavaIoSerializable())) {
                 classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
