@@ -78,7 +78,9 @@ public class RecoveryTests extends CompilerTests {
         };
         try {
             run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact(main));
-            Assert.fail("Expected execution to throw " + UnresolvedCompilationError.class.getName());
+            if (expectedError != null) {
+                Assert.fail("Expected execution to throw " + UnresolvedCompilationError.class.getName());
+            }
         } catch (RuntimeException e) {
             Throwable e2 = e;
             while (e2.getCause() != null) {
@@ -234,6 +236,15 @@ public class RecoveryTests extends CompilerTests {
     public void testRcvDeclarationMissingFunctionBody(){
         compile(1,
                 "declaration/MissingFunctionBody.ceylon");
+    }
+    
+    @Test
+    public void testRcvDeclarationClassNoPlOrCtor(){
+        compileAndRunWithUnresolvedCompilationError(
+                "declaration/ClassNoPlOrCtor.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.declaration.classNoPlOrCtor",
+                null, 1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.declaration.ClassNoPlOrCtor");
     }
     
     @Test
