@@ -5172,11 +5172,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(isWithinSyntheticClassBody() || varianceCastResult != null){
                     if (decl.isShared() && outer instanceof Interface) {
                         // always prefer qualified
-                        qualExpr = makeQualifiedDollarThis(declarationContainerType);
+                        qualExpr = ((Interface)outer).isUseDefaultMethods() ? makeEffectiveThis(expr) : makeQualifiedDollarThis(declarationContainerType);
                     } else {
                         // Class or companion class,
                         qualExpr = naming.makeQualifiedThis(makeJavaType(((TypeDeclaration)outer).getType(), 
-                                JT_RAW | (outer instanceof Interface ? JT_COMPANION : 0)));
+                                JT_RAW | (outer instanceof Interface 
+                                        && !((Interface)outer).isUseDefaultMethods() ? JT_COMPANION : 0)));
                     }
                     // add the variance cast if required
                     if(varianceCastResult != null){
