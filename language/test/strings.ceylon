@@ -658,4 +658,12 @@ shared void strings() {
     check("".permutations.map(String).sequence()==[], "string permutations empty");
     check("VWXYZ".permutations.size==120, "string permutations");
     check("UVWXYZ".permutations.size==720, "string permutations");
+    
+    check(if (exists first="abcd".sublistFrom(1).first) then first=='b' else false, "string sublist");
+    check(if (exists first="abcd".sublistFrom(2).first) then first=='c' else false, "string sublist");
+    check(if (exists first="abcd".sublistFrom(1).sublistFrom(1).first) then first=='c' else false, "string sublist");
+    check(if (exists first="abcd".sublistFrom(2).sublistFrom(1).first) then first=='d' else false, "string sublist");
+    check(!"abcd".sublistFrom(4).first exists, "string sublist");
+    check(!"abcd".sublistFrom(2).sublistFrom(2).first exists, "string sublist");
+
 }

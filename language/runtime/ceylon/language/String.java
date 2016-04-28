@@ -1452,12 +1452,12 @@ public final class String
                 };
             }
             @Override
-            public List<? extends Character> sublistTo(long t) {
-                if (t>=to) {
+            public List<? extends Character> sublistTo(long index) {
+                if (index>=to) {
                     return this;
                 }
                 else {
-                    return String.sublistTo(value, to+t);
+                    return String.sublistTo(value, to+index);
                 }
             }
             @Override
@@ -1494,7 +1494,7 @@ public final class String
         return new BaseCharacterList() {
             int start;
             {
-                if (start<0) {
+                if (from<=0) {
                     start = 0;
                 }
                 else {
@@ -1511,8 +1511,7 @@ public final class String
             @Override
             public Character getFromFirst(long index) {
                 try {
-                    int offset = 
-                            start + 
+                    int offset =
                             value.offsetByCodePoints(start, 
                                     Util.toInt(index));
                     return Character.instance(
@@ -1555,12 +1554,12 @@ public final class String
                 };
             }
             @Override
-            public List<? extends Character> sublistFrom(long f) {
-                if (f<=0) {
+            public List<? extends Character> sublistFrom(long index) {
+                if (index<=0) {
                     return this;
                 }
                 else {
-                    return String.sublistFrom(value, from+f);
+                    return String.sublistFrom(value, from+index);
                 }
             }
             @Override
