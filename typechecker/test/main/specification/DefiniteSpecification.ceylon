@@ -1134,3 +1134,16 @@ void specificationInLoop2() {
     }
     print(x);
 }
+
+shared void run() {
+    Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            break;
+        }
+        else {
+            return;
+        }
+    }
+    @error print(x);
+}
