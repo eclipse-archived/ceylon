@@ -1135,7 +1135,15 @@ void specificationInLoop2() {
     print(x);
 }
 
-shared void run() {
+void specificationInLoop3() {
+    Integer x;
+    for (j in 0..3) {
+        break;
+    }
+    @error print(x);
+}
+
+void specificationInLoop4() {
     Integer x;
     for (j in 0..3) {
         if (1==1) {
@@ -1144,6 +1152,63 @@ shared void run() {
         else {
             return;
         }
+    }
+    @error print(x);
+}
+
+
+void specificationInLoop5() {
+    variable Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            return;
+        }
+        print(x);
+    }
+    print(x);
+}
+
+void specificationInLoop6() {
+    variable Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            break;
+        }
+        print(x);
+    }
+    @error print(x);
+}
+
+void specificationInLoop7() {
+    variable Integer x;
+    while (1==0) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            break;
+        }
+        print(x);
+    }
+    @error print(x);
+}
+
+void specificationInLoop8() {
+    variable Integer x;
+    while (1==0) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            return;
+        }
+        print(x);
     }
     @error print(x);
 }

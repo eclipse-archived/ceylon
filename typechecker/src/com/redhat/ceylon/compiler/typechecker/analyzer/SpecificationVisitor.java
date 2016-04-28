@@ -542,8 +542,7 @@ public class SpecificationVisitor extends Visitor {
         boolean blockEndsInReturnThrow = 
                 blockEndsInReturnThrow(that);
         boolean blockEndsInBreak = 
-                !blockEndsInReturnThrow &&
-                blockEndsInReturnThrowBreak(that);
+                blockEndsInBreak(that);
         endsInBreak = endsInBreak || 
                 blockEndsInBreak;
         endsInReturnThrow = endsInReturnThrow || 
@@ -615,7 +614,7 @@ public class SpecificationVisitor extends Visitor {
     
     private boolean initedByEveryConstructor = true;
 
-    private boolean blockEndsInBreak(Tree.Block that) {
+    /*private boolean blockEndsInBreak(Tree.Block that) {
         if (that==null) {
             return false;
         }
@@ -679,6 +678,11 @@ public class SpecificationVisitor extends Visitor {
         else {
             return false;
         }
+    }*/
+    
+    private boolean blockEndsInBreak(Tree.Block that) {
+        return blockEndsInReturnThrowBreak(that) &&
+                !blockEndsInReturnThrow(that);
     }
     
     private boolean blockEndsInReturnThrow(Tree.Block that) {
@@ -2033,7 +2037,8 @@ public class SpecificationVisitor extends Visitor {
                 !possiblyExitedFromForClause && 
                  definitelyAssignedByElseClause ||
                 atLeastOneIteration && 
-                definitelyAssignedByForClause ||
+                definitelyAssignedByForClause &&
+                definitelySpecifiedByLoopBreaks ||
                 definitelyAssignedByElseClause && 
                 definitelySpecifiedByLoopBreaks;
         specified.possibly = specified.possibly || 
