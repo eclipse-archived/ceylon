@@ -98,4 +98,9 @@ public class Java8InterfaceTests extends CompilerTests {
     public void namedArgumentInvocation() {
         compareWithJavaSource("iface/NamedArgumentInvocation");
     }
+    
+    @Test
+    public void superToCompanion() {
+        compareWithJavaSource("iface/SuperToCompanion");
+    }
 }
