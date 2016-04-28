@@ -103,4 +103,14 @@ public class Java8InterfaceTests extends CompilerTests {
     public void superToCompanion() {
         compareWithJavaSource("iface/SuperToCompanion");
     }
+    
+    @Test
+    public void interfaceWithMpl() {
+        compareWithJavaSource("iface/InterfaceWithMpl");
+    }
+    
+    @Test
+    public void superWithinSyntheticClass() {
+        compareWithJavaSource("iface/SuperWithinSyntheticClass");
+    }
 }
