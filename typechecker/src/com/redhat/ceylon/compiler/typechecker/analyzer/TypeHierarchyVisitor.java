@@ -391,7 +391,7 @@ public class TypeHierarchyVisitor extends Visitor {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
             if (!members.formals.isEmpty()) {
-                if (members.actualsNonFormals.isEmpty()) {
+                if (members.actualsNonFormals.isEmpty() && members.nonFormalsNonDefaults.isEmpty()) {
                     Declaration example = members.formals.iterator().next();
                     Declaration declaringType = 
                             (Declaration) example.getContainer();
@@ -665,10 +665,14 @@ public class TypeHierarchyVisitor extends Visitor {
                                     //      condition is correct, we really should 
                                     //      check that the other declaration is a Java
                                     //      interface member (see the TODO above)
-                                    if (!(d.getUnit().getPackage().getModule().isJava() &&
-                                            r.getUnit().getPackage().getModule().isJava() &&
-                                            r.isInterfaceMember() &&
-                                            d.isClassMember())) {
+                                    boolean bothJava =
+                                            d.getUnit().getPackage().getModule().isJava()
+                                            && r.getUnit().getPackage().getModule().isJava();
+                                    boolean validJavaAmbiguity = bothJava
+                                            && d.isInterfaceMember()
+                                            && r.isClassMember();
+
+                                    if (!validJavaAmbiguity) {
                                         that.addError("member '" + d.getName() + 
                                                 "' is inherited ambiguously by '" + td.getName() +
                                                 "' from '" + std.getName() +  
