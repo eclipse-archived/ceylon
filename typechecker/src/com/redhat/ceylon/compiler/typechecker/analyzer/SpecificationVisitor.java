@@ -308,11 +308,14 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
             }
-            else if (parameter!=null && 
-                    isConstructor(parameter.getDeclaration())) {
-                if (parameter.getDeclaration().getContainer()
-                        .equals(declaration.getContainer())) {
-                    that.addError("default argument to constructor parameter is a member of the constructed class");
+            else if (parameter!=null) {
+                Declaration paramDec =
+                        parameter.getDeclaration();
+                if (isConstructor(paramDec)) {
+                    if (paramDec.getContainer()
+                            .equals(declaration.getContainer())) {
+                        that.addError("default argument to constructor parameter is a member of the constructed class");
+                    }
                 }
             }
             if (!assigned && declaration.isDefault() && 
