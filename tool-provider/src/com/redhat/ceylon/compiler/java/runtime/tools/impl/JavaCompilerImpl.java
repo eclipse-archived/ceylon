@@ -89,9 +89,8 @@ public class JavaCompilerImpl implements Compiler {
                            CompilationListener listener) {
         CeyloncTool compiler = new CeyloncTool();
         CompilationListenerAdapter diagnosticListener = new CompilationListenerAdapter(listener);
-        Writer writer = null;
-        // FIXME: allow the user to capture stdout
-        if(!options.isVerbose()){
+        Writer writer = options.getOutWriter();
+        if (!options.isVerbose() && writer == null) {
             // make the tool shut the hell up
             writer = new NullWriter();
         }

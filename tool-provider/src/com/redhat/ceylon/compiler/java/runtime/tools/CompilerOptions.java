@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
 import java.io.File;
+import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class CompilerOptions extends Options {
     private List<File> resourcePath = new LinkedList<>();
     private String outputRepository;
     private String workingDirectory;
+    private Writer outWriter;
 
     public List<String> getModules() {
         return modules;
@@ -64,5 +66,17 @@ public class CompilerOptions extends Options {
     }
     public void setWorkingDirectory(String workingDirectory) {
         this.workingDirectory = workingDirectory;
+    }
+
+    public Writer getOutWriter() {
+        return outWriter;
+    }
+    /**
+     * Specifies a {@link Writer} where messages will be written when {@link #setVerbose(boolean)} is set
+     * to <code>true</code>.
+     * @param outWriter the output writer
+     */
+    public void setOutWriter(Writer outWriter) {
+        this.outWriter = outWriter;
     }
 }
