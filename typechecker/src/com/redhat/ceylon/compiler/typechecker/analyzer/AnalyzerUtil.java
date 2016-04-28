@@ -31,6 +31,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -77,6 +79,13 @@ public class AnalyzerUtil {
             return (TypedDeclaration) member;
         }
         else {
+            if(!JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.getJavaBeanName(name);
+                member = td.getMember(name, unit, signature, ellipsis);
+                if (member instanceof TypedDeclaration) {
+                    return (TypedDeclaration) member;
+                }
+            }
             return null;
         }
     }
@@ -94,6 +103,18 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
+            if(JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.capitalize(name);
+                member = 
+                        td.getMember(name, unit, signature, ellipsis);
+                if (member instanceof TypeDeclaration) {
+                    return (TypeDeclaration) member;
+                }
+                else if (member instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) member);
+                }
+            }
             return null;
         }
     }
@@ -126,6 +147,19 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
+            if(JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.capitalize(name);
+                result = 
+                        scope.getMemberOrParameter(unit, 
+                                name, signature, ellipsis);
+                if (result instanceof TypeDeclaration) {
+                    return (TypeDeclaration) result;
+                }
+                else if (result instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) result);
+                }
+            }
         	return null;
         }
     }
