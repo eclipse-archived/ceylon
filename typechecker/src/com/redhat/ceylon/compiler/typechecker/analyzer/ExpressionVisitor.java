@@ -693,8 +693,9 @@ public class ExpressionVisitor extends Visitor {
         if (that instanceof CustomTree.GuardedVariable) {
             CustomTree.GuardedVariable gv = 
                     (CustomTree.GuardedVariable) that;
-            setTypeForElseVariable(that, 
-                    gv.getConditionList());
+            setTypeForGuardedVariable(that, 
+                    gv.getConditionList(), 
+                    gv.isReversed());
             Tree.BaseMemberExpression bme =
                     (Tree.BaseMemberExpression)
                         that.getSpecifierExpression()
@@ -7980,7 +7981,8 @@ public class ExpressionVisitor extends Visitor {
                 Tree.ConditionList conditionList = 
                         ifClause().getConditionList();
                 if (conditionList!=null) {
-                    setTypeForElseVariable(var, conditionList);
+                    setTypeForGuardedVariable(var, 
+                            conditionList, true);
                 }
             }
         }
@@ -8019,8 +8021,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void setTypeForElseVariable(Tree.Variable var, 
-            Tree.ConditionList conditionList) {
+    private void setTypeForGuardedVariable(Tree.Variable var, 
+            Tree.ConditionList conditionList,
+            boolean reversed) {
         Tree.Condition c = 
                 conditionList.getConditions()
                     .get(0);
@@ -8029,28 +8032,30 @@ public class ExpressionVisitor extends Visitor {
         if (c instanceof Tree.ExistsCondition) {
             Tree.ExistsCondition ec = 
                     (Tree.ExistsCondition) c;
-            inferDefiniteType(var, se, !ec.getNot());
+            inferDefiniteType(var, se, 
+                    ec.getNot() ^ reversed);
         }
         else if (c instanceof Tree.NonemptyCondition) {
-            Tree.NonemptyCondition ec = 
+            Tree.NonemptyCondition nec = 
                     (Tree.NonemptyCondition) c;
-            inferNonemptyType(var, se, !ec.getNot());
+            inferNonemptyType(var, se, 
+                    nec.getNot() ^ reversed);
         }
         else if (c instanceof Tree.IsCondition) {
             Tree.IsCondition ic = 
                     (Tree.IsCondition) c;
             Tree.Expression e = se.getExpression();
             Type expressionType = e.getTypeModel();
-            Type complementType = 
+            Type narrowedType = 
                     narrow(ic.getType().getTypeModel(), 
                             expressionType,
-                            !ic.getNot());
+                            ic.getNot() ^ reversed);
             Value dec = var.getDeclarationModel();
-            if (!isCompletelyVisible(dec, complementType)) {
-                complementType = expressionType;
+            if (!isCompletelyVisible(dec, narrowedType)) {
+                narrowedType = expressionType;
             }
-            var.getType().setTypeModel(complementType);
-            dec.setType(complementType);
+            var.getType().setTypeModel(narrowedType);
+            dec.setType(narrowedType);
         }
     }
     

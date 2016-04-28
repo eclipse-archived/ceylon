@@ -38,6 +38,7 @@ public class CustomTree extends Tree {
     public static class GuardedVariable
             extends Tree.Variable {
         private Tree.ConditionList conditionList;
+        private boolean reversed;
         public GuardedVariable(Token token) {
             super(token);
         }
@@ -47,6 +48,12 @@ public class CustomTree extends Tree {
         public void setConditionList(
                 Tree.ConditionList condition) {
             this.conditionList = condition;
+        }
+        public boolean isReversed() {
+            return reversed;
+        }
+        public void setReversed(boolean reversed) {
+            this.reversed = reversed;
         }
     }
 

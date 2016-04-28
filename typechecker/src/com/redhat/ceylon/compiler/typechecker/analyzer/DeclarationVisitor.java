@@ -1724,8 +1724,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 Tree.IfStatement ifst =
                         (Tree.IfStatement) st;
                 Tree.IfClause ifcl = ifst.getIfClause();
-                Tree.ElseClause elcl = ifst.getElseClause();
-                if (ifcl!=null && elcl==null) {
+                if (ifcl!=null) {
                     Tree.Block block = ifcl.getBlock();
                     if (block!=null) {
                         List<Tree.Statement> statements = 
@@ -1739,7 +1738,32 @@ public abstract class DeclarationVisitor extends Visitor {
                                 Tree.ConditionList cl = 
                                         ifcl.getConditionList();
                                 Tree.Variable v = 
-                                       guardedVariable(cl);
+                                       guardedVariable(cl,
+                                               true);
+                                if (v!=null) {
+                                    result.add(v);
+                                }                                
+                            }
+                        }
+                    }
+                }
+                Tree.ElseClause elcl = ifst.getElseClause();
+                if (elcl!=null) {
+                    Tree.Block block = elcl.getBlock();
+                    if (block!=null) {
+                        List<Tree.Statement> statements = 
+                                block.getStatements();
+                        if (!statements.isEmpty()) {
+                            int size = statements.size();
+                            Tree.Statement last = 
+                                    statements.get(size-1);
+                            if (definitelyReturns(last, 
+                                    isInitializer, false)) {
+                                Tree.ConditionList cl = 
+                                        ifcl.getConditionList();
+                                Tree.Variable v = 
+                                       guardedVariable(cl, 
+                                               false);
                                 if (v!=null) {
                                     result.add(v);
                                 }                                
@@ -1885,7 +1909,7 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     private static Tree.Variable guardedVariable(
-            Tree.ConditionList cl) {
+            Tree.ConditionList cl, boolean reversed) {
         if (cl!=null) {
             List<Tree.Condition> conditions = 
                     cl.getConditions();
@@ -1916,6 +1940,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 if (id!=null && t instanceof Tree.SyntheticVariable) { 
                     CustomTree.GuardedVariable ev = 
                             new CustomTree.GuardedVariable(null);
+                    ev.setReversed(reversed);
                     ev.setConditionList(cl);
                     ev.setType(new Tree.SyntheticVariable(null));
                     Tree.SpecifierExpression ese = 

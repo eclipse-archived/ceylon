@@ -535,3 +535,53 @@ class TestGuards() {
     }
 
 }
+
+void ifNarrowing0(Integer|Float x) {
+    if (is Integer x) {
+        return;
+    }
+    Float xx = x;
+}
+
+void ifNarrowing1(Integer|Float x) {
+    if (is Integer x) {
+    }
+    else {
+        return;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowing2(Integer|Float x) {
+    if (is Integer x) {
+        return;
+    }
+    else {
+    }
+    Float xx = x;
+}
+
+void ifNarrowing3(Integer|Float x) {
+    if (!is Integer x) {
+        return;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowing4(Integer|Float x) {
+    if (!is Integer x) {
+    }
+    else {
+        return;
+    }
+    Float xx = x;
+}
+
+void ifNarrowing5(Integer|Float x) {
+    if (!is Integer x) {
+        return;
+    }
+    else {
+    }
+    Integer xx = x;
+}
