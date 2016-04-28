@@ -195,8 +195,7 @@ public class MiscTests extends CompilerTests {
                 Arrays.asList("-sourcepath", compilerSourcePath, 
                               "-d", "build/classes-runtime", "-Xbootstrapceylon",
                               "-cp", getClassPathAsPathExcludingLanguageModule(),
-                              "-suppress-warnings", "ceylonNamespace",
-                              "-target", "8"
+                              "-suppress-warnings", "ceylonNamespace"
                               /*, "-verbose"*/), 
                 null, compilationUnits1);
         Boolean result = task.call();
