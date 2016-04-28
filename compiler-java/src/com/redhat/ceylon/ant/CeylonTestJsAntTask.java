@@ -57,7 +57,7 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
     private String compileFlags;
     private String version;
     private String nodeExe;
-    private Boolean tap = false;
+    private String tap;
     private Boolean debug = true;
     private Boolean report = false;
     private List<Test> tests = new ArrayList<Test>(0);
@@ -125,12 +125,12 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
     }
     
     /**
-     * Enables the Test Anything Protocol v13.
-     * @param tap
+     * Enables writing a Test Anything Protocol v13 report to the specified file.
+     * @param file The file to write the test to. If empty or {@code -}, print to standard output.
      */
     @OptionEquivalent
-    public void setTap(Boolean tap) {
-        this.tap = tap;
+    public void setTap(String file) {
+        this.tap = file;
     }
     
     /**
@@ -183,8 +183,12 @@ public class CeylonTestJsAntTask extends RepoUsingCeylonAntTask implements Dynam
         if(debug != null) { // defaults to true, so set it like an option argument, not like a flag option
             appendOptionArgument(cmd, "--debug", debug.toString());
         }
-        if(tap) {
-            appendOption(cmd, "--tap");
+        if (tap != null) {
+            if (tap.isEmpty()) {
+                appendOption(cmd, "--tap");
+            } else {
+                appendOption(cmd, "--tap=" + tap);
+            }
         }
         if(report) {
             appendOption(cmd, "--report");

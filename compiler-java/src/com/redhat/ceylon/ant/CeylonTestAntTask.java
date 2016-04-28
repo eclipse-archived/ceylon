@@ -53,7 +53,7 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     private final ModuleSet moduleSet = new ModuleSet();
     private String compileFlags;
     private String version;
-    private Boolean tap = false;
+    private String tap;
     private Boolean report = false;
     private List<Test> tests = new ArrayList<Test>(0);
 	private boolean flatClasspath;
@@ -135,12 +135,12 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
     }
     
     /**
-     * Enables the Test Anything Protocol v13.
-     * @param tap
+     * Enables writing a Test Anything Protocol v13 report to the specified file.
+     * @param file The file to write the test to. If empty or {@code -}, print to standard output.
      */
     @OptionEquivalent
-    public void setTap(Boolean tap) {
-        this.tap = tap;
+    public void setTap(String file) {
+        this.tap = file;
     }
     
     /**
@@ -187,8 +187,12 @@ public class CeylonTestAntTask extends RepoUsingCeylonAntTask {
         if(version != null) {
             appendOptionArgument(cmd, "--version", version);
         }
-        if(tap) {
-            appendOption(cmd, "--tap");
+        if (tap != null) {
+            if (tap.isEmpty()) {
+                appendOption(cmd, "--tap");
+            } else {
+                appendOption(cmd, "--tap=" + tap);
+            }
         }
         if(report) {
             appendOption(cmd, "--report");
