@@ -6469,6 +6469,9 @@ public class ExpressionVisitor extends Visitor {
                         primary.getTypeModel()
                             .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
+                if (d instanceof Constructor) {
+                    d = d.getExtendedType().getDeclaration();
+                }
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
                 ClassOrInterface ci = 
@@ -7241,6 +7244,9 @@ public class ExpressionVisitor extends Visitor {
                         primary.getTypeModel()
                             .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
+                if (d instanceof Constructor) {
+                    d = d.getExtendedType().getDeclaration();
+                }
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
                 ClassOrInterface ci = 
