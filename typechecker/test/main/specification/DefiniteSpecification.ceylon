@@ -1104,3 +1104,33 @@ void funWithReturn2() {
     value name = "Gavin";
     void bar() => print(name);
 }
+
+void specificationInLoop1() {
+    Integer x;
+    for (j in 0:3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            return;
+        }
+    }
+    @error print(x);
+}
+
+void specificationInLoop2() {
+    Integer x;
+    for (j in 0..3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            return;
+        }
+    }
+    print(x);
+}

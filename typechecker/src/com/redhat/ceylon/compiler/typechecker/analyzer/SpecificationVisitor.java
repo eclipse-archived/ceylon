@@ -539,7 +539,8 @@ public class SpecificationVisitor extends Visitor {
         boolean blockEndsInReturnThrow = 
                 blockEndsInReturnThrow(that);
         boolean blockEndsInBreak = 
-                blockEndsInBreak(that);
+                !blockEndsInReturnThrow &&
+                blockEndsInReturnThrowBreak(that);
         endsInBreak = endsInBreak || 
                 blockEndsInBreak;
         endsInReturnThrow = endsInReturnThrow || 
@@ -612,10 +613,64 @@ public class SpecificationVisitor extends Visitor {
     private boolean initedByEveryConstructor = true;
 
     private boolean blockEndsInBreak(Tree.Block that) {
+        if (that==null) {
+            return false;
+        }
         int size = that.getStatements().size();
         if (size>0) {
             Tree.Statement s = 
-                    that.getStatements().get(size-1);
+                    that.getStatements()
+                        .get(size-1);
+            if (s instanceof Tree.IfStatement) {
+                Tree.IfStatement is = (Tree.IfStatement) s;
+                Tree.IfClause ic = is.getIfClause();
+                Tree.ElseClause ec = is.getElseClause();
+                if (ic!=null) {
+                    Tree.ConditionList cl = 
+                            ic.getConditionList();
+                    if (cl!=null) {
+                        if (isAlwaysSatisfied(cl)) {
+                            return blockEndsInBreak(
+                                    ic.getBlock());
+                        }
+                        else if (ec!=null && isNeverSatisfied(cl)) {
+                            return blockEndsInBreak(
+                                    ec.getBlock());
+                        }
+                    }
+                    if (ec!=null) {
+                        return blockEndsInBreak(ic.getBlock())
+                                && blockEndsInBreak(ec.getBlock());
+                    }
+                }
+            }
+            else if (s instanceof Tree.SwitchStatement) {
+                Tree.SwitchStatement ss = (Tree.SwitchStatement) s;
+                Tree.SwitchCaseList scl = ss.getSwitchCaseList();
+                for (Tree.CaseClause cc: scl.getCaseClauses()){
+                    if (!blockEndsInBreak(cc.getBlock())) {
+                        return false;
+                    }
+                }
+                Tree.ElseClause ec = scl.getElseClause();
+                if (ec!=null) {
+                    return blockEndsInBreak(ec.getBlock());
+                }
+            }
+            else if (s instanceof Tree.ForStatement) {
+                Tree.ForStatement fs = (Tree.ForStatement) s;
+                Tree.ForClause fc = fs.getForClause();
+                Tree.ElseClause ec = fs.getElseClause();
+                if (fc!=null) {
+                    if (isAtLeastOne(fc)) {
+                        return blockEndsInBreak(fc.getBlock());
+                    }
+                    if (ec!=null) {
+                        return blockEndsInBreak(fc.getBlock())
+                                && blockEndsInBreak(ec.getBlock());
+                    }
+                }
+            }
             return s instanceof Tree.Break;
         }
         else {
@@ -624,12 +679,134 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean blockEndsInReturnThrow(Tree.Block that) {
+        if (that==null) {
+            return false;
+        }
         int size = that.getStatements().size();
         if (size>0) {
             Tree.Statement s = 
-                    that.getStatements().get(size-1);
+                    that.getStatements()
+                        .get(size-1);
+            if (s instanceof Tree.IfStatement) {
+                Tree.IfStatement is = (Tree.IfStatement) s;
+                Tree.IfClause ic = is.getIfClause();
+                Tree.ElseClause ec = is.getElseClause();
+                if (ic!=null) {
+                    Tree.ConditionList cl = 
+                            ic.getConditionList();
+                    if (cl!=null) {
+                        if (isAlwaysSatisfied(cl)) {
+                            return blockEndsInReturnThrow(
+                                    ic.getBlock());
+                        }
+                        else if (ec!=null && isNeverSatisfied(cl)) {
+                            return blockEndsInReturnThrow(
+                                    ec.getBlock());
+                        }
+                    }
+                    if (ec!=null) {
+                        return blockEndsInReturnThrow(ic.getBlock())
+                                && blockEndsInReturnThrow(ec.getBlock());
+                    }
+                }
+            }
+            else if (s instanceof Tree.SwitchStatement) {
+                Tree.SwitchStatement ss = (Tree.SwitchStatement) s;
+                Tree.SwitchCaseList scl = ss.getSwitchCaseList();
+                for (Tree.CaseClause cc: scl.getCaseClauses()){
+                    if (!blockEndsInReturnThrow(cc.getBlock())) {
+                        return false;
+                    }
+                }
+                Tree.ElseClause ec = scl.getElseClause();
+                if (ec!=null) {
+                    return blockEndsInReturnThrow(ec.getBlock());
+                }
+            }
+            else if (s instanceof Tree.ForStatement) {
+                Tree.ForStatement fs = (Tree.ForStatement) s;
+                Tree.ForClause fc = fs.getForClause();
+                Tree.ElseClause ec = fs.getElseClause();
+                if (fc!=null) {
+                    if (isAtLeastOne(fc)) {
+                        return blockEndsInReturnThrow(fc.getBlock());
+                    }
+                    if (ec!=null) {
+                        return blockEndsInReturnThrow(fc.getBlock())
+                                && blockEndsInReturnThrow(ec.getBlock());
+                    }
+                }
+            }
             return s instanceof Tree.Return ||
                     s instanceof Tree.Throw;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    private boolean blockEndsInReturnThrowBreak(Tree.Block that) {
+        if (that==null) {
+            return false;
+        }
+        int size = that.getStatements().size();
+        if (size>0) {
+            Tree.Statement s = 
+                    that.getStatements()
+                        .get(size-1);
+            if (s instanceof Tree.IfStatement) {
+                Tree.IfStatement is = (Tree.IfStatement) s;
+                Tree.IfClause ic = is.getIfClause();
+                Tree.ElseClause ec = is.getElseClause();
+                if (ic!=null) {
+                    Tree.ConditionList cl = 
+                            ic.getConditionList();
+                    if (cl!=null) {
+                        if (isAlwaysSatisfied(cl)) {
+                            return blockEndsInReturnThrowBreak(
+                                    ic.getBlock());
+                        }
+                        else if (ec!=null && isNeverSatisfied(cl)) {
+                            return blockEndsInReturnThrowBreak(
+                                    ec.getBlock());
+                        }
+                    }
+                    if (ec!=null) {
+                        return blockEndsInReturnThrowBreak(ic.getBlock())
+                                && blockEndsInReturnThrowBreak(ec.getBlock());
+                    }
+                }
+            }
+            else if (s instanceof Tree.SwitchStatement) {
+                Tree.SwitchStatement ss = (Tree.SwitchStatement) s;
+                Tree.SwitchCaseList scl = ss.getSwitchCaseList();
+                for (Tree.CaseClause cc: scl.getCaseClauses()){
+                    if (!blockEndsInReturnThrowBreak(cc.getBlock())) {
+                        return false;
+                    }
+                }
+                Tree.ElseClause ec = scl.getElseClause();
+                if (ec!=null) {
+                    return blockEndsInReturnThrowBreak(ec.getBlock());
+                }
+            }
+            else if (s instanceof Tree.ForStatement) {
+                Tree.ForStatement fs = (Tree.ForStatement) s;
+                Tree.ForClause fc = fs.getForClause();
+                Tree.ElseClause ec = fs.getElseClause();
+                if (fc!=null) {
+                    if (isAtLeastOne(fc)) {
+                        return blockEndsInReturnThrowBreak(fc.getBlock());
+                    }
+                    if (ec!=null) {
+                        return blockEndsInReturnThrowBreak(fc.getBlock())
+                                && blockEndsInReturnThrowBreak(ec.getBlock());
+                    }
+                }
+            }
+            return s instanceof Tree.Return ||
+                    s instanceof Tree.Throw ||
+                    s instanceof Tree.Break;
         }
         else {
             return false;
