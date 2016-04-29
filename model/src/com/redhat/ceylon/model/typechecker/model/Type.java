@@ -3313,12 +3313,21 @@ public class Type extends Reference {
             return qualifiedName();
         }
     }
-
+    
+    private Type unionOfCases;
+    
     /**
      * Form a union type of all cases of the type, 
      * recursively reducing cases to their cases
      */
     public Type getUnionOfCases() {
+        if (unionOfCases==null) {
+            unionOfCases = getUnionOfCasesInternal();            
+        }
+        return unionOfCases;
+    }
+    
+    public Type getUnionOfCasesInternal() {
         Unit unit = getDeclaration().getUnit();
         //if X is an intersection type A&B, and A is an
         //enumerated type with cases U and V, then the cases
