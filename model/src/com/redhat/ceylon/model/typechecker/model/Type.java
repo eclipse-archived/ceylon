@@ -3490,10 +3490,21 @@ public class Type extends Reference {
         }
     }*/
     
-    //This alternative algorithm, without the stack
-    //fails in one tiny little corner case which we
-    //might be able to disallow - Algebraic.ceylon:345
     private boolean coversInternal(Type type) {
+        if (type.isSubtypeOf(this)) {
+            return true;
+        }
+        List<Type> caseTypes = type.getCaseTypes();
+        if (caseTypes!=null) {
+            boolean covered = true;
+            for (Type caseType: caseTypes) {
+                if (!coversInternal(caseType)) {
+                    covered = false;
+                    break;
+                }
+            }
+            if (covered) return true;
+        }
         Type uoc = type.getUnionOfCases();
         //X covers Y if the union of cases of Y is 
         //a subtype of X
