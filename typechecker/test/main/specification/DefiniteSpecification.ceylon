@@ -1267,3 +1267,61 @@ void specificationInLoop8() {
     }
     @error print(x);
 }
+
+void specificationInLoop9() {
+    Integer x;
+    for (j in 0:3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            throw;
+        }
+    }
+    @error print(x);
+}
+
+void specificationInLoop10() {
+    Integer x;
+    for (j in 0..3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            throw;
+        }
+    }
+    print(x);
+}
+
+void specificationInLoop11() {
+    Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 10 + j;
+            break;
+        }
+        else {
+            throw;
+        }
+    }
+    print(x);
+}
+
+void specificationInLoop12() {
+    Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 10 + j;
+            break;
+        }
+        else {
+            return;
+        }
+    }
+    print(x);
+}
