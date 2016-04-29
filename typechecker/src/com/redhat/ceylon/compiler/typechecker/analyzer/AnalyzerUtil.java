@@ -6,8 +6,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanFalse;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
@@ -65,7 +63,8 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class AnalyzerUtil {
     
 //    static final JaroWinkler distance = new JaroWinkler();
-    static final NormalizedLevenshtein distance = new NormalizedLevenshtein();
+    static final NormalizedLevenshtein distance = 
+            new NormalizedLevenshtein();
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
@@ -762,17 +761,11 @@ public class AnalyzerUtil {
                         (Tree.BooleanCondition) c;
                 Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
-                    Tree.Term term = 
-                            unwrapExpressionUntilTerm(ex);
-                    //TODO: take into account conjunctions/disjunctions
-                    if (term instanceof Tree.BaseMemberExpression) {
-                        Tree.BaseMemberExpression bme = 
-                                (Tree.BaseMemberExpression) 
-                                    term;
-                        Declaration d = bme.getDeclaration();
-                        if (isBooleanTrue(d)) {
-                            continue;
-                        }
+                    Type type = ex.getTypeModel();
+                    if (type!=null && 
+                            type.getDeclaration()
+                                .isTrueValue()) {
+                        continue;
                     }
                 }
             }
@@ -789,17 +782,11 @@ public class AnalyzerUtil {
                         (Tree.BooleanCondition) c;
                 Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
-                    Tree.Term term = 
-                            unwrapExpressionUntilTerm(ex);
-                    //TODO: take into account conjunctions/disjunctions
-                    if (term instanceof Tree.BaseMemberExpression) {
-                        Tree.BaseMemberExpression bme = 
-                                (Tree.BaseMemberExpression) 
-                                    term;
-                        Declaration d = bme.getDeclaration();
-                        if (isBooleanFalse(d)) {
-                            return true;
-                        }
+                    Type type = ex.getTypeModel();
+                    if (type!=null && 
+                            type.getDeclaration()
+                                .isFalseValue()) {
+                        return true;
                     }
                 }
             }
@@ -827,25 +814,30 @@ public class AnalyzerUtil {
     }
 
     static boolean declaredInPackage(Declaration dec, Unit unit) {
-        return dec.getUnit().getPackage().equals(unit.getPackage());
+        return dec.getUnit().getPackage()
+                .equals(unit.getPackage());
     }
 
     /**
      * Does not unwrap primary expressions
      */
-    public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
+    public static boolean isIndirectInvocation(
+            Tree.InvocationExpression that) {
         return isIndirectInvocation(that, false);
     }
 
     /**
      * Unwraps primary expressions if you tell it to
      */
-    public static boolean isIndirectInvocation(Tree.InvocationExpression that, boolean unwrap) {
+    public static boolean isIndirectInvocation(
+            Tree.InvocationExpression that, boolean unwrap) {
         return isIndirectInvocation(that.getPrimary(), unwrap);
     }
 
-    private static boolean isIndirectInvocation(Tree.Primary primary, boolean unwrap) {
-    	Tree.Term term = unwrap ? unwrapExpressionUntilTerm(primary) : primary;
+    private static boolean isIndirectInvocation(
+            Tree.Primary primary, boolean unwrap) {
+    	Tree.Term term = unwrap ? 
+    	        unwrapExpressionUntilTerm(primary) : primary;
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) term;
