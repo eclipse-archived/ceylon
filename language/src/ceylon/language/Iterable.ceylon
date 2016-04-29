@@ -2,8 +2,8 @@
    elements may be iterated. Iterable categories are often
    called _streams_. A stream need not be finite, but its
    elements must be countable. That is, for any given
-   element of the stream, every iterator of the stream must
-   eventually return the element, even if the iterator
+   element of the stream, every [[Iterator]] of the stream 
+   must eventually return the element, even if the iterator
    itself is not exhaustible.
    
    A stream may have null elements. That is, an iterator for
@@ -133,7 +133,9 @@
        {Float*} xs = ... ;
        {Float*} ys = ... ;
        Boolean same = corresponding(xs, ys);"""
-see (`interface Collection`, `function corresponding`)
+see (`interface Collection`, 
+     `function corresponding`,
+     `interface Iterator`)
 by ("Gavin")
 tagged("Streams")
 shared interface Iterable<out Element=Anything, 
