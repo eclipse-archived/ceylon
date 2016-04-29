@@ -114,7 +114,11 @@ public class JavaCompilerImpl implements Compiler {
         List<String> translatedOptions = new ArrayList<String>();
         // FIXME: translate every option
         if(options.isVerbose()) {
-            translatedOptions.add(Option.VERBOSE.getText());
+            if (options.getVerboseCategory() == null || options.getVerboseCategory().isEmpty()) {
+                translatedOptions.add(Option.VERBOSE.getText());
+            } else {
+                translatedOptions.add(Option.VERBOSE_CUSTOM.getText() + options.getVerboseCategory());
+            }
         }
         for(File sourcePath : options.getSourcePath()){
             translatedOptions.add(Option.CEYLONSOURCEPATH.getText());
