@@ -585,3 +585,54 @@ void ifNarrowing5(Integer|Float x) {
     }
     Integer xx = x;
 }
+
+
+void ifNarrowingWithThrow0(Integer|Float x) {
+    if (is Integer x) {
+        throw;
+    }
+    Float xx = x;
+}
+
+void ifNarrowingWithThrow1(Integer|Float x) {
+    if (is Integer x) {
+    }
+    else {
+        throw;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowingWithThrow2(Integer|Float x) {
+    if (is Integer x) {
+        throw;
+    }
+    else {
+    }
+    Float xx = x;
+}
+
+void ifNarrowingWithThrow3(Integer|Float x) {
+    if (!is Integer x) {
+        return;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowingWithThrow4(Integer|Float x) {
+    if (!is Integer x) {
+    }
+    else {
+        throw;
+    }
+    Float xx = x;
+}
+
+void ifNarrowingWithThrow5(Integer|Float x) {
+    if (!is Integer x) {
+        throw;
+    }
+    else {
+    }
+    Integer xx = x;
+}

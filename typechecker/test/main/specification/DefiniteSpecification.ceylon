@@ -709,6 +709,26 @@ interface DefiniteSpecification {
         shared void bar() => print(name);
     }
 
+    class Foo4() {
+        String? name;
+        if (1==1) {
+            throw;
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
+    class Foo5() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                throw;
+            }
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
 }
 
 void localFatArrows() {
@@ -1088,6 +1108,23 @@ class ClassWithReturn2() {
     shared void bar() => print(name);
 }
 
+class ClassWithThrow1() {
+    String name;
+    if (1==1) {
+        throw;
+    }
+    name = "Gavin";
+    shared void bar() => print(name);
+}
+
+class ClassWithThrow2() {
+    if (1==1) {
+        throw;
+    }
+    value name = "Gavin";
+    shared void bar() => print(name);
+}
+
 void funWithReturn1() {
     String name;
     if (1==1) {
@@ -1104,6 +1141,24 @@ void funWithReturn2() {
     value name = "Gavin";
     void bar() => print(name);
 }
+
+void funWithThrow1() {
+    String name;
+    if (1==1) {
+        throw;
+    }
+    name = "Gavin";
+    void bar() => print(name);
+}
+
+void funWithThrow2() {
+    if (1==1) {
+        throw;
+    }
+    value name = "Gavin";
+    void bar() => print(name);
+}
+
 
 void specificationInLoop1() {
     Integer x;
