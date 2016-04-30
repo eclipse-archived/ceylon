@@ -3335,15 +3335,28 @@ public class Type extends Reference {
         //the union U&B|V&B
         if (isIntersection()) {
             List<Type> sts = getSatisfiedTypes();
-            List<Type> list = 
-                    new ArrayList<Type>
-                        (sts.size());
-            for (Type st: sts) {
-                addToIntersection(list, 
-                        st.getUnionOfCases(), 
-                        unit);
+            List<Type> list = null;
+            for (int i=0, size=sts.size(); i<size; i++) {
+                Type st = sts.get(i);
+                Type uoc = st.getUnionOfCases();
+                if (uoc!=st || list!=null) {
+                    if (list==null) {
+                        list = new ArrayList<Type>
+                                (sts.size());
+                        for (int j=0; j<i; j++) {
+                            Type t = sts.get(j);
+                            addToIntersection(list, t, unit);
+                        }
+                    }
+                    addToIntersection(list, uoc, unit);
+                }
             }
-            return canonicalIntersection(list, unit);
+            if (list==null) {
+                return this;
+            }
+            else {
+                return canonicalIntersection(list, unit);
+            }
         }
         else {
             List<Type> cts = getCaseTypes();
@@ -3356,18 +3369,33 @@ public class Type extends Reference {
             //the union U|V|B
             else {
                 //build a union of all the cases
-                List<Type> list = 
-                        new ArrayList<Type>
-                            (cts.size());
-                for (Type ct: cts) {
+                List<Type> list = null;
+                for (int i=0, size=cts.size(); i<size; i++) {
+                    Type ct = cts.get(i);
                     if (ct.isExactly(this)) {
                         //we hit a self type
                         return this;
                     }
-                    addToUnion(list, 
-                            ct.getUnionOfCases());
+                    Type uoc = ct.getUnionOfCases();
+                    if (uoc!=ct || list!=null) {
+                        if (list==null) {
+                            list = new ArrayList<Type>
+                                    (cts.size());
+                            for (int j=0; j<i; j++) {
+                                Type t = cts.get(j);
+                                addToUnion(list, t);
+                            }
+                        }
+                        addToUnion(list, uoc);
+                    }
                 }
-                return union(list, unit);
+                if (list==null) {
+                    return !isUnion() ? 
+                            union(cts, unit) : this;
+                }
+                else {
+                    return union(list, unit);
+                }
             }
         }
     }
