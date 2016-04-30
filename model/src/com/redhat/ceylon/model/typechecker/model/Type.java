@@ -3327,7 +3327,7 @@ public class Type extends Reference {
         return unionOfCases;
     }
     
-    public Type getUnionOfCasesInternal() {
+    private Type getUnionOfCasesInternal() {
         Unit unit = getDeclaration().getUnit();
         //if X is an intersection type A&B, and A is an
         //enumerated type with cases U and V, then the cases
