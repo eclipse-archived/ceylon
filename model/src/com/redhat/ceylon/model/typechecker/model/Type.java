@@ -14,6 +14,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.principalInsta
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionOfCaseTypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.util.Collections.emptyList;
@@ -1744,12 +1745,18 @@ public class Type extends Reference {
                                     intersection(types, unit);
                             List<Type> lbsts = 
                                     lowerBound.getSatisfiedTypes();
-                            List<Type> caseTypes = 
-                                    new ArrayList<Type>
-                                        (lbsts.size());
-                            caseTypes.addAll(lbsts);
-                            result = union(caseTypes, unit)
-                                    .getSupertype(c);
+                            Type t;
+                            if (lbsts.size()==1) {
+                                t = lbsts.get(0);
+                            }
+                            else {
+                                List<Type> caseTypes = 
+                                        new ArrayList<Type>
+                                            (lbsts.size());
+                                caseTypes.addAll(lbsts);
+                                t = union(caseTypes, unit);
+                            }
+                            result = t.getSupertype(c);
                             if (result==null) {
                                 return unit.getUnknownType();
                             }
@@ -3333,7 +3340,24 @@ public class Type extends Reference {
         //enumerated type with cases U and V, then the cases
         //of X are the intersection (U|V)&B canonicalized to
         //the union U&B|V&B
-        if (isIntersection()) {
+        if (isNothing()) {
+            return this;
+        }
+        else if (isAnything()) {
+            return unionType(unit.getObjectType(),
+                    unit.getNullValueDeclaration().getType(),
+                    unit);
+        }
+        else if (isNull()) {
+            return unit.getNullValueDeclaration().getType();
+        }
+        else if (isBoolean()) {
+            return unionType(
+                    unit.getTrueValueDeclaration().getType(),
+                    unit.getFalseValueDeclaration().getType(),
+                    unit);
+        }
+        else if (isIntersection()) {
             List<Type> sts = getSatisfiedTypes();
             List<Type> list = 
                     new ArrayList<Type>
@@ -3350,6 +3374,14 @@ public class Type extends Reference {
             if (cts==null) {
                 return narrowToUpperBounds();
             }
+            else if (cts.size()==1) {
+                Type ct = cts.get(0);
+                if (ct.isExactly(this)) {
+                    //we hit a self type
+                    return this;
+                }
+                return ct.getUnionOfCases();
+            }
             //otherwise, if X is a union A|B, or an enumerated 
             //type, with cases A and B, and A is an enumerated 
             //type with cases U and V, then the cases of X are
@@ -3365,8 +3397,7 @@ public class Type extends Reference {
                         return this;
                     }
                     addToUnion(list,
-                            ct.narrowToUpperBounds()
-                                .getUnionOfCases()); //note recursion
+                            ct.getUnionOfCases()); //note recursion
                 }
                 return union(list, unit);
             }
