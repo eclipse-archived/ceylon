@@ -410,15 +410,21 @@ shared native final class String(characters)
             else false;
     
     "Determines if this string begins with the characters of
-     the given string."
-    shared actual native Boolean startsWith(List<> substring)
+     the given string or list. Returns `false` if the given
+     list contains an element that is not a [[Character]]."
+    shared actual native Boolean startsWith(
+        "A sequence of [[Characters]], usually a `String`."
+        List<> substring)
             => if (is String substring) 
             then includesAt(0, substring)
             else super.startsWith(substring);
     
     "Determines if this string ends with the characters of
-     the given string."
-    shared actual native Boolean endsWith(List<> substring)
+     the given string or list. Returns `false` if the given
+     list contains an element that is not a [[Character]]."
+    shared actual native Boolean endsWith(
+        "A sequence of [[Characters]], usually a `String`."
+        List<> substring)
             => if (is String substring)
             then includesAt(size-substring.size, substring)
             else super.endsWith(substring);
