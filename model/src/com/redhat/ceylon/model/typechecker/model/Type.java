@@ -3322,7 +3322,7 @@ public class Type extends Reference {
      */
     public Type getUnionOfCases() {
         if (unionOfCases==null) {
-            unionOfCases = getUnionOfCasesInternal();            
+            unionOfCases = getUnionOfCasesInternal();
         }
         return unionOfCases;
     }
