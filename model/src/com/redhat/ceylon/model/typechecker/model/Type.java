@@ -3364,9 +3364,8 @@ public class Type extends Reference {
                         //we hit a self type
                         return this;
                     }
-                    addToUnion(list,
-                            ct.narrowToUpperBounds()
-                                .getUnionOfCases()); //note recursion
+                    addToUnion(list, 
+                            ct.getUnionOfCases());
                 }
                 return union(list, unit);
             }
