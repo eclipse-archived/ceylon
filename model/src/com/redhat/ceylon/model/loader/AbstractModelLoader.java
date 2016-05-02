@@ -2667,15 +2667,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
                 continue;
             String name = fieldMirror.getName();
+            if(!JvmBackendUtil.isInitialLowerCase(name))
+                name = NamingBase.getJavaBeanName(name);
             // skip the field if "we've already got one"
             boolean conflicts = klass.getDirectMember(name, null, false) != null
                     || "equals".equals(name)
                     || "string".equals(name)
                     || "hash".equals(name);
             if (!conflicts) {
-                Declaration decl = addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon, isNativeHeaderMember);
+                Declaration decl = addValue(klass, name, fieldMirror, isCeylon, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
-                    Declaration hdr = addValue(klass, fieldMirror.getName(), fieldMirror, true, true);
+                    Declaration hdr = addValue(klass, name, fieldMirror, true, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                     initNativeHeader(hdr, decl);
                 } else if (isCeylon && shouldLinkNatives(decl)) {
@@ -3278,8 +3280,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(methodName.equals("hash")
                 || methodName.equals("string"))
             method.setName(methodName+"_method");
-        else
-            method.setName(JvmBackendUtil.strip(methodName, isCeylon, method.isShared()));
+        else{
+            String ceylonName = JvmBackendUtil.strip(methodName, isCeylon, method.isShared());
+            if(!JvmBackendUtil.isInitialLowerCase(ceylonName))
+                ceylonName = NamingBase.getJavaBeanName(ceylonName);
+            method.setName(ceylonName);
+        }
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
         // type params first

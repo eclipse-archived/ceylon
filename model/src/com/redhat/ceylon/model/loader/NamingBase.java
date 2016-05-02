@@ -163,7 +163,10 @@ public class NamingBase {
             newName[codePointIndex++] = c;
             charIndex += Character.charCount(c);
         }
-        
+
+        if(is_CONSTANT_CASE(newName))
+            return constant_case_toCamelCase(newName);
+
         for(int i=0;i<newName.length;i++){
             int codepoint = newName[i];
             if(Character.isLowerCase(codepoint) || codepoint == '_'){
@@ -176,6 +179,33 @@ public class NamingBase {
             newName[i] = Character.toLowerCase(codepoint);
         }
         return new String(newName, 0, newName.length);
+    }
+
+    private static String constant_case_toCamelCase(int[] newName) {
+        int j = 0;
+        boolean capitaliseNext = false;
+        for(int i=0;i<newName.length;i++){
+            int codepoint = newName[i];
+            if(codepoint == '_'){
+                // skip underscore
+                capitaliseNext = true;
+            }else if(capitaliseNext){
+                newName[j++] = codepoint;
+                capitaliseNext = false;
+            }else{
+                newName[j++] = Character.toLowerCase(codepoint);
+            }
+        }
+        return new String(newName, 0, j);
+    }
+
+    private static boolean is_CONSTANT_CASE(int[] newName) {
+        for(int i=0;i<newName.length;i++){
+            int codepoint = newName[i];
+            if(Character.isLowerCase(codepoint) && codepoint != '_')
+                return false;
+        }
+        return true;
     }
 
     /**
