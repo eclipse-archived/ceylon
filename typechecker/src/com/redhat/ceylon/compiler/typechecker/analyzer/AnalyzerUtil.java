@@ -39,6 +39,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -72,14 +73,15 @@ public class AnalyzerUtil {
     
     static TypedDeclaration getTypedMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean ellipsis, 
-            Unit unit) {
+            Unit unit, Scope scope) {
         Declaration member = 
                 td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
         else {
-            if(!JvmBackendUtil.isInitialLowerCase(name)){
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)){
                 name = NamingBase.getJavaBeanName(name);
                 member = td.getMember(name, unit, signature, ellipsis);
                 if (member instanceof TypedDeclaration) {
@@ -92,7 +94,7 @@ public class AnalyzerUtil {
 
     static TypeDeclaration getTypeMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean ellipsis, 
-            Unit unit) {
+            Unit unit, Scope scope) {
         Declaration member = 
                 td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypeDeclaration) {
@@ -103,7 +105,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
-            if(JvmBackendUtil.isInitialLowerCase(name)){
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)){
                 name = NamingBase.capitalize(name);
                 member = 
                         td.getMember(name, unit, signature, ellipsis);
@@ -129,7 +132,8 @@ public class AnalyzerUtil {
             return (TypedDeclaration) result;
         }
         else {
-            if(!JvmBackendUtil.isInitialLowerCase(name)){
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)){
                 name = NamingBase.getJavaBeanName(name);
                 result = 
                         scope.getMemberOrParameter(unit, 
@@ -156,7 +160,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
-            if(JvmBackendUtil.isInitialLowerCase(name)){
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)){
                 name = NamingBase.capitalize(name);
                 result = 
                         scope.getMemberOrParameter(unit, 

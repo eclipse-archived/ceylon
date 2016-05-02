@@ -6577,12 +6577,12 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         member = getTypedMember(d, name, 
-                                signature, spread, unit);
+                                signature, spread, unit, scope);
                     }
                 }
                 else {
                     member = getTypedMember(d, name, 
-                            signature, spread, unit);
+                            signature, spread, unit, scope);
                 }
                 ambiguous = member==null && 
                         d.isMemberAmbiguous(name, unit, 
@@ -7343,12 +7343,12 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         type = getTypeMember(d, name, 
-                                signature, spread, unit);
+                                signature, spread, unit, scope);
                     }
                 }
                 else {
                     type = getTypeMember(d, name, 
-                            signature, spread, unit);
+                            signature, spread, unit, scope);
                 }
                 ambiguous = type==null && 
                         d.isMemberAmbiguous(name, unit, 
@@ -9321,7 +9321,7 @@ public class ExpressionVisitor extends Visitor {
             	String container = "type '" + qtd.getName(unit) + "'";
             	TypedDeclaration member = 
             	        getTypedMember(qtd, name, 
-            	                null, false, unit);
+            	                null, false, unit, that.getScope());
             	if (member==null) {
             		if (qtd.isMemberAmbiguous(name, unit, null, false)) {
             			that.addError("method or attribute is ambiguous: '" +

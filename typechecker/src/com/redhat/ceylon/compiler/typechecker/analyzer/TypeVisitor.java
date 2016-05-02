@@ -480,7 +480,7 @@ public class TypeVisitor extends Visitor {
                 String name = name(id);
                 TypeDeclaration type = 
                         getTypeMember(d, name, 
-                                null, false, unit);
+                                null, false, unit, that.getScope());
                 if (type==null) {
                     Scope scope = that.getScope();
                     if (!isNativeForWrongBackend(
