@@ -49,13 +49,13 @@ public class LazyInterface extends Interface implements LazyContainer {
         this.classMirror = classMirror;
         this.completer = completer;
         this.realName = classMirror.getName();
-        String ceylonName = JvmBackendUtil.getMirrorName(classMirror);
-        if(JvmBackendUtil.isInitialLowerCase(ceylonName))
-            ceylonName = NamingBase.capitalize(ceylonName);
-        setName(ceylonName);
         this.isStatic = classMirror.isStatic();
         this.isAnnotationType  = classMirror.isAnnotationType();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
+        String ceylonName = JvmBackendUtil.getMirrorName(classMirror);
+        if(!isCeylon && JvmBackendUtil.isInitialLowerCase(ceylonName))
+            ceylonName = NamingBase.capitalize(ceylonName);
+        setName(ceylonName);
     }
 
     @Override
