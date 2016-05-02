@@ -200,12 +200,18 @@ public class NamingBase {
     }
 
     private static boolean is_CONSTANT_CASE(int[] newName) {
+        // reject empty, "U" and "_"
+        if(newName.length <= 1)
+            return false;
+        boolean hasOneUnderscore = false;
         for(int i=0;i<newName.length;i++){
             int codepoint = newName[i];
             if(Character.isLowerCase(codepoint) && codepoint != '_')
                 return false;
+            if(codepoint == '_')
+                hasOneUnderscore = true;
         }
-        return true;
+        return hasOneUnderscore;
     }
 
     /**
