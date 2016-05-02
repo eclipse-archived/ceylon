@@ -377,7 +377,7 @@ public class TreeUtil {
                 Annotation ann = new Annotation();
                 ann.setName("doc");
                 String text = aa.getStringLiteral().getText();
-                ann.addPositionalArgment(text);
+                ann.addPositionalArgument(text);
                 annotations.add(ann);
             }
             for (Tree.Annotation a: al.getAnnotations()) {
@@ -421,7 +421,7 @@ public class TreeUtil {
                             Tree.Term t = la.getExpression().getTerm();
                             String text = toString(t);
                             if (text!=null) {
-                                ann.addPositionalArgment(text);
+                                ann.addPositionalArgument(text);
                             }
                         }
                     }

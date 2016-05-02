@@ -105,7 +105,7 @@ public class JsonPackage extends LazyPackage {
                         Annotation ann = new Annotation();
                         ann.setName(name);
                         for (String arg : (List<String>)e.getValue()) {
-                            ann.addPositionalArgment(arg);
+                            ann.addPositionalArgument(arg);
                         }
                         getAnnotations().add(ann);
                     }
@@ -1157,7 +1157,7 @@ public class JsonPackage extends LazyPackage {
             Annotation ann = new Annotation();
             ann.setName(name);
             for (String arg : (List<String>)e.getValue()) {
-                ann.addPositionalArgment(arg);
+                ann.addPositionalArgument(arg);
             }
             d.getAnnotations().add(ann);
         }

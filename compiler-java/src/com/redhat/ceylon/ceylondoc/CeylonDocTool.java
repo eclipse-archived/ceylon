@@ -951,7 +951,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private void docNothingType(Package pkg) throws IOException {
         final Annotation nothingDoc = new Annotation();
         nothingDoc.setName("doc");
-        nothingDoc.addPositionalArgment(
+        nothingDoc.addPositionalArgument(
                 "The special type _Nothing_ represents: \n" +
                 " - the intersection of all types, or, equivalently \n" +
                 " - the empty set \n" +
