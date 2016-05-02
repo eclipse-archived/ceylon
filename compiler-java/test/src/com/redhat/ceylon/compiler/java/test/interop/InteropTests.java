@@ -778,4 +778,10 @@ public class InteropTests extends CompilerTests {
                 "com.redhat.ceylon.compiler.java.test.interop",
                 Arrays.asList("--run=com.redhat.ceylon.compiler.java.test.interop::sdkBug571_run"));
     }
+
+    @Test
+    public void testIopBug6099(){
+        compile("Bug6099Java.java");
+        compile("Bug6099.ceylon");
+    }
 }
