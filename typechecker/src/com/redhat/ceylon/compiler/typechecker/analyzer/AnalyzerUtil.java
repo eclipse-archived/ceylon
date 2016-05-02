@@ -129,6 +129,15 @@ public class AnalyzerUtil {
             return (TypedDeclaration) result;
         }
         else {
+            if(!JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.getJavaBeanName(name);
+                result = 
+                        scope.getMemberOrParameter(unit, 
+                                name, signature, ellipsis);
+                if (result instanceof TypedDeclaration) {
+                    return (TypedDeclaration) result;
+                }
+            }
             return null;
         }
     }
