@@ -1503,7 +1503,7 @@ public class ModelUtil {
             }
             return true;
         }
-        else if (p.getCaseTypes()!=null) {
+        else if (pd.getCaseTypes()!=null) {
             boolean all = true;
             for (Type t: pd.getCaseTypes()) {
                 if (t.getDeclaration().isSelfType() || 
