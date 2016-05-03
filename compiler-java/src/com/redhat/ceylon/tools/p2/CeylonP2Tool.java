@@ -902,7 +902,17 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
         String key = name+"/"+version;
         if(allModules.containsKey(key))
             return;
-        ArtifactResult artifact = repoManager.getArtifactResult(new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR));
+        ArtifactResult artifact = null;
+        try {
+            artifact = repoManager.getArtifactResult(new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR));
+        }
+        catch(RuntimeException e) {
+            if (e.getCause() instanceof IOException) {
+                log.warning(e.toString());
+            } else {
+                throw e;
+            }
+        }
         File artifactJar = null;
         if(artifact == null){
             // try to find it in the plugins folder
