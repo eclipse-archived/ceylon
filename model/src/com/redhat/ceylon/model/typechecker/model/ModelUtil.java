@@ -1560,8 +1560,7 @@ public class ModelUtil {
                 !st.inherits(qd) ||
             p.isClassOrInterface() &&
                 qd.inherits(st) && !pd.inherits(st) && 
-                !st.inherits(pd) && 
-                !p.involvesTypeParameters()) {
+                !st.inherits(pd)) {
             return true;
         }
         
