@@ -268,7 +268,7 @@ final class bug1227_ifReturn_specifiedElse_ {
                     }
                 }
                 final ohNo_ ohNo = new ohNo_();
-                return from$42;
+                return from$46;
             }
         }
         from$42 = 0L;
@@ -304,7 +304,7 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
                     }
                 }
                 final ohNo_ ohNo = new ohNo_();
-                return from$48;
+                return from$52;
             }
         }
         from$48 = 0L;
@@ -383,7 +383,7 @@ final class bug1227_for2_ifReturn_specifiedElse_ {
                 if (someBoolean) {
                     from$66 = index + index2;
                     final long from$72 = from$66;
-                    return from$66;
+                    return from$72;
                 }
             }
         }

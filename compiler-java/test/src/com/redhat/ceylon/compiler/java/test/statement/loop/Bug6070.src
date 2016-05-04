@@ -86,7 +86,7 @@ final class bug1227_again_ {
                 if (someBoolean) {
                     from$12 = index + index2;
                     final long from$18 = from$12;
-                    return from$12;
+                    return from$18;
                 }
             }
         }
