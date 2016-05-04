@@ -413,7 +413,7 @@ shared native final class String(characters)
      the given string or list. Returns `false` if the given
      list contains an element that is not a [[Character]]."
     shared actual native Boolean startsWith(
-        "A sequence of [[Characters]], usually a `String`."
+        "A sequence of [[Character]]s, usually a `String`."
         List<> substring)
             => if (is String substring) 
             then includesAt(0, substring)
@@ -423,7 +423,7 @@ shared native final class String(characters)
      the given string or list. Returns `false` if the given
      list contains an element that is not a [[Character]]."
     shared actual native Boolean endsWith(
-        "A sequence of [[Characters]], usually a `String`."
+        "A sequence of [[Character]]s, usually a `String`."
         List<> substring)
             => if (is String substring)
             then includesAt(size-substring.size, substring)
