@@ -1724,9 +1724,10 @@ public class Type extends Reference {
                     if (rd.equals(prd)) {
                         result = principalInstantiation(rd, 
                                 possibleResult, result, unit);
-                        if (result.isSubtypeOf(lowerBound)) {
-                            lowerBound = result;
-                        }
+                        lowerBound = c.isMemberLookup() ? 
+                                intersectionType(result, 
+                                        lowerBound, unit) : 
+                                result;
                     }
                     else {
                         //ambiguous! we can't decide between 
