@@ -152,21 +152,19 @@ public class UnionType extends TypeDeclaration {
             return true;
         }
         else {
-            //this loop is intended as a performance
-            //optimization, but it doesn't actually
-            //seem to help at all really
-            /*for (Type ct: getCaseTypes()) {
+            for (Type ct: getCaseTypes()) {
                 if (!ct.getDeclaration().inherits(dec)) {
                     return false;
                 }
-            }*/
+            }
+            return true;
             //have to resolve aliases here or the build of
             //ceylon.ast is really slow / nonterminating
-            Type st = 
-                    getType()
-                        .resolveAliases()
-                        .getSupertype(dec);
-            return st!=null && !st.isNothing();
+//            Type st = 
+//                    getType()
+//                        .resolveAliases()
+//                        .getSupertype(dec);
+//            return st!=null && !st.isNothing();
         }
     }
     
