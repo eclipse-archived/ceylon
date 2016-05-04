@@ -996,14 +996,15 @@ public abstract class TypeDeclaration extends Declaration
      *         the given list of types
      */
     public boolean isDisjoint(TypeDeclaration td) {
-        if (this instanceof ClassOrInterface &&
-            td instanceof ClassOrInterface &&
-                equals(td)) {
+        if (!(this instanceof ClassOrInterface)
+                || !(td instanceof ClassOrInterface)) {
             return false;
         }
-        if (this instanceof TypeParameter &&
-                td instanceof TypeParameter &&
-                    equals(td)) {
+        if (this instanceof Class
+                && td instanceof Class) {
+            return false;
+        }
+        if (equals(td)) {
             return false;
         }
         List<Type> sts = getSatisfiedTypes();
