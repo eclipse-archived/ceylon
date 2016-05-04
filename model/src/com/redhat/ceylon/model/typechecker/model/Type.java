@@ -1719,6 +1719,7 @@ public class Type extends Reference {
                     if (rd.equals(prd)) {
                         result = principalInstantiation(rd, 
                                 possibleResult, result, unit);
+                        lowerBound = result;
                     }
                     else {
                         //ambiguous! we can't decide between 
