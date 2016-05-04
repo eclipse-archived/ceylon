@@ -1691,6 +1691,32 @@ public final class String
         return builder.toString();
     }
 
+    public java.lang.String removeInitial(
+            @Name("prefix") java.lang.String prefix) {
+        return removeInitial(value, prefix);
+    }
+
+    @Ignore
+    public static java.lang.String removeInitial(java.lang.String value, 
+            java.lang.String prefix) {
+        return value.startsWith(prefix) ? 
+                value.substring(prefix.length()) : 
+                value;
+    }
+
+    public java.lang.String removeTerminal(
+            @Name("postfix") java.lang.String postfix) {
+        return removeTerminal(value, postfix);
+    }
+
+    @Ignore
+    public static java.lang.String removeTerminal(java.lang.String value, 
+            java.lang.String postfix) {
+        return value.endsWith(postfix) ? 
+                value.substring(0, value.length()-postfix.length()) : 
+                value;
+    }
+
     public java.lang.String replace(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {

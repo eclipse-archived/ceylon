@@ -522,6 +522,24 @@ shared native final class String(characters)
             else this;
     }
     
+    "Returns a string formed by removing the given 
+     [[prefix]] from the start of this string, if this 
+     string [[starts with|startsWith]] the given `prefix`, 
+     or this string otherwise."
+    shared native String removeInitial(String prefix) 
+            => startsWith(prefix) 
+            then spanFrom(prefix.size)
+            else this;
+    
+    "Returns a string formed by removing the given 
+     [[postfix]] from the end of this string, if this 
+     string [[ends with|endsWith]] the given `postfix`, or 
+     this string otherwise."
+    shared native String removeTerminal(String postfix) 
+            => endsWith(postfix) 
+            then spanTo(size-postfix.size)
+            else this;
+    
     function charsEqualIgnoringCase(Character x, Character y) 
             => x==y 
             || x.uppercased==y.uppercased
