@@ -1715,14 +1715,9 @@ public class Type extends Reference {
                     TypeDeclaration prd = 
                             possibleResult.getDeclaration();
                     
-                    TypeDeclaration d = null;
-                    if (rd.equals(prd)) {
-                        d = rd;
-                    }
-                    
                     Unit unit = getDeclaration().getUnit();
-                    if (d!=null) {
-                        result = principalInstantiation(d, 
+                    if (rd.equals(prd)) {
+                        result = principalInstantiation(rd, 
                                 possibleResult, result, unit);
                     }
                     else {
