@@ -285,7 +285,11 @@ public class NamingBase {
      * Its public modifier will be removed at a future date.
      */
     public static String getGetterName(String property) {
-        return "get"+capitalize(stripLeadingDollar(property));
+        String result = "get"+capitalize(stripLeadingDollar(property));
+        if ("getClass".equals(result)) {
+            result = "getClass$";
+        }
+        return result;
     }
 
     /** 
@@ -299,5 +303,28 @@ public class NamingBase {
 
     public static String name(Unfix unfix) {
         return unfix.toString();
+    }
+    
+    /** 
+     * Return the name of the Ceylon attribute according to conventions 
+     * applied to the given getter/setter method name.
+     * Note: The value of a {@code @Name} annotation take precedence over
+     * the convention-derived name returned by this method. 
+     */
+    public static String getJavaAttributeName(String getterName) {
+        if (getterName.startsWith("get") || getterName.startsWith("set")) {
+            return NamingBase.getJavaBeanName(getterName.substring(3));
+        } else if (getterName.startsWith("is")) {
+            // Starts with "is"
+            return NamingBase.getJavaBeanName(getterName.substring(2));
+        } else if (getterName.equals("hashCode")) {
+            // Starts with "is"
+            return "hash";
+        } else if (getterName.equals("toString")) {
+            // Starts with "is"
+            return "string";
+        } else {
+            throw new RuntimeException("Illegal java getter/setter name " + getterName);
+        }
     }
 }

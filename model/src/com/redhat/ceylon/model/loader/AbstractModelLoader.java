@@ -3472,18 +3472,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String name = getAnnotationStringValue(methodMirror, CEYLON_NAME_ANNOTATION);
         if(name != null)
             return name;
-        return getJavaAttributeName(methodMirror.getName());
-    }
-    
-    private String getJavaAttributeName(String getterName) {
-        if (getterName.startsWith("get") || getterName.startsWith("set")) {
-            return NamingBase.getJavaBeanName(getterName.substring(3));
-        } else if (getterName.startsWith("is")) {
-            // Starts with "is"
-            return NamingBase.getJavaBeanName(getterName.substring(2));
-        } else {
-            throw new RuntimeException("Illegal java getter/setter name");
-        }
+        return NamingBase.getJavaAttributeName(methodMirror.getName());
     }
 
     private Value addValue(ClassOrInterface klass, String ceylonName, FieldMirror fieldMirror, boolean isCeylon, boolean isNativeHeader) {
