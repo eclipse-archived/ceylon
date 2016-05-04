@@ -26,6 +26,7 @@ import java.net.Proxy;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.Collections;
 
 import com.redhat.ceylon.cmr.spi.ContentHandle;
@@ -331,6 +332,8 @@ public class RemoteContentStore extends URLContentStore {
 
         try {
             return exists(url);
+        } catch (UnknownHostException ignored) {
+            return false;
         } catch (IOException ignored) {
             throw new RuntimeException(ignored);
         }
