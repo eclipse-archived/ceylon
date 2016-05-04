@@ -445,7 +445,7 @@ public class Class extends ClassOrInterface implements Functional {
             }
             if (dec instanceof Interface) {
                 List<Type> sts = getSatisfiedTypes();
-                for (int i = 0, s=sts.size(); i<s; i++) {
+                for (int i=0, s=sts.size(); i<s; i++) {
                     Type st = sts.get(i);
                     if (st.getDeclaration().inherits(dec)) {
                         return true;
