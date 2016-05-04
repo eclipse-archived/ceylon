@@ -3321,6 +3321,8 @@ public class ExpressionVisitor extends Visitor {
                 ClassOrInterface ci = 
                         getContainingClassOrInterface(scope);
                 if (ci!=null) {
+                    List<TypeDeclaration> refiners = 
+                            new ArrayList<TypeDeclaration>(1);
                     Type et = ci.getExtendedType();
                     if (et!=null) {
                         Declaration etm = 
@@ -3335,11 +3337,7 @@ public class ExpressionVisitor extends Visitor {
                             TypeDeclaration container = 
                                     (TypeDeclaration) 
                                         etm.getContainer();
-                            qmte.addError("inherited member is refined by intervening superclass: '" + 
-                                    container.getName() + 
-                                    "' refines '" + name + 
-                                    "' declared by '" + 
-                                    type.getName() + "'");
+                            refiners.add(container);
                         }
                     }
                     for (Type st: ci.getSatisfiedTypes()) {
@@ -3355,12 +3353,38 @@ public class ExpressionVisitor extends Visitor {
                             TypeDeclaration container = 
                                     (TypeDeclaration) 
                                         stm.getContainer();
-                            qmte.addError("inherited member is refined by intervening superinterface: '" + 
-                                    container.getName() + 
-                                    "' refines '" + name + 
-                                    "' declared by '" + 
+                            refiners.add(container);
+                        }
+                    }
+                    if (refiners.size()==1) {
+                        TypeDeclaration r = refiners.get(0);
+                        if (r instanceof Class) {
+                            qmte.addError("inherited member is refined by intervening superclass: '" + 
+                                    r.getName() + "' refines '" +
+                                    name + "' declared by '" + 
                                     type.getName() + "'");
                         }
+                        else {
+                            qmte.addError("inherited member is refined by intervening superinterface: '" + 
+                                    r.getName() + "' refines '" +
+                                    name + "' declared by '" + 
+                                    type.getName() + "'");
+                        }
+                    }
+                    else if (!refiners.isEmpty()) {
+                        StringBuilder sb = new StringBuilder();
+                        for (TypeDeclaration r: refiners) {
+                            if (sb.length()>0) {
+                                sb.append(", ");
+                            }
+                            sb.append('\'')
+                              .append(r.getName())
+                              .append('\'');
+                        }
+                        qmte.addError("inherited member is refined by intervening supertypes: '" + 
+                                name + "' declared by '" + 
+                                type.getName() + 
+                                "' is refined by intervening types " + sb);
                     }
                 }
             }
