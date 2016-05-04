@@ -1677,6 +1677,11 @@ public class Type extends Reference {
         
         Type result = null;
         Type lowerBound = null;
+        //Note: for anything other than a member lookup,
+        //result and lowerBound are always identical. But
+        //for member lookups we can return a "best" result, 
+        //i.e. a supertype declaration of the member that is
+        //subsequently refined by multiple intervening types
         
         Type extendedType = getInternalExtendedType();
         if (extendedType!=null) {
@@ -1733,7 +1738,14 @@ public class Type extends Reference {
                             //try to find a common supertype 
                             //by forming the union of the two 
                             //possible results (since A|B is 
-                            //always a supertype of A&B)
+                            //always a supertype of A&B) but
+                            //also keep track of a lower bound,
+                            //in case we subsequently find a
+                            //strictly better and more refined
+                            //declaration of the member
+                            
+                            //lower bound is just the 
+                            //intersection
                             List<Type> types = 
                                     new ArrayList<Type>(2);
                             types.add(lowerBound);
@@ -1742,6 +1754,10 @@ public class Type extends Reference {
                                     intersection(types, unit);
                             List<Type> lbsts = 
                                     lowerBound.getSatisfiedTypes();
+                            
+                            //the "best" result is found by 
+                            //searching supertypes of the 
+                            //union
                             List<Type> caseTypes = 
                                     new ArrayList<Type>
                                         (lbsts.size());
