@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
@@ -118,6 +120,9 @@ public class StatementTransformer extends AbstractTransformer {
     private final Transformer<JCStatement, Tree.Continue> defaultContinueTransformer = new DefaultContinueTransformer();
     private Transformer<JCStatement, Tree.Continue> continueTransformer = defaultContinueTransformer;
     
+    private Tree.Block currentBlock = null;
+    private Map<Tree.Block, Runnable> onEndBlock = new IdentityHashMap<>();
+    
     public static StatementTransformer getInstance(Context context) {
         StatementTransformer trans = context.get(StatementTransformer.class);
         if (trans == null) {
@@ -154,6 +159,8 @@ public class StatementTransformer extends AbstractTransformer {
         final ListBuffer<JCTree> prevDefs = v.defs;
         final boolean prevInInitializer = v.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
+        Tree.Block oldBlock = block;
+        currentBlock = block;
         List<JCStatement> result;
         try {
             v.defs = new ListBuffer<JCTree>();
@@ -182,6 +189,10 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             }
             result = (List<JCStatement>)v.getResult().toList();
+            Runnable r = onEndBlock.get(block);
+            if (r != null) {
+                r.run();
+            }
         } finally {
             v.classBuilder = prevClassBuilder;
             v.inInitializer = prevInInitializer;
@@ -192,6 +203,7 @@ public class StatementTransformer extends AbstractTransformer {
                 scope = scope.getScope();
             }
             naming.closeScopedSubstitutions(scope);
+            currentBlock = oldBlock;
         }
         return result;
     }
@@ -2525,7 +2537,6 @@ public class StatementTransformer extends AbstractTransformer {
                     // The user-supplied contents of fail block
                     List<JCStatement> failblock = transformBlock(stmt.getElseClause().getBlock());
                     // Close the inner substitutions of the else block
-                    closeInnerSubstituionsForSpecifiedValues(stmt.getElseClause(), false);
                     if (needsFailVar()) {
                         // if ($doforelse$X) ...
                         JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
@@ -3276,9 +3287,10 @@ public class StatementTransformer extends AbstractTransformer {
      * also generate a final <tt>x$$</tt> and install an "inner substitution"
      * {@code x->x$$} so that captured references within the control
      * structure still work.</li>
-     * <li>At end end of the else Blocks of for/else and at 
-     * Break, Continue, Throw and Return statements within the
-     * control structure we remove the "inner substitution" {@code x->x$$}
+     * <li>At end end of the block in which the value is specified we remove 
+     * the "inner substitution" {@code x->x$$}. This assumes that the Ceylon 
+     * block mirrors the java block structure which is not  necessarily true, 
+     * but is true enough in practice.
      * <li>At the end of the control structure we assign <tt>x = x$</tt>
      * and remove the "outer substitution" {@code x->x$}</li>
      * </ul>
@@ -3292,6 +3304,7 @@ public class StatementTransformer extends AbstractTransformer {
         private Naming.Substitution outerSubst = null;
         private SyntheticName innerAlias;
         private Naming.Substitution innerSubst = null;
+        private JCExpression alias;
         
         public DeferredSpecification(Value value, int modifiers, Type type) {
             this.value = value;
@@ -3359,6 +3372,9 @@ public class StatementTransformer extends AbstractTransformer {
             if (innerSubst != null || innerAlias != null) {
                 throw new BugException("An inner substitution (" + innerSubst + ") is already open");
             }
+            // We're going to need the unaliased variable when we close the outer substitution
+            alias = naming.makeName(value, Naming.NA_IDENT);
+            
             try (SavedPosition pos = noPosition()) {
                 innerAlias = naming.alias(value.getName());
                 JCStatement result = makeVar(
@@ -3367,20 +3383,23 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(type, (value.getUnboxed() == false) ? AbstractTransformer.JT_NO_PRIMITIVES : 0), 
                         naming.makeName(value, Naming.NA_IDENT));
                 innerSubst = naming.addVariableSubst(value, innerAlias.getName());
+                
+                // Close this substitution when we finish transforming the current block
+                onEndBlock.put(currentBlock, new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (innerSubst == null || innerAlias == null) {
+                            throw new BugException("No inner substitution to close");
+                        }
+                        innerSubst.close();
+                        innerSubst = null;
+                        innerAlias = null;
+                    }
+                    
+                });
                 return result;
             }
-        }
-        
-        /**
-         * Removes the "inner substitution" installed by {@link #openInnerSubstitution()}
-         */
-        public void closeInnerSubstitution() {
-            if (innerSubst == null || innerAlias == null) {
-                throw new BugException("No inner substitution to close");
-            }
-            innerSubst.close();
-            innerSubst = null;
-            innerAlias = null;
         }
         
         /**
@@ -3395,7 +3414,6 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new BugException("No outer substitution to close");
             }
             try (SavedPosition pos = noPosition()) {
-                JCExpression alias = naming.makeName(value, Naming.NA_IDENT);
                 outerSubst.close();
                 outerSubst = null;
                 JCExpression var = naming.makeName(value, Naming.NA_IDENT);
@@ -3408,48 +3426,6 @@ public class StatementTransformer extends AbstractTransformer {
     
     public DeferredSpecification getDeferredSpecification(Declaration value) {
         return deferredSpecifications.get(value);
-    }
-    
-    /**
-     * Removes the "inner substitutions" for any deferred values specified 
-     * in the given control block.
-     * 
-     * If we're closing the substitutions because of a return or throw then 
-     * all enclosing substitutions need to be closed. 
-     * If it's because of a break/continue then just those for the given 
-     * controlClause need to be closed.
-     */
-    private void closeInnerSubstituionsForSpecifiedValues(Tree.ControlClause contolClause, boolean enclosing) {
-        if (contolClause != null) {
-            ControlBlock controlBlock = contolClause.getControlBlock();
-            outer: while (true) {
-                java.util.Set<Value> assigned = controlBlock.getSpecifiedValues();
-                if (assigned != null) {
-                    for (Value value : assigned) {
-                        DeferredSpecification ds = statementGen().getDeferredSpecification(value);
-                        if (ds != null) {
-                            ds.closeInnerSubstitution();
-                        }
-                    }
-                }
-                if (!enclosing) {
-                    break;
-                }
-                Scope s = controlBlock.getContainer();
-                while (s != null) {
-                    if (s instanceof ControlBlock) {
-                        controlBlock = (ControlBlock)s;
-                        continue outer;
-                    } else if (s instanceof Declaration) {
-                     // we need to stop when we reach a control block that 
-                        // encloses the declaration of the value
-                        break outer;
-                    }
-                    s = s.getContainer();
-                }
-                break;
-            }
-        }
     }
     
     // FIXME There is a similar implementation in ClassGen!
@@ -3518,9 +3494,6 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         public List<JCStatement> transform(Break stmt) {
-           // Remove the inner substitutions for any deferred values specified 
-            // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause, false);
             
             JCStatement brk = at(stmt).Break(getLabel(stmt));
         
@@ -3566,19 +3539,13 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public JCStatement transform(Tree.Return ret) {
-            // Remove the inner substitutions for any deferred values specified 
-            // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
-            at(ret);
             return at(ret).Break(label);
         }
     }
     
     class DefaultReturnTransformer implements Transformer<JCStatement, Tree.Return> {
         public JCStatement transform(Tree.Return ret) {
-            // Remove the inner substitutions for any deferred values specified 
-            // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
+            
             Tree.Expression expr = ret.getExpression();
             JCExpression returnExpr = null;
             at(ret);
@@ -3681,9 +3648,6 @@ public class StatementTransformer extends AbstractTransformer {
     };
     
     public JCStatement transform(Tree.Throw t) {
-        // Remove the inner substitutions for any deferred values specified 
-        // in the control block
-        closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
         at(t);
         Tree.Expression expr = t.getExpression();
         final JCExpression exception;
