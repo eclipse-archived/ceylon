@@ -4085,8 +4085,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     } else if (class1.isMember()){
                         // Stef: this is fugly but I couldn't find better. This makes sure that Outer.Inner.enumeratedConstructor
                         // creates a Callable<Outer.Inner,[Outer]> that returns the enumeratedConstructor given an outer instance
-                        if(primary instanceof Tree.QualifiedMemberOrTypeExpression
-                                && ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary() instanceof Tree.BaseTypeExpression)
+                        if (primary instanceof Tree.QualifiedMemberOrTypeExpression 
+                                && (((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary() instanceof Tree.BaseTypeExpression
+                                || ((Tree.QualifiedMemberOrTypeExpression) primary).getPrimary() instanceof Tree.QualifiedTypeExpression)) {
                             return CallableBuilder.unboundValueMemberReference(
                                 gen(),
                                 expr,
