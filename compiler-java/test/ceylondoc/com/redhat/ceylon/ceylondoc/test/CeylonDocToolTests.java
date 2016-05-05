@@ -706,7 +706,7 @@ public class CeylonDocToolTests {
     private Module makeDefaultModule() {
         Module module = new Module();
         module.setName(Arrays.asList(Module.DEFAULT_MODULE_NAME));
-        module.setDefault(true);
+//        module.setDefault(true);
         return module;
     }
 

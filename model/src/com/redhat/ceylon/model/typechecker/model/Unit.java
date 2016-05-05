@@ -300,7 +300,8 @@ public class Unit {
     private Module getLanguageModule() {
         if (languageModule==null) {
             languageModule = 
-                    getPackage().getModule()
+                    getPackage()
+                        .getModule()
                         .getLanguageModule();
         }
         return languageModule;

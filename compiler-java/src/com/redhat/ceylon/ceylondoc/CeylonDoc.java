@@ -487,7 +487,7 @@ public abstract class CeylonDoc extends Markup {
     
     protected final void writePackageNavigation(Package pkg) throws IOException {
         open("span class='package-identifier'");
-        if (!module.isDefault()) {
+        if (!module.isDefaultModule()) {
             List<String> moduleNames = module.getName();
             List<String> pkgNames = pkg.getName();
             List<String> subpkgNames = pkgNames.subList(moduleNames.size(), pkgNames.size());

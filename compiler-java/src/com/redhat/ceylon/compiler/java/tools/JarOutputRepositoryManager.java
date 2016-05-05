@@ -187,8 +187,8 @@ public class JarOutputRepositoryManager {
             this.module = module;
             this.writeOsgiManifest = !options.isSet(Option.CEYLONNOOSGI);
             this.osgiProvidedBundles = options.get(Option.CEYLONOSGIPROVIDEDBUNDLES);
-            this.writeMavenManifest = !options.isSet(Option.CEYLONNOPOM) && !module.isDefault();
-            this.writeJava9Module= options.isSet(Option.CEYLONJIGSAW) && !module.isDefault();
+            this.writeMavenManifest = !options.isSet(Option.CEYLONNOPOM) && !module.isDefaultModule();
+            this.writeJava9Module= options.isSet(Option.CEYLONJIGSAW) && !module.isDefaultModule();
             
             // Determine the special path that signals that the files it contains
             // should be moved to the root of the output JAR/CAR
@@ -264,12 +264,12 @@ public class JarOutputRepositoryManager {
                 // Add META-INF/MANIFEST.MF
                 if (writeOsgiManifest && manifest == null) {
                     // Copy the previous manifest
-                    Manifest manifest = (module.isDefault() 
+                    Manifest manifest = (module.isDefaultModule() 
                     		? new OsgiUtil.DefaultModuleManifest() 
                                     // using old compiler-generated manifest, so don't worry about conflicts: null logger 
                     	    : new OsgiUtil.OsgiManifest(module, jdkProvider, osgiProvidedBundles, getPreviousManifest(), null)).build();
                     writeManifestJarEntry(manifestFirst, manifest);
-                } else if (manifest != null && !module.isDefault()) {
+                } else if (manifest != null && !module.isDefaultModule()) {
                     // Use the added manifest
                     manifest.writeManifest(manifestFirst, new JavacLogger(options, log));
                 }
@@ -280,7 +280,7 @@ public class JarOutputRepositoryManager {
                 }
 
                 // Add module-info.class
-                if (writeJava9Module && !module.isDefault()) {
+                if (writeJava9Module && !module.isDefaultModule()) {
                     writeJava9Module(foldersAdded, manifestFirst, module);
                 }
 
@@ -306,7 +306,7 @@ public class JarOutputRepositoryManager {
                 JarUtils.publish(finalCarFile, sha1File, carContext, repoManager, cmrLog);
                 
                 String info;
-                if(module.isDefault())
+                if(module.isDefaultModule())
                     info = module.getNameAsString();
                 else
                     info = module.getNameAsString() + "/" + module.getVersion();
@@ -437,7 +437,7 @@ public class JarOutputRepositoryManager {
                 modifiedResourceFilesRel.add(entryName);
                 modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
                 if (OsgiUtil.CeylonManifest.isManifestFileName(entryName) && 
-                        (module.isDefault() || writeOsgiManifest)) {
+                        (module.isDefaultModule() || writeOsgiManifest)) {
                     manifest = new JarEntryManifestFileObject(outputJarFile.getPath(), entryName, 
                     		module, osgiProvidedBundles, jdkProvider);
                     return manifest;

@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.js.loader;
 
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -236,8 +238,8 @@ public class MetamodelGenerator {
             addPackage(m, pkg.getNameAsString());
         }
         if (pkg != null && !pkg.getModule().equals(module)) {
-            final String modname = pkg.getModule().getNameAsString();
-            m.put(KEY_MODULE, Module.LANGUAGE_MODULE_NAME.equals(modname)?"$":modname);
+            final Module mod = pkg.getModule();
+            m.put(KEY_MODULE, mod.isLanguageModule()?"$":mod.getNameAsString());
         }
         putTypeArguments(m, pt, from);
         return m;
@@ -699,7 +701,7 @@ public class MetamodelGenerator {
     }
 
     private void addPackage(final Map<String,Object> map, final String pkgName) {
-        if (pkgName.equals(Module.LANGUAGE_MODULE_NAME)) {
+        if (pkgName.equals(LANGUAGE_MODULE_NAME)) {
             map.put(KEY_PACKAGE, "$");
         } else {
             map.put(KEY_PACKAGE, pkgName);

@@ -125,7 +125,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         }else if(forCompiledModule || isLanguageModule || moduleManager.shouldLoadTransitiveDependencies()){
             // we only add stuff to the classpath and load the modules if we need them to compile our modules
             moduleManager.getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
-            if(!module.isDefault() && !moduleManager.getModelLoader().loadCompiledModule(module)){
+            if(!module.isDefaultModule() && !moduleManager.getModelLoader().loadCompiledModule(module)){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
                 module.setNativeBackends(Backend.Java.asSet());
@@ -144,7 +144,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 }
             }
             LazyModule lazyModule = (LazyModule) module;
-            if(!lazyModule.isJava() && !module.isDefault()){
+            if(!lazyModule.isJava() && !module.isDefaultModule()){
                 // it must be a Ceylon module
                 // default modules don't have any module descriptors so we can't check them
                 Overrides overrides = getContext().getRepositoryManager().getOverrides();

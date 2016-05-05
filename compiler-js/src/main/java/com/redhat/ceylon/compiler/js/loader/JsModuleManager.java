@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.js.loader;
 
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,9 +44,9 @@ public class JsModuleManager extends ModuleManager {
         u.setFilename(Constants.MODULE_DESCRIPTOR);
         u.setFullPath(moduleName+"/"+version);
         module.setUnit(u);
-        JsonModule dep = (JsonModule)findLoadedModule(Module.LANGUAGE_MODULE_NAME, null);
+        JsonModule dep = (JsonModule)findLoadedModule(LANGUAGE_MODULE_NAME, null);
         //This can only happen during initCoreModules()
-        if (!(module.getNameAsString().equals(Module.DEFAULT_MODULE_NAME) || module.getNameAsString().equals(Module.LANGUAGE_MODULE_NAME))) {
+        if (!(module.isDefaultModule() || module.isLanguageModule())) {
             //Load the language module if we're not inside initCoreModules()
             if (dep == null) {
                 dep = (JsonModule)getModules().getLanguageModule();

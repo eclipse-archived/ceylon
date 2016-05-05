@@ -435,7 +435,7 @@ public class CeylonEnter extends Enter {
                     +" may be corrupted.");
         } catch (Exception e) {
             String moduleName = module.getNameAsString();
-            if(!module.isDefault())
+            if(!module.isDefaultModule())
                 moduleName += "/" + module.getVersion();
             log.error("ceylon", "Exception occured while trying to resolve module "+moduleName);
             e.printStackTrace();
@@ -458,7 +458,7 @@ public class CeylonEnter extends Enter {
             artifact = result != null ? result.artifact() : null;
         } catch (Exception e) {
             String moduleName = module.getNameAsString();
-            if(!module.isDefault())
+            if(!module.isDefaultModule())
                 moduleName += "/" + module.getVersion();
             log.error("ceylon", "Exception occured while trying to resolve module "+moduleName);
             e.printStackTrace();

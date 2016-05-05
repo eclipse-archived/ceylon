@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader;
 
+import static com.redhat.ceylon.common.Versions.getJvmLanguageModuleVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
@@ -22,9 +23,9 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.mirror.AccessibleMirror;
@@ -600,7 +601,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return convertToDeclaration(module, typeName, declarationType);
             String error = "Declaration '" + typeName + "' could not be found in module '" + moduleScope.getNameAsString() 
                     + "' or its imported modules";
-            if(module != null && !module.isDefault())
+            if(module != null && !module.isDefaultModule())
                 error += " but was found in the non-imported module '"+module.getNameAsString()+"'";
             return logModelResolutionException(null, moduleScope, error).getDeclaration();
         }
@@ -1880,7 +1881,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public Module lookupModuleByPackageName(String packageName) {
         for(Module module : modules.getListOfModules()){
             // don't try the default module because it will always say yes
-            if(module.isDefault())
+            if(module.isDefaultModule())
                 continue;
             // skip modules we're not loading things from
             if(!ModelUtil.equalModules(module,getLanguageModule())
@@ -1920,7 +1921,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Module findOrCreateModule(String moduleName, String version)  {
         synchronized(getLock()){
             boolean isJdk = false;
-            boolean defaultModule = false;
 
             // make sure it isn't loaded
             Module module = getLoadedModule(moduleName, version);
@@ -1952,7 +1952,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // FIXME: this can't be that easy.
             if(isJdk)
                 module.setAvailable(true);
-            module.setDefault(defaultModule);
             return module;
         }
     }
@@ -1963,7 +1962,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     public boolean loadCompiledModule(Module module, boolean loadModuleImports)  {
         synchronized(getLock()){
-            if(module.isDefault())
+            if(module.isDefaultModule())
                 return false;
             String pkgName = module.getNameAsString();
             if(pkgName.isEmpty())
@@ -2055,7 +2054,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(!ModelUtil.equalModules(module, languageModule)){
                 boolean found = false;
                 for (ModuleImport mi : module.getImports()) {
-                    if (Module.LANGUAGE_MODULE_NAME.equals(mi.getModule().getNameAsString())) {
+                    if (mi.getModule().isLanguageModule()) {
                         found = true;
                         break;
                     }
@@ -2070,8 +2069,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             return AbstractModelLoader.this;
                         }};
                     oldLangMod.setLanguageModule(oldLangMod);
-                    oldLangMod.setName(Arrays.asList(Module.LANGUAGE_MODULE_NAME));
-                    oldLangMod.setVersion(Versions.getJvmLanguageModuleVersion(major, minor));
+                    oldLangMod.setName(Arrays.asList("ceylon", "language"));
+                    oldLangMod.setVersion(getJvmLanguageModuleVersion(major, minor));
                     oldLangMod.setNativeBackends(Backends.JAVA);
                     oldLangMod.setJvmMajor(major);
                     oldLangMod.setJvmMinor(minor);
@@ -4133,7 +4132,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private Type logModelResolutionException(final String exceptionMessage, Module module, final String message) {
         UnknownType.ErrorReporter errorReporter;
-        if(module != null && !module.isDefault()){
+        if(module != null && !module.isDefaultModule()){
             final StringBuilder sb = new StringBuilder();
             sb.append("Error while loading the ").append(module.getNameAsString()).append("/").append(module.getVersion());
             sb.append(" module:\n ");

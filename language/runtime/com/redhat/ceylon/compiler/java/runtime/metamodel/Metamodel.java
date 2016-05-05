@@ -536,7 +536,7 @@ public class Metamodel {
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
             // present. Also not an issue for optional modules.
-            if(!declaration.isDefault() && !optional)
+            if(!declaration.isDefaultModule() && !optional)
                 throw Metamodel.newModelError(e.toString());
         } catch (SecurityException e) {
             throw Metamodel.newModelError(e.toString());

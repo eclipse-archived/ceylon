@@ -212,7 +212,7 @@ public class JsCompiler {
             for (PhasedUnit pu: phasedUnits) {
                 //#416 default module with packages
                 Module mod = pu.getPackage().getModule();
-                if (mod.getVersion() == null && !mod.isDefault()) {
+                if (mod.getVersion() == null && !mod.isDefaultModule()) {
                     //Switch with the default module
                     for (com.redhat.ceylon.model.typechecker.model.Package pkg : mod.getPackages()) {
                         defmod.getPackages().add(pkg);
@@ -493,7 +493,7 @@ public class JsCompiler {
             //Create the JS file
             final File jsart = jsout.close();
             final File modart = jsout.getModelFile();
-            if (entry.getKey().isDefault()) {
+            if (entry.getKey().isDefaultModule()) {
                 logger.info("Created module "+moduleName);
             } else if (!compilingLanguageModule) {
                 logger.info("Created module "+moduleName+"/"+moduleVersion);
@@ -531,7 +531,7 @@ public class JsCompiler {
                             opts.hasVerboseFlag("cmr"), logger);
                     sac.copy(FileUtil.filesToPathList(filterForModule(resFiles, opts.getResourceDirs(), moduleName)));
                 }
-                if (!entry.getKey().isDefault()) {
+                if (!entry.getKey().isDefaultModule()) {
                     String npmdesc = new NpmDescriptorGenerator(entry.getKey(),
                             opts.isGenerateSourceArchive(), resFiles != null && !resFiles.isEmpty())
                             .generateDescriptor();
@@ -614,11 +614,11 @@ public class JsCompiler {
     /** Create a path for a require call to fetch the specified module. */
     public static String scriptPath(Module mod) {
         StringBuilder path = new StringBuilder(mod.getNameAsString().replace('.', '/')).append('/');
-        if (!mod.isDefault()) {
+        if (!mod.isDefaultModule()) {
             path.append(mod.getVersion()).append('/');
         }
         path.append(mod.getNameAsString());
-        if (!mod.isDefault()) {
+        if (!mod.isDefaultModule()) {
             path.append('-').append(mod.getVersion());
         }
         return path.toString();

@@ -50,7 +50,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
-        if(declaration.isDefault() || declaration.isJava())
+        if(declaration.isDefaultModule() || declaration.isJava())
             return NO_ANNOTATION;
         return Metamodel.getJavaClass(declaration).getAnnotations();
     }
@@ -58,7 +58,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        if(declaration.isDefault() || declaration.isJava())
+        if(declaration.isDefaultModule() || declaration.isJava())
             return false;
         final AnnotatedElement element = Metamodel.getJavaClass(declaration);;
         return element != null ? element.isAnnotationPresent(annotationType) : false;

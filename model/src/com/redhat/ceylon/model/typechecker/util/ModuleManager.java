@@ -49,7 +49,7 @@ public class ModuleManager implements BackendSupport {
             //build default module (module in which packages belong to when not explicitly under a module
             final List<String> defaultModuleName = Collections.singletonList(Module.DEFAULT_MODULE_NAME);
             final Module defaultModule = createModule(defaultModuleName, "unversioned");
-            defaultModule.setDefault(true);
+//            defaultModule.setDefault(true);
             defaultModule.setAvailable(true);
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);

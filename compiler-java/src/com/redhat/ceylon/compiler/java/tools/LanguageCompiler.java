@@ -557,7 +557,7 @@ public class LanguageCompiler extends JavaCompiler {
         // skip it if we already resolved the package
         if(pkg.getModule() != null){
             // make sure the default module is always added to the classpath, it will be the only one to have a module
-            if(!addedDefaultModuleToClassPath && pkg.getModule().isDefault()){
+            if(!addedDefaultModuleToClassPath && pkg.getModule().isDefaultModule()){
                 addedDefaultModuleToClassPath = true;
                 ceylonEnter.addOutputModuleToClassPath(pkg.getModule());
             }
@@ -795,7 +795,7 @@ public class LanguageCompiler extends JavaCompiler {
                 if(pkg == null)
                     throw new RuntimeException("Failed to find package: "+packageName);
                 Module module = pkg.getModule();
-                if(!module.isDefault()){
+                if(!module.isDefaultModule()){
                     String moduleName = module.getNameAsString();
                     CeylonFileObject moduleFileObject = moduleNamesToFileObjects.get(moduleName);
                     // if there's no module source file object it means the module descriptor had parse errors

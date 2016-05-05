@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.js.loader;
 
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -61,7 +63,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                         depv = null;
                     }
                     //TODO Remove this hack after next bin compat breaks
-                    if (Module.LANGUAGE_MODULE_NAME.equals(depname)) {
+                    if (LANGUAGE_MODULE_NAME.equals(depname)) {
                         if ("1.1.0".equals(depv)) {
                             depv = "1.2.0";
                         } else if ("1.2.1".equals(depv)) {
@@ -112,7 +114,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
         if (!clLoaded) {
             clLoaded = true;
             //If we haven't loaded the language module yet, we need to load it first
-            if (!(Module.LANGUAGE_MODULE_NAME.equals(artifact.name())
+            if (!(LANGUAGE_MODULE_NAME.equals(artifact.name())
                     && artifact.artifact().getName().endsWith(ArtifactContext.JS_MODEL))) {
                 if (JsModuleManagerFactory.isVerbose()) {
                     System.out.println("Loading JS language module before any other modules");

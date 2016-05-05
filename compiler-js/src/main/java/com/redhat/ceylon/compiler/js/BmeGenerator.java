@@ -16,12 +16,12 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -32,10 +32,10 @@ public class BmeGenerator {
         Declaration decl = bme.getDeclaration();
         if (decl != null) {
             String name = decl.getName();
-            String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
+            Package pkg = decl.getUnit().getPackage();
 
             // map Ceylon true/false/null directly to JS true/false/null
-            if (Module.LANGUAGE_MODULE_NAME.equals(pkgName)) {
+            if (pkg.isLanguagePackage()) {
                 if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
                     gen.out(name);
                     return;

@@ -720,9 +720,7 @@ public class AnalyzerUtil {
     }
 
     static boolean inLanguageModule(Unit unit) {
-        return unit.getPackage()
-                .getQualifiedNameString()
-                .startsWith(Module.LANGUAGE_MODULE_NAME);
+        return unit.getPackage().getModule().isLanguageModule();
     }
 
     static String typeDescription(TypeDeclaration td, Unit unit) {
@@ -1258,14 +1256,10 @@ public class AnalyzerUtil {
                         }
                     }
                 }
-                String help;
-                if (module.isDefault()) {
-                    help = " (define a module and add module import to its module descriptor)";
-                }
-                else {
-                    help = " (add module import to module descriptor of '" +
+                String help = module.isDefaultModule() ? 
+                        " (define a module and add module import to its module descriptor)" : 
+                        " (add module import to module descriptor of '" +
                             module.getNameAsString() + "')";
-                }
                 path.addError("package not found in imported modules: '" + 
                         nameToImport + "'" + help, 7000);
             }

@@ -83,7 +83,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
             Module module = getOrCreateModule(splitModuleName(name), version);
             // The default module is created as available, so we use a different test for it, because we are the only
             // ones setting the module's Unit
-            if(module.isDefault() 
+            if(module.isDefaultModule() 
                     ? module.getUnit() != null
                     : module.isAvailable())
                 return false;
@@ -97,7 +97,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
             }
             module.setUnit(u);
 
-            if(!module.isDefault()){
+            if(!module.isDefaultModule()){
                 // FIXME: dependencies of Ceylon modules?
                 if(!modelLoader.loadCompiledModule(module, !staticMetamodel)){
                     // we didn't find module.class so it must be a java module if it's not the default module

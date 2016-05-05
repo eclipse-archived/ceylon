@@ -118,10 +118,23 @@ public class Package
     }
 
     public String getNameAsString() {
-        if (nameAsString == null){
+        if (nameAsString == null) {
             nameAsString = formatPath(name);
         }
         return nameAsString;
+    }
+    
+    public boolean isLanguagePackage() {
+        List<String> name = getName();
+        return name.size()==2
+                && name.get(0)
+                    .equals("ceylon")
+                && name.get(1)
+                    .equals("language");
+    }
+    
+    public boolean isDefaultPackage() {
+        return getName().isEmpty();
     }
 
     @Override

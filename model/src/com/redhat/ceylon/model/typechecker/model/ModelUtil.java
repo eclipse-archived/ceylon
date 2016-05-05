@@ -1727,7 +1727,7 @@ public class ModelUtil {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<path.size(); i++) {
             String pathPart = path.get(i);
-            if (! pathPart.isEmpty()) {
+            if (!pathPart.isEmpty()) {
                 sb.append(pathPart);
                 if (i<path.size()-1) sb.append(separator);
             }

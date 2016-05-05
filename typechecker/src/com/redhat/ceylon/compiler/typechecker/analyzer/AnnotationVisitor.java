@@ -10,7 +10,6 @@ import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PACKAGE;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PARAMETER;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.TYPE;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -429,15 +428,13 @@ public class AnnotationVisitor extends Visitor {
                         if (!td.inherits(annotationDec)) {
                             that.addError("annotation constructor must return a subtype of 'Annotation'");
                         }
-                        if (!unit.getPackage()
-                                .getQualifiedNameString()
-                                .equals(LANGUAGE_MODULE_NAME)) {
-                            String packageName = 
+                        if (!unit.getPackage().isLanguagePackage()) {
+                            boolean langPackage = 
                                     td.getUnit()
                                       .getPackage()
-                                      .getQualifiedNameString();
+                                      .isLanguagePackage();
                             String typeName = td.getName();
-                            if (packageName.equals(LANGUAGE_MODULE_NAME) && 
+                            if (langPackage && 
                                     (typeName.equals("Shared") ||
                                     typeName.equals("Abstract") || 
                                     typeName.equals("Default") ||

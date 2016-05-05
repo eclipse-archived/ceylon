@@ -24,7 +24,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -793,8 +793,8 @@ public class TypeUtils {
     /** Returns the list of keys to get from the package to the declaration, in the model. */
     public static List<String> generateModelPath(final Declaration d) {
         final ArrayList<String> sb = new ArrayList<>();
-        final String pkgName = d.getUnit().getPackage().getNameAsString();
-        sb.add(Module.LANGUAGE_MODULE_NAME.equals(pkgName)?"$":pkgName);
+        final Package pkg = d.getUnit().getPackage();
+        sb.add(pkg.isLanguagePackage()?"$":pkg.getNameAsString());
         if (d.isToplevel()) {
             sb.add(d.getName());
             if (d instanceof Setter) {

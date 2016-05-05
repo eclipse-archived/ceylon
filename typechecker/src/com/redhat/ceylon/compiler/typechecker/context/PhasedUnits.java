@@ -248,7 +248,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             if(module.equals(Module.DEFAULT_MODULE_NAME)){
                 // Allow anything for the default module if it's not owned by another module
                 // and we're not defining a new module.
-                if(pkg.getModule().isDefault() && !definesModule){
+                if(pkg.getModule().isDefaultModule() && !definesModule){
                     return true;
                 }
                 // None of the other rules apply to the default module.
@@ -269,7 +269,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             }
             // Allow the path that leads to the modules we're looking for, as long as they are in the default module
             // and we're not defining a new module
-            if(module.startsWith(pkgName + ".") && pkg.getModule().isDefault() && !definesModule){
+            if(module.startsWith(pkgName + ".") && pkg.getModule().isDefaultModule() && !definesModule){
                 return true;
             }
         }

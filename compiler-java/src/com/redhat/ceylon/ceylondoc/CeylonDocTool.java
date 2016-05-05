@@ -556,7 +556,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private File getFolder(Package pkg) {
         Module module = pkg.getModule();
         List<String> unprefixedName;
-        if(module.isDefault())
+        if(module.isDefaultModule())
             unprefixedName = pkg.getName();
         else{
             // remove the leading module name part
@@ -1010,7 +1010,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
      * @return
      */
     protected boolean isRootPackage(Module module, Package pkg) {
-        if(module.isDefault())
+        if(module.isDefaultModule())
             return pkg.getNameAsString().isEmpty();
         return pkg.getNameAsString().equals(module.getNameAsString());
     }

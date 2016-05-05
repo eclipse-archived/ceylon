@@ -23,6 +23,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOf
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -58,7 +59,6 @@ import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -2535,7 +2535,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Tree.ImportPath path = that.getImportPath();
         if (path!=null && 
                 formatPath(path.getIdentifiers())
-                    .equals(Module.LANGUAGE_MODULE_NAME)) {
+                    .equals(LANGUAGE_MODULE_NAME)) {
             Tree.ImportMemberOrTypeList imtl = 
                     that.getImportMemberOrTypeList();
             if (imtl!=null) {
