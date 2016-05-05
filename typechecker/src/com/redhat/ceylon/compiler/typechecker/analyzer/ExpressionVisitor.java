@@ -1485,6 +1485,7 @@ public class ExpressionVisitor extends Visitor {
                 boolean atLeastOne = 
                         unit.isTupleVariantAtLeastOne(pts);
                 if (variadic) {
+                    argTypes = new ArrayList<Type>(argTypes);
                     Type spt = 
                             argTypes.get(argTypes.size()-1);
                     argTypes.set(argTypes.size()-1, 
