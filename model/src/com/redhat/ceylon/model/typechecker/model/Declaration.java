@@ -382,6 +382,10 @@ public abstract class Declaration
         }
     }
 
+    public boolean isVariadic() {
+        return false;
+    }
+    
     /**
      * Get a produced reference for this declaration
      * by binding explicit or inferred type arguments

@@ -14,6 +14,8 @@ import com.redhat.ceylon.model.typechecker.model.Function;
  */
 public class JavaMethod extends Function implements LocalDeclarationContainer {
 
+    private static final int VARIADIC = 1<<26;
+
     private String realName;
     private boolean defaultedAnnotation;
     public final MethodMirror mirror;
@@ -34,6 +36,20 @@ public class JavaMethod extends Function implements LocalDeclarationContainer {
 
     public String getRealName(){
         return realName;
+    }
+    
+    @Override
+    public boolean isVariadic() {
+        return (flags&VARIADIC)!=0;
+    }
+    
+    public void setVariadic(boolean variadic) {
+        if (variadic) {
+            flags|=VARIADIC;
+        }
+        else {
+            flags&=(~VARIADIC);
+        }
     }
     
     /**
