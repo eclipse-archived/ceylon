@@ -544,3 +544,10 @@ shared void caseTypes() {
     case (is BrokeCase<String,String>) {}
 }
 
+void switchOfTest<That>(That that) given That of Integer {
+    switch (that)
+    case (is Integer) {}
+    @error switch (that)
+    case (is Integer) {}
+    case (is Float) {}
+}
