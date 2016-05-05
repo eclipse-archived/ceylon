@@ -7713,9 +7713,12 @@ public class ExpressionVisitor extends Visitor {
                 var.getDeclarationModel().setType(et);
             }
             else {
-                checkAssignable(vt.getTypeModel(), 
-                        unit.getThrowableType(), vt, 
-                        "catch type must be a throwable type");
+                Type et = vt.getTypeModel();
+                if (!isTypeUnknown(et)) {
+                    Type tt = unit.getThrowableType();
+                    checkAssignable(et, tt, vt, 
+                            "catch type must be a throwable type");
+                }
             }
         }
     }
