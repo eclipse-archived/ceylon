@@ -83,7 +83,7 @@ public class Versions {
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 0;
     public static final int JS_BINARY_MAJOR_VERSION = 9;
-    public static final int JS_BINARY_MINOR_VERSION = 0;
+    public static final int JS_BINARY_MINOR_VERSION = 1;
     
     public static final int M1_BINARY_MAJOR_VERSION = 0;
     public static final int M1_BINARY_MINOR_VERSION = 0;
