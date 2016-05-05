@@ -1446,36 +1446,9 @@ public class ModelUtil {
             q.isExactlyNothing()) {
             return true;
         }
+        
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
-        if (p.isTypeParameter()) {
-            p = canonicalIntersection(
-                    p.getSatisfiedTypes(), 
-                    unit);
-            pd = p.getDeclaration();
-        }
-        if (q.isTypeParameter()) {
-            q = canonicalIntersection(
-                    q.getSatisfiedTypes(), 
-                    unit);
-            qd = q.getDeclaration();
-        }
-        if (q.isIntersection()) {
-            for (Type t: q.getSatisfiedTypes()) {
-                if (emptyMeet(p,t,unit)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        if (p.isIntersection()) {
-            for (Type t: p.getSatisfiedTypes()) {
-                if (emptyMeet(q,t,unit)) {
-                    return true;
-                }
-            }
-            return false;
-        }
         if (q.isUnion()) {
             for (Type t: q.getCaseTypes()) {
                 if (!emptyMeet(p,t,unit)) {
@@ -1514,6 +1487,24 @@ public class ModelUtil {
             }
             if (all) return true;
         }
+
+        if (q.isIntersection() || q.isTypeParameter()) {
+            for (Type t: q.getSatisfiedTypes()) {
+                if (emptyMeet(p,t,unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (p.isIntersection() || p.isTypeParameter()) {
+            for (Type t: p.getSatisfiedTypes()) {
+                if (emptyMeet(q,t,unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         if (p.isClass() && q.isClass() ||
             p.isInterface() && q.isNull() ||
             q.isInterface() && p.isNull()) {
