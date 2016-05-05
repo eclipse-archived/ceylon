@@ -1002,7 +1002,7 @@ public abstract class TypeDeclaration extends Declaration
             return false;
         }
         if (this instanceof TypeParameter &&
-                td instanceof TypeParameter &&
+            td instanceof TypeParameter &&
                     equals(td)) {
             return false;
         }
