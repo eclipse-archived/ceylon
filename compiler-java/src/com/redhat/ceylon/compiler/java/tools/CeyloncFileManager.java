@@ -163,27 +163,14 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if (sibling instanceof CeylonFileObject) {
             sibling = ((CeylonFileObject) sibling).getFile();
         }
-        String quotedFileName = quoteKeywordsInFilename(fileName);
-        
         if(location == StandardLocation.CLASS_OUTPUT){
             File siblingFile = null;
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
             }
-            return getJarRepository().getFileObject(getOutputRepositoryManager(), currentModule, quotedFileName, siblingFile);
+            return getJarRepository().getFileObject(getOutputRepositoryManager(), currentModule, fileName.getPath(), siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
-    }
-
-    private String quoteKeywordsInFilename(RelativeFile fileName) {
-        // internally, RelativeFile.path always uses '/' and not the platform separator
-        String path = fileName.getPath();
-        StringBuilder sb = new StringBuilder();
-        String[] parts = path.split("/");
-        for (String part : parts) {
-            sb.append(Util.quoteIfJavaKeyword(part)).append(File.separatorChar);
-        }
-        return sb.subSequence(0, sb.length() - 1).toString();
     }
 
     @Override

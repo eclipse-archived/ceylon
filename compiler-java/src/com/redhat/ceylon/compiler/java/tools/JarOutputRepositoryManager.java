@@ -46,6 +46,7 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
@@ -412,8 +413,19 @@ public class JarOutputRepositoryManager {
             }
         }
 
+        private String quoteKeywordsInFilename(String path) {
+            // internally, RelativeFile.path always uses '/' and not the platform separator
+            StringBuilder sb = new StringBuilder();
+            String[] parts = path.split("/");
+            for (String part : parts) {
+                sb.append(Util.quoteIfJavaKeyword(part)).append(File.separatorChar);
+            }
+            return sb.subSequence(0, sb.length() - 1).toString();
+        }
+        
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
-            String entryName = fileName.replace(File.separatorChar, '/');
+            String quotedFileName = quoteKeywordsInFilename(fileName);
+            String entryName = quotedFileName.replace(File.separatorChar, '/');
             
             if (!resourceRootPath.isEmpty() && entryName.startsWith(resourceRootPath)) {
                 // Files in the special "resource root path" get moved
