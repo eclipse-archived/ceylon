@@ -985,17 +985,11 @@ public abstract class TypeDeclaration extends Declaration
      * 
      *    Baz of Foo | Bar 
      * 
-     * (the intersection of disjoint types is empty)
-     * 
-     * @param type a type which might be disjoint from
-     *        a list of other given types
-     * @param list the list of other types
-     * @param unit
-     * 
-     * @return true of the given type was disjoint from
-     *         the given list of types
+     * @return true of this type is disjoint from
+     *         the given type, according to this
+     *         rule only
      */
-    public boolean isDisjoint(TypeDeclaration td) {
+    boolean isDisjoint(TypeDeclaration td) {
         if (this instanceof UnionType) {
             return false;
         }
@@ -1006,9 +1000,11 @@ public abstract class TypeDeclaration extends Declaration
         }
         if (this instanceof TypeParameter &&
             td instanceof TypeParameter &&
-                    equals(td)) {
+                equals(td)) {
             return false;
         }
+        //iterate over all the supertypes of this
+        //type, searching for an enumerated type 
         List<Type> sts = getSatisfiedTypes();
         for (int i=0, s=sts.size(); i<s; i++) {
             Type st = sts.get(i);
@@ -1029,6 +1025,9 @@ public abstract class TypeDeclaration extends Declaration
         TypeDeclaration std = st.getDeclaration();
         List<Type> cts = std.getCaseTypes();
         if (cts!=null) {
+            //the given supertype is an enumerated type
+            //so see if this type and the given type
+            //belong to distinct cases
             for (int i=0, s=cts.size(); i<s; i++) {
                 TypeDeclaration ctd = 
                         cts.get(i)
@@ -1048,10 +1047,8 @@ public abstract class TypeDeclaration extends Declaration
                 }
             }
         }
-        if (std.isDisjoint(td)) {
-            return true;
-        }
-        return false;
+        //recurse up the supertype hierarchy
+        return std.isDisjoint(td);
     }
     
 //    private List<TypeDeclaration> supertypeDeclarations;
