@@ -980,8 +980,8 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     /**
-     * implement the rule that Foo&Bar==Nothing if 
-     * here exists some enumerated type Baz with
+     * Implement the rule that Foo&Bar==Nothing if 
+     * there exists some enumerated type Baz with
      * 
      *    Baz of Foo | Bar 
      * 
@@ -996,6 +996,9 @@ public abstract class TypeDeclaration extends Declaration
      *         the given list of types
      */
     public boolean isDisjoint(TypeDeclaration td) {
+        if (this instanceof UnionType) {
+            return false;
+        }
         if (this instanceof ClassOrInterface &&
             td instanceof ClassOrInterface &&
                 equals(td)) {
@@ -1029,13 +1032,13 @@ public abstract class TypeDeclaration extends Declaration
             for (int i=0, s=cts.size(); i<s; i++) {
                 TypeDeclaration ctd = 
                         cts.get(i)
-                            .getDeclaration();
+                           .getDeclaration();
                 if (ctd.equals(this)) {
                     for (int j=0, l=cts.size(); j<l; j++) {
                         if (i!=j) {
                             TypeDeclaration octd = 
                                     cts.get(j)
-                                        .getDeclaration();
+                                       .getDeclaration();
                             if (td.inherits(octd)) {
                                 return true;
                             }
