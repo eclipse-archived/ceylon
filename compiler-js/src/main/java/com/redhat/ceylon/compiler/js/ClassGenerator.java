@@ -177,7 +177,8 @@ public class ClassGenerator {
                 }
             }
             gen.out(GenerateJsVisitor.function, typeName, "(){return ",
-                    typeName, "_", gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
+                    typeName, gen.getNames().constructorSeparator(defconstr.getDeclarationModel()),
+                    gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
                     _this, ",arguments);}");
             gen.endLine();
         }

@@ -850,7 +850,8 @@ public class GenerateJsVisitor extends Visitor {
             for (Declaration cm : ac.getMembers()) {
                 if (cm instanceof Constructor && cm!=ac.getDefaultConstructor() && cm.isShared()) {
                     Constructor cons = (Constructor)cm;
-                    out("function ", aname, "_", names.name(cons), "(");
+                    final String constructorName = aname + names.constructorSeparator(cons) + names.name(cons);
+                    out("function ", constructorName, "(");
                     ArrayList<String> pnames = new ArrayList<>(cons.getFirstParameterList().getParameters().size()+1);
                     boolean first=true;
                     for (int i=0;i<cons.getFirstParameterList().getParameters().size();i++) {
@@ -878,7 +879,7 @@ public class GenerateJsVisitor extends Visitor {
                     out(");}");
                     if (ac.isShared()) {
                         sharePrefix(ac, true);
-                        out(aname, "_", names.name(cons), "=", aname, "_", names.name(cons),";");
+                        out(constructorName, "=", constructorName,";");
                         endLine();
                     }
                 }
@@ -967,8 +968,8 @@ public class GenerateJsVisitor extends Visitor {
                         //Add a simple attribute which really returns the singleton from the class
                         final Tree.Enumerated vc = (Tree.Enumerated)s;
                         defineAttribute(names.self(d), names.name(vc.getDeclarationModel()));
-                        out("{return ", typename, "_", names.name(vc.getDeclarationModel()),
-                                "();},undefined,");
+                        out("{return ", typename, names.constructorSeparator(vc.getDeclarationModel()),
+                                names.name(vc.getDeclarationModel()), "();},undefined,");
                         TypeUtils.encodeForRuntime(vc, vc.getDeclarationModel(), vc.getAnnotationList(), this);
                         out(");");
                     }
@@ -1867,7 +1868,8 @@ public class GenerateJsVisitor extends Visitor {
                         out(names.moduleAlias(((Package)d.getContainer()).getModule()));
                     }
                 }
-                out(names.name((TypeDeclaration)d.getContainer()), "_", names.name(d), "()");
+                out(names.name((TypeDeclaration)d.getContainer()), names.constructorSeparator(d),
+                        names.name(d), "()");
                 if (wrap) {
                     out(";}");
                 }
@@ -1875,7 +1877,7 @@ public class GenerateJsVisitor extends Visitor {
                 Function fd = (Function)d;
                 if (fd.getTypeDeclaration() instanceof Constructor) {
                     that.getPrimary().visit(this);
-                    out("_", names.name(fd));
+                    out(names.constructorSeparator(fd), names.name(fd));
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
@@ -1973,7 +1975,7 @@ public class GenerateJsVisitor extends Visitor {
         final String member = (accessThroughGetter(decl) && !accessDirectly(decl))
                 ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) : names.name(decl);
         if (!isConstructor && TypeUtils.isConstructor(decl)) {
-            sb.append(names.name((Declaration)decl.getContainer())).append("_");
+            sb.append(names.name((Declaration)decl.getContainer())).append(names.constructorSeparator(decl));
         }
         sb.append(member);
         if (!opts.isOptimize() && (scope != null)) {
@@ -2451,7 +2453,7 @@ public class GenerateJsVisitor extends Visitor {
     public boolean qualify(final Node that, final Declaration d) {
         String path = qualifiedPath(that, d);
         if (path.length() > 0) {
-            out(path, d instanceof Constructor ? "_" : ".");
+            out(path, d instanceof Constructor ? names.constructorSeparator(d) : ".");
         }
         return path.length() > 0;
     }
@@ -3438,8 +3440,8 @@ public class GenerateJsVisitor extends Visitor {
         comment(that);
         TypeDeclaration klass = (TypeDeclaration)that.getEnumerated().getContainer();
         defineAttribute(names.self(klass), names.name(that.getDeclarationModel()));
-        out("{return ", names.name(klass), "_", names.name(that.getDeclarationModel()),
-                "();},undefined,");
+        out("{return ", names.name(klass), names.constructorSeparator(that.getDeclarationModel()),
+                names.name(that.getDeclarationModel()), "();},undefined,");
         TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         out(");");
     }
@@ -3449,7 +3451,7 @@ public class GenerateJsVisitor extends Visitor {
         final Declaration d = that.getDeclaration();
         if (d instanceof Constructor) {
             qualify(that, (Declaration)d.getContainer());
-            out(names.name((Declaration)d.getContainer()), "_");
+            out(names.name((Declaration)d.getContainer()), names.constructorSeparator(d));
         } else {
             qualify(that, d);
         }
