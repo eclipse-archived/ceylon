@@ -99,5 +99,11 @@ public class StaticRefTests extends CompilerTests {
     public void testRefBug5898() {
         compareWithJavaSource("Bug5898");
     }
+    
+    @Test
+    public void testRefBug5965() {
+        compareWithJavaSource("Bug5965");
+        run("com.redhat.ceylon.compiler.java.test.expression.ref.bug5965");
+    }
 
 }
