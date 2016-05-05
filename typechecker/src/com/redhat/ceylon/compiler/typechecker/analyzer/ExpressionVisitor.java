@@ -4385,6 +4385,8 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         checkPositionalArgument(param, pr, 
                                 (Tree.ListedArgument) arg);
+                        checkPositionalArgumentPosition(
+                                i, param, args);
                     }
                 }
             }
@@ -4788,6 +4790,48 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(at, paramType, a, 
                         "argument must be assignable to parameter " + 
                                 argdesc(p, pr), 2100);
+            }
+        }
+    }
+    
+    /**
+     * Warns if argument and parameter names don't match (#6172)
+     */
+    private void checkPositionalArgumentPosition(
+            int paramIndex, Parameter param, List<Tree.PositionalArgument> args) {
+        String paramName = param.getName();
+        if (paramIndex < args.size()) {
+            Tree.PositionalArgument currentArg = args.get(paramIndex);
+            if (currentArg instanceof Tree.ListedArgument) {
+                Tree.Term currentArgTerm = unwrapExpressionUntilTerm(
+                        ((Tree.ListedArgument)currentArg).getExpression());
+                if (currentArgTerm instanceof Tree.BaseMemberExpression) {
+                    String currentArgName = ((Tree.BaseMemberExpression)currentArgTerm)
+                        .getIdentifier().getText();
+                    if (currentArgName.equals(paramName)) {
+                        return;
+                    }
+                }
+            }
+        }
+        for (int otherArgIndex = 0; otherArgIndex < args.size(); otherArgIndex++) {
+            if (otherArgIndex == paramIndex) continue;
+            Tree.PositionalArgument otherArg = args.get(otherArgIndex);
+            if (otherArg instanceof Tree.ListedArgument) {
+                Tree.Term otherArgTerm = unwrapExpressionUntilTerm(
+                        ((Tree.ListedArgument)otherArg).getExpression());
+                if (otherArgTerm instanceof Tree.BaseMemberExpression) {
+                    String otherArgName = ((Tree.BaseMemberExpression)otherArgTerm)
+                        .getIdentifier().getText();
+                    if (otherArgName.equals(paramName)) {
+                        otherArg.addUsageWarning(
+                                Warning.suspiciousArgument,
+                                "argument '" + otherArgName +
+                                "' does not assign to parameter '" +
+                                paramName + "'; consider using named arguments " +
+                                "if this is intentional");
+                    }
+                }
             }
         }
     }
