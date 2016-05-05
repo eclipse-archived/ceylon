@@ -407,7 +407,16 @@ public class JsIdentifierNames {
     }
 
     public String valueConstructorName(TypeDeclaration d) {
-        TypeDeclaration c = (TypeDeclaration)d.getContainer();
-        return name(c) + "_" + name(c.getDirectMember(d.getName(), null, false));
+        final TypeDeclaration c = (TypeDeclaration)d.getContainer();
+        return name(c) + constructorSeparator(d) + name(c.getDirectMember(d.getName(), null, false));
     }
+
+    public String constructorSeparator(Declaration c) {
+        final Module mod = c.getUnit().getPackage().getModule();
+        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+            return "_";
+        }
+        return "$c_";
+    }
+
 }
