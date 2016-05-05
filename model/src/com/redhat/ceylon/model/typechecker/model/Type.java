@@ -54,9 +54,15 @@ public class Type extends Reference {
     private Type resolvedAliases;
     private TypeParameter typeConstructorParameter;
     private boolean typeConstructor;
+    List<Type> elementTypes;
+    int minimumLength = -1;
+    int variantAtLeastOne;
+    int lengthUnbounded;
     
     // cache
     private int hashCode;
+    private Type unionOfCases;
+    private int exactlyNothing;
 //    private List<Type> typeArgumentList;
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
@@ -149,8 +155,6 @@ public class Type extends Reference {
             (TypeParameter typeConstructorParameter) {
         this.typeConstructorParameter = typeConstructorParameter;
     }
-    
-    private int exactlyNothing;
     
     public boolean isExactlyNothing() {
         if (isNothing()) {
@@ -1444,7 +1448,9 @@ public class Type extends Reference {
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
             Type ret = cache.get(this, dec);
-            if(ret != null) return ret == NullType ? null : ret;
+            if (ret!=null) {
+                return ret == NullType ? null : ret;
+            }
         }
         
         while (dec.isAlias()) {
@@ -3328,8 +3334,6 @@ public class Type extends Reference {
             return qualifiedName();
         }
     }
-    
-    private Type unionOfCases;
     
     /**
      * Form a union type of all cases of the type, 

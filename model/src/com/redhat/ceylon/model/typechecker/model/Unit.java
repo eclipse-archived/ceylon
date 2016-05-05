@@ -1458,6 +1458,17 @@ public class Unit {
     }
 
     public List<Type> getTupleElementTypes(Type args) {
+        if (args==null) {
+            return singleton(getUnknownType());
+        }
+        if (args.elementTypes==null) {
+            args.elementTypes = 
+                    getTupleElementTypesInternal(args);
+        }
+        return args.elementTypes;
+    }
+    
+    private List<Type> getTupleElementTypesInternal(Type args) {
         if (args!=null) {
             /*List<Type> simpleResult = 
                     getSimpleTupleElementTypes(args, 0);
@@ -1472,7 +1483,7 @@ public class Unit {
                     nonemptyArgs(args)
                         .getSupertype(td);
             if (tuple!=null) {
-                List<Type> result = 
+                final List<Type> result = 
                         new LinkedList<Type>();
                 while (true) {
                     List<Type> tal = 
@@ -1606,6 +1617,18 @@ public class Unit {
     }*/
 
     public boolean isTupleLengthUnbounded(Type args) {
+        if (args==null) {
+            return false;
+        }
+        if (args.lengthUnbounded==0) {
+            args.lengthUnbounded =
+                    isTupleLengthUnboundedInternal(args) ?
+                            1 : -1;
+        }
+        return args.lengthUnbounded==1;
+    }
+    
+    private boolean isTupleLengthUnboundedInternal(Type args) {
         if (args!=null) {
             /*Boolean simpleTupleLengthUnbounded = 
                     isSimpleTupleLengthUnbounded(args);
@@ -1712,6 +1735,18 @@ public class Unit {
     }*/
 
     public boolean isTupleVariantAtLeastOne(Type args) {
+        if (args==null) {
+            return false;
+        }
+        if (args.variantAtLeastOne==0) {
+            args.variantAtLeastOne =
+                    isTupleVariantAtLeastOneInternal(args) ?
+                            1 : -1;
+        }
+        return args.variantAtLeastOne==1;
+    }
+    
+    private boolean isTupleVariantAtLeastOneInternal(Type args) {
         if (args!=null) {
             /*Boolean simpleTupleVariantAtLeastOne = 
                     isSimpleTupleVariantAtLeastOne(args);
@@ -1823,6 +1858,17 @@ public class Unit {
     }*/
 
     public int getTupleMinimumLength(Type args) {
+        if (args==null) {
+            return 0;
+        }
+        if (args.minimumLength<0) {
+            args.minimumLength = 
+                    getTupleMinimumLengthInternal(args);
+        }
+        return args.minimumLength;
+    }
+    
+    private int getTupleMinimumLengthInternal(Type args) {
         if (args!=null) {
             /*int simpleMinimumLength = 
                     getSimpleTupleMinimumLength(args);
