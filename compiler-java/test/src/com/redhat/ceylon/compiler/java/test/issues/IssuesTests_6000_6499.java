@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -130,6 +131,20 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6215() {
         compareWithJavaSource("bug62xx/Bug6215");
+    }
+    
+    @Test
+    public void testBug6231() {
+        
+        compile("bug62xx/bug6231/static/run.ceylon");
+        
+        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        options.add("-res");
+        options.add("test/src");
+        
+        compileAndRun(options,
+                "com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6231.$static.run",
+                "bug62xx/bug6231/static/run.ceylon");
     }
     
     @Test

@@ -591,9 +591,13 @@ public abstract class CompilerTests {
         return result;
     }
 
-    protected void compile(String... ceylon) {
+    protected void compile(List<String> options, String... ceylon) {
         ErrorCollector c = new ErrorCollector();
-        assertCompilesOk(c, getCompilerTask(c, ceylon).call2());
+        assertCompilesOk(c, getCompilerTask(options, c, ceylon).call2());
+    }
+    
+    protected void compile(String... ceylon) {
+        compile(defaultOptions, ceylon);
     }
 
     protected void compilesWithoutWarnings(String... ceylon) {
@@ -608,9 +612,13 @@ public abstract class CompilerTests {
                 0, dl.get(Diagnostic.Kind.WARNING).size() + dl.get(Diagnostic.Kind.MANDATORY_WARNING).size());
     }
 
-    protected Object compileAndRun(String main, String... ceylon) {
-        compile(ceylon);
+    protected Object compileAndRun(List<String> options, String main, String... ceylon) {
+        compile(options, ceylon);
         return run(main);
+    }
+    
+    protected Object compileAndRun(String main, String... ceylon) {
+        return compileAndRun(defaultOptions, main, ceylon);
     }
 
     protected Object run(String main) {
