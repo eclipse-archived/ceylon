@@ -5,15 +5,16 @@ import static java.util.Collections.singletonList;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 
 public class Class extends ClassOrInterface implements Functional {
     
-    private static final int EMPTY_VALUE = 1<<14;
-    private static final int FALSE_VALUE = 1<<13;
-    private static final int TRUE_VALUE = 1<<12;
-    private static final int NULL_VALUE = 1<<11;
+    private static final int EMPTY_VALUE = 1<<23;
+    private static final int FALSE_VALUE = 1<<22;
+    private static final int TRUE_VALUE = 1<<21;
+    private static final int NULL_VALUE = 1<<20;
+    private static final int RANGE = 1<<12;
+    private static final int ENTRY = 1<<11;
     private static final int TUPLE = 1<<10;
     private static final int BYTE = 1<<9;
     private static final int INTEGER = 1<<8;
@@ -356,6 +357,10 @@ public class Class extends ClassOrInterface implements Functional {
                             code = BYTE; break;
                         case "Tuple":
                             code = TUPLE; break;
+                        case "Entry":
+                            code = ENTRY; break;
+                        case "Range":
+                            code = RANGE; break;
                         case "null":
                             code = NULL_VALUE; break;
                         case "true":
@@ -417,54 +422,62 @@ public class Class extends ClassOrInterface implements Functional {
 
     @Override
     public boolean isBasic() {
+        setCode();
         return code == BASIC;
     }
 
     @Override
     public boolean isBoolean() {
+        setCode();
         return code == BOOLEAN;
     }
 
     @Override
     public boolean isString() {
+        setCode();
         return code == STRING;
     }
 
     @Override
     public boolean isCharacter() {
+        setCode();
         return code == CHARACTER;
     }
 
     @Override
     public boolean isFloat() {
+        setCode();
         return code == FLOAT;
     }
 
     @Override
     public boolean isInteger() {
+        setCode();
         return code == INTEGER;
     }
 
     @Override
     public boolean isByte() {
+        setCode();
         return code == BYTE;
     }
 
     @Override
     public boolean isTuple() {
+        setCode();
         return code == TUPLE;
     }
     
     @Override
     public boolean isEntry() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Entry");
+        setCode();
+        return code == ENTRY;
     }
     
     @Override
     public boolean isRange() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Range");
+        setCode();
+        return code == RANGE;
     }
     
     @Override
