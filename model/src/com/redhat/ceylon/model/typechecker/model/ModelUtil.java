@@ -1448,13 +1448,13 @@ public class ModelUtil {
         }
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
-        if (p.isTypeParameter()) {
+        while (p.isTypeParameter()) {
             p = canonicalIntersection(
                     p.getSatisfiedTypes(), 
                     unit);
             pd = p.getDeclaration();
         }
-        if (q.isTypeParameter()) {
+        while (q.isTypeParameter()) {
             q = canonicalIntersection(
                     q.getSatisfiedTypes(), 
                     unit);

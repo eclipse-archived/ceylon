@@ -41,3 +41,13 @@ class Lizt<out Item>() {
 class C<T,U>() given T of String[]|Map<String,U> {}
 
 class D<T,U>() given T of Map<String,U>|String[] {}
+
+void fooenum<T>() given T of Integer {
+    @error Nothing s = nothing of T & String;
+    @error Nothing t = nothing of String & T;
+    void bar<U>() given U satisfies T {
+        @error Nothing s = nothing of U & String;
+        @error Nothing t = nothing of String & U;
+    }
+}
+
