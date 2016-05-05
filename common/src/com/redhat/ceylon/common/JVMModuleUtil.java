@@ -1,5 +1,6 @@
 package com.redhat.ceylon.common;
 
+import java.io.File;
 import java.util.HashSet;
 
 public class JVMModuleUtil {
@@ -136,6 +137,22 @@ public class JVMModuleUtil {
             result[ii] = quoteIfJavaKeyword(name[ii]);
         }
         return result;
+    }
+    
+    public static String quoteJavaKeywordsInFilename(String path) {
+        return quoteJavaKeywordsInFilename(new File(path));
+    }
+    
+    public static String quoteJavaKeywordsInFilename(File file) {
+        String base;
+        // We can't just split on / because windows
+        if (file.getParentFile() != null) {
+            base = quoteJavaKeywordsInFilename(file.getParentFile()) + File.separator;
+        } else {
+            base = "";
+        }
+        
+        return base + quoteIfJavaKeyword(file.getName());
     }
 
     private static boolean needsJavaKeywordsQuoting(String qualifiedName) {

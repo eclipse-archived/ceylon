@@ -44,6 +44,7 @@ import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.cmr.util.JarUtils.JarEntryFilter;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.compiler.java.util.Util;
@@ -412,19 +413,9 @@ public class JarOutputRepositoryManager {
                 }
             }
         }
-
-        private String quoteKeywordsInFilename(String path) {
-            // internally, RelativeFile.path always uses '/' and not the platform separator
-            StringBuilder sb = new StringBuilder();
-            String[] parts = path.split("/");
-            for (String part : parts) {
-                sb.append(Util.quoteIfJavaKeyword(part)).append(File.separatorChar);
-            }
-            return sb.subSequence(0, sb.length() - 1).toString();
-        }
         
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
-            String quotedFileName = quoteKeywordsInFilename(fileName);
+            String quotedFileName = JVMModuleUtil.quoteJavaKeywordsInFilename(fileName);
             String entryName = quotedFileName.replace(File.separatorChar, '/');
             
             if (!resourceRootPath.isEmpty() && entryName.startsWith(resourceRootPath)) {

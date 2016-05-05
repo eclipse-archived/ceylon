@@ -14,6 +14,7 @@ import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.Import;
 import ceylon.language.meta.declaration.Package;
 
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ByteArrayResource;
 import com.redhat.ceylon.compiler.java.language.FileResource;
@@ -131,6 +132,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
         } else {
             fullPath = fullPath.substring(1);
         }
+        fullPath = JVMModuleUtil.quoteJavaKeywordsInFilename(fullPath);
         
         // First lets ask the module manager for the contents of the resource
         RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
