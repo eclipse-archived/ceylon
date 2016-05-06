@@ -1252,7 +1252,7 @@ public class AnalyzerUtil {
                         if (!isForBackend(Backend.Java.asSet(), 
                                           path.getUnit()
                                               .getSupportedBackends()) &&
-                                unit.isJDKPackage(nameToImport)) {
+                                unit.isJdkPackage(nameToImport)) {
                             return null;
                         }
                     }
