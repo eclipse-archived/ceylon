@@ -678,7 +678,7 @@ public abstract class TypeDeclaration extends Declaration
                     Declaration dm = 
                             type.getDirectMember(
                                     member.getName(), 
-                                    signature, false);
+                                    signature, member.isVariadic());
                     return dm!=null && dm.equals(member);
                 }
             }

@@ -3267,6 +3267,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setRealName(methodName);
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
+        method.setVariadic(methodMirror.isVariadic());
         Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
