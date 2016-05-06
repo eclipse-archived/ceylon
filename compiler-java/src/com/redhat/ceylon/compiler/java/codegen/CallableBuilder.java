@@ -305,10 +305,12 @@ public class CallableBuilder {
         }
         CallBuilder callBuilder = CallBuilder.instance(gen);
         Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);
+        boolean needsCast = false;
         if (Decl.isConstructor((Declaration)methodClassOrCtor)) {
             Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
             Class cls = Decl.getConstructedClass(ctor);
             if (Strategy.generateInstantiator(ctor)) {
+                needsCast = Strategy.isInstantiatorUntyped(ctor);
                 callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, cls));
             } else {
                 callBuilder.instantiate( 
@@ -356,6 +358,9 @@ public class CallableBuilder {
             callBuilder.argument(gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter)));
         }
         JCExpression innerInvocation = callBuilder.build();
+        if (needsCast) {
+            innerInvocation = gen.make().TypeCast(gen.makeJavaType(gen.getReturnTypeOfCallable(type)), innerInvocation);
+        }
         // Need to worry about boxing for Function and FunctionalParameter 
         if (methodClassOrCtor instanceof TypedDeclaration
                 && !Decl.isConstructor((Declaration)methodClassOrCtor)) {
