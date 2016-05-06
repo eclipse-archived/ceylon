@@ -111,7 +111,7 @@ public class MetamodelHelper {
                     outputPathToDeclaration(that, actualClass, gen);
                 }
                 gen.out(gen.getNames().name(actualClass),
-                        "_", constrName, ")");
+                        gen.getNames().constructorSeparator(d), constrName, ")");
                 return;
             } else {
                 outputPathToDeclaration(that, d, gen);
@@ -211,9 +211,9 @@ public class MetamodelHelper {
         }
         TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), _pc), _pc.getType(), gen, false);
         if (cd.isValueConstructor()) {
-            gen.out("_", gen.getNames().name(meta.getDeclaration()), ",");
+            gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(meta.getDeclaration()), ",");
         } else {
-            gen.out("_", gen.getNames().name(cd), ",");
+            gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(cd), ",");
         }
         TypeUtils.printTypeArguments(meta, meta.getTypeModel().getTypeArguments(), gen, false,
                 meta.getTypeModel().getVarianceOverrides());

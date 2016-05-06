@@ -1957,7 +1957,7 @@ public class GenerateJsVisitor extends Visitor {
                     return sb.toString();
                 }
             }
-            sb.append(isConstructor ? '_':'.');
+            sb.append(isConstructor ? names.constructorSeparator(decl) : ".");
         }
         boolean metaGetter = false;
         Scope scope = getSuperMemberScope(node);
