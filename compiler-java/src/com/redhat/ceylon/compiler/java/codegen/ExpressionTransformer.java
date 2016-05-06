@@ -3212,7 +3212,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             
         } else if (
                 superConstructor != null 
-                        && !Decl.isDefaultConstructor(superConstructor)) {
+                        && !Decl.isDefaultConstructor(superConstructor)
+                        && (invocation.getQmePrimary() instanceof Tree.QualifiedTypeExpression == false
+                        || !isCeylonCallable(((Tree.QualifiedTypeExpression)invocation.getQmePrimary()).getPrimary().getTypeModel()))) {
             result = result.prepend(
                     new ExpressionAndType(naming.makeNamedConstructorName(superConstructor, concreteDelegation),
                             naming.makeNamedConstructorType(superConstructor, concreteDelegation)));
@@ -3517,14 +3519,20 @@ public class ExpressionTransformer extends AbstractTransformer {
             // instantiator
             Constructor ctor = Decl.getConstructor(qte.getDeclaration());
             if (Strategy.generateInstantiator(ctor)) {
-                callBuilder.typeArguments(List.<JCExpression>nil());
-                java.util.List<Type> typeModels = qte.getTypeArguments().getTypeModels();
-                if (typeModels!=null) {
-                    for (Type tm : typeModels) {
-                        callBuilder.typeArgument(makeJavaType(tm, AbstractTransformer.JT_TYPE_ARGUMENT));
+                if (qte instanceof Tree.QualifiedMemberExpression
+                        && ((Tree.QualifiedMemberExpression)qte).getPrimary() instanceof Tree.QualifiedTypeExpression
+                        && isCeylonCallable(getReturnTypeOfCallable(invocation.getPrimary().getTypeModel()))) {
+                    callBuilder.invoke(naming.makeQualIdent(transformedPrimary.expr, "$call$"));
+                } else {
+                    callBuilder.typeArguments(List.<JCExpression>nil());
+                    java.util.List<Type> typeModels = qte.getTypeArguments().getTypeModels();
+                    if (typeModels!=null) {
+                        for (Type tm : typeModels) {
+                            callBuilder.typeArgument(makeJavaType(tm, AbstractTransformer.JT_TYPE_ARGUMENT));
+                        }
                     }
+                    callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, Decl.getConstructedClass(ctor)));
                 }
-                callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, Decl.getConstructedClass(ctor)));
             } else {
                 if (Decl.getConstructedClass(invocation.getPrimaryDeclaration()).isMember()
                         && invocation.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression
