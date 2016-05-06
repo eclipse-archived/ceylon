@@ -60,7 +60,7 @@ public class PhasedUnit {
     
     private Tree.CompilationUnit rootNode;
     private Package pkg;
-    private TypecheckerUnit unit;
+    private Unit unit;
     //must be the non qualified file name
     private String fileName;
     private WeakReference<ModuleManager> moduleManagerRef;
@@ -191,7 +191,7 @@ public class PhasedUnit {
         return moduleManagerUtilRef.get();
     }
     
-    protected TypecheckerUnit createUnit() {
+    protected Unit createUnit() {
         return new TypecheckerUnit(
                 moduleManagerRef.get()
                     .getModules()

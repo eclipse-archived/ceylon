@@ -10,19 +10,32 @@ public class TypecheckerUnit extends Unit {
     private Package javaLangPackage;
 	private ModuleSourceMapper moduleSourceMapper;
 
+    public TypecheckerUnit(ModuleSourceMapper moduleSourceMapper) {
+        this.moduleSourceMapper = moduleSourceMapper;
+    }
+    
     public TypecheckerUnit(Iterable<Module> modules, 
             ModuleSourceMapper moduleSourceMapper){
     	this.moduleSourceMapper = moduleSourceMapper;
-    	if (modules!=null) {
-            for (Module m: modules) {
-                if ("java.base".equals(m.getNameAsString())) {
-                    javaLangPackage = m.getPackage("java.lang");
-                    break;
-                }
+        for (Module module: modules) {
+            if ("java.base".equals(module.getNameAsString())) {
+                javaLangPackage = module.getPackage("java.lang");
+                break;
             }
-    	}
+        }
     }
     
+    public TypecheckerUnit(
+            String theFilename,
+            String theRelativePath,
+            String theFullPath,
+            Package thePackage) {
+        setFilename(theFilename);
+        setRelativePath(theRelativePath);
+        setFullPath(theFullPath);
+        setPackage(thePackage);
+    }
+
     /** 
      * Override this because it's possible to see java.lang.Iterable 
      * (for example) without a dependency on java.base when importing 
@@ -33,11 +46,7 @@ public class TypecheckerUnit extends Unit {
         return javaLangPackage != null ? javaLangPackage : 
             super.getJavaLangPackage();
     }
-
-	public ModuleSourceMapper getModuleSourceMapper() {
-		return moduleSourceMapper;
-	}
-	
+    
 	@Override
 	public boolean isJdkPackage(String name) {
 	    return moduleSourceMapper!=null ? 
