@@ -47,7 +47,7 @@ Float.$crtmm$=function(){return{pa:97,mod:$CCMM$,d:['$','Float']};}
 atr$(Float.$$.prototype,'integer',function(){ return Integer(Math.floor(this)); },undefined,
      function(){return {mod:$CCMM$,$t:{t:Integer},pa:65,$cont:Float,d:['$','Float','$at','integer']};});
 
-var JSNum$proto = Number.prototype;
+var JSNum$proto = JSNumber.$$.prototype;
 JSNum$proto.getT$all = function() {
     return (nflt$(this) ? Float : Integer).$$.T$all;
 }
