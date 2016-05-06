@@ -1423,31 +1423,40 @@ public class TypeVisitor extends Visitor {
             }
         }
         if (!caseTypes.isEmpty()) {
-            if (caseTypes.size() == 1 && 
-                    caseTypes.get(0).getDeclaration()
-                        .isSelfType()) {
-                Scope scope = 
-                        caseTypes.get(0)
-                            .getDeclaration()
-                            .getContainer();
+            TypeDeclaration first = 
+                    caseTypes.get(0)
+                        .getDeclaration();
+            if (caseTypes.size() == 1 
+                    && first.isSelfType()) {
+                //for a type family, the type that declares 
+                //the type parameter may not be the same 
+                //type for which it acts as a self type
+                Scope scope = first.getContainer();
                 if (scope instanceof ClassOrInterface) {
                     ClassOrInterface ci = 
                             (ClassOrInterface) scope;
                     if (!ci.isAbstract()) {
-                        that.addError("non-abstract class parameterized by self type: '" + 
-                                td.getName() + "'", 905);
+                        cts.get(0)
+                           .addError("non-abstract class parameterized by self type: " + 
+                                "self type '" + first.getName() + 
+                                "' of '" + td.getName() + 
+                                "' is declared by non-abstract class '" + ci.getName() + 
+                                "' (make '" + ci.getName() + "' abstract)", 
+                                905);
                     }
                 }
             }
             else {
                 if (td instanceof ClassOrInterface) {
-                    ClassOrInterface ci = 
+                    ClassOrInterface ci =
                             (ClassOrInterface) td;
                     if (!ci.isAbstract()) {
                         Class c = (Class) ci;
                         if (!c.hasEnumerated()) {
-                            that.addError("non-abstract class has enumerated subtypes: '" +
-                                    td.getName() + "'", 905);
+                            that.addError("non-abstract class has enumerated subtypes: " + 
+                                    "enumerated class '" + ci.getName() + "' is not abstract" +
+                                    " (make '" + ci.getName() + "' abstract)",
+                                    905);
                         }
                     }
                 }
