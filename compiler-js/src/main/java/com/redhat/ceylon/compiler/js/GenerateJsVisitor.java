@@ -1745,10 +1745,12 @@ public class GenerateJsVisitor extends Visitor {
         final String f = that.getText();
         final int dot = f.indexOf('.');
         boolean wrap = true;
-        for (int i = dot+1; i < f.length(); i++) {
-            if (f.charAt(i) != '0') {
-                wrap = false;
-                break;
+        if (f.indexOf('E', dot) < 0 && f.indexOf('e', dot) < 0) {
+            for (int i = dot+1; i < f.length(); i++) {
+                if (f.charAt(i) != '0') {
+                    wrap = false;
+                    break;
+                }
             }
         }
         if (wrap) {
