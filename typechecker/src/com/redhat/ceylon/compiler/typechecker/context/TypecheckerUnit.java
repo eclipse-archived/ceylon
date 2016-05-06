@@ -3,7 +3,6 @@ package com.redhat.ceylon.compiler.typechecker.context;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
@@ -12,7 +11,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
-public class TypecheckerUnit extends Unit implements BackendSupport {
+public class TypecheckerUnit extends Unit {
     private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
     private Package javaLangPackage;
     private Set<Declaration> missingNativeImplementations = new HashSet<Declaration>();
@@ -41,7 +40,6 @@ public class TypecheckerUnit extends Unit implements BackendSupport {
         return missingNativeImplementations;
     }
 
-    @Override
     public Backends getSupportedBackends() {
         return supportedBackends;
     }

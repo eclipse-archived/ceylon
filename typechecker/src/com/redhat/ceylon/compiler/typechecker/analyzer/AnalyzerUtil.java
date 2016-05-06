@@ -1244,12 +1244,12 @@ public class AnalyzerUtil {
                             String name = 
                                     mi.getModule()
                                         .getNameAsString();
-                            if (!isForBackend(mi.getNativeBackends(), path.getUnit()) &&
+                            if (!isForBackend(mi.getNativeBackends(), path.getUnit().getSupportedBackends()) &&
                                     (nameToImport.equals(name) ||
                                      nameToImport.startsWith(name + "."))) {
                                 return null;
                             }
-                            if (!isForBackend(Backend.Java.asSet(), path.getUnit()) &&
+                            if (!isForBackend(Backend.Java.asSet(), path.getUnit().getSupportedBackends()) &&
                                     moduleSourceMapper.getJdkProvider().isJDKPackage(nameToImport)) {
                                 return null;
                             }

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -20,7 +19,7 @@ import com.redhat.ceylon.model.typechecker.model.Package;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleManager implements BackendSupport {
+public class ModuleManager {
 
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
@@ -230,7 +229,6 @@ public class ModuleManager implements BackendSupport {
      * this ModuleManager. Returning an empty set signifies
      * that any backend is acceptable.
      */
-    @Override
     public Backends getSupportedBackends() {
         return Backends.ANY;
     }

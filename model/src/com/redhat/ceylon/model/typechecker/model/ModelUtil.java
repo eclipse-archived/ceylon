@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 
@@ -2609,11 +2608,6 @@ public class ModelUtil {
     public static boolean isForBackend(Backends backends,
             Backend supported) {
         return isForBackend(backends, supported.asSet());
-    }
-    
-    public static boolean isForBackend(Backends backends,
-            BackendSupport support) {
-        return isForBackend(backends, support.getSupportedBackends());
     }
     
     public static boolean isForBackend(Backends backends,

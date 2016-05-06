@@ -129,7 +129,7 @@ public class TreeUtil {
             TypecheckerUnit unit) {
         Backends bs = getNativeBackend(al, unit);
         if (!bs.none()) {
-            return !ModelUtil.isForBackend(bs, unit);
+            return !ModelUtil.isForBackend(bs, unit.getSupportedBackends());
         } else {
             return false;
         }

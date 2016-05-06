@@ -210,7 +210,7 @@ public class ModuleValidator {
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
             if (moduleImport.isNative() &&
-                    !isForBackend(moduleImport.getNativeBackends(), moduleManager)) {
+                    !isForBackend(moduleImport.getNativeBackends(), moduleManager.getSupportedBackends())) {
                 //import is not for this backend
                 continue;
             }
