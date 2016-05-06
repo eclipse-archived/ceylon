@@ -3514,11 +3514,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformInvocation(Invocation invocation, CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         invocation.location(callBuilder);
+        boolean needsCast = false;
         if (Decl.isConstructorPrimary(invocation.getPrimary())) {
             Tree.StaticMemberOrTypeExpression qte = (Tree.StaticMemberOrTypeExpression)invocation.getPrimary();
             // instantiator
             Constructor ctor = Decl.getConstructor(qte.getDeclaration());
             if (Strategy.generateInstantiator(ctor)) {
+                needsCast = Strategy.isInstantiatorUntyped(ctor);
                 if (qte instanceof Tree.QualifiedMemberExpression
                         && ((Tree.QualifiedMemberExpression)qte).getPrimary() instanceof Tree.QualifiedTypeExpression
                         && isCeylonCallable(getReturnTypeOfCallable(invocation.getPrimary().getTypeModel()))) {
@@ -3583,7 +3585,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
         }
-        return callBuilder.build();
+        JCExpression result = callBuilder.build();
+        if (needsCast) {
+            result = make().TypeCast(makeJavaType(invocation.getReturnType()), result);
+        }
+        return result;
     }
 
     private JCExpression transformQualifiedInstantiation(Invocation invocation, CallBuilder callBuilder,
