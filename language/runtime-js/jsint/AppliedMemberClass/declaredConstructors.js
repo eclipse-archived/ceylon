@@ -8,10 +8,9 @@ if (this.$constrs$===undefined) {
     mtn+='$'+startingType.declaration.name;
     startingType=startingType.container;
   }
-  var prefix=mtn+"_";
   var ccc=[];
   for (k in this.tipo) {
-    if (k.startsWith(prefix)) {
+    if (k.startsWith(mtn+'$c_') || k.startsWith(mtn+'_')) {
       mm=getrtmm$$(this.tipo[k]);
       if (mm.d[mm.d.length-2]!=='$cn')continue;
       if (mm.ps===undefined) {

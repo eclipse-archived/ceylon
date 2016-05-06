@@ -9,8 +9,10 @@ function(anntypes){
     mtn+='$'+startingType.declaration.name;
     startingType=startingType.container;
   }
-  var pref=mtn+"_";
-  var cs=coiclsannconstrs$(this,anntypes,pref,this.$$targs$$.Type$AppliedMemberClass);
+  var cs=coiclsannconstrs$(this,anntypes,mtn+'$c_',this.$$targs$$.Type$AppliedMemberClass);
+  if (cs.length===0) {
+    cs=coiclsannconstrs$(this,anntypes,mtn+'_',this.$$targs$$.Type$AppliedMemberClass);
+  }
   for (var i=0;i<cs.length;i++) {
     var r=AppliedMemberClassValueConstructor$jsint(cs[i].tipo,
                {Type$AppliedMemberClassValueConstructor:this.$$targs$$.Type$AppliedMemberClass,

@@ -1,7 +1,10 @@
 function(anntypes,$m) {
   var mm=getrtmm$$(this.tipo);
-  var pref=mm.d[mm.d.length-1]+"_";
-  var cs=coiclsannconstrs$(this,anntypes,pref,this.$$targs$$.Type$AppliedClass,$m.Arguments$getDeclaredCallableConstructors);
+  var pref=mm.d[mm.d.length-1];
+  var cs=coiclsannconstrs$(this,anntypes,pref+"$c_",this.$$targs$$.Type$AppliedClass,$m.Arguments$getDeclaredCallableConstructors);
+  if (cs.length===0) {
+    cs=coiclsannconstrs$(this,anntypes,pref+"_",this.$$targs$$.Type$AppliedClass,$m.Arguments$getDeclaredCallableConstructors);
+  }
   for (var i=0;i<cs.length;i++) {
     var r=AppliedCallableConstructor$jsint(cs[i].tipo,{Type$AppliedCallableConstructor:this.$$targs$$.Type$AppliedClass,
                 Arguments$AppliedCallableConstructor:cs[i].args},undefined,this.$targs);

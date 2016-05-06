@@ -4,10 +4,10 @@ function(m,i) {
     var callablesOnly=extendsType(m.Kind$annotatedMemberDeclarations,{t:CallableConstructorDeclaration$meta$declaration});
     var valuesOnly=extendsType(m.Kind$annotatedMemberDeclarations,{t:ValueConstructorDeclaration$meta$declaration});
     var mm=getrtmm$$(this.tipo);
-    var prefix=mm.d[mm.d.length-1]+'_';
+    var prefix=mm.d[mm.d.length-1];
     var ccc=[];
     for (k in this.tipo) {
-      if (k.startsWith(prefix)) {
+      if (k.startsWith(prefix+'$c_') || k.startsWith(prefix+'_')) {
         mm=getrtmm$$(this.tipo[k]);
         if (mm.ps===undefined) {
           if (!callablesOnly) {

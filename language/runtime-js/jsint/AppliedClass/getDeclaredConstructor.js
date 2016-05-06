@@ -1,7 +1,8 @@
 function(nm,$mpt){
   var mm=getrtmm$$(this.tipo);
-  var fn=mm.d[mm.d.length-1]+"_"+(nm===''?'$c$':nm);
-  var cn=this.tipo[fn];
+  var fnOld=mm.d[mm.d.length-1]+"_"+(nm===''?'$c$':nm);
+  var fnNew=mm.d[mm.d.length-1]+"$c_"+(nm===''?'$c$':nm);
+  var cn=this.tipo[fnNew]||this.tipo[fnOld];
   if (cn) {
     mm=getrtmm$$(cn);
     if (mm.d[mm.d.length-2]==='$cn') {
