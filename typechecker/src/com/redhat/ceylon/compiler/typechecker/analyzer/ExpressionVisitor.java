@@ -2075,8 +2075,31 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.Declaration that) {
+    @Override public void visit(Tree.CaseTypes that) {
         super.visit(that);
+        if (that.getTypes().size()==1) {
+            Tree.Type type = that.getTypes().get(0);
+            Type ct = type.getTypeModel();
+            if (!isTypeUnknown(ct)) {
+                TypeDeclaration ctd = ct.getDeclaration();
+                if (ctd.isSelfType()) {
+                    TypeDeclaration td = 
+                            (TypeDeclaration) 
+                            that.getScope();
+                    Type t = td.getType();
+                    for (Type bound: ct.getSatisfiedTypes()) {
+                        if (!t.isSubtypeOf(bound)) {
+                            type.addError("type does not satisfy upper bound of self type: '" + 
+                                    td.getName() + 
+                                    "' is not a subtype of upper bound '" + 
+                                    bound.asString(unit) + 
+                                    "' of its self type '" + 
+                                    ctd.getName() + "'");
+                        }
+                    }
+                }
+            }
+        }
     }
     
     @Override public void visit(Tree.TypedDeclaration that) {
