@@ -37,4 +37,12 @@ public class TypecheckerUnit extends Unit {
 	public ModuleSourceMapper getModuleSourceMapper() {
 		return moduleSourceMapper;
 	}
+	
+	@Override
+	public boolean isJdkPackage(String name) {
+	    return moduleSourceMapper!=null ? 
+	            moduleSourceMapper.getJdkProvider()
+                    .isJDKPackage(name) : 
+                super.isJdkPackage(name);
+	}
 }

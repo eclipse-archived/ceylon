@@ -175,7 +175,9 @@ public class PhasedUnit {
                 moduleVisited = true;
                 processLiterals();
                 moduleVisitor = 
-                        new ModuleVisitor(moduleManagerRef.get(), moduleManagerUtilRef.get(), 
+                        new ModuleVisitor(
+                                moduleManagerRef.get(), 
+                                moduleManagerUtilRef.get(), 
                                 pkg);
                 moduleVisitor.setCompleteOnlyAST(!isAllowedToChangeModel(null));
                 rootNode.visit(moduleVisitor);

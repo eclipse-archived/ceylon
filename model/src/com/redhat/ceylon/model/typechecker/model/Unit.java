@@ -2421,4 +2421,8 @@ public class Unit {
         return unresolvedReferences;
     }
     
+    public boolean isJdkPackage(String name) {
+        return false;
+    }
+    
 }
