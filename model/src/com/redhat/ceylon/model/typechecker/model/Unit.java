@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Unit {
@@ -38,6 +39,7 @@ public class Unit {
     private final Set<String> dependentsOf = new HashSet<String>();
     private String fullPath;
     private String relativePath;
+    private Backends supportedBackends = Backends.ANY;
     
     public List<Import> getImports() {
         return imports;
@@ -2403,6 +2405,14 @@ public class Unit {
     public TypeCache getCache() {
         Module module = getPackage().getModule();
         return module != null ? module.getCache() : null;
+    }
+
+    public Backends getSupportedBackends() {
+        return supportedBackends;
+    }
+    
+    public void setSupportedBackends(Backends backends) {
+        supportedBackends = backends;
     }
 
 }
