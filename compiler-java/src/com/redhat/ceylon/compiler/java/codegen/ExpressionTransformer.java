@@ -4124,7 +4124,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         expr,
                         expr.getTypeModel(), 
                         Decl.getConstructor(member), 
-                        producedReference).build();
+                        producedReference);
             } else if (member instanceof Function) {
                 Function method = (Function)member;
                 if (!method.isParameter()) {
@@ -4134,7 +4134,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             expr,
                             expr.getTypeModel(), 
                             method, 
-                            producedReference).build();
+                            producedReference);
                 } else {
                     Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
@@ -4142,7 +4142,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             expr,
                             expr.getTypeModel(), 
                             method, 
-                            producedReference).build();
+                            producedReference);
                 }
             } else if (member instanceof Class) {
                 Reference producedReference = expr.getTarget();
@@ -4151,7 +4151,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         expr,
                         expr.getTypeModel(), 
                         (Class)member, 
-                        producedReference).build();
+                        producedReference);
             } else {
                 return makeErroneous(expr, "compiler bug: member reference of " + expr + " not supported yet");
             }
