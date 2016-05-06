@@ -75,7 +75,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -139,7 +138,7 @@ public class ExpressionVisitor extends Visitor {
     private Node ifStatementOrExpression;
     private Node switchStatementOrExpression;
     
-    private TypecheckerUnit unit;
+    private Unit unit;
     
     private Tree.IfClause ifClause() {
         if (ifStatementOrExpression 
@@ -198,7 +197,7 @@ public class ExpressionVisitor extends Visitor {
     public ExpressionVisitor() {
     }
     
-    public ExpressionVisitor(TypecheckerUnit unit) {
+    public ExpressionVisitor(Unit unit) {
         this.unit = unit;
     }
     

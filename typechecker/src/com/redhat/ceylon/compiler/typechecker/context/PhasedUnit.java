@@ -190,7 +190,10 @@ public class PhasedUnit {
     }
     
     protected TypecheckerUnit createUnit() {
-        return new TypecheckerUnit(moduleManagerRef.get().getModules().getListOfModules(),
+        return new TypecheckerUnit(
+                moduleManagerRef.get()
+                    .getModules()
+                    .getListOfModules(),
         		moduleManagerUtilRef.get());
     }
     
@@ -333,10 +336,23 @@ public class PhasedUnit {
             if (!declarationsScanned) {
                 processLiterals();
                 scanningDeclarations = true;
+                unit = createUnit();
+                unit.setPackage(pkg);
+                unit.setFilename(fileName);
+                unit.setFullPath(unitFile.getPath());
+                unit.setRelativePath(pathRelativeToSrcDir);
                 //System.out.println("Scan declarations for " + fileName);
-                DeclarationVisitor dv = createDeclarationVisitor();
+                DeclarationVisitor dv = new DeclarationVisitor(unit) {
+                    @Override
+                    protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
+                        return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
+                    }
+                    @Override
+                    protected boolean isAllowedToChangeModel(Declaration declaration) {
+                        return PhasedUnit.this.isAllowedToChangeModel(declaration);
+                    }
+                };
                 rootNode.visit(dv);
-                unit = dv.getCompilationUnit();
 
                 rootNode.visit(new LocalDeclarationVisitor());
 
@@ -347,26 +363,6 @@ public class PhasedUnit {
         finally {
             TypeCache.setEnabled(enabled);
         }
-    }
-
-    protected DeclarationVisitor createDeclarationVisitor() {
-        return new DeclarationVisitor(pkg, 
-                fileName,
-                unitFile.getPath(), 
-                pathRelativeToSrcDir) {
-            @Override
-            protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
-                return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
-            }
-            @Override
-            protected TypecheckerUnit createUnit() {
-                return PhasedUnit.this.createUnit();
-            }
-            @Override
-            protected boolean isAllowedToChangeModel(Declaration declaration) {
-                return PhasedUnit.this.isAllowedToChangeModel(declaration);
-            }
-        };
     }
 
     private void processLiterals() {
@@ -474,7 +470,7 @@ public class PhasedUnit {
         return pkg;
     }
     
-    public TypecheckerUnit getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 

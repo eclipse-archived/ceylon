@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
@@ -71,7 +70,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class TypeVisitor extends Visitor {
     
-    private TypecheckerUnit unit;
+    private Unit unit;
 
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
@@ -80,7 +79,7 @@ public class TypeVisitor extends Visitor {
     public TypeVisitor() {
     }
     
-    public TypeVisitor(TypecheckerUnit unit) {
+    public TypeVisitor(Unit unit) {
         this.unit = unit;
     }
     

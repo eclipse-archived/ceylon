@@ -2417,7 +2417,7 @@ public class Unit {
         this.unresolvedReferences = true;
     }
     
-    public boolean hasUnresolvedReferences() {
+    public boolean getUnresolvedReferences() {
         return unresolvedReferences;
     }
     

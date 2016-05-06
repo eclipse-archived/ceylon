@@ -1198,8 +1198,7 @@ public class AnalyzerUtil {
         return type;
     }
 
-    static Package importedPackage(Tree.ImportPath path, 
-            TypecheckerUnit unit) {
+    static Package importedPackage(Tree.ImportPath path, Unit unit) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {
             String nameToImport = 
@@ -1254,7 +1253,9 @@ public class AnalyzerUtil {
                         if (!isForBackend(Backend.Java.asSet(), 
                                           path.getUnit()
                                               .getSupportedBackends()) &&
-                                unit.getModuleSourceMapper()
+                                unit instanceof TypecheckerUnit &&
+                                ((TypecheckerUnit) unit)
+                                    .getModuleSourceMapper()
                                     .getJdkProvider()
                                     .isJDKPackage(nameToImport)) {
                             return null;

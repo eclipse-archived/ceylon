@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -126,10 +125,11 @@ public class TreeUtil {
     }
     
     public static boolean isForUnsupportedBackend(Tree.AnnotationList al,
-            TypecheckerUnit unit) {
+            Unit unit) {
         Backends bs = getNativeBackend(al, unit);
         if (!bs.none()) {
-            return !ModelUtil.isForBackend(bs, unit.getSupportedBackends());
+            return !ModelUtil.isForBackend(bs, 
+                    unit.getSupportedBackends());
         } else {
             return false;
         }

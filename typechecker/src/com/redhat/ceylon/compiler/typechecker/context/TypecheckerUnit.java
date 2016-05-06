@@ -13,12 +13,14 @@ public class TypecheckerUnit extends Unit {
     public TypecheckerUnit(Iterable<Module> modules, 
             ModuleSourceMapper moduleSourceMapper){
     	this.moduleSourceMapper = moduleSourceMapper;
-        for (Module m : modules) {
-            if ("java.base".equals(m.getNameAsString())) {
-                javaLangPackage = m.getPackage("java.lang");
-                break;
+    	if (modules!=null) {
+            for (Module m: modules) {
+                if ("java.base".equals(m.getNameAsString())) {
+                    javaLangPackage = m.getPackage("java.lang");
+                    break;
+                }
             }
-        }
+    	}
     }
     
     /** 

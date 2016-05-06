@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -419,7 +418,7 @@ public class AnnotationVisitor extends Visitor {
                 TypeDeclaration td = t.getDeclaration();
                 if (td!=null) {
                     if (td.isAnnotation()) {
-                        TypecheckerUnit unit = that.getUnit();
+                        Unit unit = that.getUnit();
                         TypeDeclaration annotationDec = 
                                 unit.getAnnotationDeclaration();
                         if (t.isNothing()) {
@@ -997,7 +996,7 @@ public class AnnotationVisitor extends Visitor {
         Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
-            TypecheckerUnit unit = that.getUnit();
+            Unit unit = that.getUnit();
             if (that.getStaticMethodReference() && 
                     !dec.isStaticallyImportable()) {
                 that.addError("ambiguous static reference to overloaded method or class: '" +

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -26,6 +25,7 @@ import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -44,12 +44,12 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class ImportVisitor extends Visitor {
     
-    private TypecheckerUnit unit;
+    private Unit unit;
 
     public ImportVisitor() {
     }
     
-    public ImportVisitor(TypecheckerUnit unit) {
+    public ImportVisitor(Unit unit) {
         this.unit = unit;
     }
     
