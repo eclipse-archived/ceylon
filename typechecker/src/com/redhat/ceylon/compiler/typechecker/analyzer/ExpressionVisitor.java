@@ -9256,7 +9256,8 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     that.addError("function or value does not exist: '" +
                             name(id) + "'", 100);
-                    unit.getUnresolvedReferences().add(id);
+                    unit.getUnresolvedReferences()
+                        .add(id);
                 }
             } else {
                 TypeDeclaration qtd = 

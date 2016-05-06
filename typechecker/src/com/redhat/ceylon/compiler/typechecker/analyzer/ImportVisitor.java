@@ -297,7 +297,8 @@ public class ImportVisitor extends Visitor {
             id.addError("imported declaration not found: '" + 
                     name + "'" + message, 
                     100);
-            unit.getUnresolvedReferences().add(id);
+            unit.getUnresolvedReferences()
+                .add(id);
         }
         else {
             if (!declaredInPackage(d, unit)) {
@@ -359,7 +360,8 @@ public class ImportVisitor extends Visitor {
                     td.getName() + "'" + 
                     message, 
                     100);
-            unit.getUnresolvedReferences().add(id);
+            unit.getUnresolvedReferences()
+                .add(id);
         }
         else {
             List<Declaration> members = 
