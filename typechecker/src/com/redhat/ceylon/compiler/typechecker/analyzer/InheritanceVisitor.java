@@ -4,7 +4,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeNamesAsIntersection;
@@ -423,7 +422,9 @@ public class InheritanceVisitor extends Visitor {
                 type = type.resolveAliases();
                 TypeDeclaration dec = type.getDeclaration();
                 if (td instanceof ClassOrInterface &&
-                        !inLanguageModule(unit)) {
+                        !unit.getPackage()
+                           .getModule()
+                           .isLanguageModule()) {
                     if (unit.isCallableType(type)) {
                         t.addError("satisfies 'Callable'");
                     }

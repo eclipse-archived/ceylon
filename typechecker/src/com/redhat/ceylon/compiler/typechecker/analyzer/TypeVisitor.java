@@ -396,8 +396,7 @@ public class TypeVisitor extends Visitor {
                     that.addError("type declaration does not exist: '" + 
                             name + "'" + message, 
                             102);
-                    unit.getUnresolvedReferences()
-                        .add(id);
+                    unit.setUnresolvedReferences();
                 }
             }
             else {
@@ -501,8 +500,7 @@ public class TypeVisitor extends Visitor {
                                     name + "' in type '" + 
                                     d.getName() + "'" + 
                                     message, 100);
-                            unit.getUnresolvedReferences()
-                                .add(id);
+                            unit.setUnresolvedReferences();
                         }
                     }
                 }

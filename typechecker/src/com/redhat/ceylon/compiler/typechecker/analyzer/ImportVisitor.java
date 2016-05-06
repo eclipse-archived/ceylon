@@ -71,7 +71,7 @@ public class ImportVisitor extends Visitor {
     @Override
     public void visit(Tree.Import that) {
         Package importedPackage = 
-                importedPackage(that.getImportPath(), unit.getModuleSourceMapper());
+                importedPackage(that.getImportPath(), unit);
         if (importedPackage!=null) {
             that.getImportPath().setModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = 
@@ -297,8 +297,7 @@ public class ImportVisitor extends Visitor {
             id.addError("imported declaration not found: '" + 
                     name + "'" + message, 
                     100);
-            unit.getUnresolvedReferences()
-                .add(id);
+            unit.setUnresolvedReferences();
         }
         else {
             if (!declaredInPackage(d, unit)) {
@@ -360,8 +359,7 @@ public class ImportVisitor extends Visitor {
                     td.getName() + "'" + 
                     message, 
                     100);
-            unit.getUnresolvedReferences()
-                .add(id);
+            unit.setUnresolvedReferences();
         }
         else {
             List<Declaration> members = 

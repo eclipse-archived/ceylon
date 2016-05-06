@@ -40,6 +40,7 @@ public class Unit {
     private String fullPath;
     private String relativePath;
     private Backends supportedBackends = Backends.ANY;
+    private boolean unresolvedReferences;
     
     public List<Import> getImports() {
         return imports;
@@ -2415,4 +2416,12 @@ public class Unit {
         supportedBackends = backends;
     }
 
+    public void setUnresolvedReferences() {
+        this.unresolvedReferences = true;
+    }
+    
+    public boolean hasUnresolvedReferences() {
+        return unresolvedReferences;
+    }
+    
 }

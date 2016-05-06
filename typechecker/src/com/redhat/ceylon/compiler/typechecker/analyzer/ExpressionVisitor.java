@@ -6290,8 +6290,7 @@ public class ExpressionVisitor extends Visitor {
                         "function or value does not exist: '" +
                         name + "'" + message, 
                         100);
-                unit.getUnresolvedReferences()
-                    .add(id);
+                unit.setUnresolvedReferences();
             }
         }
         else {
@@ -6546,8 +6545,7 @@ public class ExpressionVisitor extends Visitor {
                         that.addError("method or attribute does not exist: '" +
                                 name + "' in " + container, 
                                 100);
-                        unit.getUnresolvedReferences()
-                            .add(id);
+                        unit.setUnresolvedReferences();
                     }
                 }
             }
@@ -6940,8 +6938,7 @@ public class ExpressionVisitor extends Visitor {
                         "type does not exist: '" + name + "'"
                                 + message, 
                         102);
-                unit.getUnresolvedReferences()
-                    .add(id);
+                unit.setUnresolvedReferences();
             }
         }
         else {
@@ -7314,8 +7311,7 @@ public class ExpressionVisitor extends Visitor {
                         that.addError("member type does not exist: '" +
                                 name + "' in " + container, 
                                 100);
-                        unit.getUnresolvedReferences()
-                            .add(id);
+                        unit.setUnresolvedReferences();
                     }
                 }
             }
@@ -9038,7 +9034,7 @@ public class ExpressionVisitor extends Visitor {
             pack = unit.getPackage();
         }
         else {
-            pack = importedPackage(path, unit.getModuleSourceMapper());
+            pack = importedPackage(path, unit);
         }
         path.setModel(pack);
         that.setTypeModel(unit.getPackageDeclarationType());
@@ -9256,8 +9252,7 @@ public class ExpressionVisitor extends Visitor {
                 else {
                     that.addError("function or value does not exist: '" +
                             name(id) + "'", 100);
-                    unit.getUnresolvedReferences()
-                        .add(id);
+                    unit.setUnresolvedReferences();
                 }
             } else {
                 TypeDeclaration qtd = 
