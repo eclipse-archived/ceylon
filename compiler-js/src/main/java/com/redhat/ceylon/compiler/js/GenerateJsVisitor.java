@@ -1742,7 +1742,19 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.FloatLiteral that) {
-        out(getClAlias(), "Float(", that.getText(), ")");
+        final String f = that.getText();
+        final int dot = f.indexOf('.');
+        boolean wrap = true;
+        for (int i = dot+1; i < f.length(); i++) {
+            if (f.charAt(i) != '0') {
+                wrap = false;
+                break;
+            }
+        }
+        if (wrap) {
+            out(getClAlias(), "Float");
+        }
+        out("(", f, ")/*PASA*/");
     }
 
     long parseNaturalLiteral(Tree.NaturalLiteral that, boolean neg) throws NumberFormatException {
@@ -2078,13 +2090,11 @@ public class GenerateJsVisitor extends Visitor {
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
-                if (fromTypeName.equals("ceylon.language::Integer")) {
+                if (fromType.isInteger() || fromType.isFloat()) {
                     out("(");
-                } else if (fromTypeName.equals("ceylon.language::Float")) {
-                    out(getClAlias(), "Float(");
-                } else if (fromTypeName.equals("ceylon.language::Boolean")) {
+                } else if (fromType.isBoolean()) {
                     out("(");
-                } else if (fromTypeName.equals("ceylon.language::Character")) {
+                } else if (fromType.isCharacter()) {
                     out(getClAlias(), "Character(");
                 } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
                     out(getClAlias(), "$JsCallable(");
@@ -2093,9 +2103,9 @@ public class GenerateJsVisitor extends Visitor {
                     return 0;
                 }
                 return 1;
-            } else if ("ceylon.language::Float".equals(fromTypeName)) {
+            } else if (fromType.isFloat()) {
                 // conversion from Ceylon Float to native value
-                return 2;
+                return toNative ? 2 : 1;
             } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
                 Term _t = fromTerm;
                 if (_t instanceof Tree.InvocationExpression) {
@@ -2120,7 +2130,7 @@ public class GenerateJsVisitor extends Visitor {
     void boxUnboxEnd(int boxType) {
         switch (boxType) {
         case 1: out(")"); break;
-        case 2: out(".valueOf()"); break;
+        case 2: out(".valueOf(/*UNFLOAT*/)"); break;
         case 4: out(")"); break;
         default: //nothing
         }
@@ -2898,10 +2908,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         final Type lt = left.getTypeModel();
         final Type rt = right.getTypeModel();
-        final Type intdecl = left.getUnit().getIntegerType();
-        final Type booldecl = left.getUnit().getBooleanType();
-        return (lt.isSubtypeOf(intdecl) && rt.isSubtypeOf(intdecl))
-                || (lt.isSubtypeOf(booldecl) && rt.isSubtypeOf(booldecl));
+        return (lt.isInteger() && rt.isInteger()) || (lt.isBoolean() && rt.isBoolean());
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
