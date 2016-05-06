@@ -1754,7 +1754,7 @@ public class GenerateJsVisitor extends Visitor {
         if (wrap) {
             out(getClAlias(), "Float");
         }
-        out("(", f, ")/*PASA*/");
+        out("(", f, ")");
     }
 
     long parseNaturalLiteral(Tree.NaturalLiteral that, boolean neg) throws NumberFormatException {
