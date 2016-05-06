@@ -50,9 +50,6 @@ public class Unit {
         return importLists;
     }
 
-    /**
-     * @return the dependentsOf
-     */
     public Set<String> getDependentsOf() {
         return dependentsOf;
     }
