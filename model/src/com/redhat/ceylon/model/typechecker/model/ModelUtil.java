@@ -1298,10 +1298,8 @@ public class ModelUtil {
                         return;
                     }
                     else {
-                        if ((type.isClassOrInterface()
-                                || type.isTypeParameter()) &&
-                            (t.isClassOrInterface()
-                                || t.isTypeParameter()) &&
+                        if (type.isDeclaredType() &&
+                            t.isDeclaredType() &&
                             t.getDeclaration().equals(dec) &&
                                 !type.containsUnknowns() &&
                                 !t.containsUnknowns()) {

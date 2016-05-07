@@ -544,8 +544,10 @@ public class Type extends Reference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(Type type) {
-        return type!=null && resolveAliases()
-                .isSubtypeOfInternal(type.resolveAliases());
+        return type!=null && 
+                resolveAliases()
+                    .isSubtypeOfInternal(
+                            type.resolveAliases());
     }
 
     /**
@@ -602,8 +604,7 @@ public class Type extends Reference {
                 return true;
             }
             else if (isIntersection()) {
-                if (type.isClassOrInterface()
-                        || type.isTypeParameter()) {
+                if (type.isDeclaredType()) {
                     TypeDeclaration otherDec = 
                             type.getDeclaration();
                     Type pst = getSupertype(otherDec);
@@ -4124,6 +4125,10 @@ public class Type extends Reference {
     
     public boolean isEntry() {
         return getDeclaration().isEntry();
+    }
+    
+    boolean isDeclaredType() {
+        return isClassOrInterface() || isTypeParameter();
     }
     
     public int getMemoisedHashCode() {
