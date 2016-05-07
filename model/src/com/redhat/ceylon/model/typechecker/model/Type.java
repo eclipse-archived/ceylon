@@ -602,7 +602,8 @@ public class Type extends Reference {
                 return true;
             }
             else if (isIntersection()) {
-                if (type.isClassOrInterface()) {
+                if (type.isClassOrInterface()
+                        || type.isTypeParameter()) {
                     TypeDeclaration otherDec = 
                             type.getDeclaration();
                     Type pst = getSupertype(otherDec);
@@ -1717,6 +1718,9 @@ public class Type extends Reference {
                     if (rd.equals(prd)) {
                         result = principalInstantiation(rd, 
                                 possibleResult, result, unit);
+                        if (result == null) {
+                            return null;
+                        }
                         lowerBound = c.isMemberLookup() ? 
                                 intersectionType(result, 
                                         lowerBound, unit) : 

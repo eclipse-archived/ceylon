@@ -1296,10 +1296,12 @@ public class ModelUtil {
                         list.clear();
                         list.add(unit.getNothingType());
                         return;
-                    } 
+                    }
                     else {
-                        if (type.isClassOrInterface() && 
-                            t.isClassOrInterface() && 
+                        if ((type.isClassOrInterface()
+                                || type.isTypeParameter()) &&
+                            (t.isClassOrInterface()
+                                || t.isTypeParameter()) &&
                             t.getDeclaration().equals(dec) &&
                                 !type.containsUnknowns() &&
                                 !t.containsUnknowns()) {
@@ -1310,7 +1312,8 @@ public class ModelUtil {
                                     principalInstantiation(
                                             dec, type, t, 
                                             unit);
-                            if (!pi.containsUnknowns()) {
+                            if (pi!=null &&
+                                    !pi.containsUnknowns()) {
                                 list.remove(i);
                                 list.add(pi);
                                 return;
@@ -2341,7 +2344,8 @@ public class ModelUtil {
                        arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (firstCo && secondInv) {
@@ -2353,7 +2357,8 @@ public class ModelUtil {
                        arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (secondCo && firstInv) {
@@ -2365,7 +2370,8 @@ public class ModelUtil {
                       arg = unit.getUnknownType();
                    }
                    else {
-                       return unit.getNothingType();
+                       //may not be Nothing for TPs
+                       return null;
                    }
                 }
                 else if (secondContra && firstInv) {
@@ -2377,7 +2383,8 @@ public class ModelUtil {
                         arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (firstInv && secondInv) {
@@ -2398,7 +2405,12 @@ public class ModelUtil {
                         //the type arguments are distinct, and the
                         //intersection is Nothing, so there is
                         //no reasonable principal instantiation
-                        return unit.getNothingType();
+
+                        //note: if dec is a TypeParameter, it may
+                        //not actually be invariant, and the
+                        //principal instantiation may not be
+                        //Nothing
+                        return null;
                     }
                 }
                 else {
