@@ -69,34 +69,25 @@ public class Type extends Reference {
     public boolean isCovariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isCovariant();
-        }
-        else {
-            return override==OUT;
-        }
+        return override==null ? 
+                param.isCovariant() : 
+                override==OUT;
     }
     
     public boolean isContravariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isContravariant();
-        }
-        else {
-            return override==IN;
-        }
+        return override==null ? 
+                param.isContravariant() : 
+                override==IN;
     }
     
     public boolean isInvariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isInvariant();
-        }
-        else {
-            return false;
-        }
+        return override==null ? 
+                param.isInvariant() : 
+                false;
     }
     
     public void setVariance(TypeParameter param, 
@@ -172,8 +163,10 @@ public class Type extends Reference {
      * given type? 
      */
     public boolean isExactly(Type type) {
-        return type!=null && resolveAliases()
-                .isExactlyInternal(type.resolveAliases());
+        return type!=null && 
+                resolveAliases()
+                    .isExactlyInternal(
+                            type.resolveAliases());
     }
     
     private boolean isExactlyInternal(Type type) {
