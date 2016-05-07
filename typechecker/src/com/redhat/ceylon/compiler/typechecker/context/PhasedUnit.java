@@ -338,11 +338,6 @@ public class PhasedUnit {
             if (!declarationsScanned) {
                 processLiterals();
                 scanningDeclarations = true;
-                unit = createUnit();
-                unit.setPackage(pkg);
-                unit.setFilename(fileName);
-                unit.setFullPath(unitFile.getPath());
-                unit.setRelativePath(pathRelativeToSrcDir);
                 //System.out.println("Scan declarations for " + fileName);
                 DeclarationVisitor dv = new DeclarationVisitor(unit) {
                     @Override
