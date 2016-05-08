@@ -9,8 +9,8 @@ bin
 gensrc
 output
 out
-treegen/*.java
-treegen/*.tokens
+antlr/com/redhat/ceylon/compiler/typechecker/treegen/*.java
+antlr/com/redhat/ceylon/compiler/typechecker/treegen/*.tokens
 
 #IDEs
 .settings
