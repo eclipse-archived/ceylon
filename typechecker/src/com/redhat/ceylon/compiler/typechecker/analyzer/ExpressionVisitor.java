@@ -1998,7 +1998,9 @@ public class ExpressionVisitor extends Visitor {
                 if (type instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
                     se.addError("function is declared void so specified expression must be a statement: '" +
-                            m.getName() + "' is declared 'void'");
+                            m.getName() + 
+                            "' is declared 'void'",
+                            210);
                 }
             }
         }
