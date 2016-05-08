@@ -1907,9 +1907,12 @@ public abstract class DeclarationVisitor extends Visitor {
                             (Tree.ExistsOrNonemptyCondition) c;
                     Tree.Statement s = enc.getVariable();
                     if (s instanceof Tree.Variable) {
-                        Tree.Variable v = (Tree.Variable) s;
-                        t = v.getType();
-                        id = v.getIdentifier();
+                        Tree.Variable v = 
+                                (Tree.Variable) s;
+                        if (v!=null) {
+                            t = v.getType();
+                            id = v.getIdentifier();
+                        }
                     }
                 }
                 else if (c instanceof Tree.IsCondition) {
