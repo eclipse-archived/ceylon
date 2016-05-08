@@ -1,18 +1,15 @@
-#Ignored files
-
-#OS
-.DS_Store
-
-# build system
+# Build system
 build
 bin
 gensrc
 output
 out
+
+# ANTLR generated
 antlr/com/redhat/ceylon/compiler/typechecker/treegen/*.java
 antlr/com/redhat/ceylon/compiler/typechecker/treegen/*.tokens
 
-#IDEs
+# IDEs
 .settings
 .idea
 *.iml
@@ -22,6 +19,4 @@ Ceylon Language Specification*.pdf
 
 # Misc
 test/temp
-/Ceylon.tokens
-/CeylonLexer.java
-/CeylonParser.java
+

@@ -1,2 +1,3 @@
 .gradle
-.ant-targets-build.xml
+**/.ant-targets-build.xml
+**/.DS_Store
