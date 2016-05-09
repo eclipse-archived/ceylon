@@ -42,6 +42,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     public static final String JS = ".js";
     public static final String DART = ".dart";
     public static final String DART_MODEL = "-dartmodel.json";
+    public static final String CSO = ".cso";
     public static final String RESOURCES = "module-resources";
     public static final String SRC = ".src";
     public static final String LEGACY_SRC = "-sources.jar";
@@ -59,8 +60,8 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // NB: SHA1 and ZIP are not part of this list because they are supposed
     // to be "composed" with other suffixes
     private static final String fileSuffixes[] = {
-        CAR, JAR, JS_MODEL, JS, DART, DART_MODEL, RESOURCES, SRC, LEGACY_SRC,
-        DOCS, SCRIPTS_ZIPPED
+        CAR, JAR, JS_MODEL, JS, DART, DART_MODEL, CSO, RESOURCES, SRC,
+        LEGACY_SRC, DOCS, SCRIPTS_ZIPPED
     };
     
     private static final String composedSuffixes[] = {
