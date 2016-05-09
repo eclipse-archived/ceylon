@@ -294,6 +294,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `filenameCaselessCollision`,
      `deprecation`, 
      `disjointEquals`,
+     `disjointContainment`,
      `compilerAnnotation`,
      `doclink`,
      `expressionTypeNothing`,

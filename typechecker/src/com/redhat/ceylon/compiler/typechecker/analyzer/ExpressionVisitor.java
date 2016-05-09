@@ -5629,6 +5629,15 @@ public class ExpressionVisitor extends Visitor {
 	            		unit.getCategoryDeclaration(),
 	            		that.getRightTerm(), 
 	            		"operand expression must be a category");
+                Type et = unit.getIteratedType(rhst);
+	            if (et!=null) {
+                    if (intersectionType(lhst, et, unit).isNothing()) {
+                        that.addUsageWarning(Warning.disjointContainment, 
+                                "tests containment with disjoint element types: '" +
+                                lhst.asString(unit) + "' and '" +
+                                et.asString(unit) + "' are disjoint");
+                    }
+	            }
             }
             if (ct!=null) {
                 Type at = 

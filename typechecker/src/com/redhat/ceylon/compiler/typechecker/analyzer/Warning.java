@@ -21,5 +21,6 @@ public enum Warning {
     syntaxDeprecation,
     smallIgnored,
     literalNotSmall, 
-    disjointEquals
+    disjointEquals,
+    disjointContainment
 }
