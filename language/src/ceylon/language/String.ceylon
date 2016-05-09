@@ -365,6 +365,7 @@ shared native final class String(characters)
      UTF-16 encoding. Use of [[longerThan]] or 
      [[shorterThan]] is highly recommended."
     see (`function longerThan`, `function shorterThan`)
+    aliased ("length")
     shared actual native Integer size;
     
     "The index of the last character in the string, or 
