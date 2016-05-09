@@ -181,6 +181,12 @@ shared native final class StringBuilder()
     shared actual native 
     String measure(Integer from, Integer length);
     
+    shared actual 
+    String initial(Integer length) => measure(0, length);
+    
+    shared actual 
+    String terminal(Integer length) => measure(size-length);
+    
     shared actual native String span(Integer from, Integer to);
     shared actual native String spanTo(Integer to);
     shared actual native String spanFrom(Integer from);
