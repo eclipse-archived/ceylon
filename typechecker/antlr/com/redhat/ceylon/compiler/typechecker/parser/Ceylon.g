@@ -2646,7 +2646,8 @@ ifExpression returns [IfExpression term]
       { $term = new IfExpression($IF_CLAUSE); 
         $term.setIfClause(new IfClause(null)); }
       conditions
-      { $term.getIfClause().setConditionList($conditions.conditionList); }
+      { $term.getIfClause().setConditionList($conditions.conditionList); 
+        $term.setIfClause($term.getIfClause()); } //yew!
       thenExpression
       { IfClause ic = $thenExpression.ifClause;
         if (ic!=null) {
