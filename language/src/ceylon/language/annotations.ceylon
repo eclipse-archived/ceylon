@@ -292,7 +292,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      Allowed warning types are:
      `filenameNonAscii`,
      `filenameCaselessCollision`,
-     `deprecation`,
+     `deprecation`, 
+     `disjointEquals`,
      `compilerAnnotation`,
      `doclink`,
      `expressionTypeNothing`,
@@ -304,7 +305,10 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `suppressesNothing`, 
      `unknownWarning`, 
      `ambiguousAnnotation`,
-     `javaAnnotationElement`."
+     `javaAnnotationElement`,
+     `syntaxDeprecation`,
+     `smallIgnored`,
+     `literalNotSmall`."
     String* warnings) 
         => SuppressWarningsAnnotation(*warnings);
 

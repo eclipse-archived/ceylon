@@ -5343,6 +5343,28 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(rhst, obt, 
                     that.getRightTerm(), 
                     "operand expression must be of type Object");
+            if (intersectionType(lhst, rhst, unit).isNothing()) {
+                Interface ld = unit.getListDeclaration();
+                Interface sd = unit.getSetDeclaration();
+                Interface md = unit.getMapDeclaration();
+                Class id = unit.getIntegerDeclaration();
+                Class fd = unit.getFloatDeclaration();
+                if (!(lhst.getSupertype(ld)!=null &&
+                      rhst.getSupertype(ld)!=null) &&
+                    !(lhst.getSupertype(sd)!=null &&
+                      rhst.getSupertype(sd)!=null) &&
+                    !(lhst.getSupertype(md)!=null &&
+                      rhst.getSupertype(md)!=null) &&
+                    !(lhst.getDeclaration().equals(id) &&
+                      rhst.getDeclaration().equals(fd)) &&
+                    !(lhst.getDeclaration().equals(fd) &&
+                      rhst.getDeclaration().equals(id))) {
+                    that.addUsageWarning(Warning.disjointEquals, 
+                            "tests equality for operands with disjoint types: '" +
+                            lhst.asString(unit) + "' and '" +
+                            rhst.asString(unit) + "' are disjoint");
+                }
+            }
         }
         that.setTypeModel(unit.getBooleanType());
     }

@@ -628,12 +628,16 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Set");
     }
     
-    public TypeDeclaration getComparisonDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Comparison");
+    public Interface getMapDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Map");
     }
     
-    public TypeDeclaration getBooleanDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Boolean");
+    public Class getComparisonDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Comparison");
+    }
+    
+    public Class getBooleanDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Boolean");
     }
     
     public Value getTrueValueDeclaration() {
@@ -644,24 +648,24 @@ public class Unit {
         return (Value) getLanguageModuleDeclaration("false");
     }
     
-    public TypeDeclaration getStringDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("String");
+    public Class getStringDeclaration() {
+        return (Class) getLanguageModuleDeclaration("String");
     }
     
-    public TypeDeclaration getFloatDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Float");
+    public Class getFloatDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Float");
     }
     
-    public TypeDeclaration getIntegerDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Integer");
+    public Class getIntegerDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Integer");
     }
     
-    public TypeDeclaration getCharacterDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Character");
+    public Class getCharacterDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Character");
     }
     
-    public TypeDeclaration getByteDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Byte");
+    public Class getByteDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Byte");
     }
     
     public Interface getComparableDeclaration() {
