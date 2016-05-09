@@ -914,10 +914,11 @@ public abstract class TypeDescriptor
 
         @Override
         public Type toType(RuntimeModuleManager moduleManager) {
+            Unit unit = moduleManager.getModelLoader().getUnit();
             ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
-                ModelUtil.addToUnion(caseTypes,Metamodel.getProducedType(member));
-            return ModelUtil.union(caseTypes, moduleManager.getModelLoader().getUnit());
+                caseTypes.add(Metamodel.getProducedType(member));
+            return ModelUtil.union(caseTypes, unit);
         }
 
         @Override
@@ -995,7 +996,7 @@ public abstract class TypeDescriptor
             Unit unit = moduleManager.getModelLoader().getUnit();
             ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
-                ModelUtil.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
+                satisfiedTypes.add(Metamodel.getProducedType(member));
             return ModelUtil.canonicalIntersection(satisfiedTypes, unit);
         }
         
