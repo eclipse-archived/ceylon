@@ -50,6 +50,11 @@ public class TryCatchTests extends CompilerTests {
     }
     
     @Test
+    public void testTryThrowNothing(){
+    	compareWithJavaSource("trycatch/ThrowNothing");
+    }
+
+    @Test
     public void testTryThrowException(){
         compareWithJavaSource("trycatch/ThrowException");
     }
