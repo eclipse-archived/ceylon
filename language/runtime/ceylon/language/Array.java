@@ -1044,6 +1044,7 @@ public final class Array<Element>
     }
 
     @Override
+    @AliasesAnnotation$annotation$(aliases = "length")
     public long getSize() {
         return size;
     }

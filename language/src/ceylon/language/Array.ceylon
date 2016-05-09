@@ -67,8 +67,11 @@ shared final serializable native class Array<Element>
     shared actual native Element? first;
     shared actual native Element? last;
     
-    shared actual native Boolean empty;
+    "The immutable number of elements of this array."
+    aliased ("length")
     shared actual native Integer size;
+    
+    shared actual native Boolean empty;
     shared actual native Boolean defines(Integer index);
     shared actual native Iterator<Element> iterator();
     shared actual native Boolean contains(Object element);

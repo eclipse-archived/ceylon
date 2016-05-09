@@ -230,6 +230,7 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language::Integer")
+    @AliasesAnnotation$annotation$(aliases = "length")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
         // But remember that we'll mostly be using the static verion
