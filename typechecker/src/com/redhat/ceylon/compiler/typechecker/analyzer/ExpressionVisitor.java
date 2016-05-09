@@ -5632,10 +5632,14 @@ public class ExpressionVisitor extends Visitor {
                 Type et = unit.getIteratedType(rhst);
 	            if (et!=null) {
                     if (intersectionType(lhst, et, unit).isNothing()) {
-                        that.addUsageWarning(Warning.disjointContainment, 
-                                "tests containment with disjoint element types: '" +
-                                lhst.asString(unit) + "' and '" +
-                                et.asString(unit) + "' are disjoint");
+                        Class sd = unit.getStringDeclaration();
+                        if (!lhst.getDeclaration().equals(sd) ||
+                            !rhst.getDeclaration().equals(sd)) {
+                            that.addUsageWarning(Warning.disjointContainment, 
+                                    "tests containment with disjoint element types: '" +
+                                    lhst.asString(unit) + "' and '" +
+                                    et.asString(unit) + "' are disjoint");
+                        }
                     }
 	            }
             }
