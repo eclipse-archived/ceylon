@@ -81,7 +81,7 @@ public class TypeCache {
     }
     
     // need a special value for null because ConcurrentHashMap does not support null
-    private final static Type NULL_VALUE = new UnknownType(null).getType();
+    public final static Type NULL_VALUE = new UnknownType(null).getType();
     // need ConcurrentHashMap even for the cache, otherwise get/put/containsKey can get info infinite loops
     // on concurrent operations
     private final Map<Type, Map<TypeDeclaration, Type>> superTypes = 
@@ -95,15 +95,26 @@ public class TypeCache {
         return cache.containsKey(dec);
     }
 
+    /**
+     * Returns a cached type, possibly NULL_VALUE to indicate a non-supertype
+     * @param producedType
+     * @param dec
+     * @return
+     */
     public Type get(Type producedType, TypeDeclaration dec) {
         Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
         if (cache == null) {
             return null;
         }
-        Type ret = cache.get(dec);
-        return ret == NULL_VALUE ? null : ret;
+        return cache.get(dec);
     }
 
+    /**
+     * Caches a new super type. Use NULL_VALUE to cache a non-supertype
+     * @param producedType
+     * @param dec
+     * @param superType
+     */
     public void put(Type producedType, TypeDeclaration dec, Type superType) {
         Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
         if (cache == null) {
@@ -111,9 +122,6 @@ public class TypeCache {
             // on concurrent operations
             cache = new ConcurrentHashMap<TypeDeclaration, Type>();
             superTypes.put(producedType, cache);
-        }
-        if (superType == null) {
-            superType = NULL_VALUE;
         }
         cache.put(dec, superType);
     }
