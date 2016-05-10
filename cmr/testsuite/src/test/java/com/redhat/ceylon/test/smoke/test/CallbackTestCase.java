@@ -42,7 +42,7 @@ public class CallbackTestCase extends AbstractTest {
     @Test
     public void testDefault() throws Exception {
         TestArtifactCallback callback = new TestArtifactCallback();
-        ArtifactContext context = new ArtifactContext(name, version);
+        ArtifactContext context = new ArtifactContext(null, name, version);
         context.setCallback(callback);
         doTest(context, callback);
     }
@@ -52,7 +52,7 @@ public class CallbackTestCase extends AbstractTest {
         TestArtifactCallback callback = new TestArtifactCallback();
         ArtifactCallbackStream.setCallback(callback);
         try {
-            ArtifactContext context = new ArtifactContext(name, version);
+            ArtifactContext context = new ArtifactContext(null, name, version);
             doTest(context, callback);
         } finally {
             ArtifactCallbackStream.setCallback(null);
@@ -63,7 +63,7 @@ public class CallbackTestCase extends AbstractTest {
     public void testErr() throws Exception {
         TestArtifactCallback callback = new TestArtifactCallback();
         callback.ts = String.valueOf(System.currentTimeMillis());
-        ArtifactContext context = new ArtifactContext(name, version);
+        ArtifactContext context = new ArtifactContext(null, name, version);
         context.setCallback(callback);
         doTest(context, callback);
     }

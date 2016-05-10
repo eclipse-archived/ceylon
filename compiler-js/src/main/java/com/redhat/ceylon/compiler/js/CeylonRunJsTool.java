@@ -492,7 +492,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
 
     // Make sure JS and JS_MODEL artifacts exist and try to obtain the RESOURCES as well
     protected File getArtifact(RepositoryManager repoman, String modName, String modVersion, boolean optional) {
-        ArtifactContext ac = new ArtifactContext(modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
+        ArtifactContext ac = new ArtifactContext(null, modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
         ac.setIgnoreDependencies(true);
         ac.setThrowErrorIfMissing(false);
         List<ArtifactResult> results = repoman.getArtifactResults(ac);

@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
@@ -110,7 +109,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
     private static ModuleInfo toModuleInfo(DependencyDescriptor descriptor, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
         for (DependencyDescriptor dep : descriptor.getDependencies()) {
-            infos.add(new ModuleDependencyInfo(AetherUtils.toCanonicalForm(dep.getGroupId(), dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false));
+            infos.add(new ModuleDependencyInfo("maven", AetherUtils.toCanonicalForm(dep.getGroupId(), dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false));
         }
         String descrName = descriptor.getGroupId()+":"+descriptor.getArtifactId();
         // if it's not the descriptor we wanted, let's not return it

@@ -29,6 +29,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
@@ -89,7 +90,7 @@ public class AetherTestCase extends AbstractAetherTest {
     public void testWithSources() throws Throwable {
         CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult(new ArtifactContext("org.slf4j:slf4j-api", "1.6.4", ArtifactContext.LEGACY_SRC));
+        ArtifactResult result = manager.getArtifactResult(new ArtifactContext(MavenRepository.NAMESPACE, "org.slf4j:slf4j-api", "1.6.4", ArtifactContext.LEGACY_SRC));
         Assert.assertNotNull(result);
         File artifact = result.artifact();
         boolean exists = false;

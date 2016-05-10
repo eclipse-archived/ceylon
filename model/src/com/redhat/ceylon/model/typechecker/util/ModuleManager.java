@@ -62,7 +62,7 @@ public class ModuleManager {
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
-            defaultModule.addImport(new ModuleImport(languageModule, false, false));
+            defaultModule.addImport(new ModuleImport(null, languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
         }
     }
@@ -204,13 +204,14 @@ public class ModuleManager {
 
     public Module overridesModule(ArtifactResult artifact,
             Module module, ModuleImport moduleImport) {
+        String namespace = artifact.namespace();
         String realName = artifact.name();
         String realVersion = artifact.version();
         if (! realName.equals(module.getNameAsString()) ||
             ! realVersion.equals(module.getVersion())) {
             if (module != module.getLanguageModule()) {
                 Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
-                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport()));
+                moduleImport.override(new ModuleImport(namespace, realModule, moduleImport.isOptional(), moduleImport.isExport()));
                 return realModule;
             }
         }

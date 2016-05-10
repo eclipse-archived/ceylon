@@ -302,7 +302,7 @@ public class ModuleSourceMapper {
     public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         //This implementation relies on the ability to read the model from source
         //the compiler for example subclasses this to read lazily and from the compiled model
-        ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
+        ArtifactContext artifactContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
         RepositoryManager repositoryManager = context.getRepositoryManager();
         Exception exceptionOnGetArtifact = null;
         ArtifactResult sourceArtifact = null;

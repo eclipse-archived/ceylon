@@ -74,7 +74,7 @@ public class HerdTestCase extends AbstractTest {
     private final static String JDK_VERSION = "8"; // The Java version Herd is running with
 
     private final static String CEYLON_RELEASE = "6.6.6";
-	private static final ModuleDependencyInfo ceylonCollectionDep = new ModuleDependencyInfo("ceylon.collection", CEYLON_RELEASE, false, true);
+	private static final ModuleDependencyInfo ceylonCollectionDep = new ModuleDependencyInfo(null, "ceylon.collection", CEYLON_RELEASE, false, true);
     
 	@BeforeClass
 	public static void setup() {
@@ -198,9 +198,9 @@ public class HerdTestCase extends AbstractTest {
             		true, 
             		"The Herd");
 
-    static final ModuleDependencyInfo langmod = new ModuleDependencyInfo("ceylon.language", "1.2.3", false, false);
-    static final ModuleDependencyInfo hello = new ModuleDependencyInfo("hello", "1.0.0", false, false);
-    static final ModuleDependencyInfo moduletest_shopt = new ModuleDependencyInfo("moduletest", "0.1", true, true);
+    static final ModuleDependencyInfo langmod = new ModuleDependencyInfo(null, "ceylon.language", "1.2.3", false, false);
+    static final ModuleDependencyInfo hello = new ModuleDependencyInfo(null, "hello", "1.0.0", false, false);
+    static final ModuleDependencyInfo moduletest_shopt = new ModuleDependencyInfo(null, "moduletest", "0.1", true, true);
     
     @Test
     public void testHerdCompleteEmptyJvm() throws Exception {

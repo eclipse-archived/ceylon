@@ -43,9 +43,11 @@ import org.jboss.modules.filter.PathFilter;
 import org.jboss.modules.filter.PathFilters;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
@@ -314,12 +316,16 @@ public class CeylonModuleLoader extends ModuleLoader
     }
 
     protected ArtifactResult findArtifact(ModuleIdentifier mi) {
-        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
+        String namespace = ModuleUtil.getNamespaceFromUri(mi.getName());
+        String name = ModuleUtil.getModuleNameFromUri(mi.getName());
+        final ArtifactContext context = new ArtifactContext(namespace, name, mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         return repository.getArtifactResult(context);
     }
     
     protected ModuleIdentifier findOverride(ModuleIdentifier mi) {
-        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
+        String namespace = ModuleUtil.getNamespaceFromUri(mi.getName());
+        String name = ModuleUtil.getModuleNameFromUri(mi.getName());
+        final ArtifactContext context = new ArtifactContext(namespace, name, mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactContext override = repository.getOverrides().applyOverrides(context);
         return ModuleIdentifier.create(override.getName(), override.getVersion());
     }
@@ -399,7 +405,7 @@ public class CeylonModuleLoader extends ModuleLoader
                         continue;
                     }
 
-                    boolean isDepMaven = name.contains(":");
+                    boolean isDepMaven = MavenArtifactContext.NAMESPACE.equals(i.namespace());
 
                     if (i.importType() == ImportType.OPTIONAL) {
                         Node<ArtifactResult> current = root;

@@ -49,6 +49,12 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         this.manager = manager;
     }
 
+    @Override
+    public String namespace() {
+        return null;
+    }
+
+    @Override
     public ArtifactResultType type() {
         return ArtifactResultType.CEYLON;
     }
@@ -78,6 +84,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         }
     }
     
+    @Override
     public List<ArtifactResult> dependencies() throws RepositoryException {
         ModuleInfo infos = resolve();
         // TODO -- perhaps null is not valid?
@@ -87,6 +94,7 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
         for (ModuleDependencyInfo mi : getOrderedDependencies(infos)) {
             results.add(new LazyArtifactResult(manager,
+                    mi.getNamespace(),
                     mi.getName(),
                     mi.getVersion(),
                     mi.isOptional() ? ImportType.OPTIONAL : (mi.isExport() ? ImportType.EXPORT : ImportType.UNDEFINED)));

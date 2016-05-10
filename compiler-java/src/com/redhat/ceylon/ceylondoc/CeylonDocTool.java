@@ -641,7 +641,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 
             documentModule(module);
             
-            ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+            ArtifactContext artifactDocs = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
             
             // find all doc folders to copy
             File outputDocFolder = getDocOutputFolder(module);
@@ -665,7 +665,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 if (isEmpty(module)) {
                     continue;
                 }
-                ArtifactContext docArtifact = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+                ArtifactContext docArtifact = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
                 File docFolder = outputRepositoryManager.getArtifact(docArtifact);
                 File docIndex = new File(docFolder, "api/index.html");
                 if (docIndex.isFile()) {

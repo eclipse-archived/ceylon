@@ -63,6 +63,10 @@ public class Activator implements BundleActivator {
             return null;
         }
         @Override
+        public String namespace() {
+            return null;
+        }
+        @Override
         public String name() {
             return bundle.getSymbolicName();
         }

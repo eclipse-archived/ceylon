@@ -11,6 +11,7 @@ import java.util.Map;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.js.CeylonRunJsException;
@@ -54,16 +55,16 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                     s = (String)dep;
                 }
                 int p = s.indexOf('/');
-                String depname = null;
+                String depuri = null;
                 String depv = null;
                 if (p > 0) {
-                    depname = s.substring(0,p);
+                    depuri = s.substring(0,p);
                     depv = s.substring(p+1);
                     if (depv.isEmpty()) {
                         depv = null;
                     }
                     //TODO Remove this hack after next bin compat breaks
-                    if (LANGUAGE_MODULE_NAME.equals(depname)) {
+                    if (LANGUAGE_MODULE_NAME.equals(depuri)) {
                         if ("1.1.0".equals(depv)) {
                             depv = "1.2.0";
                         } else if ("1.2.1".equals(depv)) {
@@ -73,13 +74,15 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                         }
                     }
                 } else {
-                    depname = s;
+                    depuri = s;
                 }
+                String depnamespace = ModuleUtil.getNamespaceFromUri(depuri);
+                String depname = ModuleUtil.getModuleNameFromUri(depuri);
                 //This will cause the dependency to be loaded later
                 JsonModule mod = (JsonModule)getModuleManager().getOrCreateModule(
                         ModuleManager.splitModuleName(depname), depv);
                 Backends backends = mod.getNativeBackends();
-                ModuleImport imp = new ModuleImport(mod, optional, export, backends);
+                ModuleImport imp = new ModuleImport(depnamespace, mod, optional, export, backends);
                 module.addImport(imp);
             }
             model.remove("$mod-deps");
@@ -119,7 +122,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 if (JsModuleManagerFactory.isVerbose()) {
                     System.out.println("Loading JS language module before any other modules");
                 }
-                ArtifactContext ac = new ArtifactContext(Module.LANGUAGE_MODULE_NAME,
+                ArtifactContext ac = new ArtifactContext(null, Module.LANGUAGE_MODULE_NAME,
                         module.getLanguageModule().getVersion(), ArtifactContext.JS_MODEL);
                 ac.setIgnoreDependencies(true);
                 ac.setThrowErrorIfMissing(true);
@@ -132,7 +135,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
         //Create a similar artifact but with -model.js extension
         File js = artifact.artifact();
         if (js.getName().endsWith(ArtifactContext.JS) && !js.getName().endsWith(ArtifactContext.JS_MODEL)) {
-            ArtifactContext ac = new ArtifactContext(artifact.name(),
+            ArtifactContext ac = new ArtifactContext(artifact.namespace(), artifact.name(),
                     artifact.version(), ArtifactContext.JS_MODEL);
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(true);

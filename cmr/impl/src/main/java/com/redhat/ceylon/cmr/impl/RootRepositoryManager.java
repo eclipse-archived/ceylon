@@ -140,7 +140,7 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                     File missingFile = new File(parentDir, names[0].concat(MISSING));
                     if (!missingFile.exists()) {
                         if (context.getSearchRepository() == cache) {
-                            ArtifactContext unpreferred = new ArtifactContext(context.getName(), context.getVersion(), context.getSuffixes());
+                            ArtifactContext unpreferred = new ArtifactContext(context.getNamespace(), context.getName(), context.getVersion(), context.getSuffixes());
                             unpreferred.copySettingsFrom(context);
                             return getArtifactResult(unpreferred);
                         } else {

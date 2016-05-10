@@ -45,10 +45,10 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
 
         abstract void initialise() throws ModuleNotFoundException;
         
-        void loadModule(String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
+        void loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
         		throws IOException, ModuleNotFoundException  {
         	
-            ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
+            ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){
                 if(overrides.isRemoved(artifactContext))
@@ -123,7 +123,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                     // stop if we get removed at any point
                     if(mod.replaced)
                         break;
-                    loadModule(dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL, inCurrentClassLoader, mod);
+                    loadModule(dep.namespace(), dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL, inCurrentClassLoader, mod);
                 }
             }
         }

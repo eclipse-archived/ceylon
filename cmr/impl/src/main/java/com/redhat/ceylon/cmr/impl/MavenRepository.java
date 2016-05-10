@@ -38,6 +38,8 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class MavenRepository extends AbstractRepository {
+    public static final String NAMESPACE = "maven";
+
     protected MavenRepository(OpenNode root) {
         super(root);
     }
@@ -97,6 +99,11 @@ public class MavenRepository extends AbstractRepository {
     @Override
     public boolean isMaven() {
         return true;
+    }
+
+    @Override
+    public String getNamespace() {
+        return NAMESPACE;
     }
 
     @Override

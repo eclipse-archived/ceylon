@@ -617,12 +617,12 @@ public class CeylonDocToolTests {
         
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().systemRepo("../dist/dist/repo").buildManager();
-        File jbossModulesModule = repoManager.getArtifact(new ArtifactContext("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
-        File runtimeModule = repoManager.getArtifact(new ArtifactContext("ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
-        File modelModule = repoManager.getArtifact(new ArtifactContext("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, ".jar"));
-        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.3.5.Final", ".jar"));
-        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
-        File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
+        File jbossModulesModule = repoManager.getArtifact(new ArtifactContext(null, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
+        File runtimeModule = repoManager.getArtifact(new ArtifactContext(null, "ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
+        File modelModule = repoManager.getArtifact(new ArtifactContext(null, "com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, ".jar"));
+        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext(null, "io.undertow.core", "1.3.5.Final", ".jar"));
+        File narnyaModule = repoManager.getArtifact(new ArtifactContext(null, "org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
+        File languageModule = repoManager.getArtifact(new ArtifactContext(null, AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();

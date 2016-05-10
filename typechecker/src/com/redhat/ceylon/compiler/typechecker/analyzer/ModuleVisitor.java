@@ -17,6 +17,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -318,23 +319,23 @@ public class ModuleVisitor extends Visitor {
             }
             String version = 
                     getVersionString(that.getVersion());
-            String nameString;
+            String namespace;
             List<String> name;
             Node node;
             if (importPath!=null) {
-                nameString = 
-                        formatPath(importPath.getIdentifiers());
+                namespace = null;
             	name = getNameAsList(importPath);
             	node = importPath;
             }
             else if (that.getQuotedLiteral()!=null) {
-                nameString = 
+                String nameString = 
                         getNameString(that.getQuotedLiteral());
-                name = asList(nameString.split("\\."));
+                namespace = ModuleUtil.getNamespaceFromUri(nameString);
+                name = asList(ModuleUtil.getModuleNameFromUri(nameString).split("\\."));
                 node = that.getQuotedLiteral();
             }
             else {
-                nameString = "";
+                namespace = null;
             	name = Collections.emptyList();
             	node = null;
             }
@@ -395,7 +396,8 @@ public class ModuleVisitor extends Visitor {
                         boolean export =
                                 hasAnnotation(al, "shared", u);
                         moduleImport =
-                                new ModuleImport(importedModule,
+                                new ModuleImport(namespace,
+                                        importedModule,
                                         optional, export, bs);
                         moduleImport.getAnnotations().clear();
                         buildAnnotations(al,

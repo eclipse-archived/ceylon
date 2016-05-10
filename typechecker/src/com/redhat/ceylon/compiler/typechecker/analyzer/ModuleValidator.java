@@ -255,7 +255,7 @@ public class ModuleValidator {
                 RepositoryManager repositoryManager = context.getRepositoryManager();
                 Exception exceptionOnGetArtifact = null;
                 Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
-                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
+                ArtifactContext artifactContext = new ArtifactContext(moduleImport.getNamespace(), module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
                 listener.retrievingModuleArtifact(module, artifactContext);
                 try {
                     artifact = repositoryManager.getArtifactResult(artifactContext);

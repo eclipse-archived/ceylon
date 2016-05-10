@@ -904,7 +904,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
             return;
         ArtifactResult artifact = null;
         try {
-            artifact = repoManager.getArtifactResult(new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR));
+            artifact = repoManager.getArtifactResult(new ArtifactContext(null, name, version, ArtifactContext.CAR, ArtifactContext.JAR));
         }
         catch(RuntimeException e) {
             if (e.getCause() instanceof IOException) {

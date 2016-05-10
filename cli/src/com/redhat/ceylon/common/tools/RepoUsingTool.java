@@ -295,7 +295,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         
         if (ModuleUtil.isDefaultModule(name) || version != null) {
             // If we have the default module or a version we first try it the quick way
-            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             ArtifactResult result = repoMgr.getArtifactResult(ac);
@@ -545,7 +545,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
         if (checkCompilation) {
-            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             File artifile = repoMgr.getArtifact(ac);
@@ -614,7 +614,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     }
                     SortedSet<ModuleDependencyInfo> dependencies = new TreeSet<>();
                     for(Object[] dep : mdr.getModuleImports()){
-                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (Boolean)dep[2], (Boolean)dep[3]));
+                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (String)dep[2], (Boolean)dep[3], (Boolean)dep[4]));
                     }
                     mvd.setDependencies(dependencies);
                     mvd.setRemote(false);

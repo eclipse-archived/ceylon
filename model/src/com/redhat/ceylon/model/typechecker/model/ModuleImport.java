@@ -14,20 +14,22 @@ import com.redhat.ceylon.common.Backends;
 public class ModuleImport implements Annotated {
     private boolean optional;
     private boolean export;
+    private String namespace;
     private Module module;
     private Backends nativeBackends;
     private List<Annotation> annotations = new ArrayList<Annotation>();
     private ModuleImport overridenModuleImport = null;
 
-    public ModuleImport(Module module, boolean optional, boolean export) {
-        this(module, optional, export, (Backend)null);
+    public ModuleImport(String namespace, Module module, boolean optional, boolean export) {
+        this(namespace, module, optional, export, (Backend)null);
     }
 
-    public ModuleImport(Module module, boolean optional, boolean export, Backend backend) {
-        this(module, optional, export, backend != null ? backend.asSet() : Backends.ANY);
+    public ModuleImport(String namespace, Module module, boolean optional, boolean export, Backend backend) {
+        this(namespace, module, optional, export, backend != null ? backend.asSet() : Backends.ANY);
     }
 
-    public ModuleImport(Module module, boolean optional, boolean export, Backends backends) {
+    public ModuleImport(String namespace, Module module, boolean optional, boolean export, Backends backends) {
+        this.namespace = namespace;
         this.module = module;
         this.optional = optional;
         this.export = export;
@@ -40,6 +42,10 @@ public class ModuleImport implements Annotated {
 
     public boolean isExport() {
         return export;
+    }
+
+    public String getNamespace() {
+        return namespace;
     }
 
     public Module getModule() {
@@ -66,7 +72,8 @@ public class ModuleImport implements Annotated {
     public boolean override(ModuleImport moduleImportOverride) {
         if (overridenModuleImport == null
         		&& moduleImportOverride != null) {
-            this.overridenModuleImport = new ModuleImport(module, optional, export, nativeBackends);
+            this.overridenModuleImport = new ModuleImport(namespace, module, optional, export, nativeBackends);
+            namespace = moduleImportOverride.getNamespace();
             module = moduleImportOverride.getModule();
             optional = moduleImportOverride.isOptional();
             export = moduleImportOverride.isExport();
@@ -86,9 +93,17 @@ public class ModuleImport implements Annotated {
               .append(nativeBackends)
               .append(") ");
         }
-        sb.append("import ")
-          .append(module.getNameAsString())
-          .append(" \"")
+        sb.append("import ");
+        if (namespace != null) {
+            sb.append("\"")
+              .append(namespace)
+              .append(":")
+              .append(module.getNameAsString())
+              .append("\"");
+        } else {
+            sb.append(module.getNameAsString());
+        }
+        sb.append(" \"")
           .append(module.getVersion())
           .append("\"");
         return sb.toString();

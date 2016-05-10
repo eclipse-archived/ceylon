@@ -605,7 +605,7 @@ public class ImportJarToolTests extends AbstractToolTests {
 
 	protected void checkModuleDescriptor(RepositoryManager repository, String module, String version) throws Exception {
 		System.err.println("Checking "+module+"/"+version);
-    	File artifact = repository.getArtifact(new ArtifactContext(module, version, ArtifactContext.CAR, ArtifactContext.JAR));
+    	File artifact = repository.getArtifact(new ArtifactContext(null, module, version, ArtifactContext.CAR, ArtifactContext.JAR));
     	File descr = new File(artifact.getParentFile(), "module.xml");
     	Assert.assertNotNull(artifact);
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");

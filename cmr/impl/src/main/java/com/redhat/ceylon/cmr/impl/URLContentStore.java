@@ -55,6 +55,7 @@ import com.redhat.ceylon.cmr.util.WS.Link;
 import com.redhat.ceylon.cmr.util.WS.Parser;
 import com.redhat.ceylon.cmr.util.WS.XMLHandler;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -640,11 +641,11 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     }
 
     private ModuleDependencyInfo parseDependency(Parser p) {
-        String dependencyName = null, dependencyVersion = null;
+        String dependencyUri = null, dependencyVersion = null;
         boolean dependencyShared = false, dependencyOptional = false;
         while(p.moveToOptionalOpenTag()){
             if(p.isOpenTag("module")){
-                dependencyName = p.contents();
+                dependencyUri = p.contents();
             }else if(p.isOpenTag("version")){
                 dependencyVersion = p.contents();
             }else if(p.isOpenTag("shared")){
@@ -658,11 +659,13 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 throw new RuntimeException("Unknown tag: "+p.tagName());
             }
         }
-        if(dependencyName == null || dependencyName.isEmpty())
+        if(dependencyUri == null || dependencyUri.isEmpty())
             throw new RuntimeException("Missing required dependency module name");
         if(dependencyVersion == null || dependencyVersion.isEmpty())
             throw new RuntimeException("Missing required dependency module version");
-        return new ModuleDependencyInfo(dependencyName, dependencyVersion, dependencyOptional, dependencyShared);
+        String dependencyNamespace = ModuleUtil.getNamespaceFromUri(dependencyUri);
+        String dependencyName = ModuleUtil.getModuleNameFromUri(dependencyUri);
+        return new ModuleDependencyInfo(dependencyNamespace, dependencyName, dependencyVersion, dependencyOptional, dependencyShared);
     }
 
     @Override

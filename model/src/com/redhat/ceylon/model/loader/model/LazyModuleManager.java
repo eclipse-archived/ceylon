@@ -84,7 +84,7 @@ public abstract class LazyModuleManager extends ModuleManager {
                 // add ceylon.language if required
                 ModuleImport moduleImport = findImport(m, languageModule);
                 if (moduleImport == null) {
-                    moduleImport = new ModuleImport(languageModule, false, true);
+                    moduleImport = new ModuleImport(null, languageModule, false, true);
                     m.addImport(moduleImport);
                 }
             }

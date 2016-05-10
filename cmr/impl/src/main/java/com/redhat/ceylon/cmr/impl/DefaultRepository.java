@@ -88,4 +88,9 @@ public class DefaultRepository extends AbstractRepository {
     public boolean isMaven() {
         return false;
     }
+
+    @Override
+    public String getNamespace() {
+        return null;
+    }
 }

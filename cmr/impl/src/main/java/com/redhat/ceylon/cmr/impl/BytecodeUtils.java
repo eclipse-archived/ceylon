@@ -29,13 +29,11 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.api.ModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
@@ -117,9 +115,12 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
 
         for (Object im : dependencies) {
         	Annotation dep = (Annotation) im;
-        	final String name = (String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "name");
+        	final String depUri = (String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "name");
+        	final String namespace = ModuleUtil.getNamespaceFromUri(depUri);
+            final String modName = ModuleUtil.getModuleNameFromUri(depUri);
         	final ModuleDependencyInfo mi = new ModuleDependencyInfo(
-        			name,
+        	        namespace,
+        	        modName,
         			(String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "version"),
         			asBoolean(moduleInfo, dep, "optional"),
         			asBoolean(moduleInfo, dep, "export"));
@@ -328,12 +329,14 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>(dependencies.length);
         for (Object depObject : dependencies) {
         	Annotation dep = (Annotation) depObject;
-            String depName = (String)ClassFileUtil.getAnnotationValue(classFile, dep, "name");
+            String depUri = (String)ClassFileUtil.getAnnotationValue(classFile, dep, "name");
+            String namespace = ModuleUtil.getNamespaceFromUri(depUri);
+            String modName = ModuleUtil.getModuleNameFromUri(depUri);
             String depVersion = (String)ClassFileUtil.getAnnotationValue(classFile, dep, "version");
             boolean export = asBoolean(classFile, dep, "export");
             boolean optional = asBoolean(classFile, dep, "optional");
             
-            result.add(new ModuleDependencyInfo(depName, depVersion, optional, export));
+            result.add(new ModuleDependencyInfo(namespace, modName, depVersion, optional, export));
         }
         if(overrides != null)
             return overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, result)).getDependencies();

@@ -16,20 +16,27 @@ public class LazyArtifactResult extends AbstractArtifactResult {
     private ArtifactResult delegate;
     private final ImportType importType;
     private RepositoryManager manager;
+    private String namespace;
 
-    public LazyArtifactResult(RepositoryManager manager, String name, String version, ImportType importType) {
+    public LazyArtifactResult(RepositoryManager manager, String namespace, String name, String version, ImportType importType) {
         super(null, name, version);
         this.manager = manager;
+        this.namespace = namespace;
         this.importType = importType;
     }
 
     private synchronized ArtifactResult getDelegate() {
         if (delegate == null) {
-            final ArtifactContext context = new ArtifactContext(name(), version());
+            final ArtifactContext context = new ArtifactContext(null, name(), version());
             context.setThrowErrorIfMissing(importType() != ImportType.OPTIONAL);
             delegate = manager.getArtifactResult(context);
         }
         return delegate;
+    }
+
+    @Override
+    public String namespace() {
+        return namespace;
     }
 
     @Override

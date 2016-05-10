@@ -53,6 +53,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.JDKRepository;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
@@ -91,7 +92,7 @@ public class SmokeTestCase extends AbstractTest {
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
 
-        ArtifactContext artifact = new ArtifactContext("ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
+        ArtifactContext artifact = new ArtifactContext(null, "ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
         List<ArtifactResult> json = manager.getArtifactResults(artifact);
         Assert.assertNotNull("Module 'ceylon.json-1.0.0' not found", json);
         Assert.assertEquals("Expected two artifacts for 'ceylon.json-1.0.0'", 2, json.size());
@@ -107,7 +108,7 @@ public class SmokeTestCase extends AbstractTest {
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
 
-        ArtifactContext artifact1 = new ArtifactContext("ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
+        ArtifactContext artifact1 = new ArtifactContext(null, "ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
         List<ArtifactResult> json1 = manager.getArtifactResults(artifact1);
         Assert.assertNotNull("Module 'ceylon.json-1.0.0' not found", json1);
         Assert.assertEquals("Expected two artifacts for 'ceylon.json-1.0.0'", 2, json1.size());
@@ -115,7 +116,7 @@ public class SmokeTestCase extends AbstractTest {
         File missing = new File(root, "ceylon/json/1.0.0/ceylon.json-1.0.0.scripts.zip.missing");
         Assert.assertTrue("Marker file .missing not found", missing.exists());
 
-        ArtifactContext artifact2 = new ArtifactContext("ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.SRC);
+        ArtifactContext artifact2 = new ArtifactContext(null, "ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.SRC);
         List<ArtifactResult> json2 = manager.getArtifactResults(artifact2);
         Assert.assertNotNull("Module 'ceylon.json-1.0.0' not found", json2);
         Assert.assertEquals("Expected two artifacts for 'ceylon.json-1.0.0'", 2, json2.size());
@@ -201,7 +202,7 @@ public class SmokeTestCase extends AbstractTest {
 
         String name = "com.redhat.acme";
         String version = "1.0.0.CR1";
-        ArtifactContext context = new ArtifactContext(name, version);
+        ArtifactContext context = new ArtifactContext(null, name, version);
         context.setIgnoreSHA(true); // ignore with in-memory
 
         OpenNode parent = repo.createParent(context);
@@ -282,7 +283,7 @@ public class SmokeTestCase extends AbstractTest {
     @Ignore // this test should work, if you have org.slf4j.slf4j-api 1.5.10 present
     public void testMavenLocal() throws Exception {
         RepositoryManager manager = new SimpleRepositoryManager(MavenRepositoryHelper.getMavenRepository(), log);
-        ArtifactContext ac = new ArtifactContext("org.slf4j.slf4j-api", "1.5.10");
+        ArtifactContext ac = new ArtifactContext(null, "org.slf4j.slf4j-api", "1.5.10");
         File file = manager.getArtifact(ac);
         Assert.assertNotNull(file);
         // No remove, as we don't wanna delete from mvn manager
@@ -294,7 +295,7 @@ public class SmokeTestCase extends AbstractTest {
         CmrRepository externalRepo = MavenRepositoryHelper.getMavenRepository("https://repository.jboss.org/nexus/content/groups/public", log, false, 60000, java.net.Proxy.NO_PROXY);
         builder.addRepository(externalRepo);
         RepositoryManager manager = builder.buildRepository();
-        ArtifactContext ac = new ArtifactContext("org.jboss:jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
+        ArtifactContext ac = new ArtifactContext(MavenRepository.NAMESPACE, "org.jboss:jboss-vfs", "3.0.1.GA", ArtifactContext.JAR);
         File file = null;
         try {
             file = manager.getArtifact(ac);
@@ -462,7 +463,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testPropertiesResolver() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("old-jar", "1.2.CR1", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "old-jar", "1.2.CR1", ArtifactContext.JAR);
         File[] files = manager.resolve(context);
         Assert.assertNotNull(files);
         Assert.assertEquals(3, files.length);
@@ -471,7 +472,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testPropertiesPut() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("org.acme.props", "1.0", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "org.acme.props", "1.0", ArtifactContext.JAR);
         try {
             manager.putArtifact(context, mockJar("someentry", "qwerty".getBytes()));
             manager.putArtifact(context.getModuleProperties(), new ByteArrayInputStream("moduletest=0.1\n".getBytes()));
@@ -486,7 +487,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testInnerProperties() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("org.mood.lw", "1.0", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "org.mood.lw", "1.0", ArtifactContext.JAR);
         try {
             manager.putArtifact(context, mockJar("META-INF/jbossmodules/org/mood/lw/1.0/module.properties", "moduletest=0.1\n".getBytes()));
             File[] files = manager.resolve(context);
@@ -505,7 +506,7 @@ public class SmokeTestCase extends AbstractTest {
         builder.addRepository(repository);
         RepositoryManager manager = builder.buildRepository();
 
-        ArtifactContext context = new ArtifactContext("io.undertow.core", "1.0.0.Alpha1-9fdfd5f766", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "io.undertow.core", "1.0.0.Alpha1-9fdfd5f766", ArtifactContext.JAR);
         try {
             File artifact = manager.getArtifact(context);
             Assert.assertNotNull(artifact);
@@ -519,7 +520,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testXmlResolver() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("older-jar", "12-b3", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "older-jar", "12-b3", ArtifactContext.JAR);
         File[] files = manager.resolve(context);
         Assert.assertNotNull(files);
         Assert.assertEquals(3, files.length);
@@ -528,7 +529,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void test2ndTry() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext ac = new ArtifactContext("test-jar", "0.1");
+        ArtifactContext ac = new ArtifactContext(null, "test-jar", "0.1");
         ArtifactResult result = manager.getArtifactResult(ac);
         Assert.assertNull(result);
         ac.setSuffixes(ArtifactContext.JAR);
@@ -539,7 +540,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSimpleOSGi() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("org.osgi.ceylon.simple", "1.0", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "org.osgi.ceylon.simple", "1.0", ArtifactContext.JAR);
         try {
             Manifest manifest = mockManifest("1.0");
             manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;bundle-version=0.1");
@@ -556,7 +557,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOptionalOSGi() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("org.osgi.ceylon.optional", "1.0", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "org.osgi.ceylon.optional", "1.0", ArtifactContext.JAR);
         try {
             Manifest manifest = mockManifest("1.0");
             manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;resolution:=optional;bundle-version=0.1");
@@ -577,7 +578,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testSharedOSGi() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactContext context = new ArtifactContext("org.osgi.ceylon.shared", "1.0", ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, "org.osgi.ceylon.shared", "1.0", ArtifactContext.JAR);
         try {
             Manifest manifest = mockManifest("1.0");
             manifest.getMainAttributes().putValue("Require-Bundle", "moduletest;visibility:=reexport;bundle-version=0.1");
@@ -595,7 +596,7 @@ public class SmokeTestCase extends AbstractTest {
         }
     }
 
-    private final static ModuleDependencyInfo language = new ModuleDependencyInfo("ceylon.language", "1.2.3", false, false);
+    private final static ModuleDependencyInfo language = new ModuleDependencyInfo(null, "ceylon.language", "1.2.3", false, false);
     public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
     public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
     public final static ModuleDetails hello_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
@@ -604,14 +605,14 @@ public class SmokeTestCase extends AbstractTest {
     public final static ModuleDetails hello2 = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
     public final static ModuleDetails hello2_jvm = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
     public final static ModuleDetails hello2_js = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
-    public final static ModuleDetails moduletest = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo("hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo("ceylon.language", "0.6", false, false), new ModuleDependencyInfo("hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
-    public final static ModuleDetails moduletest_js = new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(new ModuleDependencyInfo("ceylon.language", "0.6", false, false), new ModuleDependencyInfo("hello", "1.0.0", false, false)), types(art(".js")), false, null);
-    public final static ModuleDetails old_jar = new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo("moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails older_jar = new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo("moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails moduletest = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
+    public final static ModuleDetails moduletest_js = new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".js")), false, null);
+    public final static ModuleDetails old_jar = new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails older_jar = new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
     public final static ModuleDetails org_jboss_acme = new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), types(), false, null);
     public final static ModuleDetails test_jar = new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails jsonly = new ModuleDetails("jsonly", null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo("ceylon.language", "1.0.0", false, false)), types(art(".js", 7, 0)), false, null);
+    public final static ModuleDetails jsonly = new ModuleDetails("jsonly", null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo(null, "ceylon.language", "1.0.0", false, false)), types(art(".js", 7, 0)), false, null);
 
     @Test
     public void testCompleteEmpty() throws Exception {

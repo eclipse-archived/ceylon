@@ -27,6 +27,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
@@ -107,7 +108,7 @@ public class AetherRepository extends MavenRepository {
                 return;
         }
         // this means only for explicitly Maven modules that have a ":"
-        if(lookup.getName().indexOf(':') == -1)
+        if(!ModuleUtil.isMavenModule(lookup.getName()))
             return;
         String[] groupArtifactIds = utils.nameToGroupArtifactIds(lookup.getName());
         if(groupArtifactIds == null)

@@ -83,6 +83,11 @@ public class ResolverTestCase extends AbstractAetherTest {
         }
 
         @Override
+        public String namespace() {
+            return repository().getNamespace();
+        }
+        
+        @Override
         protected File artifactInternal() {
             return artifact;
         }

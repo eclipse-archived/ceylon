@@ -76,16 +76,7 @@ public abstract class ModuleUtil {
      * Turns maven:foo:bar into foo.bar
      */
     public static String toCeylonModuleName(String name){
-        int firstColon = name.indexOf(':');
-        if(firstColon == -1)
-            return name;
-        // if we have more than one colon, we can start with "maven:"
-        if(name.indexOf(':', firstColon+1) != -1){
-            // remove the prefix
-            if(name.startsWith("maven:"))
-                name = name.substring("maven:".length());
-        }
-        return name.replace(':', '.');
+        return getModuleNameFromUri(name).replace(':', '.');
     }
     
     /**
@@ -94,4 +85,45 @@ public abstract class ModuleUtil {
     public static boolean isMavenModule(String name){
         return name != null && name.indexOf(':') != -1;
     }
+    
+    /**
+     * For imports of the type
+     * <code>import "maven:some.artifact:name" "1.2.3"</code>
+     * this will return "maven" and <code>null otherwise</code>
+     */
+    public static String getNamespaceFromUri(String uri) {
+        int p = uri.indexOf(':');
+        if (p > 0) {
+            String prefix = uri.substring(0, p);
+            if (prefix.indexOf('.') > 0) {
+                // Prefix has dots in it so it's really a maven import
+                return "maven";
+            } else {
+                return prefix;
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * For imports of the type
+     * <code>import "maven:some.artifact:name" "1.2.3"</code>
+     * this will return "some.artifact:name"
+     */
+    public static String getModuleNameFromUri(String uri) {
+        int p = uri.indexOf(':');
+        if (p > 0) {
+            String prefix = uri.substring(0, p);
+            if (prefix.indexOf('.') > 0) {
+                // Prefix has dots in it so it's really a maven import
+                return uri;
+            } else {
+                return uri.substring(p + 1);
+            }
+        } else {
+            return uri;
+        }
+    }
+
 }

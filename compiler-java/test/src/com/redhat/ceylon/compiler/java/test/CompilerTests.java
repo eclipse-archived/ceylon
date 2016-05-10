@@ -53,8 +53,8 @@ import org.junit.Before;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -658,6 +658,12 @@ public abstract class CompilerTests {
             
             @Override
             public ArtifactResultType type() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public String namespace() {
                 // TODO Auto-generated method stub
                 return null;
             }

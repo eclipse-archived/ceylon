@@ -126,7 +126,7 @@ public class CeylonSrcTool extends RepoUsingTool {
                 		ModuleQuery.Type.SRC, null, null, null, null);
             }
             msg("retrieving.module", module).newline();
-            ArtifactContext allArtifacts = new ArtifactContext(module.getName(), version, ArtifactContext.SRC, ArtifactContext.RESOURCES, ArtifactContext.DOCS, ArtifactContext.SCRIPTS_ZIPPED);
+            ArtifactContext allArtifacts = new ArtifactContext(null, module.getName(), version, ArtifactContext.SRC, ArtifactContext.RESOURCES, ArtifactContext.DOCS, ArtifactContext.SCRIPTS_ZIPPED);
             List<ArtifactResult> results = getRepositoryManager().getArtifactResults(allArtifacts);
             if (results == null) {
                 String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());

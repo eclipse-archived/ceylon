@@ -138,7 +138,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
 
                     ModuleImport depImport = moduleManager.findImport(module, dependency);
                     if (depImport == null) {
-                        moduleImport = new ModuleImport(dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
+                        moduleImport = new ModuleImport(dep.namespace(), dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
                         module.addImport(moduleImport);
                     }
                 }
@@ -149,12 +149,12 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 // default modules don't have any module descriptors so we can't check them
                 Overrides overrides = getContext().getRepositoryManager().getOverrides();
                 if (overrides != null) {
-                    if (overrides.getArtifactOverrides(new ArtifactContext(artifact.name(), artifact.version())) != null) {
+                    if (overrides.getArtifactOverrides(new ArtifactContext(artifact.namespace(), artifact.name(), artifact.version())) != null) {
                         Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
                         for (ModuleImport i : lazyModule.getImports()) {
                             Module m = i.getModule();
                             if (m != null) {
-                                existingModuleDependencies.add(new ModuleDependencyInfo(m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
+                                existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
                             }
                         }
                         ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
@@ -163,7 +163,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                         for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
                             Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
                             Backends backends = dependency.getNativeBackends();
-                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backends);
+                            moduleImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
                             newModuleImports.add(moduleImport);
                         }
                         module.overrideImports(newModuleImports);

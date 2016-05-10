@@ -511,8 +511,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(null, findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(null, findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         
         return languageModule;
     }
@@ -2019,11 +2019,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
             if(imports != null){
                 for (AnnotationMirror importAttribute : imports) {
-                    String dependencyName = (String) importAttribute.getValue("name");
-                    if (dependencyName != null) {
+                    String dependencyUri = (String) importAttribute.getValue("name");
+                    if (dependencyUri != null) {
                         String dependencyVersion = (String) importAttribute.getValue("version");
 
-                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
+                        String namespace = ModuleUtil.getNamespaceFromUri(dependencyUri);
+                        String depModuleName = ModuleUtil.getModuleNameFromUri(dependencyUri);
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(depModuleName), dependencyVersion);
 
                         Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
 
@@ -2036,7 +2038,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         if (moduleImport == null) {
                             boolean optional = optionalVal != null && optionalVal;
                             boolean export = exportVal != null && exportVal;
-                            moduleImport = new ModuleImport(dependency, optional, export, backends);
+                            moduleImport = new ModuleImport(namespace, dependency, optional, export, backends);
                             module.addImport(moduleImport);
                         }
                     }
@@ -2074,7 +2076,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     oldLangMod.setNativeBackends(Backends.JAVA);
                     oldLangMod.setJvmMajor(major);
                     oldLangMod.setJvmMinor(minor);
-                    ModuleImport moduleImport = new ModuleImport(oldLangMod, false, false);
+                    ModuleImport moduleImport = new ModuleImport(null, oldLangMod, false, false);
                     module.addImport(moduleImport);
                 }
             }

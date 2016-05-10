@@ -173,6 +173,11 @@ public class Main {
             }
 
             @Override
+            public String namespace() {
+                return null;
+            }
+
+            @Override
             public String toString() {
                 StringBuilder b = new StringBuilder();
                 b.append("Import{ name = ").append(name());
@@ -244,6 +249,11 @@ public class Main {
                 dependencies.add(new Dependency(name, version, optional, shared));
             }
             
+            @Override
+            public String namespace() {
+                return null;
+            }
+
             @Override
             public int hashCode() {
                 int ret = 31;
@@ -469,7 +479,7 @@ public class Main {
         // information from the jar/car file itself.
         private Module searchJars(String name, String version) {
             if(overrides != null){
-                ArtifactContext ctx = new ArtifactContext(name, version);
+                ArtifactContext ctx = new ArtifactContext(null, name, version);
                 ArtifactContext replacement = overrides.replace(ctx);
                 if(replacement != null){
                     name = replacement.getName();
@@ -704,7 +714,7 @@ public class Main {
                 Object moduleDependencies = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "dependencies");
                 ArtifactOverrides ao = null;
                 if(overrides != null){
-                    ao = overrides.getArtifactOverrides(new ArtifactContext(name, version));
+                    ao = overrides.getArtifactOverrides(new ArtifactContext(null, name, version));
                 }
                 if(moduleDependencies instanceof Object[]){
                     for(Object dependency : (Object[])moduleDependencies){
@@ -721,7 +731,7 @@ public class Main {
                             throw new IOException("Invalid module import");
                         
                         if(overrides != null){
-                            ArtifactContext depCtx = new ArtifactContext(depName, depVersion);
+                            ArtifactContext depCtx = new ArtifactContext(null, depName, depVersion);
                             ArtifactContext replacement = overrides.replace(depCtx);
                             if(replacement != null){
                                 depCtx = replacement;

@@ -37,7 +37,7 @@ public class SourceArtifactCreatorImpl implements ArtifactCreator {
         this.verbose = verbose;
         this.log = log;
         this.sourcePaths = sourcePaths;
-        this.srcContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.SRC);
+        this.srcContext = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.SRC);
         this.originalSrcFile = repoManager.getArtifact(srcContext);
     }
 

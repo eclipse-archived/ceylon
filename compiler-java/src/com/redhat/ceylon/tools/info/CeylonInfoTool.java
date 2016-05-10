@@ -24,6 +24,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -555,7 +556,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                     if(printOverrides){
                         overridesFile.append(" <set");
                         String name = entry.getKey();
-                        if(name.contains(":")){
+                        if(ModuleUtil.isMavenModule(name)){
                             int p = name.indexOf(':');
                             String groupId = name.substring(0, p);
                             String artifactId = name.substring(p+1);

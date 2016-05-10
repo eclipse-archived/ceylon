@@ -28,6 +28,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
@@ -538,16 +539,24 @@ public class JvmBackendUtil {
                     continue;
                 }
                 // it's an import
-                final ModuleSpec importSpec = ModuleSpec.parse(line);
+                ModuleSpec importSpec = ModuleSpec.parse(line);
+                final String namespace = ModuleUtil.getNamespaceFromUri(importSpec.getName());
+                final String name = ModuleUtil.getModuleNameFromUri(importSpec.getName());
+                final String version = importSpec.getVersion();
                 imports.add(new ArtifactResult(){
                     @Override
+                    public String namespace() {
+                        return namespace;
+                    }
+
+                    @Override
                     public String name() {
-                        return importSpec.getName();
+                        return name;
                     }
 
                     @Override
                     public String version() {
-                        return importSpec.getVersion();
+                        return version;
                     }
 
                     @Override
@@ -600,7 +609,7 @@ public class JvmBackendUtil {
         }
     }
 
-    private static void finishLoadingModule(final ModuleSpec module, 
+    private static void finishLoadingModule(ModuleSpec module, 
             SortedSet<String> packages, 
             List<ArtifactResult> dependencies, 
             final List<String> dexEntries, 
@@ -608,6 +617,9 @@ public class JvmBackendUtil {
         final SortedSet<String> packagesCopy = new TreeSet<>(packages);
         final List<ArtifactResult> dependenciesCopy = new ArrayList<>(dependencies);
         
+        final String namespace = ModuleUtil.getNamespaceFromUri(module.getName());
+        final String name = ModuleUtil.getModuleNameFromUri(module.getName());
+        final String version = module.getVersion();
         ArtifactResult artifact = new ContentAwareArtifactResult() {
             
             @Override
@@ -617,7 +629,7 @@ public class JvmBackendUtil {
             
             @Override
             public String version() {
-                return module.getVersion();
+                return version;
             }
             
             @Override
@@ -636,8 +648,13 @@ public class JvmBackendUtil {
             }
             
             @Override
+            public String namespace() {
+                return namespace;
+            }
+
+            @Override
             public String name() {
-                return module.getName();
+                return name;
             }
             
             @Override

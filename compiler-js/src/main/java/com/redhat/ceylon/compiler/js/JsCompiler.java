@@ -282,7 +282,7 @@ public class JsCompiler {
                             }
                             if (m.getJsMajor() == 0) {
                                 //Load the module (most likely we're in the IDE if we need to do this)
-                                ArtifactContext ac = new ArtifactContext(m.getNameAsString(),
+                                ArtifactContext ac = new ArtifactContext(null, m.getNameAsString(),
                                         m.getVersion(), ArtifactContext.JS_MODEL);
                                 ac.setIgnoreDependencies(true);
                                 ac.setThrowErrorIfMissing(false);
@@ -499,14 +499,14 @@ public class JsCompiler {
                 logger.info("Created module "+moduleName+"/"+moduleVersion);
             }
             if (compilingLanguageModule) {
-                ArtifactContext artifact = new ArtifactContext("delete", "me", ArtifactContext.JS);
+                ArtifactContext artifact = new ArtifactContext(null, "delete", "me", ArtifactContext.JS);
                 artifact.setForceOperation(true);
                 outRepo.putArtifact(artifact, jsart);
             } else {
-                final ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS);
+                final ArtifactContext artifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.JS);
                 artifact.setForceOperation(true);
                 outRepo.putArtifact(artifact, jsart);
-                final ArtifactContext martifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS_MODEL);
+                final ArtifactContext martifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.JS_MODEL);
                 martifact.setForceOperation(true);
                 outRepo.putArtifact(martifact, modart);
                 //js file signature
@@ -539,7 +539,7 @@ public class JsCompiler {
                     try (FileWriter fw = new FileWriter(npmfile)) {
                         fw.write(npmdesc);
                     }
-                    final ArtifactContext npmArtifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.NPM_DESCRIPTOR);
+                    final ArtifactContext npmArtifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.NPM_DESCRIPTOR);
                     npmArtifact.setForceOperation(true);
                     outRepo.putArtifact(npmArtifact, npmfile);
                 }

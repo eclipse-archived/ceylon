@@ -15,7 +15,7 @@ public class OverridesRuntimeResolver implements com.redhat.ceylon.model.cmr.Run
     }
     
     private String findOverride(String name, String version) {
-        final ArtifactContext context = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
+        final ArtifactContext context = new ArtifactContext(null, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactContext override = overrides.applyOverrides(context);
         return override.getVersion();
     }

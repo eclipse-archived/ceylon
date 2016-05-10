@@ -125,7 +125,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
                     findImport(module, dependency);
             if (depImport == null) {
                 ModuleImport moduleImport = 
-                        new ModuleImport(dependency, false, false, Backend.Java);
+                        new ModuleImport(dep.namespace(), dependency, false, false, Backend.Java);
                 module.addImport(moduleImport);
             }
         }

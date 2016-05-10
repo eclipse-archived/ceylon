@@ -92,14 +92,26 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
 
     @Override
     public String toString() {
+        StringBuffer txt = new StringBuffer();
+        txt.append("[Artifact result: ");
+        if (namespace() != null) {
+            txt.append(namespace());
+            txt.append(":");
+        }
+        txt.append(name);
+        txt.append("/");
+        txt.append(version);
         if (artifact() != null) {
             try {
                 String suffix = ArtifactContext.getSuffixFromFilename(artifact().getName());
-                return "[Artifact result: " + name + "/" + version + " (" + suffix + ")]";
+                txt.append(" (");
+                txt.append(suffix);
+                txt.append(")");
             } catch (RepositoryException ignored) {
             }
         }
-        return "[Artifact result: " + name + "/" + version + "]";
+        txt.append("]");
+        return txt.toString();
     }
 
     @Override
