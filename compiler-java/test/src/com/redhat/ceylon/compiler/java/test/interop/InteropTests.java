@@ -97,6 +97,12 @@ public class InteropTests extends CompilerTests {
     }
 
     @Test
+    public void testIopVariadicImplementations(){
+        compile("TypesJava.java");
+        compareWithJavaSource("VariadicImplementations");
+    }
+    
+    @Test
     public void testIopImplementOverloadedConstructors(){
         compile("JavaWithOverloadedMembers.java");
         compareWithJavaSource("ImplementOverloadedConstructors");
