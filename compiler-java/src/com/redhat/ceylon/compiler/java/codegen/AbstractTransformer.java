@@ -4031,7 +4031,7 @@ public abstract class AbstractTransformer implements Transformation {
                                      BoxingStrategy boxingStrategy, Type exprType,
                                      List<JCTree.JCExpression> initialElements) {
         // find the sequence element type
-        Type type = typeFact().getIteratedType(sequenceType);
+        Type type = simplifyType(typeFact().getIteratedType(sequenceType));
         if(boxingStrategy == BoxingStrategy.UNBOXED){
             if(isCeylonInteger(type)){
                 if("short".equals(type.getUnderlyingType()))
