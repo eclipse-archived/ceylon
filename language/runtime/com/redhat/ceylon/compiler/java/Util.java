@@ -826,7 +826,7 @@ public class Util {
                 new CharArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
         for(;i<initialElements.length;i++) {
-            builder.appendCodepoint((char) initialElements[i]);
+            builder.appendCodepoint(initialElements[i]);
             
         }
         Iterator<? extends ceylon.language.Character> iterator = sequence.iterator();
