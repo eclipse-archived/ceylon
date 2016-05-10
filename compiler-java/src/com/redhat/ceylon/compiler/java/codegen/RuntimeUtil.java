@@ -243,4 +243,8 @@ class RuntimeUtil {
     public JCExpression sequentialWrapper(JCExpression typeArg, JCExpression reifiedTypeArg, JCExpression array) {
         return makeUtilInvocation(List.of(typeArg), "sequentialWrapper", List.of(reifiedTypeArg, array));
     }
+
+    public JCExpression sequentialWrapperCopy(JCExpression typeArg, JCExpression reifiedTypeArg, JCExpression array) {
+        return makeUtilInvocation(List.of(typeArg), "sequentialWrapperCopy", List.of(reifiedTypeArg, array));
+    }
 }

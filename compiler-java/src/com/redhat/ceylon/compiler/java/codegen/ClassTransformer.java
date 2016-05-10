@@ -4227,7 +4227,8 @@ public class ClassTransformer extends AbstractTransformer {
             init = utilInvocation().sequentialWrapperBoxed(makeQuotedIdent(lastParameter.getName()));
         }else{
             JCExpression typeArg = makeJavaType(seqElemType, JT_TYPE_ARGUMENT);
-            init = utilInvocation().sequentialWrapper(typeArg, makeReifiedTypeArgument(seqElemType), 
+            // make a defensive copy
+            init = utilInvocation().sequentialWrapperCopy(typeArg, makeReifiedTypeArgument(seqElemType), 
                     makeQuotedIdent(lastParameter.getName()));
         }
         return make().VarDef(make().Modifiers(FINAL), alias.asName(), seqType , init);

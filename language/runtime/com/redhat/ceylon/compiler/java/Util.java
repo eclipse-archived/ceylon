@@ -1022,6 +1022,24 @@ public class Util {
         return new Tuple<T,T,Sequential<? extends T>>($reifiedT, elements);
     }
 
+    /**
+     * Return a {@link Sequential} for the given elements
+     * (subsequent changes to the array will not be visible in 
+     * the returned {@link Sequential}).
+     * @param $reifiedT The reified type parameter
+     * @param elements The elements
+     * @return A Sequential
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static <T> Sequential<T> 
+    sequentialWrapperCopy(TypeDescriptor $reifiedT, T[] elements) {
+        if (elements.length == 0) {
+            return (Sequential) empty_.get_();
+        }
+        return new Tuple<T,T,Sequential<? extends T>>($reifiedT, elements,
+                (Sequential<? extends T>) empty_.get_(), true);
+    }
+
     /** 
      * <p>Return a {@link Sequential Sequential&lt;String&gt;} copying the 
      * given {@code java.lang.String[]} elements
