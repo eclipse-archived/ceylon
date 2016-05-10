@@ -815,5 +815,16 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     public Appendable getOutAppendable(){
         return out;
     }
+    
+    @Override
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
+        if (overrides != null) {
+            File of = new File(cwd, overrides);
+            if (!of.exists()) {
+                throw new IllegalArgumentException("Overrides file '"+of+"' does not exist");
+            }
+        }
+    }
 }
 

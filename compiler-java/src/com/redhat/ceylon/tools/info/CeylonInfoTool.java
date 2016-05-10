@@ -223,7 +223,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         if (showType != null) {
             if ("car".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.CAR;

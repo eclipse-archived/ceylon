@@ -166,7 +166,8 @@ public class CeylonRunTool extends RepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
     }
 
     @Override

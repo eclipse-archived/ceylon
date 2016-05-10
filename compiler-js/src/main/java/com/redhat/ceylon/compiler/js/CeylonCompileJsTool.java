@@ -216,7 +216,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) throws IOException {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
     }
 
     @Override

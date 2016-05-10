@@ -111,7 +111,8 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
     }
     
     @Override
