@@ -4232,7 +4232,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void markUnboxed(TypedDeclaration decl, MethodMirror methodMirror, TypeMirror type) {
         boolean unboxed = false;
         if(type.isPrimitive() 
-                || type.getKind() == TypeKind.ARRAY
+                || isPrimitiveArray(type)
                 || sameType(type, STRING_TYPE)
                 || (methodMirror != null && methodMirror.isDeclaredVoid())) {
             unboxed = true;
@@ -4240,7 +4240,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.setUnboxed(unboxed);
     }
     
-
+    private boolean isPrimitiveArray(TypeMirror type) {
+        if(type.getKind() == TypeKind.ARRAY){
+            TypeMirror componentType = type.getComponentType();
+            // byte[][] is not primitive, it's a ObjectArray<ByteArray>
+            return componentType.isPrimitive() || sameType(type, STRING_TYPE);
+        }
+        return false;
+    }
+    
     private void markSmall(FunctionOrValue value, TypeMirror type) {
         if (!(value.isMember() && value.getName().equals("hash"))) {
             value.setSmall(sameType(type, PRIM_INT_TYPE) && !value.getType().isCharacter()

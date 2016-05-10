@@ -1,8 +1,10 @@
 package com.redhat.ceylon.model.typechecker.context;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -118,6 +120,32 @@ public class TypeCache {
 
     public void clear(){
         superTypes.clear();
+    }
+
+    /**
+     * Clears this type from the cache as a cached root and as a cached type value
+     * @param producedType
+     */
+    public void remove(Type producedType) {
+        Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
+        if (cache != null) {
+            // help GC a bit
+            cache.clear();
+            superTypes.remove(producedType);
+        }
+        int hashCode = producedType.hashCode();
+        // also clear cached values
+        for(Map<TypeDeclaration, Type> cacheValues : superTypes.values()){
+            Iterator<Entry<TypeDeclaration, Type>> iterator = cacheValues.entrySet().iterator();
+            while(iterator.hasNext()){
+                Entry<TypeDeclaration, Type> entry = iterator.next();
+                if(entry.getValue() != NULL_VALUE
+                        && !entry.getValue().isUnknown()
+                        && entry.getValue().hashCode() == hashCode
+                        && entry.getValue().equals(producedType))
+                    iterator.remove();
+            }
+        }
     }
 
     public void clearForDeclaration(TypeDeclaration decl) {

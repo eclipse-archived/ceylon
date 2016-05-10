@@ -239,4 +239,8 @@ class RuntimeUtil {
     public JCExpression recover() {
         return makeUtilInvocation(null, "recover", List.<JCExpression>nil());
     }
+
+    public JCExpression sequentialWrapper(JCExpression typeArg, JCExpression reifiedTypeArg, JCExpression array) {
+        return makeUtilInvocation(List.of(typeArg), "sequentialWrapper", List.of(reifiedTypeArg, array));
+    }
 }

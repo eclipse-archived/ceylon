@@ -49,6 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -1011,4 +1012,40 @@ public class Decl {
         return false;
     }
     
+    public static boolean isJavaVariadic(Parameter parameter) {
+        return parameter.isSequenced()
+                && parameter.getDeclaration() instanceof Function
+                && isJavaMethod((Function) parameter.getDeclaration());
+    }
+    
+    public static boolean isJavaVariadicIncludingInheritance(Parameter parameter){
+        if(!parameter.isSequenced())
+            return false;
+        if(isJavaVariadic(parameter))
+            return true;
+        // perhaps it refines a Java method
+        Scope container = parameter.getModel().getContainer();
+        if(container instanceof Function){
+            Declaration refinedDeclaration = CodegenUtil.getTopmostRefinedDeclaration((Declaration) container);
+            if(refinedDeclaration instanceof Function
+                    && Decl.isJavaMethod((Function) refinedDeclaration))
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean isJavaMethod(Function method) {
+        ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
+        return container != null && !Decl.isCeylon(container);
+    }
+
+    public static Parameter getLastParameterFromFirstParameterList(Function model) {
+        if(!model.getParameterLists().isEmpty()){
+            ParameterList parameterList = model.getParameterLists().get(0);
+            if(!parameterList.getParameters().isEmpty()){
+                return parameterList.getParameters().get(parameterList.getParameters().size()-1);
+            }
+        }
+        return null;
+    }
 }

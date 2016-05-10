@@ -2260,7 +2260,11 @@ public abstract class AbstractTransformer implements Transformation {
             Type elementType = type.getTypeArgumentList().get(0);
             if(elementType == null)
                 return makeErroneous(null, "compiler bug: " + type + " has null parameter type to java ObjectArray");
-            return make().TypeArray(makeJavaType(elementType, flags | JT_TYPE_ARGUMENT));
+            elementType = simplifyType(elementType);
+            int newFlags = flags;
+            if((flags & JT_NO_PRIMITIVES) != 0)
+                newFlags |= JT_TYPE_ARGUMENT;
+            return make().TypeArray(makeJavaType(elementType, newFlags));
         }else if(name.equals("java.lang::ByteArray")){
             return make().TypeArray(make().TypeIdent(TypeTag.BYTE));
         }else if(name.equals("java.lang::ShortArray")){
@@ -2807,7 +2811,7 @@ public abstract class AbstractTransformer implements Transformation {
         // be more resilient to upstream errors
         if(declType == null)
             return typeFact.getUnknownType();
-        if(isJavaVariadic(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
+        if(Decl.isJavaVariadicIncludingInheritance(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
             // type of param must be Iterable<T>
             Type elementType = typeFact.getIteratedType(type);
             if(elementType == null){
@@ -2862,15 +2866,12 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
 
-    private boolean isJavaVariadic(Parameter parameter) {
-        return parameter.isSequenced()
-                && parameter.getDeclaration() instanceof Function
-                && isJavaMethod((Function) parameter.getDeclaration());
+    boolean isJavaVariadic(Parameter parameter) {
+        return Decl.isJavaVariadic(parameter);
     }
 
     boolean isJavaMethod(Function method) {
-        ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
-        return container != null && !Decl.isCeylon(container);
+        return Decl.isJavaMethod(method);
     }
     
     boolean isJavaCtor(Class cls) {
@@ -4055,7 +4056,7 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (isJavaString(type)) {
                 return utilInvocation().toJavaStringArray(expr, initialElements);
             } else if (isCeylonString(type)) {
-                return objectVariadicToJavaArray(invocation, type, exprType, expr, initialElements);
+                return utilInvocation().toJavaStringArray(expr, initialElements);
             }
             return objectVariadicToJavaArray(invocation, type, exprType, expr, initialElements);
         }else{

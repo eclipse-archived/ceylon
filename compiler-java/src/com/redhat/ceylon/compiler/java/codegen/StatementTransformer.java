@@ -2077,7 +2077,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexableType() {
-            return makeJavaType(javaArrayType);
+            return makeJavaType(javaArrayType, JT_NO_PRIMITIVES);
         }
         
         @Override
