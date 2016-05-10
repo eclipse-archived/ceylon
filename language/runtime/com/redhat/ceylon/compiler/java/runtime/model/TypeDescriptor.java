@@ -921,6 +921,18 @@ public abstract class TypeDescriptor
             return ModelUtil.union(caseTypes, unit);
         }
 
+        /** 
+         * The same as {@link #toType(RuntimeModuleManager)}, but will 
+         * simplify things like {@code Object|String} to {@code Object} 
+         */
+        public Type toSimpleType(RuntimeModuleManager moduleManager) {
+            ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
+            for(TypeDescriptor member : members)
+                ModelUtil.addToUnion(caseTypes,Metamodel.getProducedType(member));
+            return ModelUtil.union(caseTypes, moduleManager.getModelLoader().getUnit());
+        }
+
+        
         @Override
         public java.lang.Class<?> getArrayElementClass() {
             java.lang.Class<?> result = null;
@@ -999,6 +1011,19 @@ public abstract class TypeDescriptor
                 satisfiedTypes.add(Metamodel.getProducedType(member));
             return ModelUtil.canonicalIntersection(satisfiedTypes, unit);
         }
+        
+        /** 
+         * The same as {@link #toType(RuntimeModuleManager)}, but will 
+         * simplify things like {@code Object&String} to {@code String} 
+         */
+        public Type toSimpleType(RuntimeModuleManager moduleManager) {
+            Unit unit = moduleManager.getModelLoader().getUnit();
+            ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);
+            for(TypeDescriptor member : members)
+                ModelUtil.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
+            return ModelUtil.canonicalIntersection(satisfiedTypes, unit);
+        }
+        
         
         @Override
         public java.lang.Class<?> getArrayElementClass() {
