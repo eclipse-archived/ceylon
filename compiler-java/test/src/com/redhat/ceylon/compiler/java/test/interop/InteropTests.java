@@ -764,4 +764,12 @@ public class InteropTests extends CompilerTests {
         compile("Bug6244Java.java");
         compile("Bug6244.ceylon");
     }
+    
+    @Test
+    public void testSdkBug571() throws Throwable{
+        compile("SdkBug571.ceylon");
+        runInJBossModules("run", 
+                "com.redhat.ceylon.compiler.java.test.interop",
+                Arrays.asList("--run=com.redhat.ceylon.compiler.java.test.interop::sdkBug571_run"));
+    }
 }
