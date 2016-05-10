@@ -1692,7 +1692,12 @@ class NamedArgumentInvocation extends Invocation {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0));
-                defaultedParameterInstance = gen.naming.makeThis();
+                if (Decl.withinInterface(getPrimaryDeclaration())
+                        && getPrimaryDeclaration().isShared()) {
+                    defaultedParameterInstance = gen.naming.makeQuotedThis();
+                } else {
+                    defaultedParameterInstance = gen.naming.makeThis();
+                }
             } else {
                 // a local or toplevel function
                 thisType = gen.naming.makeName((TypedDeclaration)getPrimaryDeclaration(), Naming.NA_WRAPPER);
