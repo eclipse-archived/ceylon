@@ -269,7 +269,15 @@ public class AetherTestCase extends AbstractAetherTest {
         }
         lookup = new ModuleVersionQuery("com.sparkjava:spark-core", null, Type.JAR);
         result = manager.completeVersions(lookup);
-        Assert.assertEquals(7, result.getVersions().size());
+        // Count the version up to 2.3
+        int cnt = 0;
+        for (ModuleVersionDetails mvd : result.getVersions().values()) {
+            cnt++;
+            if ("2.3".equals(mvd.getVersion())) {
+                break;
+            }
+        }
+        Assert.assertEquals(7, cnt);
         
         // now check that we only downloaded the POMs for that, and not the jars
         File repo = new File("build/test-classes/maven-settings/repository");
