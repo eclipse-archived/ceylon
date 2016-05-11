@@ -1,6 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-public class Bug6099Java {
+class Bug6099JavaSuperClass {
+    public static final int WIDTH3 = 1;
+}
+
+public class Bug6099Java extends Bug6099JavaSuperClass {
     public static class innerClass {}
     public interface innerInterface {}
     public interface innerInterface2 {}
@@ -23,6 +27,14 @@ public class Bug6099Java {
     public static final boolean derived3 = true;
     
     public static final int STRING = 1;
+    
+    public int WIDTH;
+    public boolean width(){ return true; }
+
+    public int getWidth2() { return 1; }
+    public boolean WIDTH2(){ return true; }
+    
+    public boolean getWidth3(){ return true; }
 }
 
 class bug6099JavaTopLevelClass {}

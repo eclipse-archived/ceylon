@@ -25,6 +25,8 @@ import com.redhat.ceylon.compiler.java.test.interop {
         ...
     }
 }
+import javax.swing { JTable }
+import java.awt.image { ImageObserver }
 
 @noanno
 see(`function process.writeLine`) // regression for Ceylon anonymous types
@@ -70,6 +72,16 @@ shared void bug6099() {
     Integer d5 = \iDERIVED3;
     Boolean d6 = java.derived3;
     Integer s = \iSTRING;
+    
+    Integer w1 = java.\iWIDTH;
+    Boolean w2 = java.width();
+    Integer w3 = java.width2;
+    Boolean w4 = java.\iWIDTH2();
+    Boolean w6 = java.width3;
+    
+    JTable table = nothing;
+    Integer wid1 = table.width;
+    Integer wid2 = (table of ImageObserver).width;
     
     // regression for ceylon constants TypeDescriptors
     value b = [true]; 
