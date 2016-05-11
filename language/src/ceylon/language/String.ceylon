@@ -153,9 +153,9 @@ shared native final class String(characters)
      the given [[objects]], using this string as a separator."
     shared native String join({Object*} objects) {
         value result = StringBuilder();
-        objects.map(Object.string)
-               .interpose(this)
-               .each(result.append);
+        value strings = objects.map(Object.string);
+        result.appendAll(empty then strings 
+            else strings.interpose(this));
         return result.string;
     }
     
