@@ -2670,15 +2670,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(!JvmBackendUtil.isInitialLowerCase(name)){
                 String newName = NamingBase.getJavaBeanName(name);
                 if(!fieldNames.contains(newName)
-                        && klass.getDirectMember(newName, null, false) == null
+                        && !addingFieldWouldConflictWithMember(klass, newName)
                         && !methods.containsKey(newName))
                     name = newName;
             }
             // skip the field if "we've already got one"
-            boolean conflicts = klass.getDirectMember(name, null, false) != null
-                    || "equals".equals(name)
-                    || "string".equals(name)
-                    || "hash".equals(name);
+            boolean conflicts = addingFieldWouldConflictWithMember(klass, name);
             if (!conflicts) {
                 Declaration decl = addValue(klass, name, fieldMirror, isCeylon, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
@@ -2830,6 +2827,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private boolean addingFieldWouldConflictWithMember(ClassOrInterface klass, String name) {
+        return klass.getDirectMember(name, null, false) != null
+                || "equals".equals(name)
+                || "string".equals(name)
+                || "hash".equals(name);
+    }
+    
     private boolean keepField(FieldMirror fieldMirror, boolean isCeylon, boolean isFromJDK) {
         // We skip members marked with @Ignore
         if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)

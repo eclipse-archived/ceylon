@@ -69,6 +69,7 @@ shared void bug6099() {
     Integer d4 = \iDERIVED2;
     Integer d5 = \iDERIVED3;
     Boolean d6 = java.derived3;
+    Integer s = \iSTRING;
     
     // regression for ceylon constants TypeDescriptors
     value b = [true]; 

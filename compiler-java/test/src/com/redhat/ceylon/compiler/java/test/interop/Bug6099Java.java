@@ -21,6 +21,8 @@ public class Bug6099Java {
     public void setDerived2(boolean d){ }
     public static final int DERIVED3 = 1;
     public static final boolean derived3 = true;
+    
+    public static final int STRING = 1;
 }
 
 class bug6099JavaTopLevelClass {}
