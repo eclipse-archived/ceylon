@@ -139,7 +139,7 @@ public class PackageImpl implements ceylon.language.meta.declaration.Package,
         List<com.redhat.ceylon.model.typechecker.model.Declaration> modelMembers = declaration.getMembers();
         ArrayList<Kind> members = new ArrayList<Kind>(modelMembers.size());
         for(com.redhat.ceylon.model.typechecker.model.Declaration modelDecl : modelMembers){
-            if (predicate.accept(modelDecl)) {
+            if (!modelDecl.isNativeHeader() && predicate.accept(modelDecl)) {
                 Kind member = (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
                 members.add(member);
             }
@@ -159,7 +159,7 @@ public class PackageImpl implements ceylon.language.meta.declaration.Package,
         }
         List<com.redhat.ceylon.model.typechecker.model.Declaration> modelMembers = declaration.getMembers();
         for(com.redhat.ceylon.model.typechecker.model.Declaration modelDecl : modelMembers){
-            if (predicate.accept(modelDecl)) {
+            if (!modelDecl.isNativeHeader() && predicate.accept(modelDecl)) {
                 return (Kind)Metamodel.getOrCreateMetamodel(modelDecl);
             }
         }
