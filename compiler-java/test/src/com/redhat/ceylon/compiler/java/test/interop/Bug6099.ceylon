@@ -31,6 +31,9 @@ see(`function process.writeLine`) // regression for Ceylon anonymous types
 shared void bug6099() {
     process.writeLine("foo");
     value java = Bug6099Java();
+    String staticConstantAlt2 = "a";
+    class InnerClass(){}
+    InnerClass c = InnerClass();
     
     print(java.method());
     print(java.instanceField);
@@ -38,6 +41,10 @@ shared void bug6099() {
     print(java.staticConstantAlt);
     print(java.\iSTATIC_CONSTANT_ALT);
     print(\iSTATIC_CONSTANT_ALT);
+    // make sure we get the constant and not the local var
+    Integer v = \iSTATIC_CONSTANT_ALT2;
+    // make sure we get the imported type and not the local type
+    \IinnerClass c2 = Bug6099Java.\IinnerClass();
     print(Bug6099Java.staticConstantAlt);
     print(Bug6099Java.\iSTATIC_CONSTANT_ALT);
     print(java.InnerClass());
@@ -56,6 +63,12 @@ shared void bug6099() {
     \Ibug6099JavaTopLevelInterface zb = nothing;
     package.Bug6099JavaTopLevelInterface za2 = nothing; 
     package.\Ibug6099JavaTopLevelInterface zb2 = nothing;
+    Anything() d1 = derived;
+    Boolean d2 = java.derived2;
+    Integer d3 = \iDERIVED;
+    Integer d4 = \iDERIVED2;
+    Integer d5 = \iDERIVED3;
+    Boolean d6 = java.derived3;
     
     // regression for ceylon constants TypeDescriptors
     value b = [true]; 
