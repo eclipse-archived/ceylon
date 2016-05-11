@@ -1118,11 +1118,14 @@ public class Util {
      * (subsequent changes to the array will not be visible in 
      * the returned {@link Sequential}).</p>
      * 
+     * <p>WARNING: if you use this method for anything else than interop you're likely doind it wrong
+     * and want #sequentialWrapperBoxed instead</p>
+     * 
      * <p>Used to obtain a {@code Sequential<Integer>} from a {@code int[]}.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Integer> 
-    sequentialWrapperBoxed(int[] elements) {
+    sequentialWrapperBoxedForInteger(int[] elements) {
         if (elements.length == 0) {
             return (Sequential)empty_.get_();
 
@@ -1206,12 +1209,15 @@ public class Util {
      * (subsequent changes to the array will be visible in 
      * the returned {@link Sequential}).</p>
      * 
+     * <p>WARNING: if you use this method for interop you're likely doind it wrong
+     * and want #sequentialWrapperBoxedForInteger instead</p>
+     * 
      * <p>Used to obtain a {@code Sequential<Character>} from a {@code int[]} 
      * obtained from an annotation.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Character> 
-    sequentialWrapperBoxedCodepoints(int[] elements) {
+    sequentialWrapperBoxed(int[] elements) {
         if (elements.length == 0) {
             return (Sequential)empty_.get_();
 

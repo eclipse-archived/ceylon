@@ -4224,7 +4224,12 @@ public class ClassTransformer extends AbstractTransformer {
         Type seqElemType = typeFact().getIteratedType(lastParameter.getType());
         JCExpression init;
         if(CodegenUtil.isUnBoxed(lastParameter.getModel())){
-            init = utilInvocation().sequentialWrapperBoxed(makeQuotedIdent(lastParameter.getName()));
+            JCIdent name = makeQuotedIdent(lastParameter.getName());
+            // due to backwards-compat, we had a method named sequentialWrapperBoxed int[] -> Sequential<Character>
+            // so the new one has a special name
+            init = seqElemType.getUnderlyingType() != null && seqElemType.getUnderlyingType().equals("int")
+                    ? utilInvocation().sequentialWrapperBoxedForInteger(name)
+                    : utilInvocation().sequentialWrapperBoxed(name);
         }else{
             JCExpression typeArg = makeJavaType(seqElemType, JT_TYPE_ARGUMENT);
             // make a defensive copy

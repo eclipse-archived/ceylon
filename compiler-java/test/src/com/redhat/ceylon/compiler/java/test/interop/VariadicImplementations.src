@@ -106,7 +106,7 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
     
     @.java.lang.Override
     public final void variadicInt(final int... vars) {
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> vars$9 = .com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(vars);
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> vars$9 = .com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxedForInteger(vars);
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> vars2 = vars$9;
         variadicInt(.com.redhat.ceylon.compiler.java.Util.toIntArray(vars$9));
         variadicInt();
