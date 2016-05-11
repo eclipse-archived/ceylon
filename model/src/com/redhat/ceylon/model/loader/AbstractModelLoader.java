@@ -2653,22 +2653,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
 
+        Set<String> fieldNames = new HashSet<String>();
+        // collect field names first
+        for(FieldMirror fieldMirror : classMirror.getDirectFields()){
+            if(!keepField(fieldMirror, isCeylon, isFromJDK))
+                continue;
+            // do not change the name case here otherwise it will appear taken by itself
+            fieldNames.add(fieldMirror.getName());
+        }
+
         // now handle fields
         for(FieldMirror fieldMirror : classMirror.getDirectFields()){
-            // We skip members marked with @Ignore
-            if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                continue;
-            if(skipPrivateMember(fieldMirror))
-                continue;
-            if(isCeylon && fieldMirror.isStatic())
-                continue;
-            // FIXME: temporary, because some private classes from the jdk are
-            // referenced in private methods but not available
-            if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
+            if(!keepField(fieldMirror, isCeylon, isFromJDK))
                 continue;
             String name = fieldMirror.getName();
-            if(!JvmBackendUtil.isInitialLowerCase(name))
-                name = NamingBase.getJavaBeanName(name);
+            if(!JvmBackendUtil.isInitialLowerCase(name)){
+                String newName = NamingBase.getJavaBeanName(name);
+                if(!fieldNames.contains(newName)
+                        && klass.getDirectMember(newName, null, false) == null
+                        && !methods.containsKey(newName))
+                    name = newName;
+            }
             // skip the field if "we've already got one"
             boolean conflicts = klass.getDirectMember(name, null, false) != null
                     || "equals".equals(name)
@@ -2823,6 +2828,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
         }
+    }
+
+    private boolean keepField(FieldMirror fieldMirror, boolean isCeylon, boolean isFromJDK) {
+        // We skip members marked with @Ignore
+        if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+            return false;
+        if(skipPrivateMember(fieldMirror))
+            return false;
+        if(isCeylon && fieldMirror.isStatic())
+            return false;
+        // FIXME: temporary, because some private classes from the jdk are
+        // referenced in private methods but not available
+        if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
+            return false;
+        return true;
     }
 
     private boolean propertiesMatch(ClassOrInterface klass, MethodMirror getter, MethodMirror setter) {
