@@ -135,6 +135,16 @@ public class AnalyzerUtil {
             if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
                     && !JvmBackendUtil.isInitialLowerCase(name)){
                 name = NamingBase.getJavaBeanName(name);
+                // This method is used for base members, not qualified members
+                // so we don't look for members but we look on the scope, which
+                // may contain values with the modified case. For example, given
+                // import Foo { ... } which contains a \iBAR we map to "bar",
+                // if we look on the scope for "bar" we may find one that is not
+                // the one we wanted to import, so try imports first.
+                result = unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+                if(result instanceof TypedDeclaration)
+                    return (TypedDeclaration) result;
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
@@ -163,6 +173,21 @@ public class AnalyzerUtil {
             if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
                     && JvmBackendUtil.isInitialLowerCase(name)){
                 name = NamingBase.capitalize(name);
+                // This method is used for base members, not qualified members
+                // so we don't look for members but we look on the scope, which
+                // may contain values with the modified case. For example, given
+                // import Foo { ... } which contains a \iBAR we map to "bar",
+                // if we look on the scope for "bar" we may find one that is not
+                // the one we wanted to import, so try imports first.
+                result = unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+                if (result instanceof TypeDeclaration) {
+                    return (TypeDeclaration) result;
+                }
+                else if (result instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) result);
+                }
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
