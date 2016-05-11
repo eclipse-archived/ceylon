@@ -4,6 +4,6 @@ if (tps) {
   for (var tp in tps) {
     rv.push(OpenTypeParam$jsint(this, tp));
   }
-  return rv.$sa$({t:TypeParameter$meta$declaration});
+  return $arr$sa$(rv,{t:TypeParameter$meta$declaration});
 }
 return empty();

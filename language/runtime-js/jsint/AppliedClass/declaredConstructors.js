@@ -18,7 +18,7 @@ if (this.$constrs$===undefined) {
       ccc.push(r);
     }
   }
-  this.$constrs$=ccc.$sa$({t:'u',l:[
+  this.$constrs$=$arr$sa$(ccc,{t:'u',l:[
     {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$$targs$$.Type$AppliedClass,Arguments:{t:Nothing}}},
     {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedClass}}]});
 }

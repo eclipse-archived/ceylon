@@ -7,6 +7,6 @@ if (ints && ints.length) {
     var _m = typeof(mm.mod)==='function'?mm.mod():mm.mod;
     rv.push(FreeInterface$jsint(OpenInterface$jsint(modules$meta().find(_m['$mod-name'],_m['$mod-version']).findPackage(mm.d[0]), ifc)));
   }
-  return rv.$sa$({t:OpenInterfaceType$meta$declaration});
+  return $arr$sa$(rv,{t:OpenInterfaceType$meta$declaration});
 }
 return empty();

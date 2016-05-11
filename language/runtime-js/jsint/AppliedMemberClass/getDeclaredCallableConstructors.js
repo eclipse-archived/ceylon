@@ -25,5 +25,5 @@ function(anntypes,$m) {
   var targ={t:MemberClassCallableConstructor$meta$model,
     a:{Type$MemberClassCallableConstructor:this.$$targs$$.Type$AppliedClass,Arguments$MemberClassCallableConstructor:{t:Nothing},
        Container$MemberClassCallableConstructor:this.$$targs$$.Container$AppliedMemberClass}};
-  return cs.$sa$(targ);
+  return $arr$sa$(cs,targ);
 }

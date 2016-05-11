@@ -64,7 +64,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}});
+  return $arr$sa$(mems,{t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}});
 }
 function coicla$(coi,name,types,cont,noInherit) {
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -98,7 +98,7 @@ function clsparamtypes(cls) {
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt},cls.$targs));
   }
-  return r.$sa$({t:Type$meta$model,a:{t:Anything}});
+  return $arr$sa$(r,{t:Type$meta$model,a:{t:Anything}});
 }
 function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
@@ -119,7 +119,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}});
+  return $arr$sa$(mems,{t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}});
 }
 function coiifc$(coi,name,types,cont,noInherit){
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -189,7 +189,7 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}});
+  return $arr$sa$(mems,{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}});
 }
 function coimtd$(coi,name,types,$$$mptypes,noInherit){
   if (noInherit && !extendsType($$$mptypes.Container$getMethod,{t:coi.tipo})) {
@@ -258,7 +258,7 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}});
+  return $arr$sa$(mems,{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}});
 }
 //ClassOrInterface.satisfiedTypes
 function coisattype$(coi){
@@ -303,7 +303,7 @@ function coicase$(coi){
         rv.push(cts[i]());
       }
     }
-    return rv.$sa$({t:coi.tipo});
+    return $arr$sa$(rv,{t:coi.tipo});
   }
   return empty();
 }
@@ -545,7 +545,7 @@ function _coitargl_$(coi,makeItem,listarg){
         }
         ord.push(makeItem(coi,_targ||0,targ));
       }
-      return ord.$sa$(listarg);
+      return $arr$sa$(ord,listarg);
     }
     return empty();
   }

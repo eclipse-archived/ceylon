@@ -12,6 +12,6 @@ function(anntypes,$m) {
     if (cs[i].fakeConstr)r.fakeConstr$=true;
     cs[i]=r;
   }
-  return cs.$sa$({t:CallableConstructor$meta$model,
+  return $arr$sa$(cs,{t:CallableConstructor$meta$model,
     a:{Type$CallableConstructor:this.$$targs$$.Type$AppliedClass,Arguments$CallableConstructor:{t:Nothing}}});
 }

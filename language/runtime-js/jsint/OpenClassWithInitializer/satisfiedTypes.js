@@ -9,6 +9,6 @@ if (ints && ints.length) {
     if (ifc.a)fi.declaration._targs=ifc.a;
     rv.push(fi);
   }
-  return rv.$sa$({t:OpenInterfaceType$meta$declaration});
+  return $arr$sa$(rv,{t:OpenInterfaceType$meta$declaration});
 }
 return empty();

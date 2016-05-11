@@ -10,6 +10,6 @@ function(anntypes){
     r.cont$=this;
     cs[i]=r;
   }
-  return cs.$sa$({t:ValueConstructor$meta$model,
+  return $arr$sa$(cs,{t:ValueConstructor$meta$model,
     a:{Type$ValueConstructor:this.$$targs$$.Type$AppliedClass}});
 }

@@ -156,7 +156,7 @@ function convert$params(mm,a,$$targs$$) {
           if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
           sarg.push(a[j]);
         }
-        fa.push(sarg.$sa$(val_t));
+        fa.push($arr$sa$(sarg,val_t));
         i=j;
       }
     } else {

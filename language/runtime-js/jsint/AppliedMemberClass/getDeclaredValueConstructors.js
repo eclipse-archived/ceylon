@@ -20,7 +20,7 @@ function(anntypes){
     r.$cont=this;
     cs[i]=r;
   }
-  return cs.$sa$({t:MemberClassValueConstructor$meta$model,
+  return $arr$sa$(cs,{t:MemberClassValueConstructor$meta$model,
     a:{Type$MemberClassValueConstructor:this.$$targs$$.Type$AppliedClass,
        Container$MemberClassValueConstructor:this.$$targs$$.Container$AppliedMemberClass}});
 }

@@ -109,7 +109,7 @@ function $init$tpl$(){
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
           if (f(this.sp$.getFromFirst(i)))a.push(this.sp$.getFromFirst(i));
         }
-        return a.$sa$(this.t$);
+        return $arr$sa$(a,this.t$);
       };
       tuple.select.$crtmm$=Tuple.$$.prototype.select.$crtmm$;
       tuple.$_filter=function(f){
@@ -144,7 +144,7 @@ function $init$tpl$(){
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
           a[j++]=f(this.sp$.getFromFirst(i));
         }
-        return a.$sa$($m.Result$collect);
+        return $arr$sa$(a,$m.Result$collect);
       };
       tuple.collect.$crtmm$=Tuple.$$.prototype.collect.$crtmm$;
       tuple.$_map=function(f,$m){

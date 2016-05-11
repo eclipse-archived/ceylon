@@ -81,7 +81,7 @@ function _ocoitargl_$(coi,makeItem,listarg){
       }
       ord.push(makeItem(coi,rtp||0,targ));
     }
-    return ord.$sa$(listarg);
+    return $arr$sa$(ord,listarg);
   }
   return empty();
 }

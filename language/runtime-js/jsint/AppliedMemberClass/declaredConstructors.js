@@ -30,7 +30,7 @@ if (this.$constrs$===undefined) {
   var targ={t:'u',l:[
     {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$$targs$$.Type$AppliedMemberClass,Arguments:{t:Nothing}}},
     {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedMemberClass}}]};
-  this.$constrs$=ccc.$sa$(targ);
+  this.$constrs$=$arr$sa$(ccc,targ);
 }
 return this.$constrs$;
 
