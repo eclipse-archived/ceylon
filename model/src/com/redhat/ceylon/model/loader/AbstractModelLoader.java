@@ -3763,9 +3763,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }else{
                     if(isOverridingMethod(methodMirror)){
-                        decl.setActual(true);
                         Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
-                        decl.setRefinedDeclaration(refined);
+                        if(refined instanceof FieldValue == false){
+                            decl.setActual(true);
+                            decl.setRefinedDeclaration(refined);
+                        }
                     }
                 }
                 
