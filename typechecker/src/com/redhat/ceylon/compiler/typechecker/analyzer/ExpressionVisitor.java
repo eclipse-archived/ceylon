@@ -9321,7 +9321,8 @@ public class ExpressionVisitor extends Visitor {
             	String container = "type '" + qtd.getName(unit) + "'";
             	TypedDeclaration member = 
             	        getTypedMember(qtd, name, 
-            	                null, false, unit, that.getScope());
+            	                null, false, unit, 
+            	                that.getScope());
             	if (member==null) {
             		if (qtd.isMemberAmbiguous(name, unit, null, false)) {
             			that.addError("method or attribute is ambiguous: '" +
@@ -9578,7 +9579,8 @@ public class ExpressionVisitor extends Visitor {
             } else {
                 that.addError("illegal reference to native declaration '" +
                         dec.getName(unit) + "': declaration '" +
-                        d.getName(unit) + "' is not native (mark it or the module native)");
+                        d.getName(unit) + "' is not native (mark it or the module native)",
+                        20010);
             }
         }
         if (dec.isNative()) {
