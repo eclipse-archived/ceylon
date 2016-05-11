@@ -361,4 +361,11 @@ public class AnnotationsTests extends CompilerTests {
         compareWithJavaSource(options, "Repeatable7.src", "Repeatable.ceylon");
         run("com.redhat.ceylon.compiler.java.test.annotations.RepeatableUse");
     }
+    
+    @Test
+    public void testAnnotationCharacterSequence(){
+        //compareWithJavaSource("AnnotationCharacterSequence");
+        compile("AnnotationCharacterSequence.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.annotations.AnnotationCharacterSequenceUse");
+    }
  }
