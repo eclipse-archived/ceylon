@@ -56,6 +56,26 @@ public class NothingType extends TypeDeclaration {
     }
     
     @Override
+    public boolean isClassMember() {
+        return false;
+    }
+    
+    @Override
+    public boolean isInterfaceMember() {
+        return false;
+    }
+    
+    @Override
+    public boolean isClassOrInterfaceMember() {
+        return false;
+    }
+    
+    @Override
+    public boolean isToplevel() {
+        return true;
+    }
+    
+    @Override
     public String getQualifiedNameString() {
         return "ceylon.language::Nothing";
     }
