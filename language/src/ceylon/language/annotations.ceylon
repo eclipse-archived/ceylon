@@ -337,3 +337,15 @@ shared final annotation class SmallAnnotation()
  32-bit IEEE float."
 shared annotation SmallAnnotation small() 
         => SmallAnnotation();
+
+
+"The annotation class for the [[service]] annotation."
+shared final annotation class ServiceAnnotation(contract)
+        satisfies SequencedAnnotation<ServiceAnnotation,ClassDeclaration> {
+    "The service interface or class that the annotated class provides."
+    ClassOrInterfaceDeclaration contract;
+}
+
+"Annotation mark a class as providing a service"
+shared annotation ServiceAnnotation service(ClassOrInterfaceDeclaration contract) 
+        => ServiceAnnotation(contract);
