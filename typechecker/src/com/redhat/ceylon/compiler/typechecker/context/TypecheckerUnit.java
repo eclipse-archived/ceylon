@@ -14,17 +14,6 @@ public class TypecheckerUnit extends Unit {
         this.moduleSourceMapper = moduleSourceMapper;
     }
     
-    public TypecheckerUnit(Iterable<Module> modules, 
-            ModuleSourceMapper moduleSourceMapper){
-    	this.moduleSourceMapper = moduleSourceMapper;
-        for (Module module: modules) {
-            if ("java.base".equals(module.getNameAsString())) {
-                javaLangPackage = module.getPackage("java.lang");
-                break;
-            }
-        }
-    }
-    
     public TypecheckerUnit(
             String theFilename,
             String theRelativePath,
