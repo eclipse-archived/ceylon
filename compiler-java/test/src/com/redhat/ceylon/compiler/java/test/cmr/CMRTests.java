@@ -1763,4 +1763,14 @@ public class CMRTests extends CompilerTests {
             }
         }
     }
+    
+    @Test
+    public void testNamespaceImports() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether", "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aetherdefault/module.ceylon", "modules/namespaces/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+    }
+
 }
