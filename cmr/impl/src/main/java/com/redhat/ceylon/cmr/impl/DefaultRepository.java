@@ -36,6 +36,8 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  */
 public class DefaultRepository extends AbstractRepository {
 
+    public static final String NAMESPACE = "ceylon";
+    
     public DefaultRepository(OpenNode root) {
         super(root);
     }
@@ -85,12 +87,7 @@ public class DefaultRepository extends AbstractRepository {
     }
 
     @Override
-    public boolean isMaven() {
-        return false;
-    }
-
-    @Override
     public String getNamespace() {
-        return null;
+        return NAMESPACE;
     }
 }

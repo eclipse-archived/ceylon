@@ -210,11 +210,6 @@ public class JDKRepository extends AbstractRepository {
     }
 
     @Override
-    public boolean isMaven() {
-        return false;
-    }
-
-    @Override
     public String getNamespace() {
         return NAMESPACE;
     }

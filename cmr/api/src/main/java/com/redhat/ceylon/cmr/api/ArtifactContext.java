@@ -208,14 +208,6 @@ public class ArtifactContext implements Serializable, ContentOptions {
         }
     }
 
-    public boolean isMaven(){
-        boolean maven = name != null
-                && (name.startsWith("maven:")
-                        || name.indexOf(':') != -1);
-        return maven;
-    }
-    
-    
     public String getNamespace() {
         return namespace;
     }

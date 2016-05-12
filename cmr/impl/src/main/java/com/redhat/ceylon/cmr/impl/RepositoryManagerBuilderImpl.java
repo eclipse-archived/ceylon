@@ -118,9 +118,4 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     public RepositoryManager buildRepository() {
         return repository;
     }
-
-    @Override
-    public boolean hasMavenRepository() {
-        return repository.hasMavenRepository();
-    }
 }

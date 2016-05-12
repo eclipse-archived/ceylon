@@ -97,11 +97,6 @@ public class MavenRepository extends AbstractRepository {
     }
 
     @Override
-    public boolean isMaven() {
-        return true;
-    }
-
-    @Override
     public String getNamespace() {
         return NAMESPACE;
     }

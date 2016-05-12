@@ -285,12 +285,4 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
     public String toString() {
         return "RootRepositoryManager: " + fileContentStore;
     }
-
-    public boolean hasMavenRepository() {
-        for(CmrRepository root : getRepositories()){
-            if(root.isMaven())
-                return true;
-        }
-        return false;
-    }
 }
