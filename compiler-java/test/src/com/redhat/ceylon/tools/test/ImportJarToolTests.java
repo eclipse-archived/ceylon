@@ -36,6 +36,7 @@ import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
@@ -477,7 +478,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         
     	CeylonRepoManagerBuilder builder = CeylonUtils.repoManager();
     	RepositoryManager repository = builder.buildManager();
-    	File artifact = repository.getArtifact("org.eclipse.jetty:jetty-server", "9.3.2.v20150730");
+    	File artifact = repository.getArtifact(MavenArtifactContext.NAMESPACE, "org.eclipse.jetty:jetty-server", "9.3.2.v20150730");
     	Assert.assertNotNull(artifact);
     	
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");

@@ -92,7 +92,7 @@ public class CallbackTestCase extends AbstractTest {
             Assert.assertNotNull(callback.err);
             Assert.assertEquals(callback.ts, callback.err.getMessage());
         } finally {
-            manager.removeArtifact(name, version);
+            manager.removeArtifact(null, name, version);
             // test if remove really works
             testSearchResults("com.redhat.fizbiz", ModuleQuery.Type.JVM, new ModuleSearchResult.ModuleDetails[0]);
         }

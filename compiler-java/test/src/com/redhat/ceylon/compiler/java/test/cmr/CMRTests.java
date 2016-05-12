@@ -63,6 +63,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -1747,7 +1748,7 @@ public class CMRTests extends CompilerTests {
         String artifactId = "javax.el-api";
         String version = "3.0.0";
         String coord = groupId + ":" + artifactId;
-        File artifact = repository.getArtifact(coord, version);
+        File artifact = repository.getArtifact(MavenArtifactContext.NAMESPACE, coord, version);
         Assert.assertNotNull(artifact);
         try(ZipFile zf = new ZipFile(artifact)){
             String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);

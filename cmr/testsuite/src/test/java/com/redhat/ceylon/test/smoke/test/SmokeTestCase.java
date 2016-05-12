@@ -73,7 +73,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testNavigation() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        File acme = manager.getArtifact("org.jboss.acme", "1.0.0.Final");
+        File acme = manager.getArtifact(null, "org.jboss.acme", "1.0.0.Final");
         Assert.assertNotNull("Module 'org.jboss.acme-1.0.0.Final' not found", acme);
     }
 
@@ -81,7 +81,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testNoVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager();
 
-        File def = manager.getArtifact(RepositoryManager.DEFAULT_MODULE, null);
+        File def = manager.getArtifact(null, RepositoryManager.DEFAULT_MODULE, null);
         Assert.assertNotNull("Default module not found", def);
     }
 
@@ -130,12 +130,12 @@ public class SmokeTestCase extends AbstractTest {
         String name = "com.redhat.foobar1";
         String version = "1.0.0.Alpha1";
         try {
-            manager.putArtifact(name, version, baos);
+            manager.putArtifact(null, name, version, baos);
 
-            File file = manager.getArtifact(name, version);
+            File file = manager.getArtifact(null, name, version);
             Assert.assertNotNull("Failed to put or retrieve after put", file);
         } finally {
-            manager.removeArtifact(name, version);
+            manager.removeArtifact(null, name, version);
         }
     }
 
@@ -154,16 +154,16 @@ public class SmokeTestCase extends AbstractTest {
 
             manager.putArtifact(context, baos);
 
-            File file = manager.getArtifact(name, version);
+            File file = manager.getArtifact(null, name, version);
             Assert.assertNotNull("Failed to retrieve after put", file);
 
             baos = new ByteArrayInputStream("ytrewq".getBytes());
             manager.putArtifact(context, baos);
 
-            file = manager.getArtifact(name, version);
+            file = manager.getArtifact(null, name, version);
             Assert.assertNotNull("Failed to retrieve after forced put", file);
         } finally {
-            manager.removeArtifact(name, version);
+            manager.removeArtifact(null, name, version);
         }
     }
 
@@ -175,15 +175,15 @@ public class SmokeTestCase extends AbstractTest {
         String version = "1.0.0.Alpha2";
         File file = null;
         try {
-            File artifact = manager.getArtifact(name, version);
+            File artifact = manager.getArtifact(null, name, version);
             Assert.assertNull(artifact);
 
-            manager.putArtifact(name, version, new ByteArrayInputStream("qwerty".getBytes()));
+            manager.putArtifact(null, name, version, new ByteArrayInputStream("qwerty".getBytes()));
 
-            file = manager.getArtifact(name, version);
+            file = manager.getArtifact(null, name, version);
             Assert.assertNotNull("Failed to retrieve after put", file);
         } finally {
-            manager.removeArtifact(name, version);
+            manager.removeArtifact(null, name, version);
             if (file != null)
                 Assert.assertFalse("Failed to remove module", file.exists());
         }
@@ -212,7 +212,7 @@ public class SmokeTestCase extends AbstractTest {
             File file = manager.getArtifact(context);
             Assert.assertNotNull("Failed to retrieve after put", file);
         } finally {
-            manager.removeArtifact(name, version);
+            manager.removeArtifact(null, name, version);
         }
     }
 
@@ -258,7 +258,7 @@ public class SmokeTestCase extends AbstractTest {
         File file = null;
         File originFile = null;
         try {
-            file = manager.getArtifact(name, version);
+            file = manager.getArtifact(null, name, version);
             Assert.assertNotNull(file);
             originFile = new File(file.getAbsolutePath() + ".origin");
             Assert.assertNotNull(originFile);            
@@ -271,7 +271,7 @@ public class SmokeTestCase extends AbstractTest {
             } catch(IOException ignored) {
             } 
         } finally {
-            manager.removeArtifact(name, version);
+            manager.removeArtifact(null, name, version);
             // test if remove really works
             if (file != null) assertFalse(file.exists());
             if (originFile != null) assertFalse(originFile.exists());
@@ -314,7 +314,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testResolver() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        File[] files = manager.resolve("moduletest", "0.1");
+        File[] files = manager.resolve(null, "moduletest", "0.1");
         Assert.assertNotNull(files);
         Assert.assertEquals(2, files.length);
     }
@@ -322,7 +322,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testNoOverrides() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.dependencies().size());
     }
@@ -330,7 +330,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesRemove() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overrides.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.dependencies().size());
     }
@@ -362,7 +362,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesInterpolation() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesInterpolation.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.dependencies().size());
     }
@@ -370,7 +370,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesReplace() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplace.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals("com.acme.helloworld", result.name());
         Assert.assertEquals("1.0.0", result.version());
@@ -380,7 +380,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesReplaceGlobal() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplaceGlobal.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals("com.acme.helloworld", result.name());
         Assert.assertEquals("1.0.0", result.version());
@@ -390,7 +390,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesReplaceGlobalNoVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplaceGlobalNoVersion.xml");
-        ArtifactResult result = manager.getArtifactResult("com.acme.helloworld", "1.0.0");
+        ArtifactResult result = manager.getArtifactResult(null, "com.acme.helloworld", "1.0.0");
         Assert.assertNotNull(result);
         Assert.assertEquals("hello", result.name());
         Assert.assertEquals("1.0.0", result.version());
@@ -400,7 +400,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesReplaceImport() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesReplaceImport.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.dependencies().size());
         ArtifactResult dep = result.dependencies().get(0);
@@ -412,7 +412,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesShareImport() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesShareImport.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.dependencies().size());
         ArtifactResult dep = result.dependencies().get(0);
@@ -424,7 +424,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesOptionalImport() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesOptionalImport.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.dependencies().size());
         ArtifactResult dep = result.dependencies().get(0);
@@ -436,18 +436,18 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesSet() throws Exception {
         RepositoryManager manager = getRepositoryManager();
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
 
         manager = getRepositoryManager("testsuite/src/test/resources/overridesSet.xml");
-        result = manager.getArtifactResult("moduletest", "0.1");
+        result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNull(result);
 }
     
     @Test
     public void testOverridesRemoveNoVersion() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesNoVersion.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.dependencies().size());
     }
@@ -455,7 +455,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testOverridesRemoveGlobal() throws Exception {
         RepositoryManager manager = getRepositoryManager("testsuite/src/test/resources/overridesGlobal.xml");
-        ArtifactResult result = manager.getArtifactResult("moduletest", "0.1");
+        ArtifactResult result = manager.getArtifactResult(null, "moduletest", "0.1");
         Assert.assertNotNull(result);
         Assert.assertEquals(0, result.dependencies().size());
     }
